@@ -85,7 +85,7 @@ module Fisk8Viewer
                 :competition_type, :cid, :season,]
         
         competition = Competition.create(summary.slice(*keys))
-          
+
         ## for each categories
         summary.categories.each do |category|
           next unless @accept_categories.include?(category.to_sym)

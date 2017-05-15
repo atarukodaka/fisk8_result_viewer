@@ -24,12 +24,16 @@ end
 task :update_competitions => :environment do
   first = ENV["first"].to_i
   last = ENV["last"].to_i
-  reverse = ENV['reverse'].to_i.nonzero?
+  #reverse = ENV['reverse'].to_i.nonzero?
   force = ENV['force'].to_i.nonzero?
   updater = Fisk8Viewer::Updater.new(accept_categories: ENV['accept_categories'], force: force)
   items = updater.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
-  items = items.reverse if reverse
-  items = items.first(first) if first > 0
-  items = items.last(last) if last > 0  
+
+  if first > 0
+    items = items.first(first)
+  elsif last > 0
+    items = items.last(last).reverse
+  end
   updater.update_competitions(items)
+  
 end

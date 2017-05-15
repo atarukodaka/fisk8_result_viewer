@@ -15,9 +15,13 @@ module Fisk8Viewer
       end
       def parse_city_country(page)
         str = page.search("td.caption3").first.text
-        str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
-        city, country = $1, $2
-        [city.sub(/ *$/, ''), country]
+        if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
+          city, country = $1, $2
+          city.sub!(/ *$/, '') if city.present?
+          [city, country]
+        else
+          [str, nil]
+        end
       end
       def parse_summary_table(page, url: "")
         category_elem = page.xpath("//*[text()='Category']").first

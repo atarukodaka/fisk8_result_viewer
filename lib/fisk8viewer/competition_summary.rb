@@ -102,7 +102,7 @@ module Fisk8Viewer
         when :jworld
           "JWORLD#{year}"
         when :jgp
-          "JGP#{year}"
+          "JGP#{country.presence || city}#{year}"
         else
           @data[:name].gsub(/Figure Skating */, '').gsub(/\s/, '_')
         end
