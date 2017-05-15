@@ -29,13 +29,25 @@
 - http://www.isuresults.com/results/wc2011/
 - http://www.isuresults.com/results/owg2010/
 
-- http://www.isuresults.com/results/jgpfra2010/
+-
+  url: http://www.isuresults.com/results/jgpfra2010/
+  parser: :isu_generic_mdy
+
 - http://www.isuresults.com/results/jgprou2010/
-- http://www.isuresults.com/results/jgpaut2010/
+-
+  url: http://www.isuresults.com/results/jgpaut2010/
+  parser: :isu_generic_mdy
+  
 - http://www.isuresults.com/results/jgpjpn2010/
-- http://www.isuresults.com/results/jgpgbr2010/
+-
+  url: http://www.isuresults.com/results/jgpgbr2010/
+  parser: :isu_generic_mdy
+  
 - http://www.isuresults.com/results/jgpger2010/
-- http://www.isuresults.com/results/jgpcze2010/
+-
+  url: http://www.isuresults.com/results/jgpcze2010/
+  parser: :isu_generic_mdy
+
 
 ##2011-12
 - http://www.isuresults.com/results/gpusa2011/
