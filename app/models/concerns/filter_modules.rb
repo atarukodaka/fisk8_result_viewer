@@ -26,10 +26,11 @@ module FilterModules
     }
 
     class << self
+
       def select_options(key)
         @_select_options ||= {}
         return @_select_options[key] if @_select_options[key]
-        @_select_options[key] = pluck(key).uniq.unshift(nil)
+        @_select_options[key] = pluck(key).uniq.sort.unshift(nil)
       end
 
       def _parse_compare(text)

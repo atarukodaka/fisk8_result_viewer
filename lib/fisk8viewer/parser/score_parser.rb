@@ -4,6 +4,8 @@ module Fisk8Viewer
   class Parser
     class ScoreParser
       include Fisk8Viewer::Utils
+
+      SCORE_DELIMITER = /Name Nation/
       
       def parse_each_score(text, additional_entries: {})
         mode = :skater
@@ -66,7 +68,7 @@ module Fisk8Viewer
         page_number = 1
         text.split(/\f/).map do |page_text|
           #page_text.split(/^Rank/)[1..-1].each_with_index do |t, i|
-          page_text.split(/Name Nation/)[1..-1].each_with_index do |t, i|          
+          page_text.split(SCORE_DELIMITER)[1..-1].each_with_index do |t, i|          
             result_pdf =  "#{score_url}\#page=#{i+1}"
             score = parse_each_score(t, additional_entries: additional_entries)
             scores << score.merge(result_pdf: result_pdf)
