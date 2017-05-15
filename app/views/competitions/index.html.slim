@@ -1,0 +1,11 @@
+h2 Competitions List
+
+= render partial: "filter_form", locals: {controller: :competitions, filters: @filters}
+
+////////////////////////////////////////////////////////////////
+- keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+- callback = {}
+- callback[:site_url] = ->(record, key){ link_to("ISU HP", record[key], target: "_blank") }
+- callback[:name] = ->(record, key){ link_to(record[key], controller: :competitions, action: :show, cid: record.cid) } 
+
+= render partial: "list_table", locals: {keys: keys, collection: @collection, filter_keys: @filters.keys, record_callback: callback }

@@ -1,0 +1,18 @@
+h2 Scores
+
+= render partial: "filter_form", locals: {controller: :scores, filters: @filters}
+
+////////////////////////////////////////////////////////////////
+
+- filter_keys = @filters.keys || []
+- collection = @collection
+
+- keys = [:sid, :competition_name, :category, :segment, :date, :result_pdf, :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions]
+
+- callback = {}
+- callback[:result_pdf] = method(:link_to_pdf_proc)
+- callback[:sid] = ->(record, key){ link_to(record.id, controller: :scores, action: :show, sid: record.sid)  }
+
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filter_keys, record_callback: callback}
+
+

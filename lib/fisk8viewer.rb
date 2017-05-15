@@ -1,0 +1,5 @@
+require 'fisk8viewer/parser'
+require 'fisk8viewer/updater'
+require 'fisk8viewer/competition_summary'
+require 'fisk8viewer/isu_bio'
+require 'fisk8viewer/version'

@@ -1,0 +1,48 @@
+h2 Score
+
+- score = @score
+
+
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Skater
+    td= link_to_skater(score.skater)
+  tr
+    th Competition
+    td= link_to_competition(score.competition)
+  tr
+    th Category
+    td= link_to_competition(score.competition, category: score.category)
+  tr
+    th Segment
+    td= link_to_competition(score.competition, category: score.category, segment: score.segment)
+  tr
+    th Date
+    td= score.date
+  tr
+    th TSS
+    td= score.tss
+  tr
+    th TES
+    td= score.tes
+  tr
+    th PCS
+    td= score.pcs
+  tr
+    th Deductions
+    td= score.deductions
+  tr
+    th Result PDF
+    td
+      = link_to("result", score.result_pdf, target: "_blank")
+      span.glyphicon.glyphicon-link
+
+h2 Elements
+
+= render partial: "list_table", locals: { keys: [:number, :element, :info, :base_value, :credit, :goe, :judges, :value] , collection: @score.elements}
+
+h2 Components
+
+= render partial: "list_table", locals: { keys: [:number, :component, :factor, :judges, :value] , collection: @score.components }
+
+

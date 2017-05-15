@@ -1,0 +1,16 @@
+h2 Components
+
+= render partial: "filter_form", locals: {controller: :components, filters: @filters}
+
+////////////////////////////////////////////////////////////////
+
+- filter_keys = @filters.keys
+- keys = @keys
+- collection = @collection
+- controller = :elements
+//- binding.pry
+- callback = {sid: ->(record, key){ link_to(record.sid, controller: :scores, action: :show, sid: record.sid)}}
+
+
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filter_keys, record_callback: callback}
+

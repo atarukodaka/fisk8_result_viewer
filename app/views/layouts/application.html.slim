@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Fisk8 Result Viewer
+    meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    = analytics_init if Rails.env.production? && GA.tracker.present?
+
+  body
+    div.container style="width: 90%;"
+      =render partial: "navbar", cached: true
+      = yield
+
+      div.footer
+        hr
+          p 
+            | Powered by 
+            = link_to('Fisk8Viewer', 'https://github.com/atarukodaka/fisk8_result_viewer', target: "_blank")
+      
+

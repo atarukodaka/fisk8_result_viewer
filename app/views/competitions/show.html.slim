@@ -1,0 +1,68 @@
+
+- competition ||= @competition || Competition.none
+- category ||= @category || ""
+- segment ||= @segment || ""
+
+////////////////////////////////////////////////////////////////
+h2 Competition Info
+
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Competition Name
+    td= competition.name
+  tr
+    th Competition ID
+    td= competition.cid
+  tr
+    th City / Country
+    td= [competition.city, competition.country].join(' / ')
+  tr
+    th ISU Site
+    td
+      = link_to('ISU HP', competition.site_url, target: "_blank")
+      span.glyphicon.glyphicon-link
+  tr
+    th Start Date
+    td= competition.start_date
+  tr
+    th End Date
+    td= competition.end_date
+
+////////////////////////////////////////////////////////////////
+h2 Category Summary
+
+table.table.table-striped.table-hover.table-condensed
+
+  tr
+    - [:category, :segment, "1st", "2nd", "3rd"].each do |header|
+      th= header.to_s.camelize
+
+  - competition.categories.each do |cat|
+    tr
+      td= link_to_competition(competition, category: cat)
+      td
+        - competition.segments(cat).each do |seg|
+          = link_to_competition(competition, category: cat, segment: seg)
+          span , 
+      - rankers = competition.top_rankers(cat)[1..3] || []
+      - rankers.each do |ranker|
+        td= ranker.name
+
+- if category.present?
+  - unless segment.present?
+    ////////////////////////////////////////////////////////////////
+    h2 
+      | Category Result of 
+      = category
+    = render partial: "list_table", locals: {keys: [:ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking], collection: competition.category_results.search_by_category(category)}
+
+  - else
+    ////////////////////////////////////////////////////////////////
+    h2 
+      | Segment Result of 
+      = [category, segment].join('/')
+
+    - callback = { ranking: ->(record, key){ link_to(record.ranking, {controller: :scores, action: :show, sid: record.sid})}}
+
+    = render partial: "list_table", locals: {keys: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions] , collection: competition.scores.where(category: category, segment: segment).order(:ranking), record_callback: callback }
+

@@ -1,0 +1,25 @@
+// locals: keys, collection, optional: filter_keys, record_callback
+
+- keys ||= []
+- record_callback ||= {}
+- filter_keys ||= []
+
+table.table.table-striped.table-hover.table-condensed
+  tr
+    - keys.each do |key|
+      - if record_callback[key].blank? and filter_keys.include?(key)
+        th= bracket(key.to_s.camelize)
+      - else
+        th= key.to_s.camelize
+    - collection.each do |item|
+      tr
+        - keys.each do |key|
+          - if cb = record_callback[key]
+            td= cb.call(item, key)
+          - elsif filter_keys.include?(key)
+            / td= link_to_index("[#{item[key]}]", parameters: params.permit(filter_keys).merge(key => item[key]))
+            td= link_to_index(item[key], parameters: params.permit(filter_keys).merge(key => item[key]))
+          - else
+            td= item[key]
+
+= paginate(collection) if collection.respond_to?(:total_pages)

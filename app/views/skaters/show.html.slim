@@ -1,0 +1,43 @@
+h2 Skaters Infon
+
+////////////////////////////////////////////////////////////////
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Name
+    td= @skater[:name]
+  tr
+    th Nation
+    td= @skater[:nation]
+  tr
+    th ISU Number
+    td
+      = link_to_isu_bio(nil, @skater[:isu_number], target: "_blank")
+      span.glyphicon.glyphicon-link
+  tr
+    th Category
+    td= @skater[:category]
+
+h2 Results
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Competition
+    th Category
+    th Segment
+    th Date
+    th Ranking
+    th TSS
+    th TES
+    th PCS
+    th Deductinos
+
+  - @skater.scores.order("date desc").includes(:competition).each do |score|
+    tr
+      td= link_to_competition(score.competition)
+      td= link_to_competition(score.competition, category: score.category)
+      td= link_to_competition(score.competition, category: score.category, segment: score.segment)
+      td= score.date
+      td= score.ranking
+      td= score.tss
+      td= score.tes
+      td= score.pcs
+      td= score.deductions
