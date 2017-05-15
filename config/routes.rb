@@ -26,8 +26,7 @@ Rails.application.routes.draw do
   
   ## feedback
   get 'feedback' => 'feedback#index'
-  post 'feedback/pull_request'
-  #post 'feedback/post_comment'
+  post 'feedback' => 'feedback#submit'
 
   
   ## top

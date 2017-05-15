@@ -2,7 +2,7 @@ class FeedbackController < ApplicationController
   def index
   end
 
-  def pull_request
+  def submit
     ## commit to database
     
     ## send mail
@@ -10,12 +10,15 @@ class FeedbackController < ApplicationController
     competition_name = params[:competition_name]
 
     if competition_url.blank?
-      redirect_to controller: :feedback, action: :index, params: {url_missing: true}
-      #render action: :index, params: {warning: 'URL is missing'} and return
+      #redirect_to controller: :feedback, action: :index, params: {url_missing: true}
+      @warning = "URL is missing"
+      render action: :index
     else
       body = "#{competition_url}, #{competition_name}"
       @mail = FeedbackMailer.send_mail(body).deliver
       # TODO error handling
+      @message = "Thank you for your feedback"
+      render action: :index
     end
   end
 end

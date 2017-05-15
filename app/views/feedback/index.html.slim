@@ -2,14 +2,20 @@ h2 Pull Request of missing competition
 
 p please input URL of new competition that should be incoroprated into this database.
 
-- if params[:url_missing]
+- if @warning.present?
   div.alert.alert-warning.alert-dismissible.face.show
     button.close type="button" data-dismiss="alert"
       span &times;
-    strong URL is missing
+    strong= @warning
+
+- if @message.present?
+  div.alert.alert-success.alert-dismissible.face.show
+    button.close type="button" data-dismiss="alert"
+      span &times;
+    strong= @message
 
 
-= form_tag url_for(controller: :feedback, action: :pull_request), enforce_utf8: false, method: :post, id: :feedback_mailer_form do |f|
+= form_tag url_for(controller: :feedback, action: :submit), enforce_utf8: false, method: :post, id: :feedback_mailer_form do |f|
   .form-group.row
     .col-sm-2
       = label_tag(:competition_url)
