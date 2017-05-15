@@ -206,7 +206,12 @@
 
 - http://www.isuresults.com/results/owg2014/
 - http://www.isuresults.com/results/season1617/gpcan2016/
-
 ## junior
 
 
+
+-
+  url: http://www.isuresults.com/results/jgpfra2010/
+  parser: :isu_generic_mdy
+
+- http://www.isuresults.com/results/season1617/wc2017/
