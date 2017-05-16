@@ -1,13 +1,12 @@
-h2 Skaters
+
+- keys = [ :name, :nation, :category, :isu_number]
+- controller.register_list_record_callback(:name){|record, key| link_to_skater(record) }
+
+
+////////////////////////////////////////////////////////////////
+- collection = @collection
+
+h2= controller_name.camelize
 
 = render partial: "filter_form", locals: {controller: :skaters, filters: @filters}
-      
-////////////////////////////////////////////////////////////////
-h2 List
-
-- collection = @collection
-- keys = [ :name, :nation, :category, :isu_number]
-- callback = {name: ->(record, key){ link_to_skater(record) }}
-
-
-= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: @filters.keys, record_callback: callback}
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: @filters.keys}

@@ -14,7 +14,8 @@ table.table.table-striped.table-hover.table-condensed.list-table
     - collection.each do |item|
       tr
         - keys.each do |key|
-          - if cb = record_callback[key]
+          - if cb = controller.registered_list_record_callback(key)
+            //cb = record_callback[key]
             td= cb.call(item, key)
           - elsif filter_keys.include?(key)
             / td= link_to_index("[#{item[key]}]", parameters: params.permit(filter_keys).merge(key => item[key]))

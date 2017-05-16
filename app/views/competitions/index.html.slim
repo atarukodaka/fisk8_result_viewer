@@ -1,11 +1,15 @@
-h2 Competitions List
 
-= render partial: "filter_form", locals: {controller: :competitions, filters: @filters}
+
+- keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+- controller.register_list_record_callback(:site_url){|record, key| link_to("ISU HP", record[key], target: "_blank") }
+- controller.register_list_record_callback(:site_url){|record, key| link_to(record[key], controller: :competitions, action: :show, cid: record.cid) } 
+- binding.pry
 
 ////////////////////////////////////////////////////////////////
-- keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
-- callback = {}
-- callback[:site_url] = ->(record, key){ link_to("ISU HP", record[key], target: "_blank") }
-- callback[:name] = ->(record, key){ link_to(record[key], controller: :competitions, action: :show, cid: record.cid) } 
+- filters = @filters
+- collection = @collection
 
-= render partial: "list_table", locals: {keys: keys, collection: @collection, filter_keys: @filters.keys, record_callback: callback }
+h2= controller_name.camelize
+
+= render partial: "filter_form", locals: {controller: controller_name.to_sym, filters: filters}
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filters.keys}

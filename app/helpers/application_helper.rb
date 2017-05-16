@@ -22,19 +22,20 @@ module LinkToHelper
     text ||= isu_number
     link_to(text, isu_bio_url(isu_number), target: target)
   end
-
+  def link_to_pdf(url)
+    img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
+    link_to(image_tag(img_url), url)
+  end
   def link_to_index(text, parameters: {})
     link_to(text, controller: controller_name.to_sym, action: :index, params: parameters)
   end
 
   ## callbacks for view
-  def link_to_pdf_proc(record, key)
-    link_to("pdf", record[key])
-  end
+=begin
   def link_to_index_proc(record, key)
     link_to_index(record[key], parameters: params.permit(@filters.keys).merge(key => record[key]))
   end
-
+=end
   def bracket(str)
     "[#{str}]"
   end

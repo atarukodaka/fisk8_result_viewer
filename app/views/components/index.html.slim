@@ -1,16 +1,12 @@
-h2 Components
 
-= render partial: "filter_form", locals: {controller: :components, filters: @filters}
+- controller.register_list_record_callback(:sid){|record, key| link_to(record.sid, controller: :scores, action: :show, sid: record.sid)  }
 
 ////////////////////////////////////////////////////////////////
-
-- filter_keys = @filters.keys
+- filters = @filters
 - keys = @keys
 - collection = @collection
-- controller = :elements
-//- binding.pry
-- callback = {sid: ->(record, key){ link_to(record.sid, controller: :scores, action: :show, sid: record.sid)}}
 
-
-= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filter_keys, record_callback: callback}
+h2= controller_name.camelize
+= render partial: "filter_form", locals: {controller: controller_name.to_sym, filters: filters}
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filters.keys}
 

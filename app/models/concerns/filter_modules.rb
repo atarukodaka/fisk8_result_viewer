@@ -1,6 +1,6 @@
 module FilterModules
   extend ActiveSupport::Concern
-
+  
   class_methods do
     @@_select_options = {}   ## caching purpose
     @@_select_options_callback = {}
@@ -19,10 +19,8 @@ module FilterModules
     end
 
     def _parse_compare(text)
-      if text =~ /^ *([\d\.]+) *$/
-        method = :eq; value = $1.to_f
-      else
-        text =~ %r{^ *([=<>]+) *([\d\.]+) *$}
+      method = :eq; value = text.to_i
+      if text =~ %r{^ *([=<>]+) *([\d\.\-]+) *$}
         value = $2.to_f
         method =
           case $1
@@ -31,7 +29,6 @@ module FilterModules
           when '>='; :gteq
           when '<'; :lt
           when '<='; :lteq
-          else; :eq
           end
       end
       {method: method, value: value}

@@ -1,3 +1,9 @@
+class ListTableView
+
+end
+
+
+################################################################
 class SkatersController < ApplicationController
   ## index
   def index
