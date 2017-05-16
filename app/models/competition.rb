@@ -10,6 +10,10 @@ class Competition < ApplicationRecord
     order("start_date desc")
   }
 
+  self.register_select_options_callback(:season) do |key|
+    Competition.order("start_date desc").pluck(key).uniq.unshift(nil)
+  end
+
   def categories
     category_results.pluck(:category).uniq
   end
@@ -30,7 +34,7 @@ class Competition < ApplicationRecord
   validates :cid, presence: true, uniqueness: true
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
 
-  private
+  #private
   def set_default_values
     self.cid ||= self.name || [self.competition_type, self.country, self.start_date.try(:year)].join("-")
   end

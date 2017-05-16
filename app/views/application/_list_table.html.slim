@@ -4,7 +4,7 @@
 - record_callback ||= {}
 - filter_keys ||= []
 
-table.table.table-striped.table-hover.table-condensed
+table.table.table-striped.table-hover.table-condensed.list-table
   tr
     - keys.each do |key|
       - if record_callback[key].blank? and filter_keys.include?(key)

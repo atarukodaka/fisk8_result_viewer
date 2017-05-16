@@ -15,6 +15,22 @@ class Score < ApplicationRecord
   scope :recent, ->{
     order("date desc")
   }
+
+  self.register_select_options_callback(:competition_name) do |key|
+    Score.order("date desc").pluck(key).uniq.unshift(nil)
+  end
+
+  self.register_select_options_callback(:category) do |key|
+    preset = [:MEN, :LADIES, :PAIRS, :"ICE DANCE",
+              :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",]
+    [nil, preset, pluck(key).uniq.sort.reject {|k| preset.include?(k.to_sym)}].flatten
+  end
+
+  self.register_select_options_callback(:segment) do |key|
+    preset = [:"SHORT PROGRAM", :"FREE SKATING", :"SHORT DANCE", :"FREE DANCE"]
+    [nil, preset, pluck(key).uniq.sort.reject {|k| preset.include?(k.to_sym)}].flatten    
+  end
+  ################
   private
   def set_default_values
     self.sid ||= [self.competition.try(:cid), self.category, self.segment, self.ranking].join("-")
