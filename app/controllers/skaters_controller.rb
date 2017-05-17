@@ -1,12 +1,14 @@
-class SkatersListDecorator < Draper::Decorator # ListDecorator # Draper::Decorator
+class SkatersListDecorator < Draper::Decorator
   include ListDecorator
 
-  set_filter_keys(:nation, :category)
   def name
     h.link_to_skater(model)
   end
   def isu_number
-    h.link_to(model.isu_number, isu_bio_url(model.isu_number))
+    h.content_tag(:span) do
+      h.concat(h.link_to(model.isu_number, isu_bio_url(model.isu_number), target: "_blank"))
+      h.concat(h.span_link_icon)      
+    end
   end
 end
 ################################################################
@@ -19,17 +21,10 @@ class SkatersController < ApplicationController
       nation: {operator: :eq, input: :select, model: Skater},
     }
     @keys = [ :name, :nation, :category, :isu_number]
+    SkatersListDecorator.set_filter_keys([:nation, :category])
     collection = Skater.filter(@filters, params).having_scores
 
-    respond_to do |format|
-      format.html { @collection = SkatersListDecorator.decorate_collection(collection.page(params[:page]))}
-      format.json { render json: collection.limit(max_output) }
-      format.csv {
-        @collection = collection.limit(max_output)
-        headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]
-      }
-    end
-    #render_formats(collection, page: params[:page])
+    render_index_as_formats(collection)
   end
 
   ## show

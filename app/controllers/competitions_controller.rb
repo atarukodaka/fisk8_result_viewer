@@ -1,3 +1,18 @@
+class CompetitionsListDecorator < Draper::Decorator
+  include ListDecorator
+
+  def name
+    h.link_to_competition(model)
+  end
+  
+  def site_url
+    h.content_tag(:span) do
+      h.concat(h.link_to("ISU HP", model.site_url, target: "_blank"))
+      h.concat(h.span_link_icon)
+    end
+  end
+end
+################################################################
 class CompetitionsController < ApplicationController
   def index
     @filters = {
@@ -5,8 +20,10 @@ class CompetitionsController < ApplicationController
       competition_type: {operator: :eq, input: :select, model: Competition},
       season: {operator: :eq, input: :select, model: Competition},
     }
+    @keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+    CompetitionsListDecorator.set_filter_keys([:competition_type, :season])
     collection = Competition.recent.filter(@filters, params)
-    render_formats(collection, page: params[:page])
+    render_index_as_formats(collection)
   end
 
   def show

@@ -6,7 +6,7 @@ module ListDecorator
   class_methods do
     @@_filter_keys = []
     
-    def set_filter_keys(*keys)
+    def set_filter_keys(keys)
       @@_filter_keys = keys
 
       keys.each do |key|

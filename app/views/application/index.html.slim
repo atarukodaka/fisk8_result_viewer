@@ -5,7 +5,7 @@ h2= controller_name.camelize
 - filters = @filters
 
 ////////////////////////////////////////////////////////////////
-// filter
+// filter form
 = form_tag url_for(controller: controller_name.to_sym, action: :index), method: :get, enforce_utf8: false, id: "#{controller_name}_filter_form" do |f|
   - filters.each do |key, hash|
     .form-group.row

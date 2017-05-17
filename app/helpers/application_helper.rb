@@ -36,6 +36,9 @@ module LinkToHelper
     link_to_index(record[key], parameters: params.permit(@filters.keys).merge(key => record[key]))
   end
 =end
+  def span_link_icon
+    content_tag(:span, "", :class => "glyphicon glyphicon-link")
+  end
   def bracket(str)
     "[#{str}]"
   end
