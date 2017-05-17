@@ -7,26 +7,13 @@
 h2 Competition Info
 
 table.table.table-striped.table-hover.table-condensed
-  tr
-    th Competition Name
-    td= competition.name
-  tr
-    th Competition ID
-    td= competition.cid
-  tr
-    th City / Country
-    td= [competition.city, competition.country].join(' / ')
-  tr
-    th ISU Site
-    td
-      = link_to('ISU HP', competition.site_url, target: "_blank")
-      span.glyphicon.glyphicon-link
-  tr
-    th Start Date
-    td= competition.start_date
-  tr
-    th End Date
-    td= competition.end_date
+  =tr_data("Name", competition.name)
+  =tr_data("CID", competition.cid)
+  =tr_data("City / Country", [competition.city, competition.country].join(' / '))
+  =tr_data("Official Site", link_to_competition_site("Site", competition))
+  =tr_data("Start Date", competition.start_date)
+  =tr_data("End Date", competition.end_date)
+
 
 ////////////////////////////////////////////////////////////////
 h2 Category Summary

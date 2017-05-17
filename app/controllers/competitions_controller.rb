@@ -6,10 +6,7 @@ class CompetitionsListDecorator < Draper::Decorator
   end
   
   def site_url
-    h.content_tag(:span) do
-      h.concat(h.link_to("ISU HP", model.site_url, target: "_blank"))
-      h.concat(h.span_link_icon)
-    end
+    h.link_to_competition_site("SITE", model)
   end
 end
 ################################################################

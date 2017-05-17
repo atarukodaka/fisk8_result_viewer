@@ -12,6 +12,13 @@ module LinkToHelper
     link_to(text, {controller: :competitions, action: :show, cid: competition.cid, category: category, segment: segment})
   end
 
+  def link_to_competition_site(text = "SITE", competition)
+    content_tag(:span) do
+      concat(link_to(text, competition.site_url, target: "_blank"))
+      concat(span_link_icon)
+    end
+  end
+  
   def link_to_score(text = nil, score)
     link_to(text || score.sid, {controller: :scores, action: :show, sid: score.sid})
   end
@@ -36,16 +43,27 @@ module LinkToHelper
     link_to_index(record[key], parameters: params.permit(@filters.keys).merge(key => record[key]))
   end
 =end
+
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
   end
+  
   def bracket(str)
     "[#{str}]"
   end
 end ## module
 
+module TableHelper
+  def tr_data(th, td)
+    content_tag(:tr) do
+      concat(content_tag(:th, th))
+      concat(content_tag(:td, td))
+    end
+  end
+end
+
 ################################################################
 module ApplicationHelper
-  include LinkToHelper
+  include LinkToHelper, TableHelper
 
 end
