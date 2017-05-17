@@ -1,5 +1,4 @@
-################
-class SkaterListDecorator < Draper::Decorator # ListDecorator # Draper::Decorator
+class SkatersListDecorator < Draper::Decorator # ListDecorator # Draper::Decorator
   include ListDecorator
 
   set_filter_keys(:nation, :category)
@@ -23,7 +22,7 @@ class SkatersController < ApplicationController
     collection = Skater.filter(@filters, params).having_scores
 
     respond_to do |format|
-      format.html { @collection = SkaterListDecorator.decorate_collection(collection.page(params[:page]))}
+      format.html { @collection = SkatersListDecorator.decorate_collection(collection.page(params[:page]))}
       format.json { render json: collection.limit(max_output) }
       format.csv {
         @collection = collection.limit(max_output)

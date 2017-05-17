@@ -1,4 +1,50 @@
 h2= controller_name.camelize
 
-= render partial: "filter_form", locals: {controller: controller_name.to_sym, filters: @filters}
-= render partial: "list_table", locals: {keys: @keys, collection: @collection, filter_keys: @filters.keys}
+- keys = @keys
+- collection = @collection
+- filters = @filters
+
+////////////////////////////////////////////////////////////////
+// filter
+= form_tag url_for(controller: controller_name.to_sym, action: :index), method: :get, enforce_utf8: false, id: "#{controller_name}_filter_form" do |f|
+  - filters.each do |key, hash|
+    .form-group.row
+      .col-sm-2
+        = label_tag(key)
+      .col-sm-10
+        - case hash[:input] 
+          - when :select
+            //= select_tag_options key, hash[:model]
+            = select_tag key, options_for_select(hash[:model].select_options(key), selected: params[key])
+          - when :text_field
+            = text_field_tag key, params[key], size: 70
+          - when :checkbox
+            = check_box_tag key, nil, params[key].present?
+  .form-group.row
+    .col-sm-2
+      = label_tag "Format"
+    .col-sm-10
+      = select_tag :format, options_for_select(['html', 'json', 'csv'], selected: params[:format])
+  .form-group.row
+    .col-sm-2
+    .col-sm-10
+      = submit_tag "Search", id: "submit", name: nil
+
+
+////////////////////////////////////////////////////////////////
+// list table
+table.table.table-striped.table-hover.table-condensed.list-table
+  tr
+    - keys.each do |key|
+      th= key.to_s.camelize
+    - collection.each do |item|
+      tr
+        - keys.each do |key|
+          td= item.method(key).call
+          
+= paginate(collection) if collection.respond_to?(:total_pages)
+
+////////////////////////////////////////////////////////////////
+//= render partial: "filter_form", locals: {controller: controller_name.to_sym, filters: @filters}
+// = render partial: "list_table", locals: {keys: @keys, collection: @collection, filter_keys: @filters.keys}
+

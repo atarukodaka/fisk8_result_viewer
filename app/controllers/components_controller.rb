@@ -1,3 +1,16 @@
+class CompetitionListDecorator < Draper::Decorator
+  include ListDecorator
+
+  set_filter_keys(:nation, :category)
+  def name
+    h.link_to_skater(model)
+  end
+  def isu_number
+    h.link_to(model.isu_number, isu_bio_url(model.isu_number))
+  end
+end
+
+
 class ComponentsController < ApplicationController
   def index
     @filters = {
