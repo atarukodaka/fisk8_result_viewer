@@ -1,4 +1,4 @@
-h2 Skaters Infon
+h2 Skaters Info
 
 ////////////////////////////////////////////////////////////////
 table.table.table-striped.table-hover.table-condensed
@@ -10,5 +10,6 @@ table.table.table-striped.table-hover.table-condensed
 
 h2 Results
 
-= render partial: "list_table", locals: {collection: @scores, keys: [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]}
+- keys =  [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]
+= render partial: "list_table", locals: {collection: @scores, keys: keys}
 
