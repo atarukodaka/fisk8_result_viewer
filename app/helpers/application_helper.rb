@@ -20,7 +20,9 @@ module LinkToHelper
   end
   
   def link_to_score(text = nil, score)
-    link_to(text || score.sid, {controller: :scores, action: :show, sid: score.sid})
+    sid = (score.class == Score) ? score.sid : score
+    
+    link_to(text || sid, {controller: :scores, action: :show, sid: sid})
   end
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]

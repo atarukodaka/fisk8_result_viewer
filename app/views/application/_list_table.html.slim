@@ -1,29 +1,18 @@
-// locals: keys, collection, pagination(optional)
+// locals: collection, display_keys, pagination(optional)
 
-- keys ||= []
+- display_keys ||= []
 - pagination = false unless defined? pagination
-//- keys = collection.class.display_keys
-//- record_callback ||= {}
-//- filter_keys ||= []
 
 div
   = page_entries_info collection if pagination
 
 table.table.table-striped.table-hover.table-condensed.list-table
   tr
-    - keys.each do |key|
+    - display_keys.each do |key|
       th= key.to_s.camelize
     - collection.each do |item|
       tr
-        - keys.each do |key|
+        - display_keys.each do |key|
           td= item.method(key).call
-//          - if cb = controller.registered_list_record_callback(key)
-            //cb = record_callback[key]
-//            td= cb.call(item, key)
-//          - elsif filter_keys.include?(key)
-//            td= link_to_index(item[key], parameters: params.permit(filter_keys).merge(key => item[key]))
-//          - else
 
-
-//= paginate(collection) if collection.respond_to?(:total_pages)
 = paginate(collection) if pagination

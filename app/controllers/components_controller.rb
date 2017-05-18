@@ -1,14 +1,14 @@
 class ComponentsListDecorator < Draper::Decorator
   include ListDecorator
   def sid
-    h.link_to(model.sid, controller: :scores, action: :show, sid: model.sid)
+    h.link_to_score(model.sid, model.sid)
   end
 
 end
 ################################################################
 class ComponentsController < ApplicationController
   def index
-    @filters = {
+    filters = {
       skater_name: {operator: :like, input: :text_field, model: Score},
       category: {operator: :eq, input: :select, model: Score},      
       segment: {operator: :eq, input: :select, model: Score},      
@@ -17,13 +17,18 @@ class ComponentsController < ApplicationController
       value: {operator: :compare, input: :text_field, model: Component},
     }
 
-    keys = {
-    scores: [:sid, :competition_name, :category, :segment, :date, :ranking, :skater_name, :nation],
-      components: [:number, :component, :factor, :judges, :value]
+    select_keys = {
+      scores: [:sid, :competition_name, :category, :segment, :date, :ranking, :skater_name, :nation, ],
+      components: [:number, :component, :factor, :judges, :value, :score_id],
+      competitions: [:season],
     }
-    @keys = keys.values.flatten
-    ComponentsListDecorator.set_filter_keys(@filters.keys)
-    collection = Component.with_score.filter(@filters, params).select_by_keys(keys)
-    render_index_as_formats(collection, decorator: ComponentsListDecorator)
+    display_keys = [:sid, :competition_name, :category, :segment, :date, :season,
+                    :ranking, :skater_name, :nation,
+                    :number, :component, :factor, :judges, :value]
+
+    ComponentsListDecorator.set_filter_keys(filters.keys)
+    collection = Component.with_score.joins(score: [:competition]).filter(filters, params).select_by_keys(select_keys)
+
+    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: ComponentsListDecorator)
   end
 end

@@ -1,12 +1,14 @@
 module RenderModules
-  def render_index_as_formats(collection, max_output: 1000, decorator: nil, pagination: true)
+  def render_index_as_formats(collection, display_keys: [], filters: {}, max_output: 1000, decorator: nil, pagination: true)
     respond_to do |format|
       format.html {
         collection = collection.page(params[:page]) if pagination
         @collection = (decorator) ? decorator.decorate_collection(collection) : collection
+        @filters = filters
+        @display_keys = display_keys
         @pagination = pagination
       }
-      format.json { render json: collection.limit(max_output).select(@keys) }
+      format.json { render json: collection.limit(max_output).select(display_keys) }
       format.csv {
         @collection = collection.limit(max_output)
         headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]

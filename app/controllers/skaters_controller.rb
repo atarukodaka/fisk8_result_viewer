@@ -28,16 +28,16 @@ end
 class SkatersController < ApplicationController
   ## index
   def index
-    @filters = {
+    filters = {
       name: {operator: :like, input: :text_field},
       category: {operator: :eq, input: :select, model: Skater},
       nation: {operator: :eq, input: :select, model: Skater},
     }
-    @keys = [ :name, :nation, :category, :isu_number]
+    display_keys = [ :name, :nation, :category, :isu_number]
     SkatersListDecorator.set_filter_keys([:nation, :category])
-    collection = Skater.filter(@filters, params).having_scores
+    collection = Skater.filter(filters, params).having_scores
 
-    render_index_as_formats(collection, decorator: SkatersListDecorator)
+    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: SkatersListDecorator)
   end
 
   ## show

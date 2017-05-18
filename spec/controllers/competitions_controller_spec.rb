@@ -42,6 +42,7 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('"country":"JPN"')
     }
   end
+=begin
   describe 'index.csv' do
     it {
       get :index, params: {format: :csv }
@@ -49,7 +50,7 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('WORLD2017,,,Tokyo,JPN,world,2016-17,,')
     }
   end
-
+=end
   describe 'show' do
     it {
       get :show, params: { cid: "WORLD2017" }

@@ -1,13 +1,13 @@
 class ElementsListDecorator < Draper::Decorator
   include ListDecorator
   def sid
-    h.link_to(model.sid, controller: :scores, action: :show, sid: model.sid)
+    h.link_to_score(model.sid, model.sid)
   end
 end
 
 class ElementsController < ApplicationController
-  def index
-    @filters = {
+  def filters
+    {
       element: {
         operator: (params[:partial_match]) ? :like : :eq,
         input: :text_field, model: Element,
@@ -21,17 +21,24 @@ class ElementsController < ApplicationController
       competition_name: {operator: :eq, input: :select, model: Score},
       season: { operator: :eq, input: :select, model: Competition},
     }
-
-    keys = {
+  end
+  def select_keys
+    {
       scores: [:sid, :competition_name, :category, :segment, :date, :ranking, :skater_name, :nation],
-      elements: [:number, :element, :credit, :info, :base_value, :goe, :judges, :value,],
+      elements: [:number, :element, :credit, :info, :base_value, :goe, :judges, :value, :score_id],
       competitions: [:season],
     }
-    ## something hack to insert competitions.season into middle of score's key
-    @keys = keys[:scores].dup.insert(keys[:scores].index(:ranking), :season) + keys[:elements]
-    #@keys = [:sid]
-    ElementsListDecorator.set_filter_keys(@filters.keys)
-    collection = Element.with_score.joins(score: [:competition]).filter(@filters, params).select_by_keys(keys)
-    render_index_as_formats(collection, decorator: ElementsListDecorator)
+  end
+  def display_keys
+    [:sid, :competition_name, :category, :segment, :date, :season,
+     :ranking, :skater_name, :nation,
+     :number, :element, :credit, :info, :base_value, :goe, :judges, :value,
+    ]
+  end
+  def index
+    ElementsListDecorator.set_filter_keys(filters.keys)
+    collection = Element.with_score.joins(score: [:competition]).filter(filters, params).select_by_keys(select_keys)
+    
+    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: ElementsListDecorator)
   end
 end
