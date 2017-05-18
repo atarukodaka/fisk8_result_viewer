@@ -1,14 +1,53 @@
 class ApplicationController < ActionController::Base
-  include RenderModules
-  
-  ## list record callbacks
-  def register_list_record_callback(key, &callback)
-    @_registered ||= {}
-    @_registered[key] = callback
+  #include RenderModules
+
+  def score_filters
+    {
+      skater_name: {operator: :like, input: :text_field, model: Score},
+      category: {operator: :eq, input: :select, model: Score},      
+      segment: {operator: :eq, input: :select, model: Score},      
+      nation: {operator: :eq, input: :select, model: Score},      
+      competition_name: {operator: :eq, input: :select, model: Score},
+      season: { operator: :eq, input: :select, model: Competition},
+    }
   end
-  def registered_list_record_callback(key)
-    @_registered ||= {}
-    @_registered[key]
+
+  def filters
+    {}
+  end
+  def display_keys
+    []
+  end
+
+  def set_filter_keys
+    decorator.set_filter_keys(filters.keys)
+  end
+
+  def decorator
+    "#{controller_name.camelize}ListDecorator".constantize
+  end
+
+  def index
+    set_filter_keys
+    
+    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: decorator)
+  end
+
+  def render_index_as_formats(collection, display_keys: [], filters: {}, max_output: 1000, decorator: nil, pagination: true)
+    respond_to do |format|
+      format.html {
+        collection = collection.page(params[:page]) if pagination
+        @collection = (decorator) ? decorator.decorate_collection(collection) : collection
+        @filters = filters
+        @display_keys = display_keys
+        @pagination = pagination
+      }
+      format.json { render json: collection.limit(max_output).select(display_keys) }
+      format.csv {
+        @collection = collection.limit(max_output)
+        headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]
+      }
+    end
   end
 
   ################################################################

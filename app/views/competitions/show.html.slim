@@ -44,7 +44,7 @@ table.table.table-striped.table-hover.table-condensed
       = category
     - keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
     - category_results = competition.category_results.search_by_category(category)
-    = render partial: "list_table", locals: {keys: keys, collection: category_results, patination: false}
+    = render partial: "list_table", locals: {display_keys: keys, collection: category_results, patination: false}
 
   - else
     ////////////////////////////////////////////////////////////////
@@ -52,5 +52,5 @@ table.table.table-striped.table-hover.table-condensed
       | Segment Result of 
       = [category, segment].join('/')
     - keys = [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions]
-    = render partial: "list_table", locals: {keys: keys , collection: segment_scores, pagination: false}
+    = render partial: "list_table", locals: {display_keys: keys , collection: segment_scores, pagination: false}
 

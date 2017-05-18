@@ -11,5 +11,5 @@ table.table.table-striped.table-hover.table-condensed
 h2 Results
 
 - keys =  [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]
-= render partial: "list_table", locals: {collection: @scores, keys: keys}
+= render partial: "list_table", locals: {collection: @scores, display_keys: keys}
 

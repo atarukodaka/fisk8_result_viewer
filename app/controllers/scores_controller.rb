@@ -11,21 +11,16 @@ end
 
 ################################################################
 class ScoresController < ApplicationController
-  def index
-    filters = {
-      skater_name: {operator: :like, input: :text_field},
-      category: {operator: :eq, input: :select, model: Score},      
-      segment: {operator: :eq, input: :select, model: Score},      
-      nation: {operator: :eq, input: :select, model: Score},      
-      competition_name: {operator: :eq, input: :select, model: Score},      
-    }
-    display_keys = [:sid, :competition_name, :category, :segment, :date, :result_pdf,
-             :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions]
-    ScoresListDecorator.set_filter_keys(filters.keys)
-    collection = Score.recent.filter(filters, params)
-    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: ScoresListDecorator)
+  def filters
+    score_filters
   end
-
+  def display_keys
+    [:sid, :competition_name, :category, :segment, :date, :result_pdf,
+     :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions]
+  end
+  def collection
+    Score.recent.filter(filters, params)
+  end
   def show
     @score = Score.find_by(sid: params[:sid]) ||
       raise(ActiveRecord::RecordNotFound.new("no such sid: '#{params[:sid]}'"))

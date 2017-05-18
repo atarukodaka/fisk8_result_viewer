@@ -17,16 +17,22 @@ end
 
 ################################################################
 class CompetitionsController < ApplicationController
-  def index
-    filters = {
+  def filters
+    {
       name: {operator: :like, input: :text_field, model: Competition},
       competition_type: {operator: :eq, input: :select, model: Competition},
       season: {operator: :eq, input: :select, model: Competition},
     }
-    display_keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+  end
+  
+  def display_keys
+    [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+  end
+  def set_filter_keys
     CompetitionsListDecorator.set_filter_keys([:competition_type, :season])
-    collection = Competition.recent.filter(filters, params)
-    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: CompetitionsListDecorator)
+  end
+  def collection
+    Competition.recent.filter(filters, params)
   end
 
   def show
