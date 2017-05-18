@@ -36,11 +36,12 @@ class CompetitionsController < ApplicationController
   end
 
   def show
-    @competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
-    @category = params[:category]
-    @segment = params[:segment]
-    @segment_scores = SegmentScoresListDecorator.decorate_collection(@competition.scores.where(category: @category, segment: @segment).order(:ranking))
-    
+    competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
+    category = params[:category]
+    segment = params[:segment]
+    segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking)) : []
+
+    render locals: {competition: competition, category: category, segment: segment, segment_scores: segment_scores}
 =begin
     respond_to do |format|
       format.html { }

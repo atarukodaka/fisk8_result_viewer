@@ -70,5 +70,4 @@ end
 ################################################################
 module ApplicationHelper
   include LinkToHelper, TableHelper
-
 end

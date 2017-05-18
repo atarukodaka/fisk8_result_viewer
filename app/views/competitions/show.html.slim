@@ -1,8 +1,8 @@
+// locals: competition, category, segment, segment_scores
 
-- competition ||= @competition || Competition.none
-- category ||= @category || ""
-- segment ||= @segment || ""
-- segment_scores ||= @segment_scores || competition.scores.where(category: category, segment: segment).order(:ranking) || []
+- category ||= ""
+- segment ||= ""
+- segment_scores ||= competition.scores.where(category: category, segment: segment).order(:ranking) || []
 
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
