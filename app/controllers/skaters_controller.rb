@@ -52,22 +52,18 @@ class SkatersController < ApplicationController
 
   ## show
   def show
-    @skater = Skater.find_by(isu_number: params[:isu_number]) ||
-      raise(ActiveRecord::RecordNotFound.new("no such isu_number in skaters: '#{params[:isu_number]}'"))
-    @scores = SkaterScoresListDecorator.decorate_collection(@skater.scores.recent.includes(:competition))
-    #@scores = @skater.scores.recent.includes(:competition)
-    respond_to do |format|
-      format.html {}
-      format.json { render json: @skater}
-    end
+    show_skater(Skater.find_by(isu_number: params[:isu_number]))
   end
   def show_by_name
-    @skater = Skater.find_by(name: params[:name]) ||
-      raise(ActiveRecord::RecordNotFound.new("no such name in skateres: '#{params[:name]}'"))
-    @scores = SkaterScoresListDecorator.decorate_collection(@skater.scores.recent.includes(:competition))
+    show_skater(Skater.find_by(name: params[:name]))
+  end
+  def show_skater(skater)
+    raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
+    scores = SkaterScoresListDecorator.decorate_collection(skater.scores.recent.includes(:competition))
+
     respond_to do |format|
-      format.html { render action: :show }
-      format.json { render json: @skater}
+      format.html { render action: :show, locals: { skater: skater, scores: scores }}
+      format.json { render json: skater}
     end
   end
 end

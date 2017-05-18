@@ -1,12 +1,14 @@
+// locals: skater, scores
+
 h2 Skaters Info
 
 ////////////////////////////////////////////////////////////////
 table.table.table-striped.table-hover.table-condensed
   tr
-    = tr_data(:name, @skater.name)
-    = tr_data(:nation, @skater.nation)
-    = tr_data("ISU Number", link_to_isu_bio(@skater.isu_number))
-    = tr_data(:category, @skater.category)
+    = tr_data(:name, skater.name)
+    = tr_data(:nation, skater.nation)
+    = tr_data("ISU Number", link_to_isu_bio(skater.isu_number))
+    = tr_data(:category, skater.category)
 
 /h2 Competition Results
 
@@ -17,5 +19,5 @@ table.table.table-striped.table-hover.table-condensed
 h2 Competition Results
 
 - display_keys =  [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]
-= render partial: "list_table", locals: {collection: @scores, display_keys: display_keys}
+= render partial: "list_table", locals: {collection: scores, display_keys: display_keys}
 
