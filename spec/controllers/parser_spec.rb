@@ -2,9 +2,7 @@ require 'rails_helper'
 require 'fisk8viewer'
 
 RSpec.configure do |c|
-  unless ENV['run_parser']
-    c.exclusion_filter = {parser: true}
-  end
+  c.filter_run_excluding parser: true
 end
 
 describe 'parser', parser: true do

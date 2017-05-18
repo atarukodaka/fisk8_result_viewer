@@ -26,10 +26,4 @@ class ComponentsController <  ApplicationController
       competitions: [:season],
     }
   end
-  def index
-    decorator = ComponentsListDecorator
-
-    decorator.set_filter_keys(filters.keys)
-    render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: decorator)
-  end
 end

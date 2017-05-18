@@ -44,7 +44,7 @@ class SkatersController < ApplicationController
     decorator.set_filter_keys([:nation, :category])
   end
 
-  def __index
+  def _index
     decorator = SkatersListDecorator
 
     render_index_as_formats(collection, filters: filters, display_keys: display_keys, decorator: decorator)

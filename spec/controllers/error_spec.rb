@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe SkatersController, type: :controller do
+RSpec.configure do |c|
+  c.filter_run_excluding error_handler: true
+end
+
+
+RSpec.describe SkatersController, type: :controller, error_handler: true do
   render_views
   
   describe 'show' do
@@ -10,7 +15,8 @@ RSpec.describe SkatersController, type: :controller do
     }
   end
 end
-RSpec.describe CompetitionsController, type: :controller do
+
+RSpec.describe CompetitionsController, type: :controller, error_handler: true do
   render_views
   
   describe 'show' do
@@ -20,7 +26,8 @@ RSpec.describe CompetitionsController, type: :controller do
     }
   end
 end
-RSpec.describe ScoresController, type: :controller do
+
+RSpec.describe ScoresController, type: :controller, error_handler: true do
   render_views
   
   describe 'show' do

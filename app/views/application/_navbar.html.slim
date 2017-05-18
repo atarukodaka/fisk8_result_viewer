@@ -11,7 +11,7 @@ nav.navbar.navbar-default role="navigation"
     /! Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav
-        - [:competitions, :skaters, :scores, :elements, :components, :feedback].each do |ctrl|
+        - [:skaters, :competitions, :scores, :elements, :components, :feedback].each do |ctrl|
           li= link_to(ctrl.to_s.camelize, {controller: ctrl, action: :index})
 
     /! /.navbar-collapse

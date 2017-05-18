@@ -13,6 +13,6 @@ table.table.table-striped.table-hover.table-condensed.list-table
     - collection.each do |item|
       tr
         - display_keys.each do |key|
-          td= item.method(key).call
+          td= item.send(key)
 
 = paginate(collection) if pagination

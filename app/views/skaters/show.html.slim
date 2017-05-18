@@ -8,8 +8,14 @@ table.table.table-striped.table-hover.table-condensed
     = tr_data("ISU Number", link_to_isu_bio(@skater.isu_number))
     = tr_data(:category, @skater.category)
 
-h2 Results
+/h2 Competition Results
 
-- keys =  [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]
-= render partial: "list_table", locals: {collection: @scores, display_keys: keys}
+/- category_results = @skater.category_results.joins(:competition).select("competitions.name,competitions.start_date,category,ranking,points,short_ranking,free_ranking")
+/- display_keys =  [:name, :start_date, :category, :points, :ranking, :short_ranking, :free_ranking]
+/= render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
+
+h2 Competition Results
+
+- display_keys =  [:competition_name, :category, :segment, :date, :ranking, :tss, :tes, :pcs, :deductions]
+= render partial: "list_table", locals: {collection: @scores, display_keys: display_keys}
 
