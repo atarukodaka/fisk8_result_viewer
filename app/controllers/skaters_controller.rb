@@ -11,6 +11,19 @@ class SkatersListDecorator < Draper::Decorator
     end
   end
 end
+class SkaterScoresListDecorator < Draper::Decorator
+  include ListDecorator
+  def competition_name
+    h.link_to_competition(nil, model.competition)
+  end
+  def category
+    h.link_to_competition(nil, model.competition, category: model.category)
+  end
+  def segment
+    h.link_to_competition(nil, model.competition, category: model.category, segment: model.segment)
+  end
+end
+
 ################################################################
 class SkatersController < ApplicationController
   ## index
@@ -31,7 +44,8 @@ class SkatersController < ApplicationController
   def show
     @skater = Skater.find_by(isu_number: params[:isu_number]) ||
       raise(ActiveRecord::RecordNotFound.new("no such isu_number in skaters: '#{params[:isu_number]}'"))
-
+    @scores = SkaterScoresListDecorator.decorate_collection(@skater.scores.recent.includes(:competition))
+    #@scores = @skater.scores.recent.includes(:competition)
     respond_to do |format|
       format.html {}
       format.json { render json: @skater}
@@ -40,6 +54,7 @@ class SkatersController < ApplicationController
   def show_by_name
     @skater = Skater.find_by(name: params[:name]) ||
       raise(ActiveRecord::RecordNotFound.new("no such name in skateres: '#{params[:name]}'"))
+    @scores = SkaterScoresListDecorator.decorate_collection(@skater.scores.recent.includes(:competition))
     respond_to do |format|
       format.html { render action: :show }
       format.json { render json: @skater}

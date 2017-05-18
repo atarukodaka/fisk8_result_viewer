@@ -27,7 +27,10 @@ module LinkToHelper
   end
   def link_to_isu_bio(text = nil, isu_number, target: nil)
     text ||= isu_number
-    link_to(text, isu_bio_url(isu_number), target: target)
+    content_tag(:span) do
+      concat(link_to(text, isu_bio_url(isu_number), target: target))
+      concat(span_link_icon)
+    end
   end
   def link_to_pdf(url)
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
@@ -56,7 +59,7 @@ end ## module
 module TableHelper
   def tr_data(th, td)
     content_tag(:tr) do
-      concat(content_tag(:th, th))
+      concat(content_tag(:th, (th.class == Symbol) ? th.to_s.camelize : th))
       concat(content_tag(:td, td))
     end
   end

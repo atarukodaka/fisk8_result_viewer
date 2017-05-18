@@ -2,6 +2,7 @@
 - competition ||= @competition || Competition.none
 - category ||= @category || ""
 - segment ||= @segment || ""
+- segment_scores ||= @segment_scores || competition.scores.where(category: category, segment: segment).order(:ranking) || []
 
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
@@ -21,7 +22,7 @@ h2 Category Summary
 table.table.table-striped.table-hover.table-condensed
 
   tr
-    - [:category, :segment, "1st", "2nd", "3rd"].each do |header|
+    - [:category, :segments, "1st", "2nd", "3rd"].each do |header|
       th= header.to_s.camelize
 
   - competition.categories.each do |cat|
@@ -48,8 +49,5 @@ table.table.table-striped.table-hover.table-condensed
     h2 
       | Segment Result of 
       = [category, segment].join('/')
-
-    - callback = { ranking: ->(record, key){ link_to(record.ranking, {controller: :scores, action: :show, sid: record.sid})}}
-
-    = render partial: "list_table", locals: {keys: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions] , collection: competition.scores.where(category: category, segment: segment).order(:ranking), record_callback: callback }
+    = render partial: "list_table", locals: {keys: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions] , collection: segment_scores}
 

@@ -22,15 +22,15 @@ RSpec.describe CompetitionsController, type: :controller do
     }
     it {
       get :index, params: { season: "2016-17"}
-      expect(response.body).to include('ISU')
+      expect(response.body).to include('WORLD2017')
     }
     it {
       get :index, params: { competition_type: "world"}
-      expect(response.body).to include('ISU')
+      expect(response.body).to include('WORLD2017')
     }
     it {
       get :index, params: { competition_type: "gp"}
-      expect(response.body).not_to include('ISU')
+      expect(response.body).not_to include('WORLD2017')
     }
   end
 
@@ -47,7 +47,7 @@ RSpec.describe CompetitionsController, type: :controller do
     it {
       get :index, params: {format: :csv }
       expect(response.content_type).to eq('text/csv')
-      expect(response.body).to include('WORLD2017,,Tokyo,JPN,,,,world,2016-17')
+      expect(response.body).to include('WORLD2017,,,Tokyo,JPN,world,2016-17,,')
     }
   end
 

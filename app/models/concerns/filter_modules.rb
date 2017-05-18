@@ -69,8 +69,8 @@ module FilterModules
 
     }
     scope :with_score, ->{ joins(:score) }
-    scope :with_skater, ->{ join(:skater) }
-    scope :with_competition, ->{ join(:competition) }
+    scope :with_skater, ->{ joins(:skater) }
+    scope :with_competition, ->{ joins(:competition) }
     
     scope :filter, ->(filters, parameters) {
       conditions = nil

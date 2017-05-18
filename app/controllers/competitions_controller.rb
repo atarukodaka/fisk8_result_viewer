@@ -3,12 +3,18 @@ class CompetitionsListDecorator < Draper::Decorator
 
   def name
     h.link_to_competition(model)
-  end
-  
+  end  
   def site_url
     h.link_to_competition_site("SITE", model)
   end
 end
+class SegmentScoresListDecorator < Draper::Decorator
+  include ListDecorator
+  def ranking
+    h.link_to_score(model.ranking, model)
+  end
+end
+
 ################################################################
 class CompetitionsController < ApplicationController
   def index
@@ -27,7 +33,8 @@ class CompetitionsController < ApplicationController
     @competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
     @category = params[:category]
     @segment = params[:segment]
-
+    @segment_scores = SegmentScoresListDecorator.decorate_collection(@competition.scores.where(category: @category, segment: @segment).order(:ranking))
+    
 =begin
     respond_to do |format|
       format.html { }

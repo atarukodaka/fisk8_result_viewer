@@ -1,17 +1,15 @@
-// locals: keys, collection, optional: filter_keys, record_callback
+// locals: keys, collection, pagination(optional)
 
 - keys ||= []
+- pagination = failse unless defined? pagination
 //- keys = collection.class.display_keys
-- record_callback ||= {}
-- filter_keys ||= []
+//- record_callback ||= {}
+//- filter_keys ||= []
 
 table.table.table-striped.table-hover.table-condensed.list-table
   tr
     - keys.each do |key|
-      - if record_callback[key].blank? and filter_keys.include?(key)
-        th= bracket(key.to_s.camelize)
-      - else
-        th= key.to_s.camelize
+      th= key.to_s.camelize
     - collection.each do |item|
       tr
         - keys.each do |key|
@@ -24,4 +22,5 @@ table.table.table-striped.table-hover.table-condensed.list-table
 //          - else
 
 
-= paginate(collection) if collection.respond_to?(:total_pages)
+//= paginate(collection) if collection.respond_to?(:total_pages)
+= paginate(collection) if pagination
