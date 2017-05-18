@@ -4,11 +4,9 @@ RSpec.describe SkatersController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create!(name: "Skater NAME", nation: "JPN", isu_number: 1)
-    Competition.create(cid: "WJ").scores.create(skater: skater, sid: "SID")
-  end
-  after do
-    Skater.all.map(&:destroy)
+    skater = create(:skater, {name: "Skater NAME", nation: "JPN", isu_number: 1})
+    competition = create(:competition)
+    competition.scores.create(skater: skater)
   end
 
   describe 'index' do

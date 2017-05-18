@@ -21,14 +21,17 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
+end
 
+group :test do
   gem 'capybara', '~> 2.13.0'
   gem 'selenium-webdriver'
-  gem 'bullet'
   gem 'rspec-rails'
   gem 'rspec-its'
- 
-  gem 'guard-rspec', require: false 
+  
+  #gem 'guard-rspec', require: false
+  gem 'factory_girl_rails'
+  
 end
 
 group :development do
@@ -36,6 +39,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'bullet'
 end
 
 group :production do

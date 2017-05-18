@@ -4,13 +4,9 @@ RSpec.describe ElementsController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create
-    score = Competition.create(cid: "CID").scores.create(sid: "SID-elem", skater: skater)
+    score = create(:competition).scores.create(sid: "SID-elem", skater: create(:skater))
     score.elements.create(element: "4T", base_value: 15.0)
     score.elements.create(element: "4T+3T", base_value: 10.0)
-  end
-  after do
-    Score.all.map(&:destroy)
   end
 
   describe 'index' do

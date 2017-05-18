@@ -4,9 +4,8 @@ RSpec.describe ScoresController, type: :controller do
   render_views
   
   before do
-    Competition.all.map(&:destroy)
-    competition = Competition.create(cid: "World FS 2017", competition_type: "world", season: "2016-17")
-    score = competition.scores.create(sid: "WFS17-MEN", competition_name: "World FS 2017", skater_name: "Skater NAME", category: "MEN", segment: "SHORT PROGRAM", nation: "JPN", ranking: 1, skater: Skater.create(name: "Skater NAME"))
+    competition = create(:competition, {cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN"})
+    score = competition.scores.create(sid: "WFS17-MEN", competition_name: "World FS 2017", skater_name: "Skater NAME", category: "MEN", segment: "SHORT PROGRAM", nation: "JPN", ranking: 1, skater: create(:skater, {name: "Skater NAME"}))
   end
 
   describe 'index' do

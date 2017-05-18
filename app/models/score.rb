@@ -23,12 +23,12 @@ class Score < ApplicationRecord
   self.register_select_options_callback(:category) do |key|
     preset = [:MEN, :LADIES, :PAIRS, :"ICE DANCE",
               :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",]
-    [nil, preset, pluck(key).uniq.sort.reject {|k| preset.include?(k.to_sym)}].flatten
+    [nil, preset, pluck(key).uniq.sort.reject {|k| k.nil? || preset.include?(k.to_sym)}].flatten
   end
 
   self.register_select_options_callback(:segment) do |key|
     preset = [:"SHORT PROGRAM", :"FREE SKATING", :"SHORT DANCE", :"FREE DANCE"]
-    [nil, preset, pluck(key).uniq.sort.reject {|k| preset.include?(k.to_sym)}].flatten    
+    [nil, preset, pluck(key).uniq.sort.reject {|k| k.nil? || preset.include?(k.to_sym)}].flatten    
   end
   ################
   private
