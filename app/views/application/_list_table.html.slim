@@ -1,10 +1,13 @@
 // locals: keys, collection, pagination(optional)
 
 - keys ||= []
-- pagination = failse unless defined? pagination
+- pagination = false unless defined? pagination
 //- keys = collection.class.display_keys
 //- record_callback ||= {}
 //- filter_keys ||= []
+
+div
+  = page_entries_info collection if pagination
 
 table.table.table-striped.table-hover.table-condensed.list-table
   tr
