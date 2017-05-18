@@ -1,16 +1,11 @@
-class CompetitionListDecorator < Draper::Decorator
+class ComponentsListDecorator < Draper::Decorator
   include ListDecorator
+  def sid
+    h.link_to(model.sid, controller: :scores, action: :show, sid: model.sid)
+  end
 
-  set_filter_keys(:nation, :category)
-  def name
-    h.link_to_skater(model)
-  end
-  def isu_number
-    h.link_to(model.isu_number, isu_bio_url(model.isu_number))
-  end
 end
-
-
+################################################################
 class ComponentsController < ApplicationController
   def index
     @filters = {
@@ -27,8 +22,8 @@ class ComponentsController < ApplicationController
       components: [:number, :component, :factor, :judges, :value]
     }
     @keys = keys.values.flatten
-
+    ComponentsListDecorator.set_filter_keys(@filters.keys)
     collection = Component.with_score.filter(@filters, params).select_by_keys(keys)
-    render_formats(collection, page: params[:page])
+    render_index_as_formats(collection, decorator: ComponentsListDecorator)
   end
 end

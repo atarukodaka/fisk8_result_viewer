@@ -1,3 +1,10 @@
+class ElementsListDecorator < Draper::Decorator
+  include ListDecorator
+  def sid
+    h.link_to(model.sid, controller: :scores, action: :show, sid: model.sid)
+  end
+end
+
 class ElementsController < ApplicationController
   def index
     @filters = {
@@ -22,7 +29,9 @@ class ElementsController < ApplicationController
     }
     ## something hack to insert competitions.season into middle of score's key
     @keys = keys[:scores].dup.insert(keys[:scores].index(:ranking), :season) + keys[:elements]
+    #@keys = [:sid]
+    ElementsListDecorator.set_filter_keys(@filters.keys)
     collection = Element.with_score.joins(score: [:competition]).filter(@filters, params).select_by_keys(keys)
-    render_formats(collection, page: params[:page])
+    render_index_as_formats(collection, decorator: ElementsListDecorator)
   end
 end

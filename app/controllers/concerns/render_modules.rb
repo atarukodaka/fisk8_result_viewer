@@ -1,9 +1,12 @@
 module RenderModules
-  def render_index_as_formats(collection, max_output: 1000, decorator_klass: nil)
+  def render_index_as_formats(collection, max_output: 1000, decorator: nil)
     respond_to do |format|
       format.html {
-        decorator_klass ||="#{controller_name.camelize}ListDecorator".constantize || raise
-        @collection = decorator_klass.decorate_collection(collection.page(params[:page]))
+        if decorator
+          @collection = decorator.decorate_collection(collection.page(params[:page]))
+        else
+          @collection = collection.page(params[:page])
+        end
       }
       format.json { render json: collection.limit(max_output).select(@keys) }
       format.csv {

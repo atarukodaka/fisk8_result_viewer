@@ -2,10 +2,11 @@
 - collection = @collection
 - filters = @filters
 - keys = @keys
+- pagination = true
 
 
 h2= controller_name.camelize
 
 = render partial: "filter_form", locals: {controller: controller_name.to_sym, filters: filters}
-= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filters.keys, pagination: true}
+= render partial: "list_table", locals: {keys: keys, collection: collection, filter_keys: filters.keys, pagination: pagination}
 

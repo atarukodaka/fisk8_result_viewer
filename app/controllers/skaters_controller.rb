@@ -37,7 +37,7 @@ class SkatersController < ApplicationController
     SkatersListDecorator.set_filter_keys([:nation, :category])
     collection = Skater.filter(@filters, params).having_scores
 
-    render_index_as_formats(collection)
+    render_index_as_formats(collection, decorator: SkatersListDecorator)
   end
 
   ## show

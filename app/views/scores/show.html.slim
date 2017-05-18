@@ -4,38 +4,13 @@ h2 Score
 
 
 table.table.table-striped.table-hover.table-condensed
-  tr
-    th Skater
-    td= link_to_skater(score.skater)
-  tr
-    th Competition
-    td= link_to_competition(score.competition)
-  tr
-    th Category
-    td= link_to_competition(score.competition, category: score.category)
-  tr
-    th Segment
-    td= link_to_competition(score.competition, category: score.category, segment: score.segment)
-  tr
-    th Date
-    td= score.date
-  tr
-    th TSS
-    td= score.tss
-  tr
-    th TES
-    td= score.tes
-  tr
-    th PCS
-    td= score.pcs
-  tr
-    th Deductions
-    td= score.deductions
-  tr
-    th Result PDF
-    td
-      = link_to("result", score.result_pdf, target: "_blank")
-      span.glyphicon.glyphicon-link
+  = tr_data(:skater, link_to_skater(score.skater))
+  = tr_data(:competiiton, link_to_competition(score.competition))
+  = tr_data(:category, link_to_competition(score.competition, category: score.category))
+  = tr_data(:segment, link_to_competition(score.competition, category: score.category, segment: score.segment))
+  - [:date, :tss, :tes, :pcs, :deductions].each do |key|
+    =tr_data(key, score[key])
+  = tr_data("Resulf PDF", link_to_pdf(score.result_pdf))
 
 h2 Elements
 

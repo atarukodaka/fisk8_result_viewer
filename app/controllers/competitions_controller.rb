@@ -26,7 +26,7 @@ class CompetitionsController < ApplicationController
     @keys = [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
     CompetitionsListDecorator.set_filter_keys([:competition_type, :season])
     collection = Competition.recent.filter(@filters, params)
-    render_index_as_formats(collection)
+    render_index_as_formats(collection, decorator: CompetitionsListDecorator)
   end
 
   def show

@@ -20,6 +20,6 @@ module ListDecorator
     delegate_all
   end
   def filter_index(key)
-    h.link_to_index(model[key], parameters: h.params.permit(@@_filter_keys).merge(key => model[key]))
+    h.link_to_index(bracket(model[key]), parameters: h.params.permit(@@_filter_keys).merge(key => model[key]))
   end
 end

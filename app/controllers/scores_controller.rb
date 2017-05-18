@@ -1,3 +1,15 @@
+class ScoresListDecorator < Draper::Decorator
+  include ListDecorator
+
+  def sid
+    h.link_to_score(model.sid, model)
+  end
+  def result_pdf
+    h.link_to_pdf(model.result_pdf)
+  end
+end
+
+################################################################
 class ScoresController < ApplicationController
   def index
     @filters = {
@@ -7,9 +19,11 @@ class ScoresController < ApplicationController
       nation: {operator: :eq, input: :select, model: Score},      
       competition_name: {operator: :eq, input: :select, model: Score},      
     }
-    
+    @keys = [:sid, :competition_name, :category, :segment, :date, :result_pdf,
+             :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions]
+    ScoresListDecorator.set_filter_keys(@filters.keys)
     collection = Score.recent.filter(@filters, params)
-    render_formats(collection, page: params[:page])
+    render_index_as_formats(collection, decorator: ScoresListDecorator)
   end
 
   def show
