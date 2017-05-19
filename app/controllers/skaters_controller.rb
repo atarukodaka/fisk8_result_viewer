@@ -1,5 +1,6 @@
-class SkatersListDecorator < Draper::Decorator
-  include ListDecorator
+################
+class SkatersListDecorator < ListDecorator # < Draper::Decorator
+#  include ListDecorator
 
   def name
     h.link_to_skater(model)
@@ -11,22 +12,8 @@ class SkatersListDecorator < Draper::Decorator
     end
   end
 end
-=begin
-class SkaterScoresListDecorator < Draper::Decorator
-  include ListDecorator
-  def competition_name
-    h.link_to_competition(nil, model.competition)
-  end
-  def category
-    h.link_to_competition(nil, model.competition, category: model.category)
-  end
-  def segment
-    h.link_to_competition(nil, model.competition, category: model.category, segment: model.segment)
-  end
-end
-=end
-class SkaterCompetitionsListDecorator < Draper::Decorator
-  include ListDecorator
+
+class SkaterCompetitionsListDecorator < ListDecorator
   def competition_name
     h.link_to_competition(nil, model.competition)
   end
@@ -52,7 +39,6 @@ class SkaterCompetitionsListDecorator < Draper::Decorator
     h.link_to_score(model.free.tss, model.free)
   end
 end
-
 ################################################################
 class SkatersController < ApplicationController
   ## index
@@ -82,7 +68,7 @@ class SkatersController < ApplicationController
   end
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
-    #scores = SkaterScoresListDecorator.decorate_collection(skater.scores.recent.includes(:competition))
+
     collection = skater.category_results.includes(:competition)
     category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
 

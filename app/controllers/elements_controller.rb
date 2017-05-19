@@ -1,10 +1,9 @@
-class ElementsListDecorator < Draper::Decorator
-  include ListDecorator
+class ElementsListDecorator < ListDecorator
   def sid
     h.link_to_score(model.sid, model.sid)
   end
 end
-
+################################################################
 class ElementsController < ApplicationController  
   def filters    
     {

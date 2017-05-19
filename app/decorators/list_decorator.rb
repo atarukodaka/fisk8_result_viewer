@@ -1,13 +1,11 @@
-module ListDecorator
-  extend ActiveSupport::Concern
-
+class ListDecorator < Draper::Decorator
   include ApplicationHelper
-
-  class_methods do
-    @@_filter_keys = []
-    
+  delegate_all
+  class_attribute :filter_keys
+  
+  class << self
     def set_filter_keys(keys)
-      @@_filter_keys = keys
+      self.filter_keys = keys
 
       keys.each do |key|
         self.send(:define_method, key) {
@@ -16,10 +14,7 @@ module ListDecorator
       end
     end
   end
-  included do
-    delegate_all
-  end
   def filter_index(key)
-    h.link_to_index(bracket(model[key]), parameters: h.params.permit(@@_filter_keys).merge(key => model[key]))
+    h.link_to_index(bracket(model[key]), parameters: h.params.permit(filter_keys).merge(key => model[key]))
   end
 end

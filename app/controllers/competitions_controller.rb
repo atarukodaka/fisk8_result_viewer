@@ -1,6 +1,4 @@
-class CompetitionsListDecorator < Draper::Decorator
-  include ListDecorator
-
+class CompetitionsListDecorator < ListDecorator
   def name
     h.link_to_competition(model)
   end  
@@ -9,12 +7,12 @@ class CompetitionsListDecorator < Draper::Decorator
   end
 end
 class SegmentScoresListDecorator < Draper::Decorator
-  include ListDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
 end
-################
+################################################################
+
 class CategorySummary
   include ApplicationHelper
   

@@ -1,6 +1,4 @@
-class ScoresListDecorator < Draper::Decorator
-  include ListDecorator
-
+class ScoresListDecorator < ListDecorator
   def sid
     h.link_to_score(model.sid, model)
   end
@@ -8,7 +6,6 @@ class ScoresListDecorator < Draper::Decorator
     h.link_to_pdf(model.result_pdf)
   end
 end
-
 ################################################################
 class ScoresController < ApplicationController
   def filters
