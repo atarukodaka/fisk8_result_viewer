@@ -6,7 +6,7 @@ class CompetitionsListDecorator < ListDecorator
     h.link_to_competition_site("SITE", model)
   end
 end
-class SegmentScoresListDecorator < Draper::Decorator
+class SegmentScoresListDecorator < ListDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
@@ -55,7 +55,7 @@ class CompetitionsController < ApplicationController
     [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
   end
   def set_filter_keys
-    CompetitionsListDecorator.set_filter_keys([:competition_type, :season])
+    decorator.set_filter_keys([:competition_type, :season])
   end
   def collection
     Competition.recent.filter(filters, params)
@@ -73,8 +73,6 @@ class CompetitionsController < ApplicationController
     category = params[:category]
     segment = params[:segment]
     segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking)) : []
-
-
     render locals: {competition: competition, category: category, segment: segment, segment_scores: segment_scores, category_summary: CategorySummary.new(competition)}
     
 =begin
