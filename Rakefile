@@ -52,6 +52,9 @@ task :count_check => :environment do
   # competitions
   num_competitions = Competition.count
   Competition.all.each do |competition|
-    puts "#{competition.scores.count}: #{competition.name}:[#{competition.scores.pluck(:category).uniq.join("/") }]"
+    puts competition.name
+    puts "  category_result: #{competition.category_results.count}: #{competition.category_results.group(:category).count}"
+    puts "  short scores:    #{competition.scores.where('segment like ?', 'SHORT%').count}: #{competition.scores.where('segment like ?', 'SHORT%').group(:category).count}"
+    puts "   free scores:    #{competition.scores.where('segment like ?', 'FREE%').count}: #{competition.scores.where('segment like ?', 'FREE%').group(:category).count}"    
   end
 end
