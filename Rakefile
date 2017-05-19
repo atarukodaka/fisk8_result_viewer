@@ -9,7 +9,13 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 require 'rake/clean'
+require "rspec/core/rake_task"
 
+RSpec::Core::RakeTask.new("spec")
+task :test => :spec do
+end
+
+  
 ################
 require 'fisk8viewer/updater'
 
@@ -35,5 +41,4 @@ task :update_competitions => :environment do
     items = items.last(last).reverse
   end
   updater.update_competitions(items)
-  
 end
