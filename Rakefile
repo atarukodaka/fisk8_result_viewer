@@ -42,3 +42,16 @@ task :update_competitions => :environment do
   end
   updater.update_competitions(items)
 end
+
+task :count_check => :environment do
+  ## skaters
+  num_skaters = Skater.count
+  num_skaters_having_score = Skater.having_scores.count
+  puts "skaters: #{num_skaters_having_score} / #{num_skaters}"
+  
+  # competitions
+  num_competitions = Competition.count
+  Competition.all.each do |competition|
+    puts "#{competition.name}:[#{competition.scores.pluck(:category).uniq.join("/") }]: #{competition.scores.count}"
+  end
+end
