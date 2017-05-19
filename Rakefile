@@ -52,6 +52,6 @@ task :count_check => :environment do
   # competitions
   num_competitions = Competition.count
   Competition.all.each do |competition|
-    puts "#{competition.name}:[#{competition.scores.pluck(:category).uniq.join("/") }]: #{competition.scores.count}"
+    puts "#{competition.scores.count}: #{competition.name}:[#{competition.scores.pluck(:category).uniq.join("/") }]"
   end
 end
