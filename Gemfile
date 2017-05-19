@@ -31,6 +31,9 @@ group :test do
   
   #gem 'guard-rspec', require: false
   gem 'factory_girl_rails'
+
+  gem 'coveralls', require: false
+  gem 'codecov', :require => false
   
 end
 
@@ -61,4 +64,3 @@ gem 'kaminari'
 gem 'google-analytics-rails'
 gem 'draper'
 
-gem 'coveralls', require: false

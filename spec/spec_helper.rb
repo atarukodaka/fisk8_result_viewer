@@ -103,8 +103,10 @@ RSpec.configure do |config|
   
 end
 
-#require 'coveralls'
-#Coveralls.wear!
+## coveralls
+require 'coveralls'
+Coveralls.wear!
+
 require 'simplecov'
 require 'coveralls'
 
@@ -114,3 +116,4 @@ SimpleCov.start do
   add_filter 'lib/fisk8viewer'
   add_filter 'app/controllers/feedback_controller.rb'
 end
+

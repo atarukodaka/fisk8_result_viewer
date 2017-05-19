@@ -14,3 +14,6 @@ addons:
   apt:
     packages:
       - poppler-utils
+
+after_success:
+  - codecov        
