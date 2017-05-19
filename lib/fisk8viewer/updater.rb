@@ -98,6 +98,7 @@ module Fisk8Viewer
             puts "  - [#{category}/#{segment}]"
 
             score_url = summary.score_url(category, segment)
+
             parser.parse_score(score_url).each do |score_hash|
               update_score(score_hash, competition: competition, category: category, segment: segment) do |score|
                 score.update!(date: summary.starting_time(category, segment))
@@ -166,7 +167,17 @@ module Fisk8Viewer
         end
         score.update!(components_summary: comp_summary.join('/'))
       end
-      score.update!(sid: [score.competition.cid, score.category, score.segment, score.ranking].join('/'))
+
+      ## abbr score id
+      category_abbr = score.category || ""
+      [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"], ["JUNIOR ", "J"]].each do |ary|
+        category_abbr = category_abbr.gsub(ary[0], ary[1])
+      end
+      
+      segment_abbr =score.segment || ""
+      segment_abbr = segment_abbr.split(/ /).map {|d| d[0]}.join
+      
+      score.update!(sid: [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('/'))
     end
     ################################################################
     def update_skaters

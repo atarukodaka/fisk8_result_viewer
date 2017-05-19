@@ -1,8 +1,6 @@
 class ElementsListDecorator < ListDecorator
   def sid
-    ary = model.sid.split('/')
-    text = [ary.shift, ary.map {|d| d[0]}].join('/')
-    h.link_to_score(text, model.sid)
+    h.link_to_score(model.sid, model.sid)
   end
 end
 ################################################################

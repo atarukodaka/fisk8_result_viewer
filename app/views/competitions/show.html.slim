@@ -1,5 +1,6 @@
 // locals: competition, category, segment, category_summary
-//   optional: segment_scores (only when 'segment' specified)
+//   optional: category_results (only when 'category' specified)
+/              segment_scores (only when 'segment' specified)
 
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
@@ -11,7 +12,6 @@ table.table.table-striped.table-hover.table-condensed
   =tr_data("Official Site", link_to_competition_site(competition.site_url, competition))
   =tr_data("Start Date", competition.start_date)
   =tr_data("End Date", competition.end_date)
-
 
 ////////////////////////////////////////////////////////////////
 h2 Category Summary
@@ -37,7 +37,6 @@ table.table.table-striped.table-hover.table-condensed
       | Category Result of 
       = category
     - keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
-    - category_results = competition.category_results.search_by_category(category)
     = render partial: "list_table", locals: {display_keys: keys, collection: category_results, patination: false}
 
   - else

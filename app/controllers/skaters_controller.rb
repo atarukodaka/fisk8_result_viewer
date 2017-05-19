@@ -24,7 +24,7 @@ class SkaterCompetitionsListDecorator < ListDecorator
     h.link_to_competition(model.ranking, model.competition, category: model.category)
   end
   def points
-    h.link_to_competition(model.points, model.competition, category: model.category)
+    h.link_to_competition("%3.2f" % [model.points], model.competition, category: model.category)
   end
   def short_ranking
     #h.link_to_score(model.short_ranking, model.short)

@@ -5,7 +5,8 @@ module Fisk8Viewer
     class ScoreParser
       include Fisk8Viewer::Utils
 
-      SCORE_DELIMITER = /Name Nation/
+      #SCORE_DELIMITER = /Name Nation/
+      SCORE_DELIMITER = /Score Score/
       
       def parse_each_score(text, additional_entries: {})
         mode = :skater

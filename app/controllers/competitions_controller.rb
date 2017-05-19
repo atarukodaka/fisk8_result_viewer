@@ -6,10 +6,48 @@ class CompetitionsListDecorator < ListDecorator
     h.link_to_competition_site("SITE", model)
   end
 end
-class SegmentScoresListDecorator < ListDecorator
+################
+class CategoryResultsListDecorator < ListDecorator
+  def skater_name
+    h.link_to_skater(nil, model.skater)
+  end
+  def points
+    _show_score(model.points)
+  end
+  def ranking
+    _show_score(model.ranking, format: "%d")
+  end
+  def free_ranking
+    _show_score(model.free_ranking, format: "%d")
+  end
+  
+  protected
+  def _show_score(value, format: "%3.2f")
+    (value == 0) ? "-" : format % [ value ]    
+  end
+
+end
+
+
+################
+class SegmentScoresListDecorator < CategoryResultsListDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
+  def tss
+    _show_score(model.tss)
+  end
+  def tes
+    _show_score(model.tss)
+  end
+  def pcs
+    _show_score(model.tss)
+  end
+  def deductions
+    (model.deductions == 0) ? "" : model.deductions.abs * (-1)
+  end
+
+
 end
 ################################################################
 
@@ -17,26 +55,25 @@ class CategorySummary
   include ApplicationHelper
   
   def initialize(competition)
-
     @competition = competition
 
-    @_categories = []
-    @_segments = Hash.new { |h,k| h[k] = [] }
-    @_top_rankers = Hash.new { |h,k| h[k] = [] }
+    @categories = []
+    @segments = Hash.new { |h,k| h[k] = [] }
+    @top_rankers = Hash.new { |h,k| h[k] = [] }
 
     @competition.scores.order("date").pluck(:category, :segment).uniq.each do |ary|
       category, segment = ary   # = ary.first; segment = ary.second
-      @_categories << category unless @_categories.include?(category)
-      @_segments[category] << segment
+      @categories << category unless @categories.include?(category)
+      @segments[category] << segment
     end
-    @_categories = sort_with_preset(@_categories, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+    @categories = sort_with_preset(@categories, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
     @competition.category_results.where("ranking > 0 and ranking <= ? ", 3).order(:ranking).each do |item|
-      @_top_rankers[item.category] << item.skater_name
+      @top_rankers[item.category] << item.skater_name
     end
   end
   def collection
-    @_categories.map do |category|
-      {category: category, segments: @_segments[category], top_rankers: @_top_rankers[category]}
+    @categories.map do |category|
+      {category: category, segments: @segments[category], top_rankers: @top_rankers[category]}
     end
   end
 end
@@ -66,18 +103,25 @@ class CompetitionsController < ApplicationController
     ## category summary
     category = params[:category]
     segment = params[:segment]
-    segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking)) : []
+
     category_summary = CategorySummary.new(competition)
     
-    
+    category_results = (category) ? CategoryResultsListDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater)) : []
+    segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking).includes(:skater)) : []
+
     respond_to do |format|
       format.html {
-        render locals: {competition: competition, category: category, segment: segment, segment_scores: segment_scores, category_summary: category_summary}
+        render locals: {
+          competition: competition, category: category, segment: segment,
+          category_summary: category_summary,
+          category_results: category_results,
+          segment_scores: segment_scores,
+        }
       }
       format.json {
         data = {competition_info: competition, category_summary: category_summary}
         data[:segment_scores] = segment_scores if segment
-        data[:category_result] = competition.category_results.where(category: category) if category
+        data[:category_result] = category_results if category
         render json: data
       }
     end

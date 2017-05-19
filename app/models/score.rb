@@ -30,10 +30,11 @@ class Score < ApplicationRecord
     preset = [:"SHORT PROGRAM", :"FREE SKATING", :"SHORT DANCE", :"FREE DANCE"]
     [nil, preset, pluck(key).uniq.sort.reject {|k| k.nil? || preset.include?(k.to_sym)}].flatten    
   end
+
   ################
   private
   def set_default_values
-    self.sid ||= [self.competition.try(:cid), self.category, self.segment, self.ranking].join("-")
+    self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")
   end
 end
 
