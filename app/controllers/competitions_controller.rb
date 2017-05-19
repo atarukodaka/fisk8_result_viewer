@@ -63,23 +63,23 @@ class CompetitionsController < ApplicationController
   ################
   def show
     competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
-    data = competition.scores.pluck(:category, :segment, :ranking, :skater_name).uniq.sort
-    cat_seg = data.map {|d| d[0..1]}.uniq
-    aa = []
-    cat_seg.map do |c_s|
-      aa << data.select {|d| d[0] == c_s[0] && d[1] == c_s[1]}
-    end
     ## category summary
     category = params[:category]
     segment = params[:segment]
     segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking)) : []
-    render locals: {competition: competition, category: category, segment: segment, segment_scores: segment_scores, category_summary: CategorySummary.new(competition)}
+    category_summary = CategorySummary.new(competition)
     
-=begin
+    
     respond_to do |format|
-      format.html { }
-      format.json { render json: @competition }
+      format.html {
+        render locals: {competition: competition, category: category, segment: segment, segment_scores: segment_scores, category_summary: category_summary}
+      }
+      format.json {
+        data = {competition_info: competition, category_summary: category_summary}
+        data[:segment_scores] = segment_scores if segment
+        data[:category_result] = competition.category_results.where(category: category) if category
+        render json: data
+      }
     end
-=end
   end
 end

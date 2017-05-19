@@ -15,6 +15,6 @@ class ListDecorator < Draper::Decorator
     end
   end
   def filter_index(key)
-    h.link_to_index(bracket(model[key]), parameters: h.params.permit(filter_keys).merge(key => model[key]))
+    h.link_to_index(model[key], parameters: h.params.permit(filter_keys).merge(key => model[key]))
   end
 end

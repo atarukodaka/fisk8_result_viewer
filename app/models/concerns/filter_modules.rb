@@ -18,7 +18,7 @@ module FilterModules
       @@_select_options_callback[key] = func
     end
 
-    def _parse_compare(text)
+    def parse_compare(text)
       method = :eq; value = text.to_i
       if text =~ %r{^ *([=<>]+) *([\d\.\-]+) *$}
         value = $2.to_f
@@ -45,7 +45,7 @@ module FilterModules
         when :eq, :is
           arel_tables << model.arel_table[key].eq(value)
         when :compare
-          parsed = _parse_compare(value)
+          parsed = parse_compare(value)
           logger.debug("#{value} parsed as '#{parsed[:method]}'")
           arel_tables << model.arel_table[key].method(parsed[:method]).call(parsed[:value]) if parsed[:method]
           

@@ -33,7 +33,7 @@ module Fisk8Viewer
         rows.each do |row|
           next if row.xpath("td").blank?
           
-          if c = row.xpath("td[1]").text.presence
+          if (c = row.xpath("td[1]").text.presence)
             category = c.upcase
           end
           segment = row.xpath("td[2]").text.upcase
@@ -60,7 +60,7 @@ module Fisk8Viewer
         time_schedule = []
         rows.each do |row|
           next if row.xpath("td").blank?
-          if t = row.xpath("td[1]").text.presence
+          if (t = row.xpath("td[1]").text.presence)
             dt_str = t
             next
           end

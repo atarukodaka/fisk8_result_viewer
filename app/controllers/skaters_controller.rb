@@ -78,7 +78,7 @@ class SkatersController < ApplicationController
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results }}
-      format.json { render json: skater}
+      format.json { render json: {skater_info: skater, competition_results: category_results} }
     end
   end
 end
