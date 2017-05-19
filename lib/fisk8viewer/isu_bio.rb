@@ -39,7 +39,7 @@ module Fisk8Viewer
 
       begin
         page = @agent.get(url)
-      rescue Mechanize::ResponseCodeError => e
+      rescue Mechanize::ResponseCodeError
         logger.warn("  #{url} not found")
         return {}
       end
@@ -57,7 +57,7 @@ module Fisk8Viewer
         coach: :media_information_coach,
         choreographer: :media_information_choreographer,
       }.map {|k, v|
-        [k, page.search("#FormView1_person_#{v.to_s}Label").text]
+        [k, page.search("#FormView1_person_#{v}Label").text]
       }.to_h
       skater.merge(parsed_info)
     end

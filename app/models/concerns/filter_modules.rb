@@ -60,7 +60,7 @@ module FilterModules
       case headers
       when Hash
         str = headers.map {|table, keys|
-          keys.map {|k| "#{table}.#{k.to_s}"}
+          keys.map {|k| "#{table}.#{k}"}
         }.flatten.join(",")
         select(str)
       else
