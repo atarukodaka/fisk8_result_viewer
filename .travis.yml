@@ -3,6 +3,8 @@ language: ruby
 rvm:
   - 2.2.5
 
-script: "bundle exec rake test"
+script: "bundle exec rake rspec"
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rspec
 
 env: TEST=true
