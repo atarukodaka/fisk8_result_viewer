@@ -30,7 +30,7 @@ module LinkToHelper
   def link_to_isu_bio(text = nil, isu_number, target: nil)
     text ||= isu_number
     content_tag(:span) do
-      concat(link_to(text, isu_bio_url(isu_number), target: target))
+      concat(link_to(text, isu_bio_url(isu_number), target: "_blank"))
       concat(span_link_icon)
     end
   end
@@ -67,7 +67,24 @@ module TableHelper
   end
 end
 
+module SortHelper
+  def sort_with_preset(data, preset)
+    result = []
+    preset_hash = preset.map {|v| [v, false]}.to_h
+    to_sort = []
+    data.each do |v|
+      if preset.include?(v)
+        preset_hash[v] = true
+      else
+        to_sort << v
+      end
+    end
+    preset.select {|v| preset_hash[v]} + to_sort.sort
+  end
+end
 ################################################################
 module ApplicationHelper
-  include LinkToHelper, TableHelper
+  include LinkToHelper, TableHelper, SortHelper
+
+  
 end

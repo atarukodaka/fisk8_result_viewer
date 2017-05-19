@@ -1,7 +1,6 @@
+// locals: score
+
 h2 Score
-
-- score = @score
-
 
 table.table.table-striped.table-hover.table-condensed
   = tr_data(:skater, link_to_skater(score.skater))
@@ -14,10 +13,10 @@ table.table.table-striped.table-hover.table-condensed
 
 h2 Elements
 
-= render partial: "list_table", locals: { display_keys: [:number, :element, :info, :base_value, :credit, :goe, :judges, :value] , collection: @score.elements}
+= render partial: "list_table", locals: { display_keys: [:number, :element, :info, :base_value, :credit, :goe, :judges, :value] , collection: score.elements}
 
 h2 Components
 
-= render partial: "list_table", locals: { display_keys: [:number, :component, :factor, :judges, :value] , collection: @score.components }
+= render partial: "list_table", locals: { display_keys: [:number, :component, :factor, :judges, :value] , collection: score.components }
 
 

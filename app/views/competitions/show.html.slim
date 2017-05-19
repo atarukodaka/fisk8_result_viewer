@@ -1,8 +1,5 @@
-// locals: competition, category, segment, segment_scores
-
-- category ||= ""
-- segment ||= ""
-- segment_scores ||= competition.scores.where(category: category, segment: segment).order(:ranking) || []
+// locals: competition, category, segment, category_summary
+//   optional: segment_scores (only when 'segment' specified)
 
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
@@ -11,7 +8,7 @@ table.table.table-striped.table-hover.table-condensed
   =tr_data("Name", competition.name)
   =tr_data("CID", competition.cid)
   =tr_data("City / Country", [competition.city, competition.country].join(' / '))
-  =tr_data("Official Site", link_to_competition_site("Site", competition))
+  =tr_data("Official Site", link_to_competition_site(competition.site_url, competition))
   =tr_data("Start Date", competition.start_date)
   =tr_data("End Date", competition.end_date)
 
@@ -20,21 +17,18 @@ table.table.table-striped.table-hover.table-condensed
 h2 Category Summary
 
 table.table.table-striped.table-hover.table-condensed
-
   tr
-    - [:category, :segments, "1st", "2nd", "3rd"].each do |header|
+    - ["Category", "1st Segment", "2nd Segment", "1st Ranker", "2nd", "3rd"].each do |header|
       th= header.to_s.camelize
-
-  - competition.categories.each do |cat|
+  - category_summary.collection.each do |data|
     tr
-      td= link_to_competition(competition, category: cat)
-      td
-        - competition.segments(cat).each do |seg|
-          = link_to_competition(competition, category: cat, segment: seg)
-          span , 
-      - rankers = competition.top_rankers(cat)[1..3] || []
-      - rankers.each do |ranker|
-        td= ranker.name
+      td= link_to_competition(competition, category: data[:category])
+      td= link_to_competition(competition, category: data[:category], segment: data[:segments].first)
+      td= link_to_competition(competition, category: data[:category], segment: data[:segments].second)
+      td= data[:top_rankers].first
+      td= data[:top_rankers].second
+      td= data[:top_rankers].third
+
 
 - if category.present?
   - unless segment.present?

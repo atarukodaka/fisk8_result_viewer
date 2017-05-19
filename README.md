@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/atarukodaka/fisk8_result_viewer.svg?branch=master)](https://travis-ci.org/atarukodaka/fisk8_result_viewer)
+[![Coverage Status](https://coveralls.io/repos/github/atarukodaka/fisk8_result_viewer/badge.svg?branch=master)](https://coveralls.io/github/atarukodaka/fisk8_result_viewer?branch=master)
+[![Code Climate](https://codeclimate.com/github/atarukodaka/fisk8_result_viewer/badges/gpa.svg)](https://codeclimate.com/github/atarukodaka/fisk8_result_viewer)
+
+
 ## Overview
 Result and Score viewer of figureskating competitions. you can see below details of competitions you registered:
 

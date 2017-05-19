@@ -14,14 +14,24 @@ class Competition < ApplicationRecord
     Competition.order("start_date desc").pluck(key).uniq.unshift(nil)
   end
 
+=begin
   def categories
     category_results.pluck(:category).uniq
   end
+  def short(category)
+    #category_results.find_by(category: category).try(:short)
+    scores.where(category: category).where("segment like ?", "SHORT%").first
+  end
+  def free(category)
+    scores.where(category: category).where("segment like ?", "FREE%").first
+  end
+
   def segments(category)
     _segments = Hash.new { |h,k| h[k] = [] }
     scores.pluck(:category, :segment).uniq.each {|cat, seg| _segments[cat] << seg }
     return _segments[category]
   end
+
   def top_rankers(category)
     _top_rankers = Hash.new { |h,k| h[k] = [] }    
     category_results.includes(:skater).where("ranking >= ? and ranking <= ?", 1, 3).each do |res|
@@ -29,7 +39,7 @@ class Competition < ApplicationRecord
     end
     return _top_rankers[category]
   end
-
+=end
   ## validation
   validates :cid, presence: true, uniqueness: true
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  

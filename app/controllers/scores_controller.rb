@@ -22,12 +22,12 @@ class ScoresController < ApplicationController
     Score.recent.filter(filters, params)
   end
   def show
-    @score = Score.find_by(sid: params[:sid]) ||
+    score = Score.find_by(sid: params[:sid]) ||
       raise(ActiveRecord::RecordNotFound.new("no such sid: '#{params[:sid]}'"))
 
     respond_to do |format|
-      format.html {}
-      format.json { render json: {summary: @score, elements: @score.elements, components: @score.components }}
+      format.html { render locals: {score: score}}
+      format.json { render json: {summary: score, elements: @score.elements, components: @score.components }}
     end
   end
 end
