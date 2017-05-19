@@ -21,14 +21,7 @@ class ElementsController < ApplicationController
      :number, :element, :credit, :info, :base_value, :goe, :judges, :value,
     ]
   end
-  def select_keys
-    {
-      scores: [:sid, :competition_name, :category, :segment, :date, :ranking, :skater_name, :nation],
-      competitions: [:season],
-      elements: [:number, :element, :credit, :info, :base_value, :goe, :judges, :value, :score_id],
-    }
-  end
   def collection
-    Element.with_score.joins(score: [:competition]).filter(filters, params).select_by_keys(select_keys)
+    Element.with_score.joins(score: [:competition]).filter(filters, params).select("scores.*, competitions.season, elements.*")
   end
 end

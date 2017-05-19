@@ -6,7 +6,9 @@ end
 ################################################################
 class ComponentsController <  ApplicationController
   def filters
-    score_filters
+    {
+      value: { operator: :compare, input: :text_field, model: Component},
+    }.merge(score_filters)
   end
   def display_keys
     [:sid, :competition_name, :category, :segment, :date, :season,
@@ -15,13 +17,6 @@ class ComponentsController <  ApplicationController
   end
 
   def collection
-    Component.with_score.joins(score: [:competition]).filter(filters, params).select_by_keys(select_keys)
-  end
-  def select_keys
-    {
-      scores: [:sid, :competition_name, :category, :segment, :date, :ranking, :skater_name, :nation, ],
-      components: [:number, :component, :factor, :judges, :value, :score_id],
-      competitions: [:season],
-    }
+    Component.with_score.joins(score: [:competition]).filter(filters, params).select("scores.*, competitions.season, components.*")
   end
 end
