@@ -103,5 +103,13 @@ RSpec.configure do |config|
   
 end
 
+#require 'coveralls'
+#Coveralls.wear!
+require 'simplecov'
 require 'coveralls'
-Coveralls.wear!
+
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.start do
+  add_filter 'specs'
+  add_filter 'lib/fisk8viewer'
+end
