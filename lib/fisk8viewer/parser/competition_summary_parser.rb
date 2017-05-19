@@ -8,7 +8,7 @@ module Fisk8Viewer
       def parse_datetime(str)
         begin
           Time.zone ||= "UTC"
-          tm = Time.zone.parse(str)
+          Time.zone.parse(str)
         rescue ArgumentError
           raise "invalid date format"
         end
@@ -23,7 +23,7 @@ module Fisk8Viewer
           [str, nil]
         end
       end
-      def parse_summary_table(page, url: "")
+      def parse_summary_table(page)
         category_elem = page.xpath("//*[text()='Category']").first
         rows = category_elem.ancestors.xpath("table").first.xpath("tr")
 
@@ -85,7 +85,7 @@ module Fisk8Viewer
         page = get_url(url)
         city, country = parse_city_country(page)
         
-        data = {
+        {
           name: parse_name(page),
           site_url: url,
           city: city,

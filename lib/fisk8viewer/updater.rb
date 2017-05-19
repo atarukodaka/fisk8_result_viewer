@@ -99,7 +99,7 @@ module Fisk8Viewer
 
             score_url = summary.score_url(category, segment)
             parser.parse_score(score_url).each do |score_hash|
-              score = update_score(score_hash, competition: competition, category: category, segment: segment) do |score|
+              update_score(score_hash, competition: competition, category: category, segment: segment) do |score|
                 score.update!(date: summary.starting_time(category, segment))
               end
             end
@@ -114,7 +114,7 @@ module Fisk8Viewer
       ActiveRecord::Base::transaction do 
         parser.parse_category_result(url).map do |result_hash|
           keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
-          param = {name: result_hash[:skater_name]}.merge(result_hash.slice(*[:isu_number, :nation, :category]))
+          #param = {name: result_hash[:skater_name]}.merge(result_hash.slice(*[:isu_number, :nation, :category]))
 
           skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
 

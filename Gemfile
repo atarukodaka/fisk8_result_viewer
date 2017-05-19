@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'pry-rails'
-  gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
+  #gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :test do
@@ -47,12 +47,12 @@ group :production do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+#gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 ################
 gem 'slim-rails'
-#gem 'stackprof'
-gem 'stackprof', github: "tmm1/stackprof", branch: "master"
+gem 'stackprof'
+#gem 'stackprof', github: "tmm1/stackprof", branch: "master"
 
 gem 'pdftotext'
 gem 'mechanize'
@@ -61,4 +61,4 @@ gem 'kaminari'
 gem 'google-analytics-rails'
 gem 'draper'
 
-gem 'coversalls', require: false
+gem 'coveralls', require: false

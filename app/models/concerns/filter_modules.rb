@@ -35,7 +35,7 @@ module FilterModules
     end
     def create_arel_tables_by_filters(filters, parameters)
       arel_tables = []
-        filters.each do |key, hash|
+      filters.each do |key, hash|
         next if (value = parameters[key]).blank? || hash[:operator].nil?
         model = hash[:model] || self
         

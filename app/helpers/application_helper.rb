@@ -27,10 +27,10 @@ module LinkToHelper
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
   end
-  def link_to_isu_bio(text = nil, isu_number, target: nil)
+  def link_to_isu_bio(text = nil, isu_number, target: "_blank")
     text ||= isu_number
     content_tag(:span) do
-      concat(link_to(text, isu_bio_url(isu_number), target: "_blank"))
+      concat(link_to(text, isu_bio_url(isu_number), target: target))
       concat(span_link_icon)
     end
   end
@@ -69,7 +69,6 @@ end
 
 module SortHelper
   def sort_with_preset(data, preset)
-    result = []
     preset_hash = preset.map {|v| [v, false]}.to_h
     to_sort = []
     data.each do |v|

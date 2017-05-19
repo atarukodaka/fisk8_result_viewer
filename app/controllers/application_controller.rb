@@ -16,7 +16,7 @@ module ErrorHandler
   def handler_500(e = nil)
     respond_to do |format|
       format.html { render 'errors/500', status: :internal_server_error }
-      format.json { render json: { error: '500 error'}, status: :internal_server_error }
+      format.json { render json: { error: '500 error'}, status: :internal_server_error, locals: {message: e.try(:message)}}
     end
   end
 end

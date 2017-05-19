@@ -56,7 +56,6 @@ module Fisk8Viewer
       end
       
       def parse(url)
-        data = []
         page = get_url(url)
         page.encoding = 'iso-8859-1'  # for umlaut support
         category = get_category(page)

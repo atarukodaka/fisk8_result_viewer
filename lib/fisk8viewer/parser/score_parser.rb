@@ -64,7 +64,6 @@ module Fisk8Viewer
           segment: $3,
         }
         scores = []
-        page_number = 1
         text.split(/\f/).map do |page_text|
           #page_text.split(/^Rank/)[1..-1].each_with_index do |t, i|
           page_text.split(SCORE_DELIMITER)[1..-1].each_with_index do |t, i|          
