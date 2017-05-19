@@ -110,6 +110,7 @@ require 'coveralls'
 
 SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.start do
-  add_filter 'specs'
+  add_filter 'spec/'
   add_filter 'lib/fisk8viewer'
+  add_filter 'app/controlers/feedback_controller.rb'
 end

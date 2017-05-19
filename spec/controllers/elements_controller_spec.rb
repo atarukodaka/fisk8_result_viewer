@@ -5,8 +5,8 @@ RSpec.describe ElementsController, type: :controller do
   
   before do
     score = create(:competition).scores.create(sid: "SID-elem", skater: create(:skater))
-    score.elements.create(element: "4T", base_value: 15.0, goe: 10.0)
-    score.elements.create(element: "4T+3T", base_value: 10.0, goe: 8.0)
+    score.elements.create(element: "4T", base_value: 15.0, goe: 3.0)
+    score.elements.create(element: "4T+3T", base_value: 10.0, goe: -2.0)
   end
 
   describe 'index' do
@@ -26,7 +26,7 @@ RSpec.describe ElementsController, type: :controller do
       expect(response.body).to include('4T+3T')
     }
     it {
-      get :index, params: {goe: '>9'}
+      get :index, params: {goe: '>1'}
       expect(response.body).to include('4T')
       expect(response.body).not_to include('4T+3T')
     }

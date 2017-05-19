@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'pry-rails'
-  #gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :test do
