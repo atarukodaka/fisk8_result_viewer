@@ -27,17 +27,21 @@ class SkaterCompetitionsListDecorator < ListDecorator
     h.link_to_competition(model.points, model.competition, category: model.category)
   end
   def short_ranking
-    h.link_to_score(model.short_ranking, model.short)
-  end
-  def short_tss
-    h.link_to_score(model.short.tss, model.short)
+    #h.link_to_score(model.short_ranking, model.short)
+    model.short_ranking
   end
   def free_ranking
-    h.link_to_score(model.free_ranking, model.free)
+    #h.link_to_score(model.free_ranking, model.free)
+    model.short_ranking
+  end
+=begin
+  def short_tss
+    #h.link_to_score(model.short.tss, model.short)
   end
   def free_tss
-    h.link_to_score(model.free.tss, model.free)
+    #h.link_to_score(model.free.tss, model.free)
   end
+=end
 end
 ################################################################
 class SkatersController < ApplicationController

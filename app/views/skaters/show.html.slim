@@ -12,7 +12,7 @@ table.table.table-striped.table-hover.table-condensed
 
 h2 Competition Results
 
-- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
+- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :free_ranking]
 = render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
 
 //h2 Competition Results
