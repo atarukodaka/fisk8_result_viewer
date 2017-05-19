@@ -21,7 +21,6 @@ module Fisk8Viewer
                 tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f,
               }
               hash[:skater_name].sub!(/ *$/, '')
-              #hash[:skater_name] = normalize_skater_name(hash[:skater_name])
               score.merge!(hash)
               mode = :tes
             end

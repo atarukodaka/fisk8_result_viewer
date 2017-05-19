@@ -45,6 +45,7 @@ module Fisk8Viewer
           end
           summary
         end
+        # rubocop:disable all
         def parse_time_schedule(page)
           Time.zone ||= "UTC"
           [
@@ -92,7 +93,8 @@ module Fisk8Viewer
           ]
         end
       end  ##
-
+      # rubocop:enable all
+      
       class CategoryResultParser < ISU_Generic::CategoryResultParser
         def get_rows(page)
           page.xpath("//table[1]/tr")
