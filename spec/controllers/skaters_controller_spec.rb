@@ -37,7 +37,7 @@ RSpec.describe SkatersController, type: :controller do
   end
   describe 'show/:isu_number' do
     it {
-      get :show, params: { isu_number: 1 }
+      get :show, params: { isu_number: 12345 }
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')    
@@ -46,7 +46,7 @@ RSpec.describe SkatersController, type: :controller do
   end
   describe 'show/:name' do
     it {
-      get :show, params: { name: "Skater NAME" }
+      get :show_by_name, params: { name: "Skater NAME"}
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')
