@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 3) do
 
   create_table "category_results", force: :cascade do |t|
+    t.string "competition_name"
     t.string "category"
     t.integer "ranking"
     t.string "skater_name"

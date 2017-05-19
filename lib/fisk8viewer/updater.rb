@@ -119,6 +119,7 @@ module Fisk8Viewer
           skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
 
           cr = competition.category_results.create(result_hash.slice(*keys))
+          cr.update(competition_name: competition.name)
           puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
           skater.category_results << cr
           cr.update!(skater: skater)

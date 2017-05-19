@@ -14,6 +14,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     end
     
     create_table :category_results do |t|
+      t.string :competition_name
       t.string :category
 
       t.integer :ranking

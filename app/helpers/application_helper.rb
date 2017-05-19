@@ -9,6 +9,7 @@ module LinkToHelper
   end
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
     text ||= segment || category || competition.name
+    #cid = (competition.class == Competition) ? competition.cid : competition
     link_to(text, {controller: :competitions, action: :show, cid: competition.cid, category: category, segment: segment})
   end
 

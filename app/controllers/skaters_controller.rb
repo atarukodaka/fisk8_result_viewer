@@ -11,6 +11,7 @@ class SkatersListDecorator < Draper::Decorator
     end
   end
 end
+=begin
 class SkaterScoresListDecorator < Draper::Decorator
   include ListDecorator
   def competition_name
@@ -23,11 +24,14 @@ class SkaterScoresListDecorator < Draper::Decorator
     h.link_to_competition(nil, model.competition, category: model.category, segment: model.segment)
   end
 end
-
+=end
 class SkaterCompetitionsListDecorator < Draper::Decorator
   include ListDecorator
-  def name
-    h.link_to_competition(model.competition)
+  def competition_name
+    h.link_to_competition(nil, model.competition)
+  end
+  def date
+    model.competition.start_date
   end
   def ranking
     h.link_to_competition(model.ranking, model.competition, category: model.category)
@@ -47,7 +51,6 @@ class SkaterCompetitionsListDecorator < Draper::Decorator
   def free_tss
     h.link_to_score(model.free.tss, model.free)
   end
-  
 end
 
 ################################################################
@@ -79,12 +82,12 @@ class SkatersController < ApplicationController
   end
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
-    scores = SkaterScoresListDecorator.decorate_collection(skater.scores.recent.includes(:competition))
-    collection = skater.category_results.joins(:competition).select("competitions.*,category_results.*")
+    #scores = SkaterScoresListDecorator.decorate_collection(skater.scores.recent.includes(:competition))
+    collection = skater.category_results.includes(:competition)
     category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
 
     respond_to do |format|
-      format.html { render action: :show, locals: { skater: skater, scores: scores, category_results: category_results }}
+      format.html { render action: :show, locals: { skater: skater, category_results: category_results }}
       format.json { render json: skater}
     end
   end
