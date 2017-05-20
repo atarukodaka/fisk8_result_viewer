@@ -6,8 +6,8 @@ RSpec.describe CompetitionsController, type: :controller do
   before do
     skater = create(:skater)
     competition = create(:competition, {cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN"})
-    cr = competition.category_results.create(skater: skater)
-    score = competition.scores.create(skater: skater)
+    cr = competition.category_results.create(skater: skater, category: "MEN")
+    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT")
   end
   
   ################################################################
@@ -51,6 +51,7 @@ RSpec.describe CompetitionsController, type: :controller do
     }
   end
 
+  ################
   describe 'show' do
     it {
       get :show, params: { cid: "WORLD2017" }
@@ -60,4 +61,29 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('JPN')
     }
   end
+
+  describe 'show/category' do
+    it {
+      get :show, params: { cid: "WORLD2017", category: "MEN" }
+      expect(response.status).to eq(200)
+      expect(response.body).to include('WORLD2017')
+      expect(response.body).to include('Tokyo')
+      expect(response.body).to include('JPN')
+      expect(response.body).to include('MEN')
+    }
+  end
+
+  describe 'show/category/segment' do
+    it {
+      get :show, params: { cid: "WORLD2017", category: "MEN", segment: "SHORT" }
+      expect(response.status).to eq(200)
+      expect(response.body).to include('WORLD2017')
+      expect(response.body).to include('Tokyo')
+      expect(response.body).to include('JPN')
+      expect(response.body).to include('MEN')
+      expect(response.body).to include('SHORT')
+    }
+  end
+
+  
 end

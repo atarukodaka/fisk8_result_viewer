@@ -25,6 +25,7 @@ RSpec.describe ElementsController, type: :controller do
       expect(response.body).to include('4T')
       expect(response.body).to include('4T+3T')
     }
+    # compare
     it {
       get :index, params: {goe: '>1'}
       expect(response.body).to include('4T')

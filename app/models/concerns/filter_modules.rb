@@ -56,6 +56,7 @@ module FilterModules
   end  ## class methods
   ################
   included do
+=begin
     scope :select_by_keys, ->(headers){
       case headers
       when Hash
@@ -68,6 +69,7 @@ module FilterModules
       end
 
     }
+=end
     scope :with_score, ->{ joins(:score) }
     scope :with_skater, ->{ joins(:skater) }
     scope :with_competition, ->{ joins(:competition) }

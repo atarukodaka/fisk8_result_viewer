@@ -23,7 +23,7 @@ class CategoryResultsListDecorator < ListDecorator
   
   protected
   def _show_score(value, format: "%3.2f")
-    (value == 0) ? "-" : format % [ value ]    
+    (value.to_f == 0) ? "-" : format % [ value ]    
   end
 
 end
@@ -44,7 +44,7 @@ class SegmentScoresListDecorator < CategoryResultsListDecorator
     _show_score(model.tss)
   end
   def deductions
-    (model.deductions == 0) ? "" : model.deductions.abs * (-1)
+    (model.deductions.to_f == 0) ? "" : model.deductions.to_f.abs * (-1)
   end
 
 

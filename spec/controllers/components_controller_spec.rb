@@ -25,5 +25,31 @@ RSpec.describe ComponentsController, type: :controller do
       expect(response.body).to include('9.0')
       expect(response.body).not_to include('10.0')
     }
+    # compare
+    it {
+      get :index, params: { value: "<9.5"}
+      expect(response.body).to include('Skating Skill')
+      expect(response.body).to include('9.0')
+      expect(response.body).not_to include('10.0')
+    }
+    it {
+      get :index, params: { value: "<=9"}
+      expect(response.body).to include('Skating Skill')
+      expect(response.body).to include('9.0')
+      expect(response.body).not_to include('10.0')
+    }
+    it {
+      get :index, params: { value: ">=9"}
+      expect(response.body).to include('Skating Skill')
+      expect(response.body).to include('9.0')
+      expect(response.body).to include('10.0')
+    }
+    it {
+      get :index, params: { value: "=9"}
+      expect(response.body).to include('Skating Skill')
+      expect(response.body).to include('9.0')
+      expect(response.body).not_to include('10.0')
+    }
+    
   end
 end
