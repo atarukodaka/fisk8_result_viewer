@@ -32,6 +32,18 @@ RSpec.describe CompetitionsController, type: :controller, updater: true do
     }
   end
 
+  describe 'update competition: wtt2017' do 
+    it {
+      url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
+      updater = Fisk8Viewer::Updater.new(accept_categories: [:MEN])
+      updater.update_competition(url, parser_type: :wtt_2017)
+      
+      get :index
+      expect(response.status).to eq(200)
+      expect(response.body).to include(url)
+    }
+  end
+
   ################
   describe 'update competitions' do 
     it {

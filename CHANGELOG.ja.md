@@ -6,7 +6,9 @@
 - list table: 数字のとこは中or右揃え
 - deductionsは全てマイナスで統一
 - short_sid
-- OWG 取得漏れ？
-
+- cid, competition_type を self.name, self.country などの情報から生成するか
+- factory girl で create すると after_initialize のときに attr がセットされていない
+- specs
+  - competitions_controller: @top_ranker
 ## 1.0.0-pre1
 - pre-release
