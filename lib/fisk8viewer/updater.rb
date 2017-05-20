@@ -230,21 +230,6 @@ module Fisk8Viewer
         puts " ! '%{name}' (%{isu_number}) [%{nation}] <%{category}> created" % skater.attributes.symbolize_keys
       end
     end
-    ################################################################
-    def update_select_options
-      settings = Settings
-      settings[:filter_select_options] ||= {}
-
-      [:competition_type, :season].each do |key|
-        settings[:filter_select_options][key] = Competition.pluck(key).uniq
-      end
-      [:category, :segment, :nation, :competition_name].each do |key|
-        settings[:filter_select_options][key] = Score.pluck(key).uniq
-      end
-      File.open(Rails.root.join("config", "settings.yml"), "w") do |f|
-        f.puts settings.to_hash.to_yaml
-      end
-    end
   end  ## class
 end
 
