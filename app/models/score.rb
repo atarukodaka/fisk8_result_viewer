@@ -1,6 +1,4 @@
 class Score < ApplicationRecord
-  include FilterModules
-  
   after_initialize :set_default_values
   
   has_many :elements, dependent: :destroy

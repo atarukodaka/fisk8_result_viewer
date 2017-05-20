@@ -1,6 +1,4 @@
 class Skater < ApplicationRecord
-  include FilterModules
-  
   has_many :category_results
   has_many :scores
   #validates :name, presence: true

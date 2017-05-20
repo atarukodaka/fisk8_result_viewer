@@ -1,5 +1,3 @@
-class Element < ActiveRecord::Base
-  include FilterModules
-  
+class Element < ApplicationRecord
   belongs_to :score
 end

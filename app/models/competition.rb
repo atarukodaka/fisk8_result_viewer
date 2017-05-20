@@ -1,6 +1,4 @@
 class Competition < ApplicationRecord
-  include FilterModules
-  
   after_initialize :set_default_values
   
   has_many :category_results, dependent: :destroy

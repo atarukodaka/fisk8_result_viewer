@@ -1,6 +1,4 @@
-class Component < ActiveRecord::Base
-  include FilterModules
-  
+class Component < ApplicationRecord
   belongs_to :score
 end
 
