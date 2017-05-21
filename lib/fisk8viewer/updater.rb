@@ -42,22 +42,8 @@ module Fisk8Viewer
     end
     def update_competitions(items)
       items.map do |item|
-        case ENV['RACK_ENV']
-        when "development"
-          require 'benchmark'
-          Benchmark.bm 10 do |r|
-            r.report "competition" do
-              update_competition(item[:url], parser_type: item[:parser])
-            end
-          end
-        else
-          update_competition(item[:url], parser_type: item[:parser])
-        end
+        update_competition(item[:url], parser_type: item[:parser])
       end
-    end
-    def transact_competition(url, parser_type: :isu_generic)
-
-        update_competition(url, parser_type: parser_type)
     end
     def update_competition(url, parser_type: :isu_generic)
       parser_klass =Fisk8Viewer::Parsers.registered[parser_type]
@@ -91,7 +77,7 @@ module Fisk8Viewer
           next unless @accept_categories.include?(category.to_sym)
           result_url = summary.result_url(category)
           puts " = [%s]" % [category]
-          update_category_result(result_url, competition: competition, parser: parser)
+          update_category_results(result_url, competition: competition, parser: parser)
 
           ## for segments
           summary.segments(category).each do |segment|
@@ -109,23 +95,28 @@ module Fisk8Viewer
       end
     end
     ################################################################
-    def update_category_result(url, competition: , parser: )
+    def update_category_results(url, competition: , parser: )
       return [] if url.blank?
 
-      ActiveRecord::Base::transaction do 
-        parser.parse_category_result(url).map do |result_hash|
-          keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
-          #param = {name: result_hash[:skater_name]}.merge(result_hash.slice(*[:isu_number, :nation, :category]))
-
-          skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
-
-          cr = competition.category_results.create(result_hash.slice(*keys))
-          cr.update(competition_name: competition.name)
-          puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
-          skater.category_results << cr
-          cr.update!(skater: skater)
+      parser.parse_category_result(url).map do |result_hash|
+        competition.category_results.create do |cr|
+          cr.competition_name = competition.name
+          update_category_result(result_hash, cr)
         end
       end
+    end
+    def update_category_result(result_hash, cr)
+      keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
+      puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
+      #cr = competition.category_results.create(result_hash.slice(*keys))
+      cr.attributes = result_hash.slice(*keys)
+      #cr.update(competition_name: competition.name)
+
+      skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
+      cr.skater = skater
+      skater.category_results << cr
+      #cr.update!(skater: skater)
+      cr
     end
     ################################################################
     def update_score(score_hash, competition: , category: , segment: )
@@ -180,15 +171,16 @@ module Fisk8Viewer
       score.update!(sid: [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('/'))
     end
     ################################################################
-    def update_skaters
+    def update_skaters(categories = [:MEN, :LADIES, :PAIRS, :"ICE DANCE"])
+      categories = categories.split(/ *, */).map(&:upcase).map(&:to_sym) if categories.class == String
       parser = Fisk8Viewer::ISU_Bio.new
       ActiveRecord::Base::transaction do
-        parser.parse_isu_bio_summary(@accept_categories).each do |hash|
+        parser.parse_isu_bio_summary(categories).each do |hash|
           find_or_create_skater(hash[:isu_number], hash[:name], category: hash[:category], nation: hash[:nation])
         end
       end
     end
-
+=begin
     def update_isu_bio_details(skater=nil)
       puts("update skaters bio details")
 
@@ -211,6 +203,7 @@ module Fisk8Viewer
         end
       end
     end
+=end
     ################################################################
     def seniorize(category)
       sen_cat = category.to_s.gsub(/^JUNIOR /, '')

@@ -23,8 +23,8 @@ task :update => [:update_skaters, :update_competitions] do
 end
 
 task :update_skaters => :environment do
-  updater = Fisk8Viewer::Updater.new(accept_categories: ENV['accept_categories'])
-  updater.update_skaters
+  updater = Fisk8Viewer::Updater.new
+  updater.update_skaters(ENV['categories'])
 end
 
 task :update_competitions => :environment do

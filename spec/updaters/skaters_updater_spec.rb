@@ -5,19 +5,16 @@ RSpec.configure do |c|
   c.filter_run_excluding updater: true
 end
 
-RSpec.describe SkatersController, type: :controller, updater: true do
-  render_views
-  
-  describe 'skater' do 
+RSpec.describe 'skater', updater: true do
+  describe 'update skaters' do 
     it {
       updater = Fisk8Viewer::Updater.new(accept_categories: [:MEN])
       updater.update_skaters
-      skater = Skater.find_by(isu_number: 10967)
-      updater.update_isu_bio_details(skater)
+      #skater = Skater.find_by(isu_number: 10967)
+      #updater.update_isu_bio_details(skater)
+      num_skaters = Skater.group(:category).count
 
-      get :show, params: {isu_number: 10967}
-      expect(response.status).to eq(200)
-      expect(response.body).to include('Yuzuru HANYU')
+      expect(num_skaters["MEN"]).to be > 0
     }
   end
 end
