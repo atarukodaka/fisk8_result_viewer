@@ -1,9 +1,5 @@
-# Add your own tasks in files placed in lib/tasks ending in .rake,
-# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-
 
 require_relative 'config/application'
 
@@ -12,9 +8,6 @@ require 'rake/clean'
 require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new("spec")
-task :test => :spec do
-end
-
   
 ################
 require 'fisk8viewer/updater'
@@ -33,14 +26,16 @@ task :update_competitions => :environment do
   #reverse = ENV['reverse'].to_i.nonzero?
   force = ENV['force'].to_i.nonzero?
   updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'], force: force)
-  items = updater.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
+  items = updater.class.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
 
   if first > 0
     items = items.first(first)
   elsif last > 0
     items = items.last(last).reverse
   end
-  updater.update_competitions(items)
+  items.map do |item|
+    update_competition(item[:url], parser_type: item[:parser])
+  end
 end
 
 task :count_check => :environment do
@@ -58,3 +53,5 @@ task :count_check => :environment do
     puts "   free scores:    #{competition.scores.where('segment like ?', 'FREE%').count}: #{competition.scores.where('segment like ?', 'FREE%').group(:category).count}"    
   end
 end
+
+task :test => :spec
