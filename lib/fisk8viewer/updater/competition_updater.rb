@@ -79,7 +79,6 @@ module Fisk8Viewer
           ## competition_type, cid
           competition.update!(competition_type: get_competition_type(competition))
           competition.update!(cid: get_cid(competition))
-          
 
           ## for each categories
           summary.categories.each do |category|
@@ -118,7 +117,6 @@ module Fisk8Viewer
           :europe
         when /^ISU World Team/
           :team
-
         when /^ISU World Junior/
           :jworld
         when /^ISU JGP/, /^ISU Junior Grand Prix/
@@ -182,6 +180,7 @@ module Fisk8Viewer
         cr.skater = skater
         skater.category_results << cr
         #cr.update!(skater: skater)
+        cr.save
         cr
       end
       ################################################################
@@ -202,7 +201,12 @@ module Fisk8Viewer
           yield(sc) if block_given?
         end
         skater.scores << score
-
+        
+        update_elements(score_hash, score)
+        update_components(score_hash, score)
+        update_sid(score_hash, score)        
+      end
+      def update_elements(score_hash, score)
         ## technical elements
         ActiveRecord::Base.transaction do
           element_keys = [:number, :element, :info, :base_value, :credit, :goe, :judges, :value]
@@ -213,7 +217,8 @@ module Fisk8Viewer
           end
           score.update!(elements_summary: elem_summary.join('/'))
         end
-
+      end
+      def update_components(score_hash, score)
         ## components
         ActiveRecord::Base.transaction do
           comp_keys = [:component, :number, :factor, :judges, :value]
@@ -224,8 +229,8 @@ module Fisk8Viewer
           end
           score.update!(components_summary: comp_summary.join('/'))
         end
-
-        ## abbr score id
+      end
+      def update_sid(score_has, score)
         category_abbr = score.category || ""
         [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"], ["JUNIOR ", "J"]].each do |ary|
           category_abbr = category_abbr.gsub(ary[0], ary[1])
