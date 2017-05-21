@@ -23,7 +23,7 @@ task :update => [:update_skaters, :update_competitions] do
 end
 
 task :update_skaters => :environment do
-  updater = Fisk8Viewer::Updater.new
+  updater = Fisk8Viewer::Updater::SkatersUpdater.new
   updater.update_skaters(ENV['categories'])
 end
 
@@ -32,7 +32,7 @@ task :update_competitions => :environment do
   last = ENV["last"].to_i
   #reverse = ENV['reverse'].to_i.nonzero?
   force = ENV['force'].to_i.nonzero?
-  updater = Fisk8Viewer::Updater.new(accept_categories: ENV['accept_categories'], force: force)
+  updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'], force: force)
   items = updater.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
 
   if first > 0
