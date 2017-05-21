@@ -6,8 +6,8 @@ RSpec.describe CompetitionsController, type: :controller do
   before do
     skater = create(:skater)
     competition = create(:competition, {cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN"})
-    cr = competition.category_results.create(skater: skater, category: "MEN")
-    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT")
+    cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
+    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
   end
   
   ################################################################
@@ -85,5 +85,16 @@ RSpec.describe CompetitionsController, type: :controller do
     }
   end
 
+  describe 'show.json' do
+    it {
+      get :show, params: { cid: "WORLD2017", category: "MEN", segment: "SHORT", format: "json" }
+      expect(response.status).to eq(200)
+      expect(response.content_type).to eq("application/json")
+      expect(response.body).to include('Tokyo')
+      expect(response.body).to include('JPN')
+      expect(response.body).to include('MEN')
+      expect(response.body).to include('SHORT')
+    }
+  end
   
 end

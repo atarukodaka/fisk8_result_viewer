@@ -8,6 +8,7 @@ h2 Competition Info
 table.table.table-striped.table-hover.table-condensed
   =tr_data("Name", competition.name)
   =tr_data("CID", competition.cid)
+  =tr_data("Competion Type", competition.competition_type)
   =tr_data("City / Country", [competition.city, competition.country].join(' / '))
   =tr_data("Official Site", link_to_competition_site(competition.site_url, competition))
   =tr_data("Start Date", competition.start_date)

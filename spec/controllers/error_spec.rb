@@ -4,36 +4,37 @@ RSpec.configure do |c|
   c.filter_run_excluding error_handler: true
 end
 
+RSpec.describe 'error handlers', error_handler: true do
+  describe SkatersController, type: :controller do
+    render_views
 
-RSpec.describe SkatersController, type: :controller, error_handler: true do
-  render_views
-  
-  describe 'show' do
-    it {
-      get :show, params: { isu_number: -1 }
-      expect(response).to have_http_status(404)
-    }
+    describe 'skaters/:isu_number 404' do
+      it {
+        get :show, params: { isu_number: -1 }
+        expect(response).to have_http_status(404)
+      }
+    end
   end
-end
 
-RSpec.describe CompetitionsController, type: :controller, error_handler: true do
-  render_views
-  
-  describe 'show' do
-    it {
-      get :show, params: { cid: "----------" }
-      expect(response).to have_http_status(404)
-    }
+  describe CompetitionsController, type: :controller do
+    render_views
+
+    describe 'competitions/:cid 404' do
+      it {
+        get :show, params: { cid: "----------" }
+        expect(response).to have_http_status(404)
+      }
+    end
   end
-end
 
-RSpec.describe ScoresController, type: :controller, error_handler: true do
-  render_views
-  
-  describe 'show' do
-    it {
-      get :show, params: { sid: "----------" }
-      expect(response).to have_http_status(404)
-    }
+  describe ScoresController, type: :controller do
+    render_views
+
+    describe 'scores/:sid 404' do
+      it {
+        get :show, params: { sid: "----------" }
+        expect(response).to have_http_status(404)
+      }
+    end
   end
 end

@@ -68,13 +68,18 @@ module Fisk8Viewer
             return
           end
         end
+        
         ActiveRecord::Base::transaction do
           parsed = parser.parse_competition_summary(url)
           summary = Fisk8Viewer::CompetitionSummary.new(parsed)
           keys = [:name, :city, :country, :site_url, :start_date, :end_date,
-                  :competition_type, :cid, :season,]
+                  :season,]
 
           competition = Competition.create(summary.slice(*keys))
+          ## competition_type, cid
+          competition.update!(competition_type: get_competition_type(competition))
+          competition.update!(cid: get_cid(competition))
+          
 
           ## for each categories
           summary.categories.each do |category|
@@ -99,6 +104,62 @@ module Fisk8Viewer
           end
         end
       end
+      def get_competition_type(competition)
+        case competition.name
+        when /^ISU GP/, /^ISU Grand Prix/
+          :gp
+        when /Olympic/
+          :olympic
+        when /^ISU World Figure/, /^ISU World Championships/
+          :world
+        when /^ISU Four Continents/
+          :fcc
+        when /^ISU European/
+          :europe
+        when /^ISU World Team/
+          :team
+
+        when /^ISU World Junior/
+          :jworld
+        when /^ISU JGP/, /^ISU Junior Grand Prix/
+          :jgp
+        else
+          :unknown
+        end
+      end
+      def get_cid(competition)
+        name = competition.name
+        year = competition.start_date.try(:year)
+        city = competition.city
+        country = competition.country
+
+        case competition.competition_type.to_sym
+        when :olympic
+          "OLYMPIC#{year}"
+        when :gp
+          if competition.name =~ /Final/
+            "GPF#{year}"
+          else
+            "GP#{country}#{year}"
+          end
+        when :world
+          "WORLD#{year}"
+        when :fcc
+          "4CC#{year}"
+        when :europe
+          "EURO#{year}"
+        when :team
+          "TEAM#{year}"
+        when :jworld
+          "JWORLD#{year}"
+        when :jgp
+          "JGP#{country.presence || city}#{year}"
+        else
+          competition.name.to_s.gsub(/Figure Skating */, '').gsub(/\s/, '_')
+        end
+        ## TODO: UNIQ CHECK
+      end
+
       ################################################################
       def update_category_results(url, competition: , parser: )
         return [] if url.blank?

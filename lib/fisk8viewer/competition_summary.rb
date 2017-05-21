@@ -17,8 +17,8 @@ module Fisk8Viewer
       @data[:name] = @data[:name].to_s + " #{@data[:start_date].try(:year)}" unless @data[:name] =~ /[0-9][0-9][0-9][0-9]/
       
       ## type, short_name
-      @data[:competition_type] = competition_type
-      @data[:cid] = get_cid
+      #@data[:competition_type] = competition_type
+      #@data[:cid] = get_cid
 
       ## season
       if @data[:start_date].present?
@@ -53,62 +53,6 @@ module Fisk8Viewer
     end
     
     ################
-    def competition_type
-      case @data[:name]
-      when /^ISU GP/, /^ISU Grand Prix/
-        :gp
-      when /Olympic/
-        :olympic
-      when /^ISU World Figure/, /^ISU World Championships/
-        :world
-      when /^ISU Four Continents/
-        :fcc
-      when /^ISU European/
-        :europe
-      when /^ISU World Team/
-        :team
-        
-      when /^ISU World Junior/
-        :jworld
-      when /^ISU JGP/, /^ISU Junior Grand Prix/
-        :jgp
-      else
-        :unknown
-      end
-    end
-    def get_cid
-      year = @data[:start_date].try(:year)
-      city = @data[:city]
-      country = @data[:country]
-      
-      @_cid = 
-        case @data[:competition_type]
-        when :olympic
-          "OLYMPIC#{year}"
-        when :gp
-          if @data[:name] =~ /Final/
-            "GPF#{year}"
-          else
-            "GP#{country}#{year}"
-          end
-        when :world
-          "WORLD#{year}"
-        when :fcc
-          "4CC#{year}"
-        when :europe
-          "EURO#{year}"
-        when :team
-          "TEAM#{year}"
-        when :jworld
-          "JWORLD#{year}"
-        when :jgp
-          "JGP#{country.presence || city}#{year}"
-        else
-          @data[:name].gsub(/Figure Skating */, '').gsub(/\s/, '_')
-        end
-      ## TODO: UNIQ CHECK
-    end
-
     ################
     private
     def find_row(key, category, segment)
