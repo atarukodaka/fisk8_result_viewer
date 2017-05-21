@@ -9,6 +9,9 @@ require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new("spec")
   
+
+task :test => :spec
+
 ################
 require 'fisk8viewer/updater'
 
@@ -34,7 +37,7 @@ task :update_competitions => :environment do
     items = items.last(last).reverse
   end
   items.map do |item|
-    update_competition(item[:url], parser_type: item[:parser])
+    updater.update_competition(item[:url], parser_type: item[:parser])
   end
 end
 
@@ -54,4 +57,4 @@ task :count_check => :environment do
   end
 end
 
-task :test => :spec
+
