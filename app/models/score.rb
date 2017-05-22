@@ -6,7 +6,7 @@ class Score < ApplicationRecord
 
   belongs_to :competition
   belongs_to :skater
-  belongs_to :category_result
+  belongs_to :category_result, required: false
 
   validates :sid, presence: true, uniqueness: true
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  

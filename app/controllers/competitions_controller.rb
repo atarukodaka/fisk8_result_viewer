@@ -18,7 +18,7 @@ class CategoryResultsListDecorator < ListDecorator
     _show_score(model.ranking, format: "%d")
   end
   def short_tss
-    model.scores.first.tss
+    _show_score(model.scores.first.try(:tss))
   end
   def free_ranking
     _show_score(model.free_ranking, format: "%d")

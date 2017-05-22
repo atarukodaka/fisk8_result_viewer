@@ -95,9 +95,7 @@ module Fisk8Viewer
               score_url = summary.score_url(category, segment)
               attrs = {date: summary.starting_time(category, segment)}
 
-              parser.parse_score(score_url).each do |score_hash|
-                update_score(score_hash, competition: competition, category: category, segment: segment, attributes: attrs)
-              end
+              update_scores(score_url, competition: competition, category: category, segment: segment, parser: parser, attributes: attrs)
             end
           end
         end
@@ -158,7 +156,7 @@ module Fisk8Viewer
       end
 
       ################################################################
-      def update_category_results(url, competition: , parser: )
+      def update_category_results(url, competition:, parser: )
         return [] if url.blank?
 
         parser.parse_category_result(url).map do |result_hash|
@@ -181,32 +179,35 @@ module Fisk8Viewer
         cr
       end
       ################################################################
-      def update_score(score_hash, competition: , category: , segment:, attributes: {} )
+      def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
+        parser.parse_score(score_url).each do |score_hash|
+          cr = competition.category_results.find_by(category: category,
+                                                    skater_name: score_hash[:skater_name])
+          skater = cr.skater || raise("no skater in category result")
+          score = competition.scores.create do |sc|
+            sc.competition_name = competition.name
+            sc.category = category
+            sc.segment = segment
+            sc.skater = skater
+            sc.attributes = attributes
+          end
+          skater.scores << score
+          cr.scores << score
+
+          update_score(score_hash, score)
+        end
+      end
+      def update_score(score_hash, score)
         ## skater
-        cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name])
-
-        skater = cr.skater || raise("no skater in category result")
-
         puts "    %<ranking>2d: '%{skater_name}' (%{nation}) %<tss>3.2f" % score_hash
         score_keys = [:skater_name, :ranking, :starting_number, :nation,
                       :result_pdf, :tss, :tes, :pcs, :deductions]
 
-        score = competition.scores.new(score_hash.slice(*score_keys)) do |sc|
-          sc.competition_name = competition.name
-          sc.category = category
-          sc.segment = segment
-          sc.skater = skater
-          sc.attributes = attributes
-        end
-        skater.scores << score
-        cr.scores << score
+        score.attributes = score_hash.slice(*score_keys)
         score.save!
-        
         update_elements(score_hash, score)
         update_components(score_hash, score)
         update_sid(score_hash, score)
-
-        
       end
       def update_elements(score_hash, score)
         ## technical elements
