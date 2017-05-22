@@ -24,8 +24,8 @@ table.table.table-striped.table-hover.table-condensed
   - category_summary.collection.each do |data|
     tr
       td= link_to_competition(competition, category: data[:category])
-      td= link_to_competition(competition, category: data[:category], segment: data[:segments].first)
-      td= link_to_competition(competition, category: data[:category], segment: data[:segments].second)
+      td= link_to_competition(competition, category: data[:category], segment: data[:segments].first) if data[:segments].first
+      td= link_to_competition(competition, category: data[:category], segment: data[:segments].second) if data[:segments].second
       td= data[:top_rankers].first
       td= data[:top_rankers].second
       td= data[:top_rankers].third

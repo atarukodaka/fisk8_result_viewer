@@ -4,10 +4,11 @@ RSpec.describe CompetitionsController, type: :controller do
   render_views
   
   before do
-    skater = create(:skater)
-    competition = create(:competition, {cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN"})
+    skater = Skater.create(name: "Skater NAME")
+    competition = Competition.create(cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN")
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
+    cr.scores << score
   end
   
   ################################################################

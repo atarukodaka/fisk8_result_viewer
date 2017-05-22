@@ -95,12 +95,13 @@ RSpec.configure do |config|
 =end
 
   ## FactoryGirl
+=begin
   require 'factory_girl_rails'
   config.include FactoryGirl::Syntax::Methods
   config.before(:all) do
     FactoryGirl.reload
   end
-  
+=end
 end
 
 ## coveralls

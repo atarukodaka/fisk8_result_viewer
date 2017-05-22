@@ -4,8 +4,8 @@ RSpec.describe ComponentsController, type: :controller do
   render_views
   
   before do
-    skater = create(:skater)
-    comp = create(:competition)
+    skater = Skater.create
+    comp = Competition.create
     short = comp.scores.create(sid: "WORLD-SHORT-1", segment: "SHORT", skater: skater)
     short.components.create(number: 1, component: "Skating Skill", value: 10.0)
     free = comp.scores.create(sid: "WORLD-FREE-1", segment: "FREE", skater: skater)

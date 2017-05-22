@@ -4,7 +4,7 @@ RSpec.describe ElementsController, type: :controller do
   render_views
   
   before do
-    score = create(:competition).scores.create(sid: "SID-elem", skater: create(:skater))
+    score = Competition.create.scores.create(sid: "SID-elem", skater: Skater.create)
     score.elements.create(element: "4T", base_value: 15.0, goe: 3.0)
     score.elements.create(element: "4T+3T", base_value: 10.0, goe: -2.0)
   end

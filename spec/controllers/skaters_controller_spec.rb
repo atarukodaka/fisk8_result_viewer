@@ -4,8 +4,8 @@ RSpec.describe SkatersController, type: :controller do
   render_views
   
   before do
-    skater = create(:skater, {name: "Skater NAME", nation: "JPN", isu_number: 12345})
-    competition = create(:competition) do |c|
+    skater = Skater.create(name: "Skater NAME", nation: "JPN", isu_number: 12345)
+    competition = Competition.create do |c|
       c.start_date = "2017-1-1"
       c.end_date = "2017-1-3"
     end
