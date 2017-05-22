@@ -9,11 +9,12 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   describe 'update competition: isu generic' do 
     it {
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [])
+      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ["MEN"])
       updater.update_competition(url)
 
       comp = Competition.find_by(site_url: url)
       expect(comp.site_url).to eq(url)
+      expect(comp.scores.pluck(:category).uniq).to include('MEN')
     }
   end
 
@@ -36,6 +37,26 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
       comp = Competition.find_by(site_url: url)
       expect(comp.site_url).to eq(url)
+    }
+  end
+  ################
+  describe 'load_file', type: :load_file do
+    it {
+      fname = File.join(Rails.root, "config/competitions.yaml")
+      items = Fisk8Viewer::Updater::CompetitionUpdater.load_competition_list(fname)
+      expect(items.size).to be > 0
+    }
+  end
+  
+  describe 'accept_categories string check', type: :accept_categories do
+    it {
+      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: "MEN,LADIES")
+      expect(updater.accept_categories).to eq([:MEN, :LADIES])
+    }
+  end
+  
+  describe 'force option' do
+    it {
     }
   end
 end

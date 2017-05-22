@@ -7,6 +7,7 @@ module Fisk8Viewer
     class CompetitionUpdater
       include Utils
       include FindSkater
+      attr_reader :accept_categories
 
       DEFAULT_PARSER = :isu_generic
       ACCEPT_CATEGORIES =
@@ -94,7 +95,6 @@ module Fisk8Viewer
 
               score_url = summary.score_url(category, segment)
               attrs = {date: summary.starting_time(category, segment)}
-
               update_scores(score_url, competition: competition, category: category, segment: segment, parser: parser, attributes: attrs)
             end
           end
