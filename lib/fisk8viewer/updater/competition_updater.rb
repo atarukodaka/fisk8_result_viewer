@@ -16,7 +16,7 @@ module Fisk8Viewer
          :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
         ]
 
-      def initialize(accept_categories: nil, force: nil)
+      def initialize(accept_categories: nil)
         @accept_categories =
           case accept_categories
           when String
@@ -27,7 +27,6 @@ module Fisk8Viewer
             accept_categories
           end || ACCEPT_CATEGORIES
 
-        @force = force
       end
       class << self
         def load_competition_list(yaml_filename)
@@ -54,20 +53,20 @@ module Fisk8Viewer
 
         parser_klass.new
       end
-      def update_competition(url, parser_type: :isu_generic)
+      def update_competition(url, parser_type: :isu_generic, force: false)
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
         
         if (competitions = Competition.where(site_url: url)).present?
-          if @force
+          if force
             puts "   destroy existing competitions (%d)" % [competitions.count]
             ActiveRecord::Base::transaction do
               competitions.map(&:destroy)
             end
           else
             puts " !!  skip as it already exists"
-            return
+            return competitions.first
           end
         end
         
@@ -99,6 +98,7 @@ module Fisk8Viewer
               update_scores(score_url, competition: competition, category: category, segment: segment, parser: parser, attributes: attrs)
             end
           end
+          competition
         end
       end
       def get_competition_type(competition)
@@ -141,7 +141,7 @@ module Fisk8Viewer
         when :world
           "WORLD#{year}"
         when :fcc
-          "4CC#{year}"
+          "FCC#{year}"
         when :europe
           "EURO#{year}"
         when :team
@@ -184,6 +184,8 @@ module Fisk8Viewer
         ## find relevant category result
         results = competition.category_results
         results.find_by(category: category, skater_name: skater_name) ||
+          ## for fcc2012 ladies short
+          ## name on category result and scores are different.
           case segment
           when /^SHORT/
             cr = results.find_by(category: category, short_ranking: ranking)

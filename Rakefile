@@ -37,7 +37,7 @@ task :update_competitions => :environment do
     items = items.last(last).reverse
   end
   items.map do |item|
-    updater.update_competition(item[:url], parser_type: item[:parser])
+    updater.update_competition(item[:url], parser_type: item[:parser], force: force)
   end
 end
 
