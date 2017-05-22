@@ -180,11 +180,23 @@ module Fisk8Viewer
         cr
       end
       ################################################################
+      def find_relevant_category_result(competition:, category:, segment:, skater_name:, ranking: )
+        ## find relevant category result
+        results = competition.category_results
+        results.find_by(category: category, skater_name: skater_name) ||
+          case segment
+          when /^SHORT/
+            cr = results.find_by(category: category, short_ranking: ranking)
+          when /^FREE/
+            cr = results.find_by(category: category, free_ranking: ranking)
+          end || raise
+      end
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
-          cr = competition.category_results.find_by(category: category,
-                                                    skater_name: score_hash[:skater_name])
-          skater = cr.skater || raise("no skater in category result")
+          cr = find_relevant_category_result(competition: competition, category: category, segment: segment, skater_name: score_hash[:skater_name], ranking: score_hash[:ranking])
+          raise if cr.nil?
+          skater = cr.skater
+          
           score = competition.scores.create do |sc|
             sc.competition_name = competition.name
             sc.category = category
@@ -193,7 +205,7 @@ module Fisk8Viewer
             sc.attributes = attributes
           end
           skater.scores << score
-          cr.scores << score
+          cr.scores << score if cr
 
           update_score(score_hash, score)
         end
