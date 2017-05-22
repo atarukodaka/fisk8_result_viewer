@@ -37,8 +37,8 @@ module Fisk8Viewer
     end
     def result_url(category, segment=nil)
       if segment.nil?
-        find_row(:result_summary, category, "".try(:result_url)
-      else
+        find_row(:result_summary, category, "").try(:result_url)
+               else
         find_row(:result_summary, category, segment).try(:result_url)
       end
     end
