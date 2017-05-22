@@ -37,16 +37,16 @@ module Fisk8Viewer
     end
     def result_url(category, segment=nil)
       if segment.nil?
-        find_row(:result_summary, category, "").try(:result_url)
-               else
-        find_row(:result_summary, category, segment).try(:result_url)
+        find_row(:result_summary, category, "").try(:[], :result_url)
+      else
+        find_row(:result_summary, category, segment).try(:[], :result_url)
       end
     end
     def score_url(category, segment)
-      find_row(:result_summary, category, segment).try(:score_url)
+      find_row(:result_summary, category, segment).try(:[], :score_url)
     end
     def starting_time(category, segment)
-      find_row(:time_schedule, category, segment).try(:time)
+      find_row(:time_schedule, category, segment).try(:[], :time)
     end
     def method_missing(name, *args)
       @data.send(name, *args)
