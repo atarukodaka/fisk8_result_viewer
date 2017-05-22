@@ -68,8 +68,8 @@ class ApplicationController < ActionController::Base
   include IndexActionModules
 
   ################################################################
-  #unless Rails.env.development?
-    if Rails.env.production?
+  unless Rails.env.development?
+    #if Rails.env.production?
     rescue_from Exception, with: :handler_500
     rescue_from ActiveRecord::RecordNotFound, with: :handler_404
     rescue_from ActionController::RoutingError, with: :handler_404
