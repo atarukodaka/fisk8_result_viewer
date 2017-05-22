@@ -19,7 +19,7 @@ h2 Category Summary
 
 table.table.table-striped.table-hover.table-condensed
   tr
-    - ["Category", "1st Segment", "2nd Segment", "1st Ranker", "2nd", "3rd"].each do |header|
+    - ["Category", "Short", "Free", "1st Ranker", "2nd", "3rd"].each do |header|
       th= header.to_s.camelize
   - category_summary.collection.each do |data|
     tr
@@ -37,7 +37,7 @@ table.table.table-striped.table-hover.table-condensed
     h2 
       | Category Result of 
       = category
-    - keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
+    - keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
     = render partial: "list_table", locals: {display_keys: keys, collection: category_results, patination: false}
 
   - else

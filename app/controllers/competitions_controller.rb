@@ -17,8 +17,15 @@ class CategoryResultsListDecorator < ListDecorator
   def ranking
     _show_score(model.ranking, format: "%d")
   end
+  def short_tss
+    model.scores.first.tss
+  end
   def free_ranking
     _show_score(model.free_ranking, format: "%d")
+  end
+  def free_tss
+    #(f = model.scores.second) ? f.tss : "-"
+    _show_score(model.scores.second.try(:tss))
   end
   
   protected
@@ -107,7 +114,7 @@ class CompetitionsController < ApplicationController
 
     category_summary = CategorySummary.new(competition)
     
-    category_results = (category) ? CategoryResultsListDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater)) : []
+    category_results = (category) ? CategoryResultsListDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater).includes(:scores)) : []
     segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking).includes(:skater)) : []
 
     respond_to do |format|

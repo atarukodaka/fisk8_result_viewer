@@ -27,21 +27,21 @@ class SkaterCompetitionsListDecorator < ListDecorator
     h.link_to_competition("%3.2f" % [model.points], model.competition, category: model.category)
   end
   def short_ranking
-    #h.link_to_score(model.short_ranking, model.short)
-    model.short_ranking
+    h.link_to_score(model.short_ranking, model.scores.first)
+    #model.short_ranking
   end
+  
   def free_ranking
-    #h.link_to_score(model.free_ranking, model.free)
-    model.short_ranking
+    h.link_to_score(model.free_ranking, model.scores.second)
   end
-=begin
+
   def short_tss
-    #h.link_to_score(model.short.tss, model.short)
+    h.link_to_score(model.scores.first.try(:tss), model.scores.first)
   end
   def free_tss
-    #h.link_to_score(model.free.tss, model.free)
+    h.link_to_score(model.scores.second.try(:tss), model.scores.second)
   end
-=end
+
 end
 ################################################################
 class SkatersController < ApplicationController
@@ -74,7 +74,7 @@ class SkatersController < ApplicationController
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
     collection = skater.category_results.includes(:competition)
-    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
+    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores))
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results }}

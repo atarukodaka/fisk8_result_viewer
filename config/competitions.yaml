@@ -208,10 +208,10 @@
 ## junior
 
 
-- http://www.isuresults.com/results/season1617/wc2017/
 
 - http://www.isuresults.com/results/owg2014/
-
 -
   url: http://www.isuresults.com/results/jgpfra2010/
   parser: :isu_generic_mdy
+
+- http://www.isuresults.com/results/season1617/wc2017/

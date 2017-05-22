@@ -1,4 +1,6 @@
 class CategoryResult < ApplicationRecord
+  has_many :scores
+  
   belongs_to :competition
   belongs_to :skater
 

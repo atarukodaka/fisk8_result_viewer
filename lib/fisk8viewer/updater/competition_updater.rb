@@ -177,32 +177,36 @@ module Fisk8Viewer
         cr.skater = skater
         skater.category_results << cr
 
-        cr.save
+        cr.save!
         cr
       end
       ################################################################
       def update_score(score_hash, competition: , category: , segment:, attributes: {} )
         ## skater
-        skater = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]).try(:skater) ||
-          find_or_create_skater(nil, score_hash[:skater_name], category: category, nation: score_hash[:nation])
+        cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name])
+
+        skater = cr.skater || raise("no skater in category result")
 
         puts "    %<ranking>2d: '%{skater_name}' (%{nation}) %<tss>3.2f" % score_hash
         score_keys = [:skater_name, :ranking, :starting_number, :nation,
                       :result_pdf, :tss, :tes, :pcs, :deductions]
 
-        score = competition.scores.create!(score_hash.slice(*score_keys)) do |sc|
+        score = competition.scores.new(score_hash.slice(*score_keys)) do |sc|
           sc.competition_name = competition.name
           sc.category = category
           sc.segment = segment
           sc.skater = skater
           sc.attributes = attributes
-          #yield(sc) if block_given?
         end
         skater.scores << score
+        cr.scores << score
+        score.save!
         
         update_elements(score_hash, score)
         update_components(score_hash, score)
-        update_sid(score_hash, score)        
+        update_sid(score_hash, score)
+
+        
       end
       def update_elements(score_hash, score)
         ## technical elements
