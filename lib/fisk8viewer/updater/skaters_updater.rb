@@ -1,4 +1,5 @@
 require 'fisk8viewer/isu_bio'
+require 'fisk8viewer/updater/find_skater'
 
 module Fisk8Viewer
   module Updater

@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'fisk8viewer'
+require 'fisk8viewer/updater/skaters_updater'
 
 RSpec.configure do |c|
   c.filter_run_excluding updater: true

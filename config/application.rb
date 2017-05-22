@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Fisk8ResultViewer
+module Fisk8Viewer
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
@@ -36,4 +36,5 @@ module Fisk8ResultViewer
       password: "#{ENV['GMAIL_PASSWORD']}"
     }
   end
+  VERSION = "1.0.0-pre1"
 end

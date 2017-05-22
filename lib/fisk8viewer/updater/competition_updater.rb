@@ -1,6 +1,7 @@
 require 'fisk8viewer/competition_summary'
 require 'fisk8viewer/parsers'
 require 'fisk8viewer/parser'
+require 'fisk8viewer/updater/find_skater'
 
 module Fisk8Viewer
   module Updater
