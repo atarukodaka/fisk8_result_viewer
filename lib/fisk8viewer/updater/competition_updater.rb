@@ -112,7 +112,7 @@ module Fisk8Viewer
         when /^ISU Four Continents/
           :fcc
         when /^ISU European/
-          :europe
+          :euro
         when /^ISU World Team/
           :team
         when /^ISU World Junior/
@@ -142,7 +142,7 @@ module Fisk8Viewer
           "WORLD#{year}"
         when :fcc
           "FCC#{year}"
-        when :europe
+        when :euro
           "EURO#{year}"
         when :team
           "TEAM#{year}"

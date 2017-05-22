@@ -67,16 +67,16 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
                :olympic, 'OLYMPIC2014'],
               ['http://www.isuresults.com/results/season1617/wc2017/',
                :world, 'WORLD2017'],
-              #['http://www.isuresults.com/results/season1617/fc2017/',
-              #:fcc, 'FCC2017'],
+              ['http://www.isuresults.com/results/season1617/fc2017/',
+              :fcc, 'FCC2017'],
               ['http://www.isuresults.com/results/season1617/ec2017/',
-               :euro, 'EURO2017'],
-              ['http://www.jsfresults.com/intl/2016-2017/wtt/',
-               :team, 'TEAM2017'],
+              :euro, 'EURO2017'],
+              ['http://www.isuresults.com/results/wtt2012/',
+               :team, 'TEAM2012'],
               ['http://www.isuresults.com/results/season1617/wjc2017/',
                :jworld, 'JWORLD2017'],
               ['http://www.isuresults.com/results/season1617/jgpger2016/',
-               :jgp, 'JGPGER2017'],
+               :jgp, 'JGPGER2016'],
              ]
       data.each do |ary|
         url, competition_type, cid = ary
