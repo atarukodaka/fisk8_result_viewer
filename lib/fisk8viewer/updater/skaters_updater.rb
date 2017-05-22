@@ -1,3 +1,5 @@
+require 'fisk8viewer/isu_bio'
+
 module Fisk8Viewer
   module Updater
     class SkatersUpdater

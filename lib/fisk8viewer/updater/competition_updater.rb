@@ -93,11 +93,10 @@ module Fisk8Viewer
               puts "  - [#{category}/#{segment}]"
 
               score_url = summary.score_url(category, segment)
+              attrs = {date: summary.starting_time(category, segment)}
 
               parser.parse_score(score_url).each do |score_hash|
-                update_score(score_hash, competition: competition, category: category, segment: segment) do |score|
-                  score.update!(date: summary.starting_time(category, segment))
-                end
+                update_score(score_hash, competition: competition, category: category, segment: segment, attributes: attrs)
               end
             end
           end
@@ -172,19 +171,17 @@ module Fisk8Viewer
       def update_category_result(result_hash, cr)
         keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
         puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
-        #cr = competition.category_results.create(result_hash.slice(*keys))
         cr.attributes = result_hash.slice(*keys)
-        #cr.update(competition_name: competition.name)
 
         skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
         cr.skater = skater
         skater.category_results << cr
-        #cr.update!(skater: skater)
+
         cr.save
         cr
       end
       ################################################################
-      def update_score(score_hash, competition: , category: , segment: )
+      def update_score(score_hash, competition: , category: , segment:, attributes: {} )
         ## skater
         skater = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]).try(:skater) ||
           find_or_create_skater(nil, score_hash[:skater_name], category: category, nation: score_hash[:nation])
@@ -198,7 +195,8 @@ module Fisk8Viewer
           sc.category = category
           sc.segment = segment
           sc.skater = skater
-          yield(sc) if block_given?
+          sc.attributes = attributes
+          #yield(sc) if block_given?
         end
         skater.scores << score
         
@@ -239,7 +237,7 @@ module Fisk8Viewer
         segment_abbr =score.segment || ""
         segment_abbr = segment_abbr.split(/ /).map {|d| d[0]}.join
 
-        score.update!(sid: [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('/'))
+        score.update!(sid: [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('-'))
       end
     end  ## class
   end

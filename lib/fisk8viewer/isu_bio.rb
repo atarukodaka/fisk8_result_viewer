@@ -32,7 +32,7 @@ module Fisk8Viewer
       end
       records
     end
-
+=begin
     def parse_isu_bio_details(isu_number, category)
       url = isu_bio_url(isu_number)
       @agent ||= Mechanize.new
@@ -61,5 +61,6 @@ module Fisk8Viewer
       }.to_h
       skater.merge(parsed_info)
     end
+=end
   end  ## class
 end

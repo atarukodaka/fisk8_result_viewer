@@ -38,10 +38,10 @@ class SegmentScoresListDecorator < CategoryResultsListDecorator
     _show_score(model.tss)
   end
   def tes
-    _show_score(model.tss)
+    _show_score(model.tes)
   end
   def pcs
-    _show_score(model.tss)
+    _show_score(model.pcs)
   end
   def deductions
     (model.deductions.to_f == 0) ? "" : model.deductions.to_f.abs * (-1)

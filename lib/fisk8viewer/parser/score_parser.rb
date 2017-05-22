@@ -19,7 +19,7 @@ module Fisk8Viewer
             if line =~ /^(\d+) (#{name_re}) *([A-Z][A-Z][A-Z]) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
               hash = {
                 ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
-                tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f,
+                tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
               }
               hash[:skater_name].sub!(/ *$/, '')
               score.merge!(hash)
