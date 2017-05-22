@@ -30,7 +30,7 @@ group :test do
   gem 'rspec-its'
   
   #gem 'guard-rspec', require: false
-  gem 'factory_girl_rails'
+  #gem 'factory_girl_rails'
 
   gem 'coveralls', require: false
   gem 'codecov', :require => false
