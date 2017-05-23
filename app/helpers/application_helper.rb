@@ -77,6 +77,4 @@ end
 ################################################################
 module ApplicationHelper
   include LinkToHelper, TableHelper, SortHelper
-
-  
 end

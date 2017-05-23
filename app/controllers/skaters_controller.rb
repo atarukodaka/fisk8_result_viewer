@@ -74,7 +74,7 @@ class SkatersController < ApplicationController
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
     collection = skater.category_results.includes(:competition)
-    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores))
+    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results }}

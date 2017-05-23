@@ -1,21 +1,16 @@
 // locals: score
 
 h2 Score
-
-.row
-  .col-sm-5
-    table.table.table-striped.table-hover.table-condensed
-      = tr_data(:skater, link_to_skater(score.skater))
-      = tr_data(:competiiton, link_to_competition(score.competition))
-      = tr_data(:category, link_to_competition(score.competition, category: score.category))
-      = tr_data(:segment, link_to_competition(score.competition, category: score.category, segment: score.segment))
-      - [:date, :tss, :tes, :pcs, :deductions].each do |key|
-        =tr_data(key, score[key])
-      = tr_data("Resulf PDF", link_to_pdf(score.result_pdf))
-  .col-sm-7
-    iframe id="youtube" width="640" height="480"  frameborder="0" src="http://www.youtube.com/embed/d1RDFH67WsI"
-
-
+  
+table.table.table-striped.table-hover.table-condensed
+  = tr_data(:skater, link_to_skater(score.skater))
+  = tr_data(:competiiton, link_to_competition(score.competition))
+  = tr_data(:category, link_to_competition(score.competition, category: score.category))
+  = tr_data(:segment, link_to_competition(score.competition, category: score.category, segment: score.segment))
+  - [:date, :tss, :tes, :pcs, :deductions].each do |key|
+    = tr_data(key, score[key])
+  = tr_data("Resulf PDF", link_to_pdf(score.result_pdf))
+        
 h2 Elements
 
 = render partial: "list_table", locals: { display_keys: [:number, :element, :info, :base_value, :credit, :goe, :judges, :value] , collection: score.elements}

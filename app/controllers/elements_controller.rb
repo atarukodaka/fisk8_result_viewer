@@ -22,6 +22,6 @@ class ElementsController < ApplicationController
     ]
   end
   def collection
-    Element.with_score.joins(score: [:competition]).filter(filters, params).select("scores.*, competitions.season, elements.*")
+    Element.with_score.order("scores.date desc").joins(score: [:competition]).filter(filters, params).select("scores.*, competitions.season, elements.*")
   end
 end
