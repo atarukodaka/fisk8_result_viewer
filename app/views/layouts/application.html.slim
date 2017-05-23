@@ -10,6 +10,8 @@ html
     script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     = analytics_init if Rails.env.production? && GA.tracker.present?
+    css:
+      .form-group { margin-bottom: 10px; }
 
   body
     div.container style="width: 90%;"

@@ -90,5 +90,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   ## Google Analytics
-  GA.tracker = ENV['GA_TRACKING_ID']
+  GA.tracker = Settings.google_analytics.tracking_id
 end

@@ -8,6 +8,8 @@ class FeedbackMailer < ApplicationMailer
   def send_mail(body)
     @body = body
 
-    mail to: ENV['GMAIL_ADDRESS'], subject: 'fisk8viewer pull request'
+    #mail to: ENV['GMAIL_ADDRESS'], subject: 'fisk8viewer pull request'
+    #mail to: Settings.notification.gmail_address, subject: 'fisk8viewer pull request'
+    mail to: Rails.application.config.action_mailer.smtp_settings[:user_name], subject: 'fisk8viewer pull request'
   end
 end

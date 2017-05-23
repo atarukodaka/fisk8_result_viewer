@@ -1,0 +1,6 @@
+google_analytics:
+  tracking_id: <%= ENV['GA_TRACKING_ID'] %>
+
+notification:
+  gmail_address: <%= ENV['GMAIL_ADDRESS'] %>
+  gmail_password: <%= ENV['GMAIL_PASSWORD'] %>

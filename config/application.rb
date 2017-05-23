@@ -32,8 +32,8 @@ module Fisk8Viewer
       port: '587',
       domain: 'smtp.gmail.com',
       authentication: 'plain',
-      user_name: "#{ENV['GMAIL_ADDRESS']}",
-      password: "#{ENV['GMAIL_PASSWORD']}"
+      user_name: Settings.notification.gmail_address,
+      password: Settings.notification.gmail_password,
     }
   end
   VERSION = "1.0.0-pre1"

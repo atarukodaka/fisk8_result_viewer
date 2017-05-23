@@ -7,5 +7,7 @@
 - factory girl で create すると after_initialize のときに attr がセットされていない
 - _show_score() を helpers へ。名前
 
+
+
 ## 1.0.0-pre1
 - pre-release
