@@ -36,5 +36,5 @@ module Fisk8Viewer
       password: Settings.notification.gmail_password,
     }
   end
-  VERSION = "1.0.0-pre1"
+  VERSION = "1.0.0-pre2"
 end
