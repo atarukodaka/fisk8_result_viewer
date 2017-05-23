@@ -2,31 +2,19 @@ require 'fisk8viewer/competition_summary'
 require 'fisk8viewer/parsers'
 require 'fisk8viewer/parser'
 require 'fisk8viewer/updater/find_skater'
+require 'fisk8viewer/updater/category_accepter'
 
 module Fisk8Viewer
   module Updater
     class CompetitionUpdater
       include Utils
       include FindSkater
-      attr_reader :accept_categories
-
+      attr_reader :category_accepter
+      
       DEFAULT_PARSER = :isu_generic
-      ACCEPT_CATEGORIES =
-        [:MEN, :LADIES, :PAIRS, :"ICE DANCE",
-         :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
-        ]
 
       def initialize(accept_categories: nil)
-        @accept_categories =
-          case accept_categories
-          when String
-            accept_categories.split(/ *, */).map(&:upcase).map(&:to_sym)
-          when Array
-            accept_categories.map(&:to_sym)
-          else
-            accept_categories
-          end || ACCEPT_CATEGORIES
-
+        @category_accepter = CategoryAccepter.new(accept_categories)
       end
       class << self
         def load_competition_list(yaml_filename)
@@ -42,49 +30,37 @@ module Fisk8Viewer
           end
         end
       end
-      def accept_category?(category)
-        return true if @accept_categories.nil?
-        @accept_categories.include?(category.to_sym)
-      end
       ################
       def get_parser(parser_type)
-        parser_klass = Fisk8Viewer::Parsers.registered[parser_type]
-        raise "no such parser: '#{parser_type}'" if parser_klass.nil?
-
+        parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise
         parser_klass.new
       end
+      
       def update_competition(url, parser_type: :isu_generic, force: false)
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
-        
         if (competitions = Competition.where(site_url: url)).present?
           if force
             puts "   destroy existing competitions (%d)" % [competitions.count]
-            ActiveRecord::Base::transaction do
-              competitions.map(&:destroy)
-            end
+            ActiveRecord::Base::transaction {  competitions.map(&:destroy) }
           else
             puts " !!  skip as it already exists"
             return competitions.first
           end
         end
+
+        parsed = parser.parse_competition_summary(url)
+        summary = Fisk8Viewer::CompetitionSummary.new(parsed)
+        keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
         
         ActiveRecord::Base::transaction do
-          parsed = parser.parse_competition_summary(url)
-          summary = Fisk8Viewer::CompetitionSummary.new(parsed)
-          keys = [:name, :city, :country, :site_url, :start_date, :end_date,
-                  :season,]
-
-          competition = Competition.create(summary.slice(*keys))
-          ## competition_type, cid
-          competition.update!(competition_type: get_competition_type(competition))
-          competition.update!(cid: get_cid(competition))
-
+          competition = Competition.create(summary.slice(*keys)) do |comp|
+            update_competition_identifers(comp)
+          end
           ## for each categories
           summary.categories.each do |category|
-            next unless accept_category?(category)
-            
+            next unless category_accepter.accept?(category)
             result_url = summary.result_url(category)
             puts " = [%s]" % [category]
             update_category_results(result_url, competition: competition, parser: parser)
@@ -92,74 +68,48 @@ module Fisk8Viewer
             ## for segments
             summary.segments(category).each do |segment|
               puts "  - [#{category}/#{segment}]"
-
               score_url = summary.score_url(category, segment)
               attrs = {date: summary.starting_time(category, segment)}
-              update_scores(score_url, competition: competition, category: category, segment: segment, parser: parser, attributes: attrs)
+              update_scores(score_url, competition: competition, category: category,
+                            segment: segment, parser: parser, attributes: attrs)
             end
           end
           competition
         end
       end
-      def get_competition_type(competition)
-        case competition.name
-        when /^ISU GP/, /^ISU Grand Prix/
-          :gp
-        when /Olympic/
-          :olympic
-        when /^ISU World Figure/, /^ISU World Championships/
-          :world
-        when /^ISU Four Continents/
-          :fcc
-        when /^ISU European/
-          :euro
-        when /^ISU World Team/
-          :team
-        when /^ISU World Junior/
-          :jworld
-        when /^ISU JGP/, /^ISU Junior Grand Prix/
-          :jgp
-        else
-          :unknown
-        end
-      end
-      def get_cid(competition)
-        name = competition.name
+      def update_competition_identifers(competition)
         year = competition.start_date.try(:year)
         city = competition.city
         country = competition.country
 
-        case competition.competition_type.to_sym
-        when :olympic
-          "OLYMPIC#{year}"
-        when :gp
-          if competition.name =~ /Final/
-            "GPF#{year}"
-          else
-            "GP#{country}#{year}"
-          end
-        when :world
-          "WORLD#{year}"
-        when :fcc
-          "FCC#{year}"
-        when :euro
-          "EURO#{year}"
-        when :team
-          "TEAM#{year}"
-        when :jworld
-          "JWORLD#{year}"
-        when :jgp
-          "JGP#{country.presence || city}#{year}"
-        else
-          competition.name.to_s.gsub(/Figure Skating */, '').gsub(/\s/, '_')
-        end
-        ## TODO: UNIQ CHECK
+        ary = case competition.name
+              when /^ISU GP/
+                [:gp, "GP#{country}#{year}"]
+              when /^ISU Grand Prix/
+                [:gp, "GPF#{year}"]
+              when /Olympic/
+                [:olympic, "OLYMPIC#{year}"]
+              when /^ISU World Figure/, /^ISU World Championships/
+                [:world, "WORLD#{year}"]
+              when /^ISU Four Continents/
+                [:fcc, "FCC#{year}"]
+              when /^ISU European/
+                [:euro, "EURO#{year}"]
+              when /^ISU World Team/
+                [:team, "TEAM#{year}"]
+              when /^ISU World Junior/
+                [:jworld, "JWORLD#{year}"]
+              when /^ISU JGP/, /^ISU Junior Grand Prix/
+                [:jgp, "JGP#{country}#{year}"]
+              else
+                [:unknown, competition.name.gsub(/\s+/, '_')]
+              end
+        competition.competition_type = ary[0]
+        competition.cid = ary[1]
       end
-
       ################################################################
       def update_category_results(url, competition:, parser: )
         return [] if url.blank?
-
         parser.parse_category_result(url).map do |result_hash|
           competition.category_results.create do |cr|
             cr.competition_name = competition.name
@@ -188,9 +138,9 @@ module Fisk8Viewer
           ## name on category result and scores are different.
           case segment
           when /^SHORT/
-            cr = results.find_by(category: category, short_ranking: ranking)
+            results.find_by(category: category, short_ranking: ranking)
           when /^FREE/
-            cr = results.find_by(category: category, free_ranking: ranking)
+            results.find_by(category: category, free_ranking: ranking)
           end || raise
       end
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
@@ -248,7 +198,7 @@ module Fisk8Viewer
           score.update!(components_summary: comp_summary.join('/'))
         end
       end
-      def update_sid(score_has, score)
+      def update_sid(_score_hash, score)
         category_abbr = score.category || ""
         [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"], ["JUNIOR ", "J"]].each do |ary|
           category_abbr = category_abbr.gsub(ary[0], ary[1])

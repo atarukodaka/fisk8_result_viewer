@@ -35,21 +35,13 @@ module LinkToHelper
       concat(span_link_icon)
     end
   end
-  def link_to_pdf(url)
+  def link_to_pdf(url, target: "_blank")
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
-    link_to(image_tag(img_url), url)
+    link_to(image_tag(img_url), url, target: target)
   end
   def link_to_index(text, parameters: {})
     link_to(text, controller: controller_name.to_sym, action: :index, params: parameters)
   end
-
-  ## callbacks for view
-=begin
-  def link_to_index_proc(record, key)
-    link_to_index(record[key], parameters: params.permit(@filters.keys).merge(key => record[key]))
-  end
-=end
-
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
   end

@@ -8,9 +8,9 @@ module Fisk8Viewer
       #SCORE_DELIMITER = /Name Nation/
       SCORE_DELIMITER = /Score Score/
       
-      def parse_each_score(text, additional_entries: {})
+      def parse_each_score(text) # , additional_entries: {})
         mode = :skater
-        score = { elements: [], components: [],}.merge(additional_entries)
+        score = { elements: [], components: [],}  # .merge(additional_entries)
 
         text.split(/\n/).each do |line|
           case mode
@@ -21,13 +21,12 @@ module Fisk8Viewer
                 ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
                 tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
               }
-              hash[:skater_name].sub!(/ *$/, '')
+              hash[:skater_name].strip! # sub!(/ *$/, '')
               score.merge!(hash)
               mode = :tes
             end
           when :tes
             element_re = '[\w\+\!<\*]+'
-            #binding.pry if additional_entries[:category] == "MEN"
             if line =~ /^(\d+) +(.*)$/
               number = $1.to_i; rest = $2
               if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
@@ -65,12 +64,11 @@ module Fisk8Viewer
           segment: $3,
         }
         scores = []
-        text.split(/\f/).map do |page_text|
-          #page_text.split(/^Rank/)[1..-1].each_with_index do |t, i|
-          page_text.split(SCORE_DELIMITER)[1..-1].each_with_index do |t, i|          
+        text.split(/\f/).each_with_index do |page_text, i|
+          page_text.split(SCORE_DELIMITER)[1..-1].each do |t|          
             result_pdf =  "#{score_url}\#page=#{i+1}"
-            score = parse_each_score(t, additional_entries: additional_entries)
-            scores << score.merge(result_pdf: result_pdf)
+            score = parse_each_score(t)  # , additional_entries: additional_entries)
+            scores << score.merge(additional_entries).merge(result_pdf: result_pdf)
           end
         end
         return scores

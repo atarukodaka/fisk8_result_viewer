@@ -9,7 +9,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   describe 'update competition: isu generic' do 
     it {
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ["MEN"])
+      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: "MEN")
       updater.update_competition(url)
 
       comp = Competition.find_by(site_url: url)
@@ -32,7 +32,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   describe 'update competition: wtt2017' do 
     it {
       url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
-      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [])
+      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [:MEN])
       updater.update_competition(url, parser_type: :wtt_2017)
 
       comp = Competition.find_by(site_url: url)
@@ -48,10 +48,10 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     }
   end
   
-  describe 'accept_categories string check', type: :accept_categories do
+  describe 'accept_categories string to array', type: :accept_categories do
     it {
       updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: "MEN,LADIES")
-      expect(updater.accept_categories).to eq([:MEN, :LADIES])
+      expect(updater.category_accepter.accept_categories).to eq([:MEN, :LADIES])
     }
   end
 

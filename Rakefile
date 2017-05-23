@@ -28,7 +28,7 @@ task :update_competitions => :environment do
   last = ENV["last"].to_i
   #reverse = ENV['reverse'].to_i.nonzero?
   force = ENV['force'].to_i.nonzero?
-  updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'], force: force)
+  updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'])
   items = updater.class.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
 
   if first > 0
@@ -48,12 +48,12 @@ task :count_check => :environment do
   puts "skaters: #{num_skaters_having_score} / #{num_skaters}"
   
   # competitions
-  num_competitions = Competition.count
   Competition.all.each do |competition|
     puts competition.name
     puts "  category_result: #{competition.category_results.count}: #{competition.category_results.group(:category).count}"
-    puts "  short scores:    #{competition.scores.where('segment like ?', 'SHORT%').count}: #{competition.scores.where('segment like ?', 'SHORT%').group(:category).count}"
-    puts "   free scores:    #{competition.scores.where('segment like ?', 'FREE%').count}: #{competition.scores.where('segment like ?', 'FREE%').group(:category).count}"    
+    [:short, :free].each do |sf|
+      puts "  #{sf} scores:    #{competition.scores.where('segment like ?', '#{sf.to_s.upcase}%').count}: #{competition.scores.where('segment like ?', '#{fs.to_s.upcase}%').group(:category).count}"
+    end
   end
 end
 
