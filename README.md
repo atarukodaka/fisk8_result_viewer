@@ -2,7 +2,6 @@
 [![codecov](https://codecov.io/gh/atarukodaka/fisk8_result_viewer/branch/master/graph/badge.svg)](https://codecov.io/gh/atarukodaka/fisk8_result_viewer)
 [![Code Climate](https://codeclimate.com/github/atarukodaka/fisk8_result_viewer/badges/gpa.svg)](https://codeclimate.com/github/atarukodaka/fisk8_result_viewer)
 
-
 ## Overview
 Result and Score viewer of figureskating competitions. you can see below details of competitions you registered:
 
@@ -35,3 +34,7 @@ and run migrate, update and server upon RACK_ENV=production.
 ## Maintain competitions list
 
 Add site url of competitions that you want to add into 'config/competitions.yaml' and run 'rake update'. see the file for details.
+
+
+## Demonstration
+this package is running here: [Fisk8 Result Viewer](http://tk2-201-10287.vs.sakura.ne.jp/fisk8viewer).
