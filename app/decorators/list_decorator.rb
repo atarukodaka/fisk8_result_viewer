@@ -5,13 +5,16 @@ class ListDecorator < Draper::Decorator
   
   class << self
     def set_filter_keys(keys)
+=begin
       self.filter_keys = keys
-
       keys.each do |key|
-        self.send(:define_method, key) {
-          filter_index(key)
-        }
+        unless self.instance_methods.include?(key)
+          self.send(:define_method, key) {
+            filter_index(key)
+          }
+        end
       end
+=end
     end
   end
   def filter_index(key)

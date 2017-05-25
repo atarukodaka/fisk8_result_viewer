@@ -1,20 +1,10 @@
 class ScoresListDecorator < ListDecorator
   def sid
-#    ary = model.sid.split('/')
-#    text = [ary.shift, ary.map {|d| d[0]}].join('/')
     h.link_to_score(model.sid, model)
   end
   def result_pdf
     h.link_to_pdf(model.result_pdf)
   end
-  def season
-    binding.pry
-    model.competition.season
-  end
-  def category
-    "SASS"
-  end
-  
 end
 ################################################################
 class ScoresController < ApplicationController

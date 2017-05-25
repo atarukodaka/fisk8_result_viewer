@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "site_url"
     t.string "competition_type"
     t.string "season"
+    t.string "comment"
   end
 
   create_table "components", force: :cascade do |t|

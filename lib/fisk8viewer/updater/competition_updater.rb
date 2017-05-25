@@ -23,7 +23,7 @@ module Fisk8Viewer
             when String
               {url: item, parser: DEFAULT_PARSER}
             when Hash
-              {url: item["url"], parser: item["parser"]}
+              {url: item["url"], parser: item["parser"] || DEFAULT_PARSER, comment: item['comment']}
             else
               raise "invalid format ('#{yaml_filename}'): has to be String or Hash"
             end
@@ -32,11 +32,11 @@ module Fisk8Viewer
       end
       ################
       def get_parser(parser_type)
-        parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise
+        parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise("no such parser: '#{parser_type}'")
         parser_klass.new
       end
       
-      def update_competition(url, parser_type: :isu_generic, force: false)
+      def update_competition(url, parser_type: :isu_generic, force: false, comment: nil)
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
@@ -57,6 +57,7 @@ module Fisk8Viewer
         ActiveRecord::Base::transaction do
           competition = Competition.create(summary.slice(*keys)) do |comp|
             update_competition_identifers(comp)
+            comp.comment = comment
           end
           ## for each categories
           summary.categories.each do |category|
@@ -83,7 +84,7 @@ module Fisk8Viewer
         country = competition.country
 
         ary = case competition.name
-              when /^ISU Grand Prix .* Final/, /^ISU GP.*Final/
+              when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
                 [:gp, "GPF#{year}"]
               when /^ISU GP/
                 [:gp, "GP#{country}#{year}"]

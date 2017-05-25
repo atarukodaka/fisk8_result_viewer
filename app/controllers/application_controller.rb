@@ -11,16 +11,17 @@ module IndexActionModules
   end
 
   def filters
-    {}
+    { score_filters}
   end
   def display_keys
     []
   end
 
+=begin
   def set_filter_keys
     decorator.set_filter_keys(filters.keys) if decorator
   end
-
+=end
   def decorator
     begin
       "#{controller_name.camelize}ListDecorator".constantize
@@ -56,7 +57,7 @@ module IndexActionModules
   end
   
   def index
-    set_filter_keys
+#    set_filter_keys
     
     respond_to do |format|
       format.html { format_html }
