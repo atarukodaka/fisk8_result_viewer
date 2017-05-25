@@ -71,11 +71,6 @@ class CompetitionsController < ApplicationController
   def display_keys
     [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
   end
-=begin
-  def set_filter_keys
-    decorator.set_filter_keys([:competition_type, :season])
-  end
-=end
   def collection
     Competition.recent.filter(filters.create_arel_tables(params))
   end

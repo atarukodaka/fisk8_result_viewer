@@ -1,7 +1,5 @@
 ################
-class SkatersListDecorator < ListDecorator # < Draper::Decorator
-#  include ListDecorator
-
+class SkatersListDecorator < ListDecorator
   def name
     h.link_to_skater(model)
   end
