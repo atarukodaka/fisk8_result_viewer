@@ -60,14 +60,12 @@ end
 ################################################################
 class CompetitionsController < ApplicationController
   def filters
-    f = IndexFilters.new
-    f.attributes =  {
-      name: {operator: :like, input: :text_field, model: Competition},
-      site_url: {operator: :like, input: :text_field, model: Competition},
-      competition_type: {operator: :eq, input: :select, model: Competition},
-      season: {operator: :eq, input: :select, model: Competition},
-    }
-    f
+    IndexFilters.new(
+                     name: {operator: :like, input: :text_field, model: Competition},
+                     site_url: {operator: :like, input: :text_field, model: Competition},
+                     competition_type: {operator: :eq, input: :select, model: Competition},
+                     season: {operator: :eq, input: :select, model: Competition},
+                     )
   end
   
   def display_keys

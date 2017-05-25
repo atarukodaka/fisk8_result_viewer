@@ -6,16 +6,14 @@ end
 ################################################################
 class ElementsController < ApplicationController  
   def filters
-    f = score_filters
-    f.attributes = {
-      element: {
+    score_filters.tap {|f|
+      f[:element] = {
         operator: (params[:partial_match]) ? :like : :eq,
         input: :text_field, model: Element,
-      },
-      partial_match: { operator: nil, input: :checkbox, },
-      goe: { operator: :compare, input: :text_field, model: Element},
+      }
+      f[:partial_match] = { operator: nil, input: :checkbox, }
+      f[:goe] = { operator: :compare, input: :text_field, model: Element}
     }
-    f
   end
   def display_keys
     [:sid, :competition_name, :category, :segment, :date, :season,

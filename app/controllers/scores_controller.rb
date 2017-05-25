@@ -8,15 +8,6 @@ class ScoresListDecorator < ListDecorator
 end
 ################################################################
 class ScoresController < ApplicationController
-  def filters
-    #score_filters
-    #hash = score_filters
-    f = IndexFilters.new
-    #f.attributes = score_hash
-    f[:skater_name] = {operator: :like, input: :text_field, model: Score}
-    f.attributes = score_filters
-    f
-  end
   def display_keys
     [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]

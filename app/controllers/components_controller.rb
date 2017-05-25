@@ -6,11 +6,9 @@ end
 ################################################################
 class ComponentsController <  ApplicationController
   def filters
-    f = score_filters
-    f.attributes = {
-      value: { operator: :compare, input: :text_field, model: Component},
+    score_filters.tap {|f|
+      f[:value] = { operator: :compare, input: :text_field, model: Component}
     }
-    f
   end
   def display_keys
     [:sid, :competition_name, :category, :segment, :date, :season,
