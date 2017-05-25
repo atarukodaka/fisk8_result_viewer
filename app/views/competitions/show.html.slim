@@ -2,6 +2,15 @@
 //   optional: category_results (only when 'category' specified)
 /              segment_scores (only when 'segment' specified)
 
+- content_for :title do
+  | competition: 
+  = competition.name
+  - if category.present?
+    = " / #{category}"
+    - if segment.present?
+      = " / #{segment}"
+
+
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 

@@ -4,6 +4,8 @@
 //- display_keys = @display_keys
 //- pagination = @pagination
 
+- content_for :title do
+  = controller_name
 
 h2= controller_name.camelize
 

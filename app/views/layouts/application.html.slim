@@ -1,7 +1,9 @@
 doctype html
 html
   head
-    title Fisk8 Result Viewer
+    title 
+      | Fisk8 Result Viewer;  
+      =yield :title
     meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
