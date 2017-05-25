@@ -6,6 +6,8 @@
 
 ### on next version
 
+## 1.0.0-pre4
+
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
 - total base_value in score

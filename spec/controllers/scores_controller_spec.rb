@@ -55,4 +55,12 @@ RSpec.describe ScoresController, type: :controller do
       expect(response.body).to include('Skater NAME')
     }
   end
+  describe 'show.json' do
+    it {
+      get :show, params: { sid: "WFS17-MEN", format: "json" }
+      expect(response.body).to include('Skater NAME')
+    }
+  end
+
+
 end

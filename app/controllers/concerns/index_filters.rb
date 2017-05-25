@@ -11,9 +11,7 @@ class IndexFilters
     hash.each do |k, v|
       @data[k] = v
     end
-    self
   end
-
   def method_missing(method, *args)
     @data.send(method, *args)
   end

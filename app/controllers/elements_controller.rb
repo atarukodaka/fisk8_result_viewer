@@ -6,7 +6,7 @@ end
 ################################################################
 class ElementsController < ApplicationController  
   def filters
-    score_filters.tap {|f|
+    @filteres ||= score_filters.tap {|f|
       f[:element] = {
         operator: (params[:partial_match]) ? :like : :eq,
         input: :text_field, model: Element,

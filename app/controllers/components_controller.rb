@@ -6,7 +6,7 @@ end
 ################################################################
 class ComponentsController <  ApplicationController
   def filters
-    score_filters.tap {|f|
+    @filters ||= score_filters.tap {|f|
       f[:value] = { operator: :compare, input: :text_field, model: Component}
     }
   end
