@@ -22,7 +22,7 @@ module Fisk8Viewer
         end
       end
       def correct_skater_name(skater_name)
-        filename = File.join(Rails.root, 'config/skater_name.yml')
+        filename = File.join(Rails.root, 'config/skater_name_correction.yml')
         hash = @corrections ||= YAML.load_file(filename)
         skater_name = hash[skater_name] if hash.has_key?(skater_name)
         skater_name
