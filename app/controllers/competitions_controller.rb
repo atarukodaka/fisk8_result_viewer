@@ -60,12 +60,14 @@ end
 ################################################################
 class CompetitionsController < ApplicationController
   def filters
-    {
+    f = IndexFilters.new
+    f.attributes =  {
       name: {operator: :like, input: :text_field, model: Competition},
       site_url: {operator: :like, input: :text_field, model: Competition},
       competition_type: {operator: :eq, input: :select, model: Competition},
       season: {operator: :eq, input: :select, model: Competition},
     }
+    f
   end
   
   def display_keys
@@ -77,7 +79,7 @@ class CompetitionsController < ApplicationController
   end
 =end
   def collection
-    Competition.recent.filter(filters, params)
+    Competition.recent.filter(filters.create_arel_tables(params))
   end
   ################
   def show

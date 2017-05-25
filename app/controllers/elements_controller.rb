@@ -5,15 +5,17 @@ class ElementsListDecorator < ListDecorator
 end
 ################################################################
 class ElementsController < ApplicationController  
-  def filters    
-    {
+  def filters
+    f = score_filters
+    f.attributes = {
       element: {
         operator: (params[:partial_match]) ? :like : :eq,
         input: :text_field, model: Element,
       },
       partial_match: { operator: nil, input: :checkbox, },
       goe: { operator: :compare, input: :text_field, model: Element},
-    }.merge(score_filters)
+    }
+    f
   end
   def display_keys
     [:sid, :competition_name, :category, :segment, :date, :season,
@@ -22,6 +24,6 @@ class ElementsController < ApplicationController
     ]
   end
   def collection
-    Element.with_score.order("scores.date desc").joins(score: [:competition]).filter(filters, params).select("scores.*, competitions.season, elements.*")
+    Element.with_score.order("scores.date desc").joins(score: [:competition]).filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, elements.*")
   end
 end

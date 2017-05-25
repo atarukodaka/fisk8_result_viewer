@@ -47,22 +47,25 @@ end
 class SkatersController < ApplicationController
   ## index
   def filters
-    {
-      name: {operator: :like, input: :text_field},
+    f = IndexFilters.new
+    f.attributes = {
+      name: {operator: :like, input: :text_field, model: Skater},
       category: {operator: :eq, input: :select, model: Skater},
       nation: {operator: :eq, input: :select, model: Skater},
     }
+    f
   end
   def display_keys
     [ :name, :nation, :category, :isu_number]
   end
   def collection
-    Skater.filter(filters, params).having_scores
+    Skater.filter(filters.create_arel_tables(params)).having_scores
   end
+=begin
   def set_filter_keys
     decorator.set_filter_keys([:nation, :category])
   end
-
+=end
   ## show
   def show
     show_skater(Skater.find_by(isu_number: params[:isu_number]))

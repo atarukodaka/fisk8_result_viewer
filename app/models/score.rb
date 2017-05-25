@@ -15,6 +15,7 @@ class Score < ApplicationRecord
     order("date desc")
   }
 
+=begin
   self.register_select_options_callback(:competition_name) do |key|
     Score.order("date desc").pluck(key).uniq.unshift(nil)
   end
@@ -29,6 +30,7 @@ class Score < ApplicationRecord
     preset = [:"SHORT PROGRAM", :"FREE SKATING", :"SHORT DANCE", :"FREE DANCE"]
     [nil, preset, pluck(key).uniq.sort.reject {|k| k.nil? || preset.include?(k.to_sym)}].flatten    
   end
+=end
 
   ################
   private

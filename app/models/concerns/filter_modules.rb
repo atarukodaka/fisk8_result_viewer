@@ -2,9 +2,11 @@ module FilterModules
   extend ActiveSupport::Concern
   
   class_methods do
+=begin
     @@_select_options = {}   ## caching purpose
     @@_select_options_callback = {}
     
+
     def select_options(key)
       return @@_select_options[key] if @@_select_options[key]
       @@_select_options[key] =
@@ -53,27 +55,22 @@ module FilterModules
       end
       arel_tables
     end
+=end
   end  ## class methods
   ################
   included do
-=begin
-    scope :select_by_keys, ->(headers){
-      case headers
-      when Hash
-        str = headers.map {|table, keys|
-          keys.map {|k| "#{table}.#{k}"}
-        }.flatten.join(",")
-        select(str)
-      else
-        raise   # to implement for Array
-      end
-
-    }
-=end
     scope :with_score, ->{ joins(:score) }
     scope :with_skater, ->{ joins(:skater) }
     scope :with_competition, ->{ joins(:competition) }
-    
+
+    scope :filter, ->(arel_tables){
+      cond = nil
+      arel_tables.each do |arel|
+        cond = (cond.nil?) ? arel : cond.and(arel)
+      end
+      where(cond)
+    }
+=begin
     scope :filter, ->(filters, parameters) {
       conditions = nil
       create_arel_tables_by_filters(filters, parameters).each do |arel|
@@ -81,5 +78,6 @@ module FilterModules
       end
       where(conditions)
     }
+=end
   end ## included
 end #module FilterModules

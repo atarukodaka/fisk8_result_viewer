@@ -9,14 +9,20 @@ end
 ################################################################
 class ScoresController < ApplicationController
   def filters
-    score_filters
+    #score_filters
+    #hash = score_filters
+    f = IndexFilters.new
+    #f.attributes = score_hash
+    f[:skater_name] = {operator: :like, input: :text_field, model: Score}
+    f.attributes = score_filters
+    f
   end
   def display_keys
     [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
   def collection
-    Score.joins(:competition).recent.filter(filters, params).select("competitions.season, scores.*")
+    col = Score.joins(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
   end
   def show
     score = Score.find_by(sid: params[:sid]) ||

@@ -8,10 +8,11 @@ class Competition < ApplicationRecord
     order("start_date desc")
   }
 
+=begin
   self.register_select_options_callback(:season) do |key|
     Competition.order("start_date desc").pluck(key).uniq.unshift(nil)
   end
-
+=end
 =begin
   def categories
     category_results.pluck(:category).uniq
