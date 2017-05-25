@@ -12,6 +12,16 @@ class IndexFilters
       @data[k] = v
     end
   end
+  def filters= (hash)
+    @data ||= {}
+    hash.each do |k, v|
+      @data[k] = v
+    end
+    self
+  end
+  def filters
+    @data
+  end
   def method_missing(method, *args)
     @data.send(method, *args)
   end

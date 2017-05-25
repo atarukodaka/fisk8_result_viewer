@@ -6,13 +6,16 @@ end
 ################################################################
 class ComponentsController <  ApplicationController
   def filters
-    @filters ||= score_filters.tap {|f|
-      f[:value] = { operator: :compare, input: :text_field, model: Component}
+    @filters ||= IndexFilters.new.tap {|f|
+      f.filters = {
+        value: {operator: :compare, input: :text_field, model: Component},
+      }.merge score_filters.filters
     }
   end
   def display_keys
-    [:sid, :competition_name, :category, :segment, :date, :season,
-     :ranking, :skater_name, :nation,
+#    [:sid, :competition_name, :category, :segment, :date, :season,
+    [:sid, :competition_name, :date, :season,
+    :ranking, :skater_name, :nation,
      :number, :component, :factor, :judges, :value]
   end
 

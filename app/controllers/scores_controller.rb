@@ -1,4 +1,12 @@
 class ScoresListDecorator < ListDecorator
+  class << self
+    def headers
+      super.merge ({
+                     deductions: "ded",
+                     result_pdf: "pdf",
+                   })
+    end
+  end
   def sid
     h.link_to_score(model.sid, model)
   end
@@ -21,7 +29,7 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {score: score}}
-      format.json { render json: {summary: score, elements: score.elements, components: score.components }}
+      format.json { render json: {summary: score, elements: score.elements, components: socore.components }}
     end
   end
 end

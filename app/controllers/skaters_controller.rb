@@ -1,5 +1,10 @@
 ################
 class SkatersListDecorator < ListDecorator
+  class << self
+    def header_name
+      "Name"
+    end
+  end
   def name
     h.link_to_skater(model)
   end
@@ -45,12 +50,13 @@ end
 class SkatersController < ApplicationController
   ## index
   def filters
-    @filters ||=
-      IndexFilters.new(
-                       name: {operator: :like, input: :text_field, model: Skater},
-                       category: {operator: :eq, input: :select, model: Skater},
-                     nation: {operator: :eq, input: :select, model: Skater},
-                       )
+    @filters ||= IndexFilters.new.tap {|f|
+      f.filters = {
+        name: {operator: :like, input: :text_field, model: Skater},
+        category: {operator: :eq, input: :select, model: Skater},
+        nation: {operator: :eq, input: :select, model: Skater},
+      }
+    }
   end
   def display_keys
     [ :name, :nation, :category, :isu_number]

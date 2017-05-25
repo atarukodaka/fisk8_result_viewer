@@ -6,17 +6,20 @@ end
 ################################################################
 class ElementsController < ApplicationController  
   def filters
-    @filteres ||= score_filters.tap {|f|
-      f[:element] = {
-        operator: (params[:partial_match]) ? :like : :eq,
-        input: :text_field, model: Element,
-      }
-      f[:partial_match] = { operator: nil, input: :checkbox, }
-      f[:goe] = { operator: :compare, input: :text_field, model: Element}
+    @filteres ||= IndexFilters.new.tap {|f|
+      f.filters = {
+        element: {
+          operator: (params[:perfect_match]) ? :eq : :like,
+          input: :text_field, model: Element,
+        },
+        perfect_match: { operator: nil, input: :checkbox, },
+        goe: { operator: :compare, input: :text_field, model: Element},
+      }.merge score_filters.filters
     }
   end
   def display_keys
-    [:sid, :competition_name, :category, :segment, :date, :season,
+#    [:sid, :competition_name, :category, :segment, :date, :season,
+    [:sid, :competition_name, :date, :season,
      :ranking, :skater_name, :nation,
      :number, :element, :credit, :info, :base_value, :goe, :judges, :value,
     ]
