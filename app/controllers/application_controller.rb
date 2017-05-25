@@ -11,7 +11,7 @@ module IndexActionModules
   end
 
   def filters
-    { score_filters}
+    score_filters
   end
   def display_keys
     []
