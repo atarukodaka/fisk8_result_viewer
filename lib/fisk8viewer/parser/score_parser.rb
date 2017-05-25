@@ -37,6 +37,8 @@ module Fisk8Viewer
               else
                 logger.warn "  !! SOMETHING WRONG ON PARSING TES !! #{line}"
               end
+            elsif line =~ /^([\d\.]+) +[\d\.]+$/
+              score[:base_value] = $1.to_f
             elsif line =~ /^Program Components/
               mode = :pcs
             end

@@ -7,6 +7,14 @@ class ScoresListDecorator < ListDecorator
   def result_pdf
     h.link_to_pdf(model.result_pdf)
   end
+  def season
+    binding.pry
+    model.competition.season
+  end
+  def category
+    "SASS"
+  end
+  
 end
 ################################################################
 class ScoresController < ApplicationController
@@ -14,11 +22,11 @@ class ScoresController < ApplicationController
     score_filters
   end
   def display_keys
-    [:sid, :competition_name, :category, :segment, :date, :result_pdf,
-     :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions]
+    [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
+     :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
   def collection
-    Score.recent.filter(filters, params)
+    Score.joins(:competition).recent.filter(filters, params).select("competitions.season, scores.*")
   end
   def show
     score = Score.find_by(sid: params[:sid]) ||

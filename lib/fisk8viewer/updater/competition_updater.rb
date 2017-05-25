@@ -166,7 +166,7 @@ module Fisk8Viewer
         ## skater
         puts "    %<ranking>2d: '%{skater_name}' (%{nation}) %<tss>3.2f" % score_hash
         score_keys = [:skater_name, :ranking, :starting_number, :nation,
-                      :result_pdf, :tss, :tes, :pcs, :deductions]
+                      :result_pdf, :tss, :tes, :pcs, :deductions, :base_value]
 
         score.attributes = score_hash.slice(*score_keys)
         score.save!
@@ -179,14 +179,11 @@ module Fisk8Viewer
         ActiveRecord::Base.transaction do
           element_keys = [:number, :element, :info, :base_value, :credit, :goe, :judges, :value]
           elem_summary = []
-          base_value = total_goe = 0
           score_hash[:elements].each do |element|
             score.elements.create!(element.slice(*element_keys))
             elem_summary << element[:element]
-            base_value += element[:base_value]
           end
           score.update!(elements_summary: elem_summary.join('/'))
-          score.update!(base_value: base_value)
         end
       end
       def update_components(score_hash, score)

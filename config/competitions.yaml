@@ -197,26 +197,3 @@
 #- http://www.figureskatingresults.fi/results/1617/CSFIN2016/
 
 ## for debug
--
-  url: http://www.isuresults.com/results/wjc2012/
-  parser: :isu_generic_mdy
--
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
-
-- http://www.isuresults.com/results/season1617/gpcan2016/
-## junior
-
-
-
-- http://www.isuresults.com/results/owg2014/
-- http://www.isuresults.com/results/season1617/wc2017/
--
-  url: http://www.isuresults.com/results/fc2012/
-  parser: :isu_generic_mdy
--
-  url: http://www.isuresults.com/results/jgpfra2010/
-  parser: :isu_generic_mdy
-
-- http://www.isuresults.com/results/season1516/gpfra2015/
-- http://www.isuresults.com/results/gpf1112/
