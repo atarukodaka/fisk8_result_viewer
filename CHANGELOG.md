@@ -5,7 +5,6 @@
 
 ### on next version
 - skater-name correction
-- content_for on <title>
 
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
@@ -14,6 +13,7 @@
   - score_parser recognize total base value
 - score controler: competitions.season to check
 - competition comment
+- content_for on <title>
 
 ## 1.0.0-pre2
 

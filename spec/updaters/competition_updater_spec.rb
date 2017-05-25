@@ -39,6 +39,16 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(comp.site_url).to eq(url)
     }
   end
+  describe 'update competition: fc2012: correction for Sandra KHOPON' do 
+    it {
+      url = 'http://www.isuresults.com/results/fc2012/'
+      updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES])
+      updater.update_competition(url, parser_type: :isu_generic_mdy)
+
+      comp = Competition.find_by(site_url: url)
+      expect(comp.site_url).to eq(url)
+    }
+  end
   ################
   describe 'load_file', type: :load_file do
     it {

@@ -11,6 +11,7 @@ module Fisk8Viewer
         parser = Fisk8Viewer::ISU_Bio.new
         ActiveRecord::Base::transaction do
           parser.parse_isu_bio_summary(categories).each do |hash|
+            hash[:name] = correct_skater_name(hash[:name])
             find_or_create_skater(hash[:isu_number], hash[:name], category: hash[:category], nation: hash[:nation])
           end
         end

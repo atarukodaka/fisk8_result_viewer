@@ -80,7 +80,6 @@ module Fisk8Viewer
       end
       def update_competition_identifers(competition)
         year = competition.start_date.try(:year)
-        city = competition.city
         country = competition.country
 
         ary = case competition.name
@@ -120,6 +119,8 @@ module Fisk8Viewer
       end
       def update_category_result(result_hash, cr)
         keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
+
+        result_hash[:skater_name] = correct_skater_name(result_hash[:skater_name])
         puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
         cr.attributes = result_hash.slice(*keys)
 
@@ -131,11 +132,12 @@ module Fisk8Viewer
         cr
       end
       ################################################################
+=begin
       def find_relevant_category_result(competition:, category:, segment:, skater_name:, ranking: )
         ## find relevant category result
         results = competition.category_results
-        results.find_by(category: category, skater_name: skater_name) ||
-          ## for fcc2012 ladies short
+        results.find_by(category: category, skater_name: skater_name) || raise
+        ## for fcc2012 ladies short
           ## name on category result and scores are different.
           case segment
           when /^SHORT/
@@ -143,11 +145,15 @@ module Fisk8Viewer
           when /^FREE/
             results.find_by(category: category, free_ranking: ranking)
           end || raise
+
       end
+=end
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
-          cr = find_relevant_category_result(competition: competition, category: category, segment: segment, skater_name: score_hash[:skater_name], ranking: score_hash[:ranking])
-          raise if cr.nil?
+          score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])
+          #cr = find_relevant_category_result(competition: competition, category: category, segment: segment, skater_name: score_hash[:skater_name], ranking: score_hash[:ranking])
+          #raise if cr.nil?
+          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || raise
           skater = cr.skater
           
           score = competition.scores.create do |sc|
