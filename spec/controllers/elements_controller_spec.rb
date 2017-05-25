@@ -18,12 +18,12 @@ RSpec.describe ElementsController, type: :controller do
     it {
       get :index, params: {element: '4T'}
       expect(response.body).to include('4T')
-      expect(response.body).not_to include('4T+3T')
+      expect(response.body).to include('4T+3T')
     }
     it {
-      get :index, params: {element: '4T', partial_match: true}
+      get :index, params: {element: '4T', perfect_match: true}
       expect(response.body).to include('4T')
-      expect(response.body).to include('4T+3T')
+      expect(response.body).not_to include('4T+3T')
     }
     # compare
     it {

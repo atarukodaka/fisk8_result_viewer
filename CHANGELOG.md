@@ -3,6 +3,7 @@
 - spec:
   - all filters to work
 - embed youtube in score
+- decorator.headers
 
 ### on next version
 

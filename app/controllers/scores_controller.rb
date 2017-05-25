@@ -29,7 +29,7 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {score: score}}
-      format.json { render json: {summary: score, elements: score.elements, components: socore.components }}
+      format.json { render json: {summary: score, elements: score.elements, components: score.components }}
     end
   end
 end

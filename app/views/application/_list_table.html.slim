@@ -3,6 +3,8 @@
 - display_keys ||= []
 - pagination = false unless defined? pagination
 
+- list_decorator = (collection.is_a?(Draper::CollectionDecorator) && collection.decorator_class < ListDecorator) ? collection.decorator_class : nil
+
 div
   = page_entries_info collection if pagination
 
@@ -11,7 +13,7 @@ table.table.table-striped.table-hover.table-condensed.list-table
     - display_keys.each do |key|
       //th= key.to_s.camelize
       th
-        - if collection.try(:decorator_class).try(:headers).try(:has_key?, key)
+        - if list_decorator && list_decorator.headers.has_key?(key)
           = collection.decorator_class.headers[key]
         - else
           = key.to_s.camelize
