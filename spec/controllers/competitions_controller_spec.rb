@@ -9,6 +9,8 @@ RSpec.describe CompetitionsController, type: :controller do
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
     cr.scores << score
+
+    competition2 = Competition.create(cid: "GPUSA2015", season: "2015-16", competition_type: "gp", city: "NY", country: "USA")
   end
   
   ################################################################
@@ -19,18 +21,17 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
       expect(response.body).to include('JPN')
+      expect(response.body).to include('GPUSA2015')
     }
     it {
       get :index, params: { season: "2016-17"}
       expect(response.body).to include('WORLD2017')
+      expect(response.body).not_to include('GPUSA2015')
     }
     it {
       get :index, params: { competition_type: "world"}
       expect(response.body).to include('WORLD2017')
-    }
-    it {
-      get :index, params: { competition_type: "gp"}
-      expect(response.body).not_to include('WORLD2017')
+      expect(response.body).not_to include('GPUSA2015')
     }
   end
 
@@ -48,10 +49,9 @@ RSpec.describe CompetitionsController, type: :controller do
     it {
       get :index, params: {format: :csv }
       expect(response.content_type).to eq('text/csv')
-      expect(response.body).to include('WORLD2017,,Tokyo,JPN,,,,world,2016-17')
+      expect(response.body).to include('WORLD2017,,,Tokyo,JPN,world,2016-17,,')
     }
   end
-
   ################
   describe 'show' do
     it {

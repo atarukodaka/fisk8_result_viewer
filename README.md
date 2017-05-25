@@ -33,7 +33,7 @@ and run migrate, update and server upon RACK_ENV=production.
 
 ## Maintain competitions list
 
-Add site url of competitions that you want to add into 'config/competitions.yaml' and run 'rake update'. see the file for details.
+Add site url of competitions that you want to add into 'config/competitions.yml' and run 'rake update'. see the file for details.
 
 
 ## Demonstration

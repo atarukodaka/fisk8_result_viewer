@@ -83,7 +83,7 @@ module Fisk8Viewer
         country = competition.country
 
         ary = case competition.name
-              when /^ISU Grand Prix Final/, /^ISU GP.*Final/
+              when /^ISU Grand Prix .* Final/, /^ISU GP.*Final/
                 [:gp, "GPF#{year}"]
               when /^ISU GP/
                 [:gp, "GP#{country}#{year}"]

@@ -29,7 +29,7 @@ task :update_competitions => :environment do
   #reverse = ENV['reverse'].to_i.nonzero?
   force = ENV['force'].to_i.nonzero?
   updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'])
-  items = updater.class.load_competition_list(File.join(Rails.root, "config/competitions.yaml"))
+  items = updater.class.load_competition_list(File.join(Rails.root, "config/competitions.yml"))
 
   if first > 0
     items = items.first(first)

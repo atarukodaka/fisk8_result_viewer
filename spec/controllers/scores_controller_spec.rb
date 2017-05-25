@@ -4,8 +4,13 @@ RSpec.describe ScoresController, type: :controller do
   render_views
   
   before do
-    competition = Competition.create(cid: "WORLD2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN")
-    score = competition.scores.create(sid: "WFS17-MEN", competition_name: "World FS 2017", skater_name: "Skater NAME", category: "MEN", segment: "SHORT PROGRAM", nation: "JPN", ranking: 1, skater: Skater.create(name: "Skater NAME"))
+    skater = Skater.create(name: "Skater NAME")
+    competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN")
+    score = competition.scores.create(sid: "WFS17-MEN", competition_name: "World FS 2017", skater_name: "Skater NAME", category: "MEN", segment: "SHORT", nation: "JPN", ranking: 1, skater: skater)
+
+    skater2 = Skater.create(name: "Foo BAR")
+    competition2 = Competition.create(cid: "GPUSA2015", season: "2015-16", competition_type: "gp", city: "NY", country: "USA")
+    score2 = competition2.scores.create(sid: "GPUSA-M", category: "LADIES", segment: "FREE", nation: "USA", ranking: 2, skater: skater2)
   end
 
   describe 'index' do
@@ -13,10 +18,40 @@ RSpec.describe ScoresController, type: :controller do
       get :index
       expect(response.body).to include('World FS 2017')
     }
+    it {
+      get :index, params: { skater_name: "Skater NAME" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
+    it {
+      get :index, params: { category: "MEN" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
+    it {
+      get :index, params: { segment: "SHORT" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
+    it {
+      get :index, params: { nation: "JPN" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
+    it {
+      get :index, params: { competition_name: "World FS 2017" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
+    it {
+      get :index, params: { season: "2016-17" }
+      expect(response.body).to include('WFS17-MEN')
+      expect(response.body).not_to include('GPUSA-M')
+    }
   end
   describe 'show' do
     it {
-      get :show, params: { sid: Score.last.sid }
+      get :show, params: { sid: "WFS17-MEN" }
       expect(response.body).to include('Skater NAME')
     }
   end

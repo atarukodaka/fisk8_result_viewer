@@ -4,7 +4,8 @@ RSpec.describe SkatersController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create(name: "Skater NAME", nation: "JPN", isu_number: 12345)
+    skater = Skater.create(name: "Skater NAME", nation: "JPN", category: 'MEN', isu_number: 12345)
+    skater2 = Skater.create(name: "Foo BAR", nation: "USA", category: 'LADIES', isu_number: 999)
     competition = Competition.create do |c|
       c.start_date = "2017-1-1"
       c.end_date = "2017-1-3"
@@ -51,6 +52,24 @@ RSpec.describe SkatersController, type: :controller do
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')
       expect(response.body).to include('12345')
+    }
+  end
+  ################
+  describe 'filter-by' do
+    it { 
+      get :index, params: {name: "Skater"}
+      expect(response.body).to include("Skater")
+      expect(response.body).not_to include("Foo")
+    }
+    it { 
+      get :index, params: {category: "MEN"}
+      expect(response.body).to include("Skater")
+      expect(response.body).not_to include("Foo")
+    }
+    it { 
+      get :index, params: {nation: "JPN"}
+      expect(response.body).to include("Skater")
+      expect(response.body).not_to include("Foo")
     }
   end
 end

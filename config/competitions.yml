@@ -5,7 +5,7 @@
 #     url: http://www.foo.bar/results/xxxx2017/
 #     parser: foo
 #
-#  on that case you need to register the parser into Fisk8Viewer::CompetitionSummaryParser.registered. see fisk8viewer/competition_summary_parser.rb and fisk8viewer/competition_summary_parser/isu_generic.rb
+#  in that case you need to register the parser into Fisk8Viewer::CompetitionSummaryParser.registered. see fisk8viewer/competition_summary_parser.rb and fisk8viewer/competition_summary_parser/isu_generic.rb for dettails.
 
 ##2010-11
 -
