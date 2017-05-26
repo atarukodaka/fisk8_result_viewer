@@ -1,13 +1,14 @@
 ## TODO
-- %3.2f, %d for showing table data / centering
+
 - spec:
   - all filters to work
 - embed youtube in score
-- decorator.headers
 
 ### on next version
 
 ## 1.0.0-pre4
+- decorator.headers
+- %3.2f, %d for showing table data
 
 ## 1.0.0-pre3
 - elements/show.csv should include scores key

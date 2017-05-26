@@ -1,9 +1,10 @@
 class IndexFilters
   extend Forwardable
   include Comparable
-  include Enumerable  
+  include Enumerable
+  include ApplicationHelper
 
-  def_delegators :@data, :each, "<=>".to_sym
+  def_delegators :@data, :each, "<=>".to_sym, :keys
   @@select_options = {}
   
   def initialize(hash = {})
@@ -22,13 +23,30 @@ class IndexFilters
   def filters
     @data
   end
+=begin  
   def method_missing(method, *args)
     @data.send(method, *args)
   end
+=end
   def select_options(key)
-    @@select_options[key] ||= @data[key][:model].pluck(key).sort.uniq.unshift(nil)
+    model = @data[key][:model]
+    @@select_options[key] ||= 
+      case key
+      when :competition_name, :season
+        model.recent.pluck(key).uniq
+      when :category
+        sort_with_preset(model.pluck(key).uniq,
+                         ["MEN", "LADIES", "PAIRS", "ICE DANCE",
+                          "JUNIOR MEN", "JUNIOR LADIES", "JUNIOR PAIRS", "JUNIOR ICE DANCE",
+                         ])
+      when :segment
+        sort_with_preset(model.pluck(key).uniq,
+                         ["SHORT PROGRAM", "FREE SKATING", "SHORT DANCE", "FREE DANCE"])
+      else
+        model.pluck(key).sort.uniq
+      end.unshift(nil)
   end
-
+  
   ################################################################
   def parse_compare(text)
     method = :eq; value = text.to_i
