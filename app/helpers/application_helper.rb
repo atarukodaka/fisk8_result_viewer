@@ -74,7 +74,17 @@ module SortHelper
     preset.select {|v| preset_hash[v]} + to_sort.sort
   end
 end
+
+module FormatHelper
+  def as_ranking(value)
+    (value.to_i == 0) ? "-" : "%d" % [value]
+  end
+  def as_score(value)
+    (value.to_f == 0) ? "-" : "%.2f" % [value]
+  end
+end
+
 ################################################################
 module ApplicationHelper
-  include LinkToHelper, TableHelper, SortHelper
+  include LinkToHelper, TableHelper, SortHelper, FormatHelper
 end

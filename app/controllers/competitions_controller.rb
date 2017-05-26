@@ -12,11 +12,13 @@ class CategoryResultsListDecorator < ListDecorator
     h.link_to_skater(nil, model.skater)
   end
   def short_tss
-    model.scores.first.try(:tss)
+    as_score(model.scores.first.try(:tss))
   end
   def free_tss
-    model.scores.second.try(:tss)
+    as_score(model.scores.second.try(:tss))
   end
+  self.display_as_ranking([:short_ranking, :free_ranking])
+  self.display_as_score([:points])
 end
 
 ################
@@ -24,9 +26,12 @@ class SegmentScoresListDecorator < CategoryResultsListDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
+=begin
   def deductions
-    (model.deductions.to_f == 0) ? "" : model.deductions.to_f.abs * (-1)
+    (model.deductions.to_f == 0) ? "-" : model.deductions.to_f.abs * (-1)
   end
+=end
+  self.display_as_score([:tss, :tes, :pcs, :deductions])
 end
 ################################################################
 
