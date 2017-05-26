@@ -1,10 +1,5 @@
 ################
 class SkatersListDecorator < ListDecorator
-  class << self
-    def header_name
-      "Name"
-    end
-  end
   def name
     h.link_to_skater(model)
   end
@@ -17,6 +12,8 @@ class SkatersListDecorator < ListDecorator
 end
 
 class SkaterCompetitionsListDecorator < ListDecorator
+  include ApplicationHelper
+
   def competition_name
     h.link_to_competition(nil, model.competition)
   end
@@ -24,27 +21,24 @@ class SkaterCompetitionsListDecorator < ListDecorator
     model.competition.start_date
   end
   def ranking
-    h.link_to_competition(model.ranking, model.competition, category: model.category)
+    h.link_to_competition(as_ranking(model.ranking), model.competition, category: model.category)
   end
   def points
-    h.link_to_competition("%3.2f" % [model.points], model.competition, category: model.category)
+    h.link_to_competition(as_score(model.points), model.competition, category: model.category)
+    
   end
   def short_ranking
-    h.link_to_score(model.short_ranking, model.scores.first)
-    #model.short_ranking
+    h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
   end
-  
   def free_ranking
-    h.link_to_score(model.free_ranking, model.scores.second)
+    h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
   end
-
   def short_tss
-    h.link_to_score(model.scores.first.try(:tss), model.scores.first)
+    h.link_to_score(as_score(model.scores.first.try(:tss)), model.scores.first)
   end
   def free_tss
-    h.link_to_score(model.scores.second.try(:tss), model.scores.second)
+    h.link_to_score(as_score(model.scores.second.try(:tss)), model.scores.second)
   end
-
 end
 ################################################################
 class SkatersController < ApplicationController
@@ -75,8 +69,11 @@ class SkatersController < ApplicationController
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
-    collection = skater.category_results.includes(:competition)
-    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
+    collection = skater.category_results.with_competition.recent.includes(:competition)
+    category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
+    
+    #collection = skater.category_results.includes(:competition)
+    #category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results }}

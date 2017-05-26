@@ -20,6 +20,6 @@ class ComponentsController <  ApplicationController
   end
 
   def collection
-    Component.with_score.order("scores.date desc").joins(score: [:competition]).filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, components.*")
+    Component.with_score.recent.with_competition.filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, components.*")
   end
 end

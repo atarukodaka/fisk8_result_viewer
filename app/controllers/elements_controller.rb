@@ -18,13 +18,12 @@ class ElementsController < ApplicationController
     end
   end
   def display_keys
-#    [:sid, :competition_name, :category, :segment, :date, :season,
     [:sid, :competition_name, :date, :season,
      :ranking, :skater_name, :nation,
      :number, :element, :credit, :info, :base_value, :goe, :judges, :value,
     ]
   end
   def collection
-    Element.with_score.order("scores.date desc").joins(score: [:competition]).filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, elements.*")
+    Element.with_score.recent.with_competition.filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, elements.*")
   end
 end

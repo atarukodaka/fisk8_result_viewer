@@ -8,18 +8,4 @@ class Skater < ApplicationRecord
   scope :having_scores, ->{
     where(id: Score.select(:skater_id).group(:skater_id).having("count(skater_id)> ? ", 0))
   }
-  
-=begin
-  class << self
-    def select_options(key)
-      case key
-      when :category
-        [nil, :MEN, :LADIES, :PAIRS, :"ICE DANCE"]
-      else
-        super(key)
-      end
-    end
-  end
-=end
-  
 end ## class Skater
