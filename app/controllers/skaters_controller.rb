@@ -56,7 +56,7 @@ class SkatersController < ApplicationController
     [ :name, :nation, :category, :isu_number]
   end
   def collection
-    Skater.filter(filters.create_arel_tables(params)).having_scores
+    Skater.filter(filters.create_arel_tables(params)).order(:category, :name).having_scores
   end
   ################
   ## show

@@ -5,6 +5,8 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module Fisk8Viewer
+  VERSION = "1.0.0"
+  
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
@@ -29,6 +31,4 @@ module Fisk8Viewer
       password: Settings.notification.gmail_password,
     }
   end
-  ################################################################
-  VERSION = "1.0.0-pre4"
 end

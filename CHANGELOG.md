@@ -1,11 +1,12 @@
 ## TODO
-- JSON output coulmns to check
 
 
 ### on next version
 - embed youtube in score
 - skater: highest score
 - ISU-b competition
+
+## 1.0.0
 
 ## 1.0.0-pre4
 - decorator.headers
