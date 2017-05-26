@@ -1,14 +1,15 @@
 ## TODO
 
-- spec:
-  - all filters to work
-- embed youtube in score
 
 ### on next version
+- embed youtube in score
 
 ## 1.0.0-pre4
 - decorator.headers
 - %3.2f, %d for showing table data
+- spec:
+  - all filters to work
+
 
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
@@ -19,6 +20,7 @@
 - competition comment
 - content_for on <title>
 - skater-name correction
+
 
 ## 1.0.0-pre2
 

@@ -50,13 +50,13 @@ end
 class SkatersController < ApplicationController
   ## index
   def filters
-    @filters ||= IndexFilters.new.tap {|f|
+    @_filters ||= IndexFilters.new.tap do |f|
       f.filters = {
         name: {operator: :like, input: :text_field, model: Skater},
         category: {operator: :eq, input: :select, model: Skater},
         nation: {operator: :eq, input: :select, model: Skater},
       }
-    }
+    end
   end
   def display_keys
     [ :name, :nation, :category, :isu_number]

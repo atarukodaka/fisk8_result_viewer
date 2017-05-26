@@ -3,7 +3,7 @@ class CompetitionsListDecorator < ListDecorator
     h.link_to_competition(model)
   end  
   def site_url
-    h.link_to_competition_site("SITE", model)
+    h.link_to_competition_site("Official", model)
   end
 end
 ################
@@ -17,8 +17,8 @@ class CategoryResultsListDecorator < ListDecorator
   def free_tss
     as_score(model.scores.second.try(:tss))
   end
-  self.display_as_ranking([:short_ranking, :free_ranking])
-  self.display_as_score([:points])
+  self.display_as(:ranking, [:short_ranking, :free_ranking])
+  self.display_as(:score, [:points])
 end
 
 ################
@@ -31,7 +31,7 @@ class SegmentScoresListDecorator < CategoryResultsListDecorator
     (model.deductions.to_f == 0) ? "-" : model.deductions.to_f.abs * (-1)
   end
 =end
-  self.display_as_score([:tss, :tes, :pcs, :deductions])
+  self.display_as(:score, [:tss, :tes, :pcs, :deductions])
 end
 ################################################################
 
@@ -65,12 +65,14 @@ end
 ################################################################
 class CompetitionsController < ApplicationController
   def filters
-    @filters ||=
-      IndexFilters.new(name: {operator: :like, input: :text_field, model: Competition},
-                       site_url: {operator: :like, input: :text_field, model: Competition},
-                       competition_type: {operator: :eq, input: :select, model: Competition},
-                       season: {operator: :eq, input: :select, model: Competition},
-                       )
+    @_filters ||= IndexFilters.new.tap do |f|
+      f.filters = {
+        name: {operator: :like, input: :text_field, model: Competition},
+        site_url: {operator: :like, input: :text_field, model: Competition},
+        competition_type: {operator: :eq, input: :select, model: Competition},
+        season: {operator: :eq, input: :select, model: Competition},
+      }
+    end
   end
   
   def display_keys

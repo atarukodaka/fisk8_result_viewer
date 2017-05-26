@@ -1,13 +1,15 @@
 module IndexActionModules
   def score_filters
-    IndexFilters.new(
-                     skater_name: {operator: :like, input: :text_field, model: Score},
-                     category: {operator: :eq, input: :select, model: Score},      
-                     segment: {operator: :eq, input: :select, model: Score},      
-                     nation: {operator: :eq, input: :select, model: Score},      
-                     competition_name: {operator: :eq, input: :select, model: Score},
-                     season: { operator: :eq, input: :select, model: Competition},
-                     )
+    @_filters ||= IndexFilters.new.tap {|f|
+      f.filters = {
+        skater_name: {operator: :like, input: :text_field, model: Score},
+        category: {operator: :eq, input: :select, model: Score},      
+        segment: {operator: :eq, input: :select, model: Score},      
+        nation: {operator: :eq, input: :select, model: Score},      
+        competition_name: {operator: :eq, input: :select, model: Score},
+        season: { operator: :eq, input: :select, model: Competition},
+      }
+    }
   end
 
   def filters

@@ -9,27 +9,25 @@ class ListDecorator < Draper::Decorator
         number: "#",
       }
     end
-  end
 
-  class << self
-    def display_as_ranking(keys)
+    def display_as(type, keys)
       keys.each do |key|
         self.send(:define_method, key) do
-          as_ranking(model[key])
-        end
-      end
-    end ## def
-    def display_as_score(keys)
-      keys.each do |key|
-        self.send(:define_method, key) do
-          as_score(model[key])
+          case type
+          when :ranking
+            as_ranking(model[key])
+          when :score
+            as_score(model[key])
+          else
+            raise
+          end
         end
       end
     end ## def
   end
   
-  self.display_as_ranking([:ranking])
-  self.display_as_score([:tss, :tes, :pcs, :deductions, :base_value, :value, :goe])
+  self.display_as(:ranking, [:ranking])
+  self.display_as(:score, [:tss, :tes, :pcs, :deductions, :base_value, :value, :goe])
   
 =begin
  class_attribute :filter_keys

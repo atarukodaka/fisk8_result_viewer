@@ -1,5 +1,3 @@
-
-
 module Fisk8Viewer
   module Updater
     class CategoryAccepter
@@ -7,6 +5,8 @@ module Fisk8Viewer
         [:MEN, :LADIES, :PAIRS, :"ICE DANCE",
          :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
         ]
+      attr_reader :accept_categories
+      
       def initialize(categories)
         @accept_categories =
           case categories
@@ -17,14 +17,9 @@ module Fisk8Viewer
           when Symbol
             [categories]
           else
-            categories
+            raise "invalid parameter"
           end || DEFAULT_ACCEPT_CATEGORIES
       end
-
-      def accept_categories
-        @accept_categories
-      end
-
       def accept?(category)
         ## category:
         ##   nil:   all categories accepted
