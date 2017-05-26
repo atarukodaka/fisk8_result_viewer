@@ -6,6 +6,9 @@
 - skater: highest score
 - ISU-b competition
 
+## 1.0.1
+- rake update:skater..name space for update
+
 ## 1.0.0
 
 ## 1.0.0-pre4

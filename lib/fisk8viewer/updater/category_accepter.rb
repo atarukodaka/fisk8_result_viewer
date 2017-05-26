@@ -17,7 +17,7 @@ module Fisk8Viewer
           when Symbol
             [categories]
           else
-            raise "invalid parameter"
+            categories
           end || DEFAULT_ACCEPT_CATEGORIES
       end
       def accept?(category)
