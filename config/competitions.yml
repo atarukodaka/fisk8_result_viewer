@@ -195,10 +195,6 @@
 - http://www.isuresults.com/results/season1617/jgpger2016/
 - http://www.isuresults.com/results/season1617/wjc2017/
 
-## ISU-B
-#- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-#- http://www.figureskatingresults.fi/results/1617/CSFIN2016/
-
 ## for debug
 -
   url: http://www.isuresults.com/results/season1516/gpfra2015/
@@ -210,3 +206,13 @@
 -
   url: http://www.isuresults.com/results/fc2012/
   parser: :isu_generic_mdy
+
+## ISU-B
+-
+  url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
+  parser: :finlandia
+-
+  url: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+  parser: :finlandia
+  
+  

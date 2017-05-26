@@ -1,5 +1,5 @@
 ## TODO
-
+- autoload fisk8viewer/parsers/*.rb
 
 ### on next version
 - embed youtube in score
@@ -7,7 +7,7 @@
 - ISU-b competition
 
 ## 1.0.1
-- rake update:skater..name space for update
+- rake update:skaters..name space for update
 
 ## 1.0.0
 

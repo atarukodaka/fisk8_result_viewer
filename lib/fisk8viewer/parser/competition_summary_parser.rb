@@ -34,13 +34,13 @@ module Fisk8Viewer
           next if row.xpath("td").blank?
           
           if (c = row.xpath("td[1]").text.presence)
-            category = c.upcase
+            category = c.upcase.strip
           end
-          segment = row.xpath("td[2]").text.upcase
+          segment = row.xpath("td[2]").text.upcase.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
           next if category.blank? && segment.blank?
           
-          result_url = row.xpath("td[4]/a/@href").text
-          score_url = row.xpath("td[5]/a/@href").text
+          result_url = row.xpath("td[4]//a/@href").text
+          score_url = row.xpath("td[5]//a/@href").text
 
           summary << {
             category: category,
@@ -55,7 +55,8 @@ module Fisk8Viewer
       def parse_time_schedule(page)
         ## time schdule
         date_elem = page.xpath("//*[text()='Date']").first
-        rows = date_elem.xpath("../../tr")
+        #rows = date_elem.xpath("../../tr")
+        rows = date_elem.xpath("ancestor::table/tr")
         dt_str = ""
         time_schedule = []
         rows.each do |row|

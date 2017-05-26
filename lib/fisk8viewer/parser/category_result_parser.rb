@@ -41,6 +41,9 @@ module Fisk8Viewer
           [nil, nil]
         end
       end
+      def parse_points(row)
+        row.xpath("td[4]").text.to_f
+      end
       def parse_row(row)
         return {} if row.xpath("td").blank?
         short_ranking, free_ranking = parse_rankings(row)
@@ -49,7 +52,7 @@ module Fisk8Viewer
           skater_name: parse_skater_name(row),
           isu_number: parse_isu_number(row),
           nation: parse_nation(row),
-          points: row.xpath("td[4]").text.to_f,
+          points: parse_points(row),
           short_ranking: short_ranking.to_i,
           free_ranking: free_ranking.to_i,
         }

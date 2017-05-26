@@ -101,6 +101,8 @@ module Fisk8Viewer
                 [:jworld, "JWORLD#{year}"]
               when /^ISU JGP/, /^ISU Junior Grand Prix/
                 [:jgp, "JGP#{country}#{year}"]
+              when /^Finlandia Trophy/
+                [:calendar, "B_FIN#{year}"]
               else
                 [:unknown, competition.name.gsub(/\s+/, '_')]
               end

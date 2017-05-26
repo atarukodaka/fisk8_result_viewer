@@ -1,5 +1,3 @@
-
-
 module Fisk8Viewer
   module Parsers
     class WTT_2017 < ISU_Generic
