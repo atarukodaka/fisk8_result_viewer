@@ -1,16 +1,17 @@
 ## TODO
-- autoload fisk8viewer/parsers/*.rb
 - re-consider parsers/* system
-- competition_summary_parser. use column
-
-### on next version
 - embed youtube in score
 - skater: highest score
-- ISU-b competition
+- challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
+  filter: isu_class: A or isu_championships on ??
+- competitions.yml: attributes to symbol keys
+
+### on next version
 
 ## 1.0.1
 - rake update:skaters..name space for update
-- caldendar comp: finlandia, aci, nebelhorn, lombaridai, warsaw
+- autoload fisk8viewer/parsers/*.rb
+- competition_summary_parser. use column
 
 ## 1.0.0
 

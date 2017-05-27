@@ -5,7 +5,7 @@
   - filters.each do |key, hash|
     .form-group.row
       .col-sm-2
-        = label_tag(key)
+        = label_tag(hash[:label] || key)
       .col-sm-10
         - case hash[:input] 
           - when :select
@@ -13,7 +13,7 @@
           - when :text_field
             = text_field_tag key, params[key], size: 70
           - when :checkbox
-            = check_box_tag key, nil, params[key].present?
+            = check_box_tag key, hash[:value], params[key].present?
   .form-group.row
     .col-sm-2
       = label_tag "Format"

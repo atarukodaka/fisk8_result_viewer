@@ -209,12 +209,28 @@
 
 ## ISU-B
 - http://www.isuresults.com/results/season1617/wc2017/  
+
 - http://www.deu-event.de/results/Nebelhorn_2016/index.html
 - http://www.figureskatingresults.fi/results/1617/CSFIN2016/
 - http://www.fisg.it/upload/result/4144/senior/index2.html  # lombardia
-- http://pfsa.com.pl/cspol2016/  # warsaw cup
 - http://www.deu-event.de/results/Nebelhorn_2016/index.html
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
-- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/  
+- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+
+- http://www.isuresults.com/results/season1516/csger2015/  # nebelhorn 2015
+- http://www.isuresults.com/results/nt2014/  # nebelhorn 2014
+- http://www.deu-event.de/results/Nebelhorn_2012/
+- http://www.deu-event.de/results/Nebelhorn_2011/
+- http://www.deu-event.de/results/Nebelhorn_2010/
+- http://www.isuresults.com/results/nt2013/
+
+
+-
+  url: http://www.isuresults.com/results/fc2012/
+  parser: :isu_generic_mdy
+-
+  url: http://pfsa.com.pl/cspol2016/  # warsaw cup
+  attributes:
+    country: 'RUS'  

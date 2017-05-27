@@ -21,9 +21,10 @@ module Fisk8Viewer
           YAML.load_file(yaml_filename).map do |item|
             case item
             when String
-              {url: item, parser: DEFAULT_PARSER}
+              {url: item, parser: DEFAULT_PARSER, attributes: {}}
             when Hash
-              {url: item["url"], parser: item["parser"] || DEFAULT_PARSER, comment: item['comment']}
+              {url: item["url"], parser: item["parser"] || DEFAULT_PARSER,
+                attributes: item }
             else
               raise "invalid format ('#{yaml_filename}'): has to be String or Hash"
             end
@@ -36,7 +37,7 @@ module Fisk8Viewer
         parser_klass.new
       end
       
-      def update_competition(url, parser_type: :isu_generic, force: false, comment: nil)
+      def update_competition(url, parser_type: :isu_generic, force: false, attributes: {})
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
@@ -57,7 +58,8 @@ module Fisk8Viewer
         ActiveRecord::Base::transaction do
           competition = Competition.create(summary.slice(*keys)) do |comp|
             update_competition_identifers(comp)
-            comp.comment = comment
+            comp.comment = attributes["comment"] if attributes["comment"]
+            comp.country = attributes["country"] if attributes["country"]
           end
           ## for each categories
           summary.categories.each do |category|
@@ -104,17 +106,17 @@ module Fisk8Viewer
                 [:jgp, "JGP#{country}#{year}", :A]
                 
               when /^Finlandia Trophy/
-                [:calendar, "FIN#{year}", :B]
+                [:challenger, "FIN#{year}", :B]
               when /Warsaw Cup/
-                [:calendar, "WARSAW#{year}", :B]
+                [:challenger, "WARSAW#{year}", :B]
               when /Autumn Classic/
-                [:calendar, "ACIW#{year}", :B]
+                [:challenger, "ACIW#{year}", :B]
               when /Nebelhorn/
-                [:calendar, "NEBELHORNW#{year}", :B]
+                [:challenger, "NEBELHORNW#{year}", :B]
               when /Lombardia/
-                [:calendar, "LOMBARDIA#{year}", :B]
+                [:challenger, "LOMBARDIA#{year}", :B]
               when /Ondrej Nepela/
-                [:calendar, "NEPELA#{year}", :B]
+                [:challenger, "NEPELA#{year}", :B]
               else
                 [:unknown, competition.name.gsub(/\s+/, '_'), nil]
               end
@@ -141,7 +143,7 @@ module Fisk8Viewer
 
         skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: cr.category, nation: result_hash[:nation])
         cr.skater = skater
-        puts "   #{cr.ranking}2d: '#{cr.skater_name}' (#{cr.skater.isu_number}) [#{cr.nation}] #{cr.short_ranking} / #{cr.free_ranking}"
+        puts "   #{cr.ranking}: '#{cr.skater_name}' (#{cr.skater.isu_number}) [#{cr.nation}] #{cr.short_ranking} / #{cr.free_ranking}"
         skater.category_results << cr
 
         cr.save!

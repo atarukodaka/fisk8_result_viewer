@@ -12,7 +12,7 @@ class ElementsController < ApplicationController
           operator: (params[:perfect_match]) ? :eq : :like,
           input: :text_field, model: Element,
         },
-        perfect_match: { operator: nil, input: :checkbox, },
+        perfect_match: { operator: nil, input: :checkbox, value: 'PERFECT_MATCH'},
         goe: { operator: :compare, input: :text_field, model: Element},
       }.merge score_filters.filters
     end

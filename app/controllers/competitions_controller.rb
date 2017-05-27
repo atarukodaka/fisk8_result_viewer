@@ -1,13 +1,21 @@
 class CompetitionsListDecorator < ListDecorator
+  class << self
+    def headers
+      { competition_type: "Type" }
+    end
+  end
   def name
     h.link_to_competition(model)
   end  
   def site_url
     h.link_to_competition_site("Official", model)
   end
+=begin
   def competition_type
-    [model.isu_class, model.competition_type].join("-")
+    #[model.isu_class, model.competition_type].join("-")
+    model.competition_type
   end
+=end
 end
 ################
 class CategoryResultsListDecorator < ListDecorator
@@ -73,13 +81,14 @@ class CompetitionsController < ApplicationController
         name: {operator: :like, input: :text_field, model: Competition},
         site_url: {operator: :like, input: :text_field, model: Competition},
         competition_type: {operator: :eq, input: :select, model: Competition},
+        isu_class: { operator: :eq, input: :checkbox, model: Competition, value: "A", label: "ISU Championships Only"},
         season: {operator: :eq, input: :select, model: Competition},
       }
     end
   end
   
   def display_keys
-    [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
+    [:cid, :name, :site_url, :city, :country, :competition_type, :isu_class, :season, :start_date, :end_date]
   end
   def collection
     Competition.recent.filter(filters.create_arel_tables(params))

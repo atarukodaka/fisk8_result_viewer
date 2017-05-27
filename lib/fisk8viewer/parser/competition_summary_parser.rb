@@ -58,9 +58,10 @@ module Fisk8Viewer
 
       def parse_time_schedule(page)
         ## time schdule
-        date_elem = page.xpath("//*[text()='Date']").first
+        #date_elem = page.xpath("//*[text()='Date']").first
         #rows = date_elem.xpath("../../tr")
-        rows = date_elem.xpath("ancestor::table//tr")
+        #rows = date_elem.xpath("ancestor::table//tr")
+        rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         dt_str = ""
         time_schedule = []
         rows.each do |row|
@@ -71,8 +72,8 @@ module Fisk8Viewer
           end
           tm_str = row.xpath("td[2]").text
           tm = parse_datetime("#{dt_str} #{tm_str}")
-          tm = tm + 2000.years if tm.year < 2000
           next if tm.nil?
+          tm = tm + 2000.years if tm.year < 2000
           
           time_schedule << {
             time: tm,

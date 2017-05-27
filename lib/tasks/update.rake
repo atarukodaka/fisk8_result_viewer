@@ -21,7 +21,7 @@ namespace :update do
       items = items.last(last).reverse
     end
     items.map do |item|
-      updater.update_competition(item[:url], parser_type: item[:parser], comment: item[:comment], force: force)
+      updater.update_competition(item[:url], parser_type: item[:parser], attributes: item[:attributes], force: force)
     end
   end
 
