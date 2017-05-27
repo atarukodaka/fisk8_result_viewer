@@ -1,5 +1,7 @@
 ## TODO
 - autoload fisk8viewer/parsers/*.rb
+- re-consider parsers/* system
+- competition_summary_parser. use column
 
 ### on next version
 - embed youtube in score
@@ -8,6 +10,7 @@
 
 ## 1.0.1
 - rake update:skaters..name space for update
+- caldendar comp: finlandia, aci, nebelhorn, lombaridai, warsaw
 
 ## 1.0.0
 

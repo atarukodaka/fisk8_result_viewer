@@ -34,9 +34,10 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "country"
     t.date "start_date"
     t.date "end_date"
+    t.string "season"
     t.string "site_url"
     t.string "competition_type"
-    t.string "season"
+    t.string "isu_class"
     t.string "comment"
   end
 

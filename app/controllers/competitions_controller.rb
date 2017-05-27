@@ -5,6 +5,9 @@ class CompetitionsListDecorator < ListDecorator
   def site_url
     h.link_to_competition_site("Official", model)
   end
+  def competition_type
+    [model.isu_class, model.competition_type].join("-")
+  end
 end
 ################
 class CategoryResultsListDecorator < ListDecorator

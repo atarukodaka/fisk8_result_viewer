@@ -14,7 +14,12 @@ module Fisk8Viewer
         end
       end
       def parse_city_country(page)
-        str = page.search("td.caption3").first.text
+        str =
+          begin
+            page.search("td.caption3").first.text
+          rescue
+            page.xpath("//h3").first.text.strip
+          end
         if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
           city, country = $1, $2
           city.sub!(/ *$/, '') if city.present?
@@ -25,8 +30,7 @@ module Fisk8Viewer
       end
       def parse_summary_table(page)
         category_elem = page.xpath("//*[text()='Category']").first
-        rows = category_elem.ancestors.xpath("table").first.xpath("tr")
-
+        rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
         category = ""
         summary = []
         
@@ -34,7 +38,7 @@ module Fisk8Viewer
           next if row.xpath("td").blank?
           
           if (c = row.xpath("td[1]").text.presence)
-            category = c.upcase.strip
+            category = c.upcase.strip.gsub(/^SENIOR /, '')            
           end
           segment = row.xpath("td[2]").text.upcase.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
           next if category.blank? && segment.blank?
@@ -56,7 +60,7 @@ module Fisk8Viewer
         ## time schdule
         date_elem = page.xpath("//*[text()='Date']").first
         #rows = date_elem.xpath("../../tr")
-        rows = date_elem.xpath("ancestor::table/tr")
+        rows = date_elem.xpath("ancestor::table//tr")
         dt_str = ""
         time_schedule = []
         rows.each do |row|
@@ -67,11 +71,12 @@ module Fisk8Viewer
           end
           tm_str = row.xpath("td[2]").text
           tm = parse_datetime("#{dt_str} #{tm_str}")
+          tm = tm + 2000.years if tm.year < 2000
           next if tm.nil?
           
           time_schedule << {
             time: tm,
-            category: row.xpath("td[3]").text.upcase,
+            category: row.xpath("td[3]").text.upcase.gsub(/^SENIOR /, ''),
             segment: row.xpath("td[4]").text.upcase,
           }
         end
@@ -85,7 +90,7 @@ module Fisk8Viewer
         @url = url
         page = get_url(url)
         city, country = parse_city_country(page)
-        
+
         {
           name: parse_name(page),
           site_url: url,

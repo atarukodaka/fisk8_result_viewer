@@ -64,7 +64,8 @@ module Fisk8Viewer
             next unless category_accepter.accept?(category)
             result_url = summary.result_url(category)
             puts " = [%s]" % [category]
-            update_category_results(result_url, competition: competition, parser: parser)
+            update_category_results(result_url, competition: competition, parser: parser,
+                                    category: category)
 
             ## for segments
             summary.segments(category).each do |segment|
@@ -84,72 +85,69 @@ module Fisk8Viewer
 
         ary = case competition.name
               when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-                [:gp, "GPF#{year}"]
+                [:gp, "GPF#{year}", :A]
               when /^ISU GP/
-                [:gp, "GP#{country}#{year}"]
+                [:gp, "GP#{country}#{year}", :A]
               when /Olympic/
-                [:olympic, "OLYMPIC#{year}"]
+                [:olympic, "OLYMPIC#{year}", :A]
               when /^ISU World Figure/, /^ISU World Championships/
-                [:world, "WORLD#{year}"]
+                [:world, "WORLD#{year}", :A]
               when /^ISU Four Continents/
-                [:fcc, "FCC#{year}"]
+                [:fcc, "FCC#{year}", :A]
               when /^ISU European/
-                [:euro, "EURO#{year}"]
+                [:euro, "EURO#{year}", :A]
               when /^ISU World Team/
-                [:team, "TEAM#{year}"]
+                [:team, "TEAM#{year}", :A]
               when /^ISU World Junior/
-                [:jworld, "JWORLD#{year}"]
+                [:jworld, "JWORLD#{year}", :A]
               when /^ISU JGP/, /^ISU Junior Grand Prix/
-                [:jgp, "JGP#{country}#{year}"]
+                [:jgp, "JGP#{country}#{year}", :A]
+                
               when /^Finlandia Trophy/
-                [:calendar, "B_FIN#{year}"]
+                [:calendar, "FIN#{year}", :B]
+              when /Warsaw Cup/
+                [:calendar, "WARSAW#{year}", :B]
+              when /Autumn Classic/
+                [:calendar, "ACIW#{year}", :B]
+              when /Nebelhorn/
+                [:calendar, "NEBELHORNW#{year}", :B]
+              when /Lombardia/
+                [:calendar, "LOMBARDIA#{year}", :B]
+              when /Ondrej Nepela/
+                [:calendar, "NEPELA#{year}", :B]
               else
-                [:unknown, competition.name.gsub(/\s+/, '_')]
+                [:unknown, competition.name.gsub(/\s+/, '_'), nil]
               end
         competition.competition_type = ary[0]
         competition.cid = ary[1]
+        competition.isu_class = ary[2]
       end
       ################################################################
-      def update_category_results(url, competition:, parser: )
+      def update_category_results(url, competition:, parser: , category: )
         return [] if url.blank?
         parser.parse_category_result(url).map do |result_hash|
           competition.category_results.create do |cr|
             cr.competition_name = competition.name
+            cr.category = category
             update_category_result(result_hash, cr)
           end
         end
       end
       def update_category_result(result_hash, cr)
-        keys = [:category, :ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
+        keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :free_ranking]
 
         result_hash[:skater_name] = correct_skater_name(result_hash[:skater_name])
-        puts "   %<ranking>2d: '%{skater_name}' (%{isu_number}) [%{nation}] %{short_ranking} / %{free_ranking}" % result_hash
         cr.attributes = result_hash.slice(*keys)
 
-        skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: result_hash[:category], nation: result_hash[:nation])
+        skater = find_or_create_skater(result_hash[:isu_number], result_hash[:skater_name], category: cr.category, nation: result_hash[:nation])
         cr.skater = skater
+        puts "   #{cr.ranking}2d: '#{cr.skater_name}' (#{cr.skater.isu_number}) [#{cr.nation}] #{cr.short_ranking} / #{cr.free_ranking}"
         skater.category_results << cr
 
         cr.save!
         cr
       end
       ################################################################
-=begin
-      def find_relevant_category_result(competition:, category:, segment:, skater_name:, ranking: )
-        ## find relevant category result
-        results = competition.category_results
-        results.find_by(category: category, skater_name: skater_name) || raise
-        ## for fcc2012 ladies short
-          ## name on category result and scores are different.
-          case segment
-          when /^SHORT/
-            results.find_by(category: category, short_ranking: ranking)
-          when /^FREE/
-            results.find_by(category: category, free_ranking: ranking)
-          end || raise
-
-      end
-=end
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
           score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])

@@ -11,10 +11,28 @@ module Fisk8Viewer
 
         fpl.first.xpath("../../tr")
       end
-      def get_category(page)
-        page.xpath("//table/tr/td")[2].text.upcase
+      def parse_headers(row)
+        col_num = {}
+        row.xpath("th").each_with_index do |header, i|
+          case header.text.strip
+          when 'FPl.'
+            col_num[:ranking] = i
+          when 'Name'
+            col_num[:skater_name] = i
+          when 'Nation'
+            col_num[:nation] = i
+          when 'Points'
+            col_num[:points] = i
+          when 'SP', 'SD'
+            col_num[:short_ranking] = i
+          when 'FS', 'FD'
+            col_num[:free_ranking] = i
+          end
+        end
+        col_num
       end
-
+      
+=begin
       def parse_ranking(row)
         row.xpath("td[1]").text.to_i
       end
@@ -57,15 +75,25 @@ module Fisk8Viewer
           free_ranking: free_ranking.to_i,
         }
       end
-      
+=end      
       def parse(url)
         page = get_url(url)
         page.encoding = 'iso-8859-1'  # for umlaut support
-        category = get_category(page)
 
         rows = get_rows(page)
+        col_num = parse_headers(rows[0])
         rows[1..-1].map do |row|
-          parse_row(row).merge(category: category)
+          data = {}
+          data[:ranking] = row.xpath("td")[col_num[:ranking]].text.to_i
+          data[:skater_name] = row.xpath("td")[col_num[:skater_name]].text
+          data[:nation] = row.xpath("td")[col_num[:nation]].text
+          data[:points] = row.xpath("td")[col_num[:points]].text.to_f
+          data[:short_ranking] = row.xpath("td")[col_num[:short_ranking]].text.to_i
+          data[:free_ranking] = row.xpath("td")[col_num[:free_ranking]].text.to_i
+
+          href = row.xpath("td")[col_num[:skater_name]].xpath("a/@href").text
+          data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
+          data
         end
       end
     end  # module

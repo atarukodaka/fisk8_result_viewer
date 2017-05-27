@@ -208,11 +208,13 @@
   parser: :isu_generic_mdy
 
 ## ISU-B
+- http://www.isuresults.com/results/season1617/wc2017/  
+- http://www.deu-event.de/results/Nebelhorn_2016/index.html
+- http://www.figureskatingresults.fi/results/1617/CSFIN2016/
+- http://www.fisg.it/upload/result/4144/senior/index2.html  # lombardia
+- http://pfsa.com.pl/cspol2016/  # warsaw cup
+- http://www.deu-event.de/results/Nebelhorn_2016/index.html
 -
-  url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
-  parser: :finlandia
--
-  url: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-  parser: :finlandia
-- https://skatecanada.ca/event/2016-autumn-classic-international/  
-  
+  url: https://skatecanada.ca/event/2016-autumn-classic-international/
+  parser: :autumn_classic
+- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/  
