@@ -1,9 +1,12 @@
 require 'rails_helper'
 require 'fisk8viewer/parser'
+require 'fisk8viewer/competition_summary'
 
 RSpec.configure do |c|
   c.filter_run_excluding parser: true
 end
+
+=begin
 
 describe 'parser', parser: true do
   describe 'score' do
@@ -21,8 +24,8 @@ describe 'parser', parser: true do
     it { expect(score[:elements][0][:value]).to eq(9.37) }
     it { expect(score[:components][0][:component]).to eq('Skating Skills') }
     it { expect(score[:components][0][:value]).to eq(9.39) }
-
   end
+
 
   describe 'competition summary' do
     subject (:parsed){
@@ -94,3 +97,4 @@ describe 'parser', parser: true do
 
   end
 end
+=end

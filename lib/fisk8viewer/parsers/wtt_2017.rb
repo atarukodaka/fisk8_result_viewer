@@ -90,39 +90,22 @@ module Fisk8Viewer
            },
           ]
         end
+        # rubocop:enable all
       end  ##
-      # rubocop:enable all
-      
+
+      ################################################################
       class CategoryResultParser < ISU_Generic::CategoryResultParser
         def get_rows(page)
           page.xpath("//table[1]/tr")
         end
+=begin
         def get_category(page)
           text = page.xpath("//p[1]").text
           text.sub(/ \- Entry/, '').upcase
         end
-        def parse_headers(row)
-          {
-            ranking: 0,
-            skater_name: 1,
-            nation: 2,
-          }
-        end
+=end
         def parse_skater_name(v)
           v.xpath('a/text()').map(&:text).join(' / ').gsub(/\u00a0/, ' ')
-=begin
-
-
-          #.map(&:text).join(' / ').gsub(/\u00a0/, ' ').gsub(/  */, ' ')
-          children = v.xpath("a").children
-          
-          if children.size == 3  ## for pairs, ice dance
-            #[children[0].text, children[2].text]
-            children.values_at(0, 2).map(&:text)
-          else
-            [children.first.text]
-          end.join(' / ').gsub(/\u00a0/, ' ')
-=end
         end
         def parse_nation(v)
           v.gsub(/\u00a0/, '')
