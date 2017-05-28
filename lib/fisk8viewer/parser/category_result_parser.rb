@@ -33,8 +33,8 @@ module Fisk8Viewer
       end
       def parse(url)
         page = get_url(url)
+        return [] if page.nil?
         page.encoding = 'iso-8859-1'  # for umlaut support
-
         rows = get_rows(page)
         col_num = parse_headers(rows[0])
         rows[1..-1].map do |row|

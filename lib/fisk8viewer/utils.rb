@@ -11,7 +11,12 @@ module Fisk8Viewer
     end
     def get_url(url)
       @agent ||= Mechanize.new
-      @agent.get(url)
+      begin
+        @agent.get(url)
+      rescue Mechanize::ResponseCodeError
+        logger.warn("!!! #{url} not found")
+        nil
+      end
     end
 
     def convert_pdf(url, dir: "./")

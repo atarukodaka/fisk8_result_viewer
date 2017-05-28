@@ -57,13 +57,18 @@ module Fisk8Viewer
         summary
       end
 
+      def get_time_schedule_rows(page)
+        page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+      end
       def parse_time_schedule(page)
         ## time schdule
         #date_elem = page.xpath("//*[text()='Date']").first
         #rows = date_elem.xpath("../../tr")
         #rows = date_elem.xpath("ancestor::table//tr")
-        rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        #rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         #rows = page.xpath("//table[.//*[text()='Date']]").xpath(".//tr")
+        rows = get_time_schedule_rows(page)
+        #binding.pry
         dt_str = ""
         time_schedule = []
         rows.each do |row|
@@ -86,12 +91,13 @@ module Fisk8Viewer
         time_schedule
       end
       def parse_name(page)
-        page.title
+        page.title.strip
       end
       ################
       def parse(url)
         @url = url
         page = get_url(url)
+        return {} if page.nil?
         city, country = parse_city_country(page)
 
         {

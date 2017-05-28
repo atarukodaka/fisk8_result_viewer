@@ -56,7 +56,7 @@ module Fisk8Viewer
         parsed = parser.parse_competition_summary(url)
         summary = Fisk8Viewer::CompetitionSummary.new(parsed)
         keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
-        
+
         ActiveRecord::Base::transaction do
           competition = Competition.create(summary.slice(*keys)) do |comp|
             update_competition_identifers(comp)
@@ -150,17 +150,12 @@ module Fisk8Viewer
         cr.skater = skater
         puts "   #{cr.ranking}: '#{cr.skater_name}' (#{cr.skater.isu_number}) [#{cr.nation}] #{cr.short_ranking} / #{cr.free_ranking}"
         skater.category_results << cr
-
-        cr.save!
-        cr
       end
       ################################################################
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
           score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])
-          #cr = find_relevant_category_result(competition: competition, category: category, segment: segment, skater_name: score_hash[:skater_name], ranking: score_hash[:ranking])
-          #raise if cr.nil?
-          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || raise
+          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || binding.pry # raise
           skater = cr.skater
           
           score = competition.scores.create do |sc|
@@ -184,10 +179,10 @@ module Fisk8Viewer
                       :result_pdf, :tss, :tes, :pcs, :deductions, :base_value]
 
         score.attributes = score_hash.slice(*score_keys)
-        score.save!
         update_elements(score_hash, score)
         update_components(score_hash, score)
         update_sid(score_hash, score)
+        score.save!
       end
       def update_elements(score_hash, score)
         ## technical elements
@@ -198,7 +193,7 @@ module Fisk8Viewer
             score.elements.create!(element.slice(*element_keys))
             elem_summary << element[:element]
           end
-          score.update!(elements_summary: elem_summary.join('/'))
+          score.elements_summary = elem_summary.join('/')
         end
       end
       def update_components(score_hash, score)
@@ -210,7 +205,7 @@ module Fisk8Viewer
             score.components.create!(comp.slice(*comp_keys))
             comp_summary << comp[:value]
           end
-          score.update!(components_summary: comp_summary.join('/'))
+          score.components_summary = comp_summary.join('/')
         end
       end
       def update_sid(_score_hash, score)
@@ -222,7 +217,7 @@ module Fisk8Viewer
         segment_abbr =score.segment || ""
         segment_abbr = segment_abbr.split(/ /).map {|d| d[0]}.join
 
-        score.update!(sid: [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('-'))
+        score.sid = [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('-')
       end
     end  ## class
   end

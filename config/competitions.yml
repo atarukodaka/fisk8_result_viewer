@@ -201,34 +201,54 @@
   url: http://www.isuresults.com/results/season1516/gpfra2015/
   attributes:
     comment: "Free Skating has been canceled due to explusion in Paris. refere: http://static.isu.org/media/1012/1980-isu-gp-fra-2015-partial-cancelation-info-to-members-public.pdf"
--
-  url: http://www.isuresults.com/results/fc2012/
-  parser: :isu_generic_mdy
 
 ## ISU-B
-- http://www.isuresults.com/results/season1617/wc2017/  
-
+## nebelhorn
 - http://www.deu-event.de/results/Nebelhorn_2016/index.html
-- http://www.figureskatingresults.fi/results/1617/CSFIN2016/
-- http://www.fisg.it/upload/result/4144/senior/index2.html  # lombardia
-- http://www.deu-event.de/results/Nebelhorn_2016/index.html
-- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-
-- http://www.isuresults.com/results/season1516/csger2015/  # nebelhorn 2015
-- http://www.isuresults.com/results/nt2014/  # nebelhorn 2014
+- http://www.isuresults.com/results/season1516/csger2015/
+- http://www.isuresults.com/results/nt2014/
+- http://www.isuresults.com/results/nt2013/
 - http://www.deu-event.de/results/Nebelhorn_2012/
 - http://www.deu-event.de/results/Nebelhorn_2011/
 - http://www.deu-event.de/results/Nebelhorn_2010/
-- http://www.isuresults.com/results/nt2013/
+
+## finlandia
+-
+  url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
+  parser: :finlandia_2013
+-
+  url: http://www.figureskatingresults.fi/results/1516/CSFIN2015/
+  parser: :finlandia_2013
+-
+  url: http://www.figureskatingresults.fi/results/1415/CSFIN2014/
+  parser: :finlandia_2013
+-
+  url: http://www.figureskatingresults.fi/results/1314/FT2013/
+  parser: :finlandia_2013
+- http://www.figureskatingresults.fi/results/1213/FT2012/
+- http://www.figureskatingresults.fi/results/1112/FT2011/
+- http://www.figureskatingresults.fi/results/1011/FT2010/
+
+## lombardia
+- http://www.fisg.it/upload/result/4144/senior/index2.html
+- http://www.fisg.it/upload/result/3860/index.html
 
 
+## ondreij nepela
+- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+- http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
+- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+
+## warsaw cup
 -
-  url: http://www.isuresults.com/results/fc2012/
-  parser: :isu_generic_mdy
--
-  url: http://pfsa.com.pl/cspol2016/  # warsaw cup
+  url: http://pfsa.com.pl/cspol2016/  
   attributes:
     country: 'RUS'  
+- http://pfsa.com.pl/cspol15/
+- http://www.pfsa.com.pl/warsawcup2014/    
+- http://www.pfsa.com.pl/results/1314/WC2013/
+
+## aci    
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
@@ -242,4 +262,13 @@
   attributes:
     comment: "no category results provided"
 
-    
+- http://www.pfsa.com.pl/results/1314/WC2013/
+- http://www.figureskatingresults.fi/results/1213/FT2012/
+
+-
+  url: http://www.isuresults.com/results/fc2012/
+  parser: :isu_generic_mdy
+
+
+- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+  

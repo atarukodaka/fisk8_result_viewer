@@ -15,7 +15,7 @@ module Fisk8Viewer
         text.split(/\n/).each do |line|
           case mode
           when :skater
-            name_re = %q[[[:alpha:]\.\- \/\']+]
+            name_re = %q[[[:alpha:]1\.\- \/\']+]   ## Mariya1 BAKUSHEVA
             if line =~ /^(\d+) (#{name_re}) *([A-Z][A-Z][A-Z]) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
               hash = {
                 ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
@@ -55,7 +55,11 @@ module Fisk8Viewer
       end
 
       def parse(score_url)
-        text = convert_pdf(score_url, dir: "pdf")
+        begin
+          text = convert_pdf(score_url, dir: "pdf")
+        rescue OpenURI::HTTPError
+          return []
+        end
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
 
         text =~ /^(.*)\n(.*) ((SHORT|FREE) (.*)) JUDGES DETAILS PER SKATER$/
