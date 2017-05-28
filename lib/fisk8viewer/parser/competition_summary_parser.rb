@@ -67,6 +67,7 @@ module Fisk8Viewer
         #rows = date_elem.xpath("ancestor::table//tr")
         #rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         #rows = page.xpath("//table[.//*[text()='Date']]").xpath(".//tr")
+        #binding.pry
         rows = get_time_schedule_rows(page)
         #binding.pry
         dt_str = ""

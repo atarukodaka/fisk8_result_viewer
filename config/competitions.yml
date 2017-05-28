@@ -216,16 +216,28 @@
 -
   url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
   parser: :finlandia_2013
+  attributes:
+    country: FIN
 -
   url: http://www.figureskatingresults.fi/results/1516/CSFIN2015/
   parser: :finlandia_2013
+  attributes:
+    country: FIN
 -
   url: http://www.figureskatingresults.fi/results/1415/CSFIN2014/
   parser: :finlandia_2013
+  attributes:
+    country: FIN  
 -
   url: http://www.figureskatingresults.fi/results/1314/FT2013/
   parser: :finlandia_2013
-- http://www.figureskatingresults.fi/results/1213/FT2012/
+  attributes:
+    country: FIN  
+-
+  url: http://www.figureskatingresults.fi/results/1213/FT2012/
+  parser: :finlandia_2013
+  attributes:
+    country: FIN  
 - http://www.figureskatingresults.fi/results/1112/FT2011/
 - http://www.figureskatingresults.fi/results/1011/FT2010/
 
@@ -263,12 +275,17 @@
     comment: "no category results provided"
 
 - http://www.pfsa.com.pl/results/1314/WC2013/
-- http://www.figureskatingresults.fi/results/1213/FT2012/
-
 -
   url: http://www.isuresults.com/results/fc2012/
   parser: :isu_generic_mdy
 
-
 - http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
-  
+-
+  url: http://www.figureskatingresults.fi/results/1213/FT2012/
+  parser: :finlandia_2013
+  attributes:
+    country: FIN  
+-
+  url: https://skatecanada.ca/event/2016-autumn-classic-international/
+  parser: :autumn_classic
+

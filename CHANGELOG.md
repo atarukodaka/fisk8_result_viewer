@@ -4,7 +4,6 @@
 - skater: highest score
 - challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
   filter: isu_class: A or isu_championships on ??
-- competitions.yml: attributes to symbol keys
 
 ### on next version
 
@@ -12,6 +11,8 @@
 - rake update:skaters..name space for update
 - autoload fisk8viewer/parsers/*.rb
 - competition_summary_parser. use column
+- competitions.yml: attributes to symbol keys
+- http 404 error rescue on parsing/updating
 
 ## 1.0.0
 

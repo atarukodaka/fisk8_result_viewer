@@ -4,3 +4,8 @@ google_analytics:
 notification:
   gmail_address: <%= ENV['GMAIL_ADDRESS'] %>
   gmail_password: <%= ENV['GMAIL_PASSWORD'] %>
+
+about:
+  name: your name
+  mail_address: your@mail.address
+  twitter_account: your_twitter_account

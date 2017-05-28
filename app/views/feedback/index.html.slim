@@ -3,8 +3,6 @@
   | Feedback
 
 
-
-
 h2 Pull Request of missing competition
 
 p please input URL of new competition that should be incoroprated into this database.
@@ -37,4 +35,13 @@ p please input URL of new competition that should be incoroprated into this data
     .col-sm-2
     .col-sm-10
       = submit_tag "Submit", name: nil
+
+h2 About
+
+p 
+  | this page is maintained by #{Settings.about.name}. 
+  | contact to #{link_to(Settings.about.mail_address, "mailto:" + Settings.about.mail_address)} or 
+  | #{link_to(Settings.about.twitter_account, "http://twitter.com/" + Settings.about.twitter_account)}, 
+  | powered by #{link_to("Fisk8Viewer" + " v" + Fisk8Viewer::VERSION, "https://github.com/atarukodaka/fisk8_result_viewer")}
+  
 
