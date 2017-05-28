@@ -233,9 +233,13 @@
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
 
+
+- http://www.isuresults.com/results/season1617/wc2017/    
+
 -
   url: http://www.jsfresults.com/intl/2016-2017/wtt/
   parser: :wtt_2017
   attributes:
     comment: "no category results provided"
-  
+
+    
