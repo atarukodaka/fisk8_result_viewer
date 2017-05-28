@@ -23,8 +23,10 @@ module Fisk8Viewer
             when String
               {url: item, parser: DEFAULT_PARSER, attributes: {}}
             when Hash
-              {url: item["url"], parser: item["parser"] || DEFAULT_PARSER,
-                attributes: item }
+              {
+                url: item["url"], parser: item["parser"] || DEFAULT_PARSER,
+                attributes: item["attributes"] || {}
+              }.deep_symbolize_keys
             else
               raise "invalid format ('#{yaml_filename}'): has to be String or Hash"
             end
@@ -58,8 +60,9 @@ module Fisk8Viewer
         ActiveRecord::Base::transaction do
           competition = Competition.create(summary.slice(*keys)) do |comp|
             update_competition_identifers(comp)
-            comp.comment = attributes["comment"] if attributes["comment"]
-            comp.country = attributes["country"] if attributes["country"]
+            [:comment, :country].each do |key|
+              comp[key] = attributes[key] if attributes[key]
+            end
           end
           ## for each categories
           summary.categories.each do |category|
@@ -110,9 +113,9 @@ module Fisk8Viewer
               when /Warsaw Cup/
                 [:challenger, "WARSAW#{year}", :B]
               when /Autumn Classic/
-                [:challenger, "ACIW#{year}", :B]
+                [:challenger, "ACI#{year}", :B]
               when /Nebelhorn/
-                [:challenger, "NEBELHORNW#{year}", :B]
+                [:challenger, "NEBELHORN#{year}", :B]
               when /Lombardia/
                 [:challenger, "LOMBARDIA#{year}", :B]
               when /Ondrej Nepela/
@@ -120,9 +123,11 @@ module Fisk8Viewer
               else
                 [:unknown, competition.name.gsub(/\s+/, '_'), nil]
               end
-        competition.competition_type = ary[0]
-        competition.cid = ary[1]
-        competition.isu_class = ary[2]
+        competition.attributes = {
+          competition_type: ary[0],
+          cid: ary[1],
+          isu_class: ary[2],
+        }
       end
       ################################################################
       def update_category_results(url, competition:, parser: , category: )
@@ -159,14 +164,15 @@ module Fisk8Viewer
           skater = cr.skater
           
           score = competition.scores.create do |sc|
-            sc.competition_name = competition.name
-            sc.category = category
-            sc.segment = segment
-            sc.skater = skater
-            sc.attributes = attributes
+            sc.attributes = {
+              competition_name: competition.name,
+              category: category,
+              segment: segment,
+              skater: skater,
+            }.merge(attributes)
           end
           skater.scores << score
-          cr.scores << score if cr
+          cr.scores << score
 
           update_score(score_hash, score)
         end

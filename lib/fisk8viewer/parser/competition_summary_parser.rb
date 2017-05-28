@@ -29,8 +29,9 @@ module Fisk8Viewer
         end
       end
       def parse_summary_table(page)
-        category_elem = page.xpath("//*[text()='Category']").first
-        rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
+        #category_elem = page.xpath("//*[text()='Category']").first
+        #rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
+        rows = page.xpath("//table[.//*[text()='Category']]").xpath(".//tr")
         category = ""
         summary = []
         
@@ -61,7 +62,9 @@ module Fisk8Viewer
         #date_elem = page.xpath("//*[text()='Date']").first
         #rows = date_elem.xpath("../../tr")
         #rows = date_elem.xpath("ancestor::table//tr")
-        rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        #rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        rows = page.xpath("//table[.//*[text()='Date']]").xpath(".//tr")
+
         dt_str = ""
         time_schedule = []
         rows.each do |row|
