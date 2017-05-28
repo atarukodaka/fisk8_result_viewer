@@ -101,15 +101,40 @@ module Fisk8Viewer
           text = page.xpath("//p[1]").text
           text.sub(/ \- Entry/, '').upcase
         end
-        def parse_rank(row)
-          0
+        def parse_headers(row)
+          {
+            ranking: 0,
+            skater_name: 1,
+            nation: 2,
+          }
         end
-        def parse_skater_name(row)
-          row.xpath("td[2]/a/text()").map(&:text).join(' / ').gsub(/\u00a0/, ' ').gsub(/  */, ' ')
+        def parse_skater_name(v)
+          #.map(&:text).join(' / ').gsub(/\u00a0/, ' ').gsub(/  */, ' ')
+          children = v.xpath("a").children
+          if children.size == 3
+            [children[0].text, children[2].text]
+          else
+            [children[0].text]
+          end.join(' / ').gsub(/\u00a0/, ' ')
+        end
+        def parse_nation(v)
+          v.gsub(/\u00a0/, '')
+        end
+        def parse(url)
+          page = get_url(url)
+          page.encoding = 'iso-8859-1'
+
+          page.xpath("//table[1]/tr")[1..-1].map do |row|
+            {
+              ranking: row.xpath("td[1]").text.to_i,
+              skater_name: parse_skater_name(row.xpath("td[2]")),
+              nation: parse_nation(row.xpath("td[3]").text),
+              isu_number: (row.xpath("td[2]/a/@href").text =~ /([0-9]+)\.htm$/) ? $1.to_i : nil,
+            }
+          end
         end
       end
       ## register
-      
       Fisk8Viewer::Parsers.register(:wtt_2017, self)
     end ## class
   end
