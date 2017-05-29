@@ -162,6 +162,7 @@ module Fisk8Viewer
           score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])
           cr = find_relevant_category_result(competition.category_results.where(category: category), score_hash[:skater_name], segment, score_hash[:ranking]) || raise("no such skater: '#{skater_name}' in #{category}")
           skater = cr.skater
+          score_hash[:skater_name] = skater.name
           
           score = competition.scores.create do |sc|
             sc.attributes = {
