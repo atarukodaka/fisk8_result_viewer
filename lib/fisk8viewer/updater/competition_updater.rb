@@ -151,11 +151,16 @@ module Fisk8Viewer
         puts "   #{cr.ranking}: '#{cr.skater_name}' (#{cr.skater.isu_number}) [#{cr.nation}] #{cr.short_ranking} / #{cr.free_ranking}"
         skater.category_results << cr
       end
+      def find_relevant_category_result(category_results, skater_name, segment, ranking)
+        ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
+        category_results.find_by(skater_name: skater_name) ||
+          category_results.where(ranking_type => ranking).first
+      end
       ################################################################
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
           score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])
-          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || raise("no '#{score_hash[:skater_name]}' in #{category}")
+          cr = find_relevant_category_result(competition.category_results.where(category: category), score_hash[:skater_name], segment, score_hash[:ranking]) || raise("no such skater: '#{skater_name}' in #{category}")
           skater = cr.skater
           
           score = competition.scores.create do |sc|
