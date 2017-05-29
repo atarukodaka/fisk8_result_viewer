@@ -34,12 +34,11 @@ module Fisk8Viewer
       def parse(url)
         page = get_url(url)
         return [] if page.nil?
-        #page.encoding = 'iso-8859-1'  # for umlaut support
         rows = get_rows(page)
         col_num = parse_headers(rows[0])
         rows[1..-1].map do |row|
+=begin
           data = {}
-
           [[:ranking, :int], [:skater_name, :str], [:nation, :str], [:points, :float],
            [:short_ranking, :int], [:free_ranking, :int]].each do |ary|
             key, type = ary
@@ -47,6 +46,7 @@ module Fisk8Viewer
             data[key] = row.xpath("td")[col_num[key]].text.send(method) if col_num[key]
           end
           data[:skater_name].gsub!(/  */, ' ')  # eliminate duplicated spaces
+=end
 =begin
           data[:ranking] = row.xpath("td")[col_num[:ranking]].text.to_i
           data[:skater_name] = row.xpath("td")[col_num[:skater_name]].text
@@ -55,6 +55,16 @@ module Fisk8Viewer
           data[:short_ranking] = row.xpath("td")[col_num[:short_ranking]].text.to_i
           data[:free_ranking] = row.xpath("td")[col_num[:free_ranking]].text.to_i
 =end
+          tds = row.xpath("td")
+          
+          data = {
+            ranking: tds[col_num[:ranking]].text.to_i,
+            skater_name: tds[col_num[:skater_name]].text.gsub(/  */, ' ').strip,
+            nation: tds[col_num[:nation]].text,
+            points: tds[col_num[:points]].text.to_f,
+            short_ranking: tds[col_num[:short_ranking]].text.to_i,
+            free_ranking: tds[col_num[:free_ranking]].text.to_i,
+          }
 
           href = row.xpath("td")[col_num[:skater_name]].xpath("a/@href").text
           data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
