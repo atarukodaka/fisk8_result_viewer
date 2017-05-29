@@ -190,7 +190,10 @@
 - http://www.isuresults.com/results/season1617/jgpfra2016/
 - http://www.isuresults.com/results/season1617/jgpcze2016/
 - http://www.isuresults.com/results/season1617/jgpjpn2016/
-- http://www.isuresults.com/results/season1617/jgprus2016/  ## no country info
+-
+  url: http://www.isuresults.com/results/season1617/jgprus2016/
+  attributes:
+    country: RUS
 - http://www.isuresults.com/results/season1617/jgpslo2016/
 - http://www.isuresults.com/results/season1617/jgpest2016/
 - http://www.isuresults.com/results/season1617/jgpger2016/
@@ -210,8 +213,11 @@
 - http://www.isuresults.com/results/nt2013/
 - http://www.deu-event.de/results/Nebelhorn_2012/
 - http://www.deu-event.de/results/Nebelhorn_2011/
-- http://www.deu-event.de/results/Nebelhorn_2010/
-
+-
+  url: http://www.deu-event.de/results/Nebelhorn_2010/
+  attributes:
+    country: GER
+  
 ## finlandia
 -
   url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
@@ -247,20 +253,41 @@
 
 
 ## ondreij nepela
-- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+-
+  url: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+  attributes:
+    country: SVK
+
+-
+  url: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
+  attributes:
+    country: SVK
+-
+  url:  http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+  attributes:
+    country: SVK
 
 ## warsaw cup
 -
   url: http://pfsa.com.pl/cspol2016/  
   attributes:
     country: 'RUS'  
-- http://pfsa.com.pl/cspol15/
-- http://www.pfsa.com.pl/warsawcup2014/    
-- http://www.pfsa.com.pl/results/1314/WC2013/
+-
+  url:  http://pfsa.com.pl/cspol15/
+  attributes:
+    country: 'RUS'  
 
-## aci    
+-
+  url:  http://www.pfsa.com.pl/warsawcup2014/    
+  attributes:
+    country: 'RUS'  
+
+-
+  url: http://www.pfsa.com.pl/results/1314/WC2013/
+  attributes:
+    country: 'RUS'  
+
+    ## aci    
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
@@ -289,3 +316,4 @@
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
 
+- http://www.isuresults.com/results/season1516/wjc2016/
