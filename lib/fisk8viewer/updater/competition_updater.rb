@@ -155,7 +155,7 @@ module Fisk8Viewer
       def update_scores(score_url, parser:,competition:, category:, segment:, attributes: {})
         parser.parse_score(score_url).each do |score_hash|
           score_hash[:skater_name] = correct_skater_name(score_hash[:skater_name])
-          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || binding.pry # raise
+          cr = competition.category_results.find_by(category: category, skater_name: score_hash[:skater_name]) || raise("no '#{score_hash[:skater_name]}' in #{category}")
           skater = cr.skater
           
           score = competition.scores.create do |sc|

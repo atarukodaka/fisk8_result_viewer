@@ -15,13 +15,13 @@ module Fisk8Viewer
         text.split(/\n/).each do |line|
           case mode
           when :skater
-            name_re = %q[[[:alpha:]1\.\- \/\']+]   ## Mariya1 BAKUSHEVA
+            name_re = %q[[[:alpha:]1\.\- \/\']+]   ## 1 for Mariya1 BAKUSHEVA
             if line =~ /^(\d+) (#{name_re}) *([A-Z][A-Z][A-Z]) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
               hash = {
                 ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
                 tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
               }
-              hash[:skater_name].strip! # sub!(/ *$/, '')
+              hash[:skater_name].strip!.gsub!(/ *$/, '')
               score.merge!(hash)
               mode = :tes
             end

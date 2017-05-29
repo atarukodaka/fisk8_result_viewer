@@ -46,6 +46,7 @@ module Fisk8Viewer
             method = (type == :int) ? :to_i : (type == :float) ? :to_f : :to_s
             data[key] = row.xpath("td")[col_num[key]].text.send(method) if col_num[key]
           end
+          data[:skater_name].gsub!(/  */, ' ')  # eliminate duplicated spaces
 =begin
           data[:ranking] = row.xpath("td")[col_num[:ranking]].text.to_i
           data[:skater_name] = row.xpath("td")[col_num[:skater_name]].text
