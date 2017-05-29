@@ -21,7 +21,8 @@ module Fisk8Viewer
                 ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
                 tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
               }
-              hash[:skater_name].strip!.gsub!(/ *$/, '')
+
+              hash[:skater_name] = hash[:skater_name].to_s.strip.gsub(/ *$/, '')
               score.merge!(hash)
               mode = :tes
             end
