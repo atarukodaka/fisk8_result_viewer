@@ -1,0 +1,7 @@
+        - case hash[:input] 
+          - when :select
+            = select_tag key, options_for_select(filters.select_options(key, hash[:model]), selected: params[key])
+          - when :text_field
+            = text_field_tag key, params[key], size: 70
+          - when :checkbox
+            = check_box_tag key, hash[:value], params[key].present?
