@@ -4,17 +4,25 @@
   | skater: 
   = skater.name
 
-h2 Skaters Info
+
 
 .row
   .col-sm-6
+    h2 Skaters Info
     table.table.table-striped.table-hover.table-condensed
       tr
         = tr_data(:name, skater.name)
         = tr_data(:nation, skater.nation)
         = tr_data("ISU Number", link_to_isu_bio(skater.isu_number))
         = tr_data(:category, skater.category)
+
   .col-sm-6
+    h2 Result Summary
+    div
+      = link_to_skater("All", skater)
+      | &nbsp;|  
+      = link_to_skater("ISU Championships Only", skater, params: {isu_championships_only: true})
+
     table.table.table-striped.table-hover.table-condensed
       tr
         - cr = category_results.object

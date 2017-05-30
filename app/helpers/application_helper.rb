@@ -1,11 +1,11 @@
 module LinkToHelper
-  def link_to_skater(text = nil, skater)
+  def link_to_skater(text = nil, skater, params: {})
     link_to(text || skater.name,
             if skater.isu_number
               {controller: :skaters, action: :show, isu_number: skater.isu_number}
             else
               {controller: :skaters, action: :show_by_name, name: skater.name}
-            end)
+            end.merge(params))
   end
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
     text ||= segment || category || competition.name
