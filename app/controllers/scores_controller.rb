@@ -1,10 +1,7 @@
 class ScoresListDecorator < ListDecorator
   class << self
     def headers
-      super.merge ({
-                     deductions: "ded",
-                     result_pdf: "pdf",
-                   })
+      super.merge({deductions: "ded", result_pdf: "pdf",})
     end
   end
   def sid
@@ -21,7 +18,7 @@ class ScoresController < ApplicationController
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
   def collection
-    col = Score.joins(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+    Score.joins(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
   end
   def show
     score = Score.find_by(sid: params[:sid]) ||

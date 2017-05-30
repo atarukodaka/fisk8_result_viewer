@@ -37,24 +37,6 @@ module Fisk8Viewer
         rows = get_rows(page)
         col_num = parse_headers(rows[0])
         rows[1..-1].map do |row|
-=begin
-          data = {}
-          [[:ranking, :int], [:skater_name, :str], [:nation, :str], [:points, :float],
-           [:short_ranking, :int], [:free_ranking, :int]].each do |ary|
-            key, type = ary
-            method = (type == :int) ? :to_i : (type == :float) ? :to_f : :to_s
-            data[key] = row.xpath("td")[col_num[key]].text.send(method) if col_num[key]
-          end
-          data[:skater_name].gsub!(/  */, ' ')  # eliminate duplicated spaces
-=end
-=begin
-          data[:ranking] = row.xpath("td")[col_num[:ranking]].text.to_i
-          data[:skater_name] = row.xpath("td")[col_num[:skater_name]].text
-          data[:nation] = row.xpath("td")[col_num[:nation]].text
-          data[:points] = row.xpath("td")[col_num[:points]].text.to_f
-          data[:short_ranking] = row.xpath("td")[col_num[:short_ranking]].text.to_i
-          data[:free_ranking] = row.xpath("td")[col_num[:free_ranking]].text.to_i
-=end
           tds = row.xpath("td")
           
           data = {

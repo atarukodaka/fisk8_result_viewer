@@ -45,8 +45,10 @@ class IndexFilters
   
   ################################################################
   def parse_compare(text)
-    method = :eq; value = text.to_i
-    if text =~ %r{^ *([=<>]+) *([\d\.\-]+) *$}
+    method = :eq;
+    value = text.to_i
+    re = '^ *([=<>]+) *([\d\.\-]+) *$'
+    if text =~ /#{re}/
       value = $2.to_f
       method =
         case $1

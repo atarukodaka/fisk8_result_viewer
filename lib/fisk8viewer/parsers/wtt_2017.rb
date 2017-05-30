@@ -105,10 +105,10 @@ module Fisk8Viewer
         end
 =end
         def parse_skater_name(v)
-          v.xpath('a/text()').map(&:text).join(' / ').gsub(/\u00a0/, ' ')
+          v.xpath('a/text()').map(&:text).join(' / ').tr("\u00a0", ' ')
         end
         def parse_nation(v)
-          v.gsub(/\u00a0/, '')
+          v.delete(/\u00a0/)
         end
         def parse(url)
           page = get_url(url)

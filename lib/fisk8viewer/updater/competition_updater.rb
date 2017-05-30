@@ -39,21 +39,18 @@ module Fisk8Viewer
         #parser_klass.new
         Fisk8Viewer::Parsers.registered[parser_type].try(:new) || raise("no such parser: '#{parser_type}'")
       end
-      
-      def update_competition(url, parser_type: :isu_generic, force: false, attributes: {})
+
+      def destroy_existing_competitions(url)
+        ActiveRecord::Base::transaction {
+          Competition.where(site_url: url).map(&:destroy)
+        }
+      end
+      def update_competition(url, parser_type: :isu_generic, attributes: {})
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
-        if (competitions = Competition.where(site_url: url)).present?
-          if force
-            puts "   destroy existing competitions (%d)" % [competitions.count]
-            ActiveRecord::Base::transaction {  competitions.map(&:destroy) }
-          else
-            puts " !!  skip as it already exists"
-            return competitions.first
-          end
-        end
-
+        return if Competition.find_by(site_url: url)
+        
         summary = Fisk8Viewer::CompetitionSummary.new(parser.parse_competition_summary(url))
         keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
 
@@ -84,6 +81,7 @@ module Fisk8Viewer
           competition
         end
       end
+      # rubocup:disable all
       def update_competition_identifers(competition)
         year = competition.start_date.try(:year)
         country = competition.country || competition.city.upcase.gsub(/\s+/, '_')
@@ -109,7 +107,7 @@ module Fisk8Viewer
                 [:jgp, "JGP#{country}#{year}", true]
                 
               when /^Finlandia Trophy/
-                [:challenger, "FIN#{year}", false]
+                [:challenger, "FINLANDIA#{year}", false]
               when /Warsaw Cup/
                 [:challenger, "WARSAW#{year}", false]
               when /Autumn Classic/
@@ -129,6 +127,7 @@ module Fisk8Viewer
           isu_championships: ary[2],
         }
       end
+      # rubocup:enable all
       ################################################################
       def update_category_results(url, competition:, parser: , category: )
         return [] if url.blank?
@@ -190,29 +189,19 @@ module Fisk8Viewer
         update_sid(score_hash, score)
         score.save!
       end
-      def update_elements(score_hash, score)
-        ## technical elements
-        ActiveRecord::Base.transaction do
-          element_keys = [:number, :element, :info, :base_value, :credit, :goe, :judges, :value]
-          elem_summary = []
-          score_hash[:elements].each do |element|
-            score.elements.create!(element.slice(*element_keys))
-            elem_summary << element[:element]
-          end
-          score.elements_summary = elem_summary.join('/')
+      def update_container_details(score_hash, score, type, keys)
+        summary = []
+        score_hash[type].each do |e|
+          score[type].create!(e.slice(*keys))
+          summary << e[type]
         end
+        score.update!("#{type}_summary" => summary.join('/'))
+      end
+      def update_elements(score_hash, score)
+        update_container_details(score_hash, score, :elements, [:number, :element, :info, :base_value, :credit, :goe, :judges, :value])
       end
       def update_components(score_hash, score)
-        ## components
-        ActiveRecord::Base.transaction do
-          comp_keys = [:component, :number, :factor, :judges, :value]
-          comp_summary = []
-          score_hash[:components].each do |comp|
-            score.components.create!(comp.slice(*comp_keys))
-            comp_summary << comp[:value]
-          end
-          score.components_summary = comp_summary.join('/')
-        end
+        update_container_details(score_hash, score, :components, [:component, :number, :factor, :judges, :value])
       end
       def update_sid(_score_hash, score)
         category_abbr = score.category || ""

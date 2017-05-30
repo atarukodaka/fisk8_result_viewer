@@ -3,6 +3,7 @@
   filter: isu_class: A or isu_championships on ??
 - wtt2017: sp/fs ranking
 - credit upcase
+- date default
 
 ### new feature
 

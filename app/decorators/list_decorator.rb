@@ -3,11 +3,8 @@ class ListDecorator < Draper::Decorator
   delegate_all
 
   class << self
-      def headers
-      {
-        base_value: "BV",
-        number: "#",
-      }
+    def headers
+      { base_value: "BV", number: "#", }
     end
 
     def display_as(type, keys)

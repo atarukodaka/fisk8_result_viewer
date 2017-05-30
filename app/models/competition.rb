@@ -8,6 +8,14 @@ class Competition < ApplicationRecord
     order("start_date desc")
   }
 
+  class << self
+    def destroy_existings_by_url(url)
+      ActiveRecord::Base.transaction {
+        Competition.where(site_url: item[:url]).map(&:destroy)
+      }
+    end
+  end
+  
 =begin
   self.register_select_options_callback(:season) do |key|
     Competition.order("start_date desc").pluck(key).uniq.unshift(nil)
