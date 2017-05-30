@@ -81,8 +81,12 @@ class CompetitionsController < ApplicationController
       f.filters = {
         name: {operator: :like, input: :text_field, model: Competition},
         site_url: {operator: :like, input: :text_field, model: Competition},
-        competition_type: {operator: :eq, input: :select, model: Competition},
-        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
+        type: {
+          children: {
+            competition_type: {operator: :eq, input: :select, model: Competition, label: ""},
+            isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
+          },
+        },
         season: {operator: :eq, input: :select, model: Competition},
       }
     end

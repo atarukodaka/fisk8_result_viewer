@@ -4,10 +4,7 @@ class SkatersListDecorator < ListDecorator
     h.link_to_skater(model)
   end
   def isu_number
-    h.content_tag(:span) do
-      h.concat(h.link_to(model.isu_number, isu_bio_url(model.isu_number), target: "_blank"))
-      h.concat(h.span_link_icon)      
-    end
+    h.link_to_isu_bio(model.isu_number)
   end
 end
 
@@ -28,10 +25,10 @@ class SkaterCompetitionsListDecorator < ListDecorator
     
   end
   def short_ranking
-    h.link_to_score(as_ranking(model.short_ranking || model.scores.short.first.ranking), model.scores.first)
+    h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
   end
   def free_ranking
-    h.link_to_score(as_ranking(model.free_ranking || model.scores.free.first.ranking), model.scores.first)
+    h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
   end
   def short_tss
     h.link_to_score(as_score(model.scores.first.try(:tss)), model.scores.first)
@@ -86,7 +83,7 @@ class SkatersController < ApplicationController
       competitions_participated: collection.count,
       gold_won: collection.where(ranking: 1).count,
       highest_ranking: collection.pluck(:ranking).compact.reject {|d| d == 0}.min,
-      most_valuable_element: skater.elements.order(:value).last || {},
+      most_valuable_element: skater.elements.order(:value).last,
       most_valuable_components: max_pcs || {},
                                         
     }

@@ -24,8 +24,8 @@ class IndexFilters
     @data
   end
 
-  def select_options(key)
-    model = @data[key][:model]
+  def select_options(key, model)
+    #model = @data[key][:model]
     @@select_options[key] ||= 
       case key
       when :competition_name, :season
@@ -61,7 +61,19 @@ class IndexFilters
   end
   def create_arel_tables(params)
     arel_tables = []
+    data_to_create = {}
     @data.each do |key, hash|
+      if hash[:children]
+        hash[:children].each do |ck, ch|
+          data_to_create[ck] = ch
+        end
+      else
+        data_to_create[key] = hash
+      end
+    end
+      
+    #@data.each do |key, hash|
+    data_to_create.each do |key, hash|
       next if (value = params[key]).blank? || hash[:operator].nil?
       next unless model = hash[:model]
       
