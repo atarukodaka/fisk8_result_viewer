@@ -1,11 +1,14 @@
 ## TODO
 - re-consider parsers/* system
-- embed youtube in score
-- skater: highest score
-- challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
   filter: isu_class: A or isu_championships on ??
+- wtt2017: sp/fs ranking
+- credit upcase
 
-### on next version
+### new feature
+
+- embed youtube in score (or just link to search page ?)
+- skater: highest score
+- isu championships only on scores
 
 ## 1.0.1
 - rake update:skaters..name space for update
@@ -13,6 +16,7 @@
 - competition_summary_parser. use column
 - competitions.yml: attributes to symbol keys
 - http 404 error rescue on parsing/updating
+- challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
 
 ## 1.0.0
 

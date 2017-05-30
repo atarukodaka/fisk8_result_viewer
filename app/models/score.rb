@@ -12,7 +12,9 @@ class Score < ApplicationRecord
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
   
   scope :recent, ->{ order("date desc") }
-
+  scope :short, -> { where("segment like ? ", "SHORT%") }
+  scope :free, -> { where("segment like ? ", "FREE%") }  
+  
   private
   def set_default_values
     self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")

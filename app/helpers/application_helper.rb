@@ -30,9 +30,13 @@ module LinkToHelper
   end
   def link_to_isu_bio(text = nil, isu_number, target: "_blank")
     text ||= isu_number
-    content_tag(:span) do
-      concat(link_to(text, isu_bio_url(isu_number), target: target))
-      concat(span_link_icon)
+    if isu_number.blank?
+      "-"
+    else
+      content_tag(:span) do
+        concat(link_to(text, isu_bio_url(isu_number), target: target))
+        concat(span_link_icon)
+      end
     end
   end
   def link_to_pdf(url, target: "_blank")
@@ -52,10 +56,12 @@ module LinkToHelper
 end ## module
 
 module TableHelper
-  def tr_data(th, td)
+  def tr_data(th, *td)
     content_tag(:tr) do
       concat(content_tag(:th, (th.class == Symbol) ? th.to_s.camelize : th))
-      concat(content_tag(:td, td))
+      [td].flatten.map {|t|
+        concat(content_tag(:td, t))
+      }
     end
   end
 end

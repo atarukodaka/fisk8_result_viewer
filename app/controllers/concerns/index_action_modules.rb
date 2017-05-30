@@ -7,6 +7,7 @@ module IndexActionModules
         segment: {operator: :eq, input: :select, model: Score},      
         nation: {operator: :eq, input: :select, model: Score},      
         competition_name: {operator: :eq, input: :select, model: Score},
+        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},        
         season: { operator: :eq, input: :select, model: Competition},
       }
     }

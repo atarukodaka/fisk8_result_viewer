@@ -18,10 +18,11 @@ html
     = analytics_init if Rails.env.production? && GA.tracker.present?
     css:
       .form-group { margin-bottom: 10px; }
-      table { font-size: 13px; }
+      body { font-size: 13px; }
+      div.container { width: 95%;}
 
   body
-    div.container style="width: 95%;"
+    div.container
       =render partial: "navbar", cached: true
       = yield
 

@@ -23,11 +23,7 @@ class IndexFilters
   def filters
     @data
   end
-=begin  
-  def method_missing(method, *args)
-    @data.send(method, *args)
-  end
-=end
+
   def select_options(key)
     model = @data[key][:model]
     @@select_options[key] ||= 
@@ -67,8 +63,13 @@ class IndexFilters
     arel_tables = []
     @data.each do |key, hash|
       next if (value = params[key]).blank? || hash[:operator].nil?
-      model = hash[:model] || self
+      next unless model = hash[:model]
       
+      case model.columns.find {|c| c.name == key.to_s}.type
+      when :boolean
+        value = ((value =~ /^true$/i) == 0)
+      end
+
       case hash[:operator]
       when :like, :match
         arel_tables << model.arel_table[key].matches("%#{value}%")

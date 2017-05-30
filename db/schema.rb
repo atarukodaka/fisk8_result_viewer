@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "season"
     t.string "site_url"
     t.string "competition_type"
-    t.string "isu_class"
+    t.boolean "isu_championships", default: false, null: false
     t.string "comment"
   end
 

@@ -33,7 +33,7 @@ module Fisk8Viewer
               if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
               score[:elements] << {
                   number: number, element: $1, info: $2, base_value: $3.to_f,
-                  credit: $4, goe: $5.to_f, judges: $6, value: $7.to_f,
+                  credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
                 }
               else
                 logger.warn "  !! SOMETHING WRONG ON PARSING TES !! #{line}"

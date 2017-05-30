@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   post 'feedback' => 'feedback#submit'
 
   ## about
-  get 'about' => 'about#index'
+  #get 'about' => 'about#index'
   ## top
   get '/' => 'scores#index'
 end

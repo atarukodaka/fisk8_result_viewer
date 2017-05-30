@@ -1,4 +1,4 @@
-// locals: skater, scores
+// locals: skater, scores, result_summary, category_results
 
 - content_for :title do
   | skater: 
@@ -6,16 +6,28 @@
 
 h2 Skaters Info
 
-////////////////////////////////////////////////////////////////
-table.table.table-striped.table-hover.table-condensed
-  tr
-    = tr_data(:name, skater.name)
-    = tr_data(:nation, skater.nation)
-    = tr_data("ISU Number", link_to_isu_bio(skater.isu_number))
-    = tr_data(:category, skater.category)
+.row
+  .col-sm-6
+    table.table.table-striped.table-hover.table-condensed
+      tr
+        = tr_data(:name, skater.name)
+        = tr_data(:nation, skater.nation)
+        = tr_data("ISU Number", link_to_isu_bio(skater.isu_number))
+        = tr_data(:category, skater.category)
+  .col-sm-6
+    table.table.table-striped.table-hover.table-condensed
+      tr
+        - cr = category_results.object
+        = tr_data("Highest Score", result_summary[:highest_score])
+        = tr_data("Competitions participated", result_summary[:competitions_participated])
+        = tr_data("Gold Won", result_summary[:gold_won])
+        = tr_data("Highest Ranking", result_summary[:highest_ranking])
+        - elem = result_summary[:most_valuable_element]
+        = tr_data("Most Valuable Element", "%s %s%s (%.2f)" % [ elem.element, elem.credit, elem.info, elem.value])
+        = tr_data("Most Valuable Components", (1..5).map {|i| result_summary[:most_valuable_components][i]}.join('/'))
 
 h2 Competition Results
 
-- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
+- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :free_ranking, :free_tss, ]
 = render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
 

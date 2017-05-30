@@ -35,8 +35,9 @@ module Fisk8Viewer
       end
       ################
       def get_parser(parser_type)
-        parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise("no such parser: '#{parser_type}'")
-        parser_klass.new
+        #parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise("no such parser: '#{parser_type}'")
+        #parser_klass.new
+        Fisk8Viewer::Parsers.registered[parser_type].try(:new) || raise("no such parser: '#{parser_type}'")
       end
       
       def update_competition(url, parser_type: :isu_generic, force: false, attributes: {})
@@ -53,8 +54,7 @@ module Fisk8Viewer
           end
         end
 
-        parsed = parser.parse_competition_summary(url)
-        summary = Fisk8Viewer::CompetitionSummary.new(parsed)
+        summary = Fisk8Viewer::CompetitionSummary.new(parser.parse_competition_summary(url))
         keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
 
         ActiveRecord::Base::transaction do
@@ -86,47 +86,47 @@ module Fisk8Viewer
       end
       def update_competition_identifers(competition)
         year = competition.start_date.try(:year)
-        country = competition.country
+        country = competition.country || competition.city.upcase.gsub(/\s+/, '_')
 
         ary = case competition.name
               when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-                [:gp, "GPF#{year}", :A]
+                [:gp, "GPF#{year}", true]
               when /^ISU GP/
-                [:gp, "GP#{country}#{year}", :A]
+                [:gp, "GP#{country}#{year}", true]
               when /Olympic/
-                [:olympic, "OLYMPIC#{year}", :A]
+                [:olympic, "OLYMPIC#{year}", true]
               when /^ISU World Figure/, /^ISU World Championships/
-                [:world, "WORLD#{year}", :A]
+                [:world, "WORLD#{year}", true]
               when /^ISU Four Continents/
-                [:fcc, "FCC#{year}", :A]
+                [:fcc, "FCC#{year}", true]
               when /^ISU European/
-                [:euro, "EURO#{year}", :A]
+                [:euro, "EURO#{year}", true]
               when /^ISU World Team/
-                [:team, "TEAM#{year}", :A]
+                [:team, "TEAM#{year}", true]
               when /^ISU World Junior/
-                [:jworld, "JWORLD#{year}", :A]
+                [:jworld, "JWORLD#{year}", true]
               when /^ISU JGP/, /^ISU Junior Grand Prix/
-                [:jgp, "JGP#{country}#{year}", :A]
+                [:jgp, "JGP#{country}#{year}", true]
                 
               when /^Finlandia Trophy/
-                [:challenger, "FIN#{year}", :B]
+                [:challenger, "FIN#{year}", false]
               when /Warsaw Cup/
-                [:challenger, "WARSAW#{year}", :B]
+                [:challenger, "WARSAW#{year}", false]
               when /Autumn Classic/
-                [:challenger, "ACI#{year}", :B]
+                [:challenger, "ACI#{year}", false]
               when /Nebelhorn/
-                [:challenger, "NEBELHORN#{year}", :B]
+                [:challenger, "NEBELHORN#{year}", false]
               when /Lombardia/
-                [:challenger, "LOMBARDIA#{year}", :B]
+                [:challenger, "LOMBARDIA#{year}", false]
               when /Ondrej Nepela/
-                [:challenger, "NEPELA#{year}", :B]
+                [:challenger, "NEPELA#{year}", false]
               else
-                [:unknown, competition.name.gsub(/\s+/, '_'), nil]
+                [:unknown, competition.name.gsub(/\s+/, '_'), false]
               end
         competition.attributes = {
           competition_type: ary[0],
           cid: ary[1],
-          isu_class: ary[2],
+          isu_championships: ary[2],
         }
       end
       ################################################################

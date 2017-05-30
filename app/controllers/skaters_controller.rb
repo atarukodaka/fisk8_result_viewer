@@ -28,10 +28,10 @@ class SkaterCompetitionsListDecorator < ListDecorator
     
   end
   def short_ranking
-    h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
+    h.link_to_score(as_ranking(model.short_ranking || model.scores.short.first.ranking), model.scores.first)
   end
   def free_ranking
-    h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
+    h.link_to_score(as_ranking(model.free_ranking || model.scores.free.first.ranking), model.scores.first)
   end
   def short_tss
     h.link_to_score(as_score(model.scores.first.try(:tss)), model.scores.first)
@@ -69,14 +69,32 @@ class SkatersController < ApplicationController
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
-    collection = skater.category_results.with_competition.recent.includes(:competition)
+    collection = skater.category_results.with_competition.recent.includes(:competition, :scores)
+    collection = collection.isu_championships_only if params[:isu_championships_only]
+
     category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
-    
+
+    ## result summary
+    tmp_pcs = Hash.new { |h,k| h[k] = []}
+    skater.components.all.each {|c| tmp_pcs[c.number] << c.value}
+    max_pcs = {}
+    (1..5).each do |i|
+      max_pcs[i] = tmp_pcs[i].max
+    end
+    result_summary = {
+      highest_score: collection.pluck(:points).compact.max,
+      competitions_participated: collection.count,
+      gold_won: collection.where(ranking: 1).count,
+      highest_ranking: collection.pluck(:ranking).compact.reject {|d| d == 0}.min,
+      most_valuable_element: skater.elements.order(:value).last || {},
+      most_valuable_components: max_pcs || {},
+                                        
+    }
     #collection = skater.category_results.includes(:competition)
     #category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
 
     respond_to do |format|
-      format.html { render action: :show, locals: { skater: skater, category_results: category_results }}
+      format.html { render action: :show, locals: { skater: skater, category_results: category_results, result_summary: result_summary }}
       format.json { render json: {skater_info: skater, competition_results: skater.category_results} }
     end
   end
