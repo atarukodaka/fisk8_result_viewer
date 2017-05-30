@@ -11,7 +11,7 @@ class Competition < ApplicationRecord
   class << self
     def destroy_existings_by_url(url)
       ActiveRecord::Base.transaction {
-        Competition.where(site_url: item[:url]).map(&:destroy)
+        Competition.where(site_url: url).map(&:destroy)
       }
     end
   end

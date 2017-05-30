@@ -4,6 +4,7 @@
 - wtt2017: sp/fs ranking
 - credit upcase
 - date default
+- http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
 
 ### new feature
 

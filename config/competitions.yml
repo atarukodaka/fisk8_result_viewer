@@ -230,11 +230,6 @@
   attributes:
     country: FIN
 -
-  url: http://www.figureskatingresults.fi/results/1415/CSFIN2014/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN  
--
   url: http://www.figureskatingresults.fi/results/1314/FT2013/
   parser: :finlandia_2013
   attributes:
