@@ -63,6 +63,35 @@ class SkatersController < ApplicationController
   def show_by_name
     show_skater(Skater.find_by(name: params[:name]))
   end
+  def plot(skater, scores, title: "")
+    require 'gnuplot'
+    Gnuplot.open do |gp|
+      Gnuplot::Plot.new(gp) do |plot|
+        plot.terminal "png"
+        plot.output   "public/#{title}_plot.png"
+        plot.title    title
+        plot.xlabel   "x"
+        plot.ylabel   "points"
+        plot.grid
+        plot.yrange   "[0:*]"
+
+        ys = [{key: :tss, color: 3}, {key: :tes, color: 4},{key: :pcs, color: 5},]
+
+        ys.each do |hash|
+          y = scores.pluck(hash[:key]).compact # .reject {|v| v == 0 }
+          x = scores.pluck(:date).compact.map {|v| v.year.to_f + v.month.to_f/12 + v.day.to_f/365 }
+          puts x
+          plot.data << Gnuplot::DataSet.new([x, y]) do |ds|
+            ds.with      = "linespoints"
+            ds.linewidth = 2
+            ds.linecolor = hash[:color]
+            ds.title = hash[:key].to_s.upcase
+          end
+        end
+      end
+    end
+    
+  end
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
@@ -89,6 +118,9 @@ class SkatersController < ApplicationController
     }
     #collection = skater.category_results.includes(:competition)
     #category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
+
+    plot(skater, skater.scores.short, title: "#{skater.name} - short")
+    plot(skater, skater.scores.free, title: "#{skater.name} - free")
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results, result_summary: result_summary }}

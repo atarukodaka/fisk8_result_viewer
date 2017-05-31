@@ -14,12 +14,8 @@ module Fisk8Viewer
         end
       end
       def parse_city_country(page)
-        str =
-          begin
-            page.search("td.caption3").first.text
-          rescue
-            page.xpath("//h3").first.text.strip
-          end
+        node = page.search("td.caption3").presence || page.xpath("//h3")
+        str = (node.present?) ? node.first.text.strip : ""
         if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
           city, country = $1, $2
           city.sub!(/ *$/, '') if city.present?

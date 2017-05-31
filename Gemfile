@@ -64,3 +64,5 @@ gem 'kaminari'
 gem 'google-analytics-rails'
 gem 'draper'
 gem 'config'
+
+gem 'gnuplot'

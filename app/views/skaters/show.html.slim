@@ -4,8 +4,6 @@
   | skater: 
   = skater.name
 
-
-
 .row
   .col-sm-6
     h2 Skaters Info
@@ -39,3 +37,17 @@ h2 Competition Results
 - display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :free_ranking, :free_tss, ]
 = render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
 
+- segment_keys = [:competition_name, :ranking, :tss, :tes, :pcs, :deductions]
+- short_collection = skater.scores.short.recent
+- free_collection = skater.scores.free.recent
+
+.row
+  .col-sm-6
+    h3 Short
+    = render partial: "list_table", locals: {collection: short_collection, display_keys: segment_keys}
+    = image_tag("/#{skater.name} - short_plot.png")
+
+  .col-sm-6
+    h3 Free
+    = render partial: "list_table", locals: {collection: free_collection, display_keys: segment_keys}
+    = image_tag("/#{skater.name} - free_plot.png")

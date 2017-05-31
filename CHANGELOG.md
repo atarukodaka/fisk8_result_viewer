@@ -5,6 +5,7 @@
 - credit upcase
 - date default
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
+- gnuplot
 
 ### new feature
 

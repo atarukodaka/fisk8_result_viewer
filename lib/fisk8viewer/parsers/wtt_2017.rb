@@ -108,7 +108,7 @@ module Fisk8Viewer
           v.xpath('a/text()').map(&:text).join(' / ').tr("\u00a0", ' ')
         end
         def parse_nation(v)
-          v.delete(/\u00a0/)
+          v.delete("\u00a0")
         end
         def parse(url)
           page = get_url(url)
