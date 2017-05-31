@@ -2,11 +2,8 @@
 - re-consider parsers/* system
   filter: isu_class: A or isu_championships on ??
 - wtt2017: sp/fs ranking
-- credit upcase
 - date default
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
-- gnuplot
-
 ### new feature
 
 - embed youtube in score (or just link to search page ?)
@@ -20,6 +17,8 @@
 - competitions.yml: attributes to symbol keys
 - http 404 error rescue on parsing/updating
 - challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
+- gnuplot: show score graph in skater
+- credit downcase
 
 ## 1.0.0
 

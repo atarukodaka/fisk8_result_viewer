@@ -121,8 +121,8 @@ class CompetitionsController < ApplicationController
       }
       format.json {
         data = {competition_info: competition, category_summary: category_summary}
-        data[:segment_scores] = segment_scores if segment
-        data[:category_result] = category_results if category
+        data[:segment_scores] = segment_scores.object if segment
+        data[:category_result] = category_results.object if category
         render json: data
       }
     end

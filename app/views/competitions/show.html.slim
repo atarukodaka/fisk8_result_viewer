@@ -55,6 +55,6 @@ table.table.table-striped.table-hover.table-condensed
     h2 
       | Segment Result of 
       = [category, segment].join('/')
-    - keys = [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions]
+    - keys = [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]
     = render partial: "list_table", locals: {display_keys: keys , collection: segment_scores, pagination: false}
 
