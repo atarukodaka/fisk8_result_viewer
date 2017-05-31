@@ -34,7 +34,7 @@
 
 h2 Competition Results
 
-- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :free_ranking, :free_tss, ]
+- display_keys =  [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions]
 = render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
 
 - segment_keys = [:competition_name, :ranking, :tss, :tes, :pcs, :deductions]
@@ -44,10 +44,10 @@ h2 Competition Results
 .row
   .col-sm-6
     h3 Short
-    = render partial: "list_table", locals: {collection: short_collection, display_keys: segment_keys}
+    //= render partial: "list_table", locals: {collection: short_collection, display_keys: segment_keys}
     = image_tag("/#{skater.name} - short_plot.png")
 
   .col-sm-6
     h3 Free
-    = render partial: "list_table", locals: {collection: free_collection, display_keys: segment_keys}
+    //= render partial: "list_table", locals: {collection: free_collection, display_keys: segment_keys}
     = image_tag("/#{skater.name} - free_plot.png")

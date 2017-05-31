@@ -10,7 +10,22 @@ end
 
 class SkaterCompetitionsListDecorator < ListDecorator
   include ApplicationHelper
-
+  class << self
+    def headers
+      {
+        short_ranking: "SP#",
+        short_tss: "SP-TSS",
+        short_tes: "SP-TES",
+        short_pcs: "SP-PCS",
+        short_deductions: "SP-ded",
+        free_ranking: "FS#",
+        free_tss: "FS-TSS",
+        free_tes: "FS-TES",
+        free_pcs: "FS-PCS",
+        free_deductions: "FS-ded",
+      }
+    end
+  end
   def competition_name
     h.link_to_competition(nil, model.competition)
   end
@@ -27,6 +42,19 @@ class SkaterCompetitionsListDecorator < ListDecorator
   def short_ranking
     h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
   end
+  def short_tss
+    h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
+  end
+  def short_tes
+    as_score(model.scores.first.tes)
+  end
+  def short_pcs
+    as_score(model.scores.first.pcs)
+  end
+  def short_deductions
+    as_score(model.scores.first.deductions)
+  end
+
   def free_ranking
     h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
   end
@@ -36,6 +64,16 @@ class SkaterCompetitionsListDecorator < ListDecorator
   def free_tss
     h.link_to_score(as_score(model.scores.second.try(:tss)), model.scores.second)
   end
+  def free_tes
+    as_score(model.scores.second.tes)
+  end
+  def free_pcs
+    as_score(model.scores.second.pcs)
+  end
+  def free_deductions
+    as_score(model.scores.second.deductions)
+  end
+
 end
 ################################################################
 class SkatersController < ApplicationController
