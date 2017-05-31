@@ -38,8 +38,8 @@ h2 Competition Results
 = render partial: "list_table", locals: {collection: category_results, display_keys: display_keys}
 
 - segment_keys = [:competition_name, :ranking, :tss, :tes, :pcs, :deductions]
-- short_collection = skater.scores.short.recent
-- free_collection = skater.scores.free.recent
+- short_collection = skater.scores.short.recent.isu_championships_only_if(params[:isu_championships_only])
+- free_collection = skater.scores.free.recent.isu_championships_only_if(params[:isu_championships_only])
 
 .row
   .col-sm-6
