@@ -125,7 +125,8 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
       expect(comp1.id).to eq(comp2.id)
       ## update again with force, then should re-create
-      comp3 = updater.update_competition(url, force: true)
+      Competition.destroy_existings_by_url(url)
+      comp3 = updater.update_competition(url)
       expect(comp1.id).not_to eq(comp3.id)
       expect(comp3.site_url).to eq(url)
     }

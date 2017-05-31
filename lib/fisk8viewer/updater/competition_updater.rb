@@ -49,7 +49,7 @@ module Fisk8Viewer
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
-        return if Competition.find_by(site_url: url)
+        if c = Competition.find_by(site_url: url); return c;   end
         
         summary = Fisk8Viewer::CompetitionSummary.new(parser.parse_competition_summary(url))
         keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
