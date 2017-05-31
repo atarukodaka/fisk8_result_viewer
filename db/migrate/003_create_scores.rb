@@ -10,7 +10,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.string :competition_name
       t.string :category
       t.string :segment
-      t.date :date
+      t.date :date, default: Time.new(1970, 1, 1, 0, 0, 0)
       t.string :result_pdf
       
       t.float :tss

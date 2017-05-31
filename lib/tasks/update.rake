@@ -41,4 +41,7 @@ namespace :update do
       end
     end
   end
-end
+  task :clear_score_graphs => :environment do
+    FileUtils.rm(Dir.glob(File.join(ScoreGraph::ImageDir, "*_plot.png")))
+  end
+end  # namespace

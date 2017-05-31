@@ -5,8 +5,8 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :city
       t.string :country
-      t.date :start_date
-      t.date :end_date
+      t.date :start_date, default: Time.new(1970, 1, 1, 0, 0, 0)
+      t.date :end_date, default: Time.new(1970, 1, 1, 0, 0, 0)
       t.string :season
       t.string :site_url
       t.string :competition_type

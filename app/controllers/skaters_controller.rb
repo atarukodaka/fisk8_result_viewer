@@ -37,41 +37,39 @@ class SkaterCompetitionsListDecorator < ListDecorator
   end
   def points
     h.link_to_competition(as_score(model.points), model.competition, category: model.category)
-    
   end
+  ## short
   def short_ranking
     h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
   end
   def short_tss
-    h.link_to_score(as_ranking(model.short_ranking), model.scores.first)
+    (s = model.scores.first) ? as_score(s.tss) : "-"
   end
   def short_tes
-    as_score(model.scores.first.tes)
+    (s = model.scores.first) ? as_score(s.tes) : "-"
   end
   def short_pcs
-    as_score(model.scores.first.pcs)
+    (s = model.scores.first) ? as_score(s.pcs) : "-"    
   end
   def short_deductions
-    as_score(model.scores.first.deductions)
+    (s = model.scores.first) ? as_score(s.deductions) : "-"    
   end
 
+  ## free
   def free_ranking
     h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
   end
-  def short_tss
-    h.link_to_score(as_score(model.scores.first.try(:tss)), model.scores.first)
-  end
   def free_tss
-    h.link_to_score(as_score(model.scores.second.try(:tss)), model.scores.second)
+    (s = model.scores.second) ? as_score(s.tss) : "-"
   end
   def free_tes
-    as_score(model.scores.second.tes)
+    (s = model.scores.second) ? as_score(s.tes) : "-"
   end
   def free_pcs
-    as_score(model.scores.second.pcs)
+    (s = model.scores.second) ? as_score(s.pcs) : "-"
   end
   def free_deductions
-    as_score(model.scores.second.deductions)
+    (s = model.scores.second) ? as_score(s.deductions) : "-"
   end
 
 end
@@ -101,35 +99,6 @@ class SkatersController < ApplicationController
   def show_by_name
     show_skater(Skater.find_by(name: params[:name]))
   end
-  def plot(skater, scores, title: "")
-    require 'gnuplot'
-    Gnuplot.open do |gp|
-      Gnuplot::Plot.new(gp) do |plot|
-        plot.terminal "png"
-        plot.output   "public/#{title}_plot.png"
-        plot.title    title
-        plot.xlabel   "x"
-        plot.ylabel   "points"
-        plot.grid
-        plot.yrange   "[0:*]"
-
-        ys = [{key: :tss, color: 3}, {key: :tes, color: 4},{key: :pcs, color: 5},]
-
-        ys.each do |hash|
-          y = scores.pluck(hash[:key]).compact # .reject {|v| v == 0 }
-          x = scores.pluck(:date).compact.map {|v| v.year.to_f + v.month.to_f/12 + v.day.to_f/365 }
-          puts x
-          plot.data << Gnuplot::DataSet.new([x, y]) do |ds|
-            ds.with      = "linespoints"
-            ds.linewidth = 2
-            ds.linecolor = hash[:color]
-            ds.title = hash[:key].to_s.upcase
-          end
-        end
-      end
-    end
-    
-  end
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
@@ -156,8 +125,9 @@ class SkatersController < ApplicationController
     #collection = skater.category_results.includes(:competition)
     #category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
 
-    [:short, :free].each do |segment|
-      plot(skater, skater.scores.send(segment).recent.isu_championships_only_if(params[:isu_championships_only]), title: "#{skater.name} - #{segment.to_s}")
+    score_graph = ScoreGraph.new
+    [:short, :free].each do |segment_type|
+      score_graph.plot(skater, skater.scores.send(segment_type).recent.isu_championships_only_if(params[:isu_championships_only]), segment_type)
     end
 
     respond_to do |format|
