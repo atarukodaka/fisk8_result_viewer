@@ -95,8 +95,7 @@ class SkatersController < ApplicationController
   def show_skater(skater)
     raise ActiveRecord::RecordNotFound.new("no such skater") if skater.nil?
 
-    collection = skater.category_results.with_competition.recent.includes(:competition, :scores)
-    collection = collection.isu_championships_only if params[:isu_championships_only]
+    collection = skater.category_results.with_competition.recent.includes(:competition, :scores).isu_championships_only_if(params[:isu_championships_only])
 
     category_results = SkaterCompetitionsListDecorator.decorate_collection(collection)
 
@@ -119,8 +118,9 @@ class SkatersController < ApplicationController
     #collection = skater.category_results.includes(:competition)
     #category_results = SkaterCompetitionsListDecorator.decorate_collection(collection.includes(:scores).order("scores.date desc"))
 
-    plot(skater, skater.scores.short, title: "#{skater.name} - short")
-    plot(skater, skater.scores.free, title: "#{skater.name} - free")
+    [:short, :free].each do |segment|
+      plot(skater, skater.scores.send(segment).recent.isu_championships_only_if(params[:isu_championships_only]), title: "#{skater.name} - #{segment.to_s}")
+    end
 
     respond_to do |format|
       format.html { render action: :show, locals: { skater: skater, category_results: category_results, result_summary: result_summary }}

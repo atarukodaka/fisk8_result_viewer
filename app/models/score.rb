@@ -1,4 +1,6 @@
 class Score < ApplicationRecord
+  include IsuChampionshipsOnly
+  
   after_initialize :set_default_values
   
   has_many :elements, dependent: :destroy

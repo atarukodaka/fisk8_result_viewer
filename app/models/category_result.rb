@@ -1,4 +1,6 @@
 class CategoryResult < ApplicationRecord
+  include IsuChampionshipsOnly
+  
   has_many :scores
   
   belongs_to :competition
@@ -6,8 +8,7 @@ class CategoryResult < ApplicationRecord
 
   scope :with_competition, ->{ joins(:competition) }
   scope :recent, ->{ with_competition.order("competitions.start_date desc") }
-  scope :isu_championships_only, -> { where("competitions.isu_championships" => true) }
-
+  
   scope :search_by_category, ->(cat) { where(category: cat) }
 
 =begin
