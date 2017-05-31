@@ -1,14 +1,11 @@
 ## TODO
 - re-consider parsers/* system
-  filter: isu_class: A or isu_championships on ??
 - wtt2017: sp/fs ranking
-- date default
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
 ### new feature
 
 - embed youtube in score (or just link to search page ?)
-- skater: highest score
-- isu championships only on scores
+
 
 ## 1.0.1
 - rake update:skaters..name space for update
@@ -19,6 +16,9 @@
 - challenger: finlandia, aci, nebelhorn, lombaridai, warsaw
 - gnuplot: show score graph in skater
 - credit downcase
+- date default 1970/1/1
+- isu championships only on scores
+- skater: highest score
 
 ## 1.0.0
 
