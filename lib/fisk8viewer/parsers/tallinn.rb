@@ -30,7 +30,6 @@ module Fisk8Viewer
               score_url: (score_url.present?) ? URI.join(@url, score_url).to_s : "",
             }
           end
-          binding.pry
           summary
         end
 
