@@ -291,12 +291,6 @@
 - http://www.isuresults.com/results/season1617/wc2017/    
 
 -
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
-  attributes:
-    comment: "no category results provided"
-
--
   url: http://www.isuresults.com/results/fc2012/
   parser: :isu_generic_mdy
 
@@ -316,3 +310,38 @@
 - http://www.isuresults.com/results/fc2014/
 
 - http://www.isuresults.com/results/jgpusa2012/
+-
+  url: http://www.jsfresults.com/intl/2016-2017/wtt/
+  parser: :wtt_2017
+  attributes:
+    comment: "no category results provided"
+
+-
+  url: https://data.tallinntrophy.eu/2016/Tallinn_Trophy/
+  parser: :tallinn
+      
+-
+  url: https://data.tallinntrophy.eu/2015/Tallinn_Trophy/
+  parser: :tallinn
+      
+-
+  url: https://data.tallinntrophy.eu/2014/TTR_Int/index.htm
+  parser: :tallinn
+      
+-
+  url: https://data.tallinntrophy.eu/2013/tallinntrophy/index.htm
+  parser: :tallinn
+      
+-
+  url: https://data.tallinntrophy.eu/2012/A_Hall/index.htm
+  parser: :tallinn
+      
+-
+  url: https://data.tallinntrophy.eu/2011/A_Class/index.htm
+  parser: :tallinn
+      
+      
+
+
+
+    

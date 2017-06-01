@@ -5,8 +5,8 @@ class ScoreGraph
   ImageDir = File.join(PublicDir, "images", "score_graph")
   
   class << self
-    def find_image_resource(skater, segment_type, prefix: "")
-      Dir.glob(File.join(ImageDir, "#{skater.name}_#{segment_type.to_s}_*_plot.png")).map {|v| v.sub(/^#{PublicDir}/, '')}.sort {|*args|
+    def find_image_resource(skater, segment_type)
+      Dir.glob(File.join(ImageDir, "#{skater.name}_#{segment_type}_*_plot.png")).map {|v| v.sub(/^#{PublicDir}/, '')}.sort {|*args|
         d = []
         args.each do |v|
           v =~ /([\d]+)\-([\d]+)\-([\d]+)_plot.png/
@@ -26,13 +26,13 @@ class ScoreGraph
   end
   def plot(skater, scores, segment_type)
     fname = self.class.image_filename(skater, segment_type, scores.pluck(:date).compact.max)
-    return if File.exists?(fname)
+    return if File.exist?(fname)
       
     Gnuplot.open do |gp|
       Gnuplot::Plot.new(gp) do |plot|
         plot.terminal "png"
         plot.output   fname
-        plot.title    "#{skater.name} - #{segment_type.to_s}"
+        plot.title    "#{skater.name} - #{segment_type}"
         #plot.xlabel   "x"
         plot.ylabel   "points"
         plot.grid

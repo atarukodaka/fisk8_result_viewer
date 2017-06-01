@@ -173,7 +173,8 @@ module Fisk8Viewer
           end
           skater.scores << score
           cr.scores << score
-
+          segment_type = (score.segment =~ /^SHORT/) ? :short : :free
+          cr.update!("#{segment_type}_ranking" => score_hash[:ranking]) if cr["#{segment_type}_ranking"].nil?
           update_score(score_hash, score)
         end
       end

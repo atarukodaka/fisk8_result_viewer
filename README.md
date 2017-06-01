@@ -13,7 +13,7 @@ Result and Score viewer of figureskating competitions. you can see below details
 ## Install
 
 ```sh
-% sudo yum -y install poppler-utils
+% sudo yum -y install poppler-utils gnuplot
 % bundle install
 % bundle exec rake db:migrate
 % bundle exec rake update_skaters

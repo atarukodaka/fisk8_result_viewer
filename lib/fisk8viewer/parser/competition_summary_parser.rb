@@ -35,7 +35,7 @@ module Fisk8Viewer
           next if row.xpath("td").blank?
           
           if (c = row.xpath("td[1]").text.presence)
-            category = c.upcase.strip.gsub(/^SENIOR /, '')            
+            category = c.upcase.strip.gsub(/^SENIOR /, '')
           end
           segment = row.xpath("td[2]").text.upcase.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
           next if category.blank? && segment.blank?

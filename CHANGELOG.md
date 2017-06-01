@@ -1,7 +1,8 @@
 ## TODO
 - re-consider parsers/* system
-- wtt2017: sp/fs ranking
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
+- tallin
+
 ### new feature
 
 - embed youtube in score (or just link to search page ?)
@@ -19,6 +20,9 @@
 - date default 1970/1/1
 - isu championships only on scores
 - skater: highest score
+- wtt2017: sp/fs ranking
+- link to youtube on score
+- open-url-redirections
 
 ## 1.0.0
 

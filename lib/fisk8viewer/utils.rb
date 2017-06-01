@@ -1,5 +1,6 @@
 require 'pdftotext'
 require 'open-uri'
+require 'open_uri_redirections'
 require 'mechanize'
 
 module Fisk8Viewer
@@ -29,7 +30,7 @@ module Fisk8Viewer
 
       ## convert pdf to text
       filename = File.join(dir, URI.parse(url).path.split('/').last)
-      open(url) do |f|
+      open(url, allow_redirections: :safe) do |f|
         File.open(filename, "wb") do |out|
           out.puts f.read
         end
