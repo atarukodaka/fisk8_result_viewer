@@ -37,8 +37,8 @@ h2 Competition Results
 .row
   .col-sm-6
     h3 Short
-    = image_tag(ScoreGraph.find_image_resource(skater, :short))
+    = (short_graph = ScoreGraph.find_image_resource(skater, :short)) ? image_tag(short_graph) : ''
 
   .col-sm-6
     h3 Free
-    = image_tag(ScoreGraph.find_image_resource(skater, :free))
+    = (free_graph = ScoreGraph.find_image_resource(skater, :free)) ? image_tag(free_graph) : ''
