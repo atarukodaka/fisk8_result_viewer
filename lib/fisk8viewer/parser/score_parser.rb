@@ -46,7 +46,7 @@ module Fisk8Viewer
           component, factor, value, judges = $1, $2, $3, $4
           score[:components] << {
             component: component, factor: factor.to_f,
-            judges: judges.gsub(/,/, '.'), value: value.to_f,
+            judges: judges.tr(',', '.'), value: value.to_f,
             number: (score[:components].size+1).to_i,
           }
         end

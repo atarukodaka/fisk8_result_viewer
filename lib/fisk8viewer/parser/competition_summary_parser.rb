@@ -79,19 +79,11 @@ module Fisk8Viewer
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
-        rows = elem.xpath('ancestor::table[1]//tr')
-        
+        elem.xpath('ancestor::table[1]//tr')
       end
       def parse_time_schedule(page)
         ## time schdule
-        #date_elem = page.xpath("//*[text()='Date']").first
-        #rows = date_elem.xpath("../../tr")
-        #rows = date_elem.xpath("ancestor::table//tr")
-        #rows = page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
-        #rows = page.xpath("//table[.//*[text()='Date']]").xpath(".//tr")
-        #binding.pry
         rows = get_time_schedule_rows(page)
-        #binding.pry
         dt_str = ""
         time_schedule = []
 

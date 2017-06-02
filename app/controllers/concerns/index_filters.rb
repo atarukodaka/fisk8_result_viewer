@@ -77,7 +77,7 @@ class IndexFilters
     #@data.each do |key, hash|
     data_to_create.each do |key, hash|
       next if (value = params[key]).blank? || hash[:operator].nil?
-      next unless model = hash[:model]
+      model = hash[:model] || next
       
       case model.columns.find {|c| c.name == key.to_s}.type
       when :boolean

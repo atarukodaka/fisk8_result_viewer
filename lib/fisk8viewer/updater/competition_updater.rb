@@ -36,8 +36,6 @@ module Fisk8Viewer
       end
       ################
       def get_parser(parser_type)
-        #parser_klass = Fisk8Viewer::Parsers.registered[parser_type] || raise("no such parser: '#{parser_type}'")
-        #parser_klass.new
         Fisk8Viewer::Parsers.registered[parser_type].try(:new) || raise("no such parser: '#{parser_type}'")
       end
 
@@ -50,7 +48,7 @@ module Fisk8Viewer
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
-        if c = Competition.find_by(site_url: url); return c;   end
+        if (c = Competition.find_by(site_url: url)); return c;   end
         
         summary = Fisk8Viewer::CompetitionSummary.new(parser.parse_competition_summary(url))
         keys = [:name, :city, :country, :site_url, :start_date, :end_date, :season,]
@@ -82,7 +80,7 @@ module Fisk8Viewer
           competition
         end
       end
-      # rubocup:disable all
+      # rubocop:disable all
       def update_competition_identifers(competition)
         year = competition.start_date.try(:year)
         country = competition.country || competition.city.upcase.gsub(/\s+/, '_')
@@ -128,7 +126,7 @@ module Fisk8Viewer
           isu_championships: ary[2],
         }
       end
-      # rubocup:enable all
+      # rubocop:enable all
       ################################################################
       def update_category_results(url, competition:, parser: , category: )
         return [] if url.blank?

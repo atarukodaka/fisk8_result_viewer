@@ -3,6 +3,7 @@
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
 - score-graph: error no year on no scores
 - element.element, comoponent.component: name ?
+- app/views/score/show.html: unsafe youtube link
 
 ### new feature
 
