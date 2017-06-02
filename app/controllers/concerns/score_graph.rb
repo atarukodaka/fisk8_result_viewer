@@ -16,6 +16,7 @@ class ScoreGraph
       }.first
     end
     def image_filename(skater, segment_type, date)
+      date ||= Date.new(1970, 1, 1)
       File.join(ImageDir, "%s_%s_%4d-%02d-%02d_plot.png" %
                 [skater.name, segment_type.to_s,
                  date.year, date.month, date.day])

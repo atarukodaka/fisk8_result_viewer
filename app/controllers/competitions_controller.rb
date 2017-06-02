@@ -1,4 +1,4 @@
-class CompetitionsListDecorator < ListDecorator
+class CompetitionDecorator < EntryDecorator
   class << self
     def headers
       { competition_type: "Type" }
@@ -13,7 +13,7 @@ class CompetitionsListDecorator < ListDecorator
   end
 end
 ################
-class CategoryResultsListDecorator < ListDecorator
+class CategoryResultDecorator < EntryDecorator
   def skater_name
     h.link_to_skater(nil, model.skater)
   end
@@ -28,7 +28,7 @@ class CategoryResultsListDecorator < ListDecorator
 end
 
 ################
-class SegmentScoresListDecorator < CategoryResultsListDecorator
+class SegmentScoreDecorator < CategoryResultDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
@@ -96,13 +96,14 @@ class CompetitionsController < ApplicationController
 
     category_summary = CategorySummary.new(competition)
     
-    category_results = (category) ? CategoryResultsListDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater).includes(:scores)) : []
-    segment_scores = (segment) ? SegmentScoresListDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking).includes(:skater)) : []
+    category_results = (category) ? CategoryResultDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater).includes(:scores)) : []
+    segment_scores = (segment) ? SegmentScoreDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking).includes(:skater)) : []
 
     respond_to do |format|
       format.html {
         render locals: {
-          competition: competition, category: category, segment: segment,
+          competition: competition.decorate,
+          category: category, segment: segment,
           category_summary: category_summary,
           category_results: category_results,
           segment_scores: segment_scores,

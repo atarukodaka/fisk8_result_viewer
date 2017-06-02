@@ -30,12 +30,14 @@ module IndexActionModules
 
   def decorator
     begin
-      "#{controller_name.camelize}ListDecorator".constantize
+      "#{controller_name.singularize.camelize}Decorator".constantize
     rescue NameError
       nil
     end
   end
+
   def colleciton
+    []
   end
   def format_html
     pagination = true

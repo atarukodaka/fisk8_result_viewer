@@ -1,6 +1,9 @@
-class ComponentsListDecorator < ListDecorator
+class ComponentDecorator < EntryDecorator
   def sid
     h.link_to_score(model.sid, model.sid)
+  end
+  def component
+    model.component
   end
 end
 ################################################################

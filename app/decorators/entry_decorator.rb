@@ -1,4 +1,4 @@
-class ListDecorator < Draper::Decorator
+class EntryDecorator < Draper::Decorator
   include ApplicationHelper
   delegate_all
 

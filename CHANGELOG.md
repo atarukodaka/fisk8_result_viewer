@@ -1,7 +1,9 @@
 ## TODO
 - re-consider parsers/* system
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
-- tallin
+- score-graph: error no year on no scores
+- element.element, comoponent.component: name ?
+
 
 ### new feature
 
