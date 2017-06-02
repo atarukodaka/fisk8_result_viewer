@@ -37,19 +37,9 @@ module Fisk8Viewer
       end
       Pdftotext.text(filename)
     end
-    
-=begin
-    def normalize_skater_name(skater_name)
-      skater_name.split(%r[ */ *]).map do |name|
-        if name =~ /^([A-Z][A-Z][[:alpha:]]*) +(.*)$/ || name =~ /^(Mc[[:alpha:]]*) +(.*)$/
-          last_name, first_name = $1, $2
-          "#{first_name} #{last_name}"
-        else
-          name
-        end
-      end.join(" / ")
+    def trim(str)
+      str.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
     end
-=end
     def isu_bio_url(isu_number)
       "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
     end

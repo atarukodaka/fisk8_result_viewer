@@ -19,6 +19,7 @@ module Fisk8Viewer
           score.merge!(hash)
           mode = :tes
         end
+        mode
       end
       def parse_tes(line, score, mode)
         element_re = '[\w\+\!<\*]+'
@@ -37,6 +38,7 @@ module Fisk8Viewer
         elsif line =~ /^Program Components/
           mode = :pcs
         end
+        mode
       end
       def parse_pcs(line, score, mode)
         if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\. ]+) ([\d\.]+)$/
@@ -45,6 +47,7 @@ module Fisk8Viewer
             number: (score[:components].size+1).to_i,
           }
         end
+        mode
       end
       def parse_each_score(text)
         mode = :skater
@@ -53,11 +56,11 @@ module Fisk8Viewer
         text.split(/\n/).each do |line|
           case mode
           when :skater
-            parse_skater(line, score, mode)
+            mode = parse_skater(line, score, mode)
           when :tes
-            parse_tes(line, score, mode)
+            mode = parse_tes(line, score, mode)
           when :pcs
-            parse_pcs(line, score, mode)
+            mode = parse_pcs(line, score, mode)
           end
         end  ## each line
         score

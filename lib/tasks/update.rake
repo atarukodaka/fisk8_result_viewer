@@ -10,11 +10,16 @@ namespace :update do
   task :competitions => :environment do
     first = ENV["first"].to_i
     last = ENV["last"].to_i
-    #reverse = ENV['reverse'].to_i.nonzero?
     force = ENV['force'].to_i.nonzero?
+    include_competition_type = {
+      challenger: ENV['include_challenger'].to_i.nonzero?,
+      junior: ENV['include_junior'].to_i.nonzero?,
+    }
     updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: ENV['accept_categories'])
     items = updater.class.load_competition_list(File.join(Rails.root, "config/competitions.yml"))
-
+    include_competition_type.each do |key, value|
+      items += updater.class.load_competition_list(File.join(Rails.root, "config/competitions_#{key}.yml")) if value
+    end
     if first > 0
       items = items.first(first)
     elsif last > 0
@@ -22,7 +27,7 @@ namespace :update do
     end
     items.map do |item|
       Competition.destroy_existings_by_url(item[:url]) if force
-      updater.update_competition(item[:url], parser_type: item[:parser], attributes: item[:attributes])
+      updater.update_competition(item[:url], parser_type: item[:parser], comment: item[:comment])
     end
   end
 

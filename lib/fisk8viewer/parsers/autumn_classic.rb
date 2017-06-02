@@ -11,13 +11,6 @@ module Fisk8Viewer
           [page.xpath("//dd[@class='tribe-venue']").text.strip, "CAN"]
         end
       end
-      class CompetitionSummaryParser < ISU_Generic::CompetitionSummaryParser
-        def get_time_schedule_rows(page)
-          #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
-          page.xpath("//table[.//div[text()='Date']]").xpath(".//tr")
-        end
-      end
-
       Fisk8Viewer::Parsers.register(:autumn_classic, self)
     end
   end

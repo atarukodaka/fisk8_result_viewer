@@ -97,7 +97,7 @@ class CompetitionsController < ApplicationController
     category_summary = CategorySummary.new(competition)
     
     category_results = (category) ? CategoryResultDecorator.decorate_collection(competition.category_results.where(category: category).includes(:skater).includes(:scores)) : []
-    segment_scores = (segment) ? SegmentScoreDecorator.decorate_collection(competition.scores.where(category: category, segment: segment).order(:ranking).includes(:skater)) : []
+    segment_scores = (segment) ? SegmentScoreDecorator.decorate_collection(competition.scores.where(category: category).where("segment like ?", "#{segment}%").order(:ranking).includes(:skater)) : []
 
     respond_to do |format|
       format.html {

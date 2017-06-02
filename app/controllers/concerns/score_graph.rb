@@ -5,7 +5,7 @@ class ScoreGraph
   
   class << self
     def find_image_resource(skater, segment_type)
-      glob_fname = File.join(ImageDir, "#{skater.name}_#{segment_type}_*_plot.png")
+      glob_fname = File.join(ImageDir, "#{skater[:name]}_#{segment_type.to_s.upcase}*_*_plot.png")
       Dir.glob(glob_fname).map {|v| v.sub(/^#{Rails.public_path}/, '')}.sort {|*args|
         d = []
         args.each do |v|
@@ -15,15 +15,15 @@ class ScoreGraph
         d[1] <=> d[0]
       }.first
     end
-    def image_filename(skater, segment_type, date)
+    def image_filename(skater, segment, date)
       date ||= Date.new(1970, 1, 1)
       File.join(ImageDir, "%s_%s_%4d-%02d-%02d_plot.png" %
-                [skater.name, segment_type.to_s,
+                [skater.name, segment,
                  date.year, date.month, date.day])
     end
   end
-  def plot(skater, scores, segment_type)
-    fname = self.class.image_filename(skater, segment_type, scores.pluck(:date).compact.max)
+  def plot(skater, scores, segment)
+    fname = self.class.image_filename(skater, segment, scores.pluck(:date).compact.max)
     return if File.exist?(fname)
 
     ys = [
@@ -35,7 +35,7 @@ class ScoreGraph
       Gnuplot::Plot.new(gp) do |plot|
         plot.terminal "png"
         plot.output   fname
-        plot.title    "#{skater.name} - #{segment_type}"
+        plot.title    "#{skater.name} - #{segment}"
         #plot.xlabel   "x"
         plot.ylabel   "points"
         plot.grid

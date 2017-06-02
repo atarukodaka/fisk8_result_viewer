@@ -27,7 +27,10 @@ module Fisk8Viewer
       def parse_summary_table(page)
         #category_elem = page.xpath("//*[text()='Category']").first
         #rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
-        rows = page.xpath("//table[.//*[text()='Category']]").xpath(".//tr")
+        #rows = page.xpath("//table[.//*[text()='Category']]").xpath(".//tr")
+        elem = page.xpath("//*[text()='Category']").first || raise
+        rows = elem.xpath('ancestor::table[1]//tr')
+        
         category = ""
         summary = []
         
@@ -35,9 +38,9 @@ module Fisk8Viewer
           next if row.xpath("td").blank?
           
           if (c = row.xpath("td[1]").text.presence)
-            category = c.upcase.strip.gsub(/^SENIOR /, '')
+            category = trim(c).upcase.gsub(/^SENIOR /, '')
           end
-          segment = row.xpath("td[2]").text.upcase.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
+          segment = trim(row.xpath("td[2]").text).upcase
           next if category.blank? && segment.blank?
           
           result_url = row.xpath("td[4]//a/@href").text
@@ -54,7 +57,10 @@ module Fisk8Viewer
       end
 
       def get_time_schedule_rows(page)
-        page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        elem = page.xpath("//table//tr//*[text()='Date']").first || raise
+        rows = elem.xpath('ancestor::table[1]//tr')
+        
       end
       def parse_time_schedule(page)
         ## time schdule

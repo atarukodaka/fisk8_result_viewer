@@ -69,14 +69,6 @@
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
-- http://www.isuresults.com/results/jgplat2011/
-- http://www.isuresults.com/results/jgpaus2011/
-- http://www.isuresults.com/results/jgppol2011/
-- http://www.isuresults.com/results/jgprou2011/
-- http://www.isuresults.com/results/jgpaut2011/
-- http://www.isuresults.com/results/jgpita2011/
-- http://www.isuresults.com/results/jgpest2011/
-
 ##2012-3
 - http://www.isuresults.com/results/gpusa2012/
 - http://www.isuresults.com/results/gpcan2012/
@@ -92,13 +84,6 @@
 - http://www.isuresults.com/results/wjc2013/
 - http://www.isuresults.com/results/wc2013/
 
-- http://www.isuresults.com/results/jgpfra2012/
-- http://www.isuresults.com/results/jgpusa2012/
-- http://www.isuresults.com/results/jgpaut2012/
-- http://www.isuresults.com/results/jgptur2012/
-- http://www.isuresults.com/results/jgpslo2012/
-- http://www.isuresults.com/results/jgpcro2012/
-- http://www.isuresults.com/results/jgpger2012/
 
 ##2013-4
 - http://www.isuresults.com/results/gpusa2013/
@@ -114,14 +99,6 @@
 - http://www.isuresults.com/results/wc2014/
 - http://www.isuresults.com/results/owg2014/
 
-- http://www.isuresults.com/results/jgplat2013/
-- http://www.isuresults.com/results/jgpmex2013/
-- http://www.isuresults.com/results/jgpsvk2013/
-- http://www.isuresults.com/results/jgppol2013/
-- http://www.isuresults.com/results/jgpblr2013/
-- http://www.isuresults.com/results/jgpcze2013/
-- http://www.isuresults.com/results/jgpest2013/
-
 ##2014-15
 - http://www.isuresults.com/results/gpusa2014/
 - http://www.isuresults.com/results/gpcan2014/
@@ -134,15 +111,6 @@
 - http://www.isuresults.com/results/ec2015/
 - http://www.isuresults.com/results/wjc2015/
 - http://www.isuresults.com/results/wc2015/
-
-#- junior
-- http://www.isuresults.com/results/jgpfra2014/
-- http://www.isuresults.com/results/jgpslo2014/
-#- http://www.isuresults.com/results/jgpcze2014/
-- http://www.isuresults.com/results/jgpjpn2014/
-- http://www.isuresults.com/results/jgpest2014/
-- http://www.isuresults.com/results/jgpger2014/
-- http://www.isuresults.com/results/jgpcro2014/
 
 ##2015-16
 - http://www.isuresults.com/results/season1516/gpusa2015/
@@ -160,15 +128,6 @@
 - http://www.isuresults.com/results/season1516/wjc2016/
 - http://www.isuresults.com/results/season1516/wc2016/
 
-#- junior
-- http://www.isuresults.com/results/season1516/jgpsvk2015/
-- http://www.isuresults.com/results/season1516/jgplat2015/
-- http://www.isuresults.com/results/season1516/jgpusa2015/
-- http://www.isuresults.com/results/season1516/jgpaut2015/
-- http://www.isuresults.com/results/season1516/jgppol2015/
-- http://www.isuresults.com/results/season1516/jgpesp2015/
-- http://www.isuresults.com/results/season1516/jgpcro2015/
-
 ##2016-17
 - http://www.isuresults.com/results/season1617/gpusa2016/
 - http://www.isuresults.com/results/season1617/gpcan2016/
@@ -183,136 +142,8 @@
 -
   url: http://www.jsfresults.com/intl/2016-2017/wtt/
   parser: :wtt_2017
-  attributes:
-    comment: "no category results provided"
+  comment: "no category results provided"
   
-### jnr
-- http://www.isuresults.com/results/season1617/jgpfra2016/
-- http://www.isuresults.com/results/season1617/jgpcze2016/
-- http://www.isuresults.com/results/season1617/jgpjpn2016/
--
-  url: http://www.isuresults.com/results/season1617/jgprus2016/
-  attributes:
-    country: RUS
-- http://www.isuresults.com/results/season1617/jgpslo2016/
-- http://www.isuresults.com/results/season1617/jgpest2016/
-- http://www.isuresults.com/results/season1617/jgpger2016/
-- http://www.isuresults.com/results/season1617/wjc2017/
 
 ## for debug
--
-  url: http://www.isuresults.com/results/season1516/gpfra2015/
-  attributes:
-    comment: "Free Skating has been canceled due to explusion in Paris. refere: http://static.isu.org/media/1012/1980-isu-gp-fra-2015-partial-cancelation-info-to-members-public.pdf"
-
-## ISU-B
-## nebelhorn
-- http://www.deu-event.de/results/Nebelhorn_2016/index.html
-- http://www.isuresults.com/results/season1516/csger2015/
-- http://www.isuresults.com/results/nt2014/
-- http://www.isuresults.com/results/nt2013/
-- http://www.deu-event.de/results/Nebelhorn_2012/
-- http://www.deu-event.de/results/Nebelhorn_2011/
--
-  url: http://www.deu-event.de/results/Nebelhorn_2010/
-  attributes:
-    country: GER
-  
-## finlandia
--
-  url: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN
--
-  url: http://www.figureskatingresults.fi/results/1516/CSFIN2015/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN
--
-  url: http://www.figureskatingresults.fi/results/1314/FT2013/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN  
--
-  url: http://www.figureskatingresults.fi/results/1213/FT2012/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN  
-- http://www.figureskatingresults.fi/results/1112/FT2011/
-- http://www.figureskatingresults.fi/results/1011/FT2010/
-
-## lombardia
-- http://www.fisg.it/upload/result/4144/senior/index2.html
-- http://www.fisg.it/upload/result/3860/index.html
-
-
-## ondreij nepela
--
-  url: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-  attributes:
-    country: SVK
-
--
-  url: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-  attributes:
-    country: SVK
--
-  url:  http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
-  attributes:
-    country: SVK
-
-## warsaw cup
--
-  url: http://pfsa.com.pl/cspol2016/  
-  attributes:
-    country: 'RUS'  
--
-  url:  http://pfsa.com.pl/cspol15/
-  attributes:
-    country: 'RUS'  
-
--
-  url:  http://www.pfsa.com.pl/warsawcup2014/    
-  attributes:
-    country: 'RUS'  
-
--
-  url: http://www.pfsa.com.pl/results/1314/WC2013/
-  attributes:
-    country: 'RUS'  
-
-## aci    
--
-  url: https://skatecanada.ca/event/2016-autumn-classic-international/
-  parser: :autumn_classic
-
-
-- http://www.isuresults.com/results/season1617/wc2017/    
-
--
-  url: http://www.isuresults.com/results/fc2012/
-  parser: :isu_generic_mdy
-
--
-  url: http://www.figureskatingresults.fi/results/1213/FT2012/
-  parser: :finlandia_2013
-  attributes:
-    country: FIN  
--
-  url: https://skatecanada.ca/event/2016-autumn-classic-international/
-  parser: :autumn_classic
-
-- http://www.isuresults.com/results/season1516/wjc2016/
-
-- http://www.isuresults.com/results/season1516/ec2016/
-- http://www.isuresults.com/results/wjc2015/
-- http://www.isuresults.com/results/fc2014/
-
-- http://www.isuresults.com/results/jgpusa2012/
--
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
-  attributes:
-    comment: "no category results provided"
-    
+- http://www.isuresults.com/results/season1617/wc2017/

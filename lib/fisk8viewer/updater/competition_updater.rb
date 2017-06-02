@@ -15,17 +15,18 @@ module Fisk8Viewer
 
       def initialize(accept_categories: nil)
         @category_accepter = CategoryAccepter.new(accept_categories)
+        @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
       class << self
         def load_competition_list(yaml_filename)
           YAML.load_file(yaml_filename).map do |item|
             case item
             when String
-              {url: item, parser: DEFAULT_PARSER, attributes: {}}
+              {url: item, parser: DEFAULT_PARSER, }
             when Hash
               {
                 url: item["url"], parser: item["parser"] || DEFAULT_PARSER,
-                attributes: item["attributes"] || {}
+                comment: item['comment'],
               }.deep_symbolize_keys
             else
               raise "invalid format ('#{yaml_filename}'): has to be String or Hash"
@@ -45,7 +46,7 @@ module Fisk8Viewer
           Competition.where(site_url: url).map(&:destroy)
         }
       end
-      def update_competition(url, parser_type: :isu_generic, attributes: {})
+      def update_competition(url, parser_type: :isu_generic, comment: nil)
         parser = get_parser(parser_type)
         puts "=" * 100
         puts "** update competition: #{url} with '#{parser_type}'"
@@ -56,12 +57,12 @@ module Fisk8Viewer
 
         ActiveRecord::Base::transaction do
           competition = Competition.create(summary.slice(*keys)) do |comp|
+            comp[:country] ||= @city_country[comp.city]
+            comp[:comment] = comment if comment
             update_competition_identifers(comp)
-            [:comment, :country].each do |key|
-              comp[key] = attributes[key] if attributes[key]
-            end
           end
           ## for each categories
+          puts "  existing categories : #{summary.categories.join(', ')}"
           summary.categories.each do |category|
             next unless category_accepter.accept?(category)
             result_url = summary.result_url(category)
@@ -183,26 +184,25 @@ module Fisk8Viewer
         puts "    %<ranking>2d: '%{skater_name}' (%{nation}) %<tss>3.2f" % score_hash
         score_keys = [:skater_name, :ranking, :starting_number, :nation,
                       :result_pdf, :tss, :tes, :pcs, :deductions, :base_value]
-
         score.attributes = score_hash.slice(*score_keys)
         update_elements(score_hash, score)
         update_components(score_hash, score)
         update_sid(score_hash, score)
         score.save!
       end
-      def update_container_details(score_hash, score, type, keys)
+      def update_container_details(score_hash, score, type, keys, summary_key)
         summary = []
         score_hash[type].each do |e|
-          score[type].create!(e.slice(*keys))
-          summary << e[type]
+          score.send(type).create!(e.slice(*keys))
+          summary << e[summary_key]
         end
         score.update!("#{type}_summary" => summary.join('/'))
       end
       def update_elements(score_hash, score)
-        update_container_details(score_hash, score, :elements, [:number, :element, :info, :base_value, :credit, :goe, :judges, :value])
+        update_container_details(score_hash, score, :elements, [:number, :element, :info, :base_value, :credit, :goe, :judges, :value], :element)
       end
       def update_components(score_hash, score)
-        update_container_details(score_hash, score, :components, [:component, :number, :factor, :judges, :value])
+        update_container_details(score_hash, score, :components, [:component, :number, :factor, :judges, :value], :value)
       end
       def update_sid(_score_hash, score)
         category_abbr = score.category || ""
