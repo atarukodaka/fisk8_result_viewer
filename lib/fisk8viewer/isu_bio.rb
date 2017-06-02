@@ -19,7 +19,7 @@ module Fisk8Viewer
       categories.each do |category|
         url = URLS[category]
         next if url.blank?
-        logger.debug("parse #{category} on #{url}")
+        #logger.debug("parse #{category} on #{url}")
         page = @agent.get(url)
         page.xpath("//table[1]/tr").each do |row|
           ntn = row.xpath("td[1]").text

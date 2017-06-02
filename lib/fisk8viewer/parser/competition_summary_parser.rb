@@ -5,6 +5,19 @@ module Fisk8Viewer
     class CompetitionSummaryParser
       include Utils
 
+      # return true if mmddyyyy format
+      def mdy_date_format?(ary_datestr)
+        dates = []
+        ary_datestr.each do |datestr|
+          begin
+            Time.zone ||= "UTC"
+            dates << Time.zone.parse(datestr)
+          rescue ArgumentError
+            return true
+          end
+        end
+        return dates.max - dates.min > 3600 * 24 * 10
+      end
       def parse_datetime(str, mdy_format: false)
         begin
           Time.zone ||= "UTC"
@@ -21,7 +34,7 @@ module Fisk8Viewer
         end
       end
       def parse_city_country(page)
-        node = page.search("td.caption3").presence || page.xpath("//h3")
+        node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""
         if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
           city, country = $1, $2
@@ -69,19 +82,6 @@ module Fisk8Viewer
         rows = elem.xpath('ancestor::table[1]//tr')
         
       end
-      # return true if mmddyyyy format
-      def check_date_format(ary_datestr)
-        dates = []
-        ary_datestr.each do |datestr|
-          begin
-            Time.zone ||= "UTC"
-            dates << Time.zone.parse(datestr)
-          rescue ArgumentError
-            return true
-          end
-        end
-        return dates.max - dates.min > 3600 * 24 * 10
-      end
       def parse_time_schedule(page)
         ## time schdule
         #date_elem = page.xpath("//*[text()='Date']").first
@@ -95,7 +95,7 @@ module Fisk8Viewer
         dt_str = ""
         time_schedule = []
 
-        mdy_format = check_date_format(rows.xpath(".//td[1]").map(&:text).reject {|v| v.blank? })
+        mdy_format = mdy_date_format?(rows.xpath(".//td[1]").map(&:text).reject {|v| v.blank? })
         rows.each do |row|
           next if row.xpath("td").blank?
           if (t = row.xpath("td[1]").text.presence)

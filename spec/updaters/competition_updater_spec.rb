@@ -18,11 +18,11 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     }
   end
 
-  describe 'update competition: isu generic mdy' do 
+  describe 'mdy format to work' do 
     it {
       url = 'http://www.isuresults.com/results/jgpfra2010/'
       updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [])
-      updater.update_competition(url, parser_type: :isu_generic_mdy)
+      updater.update_competition(url)
 
       comp = Competition.find_by(site_url: url)
       expect(comp.site_url).to eq(url)
@@ -43,7 +43,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     it {
       url = 'http://www.isuresults.com/results/fc2012/'
       updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES])
-      updater.update_competition(url, parser_type: :isu_generic_mdy)
+      updater.update_competition(url)
 
       comp = Competition.find_by(site_url: url)
       expect(comp.site_url).to eq(url)
@@ -100,10 +100,9 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   describe 'fcc2012' do
     it {
       url = 'http://www.isuresults.com/results/fc2012/'
-      parser_type = :isu_generic_mdy
 
       updater = Fisk8Viewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES])
-      competition = updater.update_competition(url, parser_type: parser_type)
+      competition = updater.update_competition(url)
       # 15. Sandra KHOPON: 17/16
       skater_cr = competition.category_results.find_by(category: "LADIES", ranking: 15).skater
       skater_sp = competition.scores.find_by(category: "LADIES", segment: "SHORT PROGRAM", ranking: 17).skater
