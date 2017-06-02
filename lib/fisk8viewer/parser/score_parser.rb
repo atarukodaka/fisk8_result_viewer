@@ -41,7 +41,7 @@ module Fisk8Viewer
         mode
       end
       def parse_pcs(line, score, mode)
-        if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\. ]+) ([\d\.]+)$/
+        if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.\- ]+) ([\d\.]+)$/
           score[:components] << {
             component: $1, factor: $2.to_f, judges: $3, value: $4.to_f,
             number: (score[:components].size+1).to_i,
