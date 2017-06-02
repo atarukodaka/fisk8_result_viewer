@@ -6,10 +6,12 @@ require 'mechanize'
 module Fisk8Viewer
   module Utils
    
+=begin
     def logger
       @logger = Rails.logger
       #@logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
     end
+=end
     def get_url(url)
       @agent ||= Mechanize.new
       begin

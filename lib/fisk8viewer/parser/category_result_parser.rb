@@ -23,7 +23,7 @@ module Fisk8Viewer
             col_num[:nation] = i
           when 'Points'
             col_num[:points] = i
-          when 'SP', 'SD'
+          when 'SP', 'SD', 'OD'
             col_num[:short_ranking] = i
           when 'FS', 'FD'
             col_num[:free_ranking] = i
@@ -38,7 +38,6 @@ module Fisk8Viewer
         col_num = parse_headers(rows[0])
         rows[1..-1].map do |row|
           tds = row.xpath("td")
-          
           data = {
             ranking: tds[col_num[:ranking]].text.to_i,
             skater_name: tds[col_num[:skater_name]].text.gsub(/  */, ' ').strip,

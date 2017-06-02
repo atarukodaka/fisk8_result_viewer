@@ -1,4 +1,11 @@
 ## 2010-11
+- http://www.isuresults.com/results/jgpfra2010/
+- http://www.isuresults.com/results/jgprou2010/
+- http://www.isuresults.com/results/jgpaut2010/
+- http://www.isuresults.com/results/jgpjpn2010/
+- http://www.isuresults.com/results/jgpgbr2010/
+- http://www.isuresults.com/results/jgpger2010/
+- http://www.isuresults.com/results/jgpcze2010/
 - http://www.isuresults.com/results/wjc2011/
 
 ## 2011-12
@@ -65,3 +72,24 @@
 - http://www.isuresults.com/results/season1617/wjc2017/
 
 
+## debug
+-
+  url: http://www.isuresults.com/results/jgpfra2010/
+  parser: :isu_generic_mdy
+-
+  url: http://www.isuresults.com/results/jgprou2010/
+  parser: :isu_generic_mdy
+-
+  url: http://www.isuresults.com/results/jgpaut2010/
+  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/jgpjpn2010/
+-
+  url: http://www.isuresults.com/results/jgpgbr2010/
+  parser: :isu_generic_mdy
+-
+  url: http://www.isuresults.com/results/jgpger2010/
+  parser: :isu_generic_mdy
+-
+  url: http://www.isuresults.com/results/jgpcze2010/
+  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/wjc2011/
