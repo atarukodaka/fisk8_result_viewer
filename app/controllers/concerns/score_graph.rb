@@ -5,7 +5,7 @@ class ScoreGraph
   
   class << self
     def find_image_resource(skater, segment_type)
-      glob_fname = File.join(ImageDir, "#{skater[:name]}_#{segment_type.to_s.upcase}*_*_plot.png")
+      glob_fname = File.join(ImageDir, "#{skater[:name].tr('/', '-')}_#{segment_type.to_s.upcase}*_*_plot.png")
       Dir.glob(glob_fname).map {|v| v.sub(/^#{Rails.public_path}/, '')}.sort {|*args|
         d = []
         args.each do |v|
@@ -18,7 +18,7 @@ class ScoreGraph
     def image_filename(skater, segment, date)
       date ||= Date.new(1970, 1, 1)
       File.join(ImageDir, "%s_%s_%4d-%02d-%02d_plot.png" %
-                [skater.name, segment,
+                [skater.name.tr('/', '-'), segment,
                  date.year, date.month, date.day])
     end
   end

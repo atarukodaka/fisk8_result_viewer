@@ -4,6 +4,7 @@
 - score-graph: error no year on no scores
 - element.element, comoponent.component: name ?
 - app/views/score/show.html: unsafe youtube link
+- graph for ice dance / pairs
 
 ### new feature
 
