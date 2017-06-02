@@ -25,7 +25,6 @@
   url: http://www.isuresults.com/results/ec2011/
   parser: :isu_generic_mdy
 - http://www.isuresults.com/results/fc2011/
-- http://www.isuresults.com/results/wjc2011/
 - http://www.isuresults.com/results/wc2011/
 - http://www.isuresults.com/results/owg2010/
 
@@ -63,9 +62,6 @@
 -
   url: http://www.isuresults.com/results/fc2012/
   parser: :isu_generic_mdy
--
-  url: http://www.isuresults.com/results/wjc2012/
-  parser: :isu_generic_mdy
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
@@ -81,7 +77,6 @@
 -
   url: http://www.isuresults.com/results/ec2013/
   parser: :isu_generic_mdy
-- http://www.isuresults.com/results/wjc2013/
 - http://www.isuresults.com/results/wc2013/
 
 
@@ -95,7 +90,6 @@
 - http://www.isuresults.com/results/gpf1314/
 - http://www.isuresults.com/results/fc2014/
 - http://www.isuresults.com/results/ec2014/
-- http://www.isuresults.com/results/wjc2014/
 - http://www.isuresults.com/results/wc2014/
 - http://www.isuresults.com/results/owg2014/
 
@@ -109,7 +103,6 @@
 - http://www.isuresults.com/results/gpf1415/
 - http://www.isuresults.com/results/fc2015/
 - http://www.isuresults.com/results/ec2015/
-- http://www.isuresults.com/results/wjc2015/
 - http://www.isuresults.com/results/wc2015/
 
 ##2015-16
@@ -125,7 +118,6 @@
 - http://www.isuresults.com/results/season1516/gpf1516/
 - http://www.isuresults.com/results/season1516/fc2016/
 - http://www.isuresults.com/results/season1516/ec2016/
-- http://www.isuresults.com/results/season1516/wjc2016/
 - http://www.isuresults.com/results/season1516/wc2016/
 
 ##2016-17
@@ -147,3 +139,4 @@
 
 ## for debug
 - http://www.isuresults.com/results/season1617/wc2017/
+- http://www.isuresults.com/results/season1516/ec2016/

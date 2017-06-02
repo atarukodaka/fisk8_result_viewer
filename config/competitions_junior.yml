@@ -1,3 +1,6 @@
+## 2010-11
+- http://www.isuresults.com/results/wjc2011/
+
 ## 2011-12
 - http://www.isuresults.com/results/jgplat2011/
 - http://www.isuresults.com/results/jgpaus2011/
@@ -6,6 +9,10 @@
 - http://www.isuresults.com/results/jgpaut2011/
 - http://www.isuresults.com/results/jgpita2011/
 - http://www.isuresults.com/results/jgpest2011/
+-
+  url: http://www.isuresults.com/results/wjc2012/
+  parser: :isu_generic_mdy
+  
 
 ## 2012-13
 - http://www.isuresults.com/results/jgpfra2012/
@@ -15,6 +22,7 @@
 - http://www.isuresults.com/results/jgpslo2012/
 - http://www.isuresults.com/results/jgpcro2012/
 - http://www.isuresults.com/results/jgpger2012/
+- http://www.isuresults.com/results/wjc2013/
 
 ## 2013-14
 - http://www.isuresults.com/results/jgplat2013/
@@ -24,6 +32,7 @@
 - http://www.isuresults.com/results/jgpblr2013/
 - http://www.isuresults.com/results/jgpcze2013/
 - http://www.isuresults.com/results/jgpest2013/
+- http://www.isuresults.com/results/wjc2014/
 
 ## 2014-15
 - http://www.isuresults.com/results/jgpfra2014/
@@ -33,6 +42,7 @@
 - http://www.isuresults.com/results/jgpest2014/
 - http://www.isuresults.com/results/jgpger2014/
 - http://www.isuresults.com/results/jgpcro2014/
+- http://www.isuresults.com/results/wjc2015/
 
 ## 2015-16
 - http://www.isuresults.com/results/season1516/jgpsvk2015/
@@ -42,6 +52,7 @@
 - http://www.isuresults.com/results/season1516/jgppol2015/
 - http://www.isuresults.com/results/season1516/jgpesp2015/
 - http://www.isuresults.com/results/season1516/jgpcro2015/
+- http://www.isuresults.com/results/season1516/wjc2016/
 
 ## 2016-17
 - http://www.isuresults.com/results/season1617/jgpfra2016/
@@ -52,3 +63,5 @@
 - http://www.isuresults.com/results/season1617/jgpest2016/
 - http://www.isuresults.com/results/season1617/jgpger2016/
 - http://www.isuresults.com/results/season1617/wjc2017/
+
+

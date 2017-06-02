@@ -49,4 +49,14 @@ namespace :update do
   task :clear_score_graphs => :environment do
     FileUtils.rm(Dir.glob(File.join(ScoreGraph::ImageDir, "*_plot.png")))
   end
+
+  task :elements_check => :environment do
+    Score.where.not(id: Element.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
+      puts "!!! #{score.sid} has no elements at all"
+    end
+    Score.where.not(id: Component.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
+      puts "!!! #{score.sid} has no components at all"
+    end
+    
+  end
 end  # namespace

@@ -16,6 +16,7 @@ class Score < ApplicationRecord
   scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "SHORT%") }
   scope :free, -> { where("segment like ? ", "FREE%") }  
+  scope :with_competition, ->{ joins(:competition) }
   
   private
   def set_default_values
