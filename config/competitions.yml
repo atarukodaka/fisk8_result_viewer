@@ -315,33 +315,4 @@
   parser: :wtt_2017
   attributes:
     comment: "no category results provided"
-
--
-  url: https://data.tallinntrophy.eu/2016/Tallinn_Trophy/
-  parser: :tallinn
-      
--
-  url: https://data.tallinntrophy.eu/2015/Tallinn_Trophy/
-  parser: :tallinn
-      
--
-  url: https://data.tallinntrophy.eu/2014/TTR_Int/index.htm
-  parser: :tallinn
-      
--
-  url: https://data.tallinntrophy.eu/2013/tallinntrophy/index.htm
-  parser: :tallinn
-      
--
-  url: https://data.tallinntrophy.eu/2012/A_Hall/index.htm
-  parser: :tallinn
-      
--
-  url: https://data.tallinntrophy.eu/2011/A_Class/index.htm
-  parser: :tallinn
-      
-      
-
-
-
     

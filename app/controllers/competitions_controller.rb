@@ -11,12 +11,6 @@ class CompetitionsListDecorator < ListDecorator
   def site_url
     h.link_to_competition_site("Official", model)
   end
-=begin
-  def competition_type
-    #[model.isu_class, model.competition_type].join("-")
-    model.competition_type
-  end
-=end
 end
 ################
 class CategoryResultsListDecorator < ListDecorator
@@ -38,11 +32,6 @@ class SegmentScoresListDecorator < CategoryResultsListDecorator
   def ranking
     h.link_to_score(model.ranking, model)
   end
-=begin
-  def deductions
-    (model.deductions.to_f == 0) ? "-" : model.deductions.to_f.abs * (-1)
-  end
-=end
   self.display_as(:score, [:tss, :tes, :pcs, :deductions])
 end
 ################################################################
@@ -57,13 +46,13 @@ class CategorySummary
     @segments = Hash.new { |h,k| h[k] = [] }
     @top_rankers = Hash.new { |h,k| h[k] = [] }
 
-    @competition.scores.order("date").pluck(:category, :segment).uniq.each do |ary|
-      category, segment = ary   # = ary.first; segment = ary.second
+    @competition.scores.order("date").pluck(:category, :segment).uniq.each do |cat_seg|
+      category, segment = cat_seg
       @categories << category unless @categories.include?(category)
       @segments[category] << segment
     end
     @categories = sort_with_preset(@categories, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
-    @competition.category_results.where("ranking > 0 and ranking <= ? ", 3).order(:ranking).each do |item|
+    @competition.category_results.top_rankers(3).each do |item|
       @top_rankers[item.category] << item.skater_name
     end
   end

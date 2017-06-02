@@ -18,7 +18,7 @@ class ScoresController < ApplicationController
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
   def collection
-    Score.joins(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+    Score.with_competition.recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
   end
   def show
     score = Score.find_by(sid: params[:sid]) ||
