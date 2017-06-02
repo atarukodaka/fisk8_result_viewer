@@ -8,44 +8,17 @@
 #  in that case you need to register the parser into Fisk8Viewer::CompetitionSummaryParser.registered. see fisk8viewer/competition_summary_parser.rb and fisk8viewer/competition_summary_parser/isu_generic.rb for dettails.
 
 ##2010-11
--
-  url: http://www.isuresults.com/results/gpusa2010/
-  parser: :isu_generic_mdy
--
-  url: http://www.isuresults.com/results/gpcan2010/
-  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/gpusa2010/
+- http://www.isuresults.com/results/gpcan2010/
 - http://www.isuresults.com/results/gpchn2010/
--
-  url: http://www.isuresults.com/results/gpfra2010/
-  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/gpfra2010/
 - http://www.isuresults.com/results/gprus2010/
 - http://www.isuresults.com/results/gpjpn2010/
 - http://www.isuresults.com/results/gpf1011/
--
-  url: http://www.isuresults.com/results/ec2011/
-  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/ec2011/
 - http://www.isuresults.com/results/fc2011/
 - http://www.isuresults.com/results/wc2011/
-- http://www.isuresults.com/results/owg2010/
 
--
-  url: http://www.isuresults.com/results/jgpfra2010/
-  parser: :isu_generic_mdy
-
-- http://www.isuresults.com/results/jgprou2010/
--
-  url: http://www.isuresults.com/results/jgpaut2010/
-  parser: :isu_generic_mdy
-  
-- http://www.isuresults.com/results/jgpjpn2010/
--
-  url: http://www.isuresults.com/results/jgpgbr2010/
-  parser: :isu_generic_mdy
-  
-- http://www.isuresults.com/results/jgpger2010/
--
-  url: http://www.isuresults.com/results/jgpcze2010/
-  parser: :isu_generic_mdy
 
 
 ##2011-12
@@ -56,12 +29,8 @@
 - http://www.isuresults.com/results/gprus2011/
 - http://www.isuresults.com/results/gpjpn2011/
 - http://www.isuresults.com/results/gpf1112/
--
-  url: http://www.isuresults.com/results/ec2012/
-  parser: :isu_generic_mdy
--
-  url: http://www.isuresults.com/results/fc2012/
-  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/ec2012/
+- http://www.isuresults.com/results/fc2012/
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
@@ -74,9 +43,7 @@
 - http://www.isuresults.com/results/gpjpn2012/
 - http://www.isuresults.com/results/gpf1213/
 - http://www.isuresults.com/results/fc2013/
--
-  url: http://www.isuresults.com/results/ec2013/
-  parser: :isu_generic_mdy
+- http://www.isuresults.com/results/ec2013/
 - http://www.isuresults.com/results/wc2013/
 
 
@@ -145,3 +112,4 @@
 - http://www.isuresults.com/results/owg2010/
 
 - http://www.isuresults.com/results/gpjpn2010/
+- http://www.isuresults.com/results/ec2013/   # mdy

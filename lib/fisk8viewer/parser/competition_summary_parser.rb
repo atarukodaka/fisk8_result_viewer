@@ -5,10 +5,17 @@ module Fisk8Viewer
     class CompetitionSummaryParser
       include Utils
 
-      def parse_datetime(str)
+      def parse_datetime(str, mdy_format: false)
         begin
           Time.zone ||= "UTC"
-          Time.zone.parse(str)
+          if mdy_format
+            dt_str, tm_str = str.split(/ /)
+            m, d, y = dt_str.split(/[,\/]/)
+            dt_str = "%s/%s/%s" % [d, m, y]
+            Time.zone.parse("#{dt_str} #{tm_str}")
+          else
+            Time.zone.parse(str)
+          end
         rescue ArgumentError
           raise "invalid date format"
         end
@@ -62,6 +69,19 @@ module Fisk8Viewer
         rows = elem.xpath('ancestor::table[1]//tr')
         
       end
+      # return true if mmddyyyy format
+      def check_date_format(ary_datestr)
+        dates = []
+        ary_datestr.each do |datestr|
+          begin
+            Time.zone ||= "UTC"
+            dates << Time.zone.parse(datestr)
+          rescue ArgumentError
+            return true
+          end
+        end
+        return dates.max - dates.min > 3600 * 24 * 10
+      end
       def parse_time_schedule(page)
         ## time schdule
         #date_elem = page.xpath("//*[text()='Date']").first
@@ -74,6 +94,8 @@ module Fisk8Viewer
         #binding.pry
         dt_str = ""
         time_schedule = []
+
+        mdy_format = check_date_format(rows.xpath(".//td[1]").map(&:text).reject {|v| v.blank? })
         rows.each do |row|
           next if row.xpath("td").blank?
           if (t = row.xpath("td[1]").text.presence)
@@ -81,7 +103,7 @@ module Fisk8Viewer
             next
           end
           tm_str = row.xpath("td[2]").text
-          tm = parse_datetime("#{dt_str} #{tm_str}")
+          tm = parse_datetime("#{dt_str} #{tm_str}", mdy_format: mdy_format)
           next if tm.nil?
           tm = tm + 2000.years if tm.year < 2000
           

@@ -3,8 +3,6 @@
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
 - score-graph: error no year on no scores
 - element.element, comoponent.component: name ?
-- 2010-11 juniors
-
 
 ### new feature
 
@@ -26,6 +24,7 @@
 - wtt2017: sp/fs ranking
 - link to youtube on score
 - open-url-redirections
+- delete isu_generic_mdy parser; in-corpolated into generic parser
 
 ## 1.0.0
 
