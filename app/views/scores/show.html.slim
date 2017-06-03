@@ -27,7 +27,7 @@ h2 Components
 
 = render partial: "list_table", locals: { display_keys: [:number, :name, :factor, :judges, :value] , collection: EntryDecorator.decorate_collection(score.components) }
 
-- if score.deductions < 0
+- if score.deductions.to_f < 0
   h2 Deductions
   = score.deduction_reasons
 
