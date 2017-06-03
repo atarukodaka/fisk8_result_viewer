@@ -9,6 +9,8 @@ module Fisk8Viewer
       def mdy_date_format?(ary_datestr)
         dates = []
         ary_datestr.each do |datestr|
+          datestr = trim(datestr)
+          next unless datestr =~ %r{^[0-9/.]+$}
           begin
             Time.zone ||= "UTC"
             dates << Time.zone.parse(datestr)
