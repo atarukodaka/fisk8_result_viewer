@@ -3,19 +3,11 @@ module IndexActionModules
     @_filters ||= IndexFilters.new.tap {|f|
       f.filters = {
         skater_name: {operator: :like, input: :text_field, model: Score},
-        "category/segment" => {
-          children: {
-            category: {operator: :eq, input: :select, model: Score, label: ""},
-            segment: {operator: :eq, input: :select, model: Score, label: " / "},
-          }
-        },
+        category: {operator: :eq, input: :select, model: Score, },
+        segment: {operator: :eq, input: :select, model: Score,},
         nation: {operator: :eq, input: :select, model: Score},      
-        competition: {
-          children: {
-            competition_name: {operator: :eq, input: :select, model: Score, label: ""},
-            isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
-          },
-        },
+        competition_name: {operator: :eq, input: :select, model: Score},
+        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
         season: { operator: :eq, input: :select, model: Competition},
       }
     }

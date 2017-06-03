@@ -13,12 +13,12 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.date :date, default: Time.new(1970, 1, 1, 0, 0, 0)
       t.string :result_pdf
       
-      t.float :tss
-      t.float :tes
-      t.float :pcs
-      t.float :deductions
+      t.float :tss, default: 0.0
+      t.float :tes, default: 0.0
+      t.float :pcs, default: 0.0
+      t.float :deductions, default: 0.0
       t.string :deduction_reasons
-      t.float :base_value
+      t.float :base_value, default: 0.0
       t.string :elements_summary
       t.string :components_summary
 

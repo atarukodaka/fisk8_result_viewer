@@ -65,13 +65,7 @@ class IndexFilters
     arel_tables = []
     data_to_create = {}
     @data.each do |key, hash|
-      if hash[:children]
-        hash[:children].each do |ck, ch|
-          data_to_create[ck] = ch
-        end
-      else
-        data_to_create[key] = hash
-      end
+      data_to_create[key] = hash
     end
       
     #@data.each do |key, hash|
