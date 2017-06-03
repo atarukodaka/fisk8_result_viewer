@@ -9,14 +9,9 @@ h2 Score
 .row
   .col-sm-6
     table.table.table-striped.table-hover.table-condensed
-      = tr_data(:skater, link_to_skater(score.skater))
-      = tr_data(:competiiton, link_to_competition(score.competition))
-      = tr_data(:category, link_to_competition(score.competition, category: score.category))
-      = tr_data(:segment, link_to_competition(score.competition, category: score.category, segment: score.segment))
-      - [:date, :tss, :tes, :pcs, :deductions].each do |key|
-        = tr_data(key, score[key])
-      = tr_data("Resulf PDF", link_to_pdf(score.result_pdf))
-      = tr_data("Youtube search", link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater_name, score.competition_name, score.segment].join('+'), target: "_blank"))
+      tr
+        - [:skater, :competition, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search].each do |key|
+          = tr_data(key, score.send(key))
   .col-sm-6
         
 h2 Elements
