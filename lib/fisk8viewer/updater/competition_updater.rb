@@ -197,10 +197,10 @@ module Fisk8Viewer
         score.update!("#{type}_summary" => summary.join('/'))
       end
       def update_elements(score_hash, score)
-        update_container_details(score_hash, score, :elements, [:number, :element, :info, :base_value, :credit, :goe, :judges, :value], :element)
+        update_container_details(score_hash, score, :elements, [:number, :name, :info, :base_value, :credit, :goe, :judges, :value], :name)
       end
       def update_components(score_hash, score)
-        update_container_details(score_hash, score, :components, [:component, :number, :factor, :judges, :value], :value)
+        update_container_details(score_hash, score, :components, [:number, :name, :factor, :judges, :value], :value)
       end
       def update_sid(_score_hash, score)
         category_abbr = score.category || ""

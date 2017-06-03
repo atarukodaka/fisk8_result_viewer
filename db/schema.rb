@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "components", force: :cascade do |t|
     t.integer "number"
-    t.string "component"
+    t.string "name"
     t.float "factor"
     t.string "judges"
     t.float "value"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "elements", force: :cascade do |t|
     t.integer "number"
-    t.string "element"
+    t.string "name"
     t.string "info"
     t.float "base_value"
     t.string "credit"

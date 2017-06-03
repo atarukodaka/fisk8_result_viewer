@@ -19,7 +19,7 @@ class ComponentsController <  ApplicationController
 #    [:sid, :competition_name, :category, :segment, :date, :season,
     [:sid, :competition_name, :date, :season,
     :ranking, :skater_name, :nation,
-     :number, :component, :factor, :judges, :value]
+     :number, :name, :factor, :judges, :value]
   end
 
   def collection

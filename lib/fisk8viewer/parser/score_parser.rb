@@ -27,7 +27,7 @@ module Fisk8Viewer
           number = $1.to_i; rest = $2
           if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
             score[:elements] << {
-              number: number, element: $1, info: $2, base_value: $3.to_f,
+              number: number, name: $1, info: $2, base_value: $3.to_f,
               credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
             }
           else
@@ -43,9 +43,9 @@ module Fisk8Viewer
       def parse_pcs(line, score, mode)
         ## memo: gpjpn10 ice dance using ',' i/o '.'
         if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
-          component, factor, value, judges = $1, $2, $3, $4
+          name, factor, value, judges = $1, $2, $3, $4
           score[:components] << {
-            component: component, factor: factor.to_f,
+            name: name, factor: factor.to_f,
             judges: judges.tr(',', '.'), value: value.to_f,
             number: (score[:components].size+1).to_i,
           }

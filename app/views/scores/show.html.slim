@@ -21,10 +21,10 @@ h2 Score
         
 h2 Elements
 
-= render partial: "list_table", locals: { display_keys: [:number, :element, :info, :base_value, :credit, :goe, :judges, :value] , collection: EntryDecorator.decorate_collection(score.elements) }
+= render partial: "list_table", locals: { display_keys: [:number, :name, :info, :base_value, :credit, :goe, :judges, :value] , collection: EntryDecorator.decorate_collection(score.elements) }
 
 h2 Components
 
-= render partial: "list_table", locals: { display_keys: [:number, :component, :factor, :judges, :value] , collection: EntryDecorator.decorate_collection(score.components) }
+= render partial: "list_table", locals: { display_keys: [:number, :name, :factor, :judges, :value] , collection: EntryDecorator.decorate_collection(score.components) }
 
 

@@ -13,7 +13,7 @@ class ElementsController < ApplicationController
       f.filters = {
         element: {
           children: {
-            element: {
+            name: {
               operator: (params[:perfect_match]) ? :eq : :like,
               input: :text_field, model: Element, label: "",
             },
@@ -28,7 +28,7 @@ class ElementsController < ApplicationController
   def display_keys
     [:sid, :competition_name, :date, :season,
      :ranking, :skater_name, :nation,
-     :number, :element, :credit, :info, :base_value, :goe, :judges, :value,
+     :number, :name, :credit, :info, :base_value, :goe, :judges, :value,
     ]
   end
   def collection
