@@ -88,8 +88,24 @@ module FilterFormHelper
       concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
     end
   end
-  def select_tag_with_options(key, model_klass)
-    select_tag key, options_for_select(model_klass.pluck(key).uniq.unshift(nil), selected: params[key])
+  def select_tag_with_options(key, col = nil)
+    if col.nil?
+      col =
+        case key
+        when :category
+          sort_with_preset(Score.pluck(:category).uniq, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+        when :segment
+          Score.pluck(:segment).uniq.sort
+        when :nation
+          Score.pluck(:nation).uniq.sort
+        when :competition_name
+          Score.recent.pluck(:competition_name).uniq
+        when :season
+          Competition.pluck(:season).uniq.sort.reverse
+
+        end
+    end
+    select_tag key, options_for_select(col.unshift(nil), selected: params[key])
   end
 end
 

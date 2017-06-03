@@ -4,18 +4,18 @@
   .col-sm-2
     label Category / Segment
   .col-sm-10
-    = select_tag_with_options(:category, Score)
+    = select_tag_with_options(:category)
     label -
-    = select_tag_with_options(:segment, Score)
+    = select_tag_with_options(:segment)
 
-= form_group("Nation", select_tag_with_options(:nation, Score))
+= form_group("Nation", select_tag_with_options(:nation))
 
 .form-group.row
   .col-sm-2
     label Competition
   .col-sm-10
-    = select_tag_with_options(:competition_name, Score)
+    = select_tag_with_options(:competition_name)
     label ISU Championships Only
     = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
-= form_group("Season", select_tag_with_options(:season, Competition))
+= form_group("Season", select_tag_with_options(:season))
 
