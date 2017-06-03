@@ -21,7 +21,7 @@ class ScoresController < ApplicationController
     Score.with_competition.recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
   end
   def show
-    score = Score.find_by(sid: params[:sid]).decorate ||
+    score = Score.find_by(sid: params[:sid]) ||
       raise(ActiveRecord::RecordNotFound.new("no such sid: '#{params[:sid]}'"))
 
     respond_to do |format|
