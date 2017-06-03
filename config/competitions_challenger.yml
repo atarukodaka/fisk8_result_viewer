@@ -1,4 +1,5 @@
 ## Challenger Series
+
 ## nebelhorn
 - http://www.deu-event.de/results/Nebelhorn_2016/index.html
 - http://www.isuresults.com/results/season1516/csger2015/
@@ -11,6 +12,7 @@
 ## finlandia
 - http://www.figureskatingresults.fi/results/1617/CSFIN2016/
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/
+# - http://www.figureskatingresults.fi/results/1415/CSFIN2014/
 - http://www.figureskatingresults.fi/results/1314/FT2013/
 - http://www.figureskatingresults.fi/results/1213/FT2012/
 - http://www.figureskatingresults.fi/results/1112/FT2011/
@@ -32,10 +34,9 @@
 - http://www.pfsa.com.pl/warsawcup2014/    
 - http://www.pfsa.com.pl/results/1314/WC2013/
 
-## aci    
+## autumn classic
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
 
 ## debug
-- http://www.figureskatingresults.fi/results/1314/FT2013/  

@@ -1,10 +1,8 @@
 ## TODO
 - re-consider parsers/* system
-- http://www.figureskatingresults.fi/results/1516/CSFIN2015/: charset="unicode" doesnt work
-- score-graph: error no year on no scores
+- http://www.figureskatingresults.fi/results/1415/CSFIN2014/ : charset="unicode" doesnt work
 - element.element, comoponent.component: name ?
 - app/views/score/show.html: unsafe youtube link
-- graph for ice dance / pairs
 
 ### new feature
 
@@ -27,6 +25,7 @@
 - link to youtube on score
 - open-url-redirections
 - delete isu_generic_mdy parser; in-corpolated into generic parser
+- score-graph: error no year on no scores
 
 ## 1.0.0
 
