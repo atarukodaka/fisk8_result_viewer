@@ -10,6 +10,15 @@ class ScoreDecorator < EntryDecorator
   def result_pdf
     h.link_to_pdf(model.result_pdf)
   end
+  def season
+    model.competition.season
+  end
+  def skater_name
+    h.link_to_skater(model.skater)
+  end
+  def competition_name
+    h.link_to_competition(model.competition)
+  end
 end
 ################################################################
 class ScoresController < ApplicationController
@@ -18,7 +27,10 @@ class ScoresController < ApplicationController
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
   def collection
-    Score.with_competition.recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+    #col = Score.with_competition.recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+    #Score.where(id: col.map(&:id)).includes(:competition, :skater)
+    Score.includes(:competition, :skater).references(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+
   end
   def show
     score = Score.find_by(sid: params[:sid]) ||

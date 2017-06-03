@@ -26,6 +26,7 @@
 - open-url-redirections
 - delete isu_generic_mdy parser; in-corpolated into generic parser
 - score-graph: error no year on no scores
+- deduction reasons
 
 ## 1.0.0
 

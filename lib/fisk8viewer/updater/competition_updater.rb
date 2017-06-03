@@ -181,7 +181,7 @@ module Fisk8Viewer
         ## skater
         puts "    %<ranking>2d: '%{skater_name}' (%{nation}) %<tss>3.2f" % score_hash
         score_keys = [:skater_name, :ranking, :starting_number, :nation,
-                      :result_pdf, :tss, :tes, :pcs, :deductions, :base_value]
+                      :result_pdf, :tss, :tes, :pcs, :deductions, :deduction_reasons, :base_value]
         score.attributes = score_hash.slice(*score_keys)
         update_elements(score_hash, score)
         update_components(score_hash, score)

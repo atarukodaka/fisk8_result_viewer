@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "tes"
     t.float "pcs"
     t.float "deductions"
+    t.string "deduction_reasons"
     t.float "base_value"
     t.string "elements_summary"
     t.string "components_summary"

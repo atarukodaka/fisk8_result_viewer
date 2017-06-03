@@ -49,8 +49,15 @@ module Fisk8Viewer
             judges: judges.tr(',', '.'), value: value.to_f,
             number: (score[:components].size+1).to_i,
           }
+        elsif line =~ /Judges Total Program Component Score/
+          mode = :deductions
         end
         mode
+      end
+      def parse_deductions(line, score, mode)
+        if line =~ /Deductions:? (.*) [0-9\.\-]+$/
+          score[:deduction_reasons] = $1
+        end
       end
       def parse_each_score(text)
         mode = :skater
@@ -64,6 +71,8 @@ module Fisk8Viewer
             mode = parse_tes(line, score, mode)
           when :pcs
             mode = parse_pcs(line, score, mode)
+          when :deductions
+            mode = parse_deductions(line, score, mode)
           end
         end  ## each line
         score
