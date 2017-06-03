@@ -66,26 +66,32 @@ end
 ################################################################
 class CompetitionsController < ApplicationController
   def filters
+    {
+      name: ->(col, v) { col.where("name like ? ", "%#{v}%") },
+      site_url: ->(col, v) { col.where("site_url like ?", "%#{v}%") },
+      competition_type: ->(col, v) { col.where(competition_type: v) },
+      isu_championships_only: ->(col, v) { col.where(isu_championships: v =~ /true/i)},
+      season: ->(col, v) { col.where(season: v) },
+    }
+=begin
     @_filters ||= IndexFilters.new.tap do |f|
       f.filters = {
         name: {operator: :like, input: :text_field, model: Competition},
         site_url: {operator: :like, input: :text_field, model: Competition},
-        type: {
-          children: {
-            competition_type: {operator: :eq, input: :select, model: Competition, label: ""},
-            isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
-          },
-        },
+        competition_type: {operator: :eq, input: :select, model: Competition,},
+        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
         season: {operator: :eq, input: :select, model: Competition},
       }
     end
+=end
   end
-  
+
   def display_keys
     [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
   end
   def collection
-    Competition.recent.filter(filters.create_arel_tables(params))
+    #Competition.recent.filter(filters.create_arel_tables(params))
+    filter(Competition.recent)
   end
   ################
   def show

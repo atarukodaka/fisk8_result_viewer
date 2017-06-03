@@ -2,17 +2,7 @@
 
 
 = form_tag url_for(controller: controller, action: :index), method: :get, enforce_utf8: false, id: :skaters_filter_form do |f|
-  - filters.each do |key, hash|
-    .form-group.row
-      .col-sm-2
-        = label_tag(hash[:label] || key)
-      .col-sm-10
-        - if cld = hash[:children]
-          - hash[:children].each do |child_key, child_hash|
-            = label_tag(child_hash[:label] || child_key)
-            = render partial: "filter_input_form", locals: {key: child_key, hash: child_hash, filters: filters}
-        - else 
-          = render partial: "filter_input_form", locals: {key: key, hash: hash, filters: filters}
+  = render partial: "filter_content", locals: {filters: filters}
   .form-group.row
     .col-sm-2
       = label_tag "Format"

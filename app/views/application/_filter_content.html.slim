@@ -1,7 +1,13 @@
-        - case hash[:input] 
+  - filters.each do |key, hash|
+    .form-group.row
+      .col-sm-2
+        = label_tag(hash[:label] || key)
+      .col-sm-10
+         - case hash[:input] 
           - when :select
             = select_tag key, options_for_select(filters.select_options(key, hash[:model]), selected: params[key])
           - when :text_field
             = text_field_tag key, params[key], size: 70
           - when :checkbox
             = check_box_tag key, hash[:value], params[key].present?
+

@@ -22,6 +22,9 @@ class ScoreDecorator < EntryDecorator
 end
 ################################################################
 class ScoresController < ApplicationController
+  def filters
+    score_filters
+  end
   def display_keys
     [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
@@ -29,7 +32,7 @@ class ScoresController < ApplicationController
   def collection
     #col = Score.with_competition.recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
     #Score.where(id: col.map(&:id)).includes(:competition, :skater)
-    Score.includes(:competition, :skater).references(:competition).recent.select("competitions.season, scores.*").filter(filters.create_arel_tables(params))
+    filter(Score.includes(:competition, :skater).references(:competition).recent)    #.filter(filters.create_arel_tables(params))
 
   end
   def show

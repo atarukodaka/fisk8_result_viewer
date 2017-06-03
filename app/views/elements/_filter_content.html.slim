@@ -1,0 +1,13 @@
+= form_group("Element", text_field_tag(:name, params[:name], size: 70))
+= form_group("perfect match", check_box_tag(:perfect_match, "true", params[:perfect_match].present?))
+
+.form-group.row
+  .col-sm-2
+    label GOE
+  .col-sm-10
+    = select_tag(:goe_operator, options_for_select(['=', '<', '<=', '>', '>='], params[:goe_operator]))
+    = text_field_tag(:goe, params[:goe], size: 60)
+
+hr
+
+= render partial: "scores/filter_content"

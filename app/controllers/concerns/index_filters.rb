@@ -1,3 +1,5 @@
+=begin
+
 class IndexFilters
   extend Forwardable
   include Comparable
@@ -95,3 +97,5 @@ class IndexFilters
 end
 
   
+
+=end

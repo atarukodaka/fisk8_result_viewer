@@ -1,6 +1,7 @@
 ################
 class SkatersController < ApplicationController
   ## index
+=begin
   def filters
     @_filters ||= IndexFilters.new.tap do |f|
       f.filters = {
@@ -10,11 +11,27 @@ class SkatersController < ApplicationController
       }
     end
   end
+=end
   def display_keys
     [ :name, :nation, :category, :isu_number]
   end
+  def filters
+    {
+      name: ->(col, v){ col.search_by_name(v) },
+      category: ->(col, v){ col.where(category: v) },
+      nation: ->(col, v){ col.where(nation: v) },
+    }
+  end
   def collection
-    Skater.filter(filters.create_arel_tables(params)).order(:category, :name).having_scores
+=begin
+    Skater.order(:category, :name).having_scores.filter(filters.create_arel_tables(params))
+    col = Skater.order(:category, :name).having_scores
+    col = col.where("skater_name like ?", "%#{params[:skater_name]}%") if params[:skater_name].present?
+    col = col.where(category: params[:category]) if params[:category].present?
+    col = col.where(nation: params[:nation]) if params[:nation].present?
+    col
+=end
+    col = filter(Skater.order(:category, :name).having_scores)
   end
   ################################################################
   ## show
@@ -30,7 +47,7 @@ class SkatersController < ApplicationController
     ################
     ## competition results
     collection = skater.category_results.recent.includes(:competition, :scores).isu_championships_only_if(params[:isu_championships_only])
-
+    
     competition_results = SkaterCompetitionDecorator.decorate_collection(collection)
 
     ################

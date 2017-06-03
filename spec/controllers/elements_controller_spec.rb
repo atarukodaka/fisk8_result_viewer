@@ -27,7 +27,7 @@ RSpec.describe ElementsController, type: :controller do
     }
     # compare
     it {
-      get :index, params: {goe: '>1'}
+      get :index, params: {goe: '1', goe_operator: '>'}
       expect(response.body).to include('4T')
       expect(response.body).not_to include('4T+3T')
     }

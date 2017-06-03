@@ -1,0 +1,12 @@
+.form-group.row
+  .col-sm-2
+    label Component Score
+  .col-sm-10
+    = select_tag(:value_operator, options_for_select(['=', '<', '<=', '>', '>='], params[:value_operator]))    
+    = text_field_tag(:value, params[:value], size: 60)
+
+//= form_group("Value", text_field_tag(:value, params[:value], size: 70))
+
+hr
+
+= render partial: "scores/filter_content"

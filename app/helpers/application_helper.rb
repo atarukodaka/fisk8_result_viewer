@@ -81,6 +81,18 @@ module SortHelper
   end
 end
 
+module FilterFormHelper
+  def form_group(label, input_tag)
+    content_tag(:div, :class => "form-group row") do
+      concat(content_tag(:div, label_tag(label), :class => 'col-sm-2'))
+      concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
+    end
+  end
+  def select_tag_with_options(key, model_klass)
+    select_tag key, options_for_select(model_klass.pluck(key).uniq.unshift(nil), selected: params[key])
+  end
+end
+
 module FormatHelper
   def as_ranking(value)
     (value.to_i == 0) ? "-" : "%d" % [value]
@@ -92,5 +104,5 @@ end
 
 ################################################################
 module ApplicationHelper
-  include LinkToHelper, TableHelper, SortHelper, FormatHelper
+  include LinkToHelper, TableHelper, SortHelper, FormatHelper, FilterFormHelper
 end

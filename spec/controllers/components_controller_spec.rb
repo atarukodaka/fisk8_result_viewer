@@ -26,25 +26,25 @@ RSpec.describe ComponentsController, type: :controller do
     }
     # compare
     it {
-      get :index, params: { value: "<9.5"}
+      get :index, params: { value: "9.5", value_operator: '<'}
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('9.0')
       expect(response.body).not_to include('10.0')
     }
     it {
-      get :index, params: { value: "<=9"}
+      get :index, params: { value: "9", value_operator: '<='}
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('9.0')
       expect(response.body).not_to include('10.0')
     }
     it {
-      get :index, params: { value: ">=9"}
+      get :index, params: { value: "9", value_operator: '>='}
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('9.0')
       expect(response.body).to include('10.0')
     }
     it {
-      get :index, params: { value: "=9"}
+      get :index, params: { value: "9", value_operator: '='}
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('9.0')
       expect(response.body).not_to include('10.0')

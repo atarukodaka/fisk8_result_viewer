@@ -1,5 +1,15 @@
 module IndexActionModules
   def score_filters
+    {
+      skater_name: ->(col, v){ col.where("scores.skater_name like ? ", "%#{v}%")},
+      category: ->(col, v)   { col.where("scores.category" => v) },
+      segment: ->(col, v)    { col.where("scores.segment" => v) },
+      nation: ->(col, v)     { col.where("scores.nation" => v) },
+      competition_name: ->(col, v)     { col.where("scores.competition_name" => v) },
+      isu_championships_only:->(col, v){ col.where("competitions.isu_championships" => v =~ /true/i) },
+      season: ->(col, v){ col.where("competitions.season" => v) },
+    }
+=begin    
     @_filters ||= IndexFilters.new.tap {|f|
       f.filters = {
         skater_name: {operator: :like, input: :text_field, model: Score},
@@ -11,11 +21,27 @@ module IndexActionModules
         season: { operator: :eq, input: :select, model: Competition},
       }
     }
+=end
+  end
+
+  # for elements/components search
+  def create_arel_table_by_operator(model_klass, key, operator_str, value)
+    operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
+      '<' => :lt, '<=' => :lteq}
+    operator = operators[operator_str] || :eq
+    arel = model_klass.arel_table[key].send(operator, value.to_f)
   end
 
   def filters
     score_filters
   end
+  def filter(col)
+    filters.each do |key, pr|
+      col = pr.call(col, params[key]) if params[key].present? && pr
+    end
+    col
+  end
+
   def display_keys
     []
   end
