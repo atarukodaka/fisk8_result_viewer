@@ -3,6 +3,7 @@
 - http://www.figureskatingresults.fi/results/1415/CSFIN2014/ : charset="unicode" doesnt work
 - element.element, comoponent.component: name ?
 - app/views/score/show.html: unsafe youtube link
+- select options default sort
 
 ### new feature
 
@@ -27,6 +28,7 @@
 - delete isu_generic_mdy parser; in-corpolated into generic parser
 - score-graph: error no year on no scores
 - deduction reasons
+- elements/components-operators
 
 ## 1.0.0
 

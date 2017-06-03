@@ -2,9 +2,10 @@ module FilterModules
   extend ActiveSupport::Concern
   
   included do
-    scope :with_score, ->{ joins(:score) }
-    scope :with_skater, ->{ joins(:skater) }
+#    scope :with_score, ->{ joins(:score) }
+#    scope :with_skater, ->{ joins(:skater) }
 
+=begin
     scope :filter, ->(arel_tables){
       cond = nil
       arel_tables.each do |arel|
@@ -12,6 +13,7 @@ module FilterModules
       end
       where(cond)
     }
+=end
   end ## included
 end ## FilterModules
 

@@ -1,17 +1,6 @@
 ################
 class SkatersController < ApplicationController
   ## index
-=begin
-  def filters
-    @_filters ||= IndexFilters.new.tap do |f|
-      f.filters = {
-        name: {operator: :like, input: :text_field, model: Skater},
-        category: {operator: :eq, input: :select, model: Skater},
-        nation: {operator: :eq, input: :select, model: Skater},
-      }
-    end
-  end
-=end
   def display_keys
     [ :name, :nation, :category, :isu_number]
   end
@@ -23,14 +12,6 @@ class SkatersController < ApplicationController
     }
   end
   def collection
-=begin
-    Skater.order(:category, :name).having_scores.filter(filters.create_arel_tables(params))
-    col = Skater.order(:category, :name).having_scores
-    col = col.where("skater_name like ?", "%#{params[:skater_name]}%") if params[:skater_name].present?
-    col = col.where(category: params[:category]) if params[:category].present?
-    col = col.where(nation: params[:nation]) if params[:nation].present?
-    col
-=end
     col = filter(Skater.order(:category, :name).having_scores)
   end
   ################################################################

@@ -19,7 +19,7 @@ class SkaterCompetitionResultSummary
 
   def most_valuable_element
     if (elem = @skater.elements.isu_championships_only_if(@isu_championships_only).order(:value).last)
-      "%s %s%s (%.2f=%.2f+%.2f)" % [ elem.element, elem.credit, elem.info, elem.value, elem.base_value, elem.goe]
+      "%s %s%s (%.2f=%.2f+%.2f)" % [ elem.name, elem.credit, elem.info, elem.value, elem.base_value, elem.goe]
     else
       "-"
     end
