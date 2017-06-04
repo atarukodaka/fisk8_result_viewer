@@ -10,7 +10,8 @@ module Fisk8Viewer
         dates = []
         ary_datestr.each do |datestr|
           datestr = trim(datestr)
-          next unless datestr =~ %r{^[0-9/.\-]+$}
+          #next unless datestr =~ %r{^[0-9/.\-\s]+$}
+          next if datestr =~ /^[A-Za-z\s]+$/
           begin
             Time.zone ||= "UTC"
             dates << Time.zone.parse(datestr)
@@ -18,6 +19,7 @@ module Fisk8Viewer
             return true
           end
         end
+        raise if dates.empty?
         return dates.max - dates.min > 3600 * 24 * 10
       end
       def parse_datetime(str, mdy_format: false)
