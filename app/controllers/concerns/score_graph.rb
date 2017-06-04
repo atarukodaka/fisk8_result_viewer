@@ -18,7 +18,7 @@ class ScoreGraph
     def image_filename(skater, segment, date)
       date ||= Date.new(1970, 1, 1)
       File.join(ImageDir, "%s_%s_%4d-%02d-%02d_plot.png" %
-                [skater.name.tr('/', '-'), segment,
+                [skater[:name].tr('/', '-'), segment,
                  date.year, date.month, date.day])
     end
   end
@@ -35,7 +35,7 @@ class ScoreGraph
       Gnuplot::Plot.new(gp) do |plot|
         plot.terminal "png"
         plot.output   fname
-        plot.title    "#{skater.name} - #{segment}"
+        plot.title    "#{skater[:name]} - #{segment}"
         #plot.xlabel   "x"
         plot.ylabel   "points"
         plot.grid

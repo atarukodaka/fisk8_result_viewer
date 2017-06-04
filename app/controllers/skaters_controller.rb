@@ -32,10 +32,6 @@ class SkatersController < ApplicationController
     competition_results = SkaterCompetitionDecorator.decorate_collection(collection)
 
     ################
-    ## result summary
-    result_summary = SkaterCompetitionResultSummary.new(skater, isu_championships_only: params[:isu_championships_only])
-                                                        
-    ################
     ## score graph
     score_graph = ScoreGraph.new
     skater.scores.recent.isu_championships_only_if(params[:isu_championships_only]).group_by {|s| s.segment}.each do |segment, segment_scores|
@@ -46,7 +42,7 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: { skater: skater.decorate, competition_results: competition_results, result_summary: result_summary }
+        render action: :show, locals: { skater: skater.decorate, competition_results: competition_results}
       }
       format.json {
         render json: {skater_info: skater, competition_results: skater.category_results}

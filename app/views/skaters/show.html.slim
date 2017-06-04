@@ -10,7 +10,7 @@
     table.table.table-striped.table-hover.table-condensed
       tr
         - [:name, :nation, :isu_number, :category].each do |key|
-          = tr_data(key, skater.decorate.send(key))
+          = tr_data(key, skater.send(key))
 
   .col-sm-6
     h2 Result Summary
@@ -21,13 +21,13 @@
 
     table.table.table-striped.table-hover.table-condensed
       tr
-        - cr = competition_results.object
-        = tr_data("Highest Score", result_summary.highest_score)
-        = tr_data("Competitions participated", result_summary.competitions_participated)
-        = tr_data("Gold Won", result_summary.gold_won)
-        = tr_data("Highest Ranking", result_summary.highest_ranking)
-        = tr_data("Most Valuable Element", result_summary.most_valuable_element)
-        = tr_data("Most Valuable Components", result_summary.most_valuable_components)
+        //- cr = competition_results.object
+        = tr_data("Highest Score", skater.highest_score)
+        = tr_data("Competitions participated", skater.competitions_participated)
+        = tr_data("Gold Won", skater.gold_won)
+        = tr_data("Highest Ranking", skater.highest_ranking)
+        = tr_data("Most Valuable Element", skater.most_valuable_element)
+        = tr_data("Most Valuable Components", skater.most_valuable_components)
 
 h2 Competition Results
 

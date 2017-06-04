@@ -4,10 +4,13 @@
 - element.element, comoponent.component: name ?
 - app/views/score/show.html: unsafe youtube link
 - select options default sort
+  - caching
 
 ### new feature
 
 - embed youtube in score (or just link to search page ?)
+- sort in list table
+- eliminate feedback
 
 
 ## 1.0.1
