@@ -63,7 +63,6 @@ module IndexActionModules
     
     locals = {
       collection: (decorator) ? decorator.decorate_collection(col) : col,
-      filters: filters,
       display_keys: display_keys,
       pagination: pagination,
     }
