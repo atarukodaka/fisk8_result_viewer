@@ -18,7 +18,6 @@ module Fisk8Viewer
             return true
           end
         end
-        binding.pry
         return dates.max - dates.min > 3600 * 24 * 10
       end
       def parse_datetime(str, mdy_format: false)
