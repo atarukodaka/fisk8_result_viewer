@@ -2,11 +2,14 @@
 module Fisk8ResultViewer
   module Competition
     class Updater
+      include Contracts
+      
       DEFAULT_PARSER = :isu_generic
 
       def initialize
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
+      Contract String => ArrayOf[Hash]
       def load_competition_list(yaml_filename)
         YAML.load_file(yaml_filename).map do |item|
           case item

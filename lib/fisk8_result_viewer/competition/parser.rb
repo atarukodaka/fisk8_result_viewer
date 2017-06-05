@@ -2,7 +2,10 @@ module Fisk8ResultViewer
   module Competition
     class Parser
       include Utils
+      include Contracts
+      
       # return true if mmddyyyy format
+      Contract Array => Bool
       def mdy_date_format?(ary_datestr)
         dates = []
         ary_datestr.each do |datestr|
@@ -17,8 +20,9 @@ module Fisk8ResultViewer
           end
         end
         raise if dates.empty?
-        return dates.max - dates.min > 3600 * 24 * 10
+        return (dates.max - dates.min > 3600 * 24 * 10) ? true : false
       end
+      Contract String, KeywordArgs[mdy_format: Bool] => Time
       def parse_datetime(str, mdy_format: false)
         begin
           Time.zone ||= "UTC"
@@ -34,6 +38,7 @@ module Fisk8ResultViewer
           raise "invalid date format"
         end
       end
+      Contract Mechanize::Page => ArrayOf[String]
       def parse_city_country(page)
         node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""
@@ -45,6 +50,7 @@ module Fisk8ResultViewer
           [str, nil]
         end
       end
+      Contract Mechanize::Page => ArrayOf[Hash]
       def parse_summary_table(page)
         #category_elem = page.xpath("//*[text()='Category']").first
         #rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
@@ -76,12 +82,13 @@ module Fisk8ResultViewer
         end
         summary
       end
-      
+      Contract Mechanize::Page => Nokogiri::XML::NodeSet
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
         elem.xpath('ancestor::table[1]//tr')
       end
+      Contract Mechanize::Page => ArrayOf[Hash]
       def parse_time_schedule(page)
         ## time schdule
         rows = get_time_schedule_rows(page)
@@ -108,10 +115,12 @@ module Fisk8ResultViewer
         end
         time_schedule
       end
+      Contract Mechanize::Page => String
       def parse_name(page)
         page.title.strip
       end
       ################
+      Contract String => Hash
       def parse_competition(url)
         @url = url
         page = get_url(url)
@@ -127,22 +136,6 @@ module Fisk8ResultViewer
           time_schedule: parse_time_schedule(page),
         }
       end
-      ################
     end
-      
-=begin
-      def _parse_competition(url, comment: nil)
-        puts "parsing competition: #{url}"
-        
-        {
-          site_url: url, name: "ISU World",
-          cid: "WORLD-2017-" + (rand()*100).to_i.to_s, comment: comment,
-          categories: [:MEN],
-          result_url: {MEN: "http://www.isuresults.com/results/season1617/wc2017/CAT001RS.HTM"},
-          segments: {MEN: [:"SHORT PROGRAM"]},
-          score_url: {MEN: {"SHORT PROGRAM".to_sym => "http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf"}},
-        }
-      end
-=end
   end  ## module
 end

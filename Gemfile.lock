@@ -83,7 +83,7 @@ GEM
     config (1.4.0)
       activesupport (>= 3.0)
       deep_merge (~> 1.1.1)
-    contract (0.1.0)
+    contracts (0.13.0)
     coveralls (0.8.21)
       json (>= 1.8, < 3)
       simplecov (~> 0.14.1)
@@ -312,7 +312,7 @@ DEPENDENCIES
   codecov
   coffee-rails (~> 4.2)
   config
-  contract
+  contracts
   coveralls
   draper
   gnuplot

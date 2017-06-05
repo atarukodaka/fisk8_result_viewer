@@ -5,6 +5,7 @@
 - app/views/score/show.html: unsafe youtube link
 - select options default sort
   - caching
+- category summary on competition as decorator
 
 ### new feature
 
@@ -32,6 +33,8 @@
 - score-graph: error no year on no scores
 - deduction reasons
 - elements/components-operators
+- updater/parser => skater/competition/score
+- lib/fisk8viewer => lib/fisk8_result_viewer
 
 ## 1.0.0
 

@@ -2,9 +2,11 @@ module Fisk8ResultViewer
   module Score
     class Parser
       include Utils
+      include Contracts
       
-      #SCORE_DELIMITER = /Name Nation/
       SCORE_DELIMITER = /Score Score/
+
+      Contract String, Hash, Symbol => Symbol
       def parse_skater(line, score, mode)
         name_re = %q[[[:alpha:]1\.\- \/\']+]   ## 1 for Mariya1 BAKUSHEVA
         if line =~ /^(\d+) (#{name_re}) *([A-Z][A-Z][A-Z]) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
@@ -19,6 +21,7 @@ module Fisk8ResultViewer
         end
         mode
       end
+      Contract String, Hash, Symbol => Symbol      
       def parse_tes(line, score, mode)
         element_re = '[\w\+\!<\*]+'
         if line =~ /^(\d+) +(.*)$/
@@ -38,6 +41,7 @@ module Fisk8ResultViewer
         end
         mode
       end
+      Contract String, Hash, Symbol => Symbol
       def parse_pcs(line, score, mode)
         ## memo: gpjpn10 ice dance using ',' i/o '.'
         if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
@@ -52,11 +56,14 @@ module Fisk8ResultViewer
         end
         mode
       end
+      Contract String, Hash, Symbol => Symbol
       def parse_deductions(line, score, mode)
         if line =~ /Deductions:? (.*) [0-9\.\-]+$/
           score[:deduction_reasons] = $1
         end
+        mode
       end
+      Contract String => Hash
       def parse_each_score(text)
         mode = :skater
         score = { elements: [], components: [],}
@@ -75,7 +82,7 @@ module Fisk8ResultViewer
         end  ## each line
         score
       end
-
+      Contract String => Array
       def parse_scores(score_url)
         begin
           text = convert_pdf(score_url, dir: "pdf")

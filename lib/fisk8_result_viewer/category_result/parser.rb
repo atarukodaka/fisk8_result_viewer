@@ -2,13 +2,16 @@ module Fisk8ResultViewer
   module CategoryResult
     class Parser
       include Utils
+      include Contracts
 
+      Contract Mechanize::Page => Nokogiri::XML::NodeSet
       def get_rows(page)
         fpl = page.xpath("//th[contains(text(), 'FPl.')]")
         return [] if fpl.blank?
 
         fpl.first.xpath("../../tr")
       end
+      Contract Nokogiri::XML::Element => Hash
       def parse_headers(row)
         col_num = {}
         row.xpath("th").each_with_index do |header, i|
@@ -29,6 +32,7 @@ module Fisk8ResultViewer
         end
         col_num
       end
+      Contract String, String => Array
       def parse_category_results(url, category)
         page = get_url(url)
         return [] if page.nil?

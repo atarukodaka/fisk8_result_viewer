@@ -1,41 +1,4 @@
-class CompetitionDecorator < EntryDecorator
-  class << self
-    def headers
-      { competition_type: "Type" }
-    end
-  end
-  def name
-    n = h.link_to_competition(model)
-    (model.isu_championships) ? h.content_tag(:b, n) : n
-  end  
-  def site_url
-    h.link_to_competition_site("Official", model)
-  end
-end
-################
-class CategoryResultDecorator < EntryDecorator
-  def skater_name
-    h.link_to_skater(nil, model.skater)
-  end
-  def short_tss
-    as_score(model.scores.first.try(:tss))
-  end
-  def free_tss
-    as_score(model.scores.second.try(:tss))
-  end
-  self.display_as(:ranking, [:short_ranking, :free_ranking])
-  self.display_as(:score, [:points])
-end
-
-################
-class SegmentScoreDecorator < CategoryResultDecorator
-  def ranking
-    h.link_to_score(model.ranking, model)
-  end
-  self.display_as(:score, [:tss, :tes, :pcs, :deductions])
-end
 ################################################################
-
 class CategorySummary
   include ApplicationHelper
   
@@ -62,7 +25,16 @@ class CategorySummary
     end
   end
 end
-
+class CategorySummaryDecorator
+  def category
+  end
+  def short
+  end
+  def free
+  end
+  def Ranker1st
+  end
+end
 ################################################################
 class CompetitionsController < ApplicationController
   def filters
@@ -73,24 +45,12 @@ class CompetitionsController < ApplicationController
       isu_championships_only: ->(col, v) { col.where(isu_championships: v =~ /true/i)},
       season: ->(col, v) { col.where(season: v) },
     }
-=begin
-    @_filters ||= IndexFilters.new.tap do |f|
-      f.filters = {
-        name: {operator: :like, input: :text_field, model: Competition},
-        site_url: {operator: :like, input: :text_field, model: Competition},
-        competition_type: {operator: :eq, input: :select, model: Competition,},
-        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
-        season: {operator: :eq, input: :select, model: Competition},
-      }
-    end
-=end
   end
 
   def display_keys
     [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
   end
   def collection
-    #Competition.recent.filter(filters.create_arel_tables(params))
     filter(Competition.recent)
   end
   ################
