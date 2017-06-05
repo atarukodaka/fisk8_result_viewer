@@ -4,7 +4,8 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
-module Fisk8Viewer
+module Fisk8ResultViewer
+#module Fisk8Viewer
   VERSION = "1.0.1-pre1"
   
   class Application < Rails::Application

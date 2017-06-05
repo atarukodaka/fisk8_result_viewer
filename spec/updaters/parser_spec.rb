@@ -1,6 +1,6 @@
 require 'rails_helper'
-require 'fisk8viewer/parser'
-require 'fisk8viewer/competition_summary'
+#require 'fisk8viewer/parser'
+#require 'fisk8viewer/competition_summary'
 
 RSpec.configure do |c|
   c.filter_run_excluding parser: true

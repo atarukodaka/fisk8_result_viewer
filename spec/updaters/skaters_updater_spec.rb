@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'fisk8viewer/updater/skaters_updater'
+#require 'fisk8viewer/updater/skaters_updater'
 
 RSpec.configure do |c|
   c.filter_run_excluding updater: true
@@ -8,7 +8,7 @@ end
 RSpec.describe 'skater', updater: true do
   describe 'update skaters' do 
     it {
-      updater = Fisk8Viewer::Updater::SkatersUpdater.new
+      updater = Fisk8ResultViewer::Skater::Updater.new
       updater.update_skaters([:MEN])
       #skater = Skater.find_by(isu_number: 10967)
       #updater.update_isu_bio_details(skater)
