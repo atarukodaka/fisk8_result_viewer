@@ -11,6 +11,7 @@ module Fisk8Viewer
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
+    config.autoload_paths += %W(#{config.root}/lib)
     config.generators do |g|
       g.javascripts false
       g.stylesheets false

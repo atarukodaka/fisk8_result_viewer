@@ -75,12 +75,12 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "segment"
     t.date "date", default: "1970-01-01"
     t.string "result_pdf"
-    t.float "tss"
-    t.float "tes"
-    t.float "pcs"
-    t.float "deductions"
+    t.float "tss", default: 0.0
+    t.float "tes", default: 0.0
+    t.float "pcs", default: 0.0
+    t.float "deductions", default: 0.0
     t.string "deduction_reasons"
-    t.float "base_value"
+    t.float "base_value", default: 0.0
     t.string "elements_summary"
     t.string "components_summary"
     t.integer "competition_id"

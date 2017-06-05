@@ -7,6 +7,7 @@ namespace :update do
     updater.update_skaters(ENV['categories'])
   end
 
+  desc "update competitions"
   task :competitions => :environment do
     first = ENV["first"].to_i
     last = ENV["last"].to_i
@@ -31,6 +32,7 @@ namespace :update do
     end
   end
 
+  desc "check number of scores registered"
   task :count_check => :environment do
     ## skaters
     num_skaters = Skater.count
@@ -50,6 +52,7 @@ namespace :update do
     FileUtils.rm(Dir.glob(File.join(ScoreGraph::ImageDir, "*_plot.png")))
   end
 
+  desc "check elements/components details"
   task :elements_check => :environment do
     Score.where.not(id: Element.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
       puts "!!! #{score.sid} has no elements at all"
