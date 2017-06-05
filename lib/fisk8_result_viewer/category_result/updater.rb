@@ -20,7 +20,7 @@ module Fisk8ResultViewer
             end
             cr.skater.category = category
             cr.skater.category_results << cr
-            puts "  %s %2d %-40s (%05d) | %6.2f %2d / %2d" %
+            puts "  %s %2d %-40s (%6d) | %6.2f %2d / %2d" %
               [cr.category, cr.ranking, cr.skater_name, cr.skater.isu_number.to_i, cr.points.to_f, cr.short_ranking.to_i, cr.free_ranking.to_i]
           end
         end

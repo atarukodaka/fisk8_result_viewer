@@ -41,7 +41,7 @@ module Fisk8ResultViewer
             score.components.create!(component.slice(*keys)).value
           end
 
-          puts "    %s-%s [%2d] %-40s (%05d) | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater_name, score.skater.isu_number.to_i, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
+          puts "    %s-%s [%2d] %-40s (%6d) | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater_name, score.skater.isu_number.to_i, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
         end
       end
 

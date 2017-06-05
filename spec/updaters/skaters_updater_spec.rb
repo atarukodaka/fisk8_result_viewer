@@ -9,7 +9,7 @@ RSpec.describe 'skater', updater: true do
   describe 'update skaters' do 
     it {
       updater = Fisk8ResultViewer::Skater::Updater.new
-      updater.update_skaters([:MEN])
+      updater.update_skaters(categories: [:MEN])
       #skater = Skater.find_by(isu_number: 10967)
       #updater.update_isu_bio_details(skater)
       num_skaters = Skater.group(:category).count
