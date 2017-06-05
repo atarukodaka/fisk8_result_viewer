@@ -15,6 +15,7 @@ namespace :update do
         junior: ENV['include_junior'].to_i.nonzero?,
       }
     }
+    accept_categories = ENV['accept_categories'].to_s.split(/ *, */).map(&:to_sym) if ENV['accept_categories']
     
     updater = Fisk8ResultViewer::Competition::Updater.new
     items = updater.load_competition_list(Rails.root.join('config', 'competitions.yml'))
@@ -24,7 +25,7 @@ namespace :update do
     items = items.last(options[:last]).reverse if options[:last] > 0
     items.each do |item|
       Competition.where(site_url: item[:url]).map(&:destroy) if options[:force]
-      updater.update_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment])
+      updater.update_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment], accept_categories: accept_categories)
     end
   end
 end

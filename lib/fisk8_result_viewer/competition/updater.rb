@@ -3,7 +3,10 @@ module Fisk8ResultViewer
   module Competition
     class Updater
       DEFAULT_PARSER = :isu_generic
-      
+
+      def initialize
+        @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
+      end
       def load_competition_list(yaml_filename)
         YAML.load_file(yaml_filename).map do |item|
           case item
@@ -31,11 +34,11 @@ module Fisk8ResultViewer
             puts "** #{url}"
             parser = Fisk8ResultViewer::Parsers.get_parser(:competition, parser_type)
             summary = CompetitionSummary.new(parser.parse_competition(url))
-            # TODO: comment, accept_categories
 
             keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
             competition.attributes = summary.slice(*keys)
             competition.attributes = get_identifers(competition.name, competition.country, competition.city, competition.start_date.year)
+            competition.country ||= @city_country[competition.city]
             competition.save!
             puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
 
