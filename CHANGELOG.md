@@ -1,13 +1,11 @@
 ## TODO
-- re-consider parsers/* system
-- http://www.figureskatingresults.fi/results/1415/CSFIN2014/ : charset="unicode" doesnt work
 - app/views/score/show.html: unsafe youtube link
 - select options default sort
   - caching
 - jbuilder for .json
+  - done: skater, competition:index
 
 ### new feature
-
 - embed youtube in score (or just link to search page ?)
 - sort in list table
 - eliminate feedback

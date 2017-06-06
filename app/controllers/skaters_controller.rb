@@ -27,9 +27,9 @@ class SkatersController < ApplicationController
 
     ################
     ## competition results
-    collection = skater.category_results.recent.includes(:competition, :scores).isu_championships_only_if(params[:isu_championships_only])
+    competition_results = skater.category_results.recent.includes(:competition, :scores).isu_championships_only_if(params[:isu_championships_only])
     
-    competition_results = SkaterCompetitionDecorator.decorate_collection(collection)
+    #competition_results = SkaterCompetitionDecorator.decorate_collection(collection)
 
     ################
     ## score graph
@@ -42,10 +42,12 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: { skater: skater.decorate, competition_results: competition_results}
+        render action: :show, locals: { skater: skater.decorate,
+          competition_results: SkaterCompetitionDecorator.decorate_collection(competition_results)}
       }
       format.json {
-        render json: {skater_info: skater, competition_results: skater.category_results}
+        #render json: {skater_info: skater, competition_results: skater.category_results}
+        render 'show', formats: 'json', handlers: 'jbuilder', locals: {skater: skater, competition_results: competition_results }
       }
     end
   end

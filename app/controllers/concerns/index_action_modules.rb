@@ -58,7 +58,8 @@ module IndexActionModules
 
   def format_json
     max_output = 1000
-    render json: collection.limit(max_output)  #.select(display_keys) 
+    #render json: collection.limit(max_output), handlers: 'jbuilder'  #.select(display_keys)
+    render 'index', formats: 'json', handlers: 'jbuilder', locals: {collection: collection.limit(max_output)}
   end
   def format_csv
     max_output = 1000
