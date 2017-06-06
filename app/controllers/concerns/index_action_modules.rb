@@ -9,19 +9,6 @@ module IndexActionModules
       isu_championships_only:->(col, v){ col.where("competitions.isu_championships" => v =~ /true/i) },
       season: ->(col, v){ col.where("competitions.season" => v) },
     }
-=begin    
-    @_filters ||= IndexFilters.new.tap {|f|
-      f.filters = {
-        skater_name: {operator: :like, input: :text_field, model: Score},
-        category: {operator: :eq, input: :select, model: Score, },
-        segment: {operator: :eq, input: :select, model: Score,},
-        nation: {operator: :eq, input: :select, model: Score},      
-        competition_name: {operator: :eq, input: :select, model: Score},
-        isu_championships: { operator: :eq, input: :checkbox, model: Competition, value: true, label: "ISU Championships Only"},
-        season: { operator: :eq, input: :select, model: Competition},
-      }
-    }
-=end
   end
 
   # for elements/components search
@@ -71,14 +58,14 @@ module IndexActionModules
 
   def format_json
     max_output = 1000
-    render json: collection.limit(max_output).select(display_keys) 
+    render json: collection.limit(max_output)  #.select(display_keys) 
   end
   def format_csv
     max_output = 1000
     col = collection.limit(max_output) #.select(display_keys)
     headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]
     
-    render cvs: "index.csv.ruby", locals: { collection: col, display_keys: display_keys }
+    render cvs: "index.csv.ruby", locals: { collection: col, } # , display_keys: display_keys }
   end
   
   def index

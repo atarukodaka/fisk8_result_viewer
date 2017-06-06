@@ -58,7 +58,7 @@ gem 'stackprof'
 #gem 'stackprof', github: "tmm1/stackprof", branch: "master"
 
 gem 'pdftotext'
-gem 'mechanize'
+#gem 'mechanize'
 gem 'bootstrap-sass'
 gem 'kaminari'
 gem 'google-analytics-rails'

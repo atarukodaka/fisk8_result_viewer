@@ -1,7 +1,7 @@
 require 'pdftotext'
 require 'open-uri'
 require 'open_uri_redirections'
-require 'mechanize'
+#require 'mechanize'
 
 module Fisk8ResultViewer
   module Utils
@@ -11,14 +11,14 @@ module Fisk8ResultViewer
       #@logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
     end
 
-    def get_url(url)
-      @agent ||= Mechanize.new
+    def get_url(url, read_option: nil)
       begin
-        @agent.get(url).tap do |p|
-          #p.encoding = 'iso-8859-1'  # for umlaut support
-        end
-      rescue Mechanize::ResponseCodeError
-        logger.warn("!!! #{url} not found")
+        #html = open(url, read_option).read
+        html = (read_option) ? open(url, read_option).read : open(url).read
+        Nokogiri::HTML(html)
+        #p.encoding = 'iso-8859-1'  # for umlaut support
+      rescue OpenURI::HTTPError
+        logger.warn("!!! HTTP ERror: #{url}")
         nil
       end
     end

@@ -124,5 +124,21 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(comp3.site_url).to eq(url)
     }
   end
-  
+  describe 'iso-8859-1' do
+    it {
+      url = 'http://www.isuresults.com/results/season1516/wjc2016/'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater.update_competition(url, accept_categories: [:"JUNIOR LADIES"])
+      expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
+    }
+  end
+
+  describe 'unicode - fin2014' do
+    it {
+      url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater.update_competition(url)
+      expect(Competition.find_by(site_url: url).scores.count).to be >= 0
+    }
+  end
 end

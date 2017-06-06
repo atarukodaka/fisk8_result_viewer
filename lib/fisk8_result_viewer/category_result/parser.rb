@@ -4,7 +4,7 @@ module Fisk8ResultViewer
       include Utils
       include Contracts
 
-      Contract Mechanize::Page => Nokogiri::XML::NodeSet
+      #Contract Mechanize::Page => Nokogiri::XML::NodeSet
       def get_rows(page)
         fpl = page.xpath("//th[contains(text(), 'FPl.')]")
         return [] if fpl.blank?
@@ -34,10 +34,12 @@ module Fisk8ResultViewer
       end
       Contract String, String => Array
       def parse_category_results(url, category)
-        page = get_url(url)
+        page = get_url(url, read_option: 'r:iso-8859-1')
+        #page = Nokogiri::HTML(open(url, 'r:iso-8859-1').read)
         return [] if page.nil?
         rows = get_rows(page)
         col_num = parse_headers(rows[0])
+        #binding.pry
         rows[1..-1].map do |row|
           tds = row.xpath("td")
           data = {

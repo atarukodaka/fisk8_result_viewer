@@ -38,7 +38,7 @@ module Fisk8ResultViewer
           raise "invalid date format"
         end
       end
-      Contract Mechanize::Page => Array
+      
       def parse_city_country(page)
         node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""
@@ -50,7 +50,6 @@ module Fisk8ResultViewer
           [str, nil]
         end
       end
-      Contract Mechanize::Page => ArrayOf[Hash]
       def parse_summary_table(page)
         #category_elem = page.xpath("//*[text()='Category']").first
         #rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
@@ -82,13 +81,11 @@ module Fisk8ResultViewer
         end
         summary
       end
-      Contract Mechanize::Page => Nokogiri::XML::NodeSet
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
         elem.xpath('ancestor::table[1]//tr')
       end
-      Contract Mechanize::Page => ArrayOf[Hash]
       def parse_time_schedule(page)
         ## time schdule
         rows = get_time_schedule_rows(page)
@@ -115,7 +112,6 @@ module Fisk8ResultViewer
         end
         time_schedule
       end
-      Contract Mechanize::Page => String
       def parse_name(page)
         page.title.strip
       end
