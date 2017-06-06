@@ -34,6 +34,5 @@ class SkaterDecorator < EntryDecorator
   def most_valuable_components
     model.components.isu_championships_only_if(h.params[:isu_championships_only]).group(:number).maximum(:value).values.join('/')
   end
-  
 end
 

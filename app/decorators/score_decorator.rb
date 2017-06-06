@@ -4,6 +4,10 @@ class ScoreDecorator < EntryDecorator
       super.merge({deductions: "ded", result_pdf: "pdf",})
     end
   end
+  def ranking
+    h.link_to_score(model.ranking, model)
+  end
+
   def sid
     h.link_to_score(model.sid, model)
   end

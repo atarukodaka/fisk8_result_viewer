@@ -16,6 +16,8 @@ class Score < ApplicationRecord
   scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "SHORT%") }
   scope :free, -> { where("segment like ? ", "FREE%") }  
+  scope :category,->(c){ where(category: c) }
+  scope :segment, ->(c, s){ category(c).where(segment: s) }
   scope :with_competition, ->{ joins(:competition) }
   
   private
