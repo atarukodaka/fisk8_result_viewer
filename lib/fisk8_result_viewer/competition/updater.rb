@@ -9,7 +9,7 @@ module Fisk8ResultViewer
       def initialize
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
-      Contract String => ArrayOf[Hash]
+      Contract Or[String,Pathname] => ArrayOf[Hash]
       def load_competition_list(yaml_filename)
         YAML.load_file(yaml_filename).map do |item|
           case item
@@ -58,7 +58,7 @@ module Fisk8ResultViewer
                 url = summary.score_url(category, segment)
                 score_parser = Parsers.get_parser(:score, parser_type)
                 score_updater = Fisk8ResultViewer::Score::Updater.new
-                score_updater.update_scores(url, competition, category, segment, parser: score_parser)
+                score = score_updater.update_scores(url, competition, category, segment, parser: score_parser, attributes: {date: summary.starting_time(category, segment)})
               end
             end
           end

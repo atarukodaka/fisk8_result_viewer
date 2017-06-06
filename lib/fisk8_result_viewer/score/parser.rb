@@ -45,10 +45,11 @@ module Fisk8ResultViewer
       def parse_pcs(line, score, mode)
         ## memo: gpjpn10 ice dance using ',' i/o '.'
         if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
-          name, factor, value, judges = $1, $2, $3, $4
+          name, factor, judges, value = $1, $2, $3, $4
           score[:components] << {
             name: name, factor: factor.to_f,
-            judges: judges.tr(',', '.'), value: value.to_f,
+            judges: judges.tr(',', '.'),
+            value: value.tr(',', '.').to_f,
             number: (score[:components].size+1).to_i,
           }
         elsif line =~ /Judges Total Program Component Score/

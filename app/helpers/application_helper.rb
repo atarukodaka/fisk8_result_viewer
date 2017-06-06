@@ -1,10 +1,10 @@
 module LinkToHelper
   def link_to_skater(text = nil, skater, params: {})
-    link_to(text || skater.name,
-            if skater.isu_number
-              {controller: :skaters, action: :show, isu_number: skater.isu_number}
+    link_to(text || skater[:name],
+            if skater[:isu_number]
+              {controller: :skaters, action: :show, isu_number: skater[:isu_number]}
             else
-              {controller: :skaters, action: :show_by_name, name: skater.name}
+              {controller: :skaters, action: :show_by_name, name: skater[:name]}
             end.merge(params))
   end
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
@@ -93,16 +93,20 @@ module FilterFormHelper
       col =
         case key
         when :category
-          sort_with_preset(Score.pluck(:category).uniq, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+          sort_with_preset(Score.select_options(:category), ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
         when :segment
-          Score.pluck(:segment).uniq.sort
+          #Score.pluck(:segment).compact.uniq.sort
+          Score.select_options(:segment)
         when :nation
-          Score.pluck(:nation).uniq.sort
+          #Score.pluck(:nation).compact.uniq.sort
+          Score.select_options(:nation)
         when :competition_name
-          Score.recent.pluck(:competition_name).uniq
+          #Score.recent.pluck(:competition_name).compact.uniq
+          #Score.recent.select_options(:competition_name)
+          Competition.recent.pluck(:name).compact
         when :season
-          Competition.pluck(:season).uniq.sort.reverse
-
+          #Competition.pluck(:season).compact.uniq.sort.reverse
+          Competition.select_options(:season).reverse
         end
     end
     select_tag key, options_for_select(col.unshift(nil), selected: params[key])

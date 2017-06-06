@@ -21,7 +21,9 @@ table.table.table-striped.table-hover.table-condensed
 ////////////////////////////////////////////////////////////////
 h2 Category Summary
 
-table.table.table-striped.table-hover.table-condensed
+= render partial: "list_table", locals: {display_keys: [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd], collection: category_summary}
+
+//table.table.table-striped.table-hover.table-condensed
   tr
     - ["Category", "Short", "Free", "1st Ranker", "2nd", "3rd"].each do |header|
       th= header.to_s.camelize

@@ -1,5 +1,16 @@
+module SelectOptions
+  extend ActiveSupport::Concern
+
+  class_methods do
+    def select_options(key)
+      pluck(key).compact.uniq.sort
+    end
+  end
+  
+end
+
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  #include FilterModules
+  include SelectOptions
 end

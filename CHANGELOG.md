@@ -6,6 +6,7 @@
 - select options default sort
   - caching
 - category summary on competition as decorator
+- competition json: show. category summary requires attributes methods
 
 ### new feature
 
