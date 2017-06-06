@@ -38,7 +38,7 @@ module Fisk8ResultViewer
           raise "invalid date format"
         end
       end
-      Contract Mechanize::Page => ArrayOf[String]
+      Contract Mechanize::Page => Array
       def parse_city_country(page)
         node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""

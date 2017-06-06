@@ -45,7 +45,7 @@ class CompetitionsController < ApplicationController
       format.json {
         data = {
           competition_info: competition,
-          category_summary: category_summary_collection(competition),
+          category_summary: category_summary,
           segment_scores: segment_scores,
           category_results: category_results,
         }

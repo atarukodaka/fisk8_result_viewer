@@ -3,7 +3,7 @@ class CategorySummary
   extend Forwardable
   include Enumerable
   
-  def_delegators :@data, :map
+  def_delegators :@data, :map, :each
 
   module Decorate
     def decorate

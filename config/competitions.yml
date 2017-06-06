@@ -105,17 +105,3 @@
   
 
 ## for debug
-- http://www.isuresults.com/results/season1617/wc2017/
-- http://www.isuresults.com/results/season1516/ec2016/
-- http://www.isuresults.com/results/season1516/gpcan2015/
-
-- http://www.isuresults.com/results/owg2010/
-
-- http://www.isuresults.com/results/gpjpn2010/
-- http://www.isuresults.com/results/ec2013/   # mdy
-
--
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
-  comment: "no category results provided"
-- http://www.isuresults.com/results/season1516/gpf1516/

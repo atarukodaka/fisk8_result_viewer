@@ -15,7 +15,7 @@ module Fisk8ResultViewer
       @agent ||= Mechanize.new
       begin
         @agent.get(url).tap do |p|
-          p.encoding = 'iso-8859-1'  # for umlaut support
+          #p.encoding = 'iso-8859-1'  # for umlaut support
         end
       rescue Mechanize::ResponseCodeError
         logger.warn("!!! #{url} not found")
