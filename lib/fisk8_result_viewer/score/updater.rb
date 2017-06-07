@@ -21,7 +21,7 @@ module Fisk8ResultViewer
           ## skater
           # TODO: correct skater name
           score.skater = cr.skater
-          score.skater_name = cr.skater_name
+          score.skater_name = cr.skater.name
           score.skater.scores << score
 
           ## attributes, identifers
@@ -50,7 +50,7 @@ module Fisk8ResultViewer
       private
       def find_relevant_category_result(category_results, skater_name, segment, ranking)
         ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
-        category_results.find_by(skater_name: skater_name) ||
+        category_results.joins(:skater).where("skaters.name" => skater_name).first ||
           category_results.where(ranking_type => ranking).first
       end
       
