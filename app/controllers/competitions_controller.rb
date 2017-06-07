@@ -5,8 +5,8 @@ class CompetitionsController < ApplicationController
   Contract None => Hash
   def filters
     {
-      name: ->(col, v) { col.where("name like ? ", "%#{v}%") },
-      site_url: ->(col, v) { col.where("site_url like ?", "%#{v}%") },
+      name: ->(col, v) { col.matches(:name, v) },
+      site_url: ->(col, v) { col.matches(:site_url, v) },
       competition_type: ->(col, v) { col.where(competition_type: v) },
       isu_championships_only: ->(col, v) { col.where(isu_championships: v =~ /true/i)},
       season: ->(col, v) { col.where(season: v) },
@@ -29,26 +29,25 @@ class CompetitionsController < ApplicationController
     segment_scores = (competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components) if segment) || []
 
     respond_to do |format|
+      locals = {
+          category: category,
+          segment: segment,
+      }
       format.html {
         render locals: {
           competition: competition.decorate,
-          category: category,
-          segment: segment,
           category_summary:  category_summary.map(&:decorate),
           category_results: category_results.map(&:decorate),
           segment_scores: segment_scores.map(&:decorate),
-        }
+        }.merge(locals)
       }
       format.json {
-        locals = {
+        render :show, handlers: :jbuilder, locals: {
           competition: competition,
-          category: category,
-          segment: segment,
           category_summary: category_summary,
           segment_scores: segment_scores,
           category_results: category_results,
-        }
-        render :show, handlers: :jbuilder, locals: locals
+        }.merge(locals)
       }
     end
   end

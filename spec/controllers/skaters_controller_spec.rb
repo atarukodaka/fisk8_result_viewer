@@ -76,4 +76,12 @@ RSpec.describe SkatersController, type: :controller do
       expect(response.body).not_to include("Foo")
     }
   end
+  ################
+  describe 'show.json' do
+    it {
+      get :show, params: { isu_number: 12345 }
+      expect(response.body).to include('Skater NAME')
+    }
+  end
+  
 end
