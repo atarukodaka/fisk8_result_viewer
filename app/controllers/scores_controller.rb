@@ -1,10 +1,19 @@
 ################################################################
 class ScoresController < ApplicationController
   def filters
-    score_filters
+    {
+      #skater_name: ->(col, v){ col.where("scores.skater_name like ? ", "%#{v}%")},
+      skater_name: ->(col, v){ col.references(:skater).where("skaters.name like ? ", "%#{v}%")},
+      category: ->(col, v)   { col.where(category: v) },
+      segment: ->(col, v)    { col.where(segment:  v) },
+      nation: ->(col, v)     { col.where(skaters: {nation: v}) },
+      competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
+      isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v =~ /true/i}) },
+      season: ->(col, v){ col.where(competitions: {season: v}) },
+    }
   end
   def collection
-    filter(Score.includes(:competition, :skater).references(:competition).recent)
+    filter(Score.includes(:competition, :skater).recent)
   end
   ################################################################
   def show

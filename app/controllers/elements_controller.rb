@@ -1,47 +1,9 @@
-class ElementDecorator < EntryDecorator
-  class << self
-    def column_names
-      [:sid, :competition_name, :date, :season,
-       :ranking, :skater_name, :nation,
-       :number, :name, :credit, :info, :base_value, :goe, :judges, :value,
-      ]
-    end
-  end
-  def sid
-    h.link_to_score(nil, model.score)
-  end
-  def ranking
-    model.score.ranking
-  end
-  def element
-    model.name
-  end
-  def competition_name
-    model.score.competition_name
-  end
-  def date
-    model.score.date
-  end
-  def season
-    model.score.competition.season
-  end
-  def skater_name
-    model.score.skater_name
-  end
-  def nation
-    model.score.nation
-  end
-end
 ################################################################
 class ElementsController < ApplicationController
   def filters
     {
       name: ->(col, v) {
-        if params[:perfect_match]
-          col.where("elements.name" => v)
-        else
-          col.where("elements.name like ? ", "%#{v}%")
-        end
+        (params[:perfect_match]) ? col.where(name: v) : col.where("name like ? ", "%#{v}%")
       },
       goe: ->(col, v){
         arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
@@ -49,7 +11,21 @@ class ElementsController < ApplicationController
       }
     }.merge(score_filters)
   end
+  def score_filters
+    {
+      skater_name: ->(col, v){
+        col.includes(score: :skater).references(score: :skater).where("skaters.name like ? ", "%#{v}%")
+      },
+      category: ->(col, v)   { col.where(scores: {category: v}) },
+      segment: ->(col, v)    { col.where(scores: {segment: v}) },
+      nation: ->(col, v)     { col.includes(score: :skater).where(scores: {skaters: {nation: v}}) },
+      competition_name: ->(col, v)     { col.where(scores: {competitions: {name: v}}) },
+      isu_championships_only:->(col, v){ col.where(scores: {competitions: {isu_championships: v =~ /true/i}}) },
+      season: ->(col, v){ col.where(scores: {competitions: {season: v}}) },
+    }
+  end
   def collection
-    filter(Element.includes(:score, score: [:competition]))    #.filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, elements.*")
+    #filter(Element.includes(:score, score: [:competition]))
+    filter(controller_name.singularize.camelize.constantize.includes(:score, score: [:competition]))
   end
 end
