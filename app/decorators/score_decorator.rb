@@ -30,10 +30,4 @@ class ScoreDecorator < EntryDecorator
   def competition_name
     h.link_to_competition(model.competition)
   end
-  def elements_summary
-    model.elements.map(&:name).join('/')
-  end
-  def components_summary
-    model.components.map(&:value).join('/')
-  end
 end

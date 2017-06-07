@@ -1,9 +1,12 @@
 class SkaterDecorator < EntryDecorator
+
+=begin
   class << self
     def column_names
       [ :name, :nation, :category, :isu_number]
     end
   end
+=end
   def name
     h.link_to_skater(model)
   end

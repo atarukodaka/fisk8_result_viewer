@@ -1,4 +1,10 @@
 class CategoryResultDecorator < EntryDecorator
+  class << self
+    def column_names
+      [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
+    end
+  end
+
   def skater_name
     h.link_to_skater(nil, model.skater)
   end

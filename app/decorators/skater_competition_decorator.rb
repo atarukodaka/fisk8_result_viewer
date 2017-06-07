@@ -1,6 +1,10 @@
 class SkaterCompetitionDecorator < EntryDecorator
   include ApplicationHelper
   class << self
+    def column_names
+      [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions]
+    end
+=begin
     def headers
       {
         short_ranking: "SP#",
@@ -15,6 +19,7 @@ class SkaterCompetitionDecorator < EntryDecorator
         free_deductions: "FS-ded",
       }
     end
+=end
   end
   def competition_name
     h.link_to_competition(nil, model.competition)

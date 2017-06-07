@@ -1,8 +1,5 @@
 class CompetitionDecorator < EntryDecorator
   class << self
-    def headers
-      { competition_type: "Type" }
-    end
     def column_names
       [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]      
     end

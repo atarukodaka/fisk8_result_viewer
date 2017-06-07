@@ -34,12 +34,11 @@ class CompetitionsController < ApplicationController
           segment: segment,
       }
       format.html {
-        render locals: {
-          competition: competition.decorate,
-          category_summary:  category_summary.map(&:decorate),
-          category_results: category_results.map(&:decorate),
-          segment_scores: segment_scores.map(&:decorate),
-        }.merge(locals)
+        locals[:competition] = competition.decorate
+        locals[:category_summary] = CategorySummaryDecorator.decorate_collection(category_summary)
+        locals[:category_results] = CategoryResultDecorator.decorate_collection(category_results.all) unless category_results.blank?
+        locals[:segment_scores] =  SegmentScoreDecorator.decorate_collection(segment_scores.all) unless segment_scores.blank?
+        render :show, locals: locals
       }
       format.json {
         render :show, handlers: :jbuilder, locals: {

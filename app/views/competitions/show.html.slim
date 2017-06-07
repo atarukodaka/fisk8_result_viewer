@@ -21,7 +21,7 @@ table.table.table-striped.table-hover.table-condensed
 ////////////////////////////////////////////////////////////////
 h2 Category Summary
 
-= render partial: "list_table", locals: {display_keys: [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd], collection: category_summary}
+= render partial: "list_table", locals: { collection: category_summary }
 
 - if category.present?
   - unless segment.present?
@@ -29,14 +29,12 @@ h2 Category Summary
     h2 
       | Category Result of 
       = category
-    - keys = [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
-    = render partial: "list_table", locals: {display_keys: keys, collection: category_results, patination: false}
+    = render partial: "list_table", locals: { collection: category_results }
 
   - else
     ////////////////////////////////////////////////////////////////
     h2 
       | Segment Result of 
       = [category, segment].join('/')
-    - keys = [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]
-    = render partial: "list_table", locals: {display_keys: keys , collection: segment_scores, pagination: false}
+    = render partial: "list_table", locals: { collection: segment_scores }
 

@@ -1,4 +1,10 @@
 class CategorySummaryDecorator < EntryDecorator
+  class << self
+    def column_names
+      [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]
+    end
+  end
+
   def category
     h.link_to_competition(model[:competition], category: model[:category])
   end
