@@ -17,10 +17,6 @@ module IndexActionModules
     col
   end
 
-  def display_keys
-    []
-  end
-
   def decorator
     begin
       "#{controller_name.singularize.camelize}Decorator".constantize
