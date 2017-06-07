@@ -3,6 +3,9 @@ class CompetitionDecorator < EntryDecorator
     def headers
       { competition_type: "Type" }
     end
+    def column_names
+      [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]      
+    end
   end
   def name
     n = h.link_to_competition(model)
@@ -13,12 +16,3 @@ class CompetitionDecorator < EntryDecorator
   end
 end
 
-################
-=begin
-class SegmentScoreDecorator < CategoryResultDecorator
-  def ranking
-    h.link_to_score(model.ranking, model)
-  end
-  self.display_as(:score, [:tss, :tes, :pcs, :deductions])
-end
-=end

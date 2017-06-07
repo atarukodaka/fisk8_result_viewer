@@ -19,5 +19,5 @@ h2= controller_name.camelize
       = submit_tag "Search", id: "submit", name: nil
 
 // list table
-= render partial: "list_table", locals: {display_keys: display_keys, collection: collection, pagination: pagination}
+= render partial: "list_table", locals: {collection: collection, pagination: pagination}
 

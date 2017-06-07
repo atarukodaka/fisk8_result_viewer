@@ -6,7 +6,6 @@ class EntryDecorator < Draper::Decorator
     def headers
       { base_value: "BV", number: "#", }
     end
-
     def display_as(type, keys)
       keys.each do |key|
         self.send(:define_method, key) do

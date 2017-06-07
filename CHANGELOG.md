@@ -2,13 +2,12 @@
 - app/views/score/show.html: unsafe youtube link
 - select options default sort
   - caching
-- jbuilder for .json
-  - done: skater, competition:index
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
 - sort in list table
 - eliminate feedback
+
 
 ### check before release
 - app/controller/application_controller: unless Rails.env.develop
@@ -39,6 +38,9 @@
 - lib/fisk8viewer => lib/fisk8_result_viewer
 - category summary on competition as decorator
 - element.element, comoponent.component: name as attr
+- element summary: not as db column
+- jbuilder for .json
+
 
 ## 1.0.0
 

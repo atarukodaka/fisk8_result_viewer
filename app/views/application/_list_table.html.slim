@@ -1,6 +1,7 @@
 // locals: collection, display_keys, pagination(optional)
 
-- display_keys ||= []
+/- display_keys ||= []
+- display_keys ||= ((d = collection.decorator_class) ? d : collection).column_names
 - pagination = false unless defined? pagination
 
 - decorator = (collection.is_a?(Draper::CollectionDecorator)) ? collection.decorator_class : nil

@@ -49,7 +49,11 @@ RSpec.describe CompetitionsController, type: :controller do
     it {
       get :index, params: {format: :csv }
       expect(response.content_type).to eq('text/csv')
-      expect(response.body).to include('WORLD2017,,,Tokyo,JPN,world,2016-17')
+      expect(response.body).to include('WORLD2017')
+      expect(response.body).to include('Tokyo')
+      expect(response.body).to include('JPN')
+      expect(response.body).to include('world')
+      expect(response.body).to include('2016-17')
     }
   end
   ################

@@ -13,14 +13,11 @@ class CompetitionsController < ApplicationController
     }
   end
 
-  Contract None => Array
-  def display_keys
-    [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]
-  end
-    Contract None => ActiveRecord::Relation
+  Contract None => ActiveRecord::Relation
   def collection
     filter(Competition.recent)
   end
+  ################################################################
   def show
     competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
 
@@ -29,7 +26,7 @@ class CompetitionsController < ApplicationController
    
     category_summary = CategorySummary.new(competition)
     category_results = (competition.category_results.category(category).includes(:skater, :scores) if category && segment.blank?) || []
-    segment_scores = (competition.scores.segment(category, segment).order(:ranking).includes(:skater) if segment) || []
+    segment_scores = (competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components) if segment) || []
 
     respond_to do |format|
       format.html {
@@ -43,13 +40,16 @@ class CompetitionsController < ApplicationController
         }
       }
       format.json {
-        data = {
-          competition_info: competition,
+        locals = {
+          competition: competition,
+          category: category,
+          segment: segment,
           category_summary: category_summary,
           segment_scores: segment_scores,
           category_results: category_results,
         }
-        render json: data
+        #render json: data
+        render "show", handlers: 'jbuilder', locals: locals
       }
     end
   end

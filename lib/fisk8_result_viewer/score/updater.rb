@@ -33,15 +33,15 @@ module Fisk8ResultViewer
           cr.update!("#{segment_type}_ranking" => parsed_score[:ranking]) if cr["#{segment_type}_ranking"].nil?
 
           ## elements
-          score[:elements_summary] = parsed_score[:elements].map do |element|
+          parsed_score[:elements].map do |element|
             keys = [:number, :name, :info, :base_value, :credit, :goe, :judges, :value]
             score.elements.create!(element.slice(*keys)).name
-          end.join(',')
+          end
           ## components
-          score[:components_summary] = parsed_score[:components].map do |component|
+          parsed_score[:components].map do |component|
             keys = [:number, :name, :factor, :judges, :value]
             score.components.create!(component.slice(*keys)).value
-          end.join(',')
+          end
 
           puts "    %s-%s [%2d] %-40s (%6d) | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater_name, score.skater.isu_number.to_i, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
         end

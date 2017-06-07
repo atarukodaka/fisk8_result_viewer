@@ -1,4 +1,10 @@
 class ComponentDecorator < EntryDecorator
+  class << self
+    def column_names
+      [:sid, :competition_name, :date, :season, :ranking, :skater_name, :nation,
+       :number, :name, :factor, :judges, :value]
+    end
+  end
   def sid
     h.link_to_score(nil, model.score)
   end
@@ -34,23 +40,8 @@ class ComponentsController <  ApplicationController
       }
 
     }.merge(score_filters)
-    
-=begin
-    @_filters ||= IndexFilters.new.tap do |f|
-      f.filters = {
-        value: {operator: :compare, input: :text_field, model: Component},
-      }.merge score_filters.filters
-    end
-=end
   end
-  def display_keys
-#    [:sid, :competition_name, :category, :segment, :date, :season,
-    [:sid, :competition_name, :date, :season,
-    :ranking, :skater_name, :nation,
-     :number, :name, :factor, :judges, :value]
-  end
-
   def collection
-    filter(Component.includes(:score, [score: :competition]))    #er(filters.create_arel_tables(params)).select("scores.*, competitions.season, components.*")
+    filter(Component.includes(:score, [score: :competition])) 
   end
 end

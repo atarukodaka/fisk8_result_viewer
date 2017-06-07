@@ -2,7 +2,7 @@
 class SkatersController < ApplicationController
   ## index
   def display_keys
-    [ :name, :nation, :category, :isu_number]
+    #[ :name, :nation, :category, :isu_number]
   end
   def filters
     {
@@ -29,8 +29,6 @@ class SkatersController < ApplicationController
     ## competition results
     competition_results = skater.category_results.recent.includes(:competition, :scores).isu_championships_only_if(params[:isu_championships_only])
     
-    #competition_results = SkaterCompetitionDecorator.decorate_collection(collection)
-
     ################
     ## score graph
     score_graph = ScoreGraph.new

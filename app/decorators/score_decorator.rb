@@ -3,6 +3,10 @@ class ScoreDecorator < EntryDecorator
     def headers
       super.merge({deductions: "ded", result_pdf: "pdf",})
     end
+    def column_names
+      [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
+       :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
+    end
   end
   def ranking
     h.link_to_score(model.ranking, model)
@@ -22,5 +26,11 @@ class ScoreDecorator < EntryDecorator
   end
   def competition_name
     h.link_to_competition(model.competition)
+  end
+  def elements_summary
+    model.elements.map(&:name).join('/')
+  end
+  def components_summary
+    model.components.map(&:value).join('/')
   end
 end

@@ -1,6 +1,8 @@
 module Fisk8ResultViewer
   module Skater
     class Parser
+      include Utils
+      
       URLS = {
         MEN: "http://www.isuresults.com/bios/fsbiosmen.htm",
         LADIES: "http://www.isuresults.com/bios/fsbiosladies.htm",
@@ -8,9 +10,8 @@ module Fisk8ResultViewer
         :"ICE DANCE" => "http://www.isuresults.com/bios/fsbiosicedancing.htm",
       }
       def parse_skaters(categories)
-        agent = Mechanize.new
         categories.map do |category|
-          page = agent.get(URLS[category])
+          page = get_url(URLS[category])
           nation = ""
           page.xpath("//table[1]/tr").map do |row|
             parse_skater(row, category: category, default_nation: nation).tap {|s|
