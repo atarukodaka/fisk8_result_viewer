@@ -11,7 +11,7 @@ class Score < ApplicationRecord
   belongs_to :category_result, required: false
 
   validates :sid, presence: true, uniqueness: true
-  #validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
+  validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
   
   scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "SHORT%") }

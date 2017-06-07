@@ -22,8 +22,8 @@ class CategorySummary
     end
     categories = sort_with_preset(categories, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
     
-    competition.category_results.includes(:skater).top_rankers(3).each do |item|
-      top_rankers[item.category] << item.skater.name
+    competition.category_results.top_rankers(3).each do |item|
+      top_rankers[item.category] << item.skater_name
     end
     @data = categories.map do |category|
       { competition: competition, category: category, segments: segments[category], top_rankers: top_rankers[category]}.tap {|h| h.extend Decorate }

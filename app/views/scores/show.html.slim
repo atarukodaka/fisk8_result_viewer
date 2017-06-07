@@ -16,7 +16,7 @@ h2 Score
       - [:date, :tss, :tes, :pcs, :deductions].each do |key|
         = tr_data(key, score[key])
       = tr_data("Resulf PDF", link_to_pdf(score.result_pdf))
-      = tr_data("Youtube search", link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank"))
+      = tr_data("Youtube search", link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater_name, score.competition_name, score.segment].join('+'), target: "_blank"))
   .col-sm-6
         
 h2 Elements

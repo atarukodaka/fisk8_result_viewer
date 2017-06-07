@@ -17,7 +17,7 @@ class ElementDecorator < EntryDecorator
     model.name
   end
   def competition_name
-    model.score.competition.name
+    model.score.competition_name
   end
   def date
     model.score.date
@@ -26,10 +26,10 @@ class ElementDecorator < EntryDecorator
     model.score.competition.season
   end
   def skater_name
-    model.score.skater.name
+    model.score.skater_name
   end
   def nation
-    model.score.skater.nation
+    model.score.nation
   end
 end
 ################################################################
@@ -50,6 +50,6 @@ class ElementsController < ApplicationController
     }.merge(score_filters)
   end
   def collection
-    filter(Element.includes(:score, score: [:competition, :skater]))
+    filter(Element.includes(:score, score: [:competition]))    #.filter(filters.create_arel_tables(params)).select("scores.*, competitions.season, elements.*")
   end
 end

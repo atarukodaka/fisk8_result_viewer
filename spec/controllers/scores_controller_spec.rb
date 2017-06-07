@@ -4,13 +4,13 @@ RSpec.describe ScoresController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create(name: "Skater NAME", nation: "JPN")
+    skater = Skater.create(name: "Skater NAME")
     competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: :world, city: "Tokyo", country: "JPN")
-    score = competition.scores.create(sid: "WFS17-MEN", category: "MEN", segment: "SHORT", ranking: 1, skater: skater)
+    score = competition.scores.create(sid: "WFS17-MEN", competition_name: "World FS 2017", skater_name: "Skater NAME", category: "MEN", segment: "SHORT", nation: "JPN", ranking: 1, skater: skater)
 
-    skater2 = Skater.create(name: "Foo BAR", nation: "USA")
+    skater2 = Skater.create(name: "Foo BAR")
     competition2 = Competition.create(cid: "GPUSA2015", name: "GP USA 2015", season: "2015-16", competition_type: "gp", city: "NY", country: "USA")
-    score2 = competition2.scores.create(sid: "GPUSA-M", category: "LADIES", segment: "FREE", ranking: 2, skater: skater2)
+    score2 = competition2.scores.create(sid: "GPUSA-M", competition_name: "GP USA 2015", category: "LADIES", segment: "FREE", nation: "USA", ranking: 2, skater: skater2)
   end
 
   describe 'score index' do

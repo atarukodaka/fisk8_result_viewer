@@ -10,17 +10,18 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :season
       t.string :site_url
       t.string :competition_type
+      #t.string :isu_class
       t.boolean :isu_championships, default: false, null: false
       
       t.string :comment
     end
     
     create_table :category_results do |t|
-      #t.string :competition_name
+      t.string :competition_name
       t.string :category
 
       t.integer :ranking
-      #t.string :skater_name
+      t.string :skater_name
       t.string :nation
       t.float :points
       
