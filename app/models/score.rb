@@ -2,7 +2,8 @@ class Score < ApplicationRecord
   include IsuChampionshipsOnly
   
   after_initialize :set_default_values
-  
+
+  ## relations
   has_many :elements, dependent: :destroy
   has_many :components, dependent: :destroy
 
@@ -10,9 +11,11 @@ class Score < ApplicationRecord
   belongs_to :skater
   belongs_to :category_result, required: false
 
+  ## validations
   validates :sid, presence: true, uniqueness: true
-  validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
-  
+  #validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
+
+  ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { matches(:segment, "SHORT") }
   scope :free, -> { matches(:segment, "FREE") }

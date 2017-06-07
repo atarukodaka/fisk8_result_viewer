@@ -1,12 +1,13 @@
 class CategoryResult < ApplicationRecord
   include IsuChampionshipsOnly
   
+  ## relations
   has_many :scores
   
   belongs_to :competition
   belongs_to :skater
   
-  ## scope
+  ## scopes
   scope :with_competition, ->{ joins(:competition) }
   scope :recent, ->{ with_competition.order("competitions.start_date desc") }
   scope :category, ->(cat) { where(category: cat) }

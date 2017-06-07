@@ -63,11 +63,8 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "scores", force: :cascade do |t|
     t.string "sid"
-    t.string "skater_name"
     t.integer "ranking"
     t.integer "starting_number"
-    t.string "nation"
-    t.string "competition_name"
     t.string "category"
     t.string "segment"
     t.date "date", default: "1970-01-01"
