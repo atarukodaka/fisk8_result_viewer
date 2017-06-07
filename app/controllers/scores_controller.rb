@@ -2,8 +2,7 @@
 class ScoresController < ApplicationController
   def filters
     {
-      #skater_name: ->(col, v){ col.where("scores.skater_name like ? ", "%#{v}%")},
-      skater_name: ->(col, v){ col.references(:skater).where("skaters.name like ? ", "%#{v}%")},
+      skater_name: ->(col, v){ col.references(:skater).matches("skaters.name", v) },
       category: ->(col, v)   { col.where(category: v) },
       segment: ->(col, v)    { col.where(segment:  v) },
       nation: ->(col, v)     { col.where(skaters: {nation: v}) },
@@ -22,7 +21,6 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {score: score}}
-      #format.json { render json: {summary: score, elements: score.elements, components: score.components }}
       format.json { render :show, handlers: :jbuilder, locals: {score: score } }
     end
   end

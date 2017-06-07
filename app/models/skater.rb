@@ -10,7 +10,7 @@ class Skater < ApplicationRecord
   scope :having_scores, ->{
     where(id: Score.select(:skater_id).group(:skater_id).having("count(skater_id)> ? ", 0))
   }
-  scope :search_by_name, ->(name){ where("name like ? ", "%#{name}%") }
+  #scope :search_by_name, ->(name){ where("name like ? ", "%#{name}%") }
 
   def highest_score
     category_results.pluck(:points).compact.max

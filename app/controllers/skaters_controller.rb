@@ -6,7 +6,7 @@ class SkatersController < ApplicationController
   end
   def filters
     {
-      name: ->(col, v){ col.search_by_name(v) },
+      name: ->(col, v){ col.matches(:name, v) },
       category: ->(col, v){ col.where(category: v) },
       nation: ->(col, v){ col.where(nation: v) },
     }
@@ -40,12 +40,16 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: { skater: skater.decorate,
-          competition_results: SkaterCompetitionDecorator.decorate_collection(competition_results)}
+        render action: :show, locals: {
+          skater: skater.decorate,
+          competition_results: SkaterCompetitionDecorator.decorate_collection(competition_results)
+        }
       }
       format.json {
-        #render json: {skater_info: skater, competition_results: skater.category_results}
-        render 'show', formats: 'json', handlers: 'jbuilder', locals: {skater: skater, competition_results: competition_results }
+        render :show, handlers: :jbuilder, locals: {
+          skater: skater,
+          competition_results: competition_results
+        }
       }
     end
   end

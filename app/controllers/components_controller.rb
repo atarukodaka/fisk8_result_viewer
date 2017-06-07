@@ -7,9 +7,4 @@ class ComponentsController < ElementsController #  ApplicationController
       }
     }.merge(score_filters)
   end
-=begin
-  def collection
-    filter(Component.includes(:score, [score: :competition])) 
-  end
-=end
 end

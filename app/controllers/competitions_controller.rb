@@ -48,8 +48,7 @@ class CompetitionsController < ApplicationController
           segment_scores: segment_scores,
           category_results: category_results,
         }
-        #render json: data
-        render "show", handlers: 'jbuilder', locals: locals
+        render :show, handlers: :jbuilder, locals: locals
       }
     end
   end

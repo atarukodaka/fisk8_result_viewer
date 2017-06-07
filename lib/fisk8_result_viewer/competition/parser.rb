@@ -106,8 +106,8 @@ module Fisk8ResultViewer
           
           time_schedule << {
             time: tm,
-            category: row.xpath("td[3]").text.upcase.gsub(/^SENIOR /, ''),
-            segment: row.xpath("td[4]").text.upcase,
+            category: trim(row.xpath("td[3]").text.upcase.gsub(/^SENIOR /, '')),
+            segment: trim(row.xpath("td[4]").text.upcase),
           }
         end
         time_schedule

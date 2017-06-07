@@ -3,7 +3,7 @@ class ElementsController < ApplicationController
   def filters
     {
       name: ->(col, v) {
-        (params[:perfect_match]) ? col.where(name: v) : col.where("name like ? ", "%#{v}%")
+        (params[:perfect_match]) ? col.where(name: v) : col.matches("elements.name", v)
       },
       goe: ->(col, v){
         arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
@@ -14,7 +14,7 @@ class ElementsController < ApplicationController
   def score_filters
     {
       skater_name: ->(col, v){
-        col.includes(score: :skater).references(score: :skater).where("skaters.name like ? ", "%#{v}%")
+        col.includes(score: :skater).references(score: :skater).matches("skaters.name", v)
       },
       category: ->(col, v)   { col.where(scores: {category: v}) },
       segment: ->(col, v)    { col.where(scores: {segment: v}) },
@@ -25,7 +25,7 @@ class ElementsController < ApplicationController
     }
   end
   def collection
-    #filter(Element.includes(:score, score: [:competition]))
-    filter(controller_name.singularize.camelize.constantize.includes(:score, score: [:competition]))
+    model_klass = controller_name.singularize.camelize.constantize
+    filter(model_klass.includes(:score, score: [:competition, :skater]).recent)
   end
 end

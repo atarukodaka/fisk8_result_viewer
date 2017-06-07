@@ -4,9 +4,7 @@ class Competition < ApplicationRecord
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
 
-  scope :recent, ->(){
-    order("start_date desc")
-  }
+  scope :recent, ->(){ order("start_date desc")  }
 
   class << self
     def destroy_existings_by_url(url)

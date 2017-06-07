@@ -14,11 +14,10 @@ class Score < ApplicationRecord
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
   
   scope :recent, ->{ order("date desc") }
-  scope :short, -> { where("segment like ? ", "SHORT%") }
-  scope :free, -> { where("segment like ? ", "FREE%") }  
+  scope :short, -> { matches(:segment, "SHORT") }
+  scope :free, -> { matches(:segment, "FREE") }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(c, s){ category(c).where(segment: s) }
-  scope :with_competition, ->{ joins(:competition) }
   
   private
   def set_default_values

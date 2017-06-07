@@ -9,9 +9,10 @@ module Fisk8ResultViewer
       end
 
       def update_score(parsed_score, competition, category, segment, attributes: {})
-        keys = [:skater_name, :ranking, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
+        #keys = [:skater_name, :ranking, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
+        keys = [:ranking, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
         competition.scores.create!(parsed_score.slice(*keys)) do |score|
-          score.competition_name = competition.name
+          #score.competition_name = competition.name
           score.attributes = attributes
           ## category_ results
           parsed_score[:skater_name] = correct_skater_name(parsed_score[:skater_name])
@@ -21,7 +22,7 @@ module Fisk8ResultViewer
           ## skater
           # TODO: correct skater name
           score.skater = cr.skater
-          score.skater_name = cr.skater.name
+          #score.skater_name = cr.skater.name
           score.skater.scores << score
 
           ## attributes, identifers
@@ -43,7 +44,7 @@ module Fisk8ResultViewer
             score.components.create!(component.slice(*keys)).value
           end
 
-          puts "    %s-%s [%2d] %-40s (%6d) | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater_name, score.skater.isu_number.to_i, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
+          puts "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater.name, score.skater.isu_number.to_i, score.skater.nation, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
         end
       end
 

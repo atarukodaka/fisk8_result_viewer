@@ -54,7 +54,6 @@ module Fisk8ResultViewer
       end
 
       ################
-      ################
       private
       def find_row(key, category, segment)
         data[key].select {|h|

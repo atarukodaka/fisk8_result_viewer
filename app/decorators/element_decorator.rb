@@ -13,11 +13,8 @@ class ElementDecorator < EntryDecorator
   def ranking
     model.score.ranking
   end
-  def element
-    model.name
-  end
   def competition_name
-    model.score.competition_name
+    model.score.competition.name
   end
   def date
     model.score.date
@@ -26,9 +23,9 @@ class ElementDecorator < EntryDecorator
     model.score.competition.season
   end
   def skater_name
-    model.score.skater_name
+    model.score.skater.name
   end
   def nation
-    model.score.nation
+    model.score.skater.nation
   end
 end
