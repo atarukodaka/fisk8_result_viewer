@@ -24,6 +24,9 @@ class ScoreDecorator < EntryDecorator
   def skater_name
     h.link_to_skater(model.skater)
   end
+  def nation
+    model.skater.nation
+  end
   def competition_name
     h.link_to_competition(model.competition)
   end

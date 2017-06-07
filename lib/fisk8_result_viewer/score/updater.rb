@@ -9,9 +9,9 @@ module Fisk8ResultViewer
       end
 
       def update_score(parsed_score, competition, category, segment, attributes: {})
-        keys = [:skater_name, :ranking, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
+        keys = [:skater_name, :ranking, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
         competition.scores.create!(parsed_score.slice(*keys)) do |score|
-          score.competition_name = competition.name
+          #score.competition_name = competition.name
           score.attributes = attributes
           ## category_ results
           parsed_score[:skater_name] = correct_skater_name(parsed_score[:skater_name])
@@ -21,7 +21,7 @@ module Fisk8ResultViewer
           ## skater
           # TODO: correct skater name
           score.skater = cr.skater
-          score.skater_name = cr.skater_name
+          score.skater_name = cr.skater.name
           score.skater.scores << score
 
           ## attributes, identifers
@@ -50,7 +50,7 @@ module Fisk8ResultViewer
       private
       def find_relevant_category_result(category_results, skater_name, segment, ranking)
         ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
-        category_results.find_by(skater_name: skater_name) ||
+        category_results.joins(:skater).where("skaters.name" => skater_name).first ||
           category_results.where(ranking_type => ranking).first
       end
       

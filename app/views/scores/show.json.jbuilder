@@ -1,6 +1,11 @@
-json.extract! score, :sid, :competition_name, :category, :segment, :date, :result_pdf
+json.extract! score, :sid
+json.competition_name score.competition.name
+json.extract! score, :category, :segment, :date, :result_pdf
 json.season score.competition.season
-json.extract! score, :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value
+json.extract! score, :ranking
+json.skater_name score.skater.name
+json.nation score.skater.nation
+json.extract! score, :tss, :tes, :pcs, :deductions, :base_value
 
 json.elements do
   json.array! score.elements do |element|

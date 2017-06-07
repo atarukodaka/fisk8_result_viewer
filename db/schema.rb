@@ -13,10 +13,8 @@
 ActiveRecord::Schema.define(version: 3) do
 
   create_table "category_results", force: :cascade do |t|
-    t.string "competition_name"
     t.string "category"
     t.integer "ranking"
-    t.string "skater_name"
     t.string "nation"
     t.float "points"
     t.integer "short_ranking"
@@ -69,8 +67,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "skater_name"
     t.integer "ranking"
     t.integer "starting_number"
-    t.string "nation"
-    t.string "competition_name"
     t.string "category"
     t.string "segment"
     t.date "date", default: "1970-01-01"
@@ -81,8 +77,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "deductions", default: 0.0
     t.string "deduction_reasons"
     t.float "base_value", default: 0.0
-    t.string "elements_summary"
-    t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "category_result_id"

@@ -15,7 +15,7 @@ class ComponentDecorator < EntryDecorator
     model.score.ranking
   end
   def competition_name
-    model.score.competition_name
+    model.score.competition.name
   end
   def date
     model.score.date
@@ -24,10 +24,10 @@ class ComponentDecorator < EntryDecorator
     model.score.competition.season
   end
   def skater_name
-    model.score.skater_name
+    model.score.skater.name
   end
   def nation
-    model.score.nation
+    model.score.skater.nation
   end
 end
 ################################################################
@@ -42,6 +42,6 @@ class ComponentsController <  ApplicationController
     }.merge(score_filters)
   end
   def collection
-    filter(Component.includes(:score, [score: :competition])) 
+    filter(Component.includes(:score, [score: [:competition, :skater]])) 
   end
 end

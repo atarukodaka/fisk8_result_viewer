@@ -1,11 +1,11 @@
 module IndexActionModules
   def score_filters
     {
-      skater_name: ->(col, v){ col.where("scores.skater_name like ? ", "%#{v}%")},
+      skater_name: ->(col, v){ col.includes(:skater).references(:skater).where("skater.name like ? ", "%#{v}%")},
       category: ->(col, v)   { col.where("scores.category" => v) },
       segment: ->(col, v)    { col.where("scores.segment" => v) },
-      nation: ->(col, v)     { col.where("scores.nation" => v) },
-      competition_name: ->(col, v)     { col.where("scores.competition_name" => v) },
+      nation: ->(col, v)     { col.where("scores.skater.nation" => v) },
+      competition_name: ->(col, v)     { col.where("scores.competition.name" => v) },
       isu_championships_only:->(col, v){ col.where("competitions.isu_championships" => v =~ /true/i) },
       season: ->(col, v){ col.where("competitions.season" => v) },
     }
