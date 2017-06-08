@@ -2,7 +2,7 @@
 
 require 'csv'
 
-display_keys ||= collection.columns.map(&:name)
+display_keys ||= collection.column_names
 
 csv_data = CSV.generate(headers: display_keys, write_headers: true) do |csv|
   collection.each do |item|
