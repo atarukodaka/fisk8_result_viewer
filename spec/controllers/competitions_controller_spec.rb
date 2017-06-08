@@ -14,7 +14,7 @@ RSpec.describe CompetitionsController, type: :controller do
   end
   
   ################################################################
-  describe 'index' do
+  context 'index' do
     it {
       get :index
       expect(response.status).to eq(200)
