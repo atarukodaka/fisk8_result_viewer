@@ -7,7 +7,7 @@ class ScoresController < ApplicationController
       segment: ->(col, v)    { col.where(segment:  v) },
       nation: ->(col, v)     { col.where(skaters: {nation: v}) },
       competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
-      isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v =~ /true/i}) },
+      isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool}) },
       season: ->(col, v){ col.where(competitions: {season: v}) },
     }
   end

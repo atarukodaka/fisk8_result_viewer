@@ -12,7 +12,7 @@ end
 
 json.competition_results do
   json.array! competition_results do |cr|
-    json.competition_name cr.competition_name
+    json.competition_name cr.competition.name
     json.date cr.competition.start_date
     json.ranking cr.ranking
     json.points cr.points

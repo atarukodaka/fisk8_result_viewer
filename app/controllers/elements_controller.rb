@@ -19,9 +19,10 @@ class ElementsController < ApplicationController
       category: ->(col, v)   { col.where(scores: {category: v}) },
       segment: ->(col, v)    { col.where(scores: {segment: v}) },
       nation: ->(col, v)     { col.includes(score: :skater).where(scores: {skaters: {nation: v}}) },
-      competition_name: ->(col, v)     { col.where(scores: {competitions: {name: v}}) },
-      isu_championships_only:->(col, v){ col.where(scores: {competitions: {isu_championships: v =~ /true/i}}) },
-      season: ->(col, v){ col.where(scores: {competitions: {season: v}}) },
+      #competition_name: ->(col, v)     { col.where(scores: {competitions: {name: v}}) },
+      competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
+      isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool }) },
+      season: ->(col, v){ col.where(competitions: {season: v}) },
     }
   end
   def collection

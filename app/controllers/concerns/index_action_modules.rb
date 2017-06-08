@@ -8,7 +8,7 @@ module IndexActionModules
   end
 
   def filters
-    score_filters
+    {}
   end
   def filter(col)
     filters.each do |key, pr|

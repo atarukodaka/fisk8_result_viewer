@@ -3,9 +3,6 @@ class EntryDecorator < Draper::Decorator
   delegate_all
 
   class << self
-    def headers
-      { base_value: "BV", number: "#", }
-    end
     def display_as(type, keys)
       keys.each do |key|
         self.send(:define_method, key) do
@@ -14,8 +11,6 @@ class EntryDecorator < Draper::Decorator
             as_ranking(model[key])
           when :score
             as_score(model[key])
-          else
-            raise
           end
         end
       end
@@ -24,8 +19,9 @@ class EntryDecorator < Draper::Decorator
   
   self.display_as(:ranking, [:ranking])
   self.display_as(:score, [:tss, :tes, :pcs, :deductions, :base_value, :value, :goe])
-  
+=begin  
   def filter_index(key)
     h.link_to_index(model[key], parameters: h.params.permit(filter_keys).merge(key => model[key]))
   end
+=end
 end

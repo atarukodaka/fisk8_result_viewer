@@ -77,11 +77,15 @@ RSpec.describe SkatersController, type: :controller do
     }
   end
   ################
-  describe 'show.json' do
-    it {
-      get :show, params: { isu_number: 12345 }
+  describe 'json' do
+    it 'index json' do
+      get :index, params: { format: 'json' }
       expect(response.body).to include('Skater NAME')
-    }
+    end
+    it 'show json by isu_number' do
+      get :show, params: { isu_number: 12345, format: 'json' }
+      expect(response.body).to include('Skater NAME')
+    end
   end
   
 end

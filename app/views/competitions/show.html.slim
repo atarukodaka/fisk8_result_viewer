@@ -1,4 +1,4 @@
-// locals: competition, category, segment, category_summary
+// locals: competition, category, segment, category_summaries
 //   optional: category_results (only when 'category' specified)
 /              segment_scores (only when 'segment' specified)
 
@@ -21,7 +21,7 @@ table.table.table-striped.table-hover.table-condensed
 ////////////////////////////////////////////////////////////////
 h2 Category Summary
 
-= render partial: "list_table", locals: { collection: category_summary, display_keys: [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd] }
+= render partial: "list_table", locals: { collection: category_summaries, display_keys: [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd] }
 
 - if category.present?
   - unless segment.present?
