@@ -15,13 +15,9 @@
   .col-sm-6
     h2 Result Summary
     div
-      = link_to_skater("All", skater)
-      | &nbsp;|  
-      = link_to_skater("ISU Championships Only", skater, params: {isu_championships_only: true})
 
     table.table.table-striped.table-hover.table-condensed
       tr
-        //- cr = competition_results.object
         = tr_data("Highest Score", skater.highest_score)
         = tr_data("Competitions participated", skater.competitions_participated)
         = tr_data("Gold Won", skater.gold_won)
@@ -31,7 +27,7 @@
 
 h2 Competition Results
 
-= render partial: "list_table", locals: {collection: competition_results} 
+= render partial: "list_table", locals: {collection: competition_results, display_keys: [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]} 
 
 .row
   .col-sm-6

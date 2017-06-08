@@ -1,12 +1,14 @@
-class ElementDecorator < EntryDecorator
-  class << self
-    def column_names
-      [:sid, :competition_name, :date, :season,
-       :ranking, :skater_name, :nation,
-       :number, :name, :credit, :info, :base_value, :goe, :judges, :value,
-      ]
-    end
+class ElementsDecorator < EntriesDecorator
+  def column_names
+    [:sid, :competition_name, :date, :season,
+     :ranking, :skater_name, :nation,
+     :number, :name, :credit, :info, :base_value, :goe, :judges, :value,
+    ]
   end
+end
+
+################################################################
+class ElementDecorator < EntryDecorator
   def sid
     h.link_to_score(nil, model.score)
   end

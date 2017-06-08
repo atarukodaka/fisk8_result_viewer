@@ -24,7 +24,7 @@ class CompetitionsController < ApplicationController
     category = params[:category]
     segment = params[:segment]
    
-    category_summary = CategorySummary.new(competition)
+    category_summaries = CategorySummary.create_summaries(competition)
     category_results = (competition.category_results.category(category).includes(:skater, :scores) if category && segment.blank?) || []
     segment_scores = (competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components) if segment) || []
 
@@ -35,15 +35,15 @@ class CompetitionsController < ApplicationController
       }
       format.html {
         locals[:competition] = competition.decorate
-        locals[:category_summary] = CategorySummaryDecorator.decorate_collection(category_summary)
-        locals[:category_results] = CategoryResultDecorator.decorate_collection(category_results.all) unless category_results.blank?
-        locals[:segment_scores] =  SegmentScoreDecorator.decorate_collection(segment_scores.all) unless segment_scores.blank?
+        locals[:category_summary] = category_summaries.decorate
+        locals[:category_results] = category_results.decorate unless category_results.blank?
+        locals[:segment_scores] =  segment_scores.decorate unless segment_scores.blank?
         render :show, locals: locals
       }
       format.json {
         render :show, handlers: :jbuilder, locals: {
           competition: competition,
-          category_summary: category_summary,
+          category_summary: category_summaries,
           segment_scores: segment_scores,
           category_results: category_results,
         }.merge(locals)

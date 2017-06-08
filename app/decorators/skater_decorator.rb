@@ -1,12 +1,11 @@
-class SkaterDecorator < EntryDecorator
-
-=begin
-  class << self
-    def column_names
-      [ :name, :nation, :category, :isu_number]
-    end
+class SkatersDecorator < EntriesDecorator
+  def column_names
+    [ :name, :nation, :category, :isu_number]
   end
-=end
+end
+
+################################################################
+class SkaterDecorator < EntryDecorator
   def name
     h.link_to_skater(model)
   end
@@ -14,7 +13,6 @@ class SkaterDecorator < EntryDecorator
     h.link_to_isu_bio(model.isu_number)
   end
 
-  ################
   # result
   def most_valuable_element
     elem = model.most_valuable_element

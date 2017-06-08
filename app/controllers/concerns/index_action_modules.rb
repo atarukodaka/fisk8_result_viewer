@@ -30,11 +30,10 @@ module IndexActionModules
   end
   def format_html
     pagination = true
-    col = collection.page(params[:page]) if pagination
+    col = (pagination) ? collection.page(params[:page]) : collection
     
     locals = {
-      collection: (decorator) ? decorator.decorate_collection(col) : col,
-#      display_keys: display_keys,
+      collection: col.decorate,
       pagination: pagination,
     }
     render locals: locals
@@ -42,15 +41,14 @@ module IndexActionModules
 
   def format_json
     max_output = 1000
-    #render json: collection.limit(max_output), handlers: 'jbuilder'  #.select(display_keys)
-    render 'index', formats: 'json', handlers: 'jbuilder', locals: {collection: collection.limit(max_output)}
+    render :index, handlers: :jbuilder, locals: {collection: collection.limit(max_output)}
   end
   def format_csv
     max_output = 1000
-    col = collection.limit(max_output) #.select(display_keys)
+    col = collection.limit(max_output)
     headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]
     
-    render cvs: "index.csv.ruby", locals: { collection: col, } # , display_keys: display_keys }
+    render cvs: "index.csv.ruby", locals: { collection: col, }
   end
   
   def index

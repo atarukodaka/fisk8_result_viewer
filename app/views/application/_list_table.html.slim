@@ -1,10 +1,8 @@
-// locals: collection, display_keys, pagination(optional)
+// locals: collection, display_keys(optional), pagination(optional)
 
-- pagination = false unless defined? pagination
-/- display_keys ||= []
-//- display_keys ||= ((d = collection.decorator_class) ? d : collection).column_names
-- display_keys ||= collection.try(:column_names) || collection.decorator_class.column_names || []
-//- decorator = (collection.is_a?(Draper::CollectionDecorator)) ? collection.decorator_class : nil
+- collection ||= []
+- pagination ||= false
+- display_keys ||= collection.column_names
 
 
 div
@@ -20,7 +18,3 @@ table.table.table-striped.table-hover.table-condensed.list-table
           td= item.send(key)
 
 = paginate(collection) if pagination
-
-//        - if decorator && decorator.headers.has_key?(key)
-//          = collection.decorator_class.headers[key]
-//        - else
