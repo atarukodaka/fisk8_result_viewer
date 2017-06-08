@@ -5,7 +5,7 @@ RSpec.describe CompetitionsController, type: :controller do
   
   before do
     skater = Skater.create(name: "Skater NAME")
-    competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN", site_url: 'http://world-fs-2017/')
+    competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN", site_url: 'http://world-fs-2017/', isu_championships: true)
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
     cr.scores << score
@@ -115,6 +115,11 @@ RSpec.describe CompetitionsController, type: :controller do
     end
     it 'filters by competition_type' do
       get :index, params: { competition_type: 'world' }
+      expect(response.body).to include('World FS 2017')
+      expect(response.body).not_to include('GP USA 2015')
+    end
+    it 'filters by isu_championships' do
+      get :index, params: { isu_championships_only: 'true' }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end

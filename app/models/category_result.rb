@@ -1,6 +1,4 @@
 class CategoryResult < ApplicationRecord
-  include IsuChampionshipsOnly
-  
   ## relations
   has_many :scores
   

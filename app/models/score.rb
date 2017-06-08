@@ -1,6 +1,4 @@
 class Score < ApplicationRecord
-  include IsuChampionshipsOnly
-  
   after_initialize :set_default_values
 
   ## relations

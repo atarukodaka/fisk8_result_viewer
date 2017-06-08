@@ -1,11 +1,5 @@
-################
 class SkatersController < ApplicationController
   ## index
-=begin
-  def display_keys
-    #[ :name, :nation, :category, :isu_number]
-  end
-=end
   def filters
     {
       name: ->(col, v){ col.matches(:name, v) },

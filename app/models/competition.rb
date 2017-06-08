@@ -12,7 +12,7 @@ class Competition < ApplicationRecord
 
   ## scopes
   scope :recent, ->(){ order("start_date desc")  }
-
+  
   ## class methods
   class << self
     def destroy_existings_by_url(url)

@@ -1,6 +1,4 @@
 class Component < ApplicationRecord
-  include IsuChampionshipsOnly
-
   ## relations
   belongs_to :score
 
