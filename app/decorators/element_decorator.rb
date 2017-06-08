@@ -30,4 +30,7 @@ class ElementDecorator < EntryDecorator
   def nation
     model.score.skater.nation
   end
+  def description
+    "%s %s%s (%.2f=%.2f+%.2f)" % [ model.name, model.credit, model.info, model.value, model.base_value, model.goe]
+  end
 end

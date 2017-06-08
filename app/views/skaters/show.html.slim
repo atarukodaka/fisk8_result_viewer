@@ -18,12 +18,12 @@
 
     table.table.table-striped.table-hover.table-condensed
       tr
-        = tr_data("Highest Score", skater.highest_score)
-        = tr_data("Competitions participated", skater.competitions_participated)
-        = tr_data("Gold Won", skater.gold_won)
-        = tr_data("Highest Ranking", skater.highest_ranking)
-        = tr_data("Most Valuable Element", skater.most_valuable_element)
-        = tr_data("Most Valuable Components", skater.most_valuable_components)
+        = tr_data("Highest Score", skater.category_results.highest_score)
+        = tr_data("Competitions participated", skater.category_results.count)
+        = tr_data("Gold Won", skater.category_results.where(ranking: 1).count)
+        = tr_data("Highest Ranking", skater.category_results.highest_ranking)
+        = tr_data("Most Valuable Element", skater.elements.order(:value).last.decorate.description)
+        = tr_data("Most Valuable Components", skater.components.group(:number).maximum(:value).values.join('/'))
 
 h2 Competition Results
 
