@@ -24,12 +24,6 @@ Rails.application.routes.draw do
   ## components
   get 'components' => 'components#index'
   
-  ## feedback
-  get 'feedback' => 'feedback#index'
-  post 'feedback' => 'feedback#submit'
-
-  ## about
-  #get 'about' => 'about#index'
   ## top
   get '/' => 'scores#index'
 end
