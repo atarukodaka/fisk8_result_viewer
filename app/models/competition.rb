@@ -12,6 +12,8 @@ class Competition < ApplicationRecord
 
   ## scopes
   scope :recent, ->(){ order("start_date desc")  }
+  scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
+  scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
   
   ## class methods
   class << self

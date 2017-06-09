@@ -3,10 +3,10 @@ class CategorySummaryDecorator < EntryDecorator
     h.link_to_competition(model.competition, category: model.category)
   end
   def short
-    h.link_to_competition(model.competition, category: model.category, segment: model.short)
+    _segment(:short)
   end
   def free
-    h.link_to_competition(model.competition, category: model.category, segment: model.free)
+    _segment(:free)
   end
   def ranker1st
     model.top_rankers.try(:[], 0)
@@ -16,5 +16,9 @@ class CategorySummaryDecorator < EntryDecorator
   end
   def ranker3rd
     model.top_rankers.try(:[], 2)
+  end
+  private
+  def _segment(type)
+    h.link_to_competition(model.competition, category: model.category, segment: model.send(type))    
   end
 end

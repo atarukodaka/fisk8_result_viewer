@@ -33,7 +33,7 @@ module Fisk8ResultViewer
         col_num
       end
       Contract String, String => Array
-      def parse_category_results(url, category)
+      def parse_category_results(url, _category)
         page = get_url(url, read_option: 'r:iso-8859-1')
         #page = Nokogiri::HTML(open(url, 'r:iso-8859-1').read)
         return [] if page.nil?

@@ -10,14 +10,14 @@ class ElementsController < ApplicationController
     operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
       '<' => :lt, '<=' => :lteq}
     operator = operators[operator_str] || :eq
-    arel = model_klass.arel_table[key].send(operator, value.to_f)
+    model_klass.arel_table[key].send(operator, value.to_f)
   end
 
 
   def filters
     {
       name: ->(col, v) {
-        (params[:perfect_match]) ? col.where(name: v) : col.matches("elements.name", v)
+        (params[:perfect_match]) ? col.where(name: v) : col.where("elements.name like ? ", "%#{v}%")
       },
       goe: ->(col, v){
         arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
@@ -28,7 +28,7 @@ class ElementsController < ApplicationController
   def score_filters
     {
       skater_name: ->(col, v){
-        col.includes(score: :skater).references(score: :skater).matches("skaters.name", v)
+        col.includes(score: :skater).references(score: :skater).where("skaters.name like ? ", "%#{v}%")
       },
       category: ->(col, v)   { col.where(scores: {category: v}) },
       segment: ->(col, v)    { col.where(scores: {segment: v}) },

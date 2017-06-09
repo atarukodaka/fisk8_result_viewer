@@ -1,12 +1,9 @@
 = form_group("Name", text_field_tag(:name, params[:name], size: 70))
 = form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70))
+= form_group("Competition Type") do
+  = select_tag_with_options(:competition_type, Competition.pluck(:competition_type).sort.uniq)
 
-.form-group.row.
-  .col-sm-2
-    label Competition type
-  .col-sm-10
-    = select_tag_with_options(:competition_type, Competition.pluck(:competition_type).sort.uniq)
+  label ISU Championships Only: 
+  = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
 
-    label ISU Championships Only: 
-    = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
 = form_group("Season", select_tag_with_options(:season, Competition.pluck(:season).sort.reverse.uniq))

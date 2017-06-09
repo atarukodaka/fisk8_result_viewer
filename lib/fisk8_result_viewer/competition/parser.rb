@@ -51,9 +51,6 @@ module Fisk8ResultViewer
         end
       end
       def parse_summary_table(page)
-        #category_elem = page.xpath("//*[text()='Category']").first
-        #rows = category_elem.ancestors.xpath("table").first.xpath(".//tr")
-        #rows = page.xpath("//table[.//*[text()='Category']]").xpath(".//tr")
         elem = page.xpath("//*[text()='Category']").first || raise
         rows = elem.xpath('ancestor::table[1]//tr')
         

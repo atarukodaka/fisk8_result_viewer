@@ -5,8 +5,8 @@ class CompetitionsController < ApplicationController
   Contract None => Hash
   def filters
     {
-      name: ->(col, v) { col.matches(:name, v) },
-      site_url: ->(col, v) { col.matches(:site_url, v) },
+      name: ->(col, v) { col.name_matches(v) },
+      site_url: ->(col, v) { col.site_url_matches(v) },
       competition_type: ->(col, v) { col.where(competition_type: v) },
       isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
       season: ->(col, v) { col.where(season: v) },

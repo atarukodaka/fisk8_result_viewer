@@ -3,10 +3,10 @@ module Fisk8ResultViewer
     class Wtt2017 < IsuGeneric
       module Competition
         class Parser < IsuGeneric::Competition::Parser
-          def parse_name(page)
+          def parse_name(_page)
             "ISU World Team Trophy 2017"
           end
-          def parse_city_country(page)
+          def parse_city_country(_page)
             ["Tokyo", "JPN"]
           end
 
@@ -45,7 +45,7 @@ module Fisk8ResultViewer
             summary
           end
           # rubocop:disable all
-          def parse_time_schedule(page)
+          def parse_time_schedule(_page)
             Time.zone ||= "UTC"
             [
              {

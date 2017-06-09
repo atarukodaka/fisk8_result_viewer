@@ -8,7 +8,7 @@ class SkatersController < ApplicationController
     }
   end
   def collection
-    col = filter(Skater.order(:category, :name).having_scores)
+    filter(Skater.order(:category, :name).having_scores)
   end
   ################################################################
   ## show

@@ -43,15 +43,8 @@ module LinkToHelper
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
     link_to(image_tag(img_url), url, target: target)
   end
-  def link_to_index(text, parameters: {})
-    link_to(text, controller: controller_name.to_sym, action: :index, params: parameters)
-  end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
-  end
-  
-  def bracket(str)
-    "[#{str}]"
   end
 end ## module
 
@@ -82,10 +75,17 @@ module SortHelper
 end
 
 module FilterFormHelper
-  def form_group(label, input_tag)
+  def form_group(label, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       concat(content_tag(:div, label_tag(label), :class => 'col-sm-2'))
-      concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
+      if block_given?
+        concat(content_tag(:div, :class => 'col-sm-10') do
+          yield
+        end)
+      else
+        concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
+      end
+      #concat(yield) if block_given?
     end
   end
   def select_tag_with_options(key, col = nil)

@@ -92,11 +92,10 @@ namespace :update do
 
   desc "check elements/components details"
   task :elements_check => :environment do
-    Score.where.not(id: Element.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
-      puts "!!! #{score.sid} has no elements at all"
-    end
-    Score.where.not(id: Component.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
-      puts "!!! #{score.sid} has no components at all"
+    [Element, Component].each do |model|
+      Score.where.not(id: model.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
+        puts "!!! #{score.sid} has no #{model.pluralize} at all"
+      end
     end
     puts "done."
   end

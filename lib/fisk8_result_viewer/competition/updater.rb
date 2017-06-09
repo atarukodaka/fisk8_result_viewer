@@ -42,6 +42,7 @@ module Fisk8ResultViewer
             competition.attributes = summary.slice(*keys)
             competition.attributes = get_identifers(competition.name, competition.country, competition.city, competition.start_date.year)
             competition.country ||= @city_country[competition.city]
+            competition.comment = comment
             competition.save!
             puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
 
@@ -58,7 +59,7 @@ module Fisk8ResultViewer
                 url = summary.score_url(category, segment)
                 score_parser = Parsers.get_parser(:score, parser_type)
                 score_updater = Fisk8ResultViewer::Score::Updater.new
-                score = score_updater.update_scores(url, competition, category, segment, parser: score_parser, attributes: {date: summary.starting_time(category, segment)})
+                score_updater.update_scores(url, competition, category, segment, parser: score_parser, attributes: {date: summary.starting_time(category, segment)})
               end
             end
           end

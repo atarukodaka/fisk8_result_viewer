@@ -10,7 +10,7 @@ cache:
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rspec
-  - bundle exec rspec --tag updater
+  - bundle exec rspec --tag updater  # error-handler
 
 env: TEST=true
 
