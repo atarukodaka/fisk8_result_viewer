@@ -1,5 +1,4 @@
 ## TODO
-- app/views/score/show.html: unsafe youtube link
 - select options default sort
   - caching
 
@@ -15,7 +14,7 @@
 - config/database: /tmp
 - config/competitions.yml: debug
 
-## 1.0.1
+## 1.0.1 2017/6
 - rake update:skaters..name space for update
 - autoload fisk8viewer/parsers/*.rb
 - competition_summary_parser. use column
@@ -40,7 +39,8 @@
 - element.element, comoponent.component: name as attr
 - element summary: not as db column
 - jbuilder for .json
-
+- csv-builder for csv output
+- app/views/score/show.html: unsafe youtube link -> escape html
 
 ## 1.0.0
 

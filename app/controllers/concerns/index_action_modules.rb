@@ -38,11 +38,8 @@ module IndexActionModules
   def format_csv
     max_output = 1000
     col = collection.limit(max_output)
-    headers['Content-Disposition'] = %Q[attachment; filename="#{controller_name}.csv"]
-
-    #col = decorate_csv(col)
-
-    render cvs: "index.csv.ruby", locals: { collection: col, }
+    @filename = "#{controller_name}.csv"
+    render cvs: :index, handlers: :csvbuilder, locals: { collection: col, }
   end
   
   def index
