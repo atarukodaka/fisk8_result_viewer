@@ -105,12 +105,13 @@ module Fisk8ResultViewer
           def parse_nation(v)
             v.delete("\u00a0")
           end
-          def parse_category_results(url, category)
+          def parse_category_results(url, _category)
             page = get_url(url)
             page.encoding = 'iso-8859-1'
             page.xpath("//table[1]/tr")[1..-1].map do |row|
               {
-                ranking: row.xpath("td[1]").text.to_i,
+                #ranking: row.xpath("td[1]").text.to_i,
+                ranking: 0,
                 skater_name: parse_skater_name(row.xpath("td[2]")),
                 nation: parse_nation(row.xpath("td[3]").text),
                 isu_number: (row.xpath("td[2]/a/@href").text =~ /([0-9]+)\.htm$/) ? $1.to_i : nil,

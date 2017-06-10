@@ -20,9 +20,7 @@ module Fisk8ResultViewer
           cr.scores << score
 
           ## skater
-          # TODO: correct skater name
           score.skater = cr.skater
-          #score.skater_name = cr.skater.name
           score.skater.scores << score
 
           ## attributes, identifers

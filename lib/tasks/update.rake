@@ -34,7 +34,7 @@ namespace :update do
   task :competition => :environment do
     url = ENV['url']
     force = ENV['force'].to_i.nonzero?
-    parser_type = ENV['parser_type'] || :isu_generic
+    parser_type = ENV['parser_type'].to_sym || :isu_generic
 
     Competition.where(site_url: url).map(&:destroy) if force
     updater = Fisk8ResultViewer::Competition::Updater.new

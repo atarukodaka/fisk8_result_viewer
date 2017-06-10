@@ -10,7 +10,7 @@ module IndexActionModules
   end
 
   def colleciton
-    []
+    controller_name.singuralize.constantize.send(:all)
   end
   def format_html
     pagination = true
@@ -27,14 +27,6 @@ module IndexActionModules
     render :index, handlers: :jbuilder, locals: {collection: collection.limit(max_output)}
   end
 
-  def decorate_csv(collection)
-    begin
-      decorator_class = "#{collection.model.to_s.pluralize}CsvDecorator".constantize
-    rescue NameError
-      return nil
-    end
-    decorator_class.decorate(collection)
-  end
   def format_csv
     max_output = 1000
     col = collection.limit(max_output)

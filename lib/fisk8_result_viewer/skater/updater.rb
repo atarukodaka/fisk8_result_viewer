@@ -6,7 +6,7 @@ module Fisk8ResultViewer
         parser.parse_skaters(categories).each do |data|
           ::Skater.find_or_create_by(isu_number: data[:isu_number]) do |skater|
             skater.update!(data)
-            puts ("create skater: #{skater.name} (#{skater.isu_number})")
+            puts "create skater: #{skater.name} (#{skater.isu_number})"
           end
         end
       end

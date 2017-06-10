@@ -12,7 +12,6 @@ module Fisk8ResultViewer
           competition.category_results.create!(result.slice(*keys)) do |cr|
             #cr.competition_name = competition.name
             cr.category = category
-            ## TODO correct skatername
             result[:skater_name] = correct_skater_name(result[:skater_name])
             cr.skater = find_or_create_skater(result[:isu_number], result[:skater_name]) do |sk|
               sk.category = category.gsub(/^JUNIOR /, '')
