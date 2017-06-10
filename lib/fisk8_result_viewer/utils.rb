@@ -7,8 +7,8 @@ module Fisk8ResultViewer
   module Utils
    
     def logger
-      @logger ||= Rails.logger
-      #@logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
+      #@logger ||= Rails.logger
+      @logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
     end
 
     def get_url(url, read_option: nil)
@@ -44,5 +44,9 @@ module Fisk8ResultViewer
     def isu_bio_url(isu_number)
       "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
     end
+    def str2symbols(str)
+      str.split(/ *, */).map(&:to_sym)
+    end
+      
   end  ## module
 end

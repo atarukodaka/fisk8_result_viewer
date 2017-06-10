@@ -8,7 +8,6 @@ module IndexActionModules
     end
     col
   end
-
   def colleciton
     controller_name.singuralize.constantize.send(:all)
   end
@@ -23,18 +22,17 @@ module IndexActionModules
   end
 
   def format_json
-    max_output = 1000
-    render :index, handlers: :jbuilder, locals: {collection: collection.limit(max_output)}
+    render :index, handlers: :jbuilder, locals: {collection: collection.limit(@max_output)}
   end
 
   def format_csv
-    max_output = 1000
-    col = collection.limit(max_output)
+    col = collection.limit(@max_output)
     @filename = "#{controller_name}.csv"
     render cvs: :index, handlers: :csvbuilder, locals: { collection: col, }
   end
   
   def index
+    @max_output = 1000
     respond_to do |format|
       format.html { format_html }
       format.json { format_json }

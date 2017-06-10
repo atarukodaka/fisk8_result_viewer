@@ -109,6 +109,31 @@ module Fisk8ResultViewer
         end
         return scores
       end  # def parser
+      
+      def show(score)
+        puts "-" * 100
+        puts "%d %s [%s] %d  %6.2f = %6.2f + %6.2f + %2d" % 
+          [score[:ranking], score[:skater_name], score[:nation], score[:starting_number],
+           score[:tss], score[:tes], score[:pcs], score[:deductions],
+          ]
+        puts "Executed Elements"
+        score[:elements].each do |element|
+          puts "  %d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
+            [element[:number], element[:name], element[:info], element[:base_value],
+             element[:goe], element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '),
+             element[:value]]
+        end
+        puts "Program Components"
+        score[:components].each do |component|
+          puts "  %d %-31s %3.2f %-15s %6.2f" %
+            [component[:number], component[:name], component[:factor],
+             component[:judges], component[:value]]
+        end
+        if score[:deduction_reasons]
+          puts "Deductions"
+          puts "  " + score[:deduction_reasons]
+        end
+      end
     end # module
   end
 end

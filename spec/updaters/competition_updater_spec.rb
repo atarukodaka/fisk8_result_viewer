@@ -5,48 +5,16 @@ RSpec.configure do |c|
 end
 
 RSpec.describe 'update competition', type: :competition_updater, updater: true do
-  describe 'update competition: isu generic' do 
-    it {
-      url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
-      updater.update_competition(url, accept_categories: [:MEN])
-                                 
-
-      comp = Competition.find_by(site_url: url)
-      expect(comp.site_url).to eq(url)
-      expect(comp.scores.pluck(:category).uniq).to include('MEN')
-    }
+  it 'works with isu-generic' do
+    url = 'http://www.isuresults.com/results/season1617/wc2017/'
+    updater = Fisk8ResultViewer::Competition::Updater.new
+    updater.update_competition(url, accept_categories: [:MEN])
+    
+    comp = Competition.find_by(site_url: url)
+    expect(comp.site_url).to eq(url)
+    expect(comp.scores.pluck(:category).uniq).to include('MEN')
   end
 
-  describe 'mdy format to work' do 
-    it {
-      url = 'http://www.isuresults.com/results/jgpfra2010/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
-      updater.update_competition(url, accept_categories: [])
-
-      comp = Competition.find_by(site_url: url)
-      expect(comp.site_url).to eq(url)
-    }
-  end
-
-  context 'parser types:' do
-    it 'parses wtt2017' do
-      url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
-      updater.update_competition(url, parser_type: :wtt_2017, accept_categories: [:MEN])
-      
-      comp = Competition.find_by(site_url: url)
-      expect(comp.site_url).to eq(url)
-    end
-    it 'parses autumn classic' do
-      url = 'https://skatecanada.ca/event/2016-autumn-classic-international/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
-      updater.update_competition(url, parser_type: :autumn_classic, accept_categories: [:MEN])
-      
-      comp = Competition.find_by(site_url: url)
-      expect(comp.site_url).to eq(url)
-    end
-  end
   describe 'competition_type / cid', type: :competition_type do
     it {
       updater = Fisk8ResultViewer::Competition::Updater.new
@@ -80,6 +48,43 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       end
     }
   end
+
+  describe 'load_file', type: :load_file do
+    it {
+      fname = File.join(Rails.root, "config/competitions.yml")
+      items = Fisk8ResultViewer::Competition::Updater.new.load_competition_list(fname)
+      expect(items.size).to be > 0
+    }
+  end
+
+  context 'parser types:' do
+    it 'works on mdy date format' do
+      url = 'http://www.isuresults.com/results/jgpfra2010/'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater.update_competition(url, accept_categories: [])
+
+      comp = Competition.find_by(site_url: url)
+      expect(comp.site_url).to eq(url)
+    end
+
+    it 'parses wtt2017' do
+      url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater.update_competition(url, parser_type: :wtt_2017, accept_categories: [:MEN])
+      
+      comp = Competition.find_by(site_url: url)
+      expect(comp.site_url).to eq(url)
+    end
+    it 'parses autumn classic' do
+      url = 'https://skatecanada.ca/event/2016-autumn-classic-international/'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater.update_competition(url, parser_type: :autumn_classic, accept_categories: [:MEN])
+      
+      comp = Competition.find_by(site_url: url)
+      expect(comp.site_url).to eq(url)
+    end
+  end
+
   context 'skater name correction' do
     it 'corrects skater name (fc2012)' do
       url = 'http://www.isuresults.com/results/fc2012/'
@@ -95,7 +100,6 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(skater_cr.id).to eq(skater_fs.id)
     end
   end
-
   context 'options' do
     it 'recognises force' do
       updater = Fisk8ResultViewer::Competition::Updater.new
@@ -112,13 +116,6 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(comp1.id).not_to eq(comp3.id)
       expect(comp3.site_url).to eq(url)
     end
-  end
-  describe 'load_file', type: :load_file do
-    it {
-      fname = File.join(Rails.root, "config/competitions.yml")
-      items = Fisk8ResultViewer::Competition::Updater.new.load_competition_list(fname)
-      expect(items.size).to be > 0
-    }
   end
   context 'encoding' do
     it 'parses iso-8859-1' do
