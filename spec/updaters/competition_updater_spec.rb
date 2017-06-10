@@ -51,8 +51,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
   describe 'load_file', type: :load_file do
     it {
-      fname = File.join(Rails.root, "config/competitions.yml")
-      items = Fisk8ResultViewer::Competition::Updater.new.load_competition_list(fname)
+      items = Fisk8ResultViewer::Competition::Updater.new.load_competition_list
       expect(items.size).to be > 0
     }
   end
