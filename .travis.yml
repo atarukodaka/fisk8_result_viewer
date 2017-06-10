@@ -3,9 +3,9 @@ language: ruby
 rvm:
   - 2.2.5
 
-install: bundle install --deployment
-cache:
-  directories: vendor/bundle
+#install: bundle install --deployment
+#cache:
+#  directories: vendor/bundle
   
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
