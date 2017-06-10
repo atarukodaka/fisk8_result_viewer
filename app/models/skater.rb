@@ -13,4 +13,6 @@ class Skater < ApplicationRecord
   scope :having_scores, ->{
     where(id: Score.select(:skater_id).group(:skater_id).having("count(skater_id)> ? ", 0))
   }
+  scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
+  
 end ## class Skater

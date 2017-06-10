@@ -1,0 +1,13 @@
+h2 Fisk8 Result Viewer
+
+ul
+  - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
+    li= link_to(controller.to_s.camelize, controller: controller)
+
+
+
+h2 About
+p 
+  | This site is maintained by #{Settings['about']['name']}, 
+  | powered by #{link_to("Fisk8ResultViewer #{Fisk8ResultViewer::VERSION}", "http://github.com/atarukodaka/fisk8_result_viewer/")}
+  

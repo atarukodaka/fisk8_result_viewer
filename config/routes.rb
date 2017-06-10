@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  ## home
+  get '/' => 'home#index'
+  
   ## skaters
   scope :skaters do
     get '/' => 'skaters#index'
@@ -25,5 +28,5 @@ Rails.application.routes.draw do
   get 'components' => 'components#index'
   
   ## top
-  get '/' => 'scores#index'
+  #get '/' => 'scores#index'
 end

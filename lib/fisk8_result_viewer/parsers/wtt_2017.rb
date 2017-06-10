@@ -96,9 +96,6 @@ module Fisk8ResultViewer
       end
       module CategoryResult
         class Parser < IsuGeneric::CategoryResult::Parser
-          def get_rows(page)
-            page.xpath("//table[1]/tr")
-          end
           def parse_skater_name(v)
             v.xpath('a/text()').map(&:text).join(' / ').tr("\u00a0", ' ')
           end
