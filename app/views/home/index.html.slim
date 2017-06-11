@@ -4,8 +4,6 @@ ul
   - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
     li= link_to(controller.to_s.camelize, controller: controller)
 
-
-
 h2 About
 p 
   | This site is maintained by #{Settings['about']['name']}, 
