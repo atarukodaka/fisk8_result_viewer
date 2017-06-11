@@ -10,7 +10,8 @@ rvm:
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rspec
-  - bundle exec rspec --tag updater --tag error_handler
+  - bundle exec rspec --tag updater
+  - bundle exec rspec --tag error_handler
 
 env: TEST=true
 
