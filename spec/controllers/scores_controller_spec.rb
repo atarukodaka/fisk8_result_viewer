@@ -4,7 +4,7 @@ RSpec.describe ScoresController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create(name: "Skater NAME", nation: "JPN")
+    skater = Skater.create(name: "Skater NAME", nation: "JPN", isu_number: 1)
     competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: :world, city: "Tokyo", country: "JPN", isu_championships: true)
     score = competition.scores.create(sid: "WFS17-MEN", category: "MEN", segment: "SHORT", ranking: 1, skater: skater)
 

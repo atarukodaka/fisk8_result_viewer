@@ -5,8 +5,6 @@
 ### new feature
 - embed youtube in score (or just link to search page ?)
 - sort in list table
-- eliminate feedback
-
 
 ### check before release
 - app/controller/application_controller: unless Rails.env.develop
@@ -41,6 +39,7 @@
 - jbuilder for .json
 - csv-builder for csv output
 - app/views/score/show.html: unsafe youtube link -> escape html
+- eliminate feedback
 
 ## 1.0.0
 

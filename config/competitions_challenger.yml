@@ -12,7 +12,7 @@
 ## finlandia
 - http://www.figureskatingresults.fi/results/1617/CSFIN2016/
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/
-# - http://www.figureskatingresults.fi/results/1415/CSFIN2014/
+- http://www.figureskatingresults.fi/results/1415/CSFIN2014/
 - http://www.figureskatingresults.fi/results/1314/FT2013/
 - http://www.figureskatingresults.fi/results/1213/FT2012/
 - http://www.figureskatingresults.fi/results/1112/FT2011/
@@ -40,5 +40,3 @@
   parser: :autumn_classic
 
 ## debug
-
-- http://www.figureskatingresults.fi/results/1415/CSFIN2014/

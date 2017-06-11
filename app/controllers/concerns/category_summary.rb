@@ -49,37 +49,3 @@ class CategorySummary
     @top_rankers = top_rankers
   end
 end
-
-
-
-=begin
-class CategorySummary
-  include ApplicationHelper
-  extend Forwardable
-  include Enumerable
-  include Draper::Decoratable
-  
-  def_delegators :@data, :map, :each
-
-  def initialize(competition)
-    categories = []
-    segments = Hash.new { |h,k| h[k] = [] }
-    top_rankers = Hash.new { |h,k| h[k] = [] }
-
-    competition.scores.order("date").pluck(:category, :segment).uniq.each do |cat_seg|
-      category, segment = cat_seg
-      categories << category unless categories.include?(category)
-      segments[category] << segment
-    end
-    categories = sort_with_preset(categories, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
-    
-    competition.category_results.includes(:skater).top_rankers(3).each do |item|
-      top_rankers[item.category] << item.skater.name
-    end
-    @data = categories.map do |category|
-      { competition: competition, category: category, segments: segments[category], top_rankers: top_rankers[category]}
-    end
-  end
-end
-
-=end
