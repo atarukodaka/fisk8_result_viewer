@@ -1,7 +1,7 @@
 module Fisk8ResultViewer
   module CategoryResult
     class Updater
-      include Skater::FindSkater
+      include Fisk8ResultViewer::Skater::FindSkater
       ###
       def update_category_results(url, competition, category, parser:)
         #parser = Fisk8ResultViewer::CategoryResult::Parser.new
