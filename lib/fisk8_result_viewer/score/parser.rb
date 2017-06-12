@@ -118,7 +118,7 @@ module Fisk8ResultViewer
           ]
         puts "Executed Elements"
         score[:elements].each do |element|
-          puts "  %d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
+          puts "  %2d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
             [element[:number], element[:name], element[:info], element[:base_value],
              element[:goe], element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '),
              element[:value]]

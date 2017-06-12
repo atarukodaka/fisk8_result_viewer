@@ -12,7 +12,7 @@
 - config/database: /tmp
 - config/competitions.yml: debug
 
-## 1.0.1 2017/6
+## 1.0.1-pre1 2017/6
 - rake update:skaters..name space for update
 - autoload fisk8viewer/parsers/*.rb
 - competition_summary_parser. use column

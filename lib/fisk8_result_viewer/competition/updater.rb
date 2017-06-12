@@ -10,7 +10,7 @@ module Fisk8ResultViewer
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
 
-      Contract Or[String,Pathname] => ArrayOf[Hash]
+      Contract KeywordArgs[type: Or[Symbol, String, nil]] => ArrayOf[Hash]
       def load_competition_list(type: nil)
         fname = (type) ? "competitions_#{type}.yml" : "competitions.yml"
         yaml_filename = Rails.root.join('config', fname)
