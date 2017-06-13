@@ -9,7 +9,7 @@ module Fisk8ResultViewer
         PAIRS: "http://www.isuresults.com/bios/fsbiospairs.htm",
         :"ICE DANCE" => "http://www.isuresults.com/bios/fsbiosicedancing.htm",
       }
-      def parse_skaters(categories)
+      def parse_skaters(categories = URLS.keys)
         categories.map do |category|
           page = get_url(URLS[category])
           nation = ""
