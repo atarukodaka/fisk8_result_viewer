@@ -45,9 +45,11 @@ module Fisk8ResultViewer
     def trim(str)
       str.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
     end
+=begin
     def isu_bio_url(isu_number)
       "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
     end
+=end
     def str2symbols(str)
       str.split(/ *, */).map(&:to_sym)
     end

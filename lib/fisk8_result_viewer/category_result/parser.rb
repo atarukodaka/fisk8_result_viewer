@@ -37,7 +37,9 @@ module Fisk8ResultViewer
         begin
           page = get_url(url, read_option: 'r:iso-8859-1')
           #page = Nokogiri::HTML(open(url, 'r:iso-8859-1').read)
-        rescue OepnURI::HTTPError
+        rescue OpenURI::HTTPError
+          ## http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+          logger.warn("!!! #{url} not found")
           return []
           #return [] if page.nil?
         end
