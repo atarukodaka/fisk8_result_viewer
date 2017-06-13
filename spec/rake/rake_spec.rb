@@ -12,6 +12,7 @@ RSpec.describe 'rake', rake: true do
     @rake = Rake::Application.new
     Rake.application = @rake
     Rake.application.rake_require('update', ["#{Rails.root}/lib/tasks"])
+    Rake.application.rake_require('parse', ["#{Rails.root}/lib/tasks"])
     Rake::Task.define_task(:environment)
   end
   
@@ -34,6 +35,11 @@ RSpec.describe 'rake', rake: true do
     ENV['last'] = '3'
     ENV['accept_categories'] = 'MEN'
     expect(@rake['update:competitions'].invoke).to be_truthy
-    
+  end
+
+  it 'parses scores' do
+    ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
+    binding.pry
+    expect(@rake['parse:scores'].invoke).to be_truthy
   end
 end 

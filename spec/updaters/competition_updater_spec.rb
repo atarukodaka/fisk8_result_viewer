@@ -130,4 +130,11 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
   end
+  context 'http error' do
+    it do
+      url = 'http://xxxxxxxxx.com/xxxxxxxx.pdf'
+      updater = Fisk8ResultViewer::Competition::Updater.new
+      expect {updater.update_competition(url) }.to raise_error OpenURI::HTTPError
+    end
+  end
 end

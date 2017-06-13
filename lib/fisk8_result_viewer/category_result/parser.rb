@@ -34,9 +34,13 @@ module Fisk8ResultViewer
       end
       Contract String, String => Array
       def parse_category_results(url, _category)
-        page = get_url(url, read_option: 'r:iso-8859-1')
-        #page = Nokogiri::HTML(open(url, 'r:iso-8859-1').read)
-        return [] if page.nil?
+        begin
+          page = get_url(url, read_option: 'r:iso-8859-1')
+          #page = Nokogiri::HTML(open(url, 'r:iso-8859-1').read)
+        rescue OepnURI::HTTPError
+          return []
+          #return [] if page.nil?
+        end
         rows = get_rows(page)
         col_num = parse_headers(rows[0])
         #binding.pry

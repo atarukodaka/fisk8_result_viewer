@@ -12,15 +12,19 @@ module Fisk8ResultViewer
     end
 
     def get_url(url, read_option: nil)
+      html = (read_option) ? open(url, read_option).read : open(url).read
+      Nokogiri::HTML(html)
+=begin
       begin
         #html = open(url, read_option).read
         html = (read_option) ? open(url, read_option).read : open(url).read
         Nokogiri::HTML(html)
         #p.encoding = 'iso-8859-1'  # for umlaut support
       rescue OpenURI::HTTPError
-        logger.warn("!!! HTTP ERror: #{url}")
+        logger.warn("!!! HTTP Error: #{url}")
         nil
       end
+=end
     end
 
     def convert_pdf(url, dir: "./")

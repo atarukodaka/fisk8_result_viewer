@@ -117,7 +117,7 @@ module Fisk8ResultViewer
       def parse_competition(url)
         @url = url
         page = get_url(url)
-        return {} if page.nil?
+        #return {} if page.nil?
         city, country = parse_city_country(page)
 
         {
