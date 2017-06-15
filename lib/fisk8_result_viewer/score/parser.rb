@@ -6,12 +6,77 @@ module Fisk8ResultViewer
       
       SCORE_DELIMITER = /Score Score/
 
+      class << self
+        def show_score(score)
+          puts "-" * 100
+          puts "%d %s [%s] %d  %6.2f = %6.2f + %6.2f + %2d" % 
+            [score[:ranking], score[:skater_name], score[:nation], score[:starting_number],
+             score[:tss], score[:tes], score[:pcs], score[:deductions],
+            ]
+          puts "Executed Elements"
+          score[:elements].each do |element|
+            puts "  %2d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
+              [element[:number], element[:name], element[:info], element[:base_value],
+               element[:goe], element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '),
+               element[:value]]
+          end
+          puts "Program Components"
+          score[:components].each do |component|
+            puts "  %d %-31s %3.2f %-15s %6.2f" %
+              [component[:number], component[:name], component[:factor],
+               component[:judges], component[:value]]
+          end
+          if score[:deduction_reasons]
+            puts "Deductions"
+            puts "  " + score[:deduction_reasons]
+          end
+        end
+      end
+      def show(score)
+        self.class.show_score(score)
+      end
+
+      ################################################################
+      def initialize
+        @score = {}
+        @mode = nil
+      end
+      
+      Contract String => Array
+      def parse_scores(score_url)
+        begin
+          text = convert_pdf(score_url, dir: "pdf")
+        rescue OpenURI::HTTPError
+          return []
+        end
+        text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
+
+        text =~ /^(.*)\n(.*) ((SHORT|FREE) (.*)) JUDGES DETAILS PER SKATER$/
+        
+        additional_entries = {
+          competition_name: $1,
+          category: $2,
+          segment: $3,
+        }
+        scores = []
+        text.split(/\f/).each_with_index do |page_text, i|
+          page_text.split(SCORE_DELIMITER)[1..-1].each do |t|          
+            result_pdf =  "#{score_url}\#page=#{i+1}"
+            score = parse_each_score(t)  # , additional_entries: additional_entries)
+            scores << score.merge(additional_entries).merge(result_pdf: result_pdf)
+          end
+        end
+        return scores
+      end  # def parser
+      
+      protected
       Contract String, Hash, Symbol => Symbol
       def parse_skater(line, score, mode)
-        name_re = %q[[[:alpha:]1\.\- \/\']+]   ## 1 for Mariya1 BAKUSHEVA
-        if line =~ /^(\d+) (#{name_re}) *([A-Z][A-Z][A-Z]) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+        name_re = %q[[[:alpha:]1\.\- \/\']+]   ## 1 for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
+        nation_re = %q[[A-Z][A-Z][A-Z]]
+        if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
           hash = {
-                ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
+            ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
             tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
           }
           
@@ -82,57 +147,6 @@ module Fisk8ResultViewer
           end
         end  ## each line
         score
-      end
-      Contract String => Array
-      def parse_scores(score_url)
-        begin
-          text = convert_pdf(score_url, dir: "pdf")
-        rescue OpenURI::HTTPError
-          return []
-        end
-        text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
-
-        text =~ /^(.*)\n(.*) ((SHORT|FREE) (.*)) JUDGES DETAILS PER SKATER$/
-        
-        additional_entries = {
-          competition_name: $1,
-          category: $2,
-          segment: $3,
-        }
-        scores = []
-        text.split(/\f/).each_with_index do |page_text, i|
-          page_text.split(SCORE_DELIMITER)[1..-1].each do |t|          
-            result_pdf =  "#{score_url}\#page=#{i+1}"
-            score = parse_each_score(t)  # , additional_entries: additional_entries)
-            scores << score.merge(additional_entries).merge(result_pdf: result_pdf)
-          end
-        end
-        return scores
-      end  # def parser
-      
-      def show(score)
-        puts "-" * 100
-        puts "%d %s [%s] %d  %6.2f = %6.2f + %6.2f + %2d" % 
-          [score[:ranking], score[:skater_name], score[:nation], score[:starting_number],
-           score[:tss], score[:tes], score[:pcs], score[:deductions],
-          ]
-        puts "Executed Elements"
-        score[:elements].each do |element|
-          puts "  %2d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
-            [element[:number], element[:name], element[:info], element[:base_value],
-             element[:goe], element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '),
-             element[:value]]
-        end
-        puts "Program Components"
-        score[:components].each do |component|
-          puts "  %d %-31s %3.2f %-15s %6.2f" %
-            [component[:number], component[:name], component[:factor],
-             component[:judges], component[:value]]
-        end
-        if score[:deduction_reasons]
-          puts "Deductions"
-          puts "  " + score[:deduction_reasons]
-        end
       end
     end # module
   end

@@ -5,7 +5,12 @@ module Fisk8ResultViewer
       include Contracts
       
       DEFAULT_PARSER = :isu_generic
-
+      ACCEPT_CATEGORIES =
+        [
+         :MEN, :LADIES, :PAIRS, :"ICE DANCE",
+         :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
+        ]
+      
       def initialize
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
@@ -28,25 +33,19 @@ module Fisk8ResultViewer
         end
       end
       def update_competition(url, parser_type: :isu_generic, comment: nil, accept_categories: nil)
-        accept_categories ||=
-          [
-           :MEN, :LADIES, :PAIRS, :"ICE DANCE",
-           :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
-          ]
-                               
+        accept_categories ||= ACCEPT_CATEGORIES
         ActiveRecord::Base.transaction do 
           ::Competition.find_or_create_by(site_url: url) do |competition|
-            puts "*" * 100
-            puts "** #{url}"
-            parser = Fisk8ResultViewer::Parsers.get_parser(:competition, parser_type)
+            puts ("*" * 100) + "** #{url}"
+            parser = Parsers.get_parser(:competition, parser_type)
             summary = CompetitionSummary.new(parser.parse_competition(url))
-
+            
             keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
             competition.attributes = summary.slice(*keys)
             competition.attributes = get_identifers(competition.name, competition.country, competition.city, competition.start_date.year)
             competition.country ||= @city_country[competition.city]
             competition.comment = comment
-            competition.save!
+            competition.save!   ## need to save
             puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
 
             ## category
@@ -75,7 +74,6 @@ module Fisk8ResultViewer
         #year = competition.start_date.year
         #country = competition.country || competition.city.to_s.upcase.gsub(/\s+/, '_')
         country ||= city.to_s.upcase.gsub(/\s+/, '_')        
-
         ary = case name
               when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
                 [:gp, "GPF#{year}", true]

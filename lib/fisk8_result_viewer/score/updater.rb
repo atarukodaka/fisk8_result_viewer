@@ -1,7 +1,6 @@
 module Fisk8ResultViewer
   module Score
     class Updater
-      include Skater::FindSkater
       def update_scores(url, competition, category, segment, parser:, attributes: {})
         parser.parse_scores(url).each do |parsed_score|
           update_score(parsed_score, competition, category, segment, attributes: attributes)
@@ -15,8 +14,9 @@ module Fisk8ResultViewer
           #score.competition_name = competition.name
           score.attributes = attributes
           ## category_ results
-          parsed_score[:skater_name] = correct_skater_name(parsed_score[:skater_name])
-          cr = find_relevant_category_result(competition.category_results.where(category: category), parsed_score[:skater_name], segment, parsed_score[:ranking]) || raise("no such skater: '#{skater_name}' in #{category}")
+          parsed_score[:skater_name] = ::Skater.correct_name(parsed_score[:skater_name])
+          cr = find_relevant_category_result(competition.category_results.where(category: category), parsed_score[:skater_name], segment, parsed_score[:ranking]) ||
+            raise("no such skater: '#{parsed_score[:skater_name]}' in #{category}")
           cr.scores << score
 
           ## skater

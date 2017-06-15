@@ -14,17 +14,6 @@ module Fisk8ResultViewer
     def get_url(url, read_option: nil)
       html = (read_option) ? open(url, read_option).read : open(url).read
       Nokogiri::HTML(html)
-=begin
-      begin
-        #html = open(url, read_option).read
-        html = (read_option) ? open(url, read_option).read : open(url).read
-        Nokogiri::HTML(html)
-        #p.encoding = 'iso-8859-1'  # for umlaut support
-      rescue OpenURI::HTTPError
-        logger.warn("!!! HTTP Error: #{url}")
-        nil
-      end
-=end
     end
 
     def convert_pdf(url, dir: "./")
@@ -42,10 +31,11 @@ module Fisk8ResultViewer
       end
       Pdftotext.text(filename)
     end
+=begin
     def trim(str)
       str.strip.gsub(/[\r\n]+/, '').gsub(/ +/, ' ')
     end
-=begin
+
     def isu_bio_url(isu_number)
       "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
     end
@@ -53,6 +43,17 @@ module Fisk8ResultViewer
     def str2symbols(str)
       str.split(/ *, */).map(&:to_sym)
     end
-      
   end  ## module
+end
+
+################################################################
+
+class String
+  def seniorize!
+    gsub!(/^JUNIOR +/, '')
+    self
+  end
+  def seniorize
+    dup.seniorize!
+  end
 end

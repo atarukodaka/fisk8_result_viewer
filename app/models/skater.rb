@@ -14,5 +14,26 @@ class Skater < ApplicationRecord
     where(id: Score.select(:skater_id).group(:skater_id).having("count(skater_id)> ? ", 0))
   }
   scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
+
+  ## class methods
+  class << self
+    def find_by_isu_number_or_name(isu_number, name)
+      (find_by(isu_number: isu_number) if isu_number.present?) ||
+        (find_by(name: name))
+    end
+    def find_or_create_by_isu_number_or_name(isu_number, name)
+      name = correct_name(name)
+      find_by_isu_number_or_name(isu_number, name) || create do |skater|
+        skater.isu_number = isu_number
+        skater.name = name
+        yield skater
+      end
+    end
+    def correct_name(skater_name)
+      filename = Rails.root.join('config', 'skater_name_correction.yml')
+      @_skater_corrections ||= YAML.load_file(filename)
+      @_skater_corrections[skater_name] || skater_name
+    end
+  end  ## class << self
   
 end ## class Skater

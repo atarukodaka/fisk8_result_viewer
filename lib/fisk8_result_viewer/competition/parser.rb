@@ -9,7 +9,8 @@ module Fisk8ResultViewer
       def mdy_date_format?(ary_datestr)
         dates = []
         ary_datestr.each do |datestr|
-          datestr = trim(datestr)
+          #datestr = trim(datestr)
+          datestr.squish!
           #next unless datestr =~ %r{^[0-9/.\-\s]+$}
           next if datestr =~ /^[A-Za-z\s]+$/
           begin
@@ -61,9 +62,10 @@ module Fisk8ResultViewer
           next if row.xpath("td").blank?
           
           if (c = row.xpath("td[1]").text.presence)
-            category = trim(c).upcase.gsub(/^SENIOR /, '')
+            category = c.squish.upcase.gsub(/^SENIOR /, '')
           end
-          segment = trim(row.xpath("td[2]").text).upcase
+          #segment = trim(row.xpath("td[2]").text).upcase
+          segment = row.xpath("td[2]").text.squish.upcase
           next if category.blank? && segment.blank?
           
           result_url = row.xpath("td[4]//a/@href").text
@@ -99,12 +101,12 @@ module Fisk8ResultViewer
           tm_str = row.xpath("td[2]").text
           tm = parse_datetime("#{dt_str} #{tm_str}", mdy_format: mdy_format)
           next if tm.nil?
-          tm = tm + 2000.years if tm.year < 2000
+          tm = tm + 2000.years if tm.year < 100
           
           time_schedule << {
             time: tm,
-            category: trim(row.xpath("td[3]").text.upcase.gsub(/^SENIOR /, '')),
-            segment: trim(row.xpath("td[4]").text.upcase),
+            category: row.xpath("td[3]").text.squish.upcase.seniorize,
+            segment: row.xpath("td[4]").text.squish.upcase,
           }
         end
         time_schedule
