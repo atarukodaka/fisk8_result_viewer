@@ -2,7 +2,8 @@ class SkatersController < ApplicationController
   ## index
   def filters
     {
-      name: ->(col, v){ col.matches(:name, v) },
+      name: ->(col, v){ col.where("name like ? ", "%#{v}%") },
+      #name: ->(col, v){ col.matches(:name, v); },
       category: ->(col, v){ col.where(category: v) },
       nation: ->(col, v){ col.where(nation: v) },
     }
