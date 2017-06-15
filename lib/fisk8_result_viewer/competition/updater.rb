@@ -36,7 +36,7 @@ module Fisk8ResultViewer
         accept_categories ||= ACCEPT_CATEGORIES
         ActiveRecord::Base.transaction do 
           ::Competition.find_or_create_by(site_url: url) do |competition|
-            puts ("*" * 100) + "** #{url}"
+            puts ("*" * 100) + "\n** #{url}"
             parser = Parsers.get_parser(:competition, parser_type)
             summary = CompetitionSummary.new(parser.parse_competition(url))
             

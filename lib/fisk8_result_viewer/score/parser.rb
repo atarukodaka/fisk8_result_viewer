@@ -1,47 +1,45 @@
 module Fisk8ResultViewer
   module Score
     class Parser
-      include Utils
+      class ScoreData
+        extend Forwardable
+        include Enumerable
+
+        def_delegators :@data, :each, :[], :"[]=", :"merge!", :update, :slice
+        
+        def initialize(attributes = {})
+          @data = attributes.merge(elements: [], components: [])
+        end
+        def <<(hash)
+          @data.update(hash)
+        end
+        def to_hash
+          @data
+        end
+        def to_s
+          str = "-" * 100 + "\n"
+          str << "%<ranking>d %<skater_name>s [%<nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % self.to_hash
+          str << "Executed Elements\n"
+          str << self[:elements].map do |element|
+            "  %<number>2d %<name>-20s %<info>-3s %<base_value>5.2f %<goe>5.2f %<judges>-30s %<value>6.2f" % element.merge(judges: element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '))
+
+          end.join("\n")
+          str << "\nProgram Components\n"
+          str << self[:components].map do |component|
+            "  %<number>d %<name>-31s %<factor>3.2f %<judges>-15s %<value>6.2f" % component
+          end.join("\n")
+          if self[:deduction_reasons]
+            str << "\nDeductions\n  " + self[:deduction_reasons] << "\n"
+          end
+          str
+        end ## def
+      end
+      ################################################################
       include Contracts
-      
+      include Fisk8ResultViewer::Utils
+
       SCORE_DELIMITER = /Score Score/
 
-      class << self
-        def show_score(score)
-          puts "-" * 100
-          puts "%d %s [%s] %d  %6.2f = %6.2f + %6.2f + %2d" % 
-            [score[:ranking], score[:skater_name], score[:nation], score[:starting_number],
-             score[:tss], score[:tes], score[:pcs], score[:deductions],
-            ]
-          puts "Executed Elements"
-          score[:elements].each do |element|
-            puts "  %2d %-20s %-3s %5.2f %5.2f %-30s %6.2f" %
-              [element[:number], element[:name], element[:info], element[:base_value],
-               element[:goe], element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '),
-               element[:value]]
-          end
-          puts "Program Components"
-          score[:components].each do |component|
-            puts "  %d %-31s %3.2f %-15s %6.2f" %
-              [component[:number], component[:name], component[:factor],
-               component[:judges], component[:value]]
-          end
-          if score[:deduction_reasons]
-            puts "Deductions"
-            puts "  " + score[:deduction_reasons]
-          end
-        end
-      end
-      def show(score)
-        self.class.show_score(score)
-      end
-
-      ################################################################
-      def initialize
-        @score = {}
-        @mode = nil
-      end
-      
       Contract String => Array
       def parse_scores(score_url)
         begin
@@ -50,103 +48,98 @@ module Fisk8ResultViewer
           return []
         end
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
-
         text =~ /^(.*)\n(.*) ((SHORT|FREE) (.*)) JUDGES DETAILS PER SKATER$/
         
-        additional_entries = {
+        additional_attributes = {
           competition_name: $1,
           category: $2,
           segment: $3,
         }
         scores = []
-        text.split(/\f/).each_with_index do |page_text, i|
-          page_text.split(SCORE_DELIMITER)[1..-1].each do |t|          
-            result_pdf =  "#{score_url}\#page=#{i+1}"
-            score = parse_each_score(t)  # , additional_entries: additional_entries)
-            scores << score.merge(additional_entries).merge(result_pdf: result_pdf)
+        text.split(/\f/).map.with_index do |page_text, i|
+          page_text.split(SCORE_DELIMITER)[1..-1].map do |text|
+            attributes = {
+              result_pdf:  "#{score_url}\#page=#{i+1}",
+            }.merge(additional_attributes)
+            parse_score(text, attributes: attributes)
           end
-        end
-        return scores
-      end  # def parser
-      
+        end.flatten
+      end
+      def parse_score(text, attributes: {})
+        @mode = :skater
+        @score = ScoreData.new(attributes)
+
+        text.split(/\n/).each do |line|
+          case @mode
+          when :skater
+            parse_skater(line)
+          when :tes
+            parse_tes(line)
+          when :pcs
+            parse_pcs(line)
+          when :deductions
+            parse_deductions(line)
+          end
+        end  ## each line
+
+        raise "parsing error" if @mode != :pcs && @mode != :deductions
+        @score
+      end
+     
       protected
-      Contract String, Hash, Symbol => Symbol
-      def parse_skater(line, score, mode)
-        name_re = %q[[[:alpha:]1\.\- \/\']+]   ## 1 for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
+      def parse_skater(line)
+        ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
+        name_re = %q[[[:alpha:]1\.\- \/\']+]   
         nation_re = %q[[A-Z][A-Z][A-Z]]
         if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
-          hash = {
-            ranking: $1.to_i, skater_name: $2, nation: $3, starting_number: $4.to_i,
-            tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
+          @score << {
+            ranking: $1.to_i, skater_name: $2.strip, nation: $3,
+            starting_number: $4.to_i,tss: $5.to_f, tes: $6.to_f, pcs: $7.to_f,
+            deductions: $8.to_f.abs * (-1),
           }
-          
-          hash[:skater_name] = hash[:skater_name].to_s.strip.gsub(/ *$/, '')
-          score.merge!(hash)
-          mode = :tes
+          @mode = :tes
         end
-        mode
       end
-      Contract String, Hash, Symbol => Symbol      
-      def parse_tes(line, score, mode)
-        element_re = '[\w\+\!<\*]+'
-        if line =~ /^(\d+) +(.*)$/
+
+      def parse_tes(line)
+        case line
+        when /^(\d+) +(.*)$/
           number = $1.to_i; rest = $2
+          element_re = '[\w\+\!<\*]+'
           if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
-            score[:elements] << {
+            @score[:elements] << {
               number: number, name: $1, info: $2, base_value: $3.to_f,
               credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
             }
           else
-            logger.warn "  !! SOMETHING WRONG ON PARSING TES !! #{line}"
+            raise "parseing error on TES"
           end
-        elsif line =~ /^([\d\.]+) +[\d\.]+$/
-          score[:base_value] = $1.to_f
-        elsif line =~ /^Program Components/
-          mode = :pcs
+        when /^([\d\.]+) +[\d\.]+$/
+          @score[:base_value] = $1.to_f
+        when /^Program Components/
+          @mode = :pcs
         end
-        mode
       end
-      Contract String, Hash, Symbol => Symbol
-      def parse_pcs(line, score, mode)
-        ## memo: gpjpn10 ice dance using ',' i/o '.'
-        if line =~ /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
-          name, factor, judges, value = $1, $2, $3, $4
-          score[:components] << {
-            name: name, factor: factor.to_f,
-            judges: judges.tr(',', '.'),
-            value: value.tr(',', '.').to_f,
-            number: (score[:components].size+1).to_i,
-          }
-        elsif line =~ /Judges Total Program Component Score/
-          mode = :deductions
-        end
-        mode
-      end
-      Contract String, Hash, Symbol => Symbol
-      def parse_deductions(line, score, mode)
-        if line =~ /Deductions:? (.*) [0-9\.\-]+$/
-          score[:deduction_reasons] = $1
-        end
-        mode
-      end
-      Contract String => Hash
-      def parse_each_score(text)
-        mode = :skater
-        score = { elements: [], components: [],}
 
-        text.split(/\n/).each do |line|
-          case mode
-          when :skater
-            mode = parse_skater(line, score, mode)
-          when :tes
-            mode = parse_tes(line, score, mode)
-          when :pcs
-            mode = parse_pcs(line, score, mode)
-          when :deductions
-            mode = parse_deductions(line, score, mode)
-          end
-        end  ## each line
-        score
+      def parse_pcs(line)
+        case line
+        when /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
+          name, factor, judges, value = $1, $2, $3, $4
+          @score[:components] << {
+            name: name, factor: factor.to_f,
+            judges: judges.tr(',', '.'),      ## memo: gpjpn10 ice dance using ',' i/o '.'
+            value: value.tr(',', '.').to_f,
+            number: (@score[:components].size+1).to_i,
+          }
+        when /Judges Total Program Component Score/
+          @mode = :deductions
+        end
+      end
+
+      def parse_deductions(line)
+        if line =~ /Deductions:? (.*) [0-9\.\-]+$/
+          @score[:deduction_reasons] = $1
+        end
       end
     end # module
   end

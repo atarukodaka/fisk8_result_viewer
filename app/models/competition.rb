@@ -1,6 +1,6 @@
 class Competition < ApplicationRecord
   after_initialize :set_default_values
-
+  
   ## relations
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy

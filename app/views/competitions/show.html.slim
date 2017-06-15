@@ -4,11 +4,14 @@
 
 - content_for :title do
   | competition: 
-  = competition.name
+  = competition.model.name
   - if category.present?
     = " / #{category}"
     - if segment.present?
       = " / #{segment}"
+
+category_results ||= []
+segment_scores ||= []
 
 
 ////////////////////////////////////////////////////////////////

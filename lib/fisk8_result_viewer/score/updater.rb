@@ -26,6 +26,7 @@ module Fisk8ResultViewer
           ## attributes, identifers
           score.attributes = {category: category, segment: segment}
           score.sid = get_sid(score)
+          score.save!
 
           ## segment rankings
           segment_type = (score.segment =~ /^SHORT/) ? :short : :free
@@ -42,7 +43,7 @@ module Fisk8ResultViewer
             score.components.create!(component.slice(*keys)).value
           end
 
-          puts "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [score.category, score.segment, score.ranking, score.skater.name, score.skater.isu_number.to_i, score.skater.nation, score.tss.to_f, score.tes.to_f, score.pcs.to_f, score.deductions.to_i]
+          puts score.to_s
         end
       end
 

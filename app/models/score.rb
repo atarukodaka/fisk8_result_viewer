@@ -11,7 +11,6 @@ class Score < ApplicationRecord
 
   ## validations
   validates :sid, presence: true, uniqueness: true
-  #validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
 
   ## scopes
   scope :recent, ->{ order("date desc") }
@@ -19,6 +18,10 @@ class Score < ApplicationRecord
   scope :free, -> { matches(:segment, "FREE") }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(c, s){ category(c).where(segment: s) }
+
+  def to_s
+    "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, self.skater.name, self.skater.isu_number.to_i, self.skater.nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+  end
   
   private
   def set_default_values

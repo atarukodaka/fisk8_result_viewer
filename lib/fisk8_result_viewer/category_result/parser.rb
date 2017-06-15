@@ -46,12 +46,14 @@ module Fisk8ResultViewer
         rows[1..-1].map do |row|
           tds = row.xpath("td")
           data = {}
+          
+          # keys
           [
            [:ranking, :int,], [:skater_name, :string], [:nation, :string],
            [:points, :float], [:short_ranking, :int], [:free_ranking, :int],
-          ].each do |ary|
+          ].map do |ary|
             key, type = ary
-            col_num = col_numbers[key] || raise
+            col_num = col_numbers[key] || raise("parsing error in category results")
             text = tds[col_num].text
             data[key] =
               case type
@@ -64,24 +66,12 @@ module Fisk8ResultViewer
               end
           end
           # isu_number by href
-          col_num = col_numbers[:skater_name] || raise
+          col_num = col_numbers[:skater_name] || raise("parsing error in category results")
           href = tds[col_num].xpath("a/@href").text
           data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
-=begin          
-          data = {
-            ranking: tds[col_num[:ranking]].text.to_i,
-            skater_name: tds[col_num[:skater_name]].text.squish,
-            nation: tds[col_num[:nation]].text,
-            points: tds[col_num[:points]].text.to_f,
-            short_ranking: tds[col_num[:short_ranking]].text.to_i,
-            free_ranking: tds[col_num[:free_ranking]].text.to_i,
-          }
-          href = row.xpath("td")[col_num[:skater_name]].xpath("a/@href").text
-          data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
-=end
           data
-        end
-      end
+        end ## rows.each
+      end ## def
     end
   end
 end
