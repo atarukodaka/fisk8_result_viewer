@@ -70,6 +70,8 @@ module Fisk8ResultViewer
           href = tds[col_num].xpath("a/@href").text
           data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
           data
+
+          ::CategoryResult.new(data)
         end ## rows.each
       end ## def
     end

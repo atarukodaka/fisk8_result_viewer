@@ -2,10 +2,10 @@ class CreateScores < ActiveRecord::Migration[5.1]
   def change
     create_table :scores do |t|
       t.string :sid
-      #t.string :skater_name
+      t.string :skater_name
       t.integer :ranking
       t.integer :starting_number
-      #t.string :nation
+      t.string :nation
 
       #t.string :competition_name
       t.string :category
@@ -19,8 +19,6 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.float :deductions, default: 0.0
       t.string :deduction_reasons
       t.float :base_value, default: 0.0
-      #t.string :elements_summary
-      #t.string :components_summary
 
       t.belongs_to :competition
       t.references :skater

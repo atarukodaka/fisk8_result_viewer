@@ -1,6 +1,7 @@
 class Score < ApplicationRecord
-  after_initialize :set_default_values
-
+  #after_initialize :set_default_values
+  before_save :set_sid
+  
   ## relations
   has_many :elements, dependent: :destroy
   has_many :components, dependent: :destroy
@@ -10,7 +11,7 @@ class Score < ApplicationRecord
   belongs_to :category_result, required: false
 
   ## validations
-  validates :sid, presence: true, uniqueness: true
+  #validates :sid, presence: true, uniqueness: true
 
   ## scopes
   scope :recent, ->{ order("date desc") }
@@ -19,13 +20,48 @@ class Score < ApplicationRecord
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(c, s){ category(c).where(segment: s) }
 
-  def to_s
-    "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, self.skater.name, self.skater.isu_number.to_i, self.skater.nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+  def summary
+    skater_name = self.skater.try(:name) || self.skater_name
+    nation = self.skater.try(:nation) || self.nation
+    isu_number = self.skater.try(:isu_number) || 0
+    
+    "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, skater_name, isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
-  
+
+  def to_s
+    str = "-" * 100 + "\n"
+    str << "%<ranking>d %<skater_name>s [%<nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % self.attributes.symbolize_keys
+    str << "Executed Elements\n"
+    str << self.elements.map do |element|
+      "  %<number>2d %<name>-20s %<info>-3s %<base_value>5.2f %<goe>5.2f %<judges>-30s %<value>6.2f" % element.attributes.symbolize_keys.merge(judges: element[:judges].split(/\s/).map {|v| "%4s" % [v]}.join(' '))
+
+    end.join("\n")
+    str << "\nProgram Components\n"
+    str << self.components.map do |component|
+      "  %<number>d %<name>-31s %<factor>3.2f %<judges>-15s %<value>6.2f" % component.attributes.symbolize_keys
+    end.join("\n")
+    if self[:deduction_reasons]
+      str << "\nDeductions\n  " + self[:deduction_reasons] << "\n"
+    end
+    str
+  end
   private
   def set_default_values
     self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")
+  end
+  def set_sid
+    return if self[:sid].present?
+    category_abbr = self.category || ""
+    [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"],
+     ["JUNIOR ", "J"]].each do |ary|
+      key, abbr = ary
+      category_abbr = category_abbr.gsub(key, abbr)
+    end
+
+    segment_abbr = self.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
+
+    self[:sid] = [self.competition.try(:cid), category_abbr, segment_abbr, self.ranking].join('-')
+    self
   end
 end
 

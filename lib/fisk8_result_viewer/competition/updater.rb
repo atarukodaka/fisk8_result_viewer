@@ -42,7 +42,6 @@ module Fisk8ResultViewer
             
             keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
             competition.attributes = summary.slice(*keys)
-            competition.attributes = get_identifers(competition.name, competition.country, competition.city, competition.start_date.year)
             competition.country ||= @city_country[competition.city]
             competition.comment = comment
             competition.save!   ## need to save
@@ -53,20 +52,36 @@ module Fisk8ResultViewer
               next if (!accept_categories.nil?) && (!accept_categories.include?(category.to_sym))
               url = summary.result_url(category)
               cr_parser = Parsers.get_parser(:category_result, parser_type)
-              cr_updater = Fisk8ResultViewer::CategoryResult::Updater.new
               cr_parser.parse_category_results(url, category).each do |result|
-                cr_updater.update_category_result(result, competition, category)
+                result.skater_name = ::Skater.correct_name(result.skater_name)
+                result.category = category
+                result.competition = competition
+                result.skater = ::Skater.find_or_create_by_isu_number_or_name(result.isu_number, result.skater_name) do |sk|
+                  sk.category = category.seniorize
+                  sk.nation = result.nation
+                end
+                result.save!
+                puts result.summary
               end
 
               ## segment
               summary.segments(category).each do |segment|
                 url = summary.score_url(category, segment)
                 attr = {date: summary.starting_time(category, segment)}
-                score_updater = Fisk8ResultViewer::Score::Updater.new
                 score_parser = Parsers.get_parser(:score, parser_type)
-                score_parser.parse_scores(url).each do |parsed_score|
-                  score_updater.update_score(parsed_score, competition, category, segment,
-                                             attributes: attr)
+                score_parser.parse_scores(url).each do |score|
+                  ActiveRecord::Base.transaction {
+                    score.skater_name = ::Skater.correct_name(score.skater_name)
+                    cr = competition.category_results.find_by(skater_name: score.skater_name) || raise
+                    cr.scores << score
+                    score.skater = cr.skater
+                    cr.skater.scores << score
+                    competition.scores << score
+                    score.save!
+                    score.elements.map(&:save!)
+                    score.components.map(&:save!)
+                  }
+                  puts score.summary
                 end
               end
             end
@@ -75,7 +90,15 @@ module Fisk8ResultViewer
       end
       
       private
+      def find_relevant_category_result(category_results, skater_name, segment, ranking)
+        ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
+        category_results.joins(:skater).where("skaters.name" => skater_name).first ||
+          category_results.where(ranking_type => ranking).first
+      end
+      
+
       # rubocop:disable all
+=begin
       def get_identifers(name, country, city, year)
         #year = competition.start_date.year
         #country = competition.country || competition.city.to_s.upcase.gsub(/\s+/, '_')
@@ -121,6 +144,7 @@ module Fisk8ResultViewer
           isu_championships: ary[2],
         }
       end
+=end
       # rubocop:enable all
     end ## class
   end

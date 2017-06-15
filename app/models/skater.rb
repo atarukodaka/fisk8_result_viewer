@@ -26,7 +26,7 @@ class Skater < ApplicationRecord
       find_by_isu_number_or_name(isu_number, name) || create do |skater|
         skater.isu_number = isu_number
         skater.name = name
-        yield skater
+        yield skater if block_given?
       end
     end
     def correct_name(skater_name)

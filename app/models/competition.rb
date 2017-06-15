@@ -1,5 +1,6 @@
 class Competition < ApplicationRecord
-  after_initialize :set_default_values
+  #after_initialize :set_default_values
+  before_save :set_cid
   
   ## relations
   has_many :category_results, dependent: :destroy
@@ -7,7 +8,7 @@ class Competition < ApplicationRecord
 
   
   ## validations
-  validates :cid, presence: true, uniqueness: true
+  #validates :cid, presence: true, uniqueness: true
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
 
   ## scopes
@@ -26,5 +27,55 @@ class Competition < ApplicationRecord
   private
   def set_default_values
     self.cid ||= self.name || [self.competition_type, self.country, self.start_date.try(:year)].join("-")
+  end
+
+  def set_cid
+    year = self.start_date.year
+    country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
+    ary = case name
+          when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
+            [:gp, "GPF#{year}", true]
+          when /^ISU GP/
+            [:gp, "GP#{country_city}#{year}", true]
+          when /Olympic/
+            [:olympic, "OLYMPIC#{year}", true]
+          when /^ISU World Figure/, /^ISU World Championships/
+            [:world, "WORLD#{year}", true]
+          when /^ISU Four Continents/
+            [:fcc, "FCC#{year}", true]
+          when /^ISU European/
+            [:euro, "EURO#{year}", true]
+          when /^ISU World Team/
+            [:team, "TEAM#{year}", true]
+          when /^ISU World Junior/
+            [:jworld, "JWORLD#{year}", true]
+          when /^ISU JGP/, /^ISU Junior Grand Prix/
+            [:jgp, "JGP#{country_city}#{year}", true]
+            
+          when /^Finlandia Trophy/
+            [:challenger, "FINLANDIA#{year}", false]
+          when /Warsaw Cup/
+            [:challenger, "WARSAW#{year}", false]
+          when /Autumn Classic/
+            [:challenger, "ACI#{year}", false]
+          when /Nebelhorn/
+            [:challenger, "NEBELHORN#{year}", false]
+          when /Lombardia/
+            [:challenger, "LOMBARDIA#{year}", false]
+          when /Ondrej Nepela/
+            [:challenger, "NEPELA#{year}", false]
+          else
+            [:unknown, name.to_s.gsub(/\s+/, '_'), false]
+          end
+    self.competition_type ||= ary[0]
+    self.cid ||= ary[1]
+    self.isu_championships ||= ary[2]
+=begin
+    self.attributes = {
+      competition_type: ary[0],
+      cid: ary[1],
+      isu_championships: ary[2],
+    }
+=end
   end
 end
