@@ -8,8 +8,7 @@ module Fisk8ResultViewer
       end
 
       def get_parser(roll, type)
-        #@registered[type].const_get(roll.to_s.camelize.to_sym).const_get(:Parser).new
-        @registered[type].const_get("#{roll.to_s.camelize}Parser").new
+        @registered[type].const_get(roll.to_s.camelize.to_sym).const_get(:Parser).new
       end
     end
   end
