@@ -88,8 +88,7 @@ module Fisk8ResultViewer
      
       protected
       def parse_skater(line)
-        ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
-        name_re = %q[[[:alpha:]1\.\- \/\']+]   
+        name_re = %q[[[:alpha:]1\.\- \/\']+]   ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = %q[[A-Z][A-Z][A-Z]]
         if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
           @score << {

@@ -1,18 +1,16 @@
 module Fisk8ResultViewer
   module Score
     class Updater
+=begin
       def update_scores(url, competition, category, segment, parser:, attributes: {})
         parser.parse_scores(url).each do |parsed_score|
           update_score(parsed_score, competition, category, segment, attributes: attributes)
         end
       end
-
+=end
       def update_score(parsed_score, competition, category, segment, attributes: {})
-        #keys = [:skater_name, :ranking, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
         keys = [:ranking, :starting_number, :tss, :tes, :pcs, :deductions, :deduction_reasons, :result_pdf, :base_value]
         competition.scores.create!(parsed_score.slice(*keys)) do |score|
-          #score.competition_name = competition.name
-          score.attributes = attributes
           ## category_ results
           parsed_score[:skater_name] = ::Skater.correct_name(parsed_score[:skater_name])
           cr = find_relevant_category_result(competition.category_results.where(category: category), parsed_score[:skater_name], segment, parsed_score[:ranking]) ||
@@ -24,9 +22,9 @@ module Fisk8ResultViewer
           score.skater.scores << score
 
           ## attributes, identifers
-          score.attributes = {category: category, segment: segment}
+          score.attributes = attributes.merge({category: category, segment: segment})
           score.sid = get_sid(score)
-          score.save!
+          score.save!   ## need to save here for elements/components creation
 
           ## segment rankings
           segment_type = (score.segment =~ /^SHORT/) ? :short : :free
@@ -58,11 +56,11 @@ module Fisk8ResultViewer
         category_abbr = score.category || ""
         [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"],
          ["JUNIOR ", "J"]].each do |ary|
-          category_abbr = category_abbr.gsub(ary[0], ary[1])
+          key, abbr = ary
+          category_abbr = category_abbr.gsub(key, abbr)
         end
 
-        segment_abbr =score.segment || ""
-        segment_abbr = segment_abbr.split(/ /).map {|d| d[0]}.join
+        segment_abbr = score.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
         [score.competition.cid, category_abbr, segment_abbr, score.ranking].join('-')
         

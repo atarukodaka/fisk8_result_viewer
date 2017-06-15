@@ -54,14 +54,20 @@ module Fisk8ResultViewer
               url = summary.result_url(category)
               cr_parser = Parsers.get_parser(:category_result, parser_type)
               cr_updater = Fisk8ResultViewer::CategoryResult::Updater.new
-              cr_updater.update_category_results(url, competition, category, parser: cr_parser)
+              cr_parser.parse_category_results(url, category).each do |result|
+                cr_updater.update_category_result(result, competition, category)
+              end
 
               ## segment
               summary.segments(category).each do |segment|
                 url = summary.score_url(category, segment)
-                score_parser = Parsers.get_parser(:score, parser_type)
+                attr = {date: summary.starting_time(category, segment)}
                 score_updater = Fisk8ResultViewer::Score::Updater.new
-                score_updater.update_scores(url, competition, category, segment, parser: score_parser, attributes: {date: summary.starting_time(category, segment)})
+                score_parser = Parsers.get_parser(:score, parser_type)
+                score_parser.parse_scores(url).each do |parsed_score|
+                  score_updater.update_score(parsed_score, competition, category, segment,
+                                             attributes: attr)
+                end
               end
             end
           end
