@@ -1,9 +1,3 @@
-class ElementsCsvDecorator < Draper::CollectionDecorator
-  def column_names
-  end
-end
-
-################################################################
 class ElementsController < ApplicationController
   # for elements/components search
   def create_arel_table_by_operator(model_klass, key, operator_str, value)

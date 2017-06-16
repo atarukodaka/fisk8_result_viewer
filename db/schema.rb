@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 3) do
   end
 
   create_table "scores", force: :cascade do |t|
-    t.string "sid"
+    t.string "name"
     t.string "skater_name"
     t.integer "ranking"
     t.integer "starting_number"

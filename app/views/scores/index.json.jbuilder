@@ -1,5 +1,5 @@
 json.array! collection do |score|
-  json.extract! score, :sid, :category, :segment, :date, :result_pdf
+  json.extract! score, :name, :category, :segment, :date, :result_pdf
   json.competition_name score.competition.name
   json.season score.competition.season
   json.extract! score, :ranking, :tss, :tes, :pcs, :deductions, :base_value

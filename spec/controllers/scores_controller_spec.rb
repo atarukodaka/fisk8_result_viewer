@@ -6,11 +6,11 @@ RSpec.describe ScoresController, type: :controller do
   before do
     skater = Skater.create(name: "Skater NAME", nation: "JPN", isu_number: 1)
     competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: :world, city: "Tokyo", country: "JPN", isu_championships: true)
-    score = competition.scores.create(sid: "WFS17-MEN", category: "MEN", segment: "SHORT", ranking: 1, skater: skater)
+    score = competition.scores.create(name: "WFS17-MEN", category: "MEN", segment: "SHORT", ranking: 1, skater: skater)
 
     skater2 = Skater.create(name: "Foo BAR", nation: "USA")
     competition2 = Competition.create(cid: "GPUSA2015", name: "GP USA 2015", season: "2015-16", competition_type: "gp", city: "NY", country: "USA")
-    score2 = competition2.scores.create(sid: "GPUSA-M", category: "LADIES", segment: "FREE", ranking: 2, skater: skater2)
+    score2 = competition2.scores.create(name: "GPUSA-M", category: "LADIES", segment: "FREE", ranking: 2, skater: skater2)
   end
 
   describe 'score index' do
@@ -55,11 +55,11 @@ RSpec.describe ScoresController, type: :controller do
   end
   describe 'show' do
     it {
-      get :show, params: { sid: "WFS17-MEN" }
+      get :show, params: { name: "WFS17-MEN" }
       expect(response.body).to include('Skater NAME')
     }
     it 'json' do
-      get :show, params: { sid: "WFS17-MEN", format: "json" }
+      get :show, params: { name: "WFS17-MEN", format: "json" }
       expect(response.body).to include('Skater NAME')
     end
   end

@@ -1,6 +1,6 @@
 class Competition < ApplicationRecord
   #after_initialize :set_default_values
-  before_save :set_cid
+  before_save :set_short_name
   
   ## relations
   has_many :category_results, dependent: :destroy
@@ -26,10 +26,11 @@ class Competition < ApplicationRecord
   end
   private
   def set_default_values
-    self.cid ||= self.name || [self.competition_type, self.country, self.start_date.try(:year)].join("-")
+    #self.cid ||= self.name || [self.competition_type, self.country, self.start_date.try(:year)].join("-")
+    #self.cid ||= UUID.new.generate
   end
 
-  def set_cid
+  def set_short_name
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
     ary = case name

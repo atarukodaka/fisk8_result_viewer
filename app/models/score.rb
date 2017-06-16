@@ -1,6 +1,6 @@
 class Score < ApplicationRecord
   #after_initialize :set_default_values
-  before_save :set_sid
+  before_save :set_name
   
   ## relations
   has_many :elements, dependent: :destroy
@@ -47,10 +47,11 @@ class Score < ApplicationRecord
   end
   private
   def set_default_values
-    self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")
+    #self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")
+    #self.sid ||= UUID.new.generate
   end
-  def set_sid
-    return if self[:sid].present?
+  def set_name
+    return if self[:name].present?
     category_abbr = self.category || ""
     [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"],
      ["JUNIOR ", "J"]].each do |ary|
@@ -60,7 +61,7 @@ class Score < ApplicationRecord
 
     segment_abbr = self.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-    self[:sid] = [self.competition.try(:cid), category_abbr, segment_abbr, self.ranking].join('-')
+    self[:name] = [self.competition.try(:cid), category_abbr, segment_abbr, self.ranking].join('-')
     self
   end
 end

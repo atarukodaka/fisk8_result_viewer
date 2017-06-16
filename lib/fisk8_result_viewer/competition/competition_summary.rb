@@ -27,8 +27,13 @@ module Fisk8ResultViewer
           year -= 1 if month <= 6
           @data[:season] = "%04d-%02d" % [year, (year+1) % 100]
         end
+        ################
+        keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
+        @model = ::Competition.create(@data.slice(*keys))
       end
-
+      def to_model
+        @model
+      end
       ################
       def categories
         data[:result_summary].map {|h| h[:category]}.sort.uniq
@@ -52,7 +57,6 @@ module Fisk8ResultViewer
       def method_missing(name, *args)
         @data.send(name, *args)
       end
-
       ################
       private
       def find_row(key, category, segment)

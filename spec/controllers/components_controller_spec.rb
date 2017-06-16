@@ -5,10 +5,10 @@ RSpec.describe ComponentsController, type: :controller do
   
   before do
     skater = Skater.create
-    comp = Competition.create
-    short = comp.scores.create(sid: "WORLD-SHORT-1", segment: "SHORT", skater: skater)
+    comp = Competition.create(cid: "WORLD")
+    short = comp.scores.create(name: "WORLD-SHORT-1", segment: "SHORT", skater: skater)
     short.components.create(number: 1, name: "Skating Skill", value: 10.0)
-    free = comp.scores.create(sid: "WORLD-FREE-1", segment: "FREE", skater: skater)
+    free = comp.scores.create(name: "WORLD-FREE-1", segment: "FREE", skater: skater)
     free.components.create(number: 1, name: "Skating Skill", value: 9.0)
   end
 

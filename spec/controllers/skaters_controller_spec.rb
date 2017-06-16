@@ -7,10 +7,12 @@ RSpec.describe SkatersController, type: :controller do
     skater = Skater.create(name: "Skater NAME", nation: "JPN", category: 'MEN', isu_number: 12345)
     skater2 = Skater.create(name: "Foo BAR", nation: "USA", category: 'LADIES', isu_number: 999)
     competition = Competition.create do |c|
+      c.cid = "WORLD"
       c.start_date = "2017-1-1"
       c.end_date = "2017-1-3"
     end
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT") do |score|
+      score.name = "WORLD-MEN-1"
       score.ranking = 1
       score.tss = 100
     end

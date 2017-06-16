@@ -1,6 +1,6 @@
 class ScoresDecorator < EntriesDecorator
   def column_names
-    [:sid, :competition_name, :category, :segment, :season, :date, :result_pdf,
+    [:name, :competition_name, :category, :segment, :season, :date, :result_pdf,
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
   end
 end
@@ -11,8 +11,8 @@ class ScoreDecorator < EntryDecorator
     h.link_to_score(model.ranking, model)
   end
 
-  def sid
-    h.link_to_score(model.sid, model)
+  def name
+    h.link_to_score(model.name, model)
   end
   def result_pdf
     h.link_to_pdf(model.result_pdf)

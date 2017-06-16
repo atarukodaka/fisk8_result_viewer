@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   ## scores
   scope :scores do
     get '/' => 'scores#index'
-    match ':sid' => 'scores#show', via: :get
+    match ':name' => 'scores#show', via: :get
     #match ':competition_cid/:category/:segment/:ranking' => 'scores#show', via: :get
   end
   ## elements

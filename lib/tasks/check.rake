@@ -19,7 +19,7 @@ namespace 'check' do
   task :elements => :environment do
     [Element, Component].each do |model|
       Score.where.not(id: model.select(:score_id).group(:score_id).having("count(score_id) > 0")).each do |score|
-        puts "!!! #{score.sid} has no #{model.pluralize} at all"
+        puts "!!! #{score.name} has no #{model.pluralize} at all"
       end
     end
     puts "done."

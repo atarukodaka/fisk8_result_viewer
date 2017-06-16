@@ -2,6 +2,47 @@
 module Fisk8ResultViewer
   module Competition
     class Updater
+      class CategoryResultAdaptor
+        def initialize(hash)
+          cr = ::CategoryResult.new(hash)
+          cr.skater_name = ::Skater.correct_name(cr.skater_name)
+          cr.skater = ::Skater.find_or_create_by_isu_number_or_name(cr.isu_number, cr.skater_name) do |sk|
+            sk.category = cr.category.seniorize
+            sk.nation = cr.nation
+          end
+          cr.skater_name = cr.skater.name
+          cr.save!
+          @model = cr
+        end
+        def to_model
+          @model
+        end
+      end
+      ################################################################
+      class ScoreAdaptor
+        def initialize(hash)
+          score = ::Score.new(hash.except(:elements, :components))
+          score.skater_name = ::Skater.correct_name(score.skater_name)
+          cr = score.competition.category_results.find_by(skater_name: score.skater_name) || raise
+          score.skater = cr.skater
+          score.skater_name = score.skater.name
+
+          ActiveRecord::Base.transaction {
+            cr.skater.scores << score
+            cr.scores << score
+            score.competition.scores << score
+
+            hash[:elements].map {|e| score.elements.create(e)}
+            hash[:components].map {|e| score.components.create(e)}
+            score.save!                    
+          }
+          @model = score
+        end
+        def to_model
+          @model
+        end
+      end
+      ################################################################
       include Contracts
       
       DEFAULT_PARSER = :isu_generic
@@ -11,10 +52,11 @@ module Fisk8ResultViewer
          :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
         ]
       
-      def initialize
+      def initialize(accept_categories: nil)
+        @accept_categories = accept_categories || ACCEPT_CATEGORIES
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
       end
-
+      
       Contract KeywordArgs[type: Or[Symbol, String, nil]] => ArrayOf[Hash]
       def load_competition_list(type: nil)
         fname = (type) ? "competitions_#{type}.yml" : "competitions.yml"
@@ -32,120 +74,46 @@ module Fisk8ResultViewer
           end
         end
       end
-      def update_competition(url, parser_type: :isu_generic, comment: nil, accept_categories: nil)
-        accept_categories ||= ACCEPT_CATEGORIES
+      def update_competition(url, parser_type: :isu_generic, comment: nil)
+        if c = ::Competition.find_by(site_url: url)
+          return c
+        end
+        
         ActiveRecord::Base.transaction do 
-          ::Competition.find_or_create_by(site_url: url) do |competition|
-            puts ("*" * 100) + "\n** #{url}"
-            parser = Parsers.get_parser(:competition, parser_type)
-            summary = CompetitionSummary.new(parser.parse_competition(url))
-            
-            keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
-            competition.attributes = summary.slice(*keys)
-            competition.country ||= @city_country[competition.city]
-            competition.comment = comment
-            competition.save!   ## need to save
-            puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
+          puts ("*" * 100) + "\n** #{url}"
+          parser = Parsers.get_parser(parser_type)
+          competition_hash = parser.parse(:competition, url).merge({comment: comment})
+          summary = CompetitionSummary.new(competition_hash)
+          competition = summary.to_model
+          competition.country ||= @city_country[competition.city]          
+          puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
 
-            ## category
-            summary.categories.each do |category|
-              next if (!accept_categories.nil?) && (!accept_categories.include?(category.to_sym))
-              url = summary.result_url(category)
-              cr_parser = Parsers.get_parser(:category_result, parser_type)
-              cr_parser.parse_category_results(url, category).each do |result|
-                result.skater_name = ::Skater.correct_name(result.skater_name)
-                result.category = category
-                result.competition = competition
-                result.skater = ::Skater.find_or_create_by_isu_number_or_name(result.isu_number, result.skater_name) do |sk|
-                  sk.category = category.seniorize
-                  sk.nation = result.nation
-                end
-                result.save!
-                puts result.summary
-              end
-
-              ## segment
-              summary.segments(category).each do |segment|
-                url = summary.score_url(category, segment)
-                attr = {date: summary.starting_time(category, segment)}
-                score_parser = Parsers.get_parser(:score, parser_type)
-                score_parser.parse_scores(url).each do |score|
-                  ActiveRecord::Base.transaction {
-                    score.skater_name = ::Skater.correct_name(score.skater_name)
-                    cr = competition.category_results.find_by(skater_name: score.skater_name) || raise
-                    cr.scores << score
-                    score.skater = cr.skater
-                    cr.skater.scores << score
-                    competition.scores << score
-                    score.save!
-                    score.elements.map(&:save!)
-                    score.components.map(&:save!)
-                  }
-                  puts score.summary
-                end
-              end
+          ## category
+          summary.categories.each do |category|
+            next if !@accept_categories.include?(category.to_sym)
+            url = summary.result_url(category)
+            parser.parse(:category_result, url).each do |result_hash|
+              result_hash.update({category: category, competition: competition})
+              CategoryResultAdaptor.new(result_hash).to_model.tap {|cr|
+                puts cr.summary
+              }
             end
-          end
-        end  ## transaction
-      end
-      
-      private
-      def find_relevant_category_result(category_results, skater_name, segment, ranking)
-        ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
-        category_results.joins(:skater).where("skaters.name" => skater_name).first ||
-          category_results.where(ranking_type => ranking).first
-      end
-      
-
-      # rubocop:disable all
-=begin
-      def get_identifers(name, country, city, year)
-        #year = competition.start_date.year
-        #country = competition.country || competition.city.to_s.upcase.gsub(/\s+/, '_')
-        country ||= city.to_s.upcase.gsub(/\s+/, '_')        
-        ary = case name
-              when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-                [:gp, "GPF#{year}", true]
-              when /^ISU GP/
-                [:gp, "GP#{country}#{year}", true]
-              when /Olympic/
-                [:olympic, "OLYMPIC#{year}", true]
-              when /^ISU World Figure/, /^ISU World Championships/
-                [:world, "WORLD#{year}", true]
-              when /^ISU Four Continents/
-                [:fcc, "FCC#{year}", true]
-              when /^ISU European/
-                [:euro, "EURO#{year}", true]
-              when /^ISU World Team/
-                [:team, "TEAM#{year}", true]
-              when /^ISU World Junior/
-                [:jworld, "JWORLD#{year}", true]
-              when /^ISU JGP/, /^ISU Junior Grand Prix/
-                [:jgp, "JGP#{country}#{year}", true]
-                
-              when /^Finlandia Trophy/
-                [:challenger, "FINLANDIA#{year}", false]
-              when /Warsaw Cup/
-                [:challenger, "WARSAW#{year}", false]
-              when /Autumn Classic/
-                [:challenger, "ACI#{year}", false]
-              when /Nebelhorn/
-                [:challenger, "NEBELHORN#{year}", false]
-              when /Lombardia/
-                [:challenger, "LOMBARDIA#{year}", false]
-              when /Ondrej Nepela/
-                [:challenger, "NEPELA#{year}", false]
-              else
-                [:unknown, name.gsub(/\s+/, '_'), false]
+            
+            ## segment
+            summary.segments(category).each do |segment|
+              url = summary.score_url(category, segment)
+              date = summary.starting_time(category, segment)
+              parser.parse(:score, url).each do |score_hash|
+                score_hash.update({ date: date, competition: competition, category: category, segment: segment})
+                ScoreAdaptor.new(score_hash).to_model.tap {|score|
+                  puts score.summary
+                }
               end
-        {
-          competition_type: ary[0],
-          cid: ary[1],
-          isu_championships: ary[2],
-        }
-      end
-=end
-      # rubocop:enable all
+            end ## segmnet
+          end ## category
+          competition
+        end  ## transaction
+      end  ## def
     end ## class
   end
 end

@@ -99,7 +99,7 @@ module Fisk8ResultViewer
         def parse_nation(v)
           v.delete("\u00a0")
         end
-        def parse_category_results(url, _category)
+        def parse_category_results(url)
           page = get_url(url)
           page.encoding = 'iso-8859-1'
           page.xpath("//table[1]/tr")[1..-1].map do |row|
@@ -110,9 +110,9 @@ module Fisk8ResultViewer
               nation: parse_nation(row.xpath("td[3]").text),
               isu_number: (row.xpath("td[2]/a/@href").text =~ /([0-9]+)\.htm$/) ? $1.to_i : nil,
             }
-            ::CategoryResult.new(data)
           end
         end
+        alias :parse :parse_category_results
       end
       Fisk8ResultViewer::Parsers.register(:wtt_2017, self)
     end ## class Wtt2017

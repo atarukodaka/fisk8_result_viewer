@@ -16,8 +16,8 @@ class ScoresController < ApplicationController
   end
   ################################################################
   def show
-    score = Score.find_by(sid: params[:sid]) ||
-      raise(ActiveRecord::RecordNotFound.new("no such sid: '#{params[:sid]}'"))
+    score = Score.find_by(name: params[:name]) ||
+      raise(ActiveRecord::RecordNotFound.new("no such score name: '#{params[:name]}'"))
 
     respond_to do |format|
       format.html { render locals: {score: score}}

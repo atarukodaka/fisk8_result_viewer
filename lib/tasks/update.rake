@@ -20,7 +20,7 @@ namespace :update do
     }
     accept_categories = str2symbols(ENV['accept_categories']) if ENV['accept_categories']
     
-    updater = Fisk8ResultViewer::Competition::Updater.new
+    updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: accept_categories)
     items = updater.load_competition_list
     [:challenger, :junior].each do |type|
       items += updater.load_competition_list(type: type) if options[:include_type][type]
@@ -28,7 +28,7 @@ namespace :update do
     items = items.last(options[:last]).reverse if options[:last] > 0
     items.each do |item|
       Competition.where(site_url: item[:url]).map(&:destroy) if options[:force]
-      updater.update_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment], accept_categories: accept_categories)
+      updater.update_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment])
     end
   end
 

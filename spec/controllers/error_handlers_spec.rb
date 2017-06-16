@@ -30,9 +30,9 @@ RSpec.describe 'error handlers', error_handler: true do
   describe ScoresController, type: :controller do
     render_views
 
-    describe 'scores/:sid 404' do
+    describe 'scores/:name 404' do
       it {
-        get :show, params: { sid: "----------" }
+        get :show, params: { name: "----------" }
         expect(response).to have_http_status(404)
       }
     end

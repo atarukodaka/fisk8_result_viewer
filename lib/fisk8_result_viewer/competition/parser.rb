@@ -3,7 +3,27 @@ module Fisk8ResultViewer
     class Parser
       include Utils
       include Contracts
-      
+
+      ################
+      Contract String => Hash
+      def parse_competition(url)
+        @url = url
+        page = get_url(url)
+        #return {} if page.nil?
+        city, country = parse_city_country(page)
+
+        {
+          name: parse_name(page),
+          site_url: url,
+          city: city,
+          country: country,
+          result_summary: parse_summary_table(page),
+          time_schedule: parse_time_schedule(page),
+        }
+      end
+      alias :parse :parse_competition
+      ################################################################
+      protected
       # return true if mmddyyyy format
       Contract Array => Bool
       def mdy_date_format?(ary_datestr)
@@ -113,23 +133,6 @@ module Fisk8ResultViewer
       end
       def parse_name(page)
         page.title.strip
-      end
-      ################
-      Contract String => Hash
-      def parse_competition(url)
-        @url = url
-        page = get_url(url)
-        #return {} if page.nil?
-        city, country = parse_city_country(page)
-
-        {
-          name: parse_name(page),
-          site_url: url,
-          city: city,
-          country: country,
-          result_summary: parse_summary_table(page),
-          time_schedule: parse_time_schedule(page),
-        }
       end
     end
   end  ## module

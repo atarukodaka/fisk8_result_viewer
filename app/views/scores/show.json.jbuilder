@@ -1,4 +1,4 @@
-json.extract! score, :sid, :category, :segment, :date, :result_pdf
+json.extract! score, :name, :category, :segment, :date, :result_pdf
 json.season score.competition.name
 json.season score.competition.season
 json.extract! score, :ranking, :tss, :tes, :pcs, :deductions, :base_value
