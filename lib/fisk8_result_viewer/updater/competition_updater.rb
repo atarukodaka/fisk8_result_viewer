@@ -1,7 +1,7 @@
 
 module Fisk8ResultViewer
-  module Competition
-    class Updater
+  module Updater
+    class CompetitionUpdater
       class CategoryResultAdaptor
         def initialize(hash)
           cr = ::CategoryResult.new(hash)
@@ -83,7 +83,7 @@ module Fisk8ResultViewer
           puts ("*" * 100) + "\n** #{url}"
           parser = Parsers.get_parser(parser_type)
           competition_hash = parser.parse(:competition, url).merge({comment: comment})
-          summary = CompetitionSummary.new(competition_hash)
+          summary = Adaptor::CompetitionAdaptor.new(competition_hash)
           competition = summary.to_model
           competition.country ||= @city_country[competition.city]          
           puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]

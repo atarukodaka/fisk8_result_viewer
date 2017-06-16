@@ -1,6 +1,6 @@
 module Fisk8ResultViewer
-  module Score
-    class Parser
+  class Parser
+    class ScoreParser
       include Contracts
       include Fisk8ResultViewer::Utils
 

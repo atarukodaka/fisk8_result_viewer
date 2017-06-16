@@ -1,7 +1,7 @@
 module Fisk8ResultViewer
-  module Skater
-    class Parser
-      include Utils
+  class Parser
+    class SkaterParser
+    include Utils
       
       URLS = {
         MEN: "http://www.isuresults.com/bios/fsbiosmen.htm",

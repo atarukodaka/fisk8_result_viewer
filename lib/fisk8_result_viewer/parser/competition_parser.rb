@@ -1,6 +1,7 @@
 module Fisk8ResultViewer
-  module Competition
-    class Parser
+  class Parser
+    class CompetitionParser
+
       include Utils
       include Contracts
 

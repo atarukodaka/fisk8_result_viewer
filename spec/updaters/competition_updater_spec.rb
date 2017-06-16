@@ -7,7 +7,7 @@ end
 RSpec.describe 'update competition', type: :competition_updater, updater: true do
   it 'works with isu-generic' do
     url = 'http://www.isuresults.com/results/season1617/wc2017/'
-    updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:MEN])
+    updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:MEN])
     updater.update_competition(url)
     
     comp = Competition.find_by(site_url: url)
@@ -17,7 +17,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
   describe 'competition_type / cid', type: :competition_type do
     it {
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [])
       data = [['http://www.isuresults.com/results/season1617/gpjpn2016/',
                :gp, 'GPJPN2016'],
               ['http://www.isuresults.com/results/season1617/gpf1617/',
@@ -51,7 +51,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
   describe 'load_file', type: :load_file do
     it {
-      items = Fisk8ResultViewer::Competition::Updater.new.load_competition_list
+      items = Fisk8ResultViewer::Updater::CompetitionUpdater.new.load_competition_list
       expect(items.size).to be > 0
     }
   end
@@ -59,7 +59,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   context 'parser types:' do
     it 'works on mdy date format' do
       url = 'http://www.isuresults.com/results/jgpfra2010/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
       updater.update_competition(url)
 
       comp = Competition.find_by(site_url: url)
@@ -68,7 +68,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
 
     it 'parses wtt2017' do
       url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:MEN])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:MEN])
       updater.update_competition(url, parser_type: :wtt_2017)
       
       comp = Competition.find_by(site_url: url)
@@ -76,7 +76,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     end
     it 'parses autumn classic' do
       url = 'https://skatecanada.ca/event/2016-autumn-classic-international/'
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:MEN])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:MEN])
       updater.update_competition(url, parser_type: :autumn_classic)
       
       comp = Competition.find_by(site_url: url)
@@ -88,7 +88,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     it 'corrects skater name (fc2012)' do
       url = 'http://www.isuresults.com/results/fc2012/'
 
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:LADIES])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES])
       competition = updater.update_competition(url)
       # 15. Sandra KHOPON: 17/16
       skater_cr = competition.category_results.find_by(category: "LADIES", ranking: 15).skater
@@ -101,7 +101,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   end
   context 'options' do
     it 'recognises force' do
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:MEN])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:MEN])
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
       ## update first
       comp1 = updater.update_competition(url)      ## update again, then should skip
@@ -118,13 +118,13 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   context 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
-      updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: [:"JUNIOR LADIES"])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:"JUNIOR LADIES"])
       updater.update_competition(url)
       expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
     end
     it 'parses unicode (fin2014)' do
       url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
-      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
       updater.update_competition(url)
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
@@ -132,7 +132,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   context 'http error' do
     it do
       url = 'http://xxxxxxxxx.com/xxxxxxxx.pdf'
-      updater = Fisk8ResultViewer::Competition::Updater.new
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
       expect {updater.update_competition(url) }.to raise_error OpenURI::HTTPError
     end
   end

@@ -3,7 +3,7 @@ namespace :update do
   task :skaters  => :environment do
     include Fisk8ResultViewer::Utils
     accept_categories = str2symbols(ENV['accept_categories']) if ENV['accept_categories']
-    updater = Fisk8ResultViewer::Skater::Updater.new
+    updater = Fisk8ResultViewer::Updater::SkaterUpdater.new
     updater.update_skaters(categories: accept_categories)
   end
 
@@ -20,7 +20,7 @@ namespace :update do
     }
     accept_categories = str2symbols(ENV['accept_categories']) if ENV['accept_categories']
     
-    updater = Fisk8ResultViewer::Competition::Updater.new(accept_categories: accept_categories)
+    updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: accept_categories)
     items = updater.load_competition_list
     [:challenger, :junior].each do |type|
       items += updater.load_competition_list(type: type) if options[:include_type][type]
@@ -39,7 +39,7 @@ namespace :update do
     comment = ENV['comment']
     parser_type = (t = ENV['parser_type']) ? t.to_sym :  :isu_generic
     Competition.where(site_url: url).map(&:destroy) if force
-    updater = Fisk8ResultViewer::Competition::Updater.new
+    updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
     updater.update_competition(url, parser_type: parser_type, comment: comment)
   end
 

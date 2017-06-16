@@ -1,6 +1,7 @@
 module Fisk8ResultViewer
-  module CategoryResult
-    class Parser
+  class Parser
+    class CategoryResultParser
+
       include Utils
       include Contracts
 

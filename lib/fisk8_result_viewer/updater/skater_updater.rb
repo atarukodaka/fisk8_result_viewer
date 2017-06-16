@@ -1,10 +1,11 @@
 module Fisk8ResultViewer
-  module Skater
-    class Updater
+  module Updater
+    class SkaterUpdater
+
       include Utils
       def update_skaters(categories: nil)
         categories ||= [:MEN, :LADIES, :PAIRS, :"ICE DANCE"]
-        parser = Fisk8ResultViewer::Skater::Parser.new
+        parser = Fisk8ResultViewer::Parser::SkaterParser.new
         parser.parse_skaters(categories).each do |data|
           ::Skater.find_or_create_by(isu_number: data[:isu_number]) do |skater|
             skater.update!(data)
