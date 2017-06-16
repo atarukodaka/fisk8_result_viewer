@@ -1,6 +1,6 @@
 module Fisk8ResultViewer
-  module Converter
-    class CategoryResultConverter
+  module Adaptor
+    class CategoryResultAdaptor
         def initialize(hash)
           cr = ::CategoryResult.new(hash)
           cr.skater_name = ::Skater.correct_name(cr.skater_name)

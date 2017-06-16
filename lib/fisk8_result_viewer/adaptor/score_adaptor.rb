@@ -1,6 +1,6 @@
 module Fisk8ResultViewer
-  module Converter
-    class ScoreConverter
+  module Adaptor
+    class ScoreAdaptor
       def initialize(hash)
         score = ::Score.new(hash.except(:elements, :components))
         score.skater_name = ::Skater.correct_name(score.skater_name)
