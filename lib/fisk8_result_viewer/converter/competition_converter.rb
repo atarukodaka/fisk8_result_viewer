@@ -1,6 +1,6 @@
 module Fisk8ResultViewer
-  module Adaptor
-    class CompetitionAdaptor
+  module Converter
+    class CompetitionConverter
       extend Forwardable
       def_delegators :@data, :[]
       attr_reader :data
