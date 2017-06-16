@@ -19,9 +19,9 @@ RSpec.describe 'error handlers', error_handler: true do
   describe CompetitionsController, type: :controller do
     render_views
 
-    describe 'competitions/:cid 404' do
+    describe 'competitions/:short_name 404' do
       it {
-        get :show, params: { cid: "----------" }
+        get :show, params: { short_name: "----------" }
         expect(response).to have_http_status(404)
       }
     end

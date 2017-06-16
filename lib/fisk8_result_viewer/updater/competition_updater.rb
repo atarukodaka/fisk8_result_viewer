@@ -45,7 +45,7 @@ module Fisk8ResultViewer
           summary = Adaptor::CompetitionAdaptor.new(competition_hash)
           competition = summary.to_model
           competition.country ||= @city_country[competition.city]          
-          puts " %s [%s] - %s" % [competition.name, competition.cid, competition.season]
+          puts " %s [%s] - %s" % [competition.name, competition.short_name, competition.season]
 
           ## category
           summary.categories.each do |category|

@@ -1,4 +1,4 @@
-json.extract! competition, :name, :cid, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment
+json.extract! competition, :name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment
 
 json.category_results do
   json.set! category do

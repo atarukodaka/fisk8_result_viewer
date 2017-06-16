@@ -5,13 +5,13 @@ RSpec.describe ElementsController, type: :controller do
   
   before do
     skater1 = Skater.create(name: "Skater NAME", nation: "JPN")
-    comp1 = Competition.create(name: "COMP1", cid: "COMP1", isu_championships: true, season: '2016-17')
+    comp1 = Competition.create(name: "COMP1", short_name: "COMP1", isu_championships: true, season: '2016-17')
     score1 = comp1.scores.create(name: "SID-elem1", skater: skater1, category: 'MEN')
     score1.elements.create(name: "4T", base_value: 15.0, goe: 3.0)
     score1.elements.create(name: "4T+3T", base_value: 10.0, goe: -2.0)
     
     skater2 = Skater.create(name: "Foo BAR", nation: "USA")
-    comp2 = Competition.create(name: "COMP2", cid: "COMP2", isu_championships: false, season: '2015-16')
+    comp2 = Competition.create(name: "COMP2", short_name: "COMP2", isu_championships: false, season: '2015-16')
     score2 = comp2.scores.create(name: "SID-elem2", skater: skater2, category: 'LADIES')
     score2.elements.create(name: "3Lz", base_value: 9.0, goe: 2.0)
     score2.elements.create(name: "3Lz+2T", base_value: 12.0, goe: -1.0)

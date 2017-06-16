@@ -1,6 +1,6 @@
 class CompetitionsDecorator < Draper::CollectionDecorator
   def column_names
-    [:cid, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]      
+    [:short_name, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]      
   end
 end
 

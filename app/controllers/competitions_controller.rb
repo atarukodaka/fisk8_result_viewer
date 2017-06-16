@@ -19,7 +19,7 @@ class CompetitionsController < ApplicationController
   end
   ################################################################
   def show
-    competition = Competition.find_by(cid: params[:cid]) || raise(ActiveRecord::RecordNotFound)
+    competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
     category = params[:category]
     segment = params[:segment]

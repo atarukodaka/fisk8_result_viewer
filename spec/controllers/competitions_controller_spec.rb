@@ -5,12 +5,12 @@ RSpec.describe CompetitionsController, type: :controller do
   
   before do
     skater = Skater.create(name: "Skater NAME")
-    competition = Competition.create(cid: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN", site_url: 'http://world-fs-2017/', isu_championships: true)
+    competition = Competition.create(short_name: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN", site_url: 'http://world-fs-2017/', isu_championships: true)
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
     cr.scores << score
 
-    competition2 = Competition.create(cid: "GPUSA2015", name: 'GP USA 2015', season: "2015-16", competition_type: "gp", city: "NY", country: "USA", site_url: 'http://gp-usa-2015')
+    competition2 = Competition.create(short_name: "GPUSA2015", name: 'GP USA 2015', season: "2015-16", competition_type: "gp", city: "NY", country: "USA", site_url: 'http://gp-usa-2015')
   end
   
   ################################################################
@@ -39,7 +39,7 @@ RSpec.describe CompetitionsController, type: :controller do
     it {
       get :index, params: {format: :json }
       expect(response.content_type).to eq('application/json')
-      expect(response.body).to include('"cid":"WORLD2017"')
+      expect(response.body).to include('"short_name":"WORLD2017"')
       expect(response.body).to include('"city":"Tokyo"')
       expect(response.body).to include('"country":"JPN"')
     }
@@ -59,7 +59,7 @@ RSpec.describe CompetitionsController, type: :controller do
   ################
   describe 'show' do
     it {
-      get :show, params: { cid: "WORLD2017" }
+      get :show, params: { short_name: "WORLD2017" }
       expect(response.status).to eq(200)
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
@@ -69,7 +69,7 @@ RSpec.describe CompetitionsController, type: :controller do
 
   describe 'show/category' do
     it {
-      get :show, params: { cid: "WORLD2017", category: "MEN" }
+      get :show, params: { short_name: "WORLD2017", category: "MEN" }
       expect(response.status).to eq(200)
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
@@ -80,7 +80,7 @@ RSpec.describe CompetitionsController, type: :controller do
 
   describe 'show/category/segment' do
     it {
-      get :show, params: { cid: "WORLD2017", category: "MEN", segment: "SHORT" }
+      get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT" }
       expect(response.status).to eq(200)
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
@@ -92,7 +92,7 @@ RSpec.describe CompetitionsController, type: :controller do
 
   describe 'show.json' do
     it {
-      get :show, params: { cid: "WORLD2017", category: "MEN", segment: "SHORT", format: "json" }
+      get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT", format: "json" }
       expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
       expect(response.body).to include('Tokyo')

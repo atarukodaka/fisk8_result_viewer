@@ -1,6 +1,5 @@
 class Score < ApplicationRecord
-  #after_initialize :set_default_values
-  before_save :set_name
+  before_save :set_score_name
   
   ## relations
   has_many :elements, dependent: :destroy
@@ -11,7 +10,6 @@ class Score < ApplicationRecord
   belongs_to :category_result, required: false
 
   ## validations
-  #validates :sid, presence: true, uniqueness: true
 
   ## scopes
   scope :recent, ->{ order("date desc") }
@@ -46,11 +44,7 @@ class Score < ApplicationRecord
     str
   end
   private
-  def set_default_values
-    #self.sid ||= [self.competition.cid, self.category, self.segment, self.ranking].join("-")
-    #self.sid ||= UUID.new.generate
-  end
-  def set_name
+  def set_score_name
     return if self[:name].present?
     category_abbr = self.category || ""
     [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"],
@@ -61,7 +55,7 @@ class Score < ApplicationRecord
 
     segment_abbr = self.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-    self[:name] = [self.competition.try(:cid), category_abbr, segment_abbr, self.ranking].join('-')
+    self[:name] = [self.competition.try(:short_name), category_abbr, segment_abbr, self.ranking].join('-')
     self
   end
 end

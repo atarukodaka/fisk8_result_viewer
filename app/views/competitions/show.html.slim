@@ -18,7 +18,7 @@ segment_scores ||= []
 h2 Competition Info
 
 table.table.table-striped.table-hover.table-condensed
-  - [:name, :cid, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment].each do |key|
+  - [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment].each do |key|
     = tr_data(key, competition.send(key))
 
 ////////////////////////////////////////////////////////////////

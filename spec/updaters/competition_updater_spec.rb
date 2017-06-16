@@ -15,7 +15,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     expect(comp.scores.pluck(:category).uniq).to include('MEN')
   end
 
-  describe 'competition_type / cid', type: :competition_type do
+  describe 'competition_type / short_name', type: :competition_type do
     it {
       updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [])
       data = [['http://www.isuresults.com/results/season1617/gpjpn2016/',
@@ -40,11 +40,11 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
               #:challenger, 'FINLANDIA2016'],
              ]
       data.each do |ary|
-        url, competition_type, cid = ary
+        url, competition_type, short_name = ary
         competition = updater.update_competition(url)
         expect(competition.site_url).to eq(url)
         expect(competition.competition_type.to_sym).to eq(competition_type)
-        expect(competition.cid).to eq(cid)
+        expect(competition.short_name).to eq(short_name)
       end
     }
   end

@@ -12,14 +12,13 @@ Rails.application.routes.draw do
   ## competitions
   scope :competitions do
     get '/' => 'competitions#index'
-    match ':cid(/:category(/:segment))' => 'competitions#show', via: :get
+    match ':short_name(/:category(/:segment))' => 'competitions#show', via: :get
   end
 
   ## scores
   scope :scores do
     get '/' => 'scores#index'
     match ':name' => 'scores#show', via: :get
-    #match ':competition_cid/:category/:segment/:ranking' => 'scores#show', via: :get
   end
   ## elements
   get 'elements' => 'elements#index'

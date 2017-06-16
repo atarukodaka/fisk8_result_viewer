@@ -8,7 +8,6 @@ class Competition < ApplicationRecord
 
   
   ## validations
-  #validates :cid, presence: true, uniqueness: true
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
 
   ## scopes
@@ -25,11 +24,6 @@ class Competition < ApplicationRecord
     end
   end
   private
-  def set_default_values
-    #self.cid ||= self.name || [self.competition_type, self.country, self.start_date.try(:year)].join("-")
-    #self.cid ||= UUID.new.generate
-  end
-
   def set_short_name
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
@@ -69,14 +63,7 @@ class Competition < ApplicationRecord
             [:unknown, name.to_s.gsub(/\s+/, '_'), false]
           end
     self.competition_type ||= ary[0]
-    self.cid ||= ary[1]
+    self.short_name ||= ary[1]
     self.isu_championships ||= ary[2]
-=begin
-    self.attributes = {
-      competition_type: ary[0],
-      cid: ary[1],
-      isu_championships: ary[2],
-    }
-=end
   end
 end

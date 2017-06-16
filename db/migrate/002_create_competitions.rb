@@ -1,7 +1,7 @@
 class CreateCompetitions < ActiveRecord::Migration[5.1]
   def change
     create_table :competitions do |t|
-      t.string :cid
+      t.string :short_name
       t.string :name
       t.string :city
       t.string :country
