@@ -21,7 +21,7 @@ class Skater < ApplicationRecord
       (find_by(isu_number: isu_number) if isu_number.present?) ||
         (find_by(name: name))
     end
-    def find_or_create_by_isu_number_or_name(isu_number, name)
+    def find_or_initialize_by_isu_number_or_name(isu_number, name)
       name = correct_name(name)
       find_by_isu_number_or_name(isu_number, name) || create do |skater|
         skater.isu_number = isu_number

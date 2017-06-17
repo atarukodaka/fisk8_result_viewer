@@ -29,7 +29,7 @@ module Fisk8ResultViewer
         end
         ################
         keys = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
-        @model = ::Competition.create(@data.slice(*keys))
+        @model = ::Competition.new(@data.slice(*keys))
       end
       def to_model
         @model

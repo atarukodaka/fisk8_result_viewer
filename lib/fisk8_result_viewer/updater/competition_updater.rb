@@ -41,10 +41,12 @@ module Fisk8ResultViewer
         ActiveRecord::Base.transaction do 
           puts ("*" * 100) + "\n** #{url}"
           parser = Parsers.get_parser(parser_type)
-          competition_hash = parser.parse(:competition, url).merge({comment: comment})
+          competition_hash = parser.parse(:competition, url)
           summary = Adaptor::CompetitionAdaptor.new(competition_hash)
           competition = summary.to_model
-          competition.country ||= @city_country[competition.city]          
+          competition.comment = comment
+          competition.country ||= @city_country[competition.city]
+          competition.save!
           puts " %s [%s] - %s" % [competition.name, competition.short_name, competition.season]
 
           ## category
@@ -54,6 +56,7 @@ module Fisk8ResultViewer
             parser.parse(:category_result, url).each do |result_hash|
               result_hash.update({category: category, competition: competition})
               Adaptor::CategoryResultAdaptor.new(result_hash).to_model.tap {|cr|
+                cr.save!
                 puts cr.summary
               }
             end
@@ -65,6 +68,7 @@ module Fisk8ResultViewer
               parser.parse(:score, url).each do |score_hash|
                 score_hash.update({ date: date, competition: competition, category: category, segment: segment})
                 Adaptor::ScoreAdaptor.new(score_hash).to_model.tap {|score|
+                  score.save!
                   puts score.summary
                 }
               end

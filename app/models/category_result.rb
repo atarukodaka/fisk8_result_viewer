@@ -1,4 +1,5 @@
 class CategoryResult < ApplicationRecord
+  before_save :save_skater
   ## relations
   has_many :scores
   
@@ -22,5 +23,9 @@ class CategoryResult < ApplicationRecord
     def highest_ranking
       pluck(:ranking).compact.reject {|d| d == 0}.min
     end
+  end
+  private
+  def save_skater
+    skater.save! if skater.present? && skater.changed?
   end
 end

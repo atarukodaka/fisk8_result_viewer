@@ -1,7 +1,10 @@
 ## TODO
 - select options default sort
   - caching
+- spec: autosave, cr saves skater
+- factorygirls
 
+  
 ### new feature
 - embed youtube in score (or just link to search page ?)
 - sort in list table
@@ -40,6 +43,8 @@
 - csv-builder for csv output
 - app/views/score/show.html: unsafe youtube link -> escape html
 - eliminate feedback
+- cid => competition.short_name, sid => score.name
+- updater/*, parser/*
 
 ## 1.0.0
 

@@ -2,8 +2,8 @@ class Score < ApplicationRecord
   before_save :set_score_name
   
   ## relations
-  has_many :elements, dependent: :destroy
-  has_many :components, dependent: :destroy
+  has_many :elements, dependent: :destroy, autosave: true
+  has_many :components, dependent: :destroy, autosave: true
 
   belongs_to :competition
   belongs_to :skater

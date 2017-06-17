@@ -8,15 +8,12 @@ module Fisk8ResultViewer
         score.skater = cr.skater
         score.skater_name = score.skater.name
 
-        ActiveRecord::Base.transaction {
-          cr.skater.scores << score
-          cr.scores << score
-          score.competition.scores << score
-
-          hash[:elements].map {|e| score.elements.create(e)}
-          hash[:components].map {|e| score.components.create(e)}
-          score.save!                    
-        }
+        cr.skater.scores << score
+        cr.scores << score
+        score.competition.scores << score
+        
+        hash[:elements].map {|e| score.elements.new(e)}
+        hash[:components].map {|e| score.components.new(e)}
         @model = score
       end
       def to_model
