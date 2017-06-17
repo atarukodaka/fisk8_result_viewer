@@ -26,6 +26,7 @@ class Score < ApplicationRecord
     "    %s-%s [%2d] %-40s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, skater_name, isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
 
+=begin
   def to_s
     str = "-" * 100 + "\n"
     str << "%<ranking>d %<skater_name>s [%<nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % self.attributes.symbolize_keys
@@ -43,6 +44,7 @@ class Score < ApplicationRecord
     end
     str
   end
+=end
   private
   def set_score_name
     return if self[:name].present?
