@@ -1,4 +1,3 @@
-
 module Fisk8ResultViewer
   module Updater
     class CompetitionUpdater

@@ -131,9 +131,10 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   end
   context 'http error' do
     it do
-      url = 'http://xxxxxxxxx.com/xxxxxxxx.pdf'
+      url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
       updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
-      expect {updater.update_competition(url) }.to raise_error OpenURI::HTTPError
+      #expect {updater.update_competition(url) }.to raise_error OpenURI::HTTPError || SocketError
+      expect {updater.update_competition(url) }.to raise_error SocketError
     end
   end
 end

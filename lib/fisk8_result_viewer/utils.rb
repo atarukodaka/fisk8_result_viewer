@@ -1,7 +1,6 @@
 require 'pdftotext'
 require 'open-uri'
 require 'open_uri_redirections'
-#require 'mechanize'
 
 module Fisk8ResultViewer
   module Utils
