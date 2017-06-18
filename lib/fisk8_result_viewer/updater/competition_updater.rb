@@ -10,9 +10,10 @@ module Fisk8ResultViewer
          :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
         ]
       
-      def initialize(accept_categories: nil)
+      def initialize(accept_categories: nil, quiet: false)
         @accept_categories = accept_categories || ACCEPT_CATEGORIES
         @city_country = YAML.load_file(Rails.root.join('config', 'city_country.yml'))
+        @quiet = quiet
       end
       
       Contract KeywordArgs[type: Or[Symbol, String, nil]] => ArrayOf[Hash]
@@ -38,7 +39,7 @@ module Fisk8ResultViewer
         end
         
         ActiveRecord::Base.transaction do 
-          puts ("*" * 100) + "\n** #{url}"
+          dputs ("*" * 100) + "\n** #{url}"
           parser = Parsers.get_parser(parser_type)
           competition_hash = parser.parse(:competition, url)
           summary = Adaptor::CompetitionAdaptor.new(competition_hash)
@@ -46,7 +47,7 @@ module Fisk8ResultViewer
           competition.comment = comment
           competition.country ||= @city_country[competition.city]
           competition.save!
-          puts " %s [%s] - %s" % [competition.name, competition.short_name, competition.season]
+          dputs " %s [%s] - %s" % [competition.name, competition.short_name, competition.season]
 
           ## category
           summary.categories.each do |category|
@@ -56,7 +57,7 @@ module Fisk8ResultViewer
               result_hash.update({category: category, competition: competition})
               Adaptor::CategoryResultAdaptor.new(result_hash).to_model.tap {|cr|
                 cr.save!
-                puts cr.summary
+                dputs cr.summary
               }
             end
             
@@ -68,7 +69,7 @@ module Fisk8ResultViewer
                 score_hash.update({ date: date, competition: competition, category: category, segment: segment})
                 Adaptor::ScoreAdaptor.new(score_hash).to_model.tap {|score|
                   score.save!
-                  puts score.summary
+                  dputs score.summary
                 }
               end
             end ## segmnet
@@ -76,6 +77,11 @@ module Fisk8ResultViewer
           competition
         end  ## transaction
       end  ## def
+
+      private
+      def dputs(*args)
+        puts args unless @quiet
+      end
     end ## class
   end
 end

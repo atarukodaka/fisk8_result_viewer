@@ -12,7 +12,6 @@
 ### check before release
 - app/controller/application_controller: unless Rails.env.develop
 - config/application: Version
-- config/database: /tmp
 - config/competitions.yml: debug
 
 ## 1.0.1-pre1 2017/6
