@@ -87,7 +87,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     it 'corrects skater name (fc2012)' do
       url = 'http://www.isuresults.com/results/fc2012/'
 
-      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:LADIES], quiet: true)
       competition = updater.update_competition(url)
       # 15. Sandra KHOPON: 17/16
       skater_cr = competition.category_results.find_by(category: "LADIES", ranking: 15).skater
@@ -116,7 +116,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   context 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
-      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:"JUNIOR LADIES"])
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:"JUNIOR LADIES"], quest: true)
       updater.update_competition(url)
       expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
     end

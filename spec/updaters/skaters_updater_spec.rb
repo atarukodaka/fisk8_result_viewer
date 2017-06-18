@@ -7,7 +7,7 @@ end
 RSpec.describe 'skater', updater: true do
   context 'skaters' do 
     it 'updates skaters' do
-      updater = Fisk8ResultViewer::Updater::SkaterUpdater.new
+      updater = Fisk8ResultViewer::Updater::SkaterUpdater.new(quest: true)
       updater.update_skaters(categories: [:MEN])
       num_skaters = ::Skater.group(:category).count
 

@@ -3,6 +3,10 @@ module Fisk8ResultViewer
     class SkaterUpdater
 
       include Utils
+      def initialize(quiet: false)
+        @quiet = quiet
+      end
+      
       def update_skaters(categories: nil)
         categories ||= [:MEN, :LADIES, :PAIRS, :"ICE DANCE"]
         parser = Fisk8ResultViewer::Parser::SkaterParser.new
@@ -12,6 +16,10 @@ module Fisk8ResultViewer
             puts "create skater in #{skater.category}: #{skater.name} (#{skater.isu_number}) [#{skater.nation}]"
           end
         end
+      end
+
+      def dputs(*args)
+        puts args unless @quiet
       end
     end
   end
