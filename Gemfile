@@ -34,7 +34,7 @@ group :test do
 
   gem 'coveralls', require: false
   gem 'codecov', :require => false
-  
+  gem 'factory_girl_rails'
 end
 
 group :development do

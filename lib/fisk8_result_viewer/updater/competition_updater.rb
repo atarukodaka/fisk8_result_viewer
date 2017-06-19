@@ -54,11 +54,16 @@ module Fisk8ResultViewer
             next if !@accept_categories.include?(category.to_sym)
             url = summary.result_url(category)
             parser.parse(:category_result, url).each do |result_hash|
-              result_hash.update({category: category, competition: competition})
-              Adaptor::CategoryResultAdaptor.new(result_hash).to_model.tap {|cr|
-                cr.save!
+              CategoryResult.create(result_hash) do |cr|
+                cr.competition = competition
+                cr.category = category
+                cr.skater_name = Skater.correct_name(result_hash[:skater_name])
+                cr.skater = Skater.find_or_initialize_by_isu_number_or_name(cr.isu_number, cr.skater_name) do |sk|
+                  sk.category = cr.category.seniorize
+                  sk.nation = cr.nation
+                end
                 dputs cr.summary
-              }
+              end
             end
             
             ## segment
@@ -66,11 +71,24 @@ module Fisk8ResultViewer
               url = summary.score_url(category, segment)
               date = summary.starting_time(category, segment)
               parser.parse(:score, url).each do |score_hash|
-                score_hash.update({ date: date, competition: competition, category: category, segment: segment})
-                Adaptor::ScoreAdaptor.new(score_hash).to_model.tap {|score|
-                  score.save!
+                Score.create(score_hash.except(:elements, :components)) do |score|
+                  score.attributes = {
+                    date: date,
+                    competition: competition,
+                    category: category,
+                    segment: segment,
+                    skater_name: Skater.correct_name(score_hash[:skater_name]),
+                  }
+                  cr = find_relevant_category_result(score.competition.category_results, score.skater_name, score_hash[:segment], score_hash[:ranking]) ||  raise('cannot find relevant category results')
+                  score.category_result = cr
+                  score.skater = cr.skater
+                  ActiveRecord::Base.transaction {
+                    score.save
+                    score_hash[:elements].map {|e| score.elements.create(e)}
+                    score_hash[:components].map {|e| score.components.create(e)}
+                  }
                   dputs score.summary
-                }
+                end
               end
             end ## segmnet
           end ## category
@@ -79,6 +97,13 @@ module Fisk8ResultViewer
       end  ## def
 
       private
+      def find_relevant_category_result(category_results, skater_name, segment, ranking)
+        ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
+        category_results.find_by(skater_name: skater_name) || 
+          category_results.where(ranking_type => ranking).first
+      end
+                                        
+      
       def dputs(*args)
         puts args unless @quiet
       end

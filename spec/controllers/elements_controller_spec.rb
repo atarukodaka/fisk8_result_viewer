@@ -4,43 +4,38 @@ RSpec.describe ElementsController, type: :controller do
   render_views
   
   before do
-    skater1 = Skater.create(name: "Skater NAME", nation: "JPN")
-    comp1 = Competition.create(name: "COMP1", short_name: "COMP1", isu_championships: true, season: '2016-17')
-    score1 = comp1.scores.create(name: "SID-elem1", skater: skater1, category: 'MEN')
+    score1 = create(:competition).scores.create(skater: create(:skater), category: 'MEN')
     score1.elements.create(name: "4T", base_value: 15.0, goe: 3.0)
     score1.elements.create(name: "4T+3T", base_value: 10.0, goe: -2.0)
     
-    skater2 = Skater.create(name: "Foo BAR", nation: "USA")
-    comp2 = Competition.create(name: "COMP2", short_name: "COMP2", isu_championships: false, season: '2015-16')
-    score2 = comp2.scores.create(name: "SID-elem2", skater: skater2, category: 'LADIES')
+    score2 = create(:competition, :finlandia).scores.create(skater: create(:skater, :ladies), category: 'LADIES')
     score2.elements.create(name: "3Lz", base_value: 9.0, goe: 2.0)
     score2.elements.create(name: "3Lz+2T", base_value: 12.0, goe: -1.0)
   end
-
-  describe 'index' do
-    it {
+  
+  context 'index' do
+    it 'lists' do
       get :index
       expect(response.body).to include('4T')
       expect(response.body).to include('4T+3T')
-    }
-    it {
+    end
+  end
+  context 'filter' do
+    it 'filters by element name' do
       get :index, params: {name: '4T'}
       expect(response.body).to include('4T')
       expect(response.body).to include('4T+3T')
-    }
-    it {
+    end
+    it 'filters by element name with perfect match' do
       get :index, params: {name: '4T', perfect_match: 'PERFECT_MATCH'}
       expect(response.body).to include('4T')
       expect(response.body).not_to include('4T+3T')
-    }
-    # compare
-    it {
+    end
+    it 'filters by comparison of goe by >' do
       get :index, params: {goe: '1', goe_operator: '>'}
       expect(response.body).to include('4T')
       expect(response.body).not_to include('4T+3T')
-    }
-  end
-  describe 'filter' do
+    end
     it 'filters by skater_name' do
       get :index, params: { skater_name: "Skater NAME" }
       expect(response.body).to include('4T')
@@ -57,7 +52,7 @@ RSpec.describe ElementsController, type: :controller do
       expect(response.body).not_to include('3Lz')
     end
     it 'filters by competition' do
-      get :index, params: { competition_name: "COMP1" }
+      get :index, params: { competition_name: "World FS 2017" }
       expect(response.body).to include('4T')
       expect(response.body).not_to include('3Lz')
     end

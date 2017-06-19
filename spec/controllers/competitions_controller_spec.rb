@@ -4,13 +4,11 @@ RSpec.describe CompetitionsController, type: :controller do
   render_views
   
   before do
-    skater = Skater.create(name: "Skater NAME")
-    competition = Competition.create(short_name: "WORLD2017", name: "World FS 2017", season: "2016-17", competition_type: "world", city: "Tokyo", country: "JPN", site_url: 'http://world-fs-2017/', isu_championships: true)
+    skater = create(:skater)
+    competition = create(:competition)
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
-    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1)
-    cr.scores << score
-
-    competition2 = Competition.create(short_name: "GPUSA2015", name: 'GP USA 2015', season: "2015-16", competition_type: "gp", city: "NY", country: "USA", site_url: 'http://gp-usa-2015')
+    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, category_result: cr)
+    comlpetition2 = create(:competition, :finlandia)
   end
   
   ################################################################
@@ -21,17 +19,17 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
       expect(response.body).to include('JPN')
-      expect(response.body).to include('GPUSA2015')
+      expect(response.body).to include('FIN2015')
     }
     it {
       get :index, params: { season: "2016-17"}
       expect(response.body).to include('WORLD2017')
-      expect(response.body).not_to include('GPUSA2015')
+      expect(response.body).not_to include('FIN2015')
     }
     it {
       get :index, params: { competition_type: "world"}
       expect(response.body).to include('WORLD2017')
-      expect(response.body).not_to include('GPUSA2015')
+      expect(response.body).not_to include('FIN2015')
     }
   end
 
@@ -109,7 +107,7 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).not_to include('GP USA 2015')
     end
     it 'filters by site_url' do
-      get :index, params: { site_url: "world-fs-2017" }
+      get :index, params: { site_url: "http://world2017.isu.org/results/" }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end

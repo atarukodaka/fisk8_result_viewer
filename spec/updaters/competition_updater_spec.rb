@@ -116,7 +116,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   context 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
-      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:"JUNIOR LADIES"], quest: true)
+      updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new(accept_categories: [:"JUNIOR LADIES"], quiet: true)
       updater.update_competition(url)
       expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
     end

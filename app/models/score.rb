@@ -1,5 +1,5 @@
 class Score < ApplicationRecord
-  before_save :set_score_name
+  before_save :set_score_name, :set_skater_name
   
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
@@ -58,6 +58,10 @@ class Score < ApplicationRecord
     segment_abbr = self.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
     self[:name] = [self.competition.try(:short_name), category_abbr, segment_abbr, self.ranking].join('-')
+    self
+  end
+  def set_skater_name
+    self[:skater_name] = skater.name if self.skater
     self
   end
 end

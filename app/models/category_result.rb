@@ -27,5 +27,7 @@ class CategoryResult < ApplicationRecord
   private
   def save_skater
     skater.save! if skater.present? && skater.changed?
+    self[:skater_name] = skater.name if skater
+    self
   end
 end
