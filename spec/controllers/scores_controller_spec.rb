@@ -63,36 +63,4 @@ RSpec.describe ScoresController, type: :controller do
       expect(response.body).to include('Skater NAME')
     end
   end
-  describe 'filter' do
-    it 'filters by skater_name' do
-      get :index, params: { skater_name: "Skater NAME" }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-    it 'filters by category' do
-      get :index, params: { category: "MEN" }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-    it 'filters by nation' do
-      get :index, params: { nation: "JPN" }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-    it 'filters by competition' do
-      get :index, params: { competition_name: "World FS 2017" }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-    it 'filters by isu_championships' do
-      get :index, params: { isu_championships_only: 'true' }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-    it 'filters by season' do
-      get :index, params: { season: '2016-17'}
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).not_to include('Foo BAR')
-    end
-  end
 end

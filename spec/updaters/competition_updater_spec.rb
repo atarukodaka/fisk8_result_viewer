@@ -51,7 +51,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     }
   end
 
-  describe 'load_file', type: :load_file do
+  context 'load_file', type: :load_file do
     it {
       items = Fisk8ResultViewer::Updater::CompetitionUpdater.new.load_competition_list
       expect(items.size).to be > 0
@@ -126,11 +126,17 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
   end
-  context 'http error' do
-    it do
+  context 'network errors' do
+    it 'raises socket error' do
       url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
       #expect {updater.update_competition(url) }.to raise_error OpenURI::HTTPError || SocketError
       expect {@men_updater.update_competition(url) }.to raise_error SocketError
     end
+
+    it 'raises http error' do
+      url = 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf'
+      expect {@men_updater.update_competition(url) }.to raise_error OpenURI::HTTPError
+    end
+    
   end
 end

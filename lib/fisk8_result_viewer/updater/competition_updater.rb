@@ -58,7 +58,7 @@ module Fisk8ResultViewer
                 cr.competition = competition
                 cr.category = category
                 cr.skater_name = Skater.correct_name(result_hash[:skater_name])
-                cr.skater = Skater.find_or_initialize_by_isu_number_or_name(cr.isu_number, cr.skater_name) do |sk|
+                cr.skater = Skater.find_or_create_by_isu_number_or_name(cr.isu_number, cr.skater_name) do |sk|
                   sk.category = cr.category.seniorize
                   sk.nation = cr.nation
                 end
