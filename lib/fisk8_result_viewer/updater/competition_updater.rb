@@ -79,7 +79,7 @@ module Fisk8ResultViewer
                     segment: segment,
                     skater_name: Skater.correct_name(score_hash[:skater_name]),
                   }
-                  cr = find_relevant_category_result(score.competition.category_results, score.skater_name, score_hash[:segment], score_hash[:ranking]) ||  raise('cannot find relevant category results')
+                  cr = find_relevant_category_result(score) || raise("cannot find relevant category results: #{category}/#{segment}: #{score.skater_name}")
                   score.category_result = cr
                   score.skater = cr.skater
                   ActiveRecord::Base.transaction {
@@ -97,10 +97,11 @@ module Fisk8ResultViewer
       end  ## def
 
       private
-      def find_relevant_category_result(category_results, skater_name, segment, ranking)
-        ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
-        category_results.find_by(skater_name: skater_name) || 
-          category_results.where(ranking_type => ranking).first
+      def find_relevant_category_result(score)
+        category_results = score.competition.category_results
+        ranking_type = (score.segment =~ /^SHORT/) ? :short_ranking : :free_ranking
+        category_results.find_by(skater_name: score.skater_name) || 
+          category_results.where(ranking_type => score.ranking).first
       end
                                         
       

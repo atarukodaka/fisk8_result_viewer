@@ -12,7 +12,6 @@ module Fisk8ResultViewer
         page = get_url(url)
         #return {} if page.nil?
         city, country = parse_city_country(page)
-
         {
           name: parse_name(page),
           site_url: url,
@@ -30,9 +29,7 @@ module Fisk8ResultViewer
       def mdy_date_format?(ary_datestr)
         dates = []
         ary_datestr.each do |datestr|
-          #datestr = trim(datestr)
           datestr.squish!
-          #next unless datestr =~ %r{^[0-9/.\-\s]+$}
           next if datestr =~ /^[A-Za-z\s]+$/
           begin
             Time.zone ||= "UTC"
