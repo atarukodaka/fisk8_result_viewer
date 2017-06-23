@@ -10,6 +10,16 @@ class CategoryResult < ApplicationRecord
   scope :recent, ->{ joins(:competition).order("competitions.start_date desc") }
   scope :category, ->(cat) { where(category: cat) }
   scope :top_rankers, ->(n) { where("ranking > 0 and ranking <= ? ", n.to_i).order(:ranking) }
+  scope :search_by_skater_name_or_segment_ranking, ->(skater_name:, segment:, ranking: ){
+    ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
+    joins(:skater).where("skaters.name" => skater_name).presence || where(ranking_type => ranking)
+  }
+=begin
+  scope :search_by, ->(skater_name:, segment:, ranking: ){
+    ranking_type = (score[:segment] =~ /^SHORT/) ? :short_ranking : :free_ranking
+    joins(:skater).where("skaters.name" => score[:skater_name]) || where(ranking_type => score[:ranking])
+  }
+=end
 
   def summary
     "  %s %2d %-40s (%6d)[%s] | %6.2f %2d / %2d" %
@@ -27,7 +37,7 @@ class CategoryResult < ApplicationRecord
   private
   def save_skater
     skater.save! if skater.present? && skater.changed?
-    self[:skater_name] = skater.name if skater
+    #self[:skater_name] = skater.name if skater
     self
   end
 end

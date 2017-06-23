@@ -137,6 +137,5 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       url = 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf'
       expect {@men_updater.update_competition(url) }.to raise_error OpenURI::HTTPError
     end
-    
   end
 end

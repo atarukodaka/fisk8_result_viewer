@@ -54,13 +54,16 @@ module Fisk8ResultViewer
             next if !@accept_categories.include?(category.to_sym)
             url = summary.result_url(category)
             parser.parse(:category_result, url).each do |result_hash|
-              CategoryResult.create(result_hash) do |cr|
+              #CategoryResult.create(result_hash) do |cr|
+              CategoryResult.create_from_hash(result_hash) do |cr|
                 cr.competition = competition
                 cr.category = category
-                cr.skater_name = Skater.correct_name(result_hash[:skater_name])
-                cr.skater = Skater.find_or_create_by_isu_number_or_name(cr.isu_number, cr.skater_name) do |sk|
-                  sk.category = cr.category.seniorize
-                  sk.nation = cr.nation
+                #cr.skater_name = Skater.correct_name(result_hash[:skater_name])
+                cr.skater = Skater.find_or_create_by_isu_number_or_name(cr.isu_number, Skater.correct_name(result_hash[:skater_name])) do |sk|
+                  sk.attributes = {
+                    category: category.seniorize,
+                    nation: result_hash[:nation],
+                  }
                 end
                 dputs cr.summary
               end
@@ -71,22 +74,21 @@ module Fisk8ResultViewer
               url = summary.score_url(category, segment)
               date = summary.starting_time(category, segment)
               parser.parse(:score, url).each do |score_hash|
-                Score.create(score_hash.except(:elements, :components)) do |score|
-                  score.attributes = {
-                    date: date,
-                    competition: competition,
-                    category: category,
-                    segment: segment,
-                    skater_name: Skater.correct_name(score_hash[:skater_name]),
-                  }
-                  cr = find_relevant_category_result(score) || raise("cannot find relevant category results: #{category}/#{segment}: #{score.skater_name}")
-                  score.category_result = cr
-                  score.skater = cr.skater
-                  ActiveRecord::Base.transaction {
-                    score.save
-                    score_hash[:elements].map {|e| score.elements.create(e)}
-                    score_hash[:components].map {|e| score.components.create(e)}
-                  }
+                #cr = competition.category_results.having_the_score(score_hash).first || binding.pry # raise("cannot find relevant category results: #{category}/#{segment}: #{score_hash[:skater_name]}")
+                #cr = competition.category_results.joins(:skater).where("skaters.name" => score_hash[:skater_name]) ||
+                cr = competition.category_results.search_by_skater_name_or_segment_ranking(skater_name: Skater.correct_name(score_hash[:skater_name]), segment: segment, ranking: score_hash[:ranking]).first || raise
+                ActiveRecord::Base.transaction do
+                  score = Score.create_from_hash(score_hash)
+                  score.update!(
+                                competition: competition,
+                                date: date,
+                                category: category,
+                                segment: segment,
+                                category_result: cr,
+                                skater: cr.skater,
+                                )
+                  score_hash[:elements].map {|e| score.elements.create(e)}
+                  score_hash[:components].map {|e| score.components.create(e)}
                   dputs score.summary
                 end
               end
@@ -97,14 +99,6 @@ module Fisk8ResultViewer
       end  ## def
 
       private
-      def find_relevant_category_result(score)
-        category_results = score.competition.category_results
-        ranking_type = (score.segment =~ /^SHORT/) ? :short_ranking : :free_ranking
-        category_results.find_by(skater_name: score.skater_name) || 
-          category_results.where(ranking_type => score.ranking).first
-      end
-                                        
-      
       def dputs(*args)
         puts args unless @quiet
       end

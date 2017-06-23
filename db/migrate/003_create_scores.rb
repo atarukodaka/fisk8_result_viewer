@@ -2,10 +2,10 @@ class CreateScores < ActiveRecord::Migration[5.1]
   def change
     create_table :scores do |t|
       t.string :name
-      t.string :skater_name
+      #t.string :skater_name
+      #t.string :nation
       t.integer :ranking
       t.integer :starting_number
-      t.string :nation
 
       #t.string :competition_name
       t.string :category

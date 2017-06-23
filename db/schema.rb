@@ -13,9 +13,7 @@
 ActiveRecord::Schema.define(version: 3) do
 
   create_table "category_results", force: :cascade do |t|
-    t.string "skater_name"
-    t.string "nation"
-    t.string "isu_number"
+    t.integer "isu_number"
     t.string "category"
     t.integer "ranking"
     t.float "points"
@@ -66,10 +64,8 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "scores", force: :cascade do |t|
     t.string "name"
-    t.string "skater_name"
     t.integer "ranking"
     t.integer "starting_number"
-    t.string "nation"
     t.string "category"
     t.string "segment"
     t.date "date", default: "1970-01-01"
