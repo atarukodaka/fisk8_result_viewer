@@ -5,8 +5,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module Fisk8ResultViewer
-#module Fisk8Viewer
-  VERSION = "1.0.1-pre1"
+  VERSION = "1.0.1-pre2"
   
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
