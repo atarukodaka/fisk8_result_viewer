@@ -14,7 +14,10 @@
 - config/application: Version
 - config/competitions.yml: debug
 
-## 1.0.1-pre1 2017/6
+## 1.0.1-pre2 2017/6/24
+- model create from hash
+
+## 1.0.1-pre1 2017/6/18
 - rake update:skaters..name space for update
 - autoload fisk8viewer/parsers/*.rb
 - competition_summary_parser. use column

@@ -1,9 +1,11 @@
 module Fisk8ResultViewer
   class Parser
-    def parse(type, url)
-      self.class.const_get("#{type.to_s.camelize}Parser").new.parse(url)
-      #"#{type.to_s.camelize}Parser".constantize.new.parse(url)
-      #object.const_get("#{type.to_s.camelize}Parser").new.parse(url)
+    def parse(roll, url)
+      begin
+        self.class.const_get("#{roll.to_s.camelize}Parser").new.parse(url)
+      rescue NameError
+        raise "no such roll: #{roll}"
+      end
     end
   end
 end
