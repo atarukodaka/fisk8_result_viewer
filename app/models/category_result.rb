@@ -22,8 +22,8 @@ class CategoryResult < ApplicationRecord
 =end
 
   def summary
-    "  %s %2d %-40s (%6d)[%s] | %6.2f %2d / %2d" %
-      [self.category, self.ranking, self.skater.name, self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
+    "  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d" %
+      [self.category, self.ranking, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
   end
 
   class << self
