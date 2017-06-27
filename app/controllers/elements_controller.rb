@@ -7,7 +7,6 @@ class ElementsController < ApplicationController
     model_klass.arel_table[key].send(operator, value.to_f)
   end
 
-
   def filters
     {
       name: ->(col, v) {
@@ -26,14 +25,14 @@ class ElementsController < ApplicationController
       },
       category: ->(col, v)   { col.where(scores: {category: v}) },
       segment: ->(col, v)    { col.where(scores: {segment: v}) },
-      nation: ->(col, v)     { col.includes(score: :skater).where(skaters: {nation: v}) },
+      nation: ->(col, v)     { col.where(skaters: {nation: v}) },
       competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
       isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool }) },
       season: ->(col, v){ col.where(competitions: {season: v}) },
     }
   end
-  def collection
+  def create_collection
     model_klass = controller_name.singularize.camelize.constantize
-    filter(model_klass.includes(:score, score: [:competition, :skater]).recent)
+    model_klass.includes(:score, score: [:competition, :skater]).recent
   end
 end

@@ -14,8 +14,8 @@ class CompetitionsController < ApplicationController
   end
 
   Contract None => ActiveRecord::Relation
-  def collection
-    filter(Competition.recent)
+  def create_collection
+    Competition.recent
   end
   ################################################################
   def show

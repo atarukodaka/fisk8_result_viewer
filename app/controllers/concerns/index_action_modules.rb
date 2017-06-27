@@ -8,35 +8,32 @@ module IndexActionModules
     end
     col
   end
-  def colleciton
-    controller_name.singuralize.constantize.send(:all)
+  def create_collection
+    []
   end
-  def format_html
-    pagination = true
-    col = (pagination) ? collection.page(params[:page]) : collection
-    
+  def format_html(collection)
     render locals: {
-      collection: col.decorate,
-      pagination: pagination,
+      collection: collection.page(params[:page]).decorate,
+      pagination: true,
     }
   end
 
-  def format_json
-    render :index, handlers: :jbuilder, locals: {collection: collection.limit(@max_output)}
+  def format_json(collection, max_output: 1000)
+    render :index, handlers: :jbuilder, locals: {collection: collection.limit(max_output)}
   end
 
-  def format_csv
-    col = collection.limit(@max_output)
+  def format_csv(collection, max_output: 1000)
     @filename = "#{controller_name}.csv"
-    render cvs: :index, handlers: :csvbuilder, locals: { collection: col, }
+    render cvs: :index, handlers: :csvbuilder, locals: { collection: collection.limit(max_output)}
   end
   
   def index
-    @max_output = 1000
+    max_output = 1000
+    collection = filter(create_collection)
     respond_to do |format|
-      format.html { format_html }
-      format.json { format_json }
-      format.csv { format_csv }
+      format.html { format_html(collection) }
+      format.json { format_json(collection, max_output: max_output) }
+      format.csv { format_csv(collection, max_output: max_output) }
     end
   end
 end

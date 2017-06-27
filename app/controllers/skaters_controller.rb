@@ -8,8 +8,8 @@ class SkatersController < ApplicationController
       nation: ->(col, v){ col.where(nation: v) },
     }
   end
-  def collection
-    filter(Skater.order(:category, :name).having_scores)
+  def create_collection
+    Skater.order(:category, :name).having_scores
   end
   ################################################################
   ## show

@@ -103,7 +103,7 @@ module Fisk8ResultViewer
           page = get_url(url)
           page.encoding = 'iso-8859-1'
           page.xpath("//table[1]/tr")[1..-1].map do |row|
-            data = {
+            {
               #ranking: row.xpath("td[1]").text.to_i,
               ranking: 0,
               skater_name: parse_skater_name(row.xpath("td[2]")),

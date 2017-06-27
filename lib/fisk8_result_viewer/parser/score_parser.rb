@@ -14,11 +14,9 @@ module Fisk8ResultViewer
           return []
         end
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
-        #text =~ /^(.*)\n(.*) ((SHORT|FREE) (.*)) JUDGES DETAILS PER SKATER$/
-        scores = []
         text.split(/\f/).map.with_index do |page_text, i|
-          page_text.split(SCORE_DELIMITER)[1..-1].map do |text|
-            parse_score(text).tap do |score|
+          page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
+            parse_score(t).tap do |score|
               score[:result_pdf] = "#{score_url}\#page=#{i+1}";
             end
           end
@@ -29,7 +27,6 @@ module Fisk8ResultViewer
       protected
       def parse_score(text)
         @mode = :skater
-        #@score = ::Score.new
         @score = {elements: [], components: []}
         
         text.split(/\n/).each do |line|
@@ -49,7 +46,6 @@ module Fisk8ResultViewer
         @score
       end
 
-      protected
       def parse_skater(line)
         name_re = %q[[[:alpha:]1\.\- \/\']+]   ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = %q[[A-Z][A-Z][A-Z]]

@@ -11,8 +11,8 @@ class ScoresController < ApplicationController
       season: ->(col, v){ col.where(competitions: {season: v}) },
     }
   end
-  def collection
-    filter(Score.includes(:competition, :skater).recent)
+  def create_collection
+    Score.includes(:competition, :skater).recent
   end
   ################################################################
   def show
