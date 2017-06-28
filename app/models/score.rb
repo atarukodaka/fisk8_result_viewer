@@ -10,6 +10,7 @@ class Score < ApplicationRecord
   belongs_to :category_result, required: false
 
   ## validations
+  validates  :date, presence: true
 
   ## scopes
   scope :recent, ->{ order("date desc") }

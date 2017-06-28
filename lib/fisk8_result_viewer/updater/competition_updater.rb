@@ -74,8 +74,6 @@ module Fisk8ResultViewer
               url = summary.score_url(category, segment)
               date = summary.starting_time(category, segment)
               parser.parse(:score, url).each do |score_hash|
-                #cr = competition.category_results.having_the_score(score_hash).first || binding.pry # raise("cannot find relevant category results: #{category}/#{segment}: #{score_hash[:skater_name]}")
-                #cr = competition.category_results.joins(:skater).where("skaters.name" => score_hash[:skater_name]) ||
                 cr = competition.category_results.search_by_skater_name_or_segment_ranking(skater_name: Skater.correct_name(score_hash[:skater_name]), segment: segment, ranking: score_hash[:ranking]).first || raise
                 ActiveRecord::Base.transaction do
                   score = Score.create_from_hash(score_hash)

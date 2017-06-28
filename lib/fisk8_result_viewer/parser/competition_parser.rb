@@ -123,7 +123,7 @@ module Fisk8ResultViewer
           
           time_schedule << {
             time: tm,
-            category: row.xpath("td[3]").text.squish.upcase.seniorize,
+            category: row.xpath("td[3]").text.squish.upcase.gsub(/^SENIOR /, ''),
             segment: row.xpath("td[4]").text.squish.upcase,
           }
         end
