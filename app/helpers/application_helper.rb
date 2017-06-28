@@ -11,7 +11,7 @@ module LinkToHelper
     text ||= segment || category || competition.name
     link_to(text, {controller: :competitions, action: :show, short_name: competition.short_name, category: category, segment: segment})
   end
-
+  
   def link_to_competition_site(text = "SITE", competition)
     content_tag(:span) do
       concat(link_to(text, competition.site_url, target: "_blank"))

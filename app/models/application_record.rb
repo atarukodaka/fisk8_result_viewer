@@ -3,7 +3,7 @@ module SelectOptions
 
   class_methods do
     def select_options(key)
-      pluck(key).compact.uniq.sort
+      distinct.pluck(key).compact.sort
     end
 
     def create_from_hash(hash, *args)

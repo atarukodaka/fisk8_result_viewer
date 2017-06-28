@@ -13,10 +13,10 @@ class ElementDecorator < EntryDecorator
     h.link_to_score(nil, model.score)
   end
   def ranking
-    model.score.ranking
+    h.link_to_competition(model.score.ranking, model.score.competition, category: model.score.category, segment: model.score.segment)
   end
   def competition_name
-    model.score.competition.name
+    h.link_to_competition(model.score.competition)
   end
   def date
     model.score.date
@@ -25,7 +25,7 @@ class ElementDecorator < EntryDecorator
     model.score.competition.season
   end
   def skater_name
-    model.score.skater.name
+    h.link_to_skater(model.score.skater)
   end
   def nation
     model.score.skater.nation

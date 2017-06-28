@@ -33,6 +33,19 @@ class ElementsController < ApplicationController
   end
   def create_collection
     model_klass = controller_name.singularize.camelize.constantize
-    model_klass.includes(:score, score: [:competition, :skater]).recent
+    model_klass.includes(:score, score: [:competition, :skater]).all
+  end
+  def default_sort_key
+    { key: :value, direction: :desc }
+  end
+  def sort_keys
+    {
+      score_name: "scores.name",
+      competition_name: "competitions.name",
+      date: "scores.date",
+      season: "competitions.season",
+      skater_name: "skaters.name",
+      nation: "skaters.nation",
+    }
   end
 end

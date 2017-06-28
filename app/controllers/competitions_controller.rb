@@ -12,10 +12,13 @@ class CompetitionsController < ApplicationController
       season: ->(col, v) { col.where(season: v) },
     }
   end
-
   Contract None => ActiveRecord::Relation
   def create_collection
-    Competition.recent
+    #Competition.recent
+    Competition.all
+  end
+  def default_sort_key
+    { key: :start_date, direction: :desc }
   end
   ################################################################
   def show

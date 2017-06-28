@@ -12,8 +12,21 @@ class ScoresController < ApplicationController
     }
   end
   def create_collection
-    Score.includes(:competition, :skater).recent
+    #Score.includes(:competition, :skater).recent
+    Score.includes(:competition, :skater).all    
   end
+  def sort_keys
+    {
+      competition_name: "competitions.name",
+      season: "competitions.season",
+      skater_name: "skaters.name",
+      nation: "skaters.nation",
+    }
+  end
+  def default_sort_key
+    { key: :date, direction: :desc }
+  end
+  
   ################################################################
   def show
     score = Score.find_by(name: params[:name]) ||

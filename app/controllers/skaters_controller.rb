@@ -9,7 +9,11 @@ class SkatersController < ApplicationController
     }
   end
   def create_collection
-    Skater.order(:category, :name).having_scores
+    #Skater.order(:category, :name).having_scores
+    Skater.having_scores
+  end
+  def default_sort_key
+    { key: :category, direction: :asc }
   end
   ################################################################
   ## show
