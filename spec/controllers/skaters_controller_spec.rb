@@ -36,7 +36,7 @@ RSpec.describe SkatersController, type: :controller do
   end
   describe 'show/:name' do
     it {
-      get :show_by_name, params: { name: "Skater NAME"}
+      get :show, params: { isu_number: "Skater NAME"}
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')
