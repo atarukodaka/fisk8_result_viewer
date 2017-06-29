@@ -2,8 +2,10 @@ module SelectOptions
   extend ActiveSupport::Concern
 
   class_methods do
-    def select_options(key)
-      distinct.pluck(key).compact.sort
+    def select_options(key, cache_key = nil)
+      cache_key ||= key
+      @_options_cache ||= {}
+      @_options_cache[cache_key] ||= distinct.pluck(key).compact
     end
 
     def create_from_hash(hash, *args)

@@ -4,7 +4,6 @@ require 'open_uri_redirections'
 
 module Fisk8ResultViewer
   module Utils
-   
     def logger
       #@logger ||= Rails.logger
       @logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
@@ -47,12 +46,3 @@ end
 
 ################################################################
 
-class String
-  def seniorize!
-    gsub!(/^JUNIOR +/, '')
-    self
-  end
-  def seniorize
-    dup.seniorize!
-  end
-end

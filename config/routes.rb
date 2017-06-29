@@ -1,25 +1,20 @@
 Rails.application.routes.draw do
   ## home
-  get '/' => 'home#index'
+  root to: 'home#index'
   
   ## skaters
-  scope :skaters do
-    get '/' => 'skaters#index'
-    match ':isu_number' => 'skaters#show', via: :get
-    match ':name/name' => 'skaters#show_by_name', via: :get
-  end
-  
-  ## competitions
-  scope :competitions do
-    get '/' => 'competitions#index'
-    match ':short_name(/:category(/:segment))' => 'competitions#show', via: :get
-  end
+  get '/skaters' => 'skaters#index'
+  get '/skaters/:isu_number' => 'skaters#show', as: :skater
+  #get '/skaters/:name/name' => 'skaters#show_by_name', as: :skater_name
 
-  ## scores
-  scope :scores do
-    get '/' => 'scores#index'
-    match ':name' => 'scores#show', via: :get
-  end
+  ## competitions
+  get '/competitions' => 'competitions#index'
+  get '/competitions/:short_name(/:category(/:segment))' => 'competitions#show', as: :competition
+
+  ## scores##
+  get '/scores' => 'scores#index'
+  get '/scores/:name' => 'scores#show', as: :score
+
   ## elements
   get 'elements' => 'elements#index'
   

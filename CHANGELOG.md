@@ -14,6 +14,11 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.2-pre1
+- sortable list table
+- refine for to_direction and seniorize
+- sitemap
+
 ## 1.0.1 2017/6/25
 
 ## 1.0.1-pre2 2017/6/24

@@ -12,12 +12,7 @@ table.table.table-striped.table-hover.table-condensed.list-table
   tr
     - display_keys.each do |key|
       th
-        - sort_keys = [:sort]
-        - sort_keys << :direction if key == params[:sort].to_s.to_sym
-        =link_to(key.to_s.camelize, params.permit(controller.filters.keys + sort_keys).merge({controller: controller_name, sort: key}))
-        - if params[:sort] == key.to_s
-          - updown = (params[:direction] == 'asc') ? :up : :down
-          i(class = "glyphicon glyphicon-arrow-#{updown}")
+        = link_to_table_header(key)
     - collection.each do |item|
       tr
         - display_keys.each do |key|

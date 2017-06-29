@@ -1,3 +1,5 @@
+using Seniorize
+
 module Fisk8ResultViewer
   module Updater
     class CompetitionUpdater

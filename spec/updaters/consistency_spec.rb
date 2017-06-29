@@ -16,5 +16,15 @@ RSpec.describe 'database consistency', consistency: true do
       expect(score.tes).to be_within(0.001).of(score.elements.sum(:value))
     end
   end
+  it 'competition short name uniq' do
+    count = Competition.count
+    uniq_short_name_count = Competition.distinct.pluck(:short_name).count
+    expect(count).to eq(uniq_short_name_count)
+  end
+  it 'score name uniq' do
+    count = Score.count
+    uniq_name_count = Score.distinct.pluck(:name).count
+    expect(count).to eq(uniq_name_count)
+  end
 end
 

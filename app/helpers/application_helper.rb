@@ -1,15 +1,16 @@
+using ToDirection
+
 module LinkToHelper
   def link_to_skater(text = nil, skater, params: {})
-    link_to(text || skater[:name],
-            if skater[:isu_number]
-              {controller: :skaters, action: :show, isu_number: skater[:isu_number]}
-            else
-              {controller: :skaters, action: :show_by_name, name: skater[:name]}
-            end.merge(params))
+    link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
   end
+
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
     text ||= segment || category || competition.name
-    link_to(text, {controller: :competitions, action: :show, short_name: competition.short_name, category: category, segment: segment})
+
+    lt = link_to(text, competition_path(competition.short_name, category, segment))
+    #(competition.isu_championships && category.nil?) ? content_tag(:b, lt) : lt
+    (competition.isu_championships && category.nil?) ? lt : content_tag(:i, lt)
   end
   
   def link_to_competition_site(text = "SITE", competition)
@@ -22,7 +23,8 @@ module LinkToHelper
   def link_to_score(text = nil, score)
     name = (score.class == Score) ? score.name : score
 
-    (name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
+    (name.nil?) ? text : link_to(text || name, score_path(name))
+    #(name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
@@ -41,6 +43,22 @@ module LinkToHelper
   def link_to_pdf(url, target: "_blank")
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
     link_to(image_tag(img_url), url, target: target)
+  end
+  def link_to_table_header(header)
+    query = params.permit(controller.filters.keys).to_hash.symbolize_keys.merge({sort: header})
+    if params[:sort] == header.to_s
+      direction = params[:direction].to_direction
+      query.merge!({direction: direction.opposit})
+      updown = (direction.current == :asc) ? :down : :up
+      content_tag(:span) do
+        link_to(query) do
+          concat(header.to_s.camelize)
+          concat(content_tag(:i, nil, :class => "glyphicon glyphicon-arrow-#{updown}"))
+        end
+      end
+    else
+      link_to(header.to_s.camelize, query)
+    end
   end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
@@ -94,18 +112,15 @@ module FilterFormHelper
         when :category
           sort_with_preset(Score.select_options(:category), ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
         when :segment
-          #Score.pluck(:segment).compact.uniq.sort
-          Score.select_options(:segment)
+          Score.select_options(:segment).sort
         when :nation
-          #Score.pluck(:nation).compact.uniq.sort
-          Score.select_options(:nation)
+          Score.select_options(:nation).sort
         when :competition_name
-          #Score.recent.pluck(:competition_name).compact.uniq
-          #Score.recent.select_options(:competition_name)
-          Competition.recent.pluck(:name).compact
+          Competition.recent.select_options(:name, :competition_name).sort
+        when :competition_type
+          Competition.select_options(:competition_type).sort
         when :season
-          #Competition.pluck(:season).compact.uniq.sort.reverse
-          Competition.select_options(:season).reverse
+          Competition.select_options(:season).sort.reverse
         end
     end
     select_tag key, options_for_select(col.unshift(nil), selected: params[key])

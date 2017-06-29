@@ -14,7 +14,7 @@ class Competition < ApplicationRecord
   scope :recent, ->(){ order("start_date desc")  }
   scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
   scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
-  
+    
   ## class methods
   class << self
     def destroy_existings_by_url(url)
@@ -22,6 +22,16 @@ class Competition < ApplicationRecord
         Competition.where(site_url: url).map(&:destroy)
       }
     end
+=begin
+    def options(key)
+      case key
+      when :competition_type
+        @_option_competition_type ||= pluck(key).sort.uniq
+      when :season
+        @_option_season ||= pluck(key).sort.reverse.uniq
+      end
+    end
+=end
   end
   private
   def set_short_name

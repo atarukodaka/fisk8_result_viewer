@@ -1,3 +1,5 @@
+using ToDirection
+
 module IndexActionModules
   def filters
     {}
@@ -36,17 +38,12 @@ module IndexActionModules
   end
   def sort(collection)
     if (sort = params[:sort]) && (sort_keys.keys.include?(sort.to_sym) || collection.column_names.include?(sort))
-      direction =
-        if sort == params[:sort]
-         (params[:direction] == 'desc') ? 'desc' : 'asc'
-        else
-          'asc'
-        end
+      direction = (sort == params[:sort]) ? params[:direction].to_direction.current : :asc
     end
     sort ||= default_sort_key[:key]
     direction ||= default_sort_key[:direction]
     sort_key_with_table = sort_keys[sort.to_sym] || [collection.table.name, sort].join('.')
-    params[:direction] = (direction == 'asc') ? 'desc' : 'asc'
+    params[:direction] = direction
     collection = collection.order([sort_key_with_table, direction].join(' '))
   end
   def index
