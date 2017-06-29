@@ -10,7 +10,7 @@ module LinkToHelper
 
     lt = link_to(text, competition_path(competition.short_name, category, segment))
     #(competition.isu_championships && category.nil?) ? content_tag(:b, lt) : lt
-    (competition.isu_championships && category.nil?) ? lt : content_tag(:i, lt)
+    (competition.isu_championships) ? lt : content_tag(:i, lt)
   end
   
   def link_to_competition_site(text = "SITE", competition)

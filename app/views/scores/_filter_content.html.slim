@@ -3,12 +3,13 @@
 = form_group("Category / Segment") do
   = select_tag_with_options(:category)
   label -
-  =  select_tag_with_options(:segment)
+  = select_tag_with_options(:segment)
     
 = form_group("Nation", select_tag_with_options(:nation))
 
 = form_group("Competition") do
-  = select_tag_with_options(:competition_name)
+  /= select_tag_with_options(:competition_name)
+  = text_field_tag(:competition_name, params[:competition_name], size: 70)
   label ISU Championships Only
   = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
 

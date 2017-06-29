@@ -121,4 +121,8 @@ end
 require 'simplecov'
 require 'codecov'
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'spec/updaters/consistency_spec.rb'
+  add_filter 'config/initializers/direction.rb'
+end
+
