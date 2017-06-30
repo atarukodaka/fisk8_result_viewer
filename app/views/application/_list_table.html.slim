@@ -5,15 +5,24 @@
 - display_keys ||= collection.column_names
 
 script
-  | jQuery(function($){ $("#list_table").DataTable({
-    "bProcessing": true,
-    "bServerSide": true,
-    "sAjaxSource": $('#list_table').data('source'),
-    "columns": #{display_keys.map {|column| {data: column}}.to_json.html_safe}
-    }); });
+  | jQuery(function($){ 
+      $("#list_table").DataTable({
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": $('#list_table').data('source'),
+        "columns": #{display_keys.map {|column| {data: column}}.to_json.html_safe}
+      }); 
+      $('input#name').on('keyup change', function(){
+        $('#list_table').DataTable().column(1).search(this.value).draw();
+      });
+
+    });
+
 
 div
   = page_entries_info collection if pagination
+
+/= text_field_tag(:name, nil,size: 70)
 
 table.table.table-striped.table-hover.table-condensed.list-table#list_table data-source="#{url_for(action: :index, format: :json, params: params.permit!)}"
   thead

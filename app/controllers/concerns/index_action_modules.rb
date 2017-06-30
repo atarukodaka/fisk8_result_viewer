@@ -63,9 +63,13 @@ module IndexActionModules
      {ranking: "ranking"}, {skater_name: "skaters.name"}, {nation: "skaters.nation"},
      {tss: "tss"}, {tes: "tes"}, {pcs: "pcs"}, {deductions: "deductions"}, {base_value: "base_value"}]
   end
-  
+
+  def search(collection)
+    collection
+  end
   def format_json(collection, max_output: 1000)
-    col = collection.order("#{sort_column} #{sort_direction}").page(page).per(per).decorate
+    col = search(collection)
+    col = col.order("#{sort_column} #{sort_direction}").page(page).per(per).decorate
     #render :index, handlers: :jbuilder, locals: {collection: col}
     render json: {
       iTotalRecords: collection.model.count,
@@ -73,7 +77,6 @@ module IndexActionModules
       data: col.map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h },
     }
   end
-
   def sort_column
     #collection.decorate.column_names[params[:iSortCol_0].to_i]
     #columns[params[:iSortCol_0].to_i].values.first

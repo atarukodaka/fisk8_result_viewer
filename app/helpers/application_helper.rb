@@ -105,7 +105,7 @@ module FilterFormHelper
       #concat(yield) if block_given?
     end
   end
-  def select_tag_with_options(key, col = nil)
+  def select_tag_with_options(key, col = nil, options: {})
     if col.nil?
       col =
         case key
@@ -123,7 +123,10 @@ module FilterFormHelper
           Competition.select_options(:season).sort.reverse
         end
     end
-    select_tag key, options_for_select(col.unshift(nil), selected: params[key])
+    select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), options)
+  end
+  def ajax_search(column_number)
+    "$('#list_table').DataTable().column(#{column_number}).search(this.value).draw();"
   end
 end
 
