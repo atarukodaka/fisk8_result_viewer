@@ -1,4 +1,4 @@
-= form_group(:name, text_field_tag(:name, params[:name], size: 70))
-= form_group(:category, select_tag_with_options(:category))
-= form_group(:nation, select_tag_with_options(:nation))
+= form_group(:name, text_field_tag(:name, params[:name], size: 70, onkeyup: ajax_search(:name)))
+= form_group(:category, select_tag_with_options(:category, options: { onchange: ajax_search(:category)}))
+= form_group(:nation, text_field_tag(:nation, params[:nation], onkeyup: ajax_search(:nation)))
 

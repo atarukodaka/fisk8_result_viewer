@@ -1,9 +1,9 @@
-= form_group("Name", text_field_tag(:name, params[:name], size: 70, onkeyup: ajax_search(1)))
-= form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70, onkeyup: ajax_search(2)))
+= form_group("Name", text_field_tag(:name, params[:name], size: 70, onkeyup: ajax_search(:name)))
+= form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70, onkeyup: ajax_search(:site_url)))
 = form_group("Competition Type") do
-  = select_tag_with_options(:competition_type)
+  = select_tag_with_options(:competition_type, options: {onchange: ajax_search(controller.columns.keys.index(:competition_type))})
 
   label ISU Championships Only: 
   = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
 
-= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(6)}))
+= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(:season)}))

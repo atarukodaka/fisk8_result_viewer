@@ -114,7 +114,7 @@ module FilterFormHelper
         when :segment
           Score.select_options(:segment).sort
         when :nation
-          Score.select_options(:nation).sort
+          Skater.select_options(:nation).sort
         when :competition_name
           Competition.recent.select_options(:name, :competition_name).sort
         when :competition_type
@@ -125,8 +125,8 @@ module FilterFormHelper
     end
     select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), options)
   end
-  def ajax_search(column_number)
-    "$('#list_table').DataTable().column(#{column_number}).search(this.value).draw();"
+  def ajax_search(key)
+    "$('#list_table').DataTable().column(#{controller.columns.keys.index(key)}).search(this.value);"  # draw();
   end
 end
 

@@ -24,18 +24,6 @@ class CompetitionsController < ApplicationController
       start_date: "start_date", end_date: "end_date",
     }
   end
-  def search(collection)
-    if params[:sSearch_1].present?
-      collection = collection.where('name like ?', "%#{params[:sSearch_1]}%")
-    end
-    if params[:sSearch_2].present?
-      collection = collection.where('site_url like ?', "%#{params[:sSearch_2]}%")
-    end
-    if params[:sSearch_6].present?
-      collection = collection.where(season: params[:sSearch_6])
-    end
-    collection
-  end
   ################################################################
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)

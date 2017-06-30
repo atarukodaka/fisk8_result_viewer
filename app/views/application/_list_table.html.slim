@@ -9,13 +9,11 @@ script
       $("#list_table").DataTable({
         "bProcessing": true,
         "bServerSide": true,
+        "bFilter": false,
+        "pageLength": 10,
         "sAjaxSource": $('#list_table').data('source'),
         "columns": #{display_keys.map {|column| {data: column}}.to_json.html_safe}
       }); 
-      $('input#name').on('keyup change', function(){
-        $('#list_table').DataTable().column(1).search(this.value).draw();
-      });
-
     });
 
 
