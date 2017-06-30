@@ -6,7 +6,7 @@
 h2= controller_name.camelize
 
 // filter form
-= form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :skaters_filter_form do |f|
+= form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|
   = render partial: "filter_content"
   = form_group("Format", select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format])))
   = form_group(nil, submit_tag("Search", id: "submit", name: nil))
