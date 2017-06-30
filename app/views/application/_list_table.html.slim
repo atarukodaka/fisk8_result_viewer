@@ -9,7 +9,7 @@ script
       $("#list_table").DataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "bFilter": false,
+        "bFilter": true,
         "pageLength": 10,
         "sAjaxSource": $('#list_table').data('source'),
         "columns": #{display_keys.map {|column| {data: column}}.to_json.html_safe}
