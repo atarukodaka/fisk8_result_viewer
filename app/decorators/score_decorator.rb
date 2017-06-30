@@ -1,4 +1,4 @@
-class ScoresDecorator < EntriesDecorator
+class ScoresDecorator < Draper::CollectionDecorator
   def column_names
     [:name, :competition_name, :category, :segment, :season, :date, :result_pdf,
      :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]

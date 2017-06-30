@@ -4,23 +4,25 @@ Rails.application.routes.draw do
   
   ## skaters
   get '/skaters' => 'skaters#index'
+  get '/skaters/list' => 'skaters#list'
   get '/skaters/:isu_number' => 'skaters#show', as: :skater
   #get '/skaters/:name/name' => 'skaters#show_by_name', as: :skater_name
 
   ## competitions
   get '/competitions' => 'competitions#index'
+  get '/competitions/list' => 'competitions#list'
   get '/competitions/:short_name(/:category(/:segment))' => 'competitions#show', as: :competition
 
   ## scores##
   get '/scores' => 'scores#index'
+  get '/scores/list' => 'scores#list'
   get '/scores/:name' => 'scores#show', as: :score
 
   ## elements
   get 'elements' => 'elements#index'
+  get '/elements/list' => 'elements#list'
   
   ## components
   get 'components' => 'components#index'
-  
-  ## top
-  #get '/' => 'scores#index'
+  get '/components/list' => 'components#list'
 end

@@ -1,3 +1,4 @@
+################################################################
 class CompetitionsController < ApplicationController
   include ApplicationHelper
   include Contracts
@@ -14,11 +15,14 @@ class CompetitionsController < ApplicationController
   end
   Contract None => ActiveRecord::Relation
   def create_collection
-    #Competition.recent
     Competition.all
   end
-  def default_sort_key
-    { key: :start_date, direction: :desc }
+  def columns
+    {
+      short_name: "short_name", name: "name", site_url: "site_url", city: "city",
+      country: "country", competition_type: "competition_type", season: "season",
+      start_date: "start_date", end_date: "end_date",
+    }
   end
   ################################################################
   def show

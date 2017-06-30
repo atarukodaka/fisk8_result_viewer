@@ -15,16 +15,13 @@ class ScoresController < ApplicationController
     #Score.includes(:competition, :skater).recent
     Score.includes(:competition, :skater).all    
   end
-  def sort_keys
+  def columns
     {
-      competition_name: "competitions.name",
-      season: "competitions.season",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
+      name: "name", competition_name: "competitions.name", category: "category",
+      segment: "segment", season: "season", date: "date", result_pdf: "result_pdf",
+      ranking: "ranking", skater_name: "skaters.name", nation: "skaters.nation",
+      tss: "tss", tes: "tes", pcs: "pcs", deductions: "deductions", base_value: "base_value"
     }
-  end
-  def default_sort_key
-    { key: :date, direction: :desc }
   end
   
   ################################################################

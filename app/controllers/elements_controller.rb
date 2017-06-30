@@ -35,17 +35,17 @@ class ElementsController < ApplicationController
     model_klass = controller_name.singularize.camelize.constantize
     model_klass.includes(:score, score: [:competition, :skater]).all
   end
-  def default_sort_key
-    { key: :value, direction: :desc }
-  end
-  def sort_keys
+  def columns
     {
       score_name: "scores.name",
       competition_name: "competitions.name",
       date: "scores.date",
       season: "competitions.season",
+      ranking: "scores.ranking",
       skater_name: "skaters.name",
       nation: "skaters.nation",
+      number: "number", name: "elements.name", credit: "credit", info: "info",
+      base_value: "elements.base_value", goe: "goe", judges: "judges", value: "value",
     }
   end
 end

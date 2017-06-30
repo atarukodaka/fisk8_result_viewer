@@ -12,8 +12,10 @@ class SkatersController < ApplicationController
     #Skater.order(:category, :name).having_scores
     Skater.having_scores
   end
-  def default_sort_key
-    { key: :category, direction: :asc }
+  def columns
+    {
+      name: "name", nation: "nation", category: "category", isu_number: "isu_number",
+    }
   end
   ################################################################
   ## show

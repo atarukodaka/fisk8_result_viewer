@@ -7,4 +7,18 @@ class ComponentsController < ElementsController #  ApplicationController
       }
     }.merge(score_filters)
   end
+  def columns
+    {
+      score_name: "scores.name",
+      competition_name: "competitions.name",
+      date: "scores.date",
+      season: "competitions.season",
+      ranking: "scores.ranking",
+      skater_name: "skaters.name",
+      nation: "skaters.nation",
+      number: "number", name: "components.name", factor: "factro",
+      judges: "judges", value: "value",
+    }
+  end
+
 end
