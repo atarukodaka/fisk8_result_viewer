@@ -1,10 +1,16 @@
-class DataTable < FilterTable
-  def initialize(initial_collection, columns, filters: {}, params: {}, default_order: [:name, :asc])
-    super(initial_collection, columns, filters: filters,  params: params)
+class Datatable < Listtable
+  attr_accessor :filters, :params
+  def initialize(initial_collection, columns, filters: {}, params: {}, default_order: [:name, :asc], paging: false)
+    super(initial_collection, columns)
+    @filters = filters
+    @params = params
     @default_order = default_order
+    @paging = paging
   end
   def fetch_collection
-    filter(@initial_collection).order(sort_sql).page(page).per(per)
+    col = filter(super)
+    col = col.order(sort_sql) if sort_sql.present?
+    (paging?) ? col.page(page).per(per) : col
   end
   def filter(col)
     filters.each do |key, pr|
@@ -22,6 +28,13 @@ class DataTable < FilterTable
   def per
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
   end
+  def paging?
+    @paging
+  end
+  def paging(flag)
+    @paging = flag
+    self
+  end
   ## for sorting
   def default_order
     key, direction = @default_order
@@ -30,6 +43,7 @@ class DataTable < FilterTable
     "[#{num.to_i}, '#{direction.to_s}']".html_safe
   end
   def sort_sql
+    return "" if params[:iSortCol_0].blank?
     [sort_column, sort_direction].join(' ')
   end
   def sort_column

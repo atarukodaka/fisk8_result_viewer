@@ -27,7 +27,7 @@
 
 h2 Competition Results
 
-= render partial: "data_table", locals: { table: ListTable.new(competition_results, [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]), decorate: true, page_length: 25}
+= render partial: "data_table", locals: { table: Datatable.new(competition_results, [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]), decorate: true, page_length: 25}
 /= render partial: "list_table", locals: {collection: competition_results, display_keys: [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]} 
 
 .row

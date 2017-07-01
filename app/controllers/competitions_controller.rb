@@ -17,14 +17,6 @@ class CompetitionsController < ApplicationController
   def create_collection
     Competition.all
   end
-  def create_datatable
-    cols = {
-      short_name: "short_name", name: "name", site_url: "site_url", city: "city",
-      country: "country", competition_type: "competition_type", season: "season",
-      start_date: "start_date", end_date: "end_date",
-    }
-    DataTable.new(collection, cols, default_order: [:start_date, :desc])
-  end
   def columns
     {
       short_name: "short_name", name: "name", site_url: "site_url", city: "city",
@@ -45,9 +37,9 @@ class CompetitionsController < ApplicationController
         category: category,
         segment: segment,
         competition: competition,
-        category_summaries: ListTable.new(CategorySummary.create_summaries(competition), [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]),
-        category_results: (ListTable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]) if category && segment.blank?),
-        segment_scores: (ListTable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]) if segment),
+        category_summaries: Datatable.new(CategorySummary.create_summaries(competition), [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]),
+        category_results: (Datatable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]) if category && segment.blank?),
+        segment_scores: (Datatable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]) if segment),
       }   # dont compact which can take category, segment out
 
       format.html {

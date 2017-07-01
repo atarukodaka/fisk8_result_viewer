@@ -24,7 +24,6 @@ table.table.table-striped.table-hover.table-condensed
 h2 Category Summary
 
 = render partial: "list_table", locals: {table: category_summaries, decorate: true}
-/- list_table = ListTable.new(params, category_summaries.decorate,  [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd])
 /= render partial: "list_table", locals: { datatable: list_table}
 /= render partial: "list_table", locals: { collection: category_summaries.decorate, display_keys: [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd] }
 

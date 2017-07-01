@@ -1,4 +1,4 @@
-class ListTable
+class Listtable
   attr_reader :collection, :columns
   def initialize(initial_collection, columns)
     @initial_collection = initial_collection

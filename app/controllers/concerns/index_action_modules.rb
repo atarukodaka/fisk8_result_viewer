@@ -3,13 +3,11 @@ module IndexActionModules
   def list
     respond_to do |format|
       format.json {
-        collection = create_collection()
-        table = DataTable.new(collection, columns, params: params, filters: filters)
-        collection = table.collection
+        table = Datatable.new(collection, columns, params: params, filters: filters, paging: true)
         render json: {
-          iTotalRecords: collection.model.count,
-          iTotalDisplayRecords: collection.total_count,
-          data: collection.decorate.map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h },
+          iTotalRecords: table.collection.model.count,
+          iTotalDisplayRecords: table.collection.total_count,
+          data: table.collection.decorate.map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h },
         }
       }
     end
@@ -29,22 +27,18 @@ module IndexActionModules
   end
 
   def create_datatable
-    DataTable.new(collection, columns)
+    Datatable.new(collection, columns)
   end
   def index
-    #collection = create_collection()
-    
     respond_to do |format|
+      table = create_datatable
       format.html {
-        datatable = create_datatable
-        render locals: { table: datatable } 
+        render locals: { table: table.paging(true) }
       }
       format.json {
-        table = FilterTable.new(collection, columns, filters: filters, params: params)
         render json: table.collection.limit(1000).map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h }.as_json
       }
       format.csv {
-        table = FilterTable.new(collection, columns, filters: filters, params: params)
         csv = CSV.generate(headers: columns.keys, write_headers: true) do |csv|
           table.collection.limit(1000).each do |row|
             csv << columns.keys.map {|k| row.send(k)}

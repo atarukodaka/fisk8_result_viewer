@@ -1,11 +1,11 @@
-// locals: table, ajax
+// locals: table
 
+- table || raise('no table given')
 - table_id ||= 'datatable'   
 - ajax ||= false
 - decorate ||= false
 - page_length ||= 10
-- disable_paging ||= false
-- default_order ||= nil
+- default_order ||= nil # table.default_order
 
 script
   | jQuery(function($){ 
@@ -14,10 +14,8 @@ script
     |   "order": [#{default_order}],
   |     "bProcessing": true,
         "bFilter": true,
-  - if disable_paging
-    |   "paging": false,
-  - else
-    |   "pageLength": #{page_length},
+  |     "paging": #{table.paging?},
+  |     "pageLength": #{page_length},
   - if ajax
     |    "bServerSide": true,
     |    "sAjaxSource": $("##{table_id}").data('source'),

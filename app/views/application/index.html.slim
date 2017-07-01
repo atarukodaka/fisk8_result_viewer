@@ -12,5 +12,5 @@ h2= controller_name.camelize
   = form_group(nil, submit_tag("Search", id: "submit", name: nil))
 
 // ajax list table
-= render partial: "data_table", locals: { table: table, decorate: true, ajax: true, default_order: table.default_order}
+= render partial: "data_table", locals: { table: table, decorate: true, ajax: true}
 
