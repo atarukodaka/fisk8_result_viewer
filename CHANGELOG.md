@@ -3,7 +3,8 @@
   - caching
 - spec: autosave, cr saves skater
 - factorygirls
-
+- DataTable => Datatable
+- default_order
   
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -18,6 +19,7 @@
 - sortable list table
 - refine for to_direction and seniorize
 - sitemap
+- ajax support
 
 ## 1.0.1 2017/6/25
 

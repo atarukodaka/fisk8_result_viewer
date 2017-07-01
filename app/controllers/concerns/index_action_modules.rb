@@ -24,12 +24,19 @@ module IndexActionModules
   def create_collection
     raise "should be implemented in derived class"
   end
+  def collection
+    @collection ||= create_collection
+  end
+
+  def create_datatable
+    DataTable.new(collection, columns)
+  end
   def index
-    collection = create_collection()
+    #collection = create_collection()
     
     respond_to do |format|
       format.html {
-        datatable = ListTable.new(collection, columns)
+        datatable = create_datatable
         render locals: { table: datatable } 
       }
       format.json {

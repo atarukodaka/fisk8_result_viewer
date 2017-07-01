@@ -1,15 +1,18 @@
 // locals: table, ajax
 
-- table_id ||= 'table'   
+- table_id ||= 'datatable'   
 - ajax ||= false
 - decorate ||= false
 - page_length ||= 10
 - disable_paging ||= false
+- default_order ||= nil
 
 script
   | jQuery(function($){ 
      $("##{table_id}").DataTable({
-        "bProcessing": true,
+  - if default_order
+    |   "order": [#{default_order}],
+  |     "bProcessing": true,
         "bFilter": true,
   - if disable_paging
     |   "paging": false,
