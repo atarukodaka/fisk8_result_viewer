@@ -34,7 +34,7 @@ h2 Category Summary
     h2 
       | Category Result of 
       = category
-    = render partial: "list_table", locals: { table: category_results, decorate: true }
+    = render partial: "data_table", locals: { table: category_results, decorate: true, table_id: "category_table", page_length: 50 }
     /= render partial: "list_table", locals: { collection: category_results.decorate, display_keys: [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss] }
 
   - else
@@ -42,6 +42,6 @@ h2 Category Summary
     h2 
       | Segment Result of 
       = [category, segment].join('/')
-    = render partial: "list_table", locals: { table: segment_scores, decorate: true }
+    = render partial: "data_table", locals: { table: segment_scores, decorate: true, table_id: "segment_table", page_length: 50 }
     /= render partial: "list_table", locals: { collection: segment_scores.decorate, display_keys: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary] }
 

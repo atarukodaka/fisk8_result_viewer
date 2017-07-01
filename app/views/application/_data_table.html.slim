@@ -1,27 +1,42 @@
-// locals: table
+// locals: table, ajax
 
-- list_table_id = 'list_table'   
+- table_id ||= 'table'   
+- ajax ||= false
+- decorate ||= false
+- page_length ||= 10
+- disable_paging ||= false
 
 script
   | jQuery(function($){ 
-      $("##{list_table_id}").DataTable({
+     $("##{table_id}").DataTable({
         "bProcessing": true,
-        "bServerSide": true,
         "bFilter": true,
-        "pageLength": 10,
-        "sAjaxSource": $("##{list_table_id}").data('source'),
-        "columns": #{table.columns.keys.map {|column| {data: column}}.to_json.html_safe}
+  - if disable_paging
+    |   "paging": false,
+  - else
+    |   "pageLength": #{page_length},
+  - if ajax
+    |    "bServerSide": true,
+    |    "sAjaxSource": $("##{table_id}").data('source'),
+  |      "columns": #{table.columns.keys.map {|column| {data: column}}.to_json.html_safe},
       }); 
     });
 
 - column_names = table.columns.keys
 - data_source = url_for(action: :list, controller: controller_name, format: :json, params: params.permit!)
 
-table.table.table-striped.table-hover.table-condensed id="#{list_table_id}" data-source="#{data_source}"
+table.table.table-striped.table-hover.table-condensed id="#{table_id}" data-source="#{data_source}"
   thead
     tr
       - column_names.each do |key|
         th= key.to_s.camelize
   tbody
+    - unless ajax
+      - collection = (decorate) ? table.collection.decorate : table.collection
+      - collection.each do |item|
+        tr
+          - column_names.each do |key|
+            td= item.send(key)
+
 
 

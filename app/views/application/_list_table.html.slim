@@ -8,12 +8,11 @@
 
 - collection = collection.decorate if decorate
 
-table.table.table-striped.table-hover.table-condensed#list_table
+table.table.table-striped.table-hover.table-condensed.list_table
   thead
     tr
       - column_names.each do |key|
         th= key.to_s.camelize
-          /= link_to_table_header(key)
   tbody
     - collection.each do |item|
       tr

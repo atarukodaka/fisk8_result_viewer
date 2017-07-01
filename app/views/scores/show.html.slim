@@ -21,12 +21,12 @@ h2 Score
         
 h2 Elements
 
-= render partial: "list_table", locals: { table: ListTable.new(score.elements, [:number, :name, :info, :base_value, :credit, :goe, :judges, :value]) }
+= render partial: "data_table", locals: { table: ListTable.new(score.elements, [:number, :name, :info, :base_value, :credit, :goe, :judges, :value]) , table_ld: "elements_table", disable_paging: true }
 /= render partial: "list_table", locals: { display_keys: [:number, :name, :info, :base_value, :credit, :goe, :judges, :value] , collection: EntryDecorator.decorate_collection(score.elements) }
 
 h2 Components
 
-= render partial: "list_table", locals: { table: ListTable.new(score.components, [:number, :name, :factor, :judges, :value]) }
+= render partial: "data_table", locals: { table: ListTable.new(score.components, [:number, :name, :factor, :judges, :value]), table_id: "components_id", disable_paging: true }
 /= render partial: "list_table", locals: { display_keys: [:number, :name, :factor, :judges, :value] , collection: EntryDecorator.decorate_collection(score.components) }
 
 - if score.deductions.to_f < 0
