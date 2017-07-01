@@ -126,7 +126,7 @@ module FilterFormHelper
     select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), options)
   end
   def ajax_search(key)
-    "$('#list_table').DataTable().column(#{controller.columns.keys.index(key)}).search(this.value).draw();"  # draw();
+    "$('#datatable').DataTable().column(#{controller.columns.keys.index(key)}).search(this.value).draw();"  # draw();
   end
 end
 

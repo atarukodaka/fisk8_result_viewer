@@ -5,6 +5,7 @@
 - factorygirls
 - DataTable => Datatable
 - default_order
+- datatable id: consistency btw ajax_search() and render => settings
   
 ### new feature
 - embed youtube in score (or just link to search page ?)
