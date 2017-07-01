@@ -1,9 +1,9 @@
-= form_group("Element", text_field_tag(:name, params[:name], size: 70, onkeyup: ajax_search(:name)))
+= form_group("Element", text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name)))
 = form_group("perfect match", check_box_tag(:perfect_match, "true", params[:perfect_match].present?))
 
 = form_group("GOE") do
   = select_tag(:goe_operator, options_for_select(['=', '<', '<=', '>', '>='], params[:goe_operator]))
-  = text_field_tag(:goe, params[:goe], size: 60, onkeyup: ajax_search(:goe))
+  = text_field_tag(:goe, params[:goe], size: 60, onchange: ajax_search(:goe))
 
 hr
 

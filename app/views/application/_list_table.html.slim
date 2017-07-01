@@ -1,39 +1,15 @@
-// locals: collection, display_keys(optional), pagination(optional)
-
-- collection ||= []
-- pagination ||= false
-- display_keys ||= collection.column_names
-
-script
-  | jQuery(function($){ 
-      $("#list_table").DataTable({
-        "bProcessing": true,
-        "bServerSide": true,
-        "bFilter": true,
-        "pageLength": 10,
-        "sAjaxSource": $('#list_table').data('source'),
-        "columns": #{display_keys.map {|column| {data: column}}.to_json.html_safe}
-      }); 
-    });
-
-
-div
-  = page_entries_info collection if pagination
-
-/= text_field_tag(:name, nil,size: 70)
+/- display_keys ||= collection.column_names
+- display_keys ||= controller.column_names
 
 table.table.table-striped.table-hover.table-condensed.list-table#list_table data-source="#{url_for(action: :index, format: :json, params: params.permit!)}"
   thead
     tr
-      - controller.columns.keys.each do |key|
-        th= key.to_s.camelize
-      /- display_keys.each do |key|
+      - display_keys.each do |key|
         th= key.to_s.camelize
           /= link_to_table_header(key)
   tbody
-    /- collection.each do |item|
+    - collection.each do |item|
       tr
         - display_keys.each do |key|
           td= item.send(key)
 
-= paginate(collection) if pagination

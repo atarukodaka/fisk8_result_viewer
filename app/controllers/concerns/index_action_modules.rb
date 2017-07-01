@@ -15,7 +15,7 @@ module IndexActionModules
   end
   def format_html(collection)
     render locals: {
-      collection: collection.decorate, # collection.page(params[:page]).decorate,
+      collection: collection.page(params[:page]).decorate, # collection.page(params[:page]).decorate,
       pagination: false,
     }
   end
@@ -37,13 +37,14 @@ module IndexActionModules
   end
   ################################################################
   # json ajax
+=begin
   def _columns
     [{name: "name"}, {competition_name: "competitions.name"}, {category: "category"},
      {segment: "segment"}, {season: "season"}, {date: "date"}, {result_pdf: "result_pdf"},
      {ranking: "ranking"}, {skater_name: "skaters.name"}, {nation: "skaters.nation"},
      {tss: "tss"}, {tes: "tes"}, {pcs: "pcs"}, {deductions: "deductions"}, {base_value: "base_value"}]
   end
-
+=end
   def search(col)
     filters.each do |key, pr|
       column_number = columns.keys.index(key)
@@ -63,8 +64,6 @@ module IndexActionModules
     }
   end
   def sort_column
-    #collection.decorate.column_names[params[:iSortCol_0].to_i]
-    #columns[params[:iSortCol_0].to_i].values.first
     columns.values[params[:iSortCol_0].to_i]
   end
   def sort_direction
