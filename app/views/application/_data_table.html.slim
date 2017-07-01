@@ -1,31 +1,27 @@
-// locals: datatable
+// locals: table
 
-/ - list_table_id = 'list_table'   
+- list_table_id = 'list_table'   
 
 script
   | jQuery(function($){ 
-      $("#list_table").DataTable({
+      $("##{list_table_id}").DataTable({
         "bProcessing": true,
         "bServerSide": true,
         "bFilter": true,
         "pageLength": 10,
-        "sAjaxSource": $('#list_table').data('source'),
-        "columns": #{datatable.columns.keys.map {|column| {data: column}}.to_json.html_safe}
+        "sAjaxSource": $("##{list_table_id}").data('source'),
+        "columns": #{table.columns.keys.map {|column| {data: column}}.to_json.html_safe}
       }); 
     });
 
-- keys = datatable.columns.keys
+- column_names = table.columns.keys
 - data_source = url_for(action: :list, controller: controller_name, format: :json, params: params.permit!)
-table.table.table-striped.table-hover.table-condensed.list-table#list_table data-source="#{data_source}"
 
+table.table.table-striped.table-hover.table-condensed id="#{list_table_id}" data-source="#{data_source}"
   thead
     tr
-      - keys.each do |key|
+      - column_names.each do |key|
         th= key.to_s.camelize
   tbody
-/   - datatable.collection.each do |item|
-      tr
-        - keys.each do |key|
-          td= item.send(key)
 
 

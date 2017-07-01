@@ -1,4 +1,5 @@
 module IndexActionModules
+  ## for ajax request
   def list
     respond_to do |format|
       format.json {
@@ -29,7 +30,7 @@ module IndexActionModules
     respond_to do |format|
       format.html {
         datatable = ListTable.new(collection, columns)
-        render locals: { datatable: datatable } 
+        render locals: { table: datatable } 
       }
       format.json {
         table = FilterTable.new(collection, columns, filters: filters, params: params)
