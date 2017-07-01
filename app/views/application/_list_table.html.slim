@@ -1,15 +1,22 @@
-/- display_keys ||= collection.column_names
-- display_keys ||= datatable.columns.keys
+- if defined? table
+  - column_names ||= table.columns.keys
+  - collection ||= table.collection
+- else
+  - column_names ||= []
+  - collection ||= []
+- decorate ||= false
+
+- collection = collection.decorate if decorate
 
 table.table.table-striped.table-hover.table-condensed#list_table
   thead
     tr
-      - display_keys.each do |key|
+      - column_names.each do |key|
         th= key.to_s.camelize
           /= link_to_table_header(key)
   tbody
     - collection.each do |item|
       tr
-        - display_keys.each do |key|
+        - column_names.each do |key|
           td= item.send(key)
 

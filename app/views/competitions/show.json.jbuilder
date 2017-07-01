@@ -3,7 +3,7 @@ json.extract! competition, :name, :short_name, :competition_type, :city, :countr
 if category && segment.blank?
   json.category_results do
     json.set! category do
-      json.array! category_results do |cr|
+      json.array! category_results.collection do |cr|
 	json.extract! cr, :ranking, :points #, :short_tss, :free_ranking, :free_tss
 	json.skater_name cr.skater.name
 	json.nation cr.skater.nation
@@ -20,7 +20,7 @@ if segment
   json.segment_scores do
     json.set! category do
       json.set! segment do
-	json.array! segment_scores do |score|
+	json.array! segment_scores.collection do |score|
 	  json.extract! score, :ranking, :starting_number, :tss, :tes, :pcs, :deductions
 	  json.skater_name score.skater.name
 	  json.nation score.skater.nation

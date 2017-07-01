@@ -40,8 +40,8 @@ class SkatersController < ApplicationController
     respond_to do |format|
       format.html {
         render action: :show, locals: {
-          skater: skater.decorate,
-          competition_results: competition_results.decorate
+          skater: skater,
+          competition_results: competition_results
         }
       }
       format.json {

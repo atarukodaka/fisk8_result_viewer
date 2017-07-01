@@ -3,8 +3,13 @@ module IndexActionModules
     respond_to do |format|
       format.json {
         collection = create_collection()
-        datatable = DataTable.new(params, collection, columns, filters)
-        render json: datatable
+        table = DataTable.new(collection, columns, params: params, filters: filters)
+        collection = table.collection
+        render json: {
+          iTotalRecords: collection.model.count,
+          iTotalDisplayRecords: collection.total_count,
+          data: collection.decorate.map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h },
+        }
       }
     end
   end
@@ -23,14 +28,21 @@ module IndexActionModules
     
     respond_to do |format|
       format.html {
-        datatable = DataTable.new(params, collection, columns, filters)
+        datatable = ListTable.new(collection, columns)
         render locals: { datatable: datatable } 
       }
       format.json {
-        render json: ListTable.new(params, collection, columns, filters)
+        table = FilterTable.new(collection, columns, filters: filters, params: params)
+        render json: table.collection.limit(1000).map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h }.as_json
       }
       format.csv {
-        send_data ListTable.new(params, collection, columns, filters).to_csv, filename: "#{controller_name}.csv"
+        table = FilterTable.new(collection, columns, filters: filters, params: params)
+        csv = CSV.generate(headers: columns.keys, write_headers: true) do |csv|
+          table.collection.limit(1000).each do |row|
+            csv << columns.keys.map {|k| row.send(k)}
+          end
+        end
+        send_data csv, filename: "#{controller_name}.csv"
       }
     end
   end

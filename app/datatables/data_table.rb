@@ -1,15 +1,7 @@
-class DataTable < ListTable
-  def collection
-    @collection ||= filter(@initial_collection).order(sort_sql).page(page).per(per)
+class DataTable < FilterTable
+  def fetch_collection
+    filter(@initial_collection).order(sort_sql).page(page).per(per)
   end
-  def as_json(options = {})
-    {
-      iTotalRecords: collection.model.count,
-      iTotalDisplayRecords: collection.total_count,
-      data: collection.decorate.map {|d| columns.keys.map {|k| [k, d.send(k)]}.to_h },
-    }
-  end
-
   def filter(col)
     filters.each do |key, pr|
       column_number = columns.keys.index(key)

@@ -2,7 +2,7 @@
 
 - content_for :title do
   | skater: 
-  = skater.model.name
+  = skater.name
 
 .row
   .col-sm-6
@@ -10,7 +10,7 @@
     table.table.table-striped.table-hover.table-condensed
       tr
         - [:name, :nation, :isu_number, :category].each do |key|
-          = tr_data(key, skater.send(key))
+          = tr_data(key, skater.decorate.send(key))
 
   .col-sm-6
     h2 Result Summary
@@ -27,7 +27,8 @@
 
 h2 Competition Results
 
-= render partial: "list_table", locals: {collection: competition_results, display_keys: [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]} 
+= render partial: "list_table", locals: { table: ListTable.new(competition_results, [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]), decorate: true}
+/= render partial: "list_table", locals: {collection: competition_results, display_keys: [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]} 
 
 .row
   .col-sm-6

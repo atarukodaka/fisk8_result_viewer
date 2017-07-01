@@ -4,6 +4,7 @@ class CategorySummaryRelation
   include Draper::Decoratable
   
   def_delegators :@collection, :each
+  attr_reader :collection
   
   def initialize(collection)
     @collection = collection
