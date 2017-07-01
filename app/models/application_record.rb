@@ -22,5 +22,6 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
   include SelectOptions
   
+#  default_scope  { limit(1000) }
   #scope :matches, ->(type, v) { where("#{type} like ? ", "%#{v}%") }
 end

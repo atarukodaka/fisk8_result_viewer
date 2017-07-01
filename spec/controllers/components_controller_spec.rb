@@ -14,37 +14,37 @@ RSpec.describe ComponentsController, type: :controller do
   
   context 'index' do
     it 'lists SkatingSkill' do
-      get :index
+      get :list, xhr: true
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('10.0')
     end
     it 'filters by segment' do
-      get :index, params: { segment: "FREE"}
+      get :list, xhr: true, params: { segment: "FREE"}
       expect(response.body).to include('Skating Skill')
       expect(response.body).to include('9.0')
       expect(response.body).not_to include('10.0')
     end
     context 'value comparison' do
       it 'compares by <' do
-        get :index, params: { value: "9.5", value_operator: '<'}
+        get :list, xhr: true, params: { value: "9.5", value_operator: '<'}
         expect(response.body).to include('Skating Skill')
         expect(response.body).to include('9.0')
         expect(response.body).not_to include('10.0')
       end
       it 'compares by <=' do
-        get :index, params: { value: "9", value_operator: '<='}
+        get :list, xhr: true, params: { value: "9", value_operator: '<='}
         expect(response.body).to include('Skating Skill')
         expect(response.body).to include('9.0')
         expect(response.body).not_to include('10.0')
       end
       it 'compares by >=' do
-        get :index, params: { value: "9", value_operator: '>='}
+        get :list, xhr: true, params: { value: "9", value_operator: '>='}
         expect(response.body).to include('Skating Skill')
         expect(response.body).to include('9.0')
         expect(response.body).to include('10.0')
       end
       it 'compares by =' do
-        get :index, params: { value: "9", value_operator: '='}
+        get :list, xhr: true, params: { value: "9", value_operator: '='}
         expect(response.body).to include('Skating Skill')
         expect(response.body).to include('9.0')
         expect(response.body).not_to include('10.0')

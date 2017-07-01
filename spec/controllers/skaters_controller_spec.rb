@@ -15,12 +15,12 @@ RSpec.describe SkatersController, type: :controller do
 
   describe 'index' do
     it {
-      get :index
+      get :list, xhr: true
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
     }
     it {
-      get :index, params: {nation: "JPN"}
+      get :list, xhr: true, params: {nation: "JPN"}
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
     }
@@ -46,17 +46,17 @@ RSpec.describe SkatersController, type: :controller do
   ################
   describe 'filter-by' do
     it { 
-      get :index, params: {name: "Skater"}
+      get :list, xhr: true, params: {name: "Skater"}
       expect(response.body).to include("Skater")
       expect(response.body).not_to include("Foo")
     }
     it { 
-      get :index, params: {category: "MEN"}
+      get :list, xhr: true, params: {category: "MEN"}
       expect(response.body).to include("Skater")
       expect(response.body).not_to include("Foo")
     }
     it { 
-      get :index, params: {nation: "JPN"}
+      get :list, xhr: true, params: {nation: "JPN"}
       expect(response.body).to include("Skater")
       expect(response.body).not_to include("Foo")
     }
@@ -64,7 +64,7 @@ RSpec.describe SkatersController, type: :controller do
   ################
   describe 'json' do
     it 'index json' do
-      get :index, params: { format: 'json' }
+      get :list, xhr: true, params: { format: 'json' }
       expect(response.body).to include('Skater NAME')
     end
     it 'show json by isu_number' do

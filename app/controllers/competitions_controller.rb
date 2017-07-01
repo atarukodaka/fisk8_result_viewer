@@ -31,23 +31,23 @@ class CompetitionsController < ApplicationController
     category = params[:category]
     segment = params[:segment]
 
-    collections = {
-      competition: competition,
-      category_summaries: CategorySummary.create_summaries(competition),
-      category_results: (competition.category_results.category(category).includes(:skater, :scores) if category && segment.blank?) || [],
-      segment_scores: (competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components) if segment) || [],
-    }
-
     respond_to do |format|
       locals = {
-          category: category,
-          segment: segment,
+        category: category,
+        segment: segment,
       }
+      locals_to_decorate = {
+        competition: competition,
+        category_summaries: CategorySummary.create_summaries(competition),
+        category_results: (competition.category_results.category(category).includes(:skater, :scores) if category && segment.blank?),
+        segment_scores: (competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components) if segment),
+      }.compact
+      
       format.html {
-        render :show, locals: collections.reject {|_, v| v.blank?}.map {|k, v| [k, v.decorate]}.to_h.merge(locals)
+        render :show, locals: locals.merge(locals_to_decorate.transform_values {|v| v.decorate})
       }
       format.json {
-        render :show, handlers: :jbuilder, locals: collections.merge(locals)
+        render :show, handlers: :jbuilder, locals: locals.merge(locals_to_decorate)
       }
     end
   end

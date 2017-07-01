@@ -12,6 +12,20 @@ class Score < ApplicationRecord
   ## validations
   validates  :date, presence: true
 
+  ## relevant model
+  def competition_name
+    competition.name
+  end
+  def season
+    competition.season
+  end
+  def skater_name
+    skater.name
+  end
+  def nation
+    skater.nation
+  end
+  
   ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { matches(:segment, "SHORT") }

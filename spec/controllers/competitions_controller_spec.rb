@@ -10,11 +10,11 @@ RSpec.describe CompetitionsController, type: :controller do
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, category_result: cr)
     comlpetition2 = create(:competition, :finlandia)
   end
-  
   ################################################################
   context 'index' do
     it {
-      get :index
+      #get :index, xhr: true
+      get :list, xhr: true
       expect(response.status).to eq(200)
       expect(response.body).to include('WORLD2017')
       expect(response.body).to include('Tokyo')
@@ -22,12 +22,12 @@ RSpec.describe CompetitionsController, type: :controller do
       expect(response.body).to include('FIN2015')
     }
     it {
-      get :index, params: { season: "2016-17"}
+      get :list, params: { season: "2016-17"}, xhr: true
       expect(response.body).to include('WORLD2017')
       expect(response.body).not_to include('FIN2015')
     }
     it {
-      get :index, params: { competition_type: "world"}
+      get :list, params: { competition_type: "world"}, xhr: true
       expect(response.body).to include('WORLD2017')
       expect(response.body).not_to include('FIN2015')
     }
@@ -102,27 +102,27 @@ RSpec.describe CompetitionsController, type: :controller do
   ################
   describe 'filter' do
     it 'filters by name' do
-      get :index, params: { name: "World" }
+      get :list, xhr: true, params: { name: "World" }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end
     it 'filters by site_url' do
-      get :index, params: { site_url: "http://world2017.isu.org/results/" }
+      get :list, xhr: true, params: { site_url: "http://world2017.isu.org/results/" }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end
     it 'filters by competition_type' do
-      get :index, params: { competition_type: 'world' }
+      get :list, xhr: true, params: { competition_type: 'world' }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end
     it 'filters by isu_championships' do
-      get :index, params: { isu_championships_only: 'true' }
+      get :list, xhr: true, params: { isu_championships_only: 'true' }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end
     it 'filters by season' do
-      get :index, params: { season: '2016-17' }
+      get :list, xhr: true, params: { season: '2016-17' }
       expect(response.body).to include('World FS 2017')
       expect(response.body).not_to include('GP USA 2015')
     end

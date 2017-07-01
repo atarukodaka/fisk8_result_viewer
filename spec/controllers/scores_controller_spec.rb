@@ -15,41 +15,41 @@ RSpec.describe ScoresController, type: :controller do
 
   context 'score index' do
     it {
-      get :index
+      get :list, xhr: true
       expect(response.body).to include('World FS 2017')
     }
     it {
-      get :index, params: { skater_name: "Skater NAME" }
+      get :list, xhr: true, params: { skater_name: "Skater NAME" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it {
-      get :index, params: { category: "MEN" }
+      get :list, xhr: true, params: { category: "MEN" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it {
-      get :index, params: { segment: "SHORT" }
+      get :list, xhr: true, params: { segment: "SHORT" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it {
-      get :index, params: { nation: "JPN" }
+      get :list, xhr: true, params: { nation: "JPN" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it {
-      get :index, params: { competition_name: "World FS 2017" }
+      get :list, xhr: true, params: { competition_name: "World FS 2017" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it {
-      get :index, params: { season: "2016-17" }
+      get :list, xhr: true, params: { season: "2016-17" }
       expect(response.body).to include('WFS17-MEN')
       expect(response.body).not_to include('FIN2015-L-F-2')
     }
     it 'json' do
-      get :index, params: { format: 'json' }
+      get :list, xhr: true, params: { format: 'json' }
       expect(response.body).to include('Skater NAME')
     end
   end

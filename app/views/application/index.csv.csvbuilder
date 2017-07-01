@@ -1,5 +1,0 @@
-keys = collection.column_names
-csv << keys
-collection.each do |item|
-  csv << keys.map {|k| item[k]}
-end

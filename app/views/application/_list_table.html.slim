@@ -1,7 +1,7 @@
 /- display_keys ||= collection.column_names
-- display_keys ||= controller.column_names
+- display_keys ||= datatable.columns.keys
 
-table.table.table-striped.table-hover.table-condensed.list-table#list_table data-source="#{url_for(action: :index, format: :json, params: params.permit!)}"
+table.table.table-striped.table-hover.table-condensed#list_table
   thead
     tr
       - display_keys.each do |key|

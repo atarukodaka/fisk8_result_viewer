@@ -1,15 +1,4 @@
 class ApplicationController < ActionController::Base
-  ## list
-=begin
-  def list
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: EntriesDatatable.new(params, filter(create_collection)), decorate: true
-      }
-    end
-  end
-=end  
   ################################################################
   protect_from_forgery with: :exception
   include IndexActionModules
