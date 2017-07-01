@@ -1,13 +1,3 @@
-class ElementsDecorator < EntriesDecorator
-  def column_names
-    [:score_name, :competition_name, :date, :season,
-     :ranking, :skater_name, :nation,
-     :number, :name, :credit, :info, :base_value, :goe, :judges, :value,
-    ]
-  end
-end
-
-################################################################
 class ElementDecorator < EntryDecorator
   def score_name
     h.link_to_score(nil, model.score)

@@ -1,11 +1,3 @@
-class ScoresDecorator < Draper::CollectionDecorator
-  def column_names
-    [:name, :competition_name, :category, :segment, :season, :date, :result_pdf,
-     :ranking, :skater_name, :nation, :tss, :tes, :pcs, :deductions, :base_value]
-  end
-end
-
-################################################################
 class ScoreDecorator < EntryDecorator
   def ranking
     h.link_to_score(model.ranking, model)

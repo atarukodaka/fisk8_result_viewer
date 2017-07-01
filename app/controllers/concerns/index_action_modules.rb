@@ -1,5 +1,15 @@
 using ToDirection
 
+=begin
+class DataTable
+  def initialize
+  end
+  def as_json(options = {})
+    {}
+  end
+end
+=end
+
 module IndexActionModules
   def filters
     {}

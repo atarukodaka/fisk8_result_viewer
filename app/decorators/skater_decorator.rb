@@ -1,10 +1,3 @@
-class SkatersDecorator < EntriesDecorator
-  def column_names
-    [ :name, :nation, :category, :isu_number]
-  end
-end
-
-################################################################
 class SkaterDecorator < EntryDecorator
   def name
     h.link_to_skater(model)

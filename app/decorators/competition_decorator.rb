@@ -1,11 +1,3 @@
-class CompetitionsDecorator < Draper::CollectionDecorator
-  def column_names
-    [:short_name, :name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date]      
-  end
-end
-
-################################################################
-
 class CompetitionDecorator < EntryDecorator
   def name
     h.link_to_competition(model)
