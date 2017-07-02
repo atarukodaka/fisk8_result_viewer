@@ -36,18 +36,21 @@ class ElementsController < ApplicationController
     model_klass.includes(:score, score: [:competition, :skater]).all
   end
   def columns
-    {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      category: "scores.category",
-      segment: "scores.segment",
-      date: "scores.date",
-      season: "competitions.season",
-      ranking: "scores.ranking",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      number: "number", name: "elements.name", credit: "credit", info: "info",
-      base_value: "elements.base_value", goe: "goe", judges: "judges", value: "value",
-    }
+    [
+     {name: :score_name, table: :scores, column_name: :name},
+     {name: :competition_name, table: :competitions, column_name: :name},
+     {name: :category, table: :scores},
+     {name: :segment, table: :scores},
+     {name: :date, table: :scores},
+     {name: :season, table: :competitions},
+     {name: :ranking, table: :scores},
+     {name: :skater_name, table: :skaters, column_name: :name},
+     {name: :nation, table: :skaters},
+     "number",
+     {name: :name, table: :elements},
+     "credit", "info",
+     {name: :base_value, table: :elements},
+     "goe", "judges", "value",
+    ]
   end
 end

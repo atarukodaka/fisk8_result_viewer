@@ -14,7 +14,8 @@ class Datatable < Listtable
   end
   def filter(col)
     filters.each do |key, pr|
-      column_number = columns.keys.index(key)
+      #column_number = columns.keys.index(key)
+      column_number = column_names.index(key.to_s)
       v = params["sSearch_#{column_number}"].presence || params[key]
       col = pr.call(col, v) if v.present? && pr
     end
@@ -35,7 +36,9 @@ class Datatable < Listtable
     [sort_column, sort_direction].join(' ')
   end
   def sort_column
-    columns.values[params[:iSortCol_0].to_i]
+    column = columns[params[:iSortCol_0].to_i]
+    [column[:table], column[:column_name]].join('.')
+    #columns.values[params[:iSortCol_0].to_i]
   end
   def sort_direction
     params[:sSortDir_0] == "desc" ? "desc" : "asc"

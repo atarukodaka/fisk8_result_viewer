@@ -19,12 +19,21 @@ class ScoresController < ApplicationController
     super.tap {|t| t.default_order = [:date, :desc]}
   end
   def columns
+    [{name: :name, table: :scores},
+     {name: :competition_name, table: :competitions, column_name: :name},
+     :category, :segment, :season, :date, :result_pdf,
+     :ranking,
+     {name: :skater_name, table: :skaters, column_name: :name},
+     {name: :nation, table: :skaters},
+     :tss, :tes, :pcs, :deductions, :base_value,]
+=begin
     {
       name: "scores.name", competition_name: "competitions.name", category: "category",
       segment: "segment", season: "season", date: "date", result_pdf: "result_pdf",
       ranking: "ranking", skater_name: "skaters.name", nation: "skaters.nation",
       tss: "tss", tes: "tes", pcs: "pcs", deductions: "deductions", base_value: "base_value"
     }
+=end
   end
   
   ################################################################

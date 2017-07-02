@@ -11,7 +11,7 @@ script
      $("##{table.table_id}").DataTable({
   - if table.default_order
     - key, direction = table.default_order
-    - column_num = table.columns.keys.index(key)
+    - column_num = table.column_names.index(key.to_s)
     |   "order": [[#{column_num}, '#{direction}']],
   |     "bProcessing": true,
         "bFilter": true,
@@ -20,11 +20,11 @@ script
   - if ajax
     |    "bServerSide": true,
     |    "sAjaxSource": $("##{table.table_id}").data('source'),
-  |      "columns": #{table.columns.keys.map {|column| {data: column}}.to_json.html_safe},
+  |      "columns": #{table.column_names.map {|column| {data: column}}.to_json.html_safe},
       }); 
     });
 
-- column_names = table.columns.keys
+- column_names = table.column_names
 - data_source = url_for(action: :list, controller: controller_name, format: :json, params: params.permit!)
 
 table.table.table-striped.table-hover.table-condensed id="#{table.table_id}" data-source="#{data_source}"

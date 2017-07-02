@@ -13,9 +13,7 @@ class SkatersController < ApplicationController
     Skater.having_scores
   end
   def columns
-    {
-      name: "name", nation: "nation", category: "category", isu_number: "isu_number",
-    }
+    [:name, :nation, :category, :isu_number]
   end
   ################################################################
   ## show

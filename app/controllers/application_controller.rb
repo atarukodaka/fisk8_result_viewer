@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
         render json: {
           iTotalRecords: table.collection.model.count,
           iTotalDisplayRecords: table.collection.total_count,
-          data: table.collection.decorate.map {|d| table.columns.keys.map {|k| [k, d.send(k)]}.to_h },
+          data: table.collection.decorate.map {|d| table.column_names.map {|k| [k, d.send(k)]}.to_h },
         }
       }
     end

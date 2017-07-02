@@ -21,11 +21,13 @@ class CompetitionsController < ApplicationController
 =end
   def create_datatable
     #super.tap {|t| t.default_order = [:start_date, :desc]}
-    cols =     {
+    cols = {
       short_name: "short_name", name: "name", site_url: "site_url", city: "city",
       country: "country", competition_type: "competition_type", season: "season",
       start_date: "start_date", end_date: "end_date",
     }
+    cols = [:short_name, :name, :site_url, :city, :country, :competition_type,
+            :season, :start_date, :end_date]
     filters = {
       name: ->(col, v) { col.name_matches(v) },
       site_url: ->(col, v) { col.site_url_matches(v) },

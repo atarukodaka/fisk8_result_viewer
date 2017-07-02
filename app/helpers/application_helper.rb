@@ -127,7 +127,7 @@ module FilterFormHelper
   end
   def ajax_search(key, table)  # TODO
     cols = (table) ? table.columns : controller.columns
-    col_num = table.columns.keys.index(key.to_sym)
+    col_num = table.column_names.index(key)
     "$('##{table.table_id}').DataTable().column(#{col_num}).search(this.value).draw();"
   end
 end
