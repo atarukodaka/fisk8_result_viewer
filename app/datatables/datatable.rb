@@ -1,5 +1,5 @@
 class Datatable < Listtable
-  attr_accessor :filters, :params, :default_order
+  attr_accessor :filters, :params, :default_order, :paging
   def initialize(initial_collection, columns, filters: {}, params: {}, default_order: nil, paging: false)
     super(initial_collection, columns)
     @filters = filters
@@ -10,7 +10,7 @@ class Datatable < Listtable
   def fetch_collection
     col = filter(super)
     col = col.order(sort_sql) if sort_sql.present?
-    (paging?) ? col.page(page).per(per) : col
+    (paging) ? col.page(page).per(per) : col
   end
   def filter(col)
     filters.each do |key, pr|
@@ -28,22 +28,8 @@ class Datatable < Listtable
   def per
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
   end
-  def paging?
-    !!@paging
-  end
-  def paging(flag)
-    @paging = flag
-    self
-  end
+  
   ## for sorting
-=begin
-  def default_order
-    key, direction = @default_order
-    num = columns.keys.index(key)
-    #[num.to_i, direction.to_s]
-    "[#{num.to_i}, '#{direction.to_s}']".html_safe
-  end
-=end
   def sort_sql
     return "" if params[:iSortCol_0].blank?
     [sort_column, sort_direction].join(' ')

@@ -18,7 +18,7 @@ class ComponentsController < ElementsController #  ApplicationController
       ranking: "scores.ranking",
       skater_name: "skaters.name",
       nation: "skaters.nation",
-      number: "number", name: "components.name", factor: "factro",
+      number: "number", name: "components.name", factor: "factor",
       judges: "judges", value: "value",
     }
   end

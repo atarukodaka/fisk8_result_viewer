@@ -1,7 +1,6 @@
 // locals: table
 
 - table || raise('no table given')
-- table_id ||= table.table_id
 - ajax ||= false
 - decorate ||= false
 - page_length ||= 10
@@ -9,18 +8,18 @@
 script
   | jQuery(function($){ 
 
-     $("##{table_id}").DataTable({
+     $("##{table.table_id}").DataTable({
   - if table.default_order
     - key, direction = table.default_order
     - column_num = table.columns.keys.index(key)
     |   "order": [[#{column_num}, '#{direction}']],
   |     "bProcessing": true,
         "bFilter": true,
-  |     "paging": #{table.paging?},
+  |     "paging": #{table.paging},
   |     "pageLength": #{page_length},
   - if ajax
     |    "bServerSide": true,
-    |    "sAjaxSource": $("##{table_id}").data('source'),
+    |    "sAjaxSource": $("##{table.table_id}").data('source'),
   |      "columns": #{table.columns.keys.map {|column| {data: column}}.to_json.html_safe},
       }); 
     });
@@ -28,7 +27,7 @@ script
 - column_names = table.columns.keys
 - data_source = url_for(action: :list, controller: controller_name, format: :json, params: params.permit!)
 
-table.table.table-striped.table-hover.table-condensed id="#{table_id}" data-source="#{data_source}"
+table.table.table-striped.table-hover.table-condensed id="#{table.table_id}" data-source="#{data_source}"
   thead
     tr
       - column_names.each_with_index do |key, i|
