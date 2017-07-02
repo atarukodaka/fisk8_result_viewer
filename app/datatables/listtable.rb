@@ -5,7 +5,7 @@ class Listtable
     @columns = columns.map do |column|
       case column
       when Symbol, String
-        {name: column.to_s, table: initial_collection.table_name, column_name: column.to_s}
+        {name: column.to_s, table: initial_collection.try(:table_name), column_name: column.to_s}
       when Hash
         column[:column_name] ||= column[:name]
         column

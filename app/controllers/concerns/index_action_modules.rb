@@ -23,12 +23,12 @@ module IndexActionModules
         render locals: { table: table.tap {|t| t.paging = true } }
       }
       format.json {
-        render json: table.collection.limit(1000).map {|d| table.columns.keys.map {|k| [k, d.send(k)]}.to_h }.as_json
+        render json: table.collection.limit(1000).map {|d| table.column_names.map {|k| [k, d.send(k)]}.to_h }.as_json
       }
       format.csv {
-        csv = CSV.generate(headers: columns.keys, write_headers: true) do |csv|
+        csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
           table.collection.limit(1000).each do |row|
-            csv << table.columns.keys.map {|k| row.send(k)}
+            csv << table.column_names.map {|k| row.send(k)}
           end
         end
         send_data csv, filename: "#{controller_name}.csv"
