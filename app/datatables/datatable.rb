@@ -1,6 +1,6 @@
 class Datatable < Listtable
-  attr_accessor :filters, :params
-  def initialize(initial_collection, columns, filters: {}, params: {}, default_order: [:name, :asc], paging: false)
+  attr_accessor :filters, :params, :default_order
+  def initialize(initial_collection, columns, filters: {}, params: {}, default_order: nil, paging: false)
     super(initial_collection, columns)
     @filters = filters
     @params = params
@@ -29,19 +29,21 @@ class Datatable < Listtable
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
   end
   def paging?
-    @paging
+    !!@paging
   end
   def paging(flag)
     @paging = flag
     self
   end
   ## for sorting
+=begin
   def default_order
     key, direction = @default_order
     num = columns.keys.index(key)
     #[num.to_i, direction.to_s]
     "[#{num.to_i}, '#{direction.to_s}']".html_safe
   end
+=end
   def sort_sql
     return "" if params[:iSortCol_0].blank?
     [sort_column, sort_direction].join(' ')

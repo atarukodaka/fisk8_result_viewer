@@ -1,17 +1,19 @@
 // locals: table
 
 - table || raise('no table given')
-- table_id ||= 'datatable'   
+- table_id ||= "datatable_#{table.object_id}"
 - ajax ||= false
 - decorate ||= false
 - page_length ||= 10
-- default_order ||= nil # table.default_order
 
 script
   | jQuery(function($){ 
+
      $("##{table_id}").DataTable({
-  - if default_order
-    |   "order": [#{default_order}],
+  - if table.default_order
+    - key, direction = table.default_order
+    - column_num = table.columns.keys.index(key)
+    |   "order": [[#{column_num}, '#{direction}']],
   |     "bProcessing": true,
         "bFilter": true,
   |     "paging": #{table.paging?},
@@ -29,8 +31,9 @@ script
 table.table.table-striped.table-hover.table-condensed id="#{table_id}" data-source="#{data_source}"
   thead
     tr
-      - column_names.each do |key|
-        th= key.to_s.camelize
+      - column_names.each_with_index do |key, i|
+        th id="#{key}" number="#{i}"
+          = key.to_s.camelize
   tbody
     - unless ajax
       - collection = (decorate) ? table.collection.decorate : table.collection

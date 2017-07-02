@@ -3,7 +3,8 @@ module IndexActionModules
   def list
     respond_to do |format|
       format.json {
-        table = Datatable.new(collection, columns, params: params, filters: filters, paging: true)
+        #table = Datatable.new(collection, columns, params: params, filters: filters, paging: true)
+        table = create_datatable.paging(true)
         render json: {
           iTotalRecords: table.collection.model.count,
           iTotalDisplayRecords: table.collection.total_count,
@@ -27,7 +28,7 @@ module IndexActionModules
   end
 
   def create_datatable
-    Datatable.new(collection, columns)
+    Datatable.new(collection, columns, filters: filters, params: params)
   end
   def index
     respond_to do |format|

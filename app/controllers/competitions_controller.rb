@@ -17,6 +17,16 @@ class CompetitionsController < ApplicationController
   def create_collection
     Competition.all
   end
+  def create_datatable
+    #super.tap {|t| t.default_order = [:start_date, :desc]}
+    cols =     {
+      short_name: "short_name", name: "name", site_url: "site_url", city: "city",
+      country: "country", competition_type: "competition_type", season: "season",
+      start_date: "start_date", end_date: "end_date",
+    }
+
+    Datatable.new(collection, cols, filters: filters, params: params, default_order: [:start_date, :desc])
+  end
   def columns
     {
       short_name: "short_name", name: "name", site_url: "site_url", city: "city",

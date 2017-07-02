@@ -15,6 +15,9 @@ class ScoresController < ApplicationController
     #Score.includes(:competition, :skater).recent
     Score.includes(:competition, :skater).all    
   end
+  def create_datatable
+    super.tap {|t| t.default_order = [:date, :desc]}
+  end
   def columns
     {
       name: "scores.name", competition_name: "competitions.name", category: "category",
