@@ -125,10 +125,10 @@ module FilterFormHelper
     end
     select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), options)
   end
-  def ajax_search(key, table = nil)  # TODO
+  def ajax_search(key, table)  # TODO
     cols = (table) ? table.columns : controller.columns
-    
-    "$('#datatable').DataTable().column(#{cols.keys.index(key)}).search(this.value).draw();"  # draw();
+    col_num = table.columns.keys.index(key.to_sym)
+    "$('##{table.table_id}').DataTable().column(#{col_num}).search(this.value).draw();"
   end
 end
 

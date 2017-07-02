@@ -1,17 +1,17 @@
-= form_group("Skater Name", text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name)))
+= form_group("Skater Name", text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name, table)))
 
 = form_group("Category / Segment") do
-  = select_tag_with_options(:category, options: { onchange: ajax_search(:category)})
+  = select_tag_with_options(:category, options: { onchange: ajax_search(:category, table)})
   label -
-  = select_tag_with_options(:segment, options: { onchange: ajax_search(:segment)})
+  = select_tag_with_options(:segment, options: { onchange: ajax_search(:segment, table)})
     
 = form_group("Nation", select_tag_with_options(:nation))
 
 = form_group("Competition") do
   /= select_tag_with_options(:competition_name)
-  = text_field_tag(:competition_name, params[:competition_name], size: 70, onchange: ajax_search(:competition_name))
+  = text_field_tag(:competition_name, params[:competition_name], size: 70, onchange: ajax_search(:competition_name, table))
   label ISU Championships Only
   = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?)
 
-= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(:season)}))
+= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(:season, table)}))
 

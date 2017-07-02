@@ -1,7 +1,7 @@
 // locals: table
 
 - table || raise('no table given')
-- table_id ||= "datatable_#{table.object_id}"
+- table_id ||= table.table_id
 - ajax ||= false
 - decorate ||= false
 - page_length ||= 10

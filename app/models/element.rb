@@ -10,7 +10,12 @@ class Element < ApplicationRecord
   def competition_name
     score.competition.name
   end
-
+  def category
+    score.category
+  end
+  def segment
+    score.segment
+  end
   def date
     score.competition.start_date
   end

@@ -12,6 +12,9 @@ class Listtable
     @collection = nil
   end
 
+  def table_id
+    "table_#{self.object_id}"
+  end
   def collection
     @collection ||= fetch_collection
   end

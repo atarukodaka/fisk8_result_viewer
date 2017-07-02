@@ -39,6 +39,8 @@ class ElementsController < ApplicationController
     {
       score_name: "scores.name",
       competition_name: "competitions.name",
+      category: "scores.category",
+      segment: "scores.segment",
       date: "scores.date",
       season: "competitions.season",
       ranking: "scores.ranking",

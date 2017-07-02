@@ -1,20 +1,10 @@
-script
-  |  function ajax_search(key, value, table_id) {
-      elem = 'th[id=' + key + ']';
-      //var table_id = 'datatable_' + '#{table.object_id}';
-      // console.log(table_id);
-      var datatable = $('#' + table_id)
-      column_number =  datatable.find(elem)[0].getAttribute('number');
-      datatable.DataTable().column(column_number).search(value).draw();
-     }
 
-/= form_group("Name", text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table)))
-= form_group("Name", text_field_tag(:name, params[:name], size: 70, onchange: %W[ajax_search('name', this.value, "datatable_#{table.object_id}")]))
-= form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70, onchange: ajax_search(:site_url)))
+= form_group("Name", text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table)))
+= form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70, onchange: ajax_search(:site_url, table)))
 = form_group("Competition Type") do
-  = select_tag_with_options(:competition_type, options: {onchange: ajax_search(:competition_type)})
+  = select_tag_with_options(:competition_type, options: {onchange: ajax_search(:competition_type, table)})
 
   label ISU Championships Only: 
   = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?, onchange: " $('#filter_form').submit(); ")
 
-= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(:season)}))
+= form_group("Season", select_tag_with_options(:season, options: {onchange: ajax_search(:season, table)}))

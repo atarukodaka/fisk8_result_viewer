@@ -72,8 +72,5 @@ gem 'to_bool'
 gem 'csv_builder'
 gem 'sitemap_generator'
 
-group :assets do
-  gem 'jquery-datatables-rails'  # , github: 'rweng/jquery-datatables-rails'
-  gem 'jquery-ui-rails'
-end
+gem 'jquery-datatables-rails'
 
