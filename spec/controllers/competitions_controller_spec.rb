@@ -1,130 +1,100 @@
 require 'rails_helper'
 
+module CompetitionsHelper
+  def expect_to_include(text)
+    expect(response.body).to include(text)
+  end
+  def expect_not_to_include(text)
+    expect(response.body).not_to include(text)
+  end
+  def expect_to_include_competition(competition)
+    [:name, :short_name, :city, :country].each do |key|
+      expect(response.body).to include(competition[key])
+    end
+  end
+end  
+
+################################################################
 RSpec.describe CompetitionsController, type: :controller do
+  include CompetitionsHelper
+
   render_views
-  
-  before do
+
+  let!(:world) {
     skater = create(:skater)
     competition = create(:competition)
     cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, category_result: cr)
-    comlpetition2 = create(:competition, :finlandia)
-  end
+    competition
+  }
+  let!(:finlandia){
+    create(:competition, :finlandia)
+  }
   ################################################################
-  context 'index' do
-    it {
-      #get :index, xhr: true
+  context 'index: ' do
+    it do
       get :list, xhr: true
-      expect(response.status).to eq(200)
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-      expect(response.body).to include('FIN2015')
-    }
-    it {
-      get :list, params: { season: "2016-17"}, xhr: true
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).not_to include('FIN2015')
-    }
-    it {
-      get :list, params: { competition_type: "world"}, xhr: true
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).not_to include('FIN2015')
-    }
-  end
-
-  describe 'index.json' do
-    it {
-      get :index, params: {format: :json }
-      expect(response.content_type).to eq('application/json')
-      expect(response.body).to include('"short_name":"WORLD2017"')
-      expect(response.body).to include('"city":"Tokyo"')
-      expect(response.body).to include('"country":"JPN"')
-    }
-  end
-
-  describe 'index.csv' do
-    it {
-      get :index, params: {format: :csv }
-      expect(response.content_type).to eq('text/csv')
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-      expect(response.body).to include('world')
-      expect(response.body).to include('2016-17')
-    }
+      expect_to_include_competition(world)
+      expect_to_include_competition(finlandia)
+    end
+    {json: 'application/json', csv: 'text/csv'}.each do |format, content_type|
+      it format do
+        get :index, params: {format: format}
+        expect(response.content_type).to eq(content_type)
+        expect_to_include_competition(world)
+        expect_to_include_competition(finlandia)
+      end
+    end
   end
   ################
-  describe 'show' do
-    it {
+  context 'show: ' do
+    it 'short_name' do
       get :show, params: { short_name: "WORLD2017" }
-      expect(response.status).to eq(200)
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-    }
-  end
+      expect_to_include_competition(world)
+    end
 
-  describe 'show/category' do
-    it {
+    it 'short_name/category' do
       get :show, params: { short_name: "WORLD2017", category: "MEN" }
-      expect(response.status).to eq(200)
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-      expect(response.body).to include('MEN')
-    }
-  end
-
-  describe 'show/category/segment' do
-    it {
+      expect_to_include_competition(world)
+      expect_to_include('MEN')
+    end
+    
+    it 'short_name/category/segment' do
       get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT" }
-      expect(response.status).to eq(200)
-      expect(response.body).to include('WORLD2017')
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-      expect(response.body).to include('MEN')
-      expect(response.body).to include('SHORT')
-    }
-  end
-
-  describe 'show.json' do
-    it {
+      expect_to_include_competition(world)
+      expect_to_include('SHORT')
+    end
+    
+    it 'json' do
       get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT", format: "json" }
-      expect(response.status).to eq(200)
       expect(response.content_type).to eq("application/json")
-      expect(response.body).to include('Tokyo')
-      expect(response.body).to include('JPN')
-      expect(response.body).to include('MEN')
-      expect(response.body).to include('SHORT')
-    }
+      expect_to_include_competition(world)
+    end
   end
   ################
-  describe 'filter' do
-    it 'filters by name' do
-      get :list, xhr: true, params: { name: "World" }
-      expect(response.body).to include('World FS 2017')
-      expect(response.body).not_to include('GP USA 2015')
+  context 'filters:' do
+    [
+      {name: "World"},
+      {site_url: "http://world2017.isu.org/results/"},
+      {competition_type: 'world'},
+      {season: '2016-17'},
+    ].each do |params|
+      it do
+        get :list, xhr: true, params: params
+        expect_to_include_competition(world)
+        expect_not_to_include('Finlandia')
+      end
     end
-    it 'filters by site_url' do
-      get :list, xhr: true, params: { site_url: "http://world2017.isu.org/results/" }
-      expect(response.body).to include('World FS 2017')
-      expect(response.body).not_to include('GP USA 2015')
-    end
-    it 'filters by competition_type' do
-      get :list, xhr: true, params: { competition_type: 'world' }
-      expect(response.body).to include('World FS 2017')
-      expect(response.body).not_to include('GP USA 2015')
-    end
-    it 'filters by isu_championships' do
-      get :list, xhr: true, params: { isu_championships_only: 'true' }
-      expect(response.body).to include('World FS 2017')
-      expect(response.body).not_to include('GP USA 2015')
-    end
-    it 'filters by season' do
-      get :list, xhr: true, params: { season: '2016-17' }
-      expect(response.body).to include('World FS 2017')
-      expect(response.body).not_to include('GP USA 2015')
+  end
+  context 'sort: ' do
+    [:name, :start_date, :city].each do |key|
+      it "sorts by #{key}" do
+        get :list, xhr: true, params: sort_params(key.to_s, 'asc')
+        expect('Finlandia').to appear_before('World')
+        
+        get :list, xhr: true, params: sort_params(key.to_s, 'desc')
+        expect('World').to appear_before('Finlandia')
+      end
     end
   end
 end

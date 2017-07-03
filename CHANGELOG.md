@@ -6,7 +6,7 @@
 - DataTable => Datatable
 - default_order
 - datatable id: consistency btw ajax_search() and render => settings
-- rspec: ajax search
+- rspec: filter search for all controllers
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

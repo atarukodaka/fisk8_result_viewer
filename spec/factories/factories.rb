@@ -24,8 +24,8 @@ FactoryGirl.define do
     country "JPN"
     site_url "http://world2017.isu.org/results/"
     season "2016-17"
-    start_date "2016-7-1"
-    end_date "2016-7-3"
+    start_date "2017-2-1"
+    end_date "2017-2-3"
 
     trait :finlandia do
       short_name "FIN2015"
@@ -35,7 +35,10 @@ FactoryGirl.define do
       city "Finland"
       country "FIN"
       site_url "http://finlandia-2015/"
-      isu_championships false
+      isu_championships "false"
+      start_date "2015-9-1"
+      end_date "2015-9-3"
+
     end
   end
 end

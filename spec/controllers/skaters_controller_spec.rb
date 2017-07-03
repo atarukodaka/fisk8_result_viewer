@@ -16,19 +16,16 @@ RSpec.describe SkatersController, type: :controller do
   describe 'index' do
     it {
       get :list, xhr: true
-      expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
     }
     it {
       get :list, xhr: true, params: {nation: "JPN"}
-      expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
     }
   end
   describe 'show/:isu_number' do
     it {
       get :show, params: { isu_number: 1 }
-      expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')    
       expect(response.body).to include('1')
@@ -37,34 +34,25 @@ RSpec.describe SkatersController, type: :controller do
   describe 'show/:name' do
     it {
       get :show, params: { isu_number: "Skater NAME"}
-      expect(response).to have_http_status(:success)
       expect(response.body).to include('Skater NAME')
       expect(response.body).to include('MEN')
       expect(response.body).to include('1')
     }
   end
   ################
-  describe 'filter-by' do
-    it { 
-      get :list, xhr: true, params: {name: "Skater"}
-      expect(response.body).to include("Skater")
-      expect(response.body).not_to include("Foo")
-    }
-    it { 
-      get :list, xhr: true, params: {category: "MEN"}
-      expect(response.body).to include("Skater")
-      expect(response.body).not_to include("Foo")
-    }
-    it { 
-      get :list, xhr: true, params: {nation: "JPN"}
-      expect(response.body).to include("Skater")
-      expect(response.body).not_to include("Foo")
-    }
+  context 'filters: ' do
+    [{name: "Skater"}, {category: "MEN"}, {nation: "JPN"}].each do |params|
+      it do
+        get :list, xhr: true, params: params
+        expect(response.body).to include("Skater")
+        expect(response.body).not_to include("Foo")
+      end
+    end
   end
   ################
   describe 'json' do
     it 'index json' do
-      get :list, xhr: true, params: { format: 'json' }
+      get :index, params: { format: 'json' }
       expect(response.body).to include('Skater NAME')
     end
     it 'show json by isu_number' do

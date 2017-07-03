@@ -37,19 +37,19 @@ class ElementsController < ApplicationController
   end
   def columns
     [
-     {name: :score_name, table: :scores, column_name: :name},
-     {name: :competition_name, table: :competitions, column_name: :name},
-     {name: :category, table: :scores},
-     {name: :segment, table: :scores},
-     {name: :date, table: :scores},
-     {name: :season, table: :competitions},
-     {name: :ranking, table: :scores},
-     {name: :skater_name, table: :skaters, column_name: :name},
-     {name: :nation, table: :skaters},
+     {name: "score_name", table: "scores", column_name: "name"},
+     {name: "competition_name", table: "competitions", column_name: "name"},
+     {name: "category", table: "scores"},
+     {name: "segment", table: "scores"},
+     {name: "date", table: "scores"},
+     {name: "season", table: "competitions"},
+     {name: "ranking", table: "scores"},
+     {name: "skater_name", table: "skaters", column_name: "name"},
+     {name: "nation", table: "skaters"},
      "number",
-     {name: :name, table: :elements},
+     {name: "name", table: "elements"},
      "credit", "info",
-     {name: :base_value, table: :elements},
+     {name: "base_value", table: "elements"},
      "goe", "judges", "value",
     ]
   end

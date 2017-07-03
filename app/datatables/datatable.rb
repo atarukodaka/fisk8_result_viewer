@@ -1,7 +1,6 @@
 class Datatable
   attr_accessor :collection, :columns, :options
 
-
   def self.create(*args)
     self.new(*args).tap do |table|
       yield(table) if block_given?
@@ -20,7 +19,7 @@ class Datatable
         }
       when Hash
         column[:column_name] ||= column[:name]
-        column
+        column.symbolize_keys
       end
     end
     @options = options
