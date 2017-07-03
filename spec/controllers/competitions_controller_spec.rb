@@ -24,11 +24,11 @@ RSpec.describe CompetitionsController, type: :controller do
     context 'filters:' do
       [:name, :site_url, :competition_type, :season].each do |key|
         it key do
-          get :list, xhr: true, params: {key => world[key] }
+          get :list, xhr: true, params: {key => world.send(key) }
           expect_to_include_competition(world)
           expect_not_to_include('Finlandia')
 
-          get :list, xhr: true, params: filter_params(key, world[key])
+          get :list, xhr: true, params: filter_params(key, world.send(key))
           expect_to_include_competition(world)
           expect_not_to_include('Finlandia')
         end
@@ -37,7 +37,7 @@ RSpec.describe CompetitionsController, type: :controller do
     context 'sort: ' do
       [:name, :start_date, :city].each do |key|
         it "by #{key}" do
-          names = [world, finlandia].sort {|a, b| a[key] <=> b[key]}.map(&:name)
+          names = [world, finlandia].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
           get :list, xhr: true, params: sort_params(key, 'asc')
           expect(names.first).to appear_before(names.last)
 

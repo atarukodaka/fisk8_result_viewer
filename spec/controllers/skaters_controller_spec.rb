@@ -35,11 +35,11 @@ RSpec.describe SkatersController, type: :controller do
     context 'filters: ' do
       [:name, :category, :nation].each do |key|
         it do
-          get :list, xhr: true, params: { key => men_skater[key] }
+          get :list, xhr: true, params: { key => men_skater.send(key) }
           expect_to_include_skater(men_skater)
           expect_not_to_include(no_scores_skater.name)
 
-          get :list, xhr: true, params: filter_params(key, men_skater[key])
+          get :list, xhr: true, params: filter_params(key, men_skater.send(key))
           expect_to_include_skater(men_skater)
           expect_not_to_include(no_scores_skater.name)
         end
@@ -48,7 +48,7 @@ RSpec.describe SkatersController, type: :controller do
     context 'sort: ' do
       [:name, :isu_number, :category].each do |key|
         it key do
-          names = [men_skater, ladies_skater].sort {|a, b| a[key] <=> b[key]}.map(&:name)
+          names = [men_skater, ladies_skater].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
           get :list, xhr: true, params: sort_params(key, 'asc')
           expect(names.first).to appear_before(names.last)
 
