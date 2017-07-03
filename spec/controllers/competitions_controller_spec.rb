@@ -37,11 +37,12 @@ RSpec.describe CompetitionsController, type: :controller do
     context 'sort: ' do
       [:name, :start_date, :city].each do |key|
         it "by #{key}" do
+          names = [world, finlandia].sort {|a, b| a[key] <=> b[key]}.map(&:name)
           get :list, xhr: true, params: sort_params(key, 'asc')
-          expect('Finlandia').to appear_before('World')
+          expect(names.first).to appear_before(names.last)
 
           get :list, xhr: true, params: sort_params(key, 'desc')
-          expect('World').to appear_before('Finlandia')
+          expect(names.last).to appear_before(names.first)
         end
       end
     end
