@@ -1,63 +1,86 @@
 require 'rails_helper'
 
 RSpec.describe SkatersController, type: :controller do
-  render_views
+  def expect_to_include_skater(skater)
+    [:name, :category, :isu_number].each do |key|
+      expect_to_include(skater[key])
+    end
+  end
   
+  render_views
+
+  let!(:men_skater){ create(:skater) }
+  let!(:ladies_skater){ create(:skater, :ladies) }
+  let!(:no_scores_skater){ create(:skater) {|sk| sk.name = "No SCORES" } }
+  let!(:datatable) { controller.create_datatable } 
   before do
-    skater = create(:skater)
-    skater2 = create(:skater, :ladies)
     competition = create(:competition)
-    cr = create(:category_result, competition: competition, skater: skater)
-    score = create(:score, competition: competition, skater: skater)
+    cr = create(:category_result, competition: competition, skater: men_skater)
+    score = create(:score, competition: competition, skater: men_skater)
     score.elements.create(number: 1, name: "3T", goe: 3, base_value: 10, value: 13)
     score.components.create(number: 1, name: "Skating Skills", value: 9)
+    
+    score_ladies = create(:score, competition: competition, skater: ladies_skater)
   end
-
-  describe 'index' do
-    it {
+  
+  ################################################################
+  context 'index: ' do
+    it 'list' do
       get :list, xhr: true
-      expect(response.body).to include('Skater NAME')
-    }
-    it {
-      get :list, xhr: true, params: {nation: "JPN"}
-      expect(response.body).to include('Skater NAME')
-    }
-  end
-  describe 'show/:isu_number' do
-    it {
-      get :show, params: { isu_number: 1 }
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).to include('MEN')    
-      expect(response.body).to include('1')
-    }
-  end
-  describe 'show/:name' do
-    it {
-      get :show, params: { isu_number: "Skater NAME"}
-      expect(response.body).to include('Skater NAME')
-      expect(response.body).to include('MEN')
-      expect(response.body).to include('1')
-    }
-  end
-  ################
-  context 'filters: ' do
-    [{name: "Skater"}, {category: "MEN"}, {nation: "JPN"}].each do |params|
-      it do
-        get :list, xhr: true, params: params
-        expect(response.body).to include("Skater")
-        expect(response.body).not_to include("Foo")
+      expect_to_include_skater(men_skater)
+      expect_to_include_skater(ladies_skater)
+      expect_not_to_include('No SCORES')
+        
+    end
+    context 'filters: ' do
+      [:name, :category, :nation].each do |key|
+        it do
+          get :list, xhr: true, params: { key => men_skater[key] }
+          expect_to_include_skater(men_skater)
+          expect_not_to_include(no_scores_skater.name)
+
+          get :list, xhr: true, params: filter_params(key, men_skater[key])
+          expect_to_include_skater(men_skater)
+          expect_not_to_include(no_scores_skater.name)
+        end
+      end
+    end
+    context 'sort: ' do
+      [:name, :isu_number, :category].each do |key|
+        it key do
+          names = [men_skater, ladies_skater].sort {|a, b| a[key] <=> b[key]}.map(&:name)
+          get :list, xhr: true, params: sort_params(key, 'asc')
+          expect(names.first).to appear_before(names.last)
+
+          get :list, xhr: true, params: sort_params(key, 'desc')
+          expect(names.last).to appear_before(names.first)
+        end
+      end
+    end
+    context 'format: ' do
+      [:json, :csv].each do |format|
+        it format do
+          get :index, params: { format: format }
+          expect_to_include_skater(men_skater)
+          expect_to_include_skater(ladies_skater)
+        end
       end
     end
   end
-  ################
-  describe 'json' do
-    it 'index json' do
-      get :index, params: { format: 'json' }
-      expect(response.body).to include('Skater NAME')
+  ################################################################
+  context 'show: ' do
+    it 'isu_number' do
+      get :show, params: { isu_number: men_skater.isu_number }
+      expect_to_include_skater(men_skater)
     end
-    it 'show json by isu_number' do
+    it 'name' do
+      get :show, params: { isu_number: men_skater.name }
+      expect_to_include_skater(men_skater)
+    end
+    it 'json' do
       get :show, params: { isu_number: 1, format: 'json' }
-      expect(response.body).to include('Skater NAME')
+      expect(response.content_type).to eq("application/json")
+      expect_to_include_skater(men_skater)
     end
   end
 end

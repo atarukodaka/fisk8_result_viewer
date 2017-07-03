@@ -1,29 +1,29 @@
-# See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-
 module Helper
-  def sort_params(column_name, direction = 'asc')
-    datatable = controller.create_datatable
-    col_num = datatable.column_names.index(column_name).to_i
-    { iSortCol_0: col_num, sSortDir_0: direction}
+  def expect_to_include(text)
+    expect(response.body).to include(text.to_s)
   end
-=begin
-  def get_expect_order(column_name: 'name', before: , after: )
-    datatable = controller.create_datatable
-    col_num = datatable.column_names.index(column_name).to_i
-    get :list, xhr: true, params: { iSortCol_0: col_num , sSortDir_0: 'asc'}
-    expect(before).to appear_before(after)
-    
-    get :list, xhr: true, params: { iSortCol_0: col_num , sSortDir_0: 'desc'}
-    expect(after).to appear_before(before)
+  def expect_not_to_include(text)
+    expect(response.body).not_to include(text.to_s)
   end
 
-  def get_expect_filter(key:, value:, include:, exclude:)
-    get :list, xhr: true, params: {key => value}
-    expect(response.body).to include(include)
-    expect(response.body).not_to include(exclude)
+  def expect_to_include_competition(competition)
+    [:name, :short_name, :city, :country].each do |key|
+      expect(response.body).to include(competition[key])
+    end
   end
-=end
+
+  def column_number(column_name)
+    controller.create_datatable.column_names.index(column_name.to_s).to_i
+  end
+  def filter_params(column_name, value)
+    { "sSearch_#{column_number(column_name)}" => value } 
+  end
+  def sort_params(column_name, direction = 'asc')
+    { iSortCol_0: column_number(column_name), sSortDir_0: direction}
+  end
 end
+
+################################################################
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -51,7 +51,7 @@ end
 
 RSpec::Matchers.define :appear_before do |later_content|
   match do |earlier_content|
-    response.body.index(earlier_content) < response.body.index(later_content)
+    response.body.index(earlier_content.to_s) < response.body.index(later_content.to_s)
   end
 end
 
