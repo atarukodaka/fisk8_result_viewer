@@ -19,6 +19,8 @@ class Datatable
         }
       when Hash
         column[:column_name] ||= column[:name]
+        column[:name] = column[:name].to_s
+        column[:table] = column[:table].to_s
         column.symbolize_keys
       end
     end

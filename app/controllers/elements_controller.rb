@@ -26,7 +26,8 @@ class ElementsController < ApplicationController
       category: ->(col, v)   { col.where(scores: {category: v}) },
       segment: ->(col, v)    { col.where(scores: {segment: v}) },
       nation: ->(col, v)     { col.where(skaters: {nation: v}) },
-      competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
+      #competition_name: ->(col, v)     { col.where(competitions: {name: v}) },
+      competition_name: ->(col, v)     { col.references(:competition).where("competitions.name like ? ", "%#{v}%")},
       isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool }) },
       season: ->(col, v){ col.where(competitions: {season: v}) },
     }

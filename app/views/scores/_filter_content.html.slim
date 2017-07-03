@@ -5,7 +5,7 @@
   label -
   = select_tag_with_options(:segment, options: { onchange: ajax_search(:segment, table)})
     
-= form_group("Nation", select_tag_with_options(:nation))
+= form_group("Nation", select_tag_with_options(:nation, options: { onchange: ajax_search(:nation, table)}))
 
 = form_group("Competition") do
   /= select_tag_with_options(:competition_name)
