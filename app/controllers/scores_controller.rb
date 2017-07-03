@@ -12,11 +12,10 @@ class ScoresController < ApplicationController
     }
   end
   def create_collection
-    #Score.includes(:competition, :skater).recent
     Score.includes(:competition, :skater).all    
   end
   def create_datatable
-    super.tap {|t| t.default_order = [:date, :desc]}
+    super.add_option(:default_order,  [:date, :desc])
   end
   def columns
     [{name: :name, table: :scores},
@@ -26,14 +25,6 @@ class ScoresController < ApplicationController
      {name: :skater_name, table: :skaters, column_name: :name},
      {name: :nation, table: :skaters},
      :tss, :tes, :pcs, :deductions, :base_value,]
-=begin
-    {
-      name: "scores.name", competition_name: "competitions.name", category: "category",
-      segment: "segment", season: "season", date: "date", result_pdf: "result_pdf",
-      ranking: "ranking", skater_name: "skaters.name", nation: "skaters.nation",
-      tss: "tss", tes: "tes", pcs: "pcs", deductions: "deductions", base_value: "base_value"
-    }
-=end
   end
   
   ################################################################

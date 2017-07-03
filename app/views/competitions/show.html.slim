@@ -23,7 +23,7 @@ table.table.table-striped.table-hover.table-condensed
 ////////////////////////////////////////////////////////////////
 h2 Category Summary
 
-= render partial: "list_table", locals: {table: category_summaries, decorate: true}
+= render partial: "datatable", locals: { table: category_summaries, decorate: true, disable_datatable: true}
 
 - if category.present?
   - unless segment.present?
@@ -31,12 +31,12 @@ h2 Category Summary
     h2 
       | Category Result of 
       = category
-    = render partial: "data_table", locals: { table: category_results, decorate: true, table_id: "category_table", page_length: 50 }
+    = render partial: "datatable", locals: { table: category_results, decorate: true, table_id: "category_table", page_length: 50 }
 
   - else
     ////////////////////////////////////////////////////////////////
     h2 
       | Segment Result of 
       = [category, segment].join('/')
-    = render partial: "data_table", locals: { table: segment_scores, decorate: true, table_id: "segment_table", page_length: 50 }
+    = render partial: "datatable", locals: { table: segment_scores, decorate: true, table_id: "segment_table", page_length: 50 }
 

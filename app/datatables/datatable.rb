@@ -1,46 +1,47 @@
-class Datatable < Listtable
-  attr_accessor :filters, :params, :default_order, :paging
-  def initialize(initial_collection, columns, filters: {}, params: {}, default_order: nil, paging: false)
-    super(initial_collection, columns)
-    @filters = filters
-    @params = params
-    @default_order = default_order
-    @paging = paging
+class Datatable
+  attr_accessor :collection, :columns, :options
+
+
+  def self.create(*args)
+    self.new(*args).tap do |table|
+      yield(table) if block_given?
+    end
+  end
+
+  def initialize(initial_collection, columns,  options: {})
+    @initial_collection = initial_collection
+    @columns = columns.map do |column|
+      case column
+      when Symbol, String
+        {
+          name: column.to_s,
+          table: initial_collection.table_name,
+          column_name: column.to_s
+        }
+      when Hash
+        column[:column_name] ||= column[:name]
+        column
+      end
+    end
+    @options = options
+  end
+
+  def add_option(key, value)
+    @options[key] = value
+    self
   end
   def fetch_collection
-    col = filter(super)
-    col = col.order(sort_sql) if sort_sql.present?
-    (paging) ? col.page(page).per(per) : col
+    @initial_collection
   end
-  def filter(col)
-    filters.each do |key, pr|
-      #column_number = columns.keys.index(key)
-      column_number = column_names.index(key.to_s)
-      v = params["sSearch_#{column_number}"].presence || params[key]
-      col = pr.call(col, v) if v.present? && pr
-    end
-    col
+  def column_names
+    @columns.map {|c| c[:name]}
   end
-  
-  ## for paging
-  def page
-    params[:iDisplayStart].to_i / per + 1
+  def table_id
+    "table_#{self.object_id}"
   end
-  def per
-    params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
-  end
-  
-  ## for sorting
-  def sort_sql
-    return "" if params[:iSortCol_0].blank?
-    [sort_column, sort_direction].join(' ')
-  end
-  def sort_column
-    column = columns[params[:iSortCol_0].to_i]
-    [column[:table], column[:column_name]].join('.')
-    #columns.values[params[:iSortCol_0].to_i]
-  end
-  def sort_direction
-    params[:sSortDir_0] == "desc" ? "desc" : "asc"
+  def collection
+    @collection ||= fetch_collection
   end
 end
+
+################################################################

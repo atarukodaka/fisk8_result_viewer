@@ -1,18 +1,4 @@
 class ApplicationController < ActionController::Base
-  ## for ajax request
-  def list
-    respond_to do |format|
-      format.json {
-        table = create_datatable.tap {|t| t.paging = true }
-        render json: {
-          iTotalRecords: table.collection.model.count,
-          iTotalDisplayRecords: table.collection.total_count,
-          data: table.collection.decorate.map {|d| table.column_names.map {|k| [k, d.send(k)]}.to_h },
-        }
-      }
-    end
-  end
-
   ################################################################
   protect_from_forgery with: :exception
   include IndexActionModules

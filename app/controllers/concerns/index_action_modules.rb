@@ -1,4 +1,19 @@
 module IndexActionModules
+  ## for ajax request
+  def list
+    respond_to do |format|
+      format.json {
+        table = create_datatable.extend(ServersideDatatableModule)
+        render json: {
+          iTotalRecords: table.collection.model.count,
+          iTotalDisplayRecords: table.collection.total_count,
+          data: table.collection.decorate.map {|d|
+            table.column_names.map {|k| [k, d.send(k)]}.to_h
+          },
+        }
+      }
+    end
+  end
   ################################################################
   def filters
     {}
@@ -14,16 +29,18 @@ module IndexActionModules
   end
 
   def create_datatable
-    Datatable.new(collection, columns, filters: filters, params: params)
+    FilterDatatable.create(collection, columns, filters: filters, params: params)
   end
   def index
     respond_to do |format|
-      table = create_datatable
+      table = @table || create_datatable
       format.html {
-        render locals: { table: table.tap {|t| t.paging = true } }
+        render locals: { table: table }
       }
       format.json {
-        render json: table.collection.limit(1000).map {|d| table.column_names.map {|k| [k, d.send(k)]}.to_h }.as_json
+        render json: table.collection.limit(1000).map do |d|
+          table.column_names.map {|k| [k, d.send(k)]}.to_h
+        end
       }
       format.csv {
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|

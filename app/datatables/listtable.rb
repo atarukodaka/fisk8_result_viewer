@@ -1,22 +1,17 @@
 class Listtable
-  attr_reader :collection, :columns
-  def initialize(initial_collection, columns)
+  attr_reader :collection, :columns, :options
+  def initialize(initial_collection, columns, options: {})
     @initial_collection = initial_collection
     @columns = columns.map do |column|
       case column
       when Symbol, String
-        {name: column.to_s, table: initial_collection.try(:table_name), column_name: column.to_s}
+        {name: column.to_s, table: initial_collection.table_name, column_name: column.to_s}
       when Hash
         column[:column_name] ||= column[:name]
         column
       end
     end
-=begin
-    @columns = columns.map do |column|
-      ary = column.to_s.split(/\./)
-      {name: ary.last, table: ary[0..-2].join('.').presence || initial_collection.table_name}
-    end
-=end
+    @options = options
     @collection = nil
   end
 

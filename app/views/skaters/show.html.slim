@@ -27,8 +27,7 @@
 
 h2 Competition Results
 
-- columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-= render partial: "data_table", locals: { table: Datatable.new(competition_results, columns), decorate: true, page_length: 25}
+= render partial: "datatable", locals: { table: competition_results_table, decorate: true, paging: true, page_length: 50}
 
 .row
   .col-sm-6

@@ -2,8 +2,7 @@
 class CompetitionsController < ApplicationController
   include ApplicationHelper
   include Contracts
-  
-=begin
+
   Contract None => Hash
   def filters
     {
@@ -18,34 +17,26 @@ class CompetitionsController < ApplicationController
   def create_collection
     Competition.all
   end
-=end
   def create_datatable
-    #super.tap {|t| t.default_order = [:start_date, :desc]}
-    cols = {
-      short_name: "short_name", name: "name", site_url: "site_url", city: "city",
-      country: "country", competition_type: "competition_type", season: "season",
-      start_date: "start_date", end_date: "end_date",
-    }
-    cols = [:short_name, :name, :site_url, :city, :country, :competition_type,
-            :season, :start_date, :end_date]
-    filters = {
-      name: ->(col, v) { col.name_matches(v) },
-      site_url: ->(col, v) { col.site_url_matches(v) },
-      competition_type: ->(col, v) { col.where(competition_type: v) },
-      isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
-      season: ->(col, v) { col.where(season: v) },
-    }
-    Datatable.new(Competition.all, cols, filters: filters, params: params, default_order: [:start_date, :desc])
+    #super.add_option(:default_order, [:start_date, :desc])
+    FilterDatatable.create(Competition.all, columns, filters: {}, params: params) do |table|
+      fs = {
+        name: ->(col, v) { col.name_matches(v) },
+        site_url: ->(col, v) { col.site_url_matches(v) },
+        competition_type: ->(col, v) { col.where(competition_type: v) },
+        isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
+        season: ->(col, v) { col.where(season: v) },
+      }
+      table.add_filters(fs)
+      table.add_option(:default_order, [:start_date, :desc])
+    end
   end
-=begin
+  
   def columns
-    {
-      short_name: "short_name", name: "name", site_url: "site_url", city: "city",
-      country: "country", competition_type: "competition_type", season: "season",
-      start_date: "start_date", end_date: "end_date",
-    }
+    [:short_name, :name, :site_url, :city, :country, :competition_type,
+     :season, :start_date, :end_date]
   end
-=end
+
   ################################################################
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)

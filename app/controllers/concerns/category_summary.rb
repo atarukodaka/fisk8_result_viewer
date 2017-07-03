@@ -12,6 +12,9 @@ class CategorySummaryRelation
   def decorator_class
     Draper::CollectionDecorator
   end
+  def table_name
+    nil
+  end
 end
 
 class CategorySummary

@@ -1,15 +1,12 @@
 class SkatersController < ApplicationController
-  ## index
   def filters
     {
       name: ->(col, v){ col.where("name like ? ", "%#{v}%") },
-      #name: ->(col, v){ col.matches(:name, v); },
       category: ->(col, v){ col.where(category: v) },
       nation: ->(col, v){ col.where(nation: v) },
     }
   end
   def create_collection
-    #Skater.order(:category, :name).having_scores
     Skater.having_scores
   end
   def columns
@@ -37,9 +34,11 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: {
+        columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
+        table = Datatable.new(competition_results, columns)
+        render action: :show, locals: { 
           skater: skater,
-          competition_results: competition_results
+          competition_results_table: table,
         }
       }
       format.json {

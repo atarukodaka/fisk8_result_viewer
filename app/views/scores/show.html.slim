@@ -21,11 +21,11 @@ h2 Score
         
 h2 Elements
 
-= render partial: "data_table", locals: { table: Datatable.new(score.elements, [:number, :name, :info, :base_value, :credit, :goe, :judges, :value])}
+= render partial: "datatable", locals: { table: Datatable.new(score.elements, [:number, :name, :info, :base_value, :credit, :goe, :judges, :value])}
 
 h2 Components
 
-= render partial: "data_table", locals: { table: Datatable.new(score.components, [:number, :name, :factor, :judges, :value])}
+= render partial: "datatable", locals: { table: Datatable.new(score.components, [:number, :name, :factor, :judges, :value])}
 
 - if score.deductions.to_f < 0
   h2 Deductions
