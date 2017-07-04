@@ -78,7 +78,7 @@ class CompetitionsController < ApplicationController
         render :show, locals: locals
       }
       format.json {
-        render :show, handlers: :jbuilder, locals: locals
+        render json: competition.as_json.merge({results: result_datatable})
       }
     end
   end

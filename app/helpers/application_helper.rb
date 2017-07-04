@@ -7,7 +7,6 @@ module LinkToHelper
     text ||= segment || category || competition.name
 
     lt = link_to(text, competition_path(competition.short_name, category, segment))
-    #(competition.isu_championships && category.nil?) ? content_tag(:b, lt) : lt
     (competition.isu_championships) ? lt : content_tag(:i, lt)
   end
   
@@ -22,7 +21,6 @@ module LinkToHelper
     name = (score.class == Score) ? score.name : score
 
     (name.nil?) ? text : link_to(text || name, score_path(name))
-    #(name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
@@ -42,24 +40,6 @@ module LinkToHelper
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
     link_to(image_tag(img_url), url, target: target)
   end
-=begin
-  def link_to_table_header(header)
-    query = params.permit(controller.filters.keys).to_hash.symbolize_keys.merge({sort: header})
-    if params[:sort] == header.to_s
-      direction = params[:direction].to_direction
-      query.merge!({direction: direction.opposit})
-      updown = (direction.current == :asc) ? :down : :up
-      content_tag(:span) do
-        link_to(query) do
-          concat(header.to_s.camelize)
-          concat(content_tag(:i, nil, :class => "glyphicon glyphicon-arrow-#{updown}"))
-        end
-      end
-    else
-      link_to(header.to_s.camelize, query)
-    end
-  end
-=end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
   end
@@ -76,6 +56,7 @@ module TableHelper
   end
 end
 
+=begin
 module SortHelper
   def sort_with_preset(data, preset)
     preset_hash = preset.map {|v| [v, false]}.to_h
@@ -90,7 +71,7 @@ module SortHelper
     preset.select {|v| preset_hash[v]} + to_sort.sort
   end
 end
-
+=end
 module FilterFormHelper
   using SortWithPreset
   def form_group(label, input_tag = nil)
@@ -134,6 +115,7 @@ module FilterFormHelper
   end
 end
 
+=begin
 module FormatHelper
   def as_ranking(value)
     (value.to_i == 0) ? "-" : "%d" % [value]
@@ -142,8 +124,8 @@ module FormatHelper
     (value.to_f == 0) ? "-" : "%.2f" % [value]
   end
 end
-
+=end
 ################################################################
 module ApplicationHelper
-  include LinkToHelper, TableHelper, SortHelper, FormatHelper, FilterFormHelper
+  include LinkToHelper, TableHelper, FilterFormHelper
 end

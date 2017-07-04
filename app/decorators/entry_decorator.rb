@@ -1,16 +1,20 @@
+
 class EntryDecorator < Draper::Decorator
   include ApplicationHelper
   delegate_all
 
   class << self
+    using AsRanking
+    using AsScore
+    
     def display_as(type, keys)
       keys.each do |key|
         self.send(:define_method, key) do
           case type
           when :ranking
-            as_ranking(model[key])
+            model[key].to_f.as_ranking
           when :score
-            as_score(model[key])
+            model[key].as_score
           end
         end
       end
