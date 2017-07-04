@@ -2,7 +2,7 @@ namespace :parse do
   desc "parse score of given url"
   task :scores => :environment do
     url = ENV['url']
-    parser = Fisk8ResultViewer::Parser::ScoreParser.new
+    parser = Parser::ScoreParser.new
     parser.parse_scores(url).each do |score|
       str = "-" * 100 + "\n"
       str << "%<ranking>d %<skater_name>s [%<nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % score

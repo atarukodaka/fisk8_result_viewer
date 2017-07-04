@@ -90,7 +90,7 @@ class Parser
           name: name, factor: factor.to_f,
           judges: judges.tr(',', '.'),   ## memo: gpjpn10 ice dance using ',' i/o '.'
           value: value.tr(',', '.').to_f,
-          number: (@score[:components].count+1).to_i,   ## TODO
+          number: (@score[:components].count+1).to_i,
         }
       when /Judges Total Program Component Score/
         @mode = :deductions
