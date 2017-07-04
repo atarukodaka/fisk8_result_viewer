@@ -16,7 +16,7 @@ gem 'therubyracer', platforms: :ruby
 
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
+#gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'pry-rails'
@@ -69,7 +69,7 @@ gem 'gnuplot'
 gem 'open_uri_redirections'    # for http: -> https: redirect
 gem 'contracts'
 gem 'to_bool'
-gem 'csv_builder'
+#gem 'csv_builder'
 gem 'sitemap_generator'
 
 gem 'jquery-datatables-rails'

@@ -33,7 +33,8 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {score: score}}
-      format.json { render :show, handlers: :jbuilder, locals: {score: score } }
+      #format.json { render :show, handlers: :jbuilder, locals: {score: score } }
+      format.json { render json: score.as_json.merge({elememnts: score.elements, components: score.components })}
     end
   end
 end
