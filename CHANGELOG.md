@@ -24,6 +24,8 @@
 - refine for to_direction and seniorize
 - sitemap
 - ajax support
+- lib/fisk8viewer moved out
+- parsers controller added
 
 ## 1.0.1 2017/6/25
 

@@ -1,4 +1,3 @@
-################################################################
 class ScoresController < ApplicationController
   def filters
     {
@@ -35,16 +34,6 @@ class ScoresController < ApplicationController
     respond_to do |format|
       format.html { render locals: {score: score}}
       format.json { render :show, handlers: :jbuilder, locals: {score: score } }
-    end
-  end
-  def show_scores
-    url = params[:url]
-    parser = Parsers.get_parser(:isu_generic)
-    scores = parser.parse(:score, url)
-
-    respond_to do |format|
-      format.html { render locals: {scores: scores} }
-      format.json { render json: score_hash }
     end
   end
 end

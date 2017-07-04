@@ -27,6 +27,11 @@ Rails.application.routes.draw do
   get '/elements/list' => 'elements#list'
   
   ## components
-  get 'components' => 'components#index'
+  get '/components' => 'components#index'
   get '/components/list' => 'components#list'
+
+  ## parser
+  get '/parsers' => 'parsers#index'
+  get '/parsers/competition' => 'parsers#competition'
+  get '/parsers/scores' => 'parsers#scores'  
 end

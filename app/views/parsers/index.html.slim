@@ -1,0 +1,14 @@
+h2 Parsers
+
+h3 Competition Parser
+
+= form_tag url_for(controller: controller_name, action: :competition), method: :get do |f|
+  = form_group("URL", text_field_tag(:url, nil, size: 70))
+  = form_group(nil, submit_tag("parse"))
+
+h3 Scores Parser
+
+= form_tag url_for(controller: controller_name, action: :scores), method: :get do |f|
+  = form_group("URL", text_field_tag(:url, nil, size: 70))
+  = form_group(nil, submit_tag("parse"))
+

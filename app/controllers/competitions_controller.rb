@@ -65,15 +65,4 @@ class CompetitionsController < ApplicationController
       }
     end
   end
-  ################################################################
-  def create_competition
-  end
-  def show_competition
-    url = params[:url]
-    parser_type = params[:parser_type].presence || :isu_generic
-    parser = Parsers.get_parser(parser_type.to_sym)
-    
-    summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
-    render locals: { summary: summary, parser: parser }
-  end
 end
