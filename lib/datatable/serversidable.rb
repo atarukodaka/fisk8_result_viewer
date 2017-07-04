@@ -1,4 +1,4 @@
-module ServersideDatatableModule
+module Datatable::Serversidable
   def fetch_collection
     super.order(sort_sql).page(page).per(per)
   end

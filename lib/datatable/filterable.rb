@@ -1,12 +1,4 @@
-class FilterDatatable < Datatable
-  attr_accessor :filters, :params
-
-  def initialize(initial_collection, columns, filters: {}, params: {},  options: {})
-    super(initial_collection, columns,  options: {})
-    @filters = filters
-    @params = params
-  end
-
+module Datatable::Filterable
   def fetch_collection
     execute_filters(@initial_collection)
   end
@@ -15,10 +7,16 @@ class FilterDatatable < Datatable
     self
   end
   def add_filter(key, filter)
+    @filters ||= {}
     @filters[key] = filter
     self
   end
-
+  def filters
+    @filters ||= {}
+  end
+  def params
+    @params ||= {}
+  end
   def execute_filters(col)
     # input params
     filters.each do |key, pr|
@@ -29,3 +27,4 @@ class FilterDatatable < Datatable
     col
   end
 end
+

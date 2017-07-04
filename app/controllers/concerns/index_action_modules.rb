@@ -3,7 +3,7 @@ module IndexActionModules
   def list
     respond_to do |format|
       format.json {
-        table = create_datatable.extend(ServersideDatatableModule)
+        table = create_datatable.extend(Datatable::Serversidable)
         render json: {
           iTotalRecords: table.collection.model.count,
           iTotalDisplayRecords: table.collection.total_count,
