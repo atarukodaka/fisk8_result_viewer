@@ -1,7 +1,7 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    Skater.create_skaters_from_isu_bio   ## TODO: accept_categories
+    Skater.create_skaters   ## TODO: accept_categories
   end
 
   desc "update competitions listed in config/competitions.yml"

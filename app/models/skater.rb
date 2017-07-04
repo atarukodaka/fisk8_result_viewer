@@ -17,7 +17,7 @@ class Skater < ApplicationRecord
 
   ## class methods
   class << self
-    def create_skaters_from_isu_bio
+    def create_skaters
       parser = Parser::SkaterParser.new
       ActiveRecord::Base.transaction do
         parser.parse_skaters().each do |hash|
