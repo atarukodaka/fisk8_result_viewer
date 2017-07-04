@@ -33,14 +33,11 @@ class SkatersController < ApplicationController
     ################
     ## render
     respond_to do |format|
+      columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
       table = Datatable.new(competition_results, columns)
       
       format.html {
-        columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-        render action: :show, locals: { 
-          skater: skater,
-          competition_results_table: table,
-        }
+        render action: :show, locals: { skater: skater, competition_results_table: table, }
       }
       format.json {
         render json: skater.as_json.merge({competition_results: table}) # TODO: skater record summary

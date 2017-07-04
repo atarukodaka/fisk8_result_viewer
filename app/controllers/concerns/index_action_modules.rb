@@ -45,6 +45,7 @@ module IndexActionModules
         end
       }
       format.csv {
+        require 'csv'
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
           table.collection.limit(1000).each do |row|
             csv << table.column_names.map {|k| row.send(k)}
