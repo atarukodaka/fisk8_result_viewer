@@ -10,7 +10,7 @@ class Parser
         page = get_url(url, read_option: 'r:iso-8859-1')
       rescue OpenURI::HTTPError
         ##http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
-        logger.warn("!!! #{url} not found")
+        Rails.logger.warn("!!! #{url} not found")
         return []
       end
       rows = get_rows(page)

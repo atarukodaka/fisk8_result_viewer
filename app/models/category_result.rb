@@ -22,7 +22,6 @@ class CategoryResult < ApplicationRecord
   class << self
     def create_category_result(result_url, competition, category, parser: nil)
       parser ||= Parsers.get_parser(competition.parser_type.to_sym)
-
       parser.parse(:category_result, result_url).each do |result|
         competition.category_results.create do |cr|
           cr.attributes = result.except(:skater_name, :nation)

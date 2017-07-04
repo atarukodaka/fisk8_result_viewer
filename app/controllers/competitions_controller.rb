@@ -41,7 +41,7 @@ class CompetitionsController < ApplicationController
 
   ################################################################
   def show
-    competition = Competition.where(short_name: params[:short_name]).last || raise(ActiveRecord::RecordNotFound)
+    competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
     category = params[:category]
     segment = params[:segment]

@@ -101,6 +101,11 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     end
   end
   context 'network errors' do
+    it 'rescue not found on nepera2014/pairs' do
+      url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
+      Competition.create_competition(url, accept_categories: [:PAIRS])
+      expect(Competition.find_by(site_url: url).category_results.where(category: "PAIRS").count).to be_zero
+    end
     it 'raises socket error' do
         url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
       expect {

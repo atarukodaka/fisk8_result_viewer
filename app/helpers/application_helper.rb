@@ -44,6 +44,7 @@ module LinkToHelper
     img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
     link_to(image_tag(img_url), url, target: target)
   end
+=begin
   def link_to_table_header(header)
     query = params.permit(controller.filters.keys).to_hash.symbolize_keys.merge({sort: header})
     if params[:sort] == header.to_s
@@ -60,6 +61,7 @@ module LinkToHelper
       link_to(header.to_s.camelize, query)
     end
   end
+=end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")
   end
