@@ -30,7 +30,7 @@ class CategoryResult < ApplicationRecord
           skater_name = Skater.correct_name(result[:skater_name])
           cr.skater = Skater.find_or_create_by_isu_number_or_name(cr.isu_number, skater_name) do |sk|
             sk.attributes = {
-              category: category.seniorize,
+              category: category.sub(/^JUNIOR */, ''),
               nation: result[:nation],
             }
           end

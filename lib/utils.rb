@@ -29,9 +29,11 @@ module Utils
     end
     Pdftotext.text(filename)
   end
+=begin
   def str2symbols(str)
     str.split(/ *, */).map(&:to_sym)
   end
+=end
 end  ## module
 
 

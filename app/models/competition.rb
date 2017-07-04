@@ -57,6 +57,7 @@ class Competition < ApplicationRecord
             Score.create_score(score_url, competition, category, segment, parser: parser, attributes: {date: date})            
           end
         end
+        competition
       end
     end
   end
