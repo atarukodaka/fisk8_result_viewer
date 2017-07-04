@@ -6,7 +6,7 @@ namespace :update do
 
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
-    last =  ENV['last'].to_i
+    last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
     accept_categories = ENV['accept_categories'].split(/,/).map(&:to_sym) if ENV['accept_categories']
     includes = [:challenger, :junior].select {|k|
