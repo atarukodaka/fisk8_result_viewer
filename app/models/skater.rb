@@ -17,6 +17,17 @@ class Skater < ApplicationRecord
 
   ## class methods
   class << self
+    def create_skaters_from_isu_bio
+      parser = Parser::SkaterParser.new
+      ActiveRecord::Base.transaction do
+        parser.parse_skaters().each do |hash|
+          Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
+            logger.debug(skater)
+            skater.update!(hash)   # TODO: if save failed
+          end
+        end
+      end
+    end
     def find_by_isu_number_or_name(isu_number, name)
       (find_by(isu_number: isu_number) if isu_number.present?) ||
         (find_by(name: name))

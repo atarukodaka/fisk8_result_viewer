@@ -1,15 +1,31 @@
 namespace :update do
+  task :skaters_model => :environment do
 
+  end
+  
   desc "update skater"
   task :skaters  => :environment do
+    Skater.create_skaters_from_isu_bio   ## TODO: accept_categories
+=begin
     include Fisk8ResultViewer::Utils
     accept_categories = str2symbols(ENV['accept_categories']) if ENV['accept_categories']
     updater = Fisk8ResultViewer::Updater::SkaterUpdater.new
     updater.update_skaters(categories: accept_categories)
+=end
   end
 
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
+    last =  ENV['last'].to_i
+    force =  ENV['force'].to_i.nonzero?
+    accept_categories = ENV['accept_categories'].split(/,/).map(&:to_sym) if ENV['accept_categories']
+    #challenger: ENV['include_challenger'].to_i.nonzero?,
+    #junior: ENV['include_junior'].to_i.nonzero?,
+    
+    CompetitionList.new.create_competitions(force: force, last: last, accept_categories: accept_categories) # TODO: include
+  end
+  
+  task :competitions_old => :environment do
     include Fisk8ResultViewer::Utils
     options = {
       last: ENV['last'].to_i,
@@ -35,13 +51,13 @@ namespace :update do
 
   desc "update competition of given url"
   task :competition => :environment do
-    url = ENV['url']
+    url = ENV['url'] || raise
     force = ENV['force'].to_i.nonzero?
     comment = ENV['comment']
     parser_type = (t = ENV['parser_type']) ? t.to_sym :  :isu_generic
-    Competition.where(site_url: url).map(&:destroy) if force
-    updater = Fisk8ResultViewer::Updater::CompetitionUpdater.new
-    updater.update_competition(url, parser_type: parser_type, comment: comment)
+
+    Competition.destroy_existings_by_url(url) if force
+    Competition.create_competition(url, parser_type: parser_type)  ## TODO: comment
   end
 
   desc 'show elements'

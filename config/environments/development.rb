@@ -55,6 +55,9 @@ Rails.application.configure do
   #config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.file_watcher = ActiveSupport::FileUpdateChecker
 
+  #config.logger = ActiveSupport::Logger.new(STDOUT)   ##
+
+  
   ################################################################
   # bullet
   config.after_initialize do

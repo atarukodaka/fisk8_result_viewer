@@ -4,11 +4,12 @@ require 'open_uri_redirections'
 
 module Fisk8ResultViewer
   module Utils
+=begin
     def logger
       #@logger ||= Rails.logger
       @logger ||= ::Logger.new(STDERR, date_time_format: '%Y-%m-%d %H:%M')
     end
-
+=end
     def get_url(url, read_option: nil)
       html = (read_option) ? open(url, read_option).read : open(url).read
       Nokogiri::HTML(html)

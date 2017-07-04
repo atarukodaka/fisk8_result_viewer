@@ -2,10 +2,15 @@ class Competition < ApplicationRecord
   #after_initialize :set_default_values
   before_save :set_short_name
   
+  ACCEPT_CATEGORIES =
+    [
+     :MEN, :LADIES, :PAIRS, :"ICE DANCE",
+     :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
+    ]
+
   ## relations
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
-
   
   ## validations
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
@@ -22,17 +27,40 @@ class Competition < ApplicationRecord
         Competition.where(site_url: url).map(&:destroy)
       }
     end
-=begin
-    def options(key)
-      case key
-      when :competition_type
-        @_option_competition_type ||= pluck(key).sort.uniq
-      when :season
-        @_option_season ||= pluck(key).sort.reverse.uniq
+    def create_competition(url, parser_type: :isu_generic, comment: nil, accept_categories: nil)
+      accept_categories ||= ACCEPT_CATEGORIES
+      if Competition.find_by(site_url: url)
+        puts "skip: #{url}"
+        return
+      end
+      ActiveRecord::Base.transaction do
+        parser = Parsers.get_parser(parser_type.to_sym)
+        summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
+        competition = summary.to_model
+        competition.parser_type = parser_type
+        competition.comment = comment
+        #competition.country ||= @city_country[competition.city]  # TODO: country
+
+        competition.save!  # TODO
+        puts "*" * 100
+        puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
+
+        summary.categories.each do |category|
+          next unless accept_categories.include?(category.to_sym)
+          result_url = summary.result_url(category)
+          CategoryResult.create_category_result(result_url, competition, category, parser: parser)
+          
+          # segment
+          summary.segments(category).each do |segment|
+            score_url = summary.score_url(category, segment)
+            date = summary.starting_time(category, segment)
+            Score.create_score(score_url, competition, category, segment, parser: parser, attributes: {date: date})            
+          end
+        end
       end
     end
-=end
   end
+  ################
   private
   def set_short_name
     year = self.start_date.year
@@ -76,4 +104,5 @@ class Competition < ApplicationRecord
     self.short_name ||= ary[1]
     self.isu_championships ||= ary[2]
   end
+  
 end

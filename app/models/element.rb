@@ -1,12 +1,12 @@
 class Element < ApplicationRecord
+  before_save :set_element_type
+  
   ## relations
   belongs_to :score
 
-  ##
   def score_name
     score.name
   end
-
   def competition_name
     score.competition.name
   end
@@ -31,12 +31,16 @@ class Element < ApplicationRecord
   def nation
     score.skater.nation
   end
-  ################
-  # class methods
-  class << self
-    def parse_element_type(element_name, category)
-      if category == "ICE DANCE"
-        case element_name
+
+  ## scopes
+  scope :recent, ->{ joins(:score).order("scores.date desc") }
+
+  
+  private
+  def set_element_type
+    self[:element_type] = 
+      if score.category == "ICE DANCE"
+        case name
         when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/
           :pattern_dance
         when /[12]SS/, /1PD/, /PSt/, /R[12]Sq/
@@ -54,7 +58,7 @@ class Element < ApplicationRecord
           :unknown
         end
       else
-        case element_name
+        case name
         when /St/, /ChSq/
           :step
         when /Tw/ # /[1-4]A?Tw/, /[1-4]LzTw/
@@ -74,8 +78,6 @@ class Element < ApplicationRecord
           :unknown
         end
       end
-    end
+    self
   end
-  ## scopes
-  scope :recent, ->{ joins(:score).order("scores.date desc") }
 end

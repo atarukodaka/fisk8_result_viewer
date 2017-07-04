@@ -1,0 +1,21 @@
+// locals: score
+
+- content_for :title do
+  | scores
+
+- scores.each do |score|
+  h4= "%<ranking>d: %<skater_name>s [%<nation>s] (%<starting_number>d)  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % score
+  div Executed Elements
+  ul
+    - score[:elements].each do |element|
+      li= element.values.join(', ')
+
+  div Program Components
+  ul
+    - score[:components].each do |component|
+      li= component.values.join(', ')
+
+  - if score[:deduction_reasons]
+    div Deductions: #{score[:deduction_reasons]}
+  hr
+

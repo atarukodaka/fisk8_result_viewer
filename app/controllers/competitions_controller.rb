@@ -41,7 +41,7 @@ class CompetitionsController < ApplicationController
 
   ################################################################
   def show
-    competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
+    competition = Competition.where(short_name: params[:short_name]).last || raise(ActiveRecord::RecordNotFound)
 
     category = params[:category]
     segment = params[:segment]
@@ -64,5 +64,16 @@ class CompetitionsController < ApplicationController
         render :show, handlers: :jbuilder, locals: locals
       }
     end
+  end
+  ################################################################
+  def create_competition
+  end
+  def show_competition
+    url = params[:url]
+    parser_type = params[:parser_type].presence || :isu_generic
+    parser = Parsers.get_parser(parser_type.to_sym)
+    
+    summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
+    render locals: { summary: summary, parser: parser }
   end
 end
