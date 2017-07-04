@@ -41,7 +41,7 @@ class Element < ApplicationRecord
     self[:element_type] = 
       if score.category == "ICE DANCE"
         case name
-        when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/
+        when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/, /BL/, /QS/, /CC/, /VW/
           :pattern_dance
         when /[12]SS/, /1PD/, /PSt/, /R[12]Sq/
           :pattern_dance_element
