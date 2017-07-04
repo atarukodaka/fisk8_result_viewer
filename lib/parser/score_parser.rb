@@ -1,7 +1,7 @@
 class Parser
   class ScoreParser
     include Contracts
-    include Utils
+    include PdfConvertable
 
     SCORE_DELIMITER = /Score Score/
 
