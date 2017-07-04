@@ -10,7 +10,7 @@ class ComponentsController < ElementsController #  ApplicationController
   def columns
     [
      {name: :score_name, table: :scores, column_name: :name},
-     {name: "competition_name", table: "competitions", column_name: "name"},
+     {name: :competition_name, table: :competitions, column_name: :name},
      {name: :category, table: :scores},
      {name: :segment, table: :scores},
      {name: :date, table: :scores},

@@ -18,7 +18,8 @@ class CompetitionsController < ApplicationController
     Competition.all
   end
   def create_datatable
-    #super.add_option(:default_order, [:start_date, :desc])
+    super.add_option(:default_order, [:start_date, :desc])
+=begin
     FilterDatatable.create(Competition.all, columns, filters: {}, params: params) do |table|
       fs = {
         name: ->(col, v) { col.name_matches(v) },
@@ -30,6 +31,7 @@ class CompetitionsController < ApplicationController
       table.add_filters(fs)
       table.add_option(:default_order, [:start_date, :desc])
     end
+=end
   end
   
   def columns

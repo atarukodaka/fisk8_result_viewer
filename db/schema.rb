@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 3) do
   create_table "elements", force: :cascade do |t|
     t.integer "number"
     t.string "name"
+    t.string "element_type"
     t.string "info"
     t.float "base_value"
     t.string "credit"

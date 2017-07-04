@@ -105,25 +105,27 @@ module FilterFormHelper
       #concat(yield) if block_given?
     end
   end
-  def select_tag_with_options(key, col = nil, options: {})
-    if col.nil?
-      col =
-        case key
-        when :category
-          sort_with_preset(Score.select_options(:category), ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
-        when :segment
-          Score.select_options(:segment).sort
-        when :nation
-          Skater.select_options(:nation).sort
-        when :competition_name
-          Competition.recent.select_options(:name, :competition_name).sort
-        when :competition_type
-          Competition.select_options(:competition_type).sort
-        when :season
-          Competition.select_options(:season).sort.reverse
-        end
-    end
-    select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), options)
+  def select_tag_with_options(key, *args)
+    col =
+      case key
+      when :category
+        sort_with_preset(Score.select_options(:category), ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+      when :segment
+        Score.select_options(:segment).sort
+      when :nation
+        Skater.select_options(:nation).sort
+      when :competition_name
+        Competition.recent.select_options(:name, :competition_name).sort
+      when :competition_type
+        Competition.select_options(:competition_type).sort
+      when :season
+        Competition.select_options(:season).sort.reverse
+      when :element_type
+        Element.select_options(:element_type).sort
+      else
+        []
+      end
+    select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), *args)
   end
   def ajax_search(key, table)  # TODO
     col_num = table.column_names.index(key.to_s)

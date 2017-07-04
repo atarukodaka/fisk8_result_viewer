@@ -16,6 +16,7 @@ RSpec.describe CompetitionsController, type: :controller do
   ################################################################
   context 'index: ' do
     it 'list' do
+      binding.pry
       get :list, xhr: true
       expect_to_include_competition(world)
       expect_to_include_competition(finlandia)

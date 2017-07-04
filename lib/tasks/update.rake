@@ -1,4 +1,5 @@
 namespace :update do
+
   desc "update skater"
   task :skaters  => :environment do
     include Fisk8ResultViewer::Utils
@@ -43,5 +44,12 @@ namespace :update do
     updater.update_competition(url, parser_type: parser_type, comment: comment)
   end
 
+  desc 'show elements'
+  task :show_elements => :environment do
+    binding.pry
+    category = ENV['category'] || "MEN"
+    puts Element.joins(:score).where("scores.category" => category).map {|e| [e.element_type, e.name]}.uniq.sort {|a, b| a[0]<=>b[0]}.map {|d| d.join(', ')}
+  end
+  
   ################################################################
 end  # namespace

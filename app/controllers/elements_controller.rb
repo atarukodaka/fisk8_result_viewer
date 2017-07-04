@@ -15,7 +15,10 @@ class ElementsController < ApplicationController
       goe: ->(col, v){
         arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
         col.where(arel)
-      }
+      },
+      element_type: ->(col, v){
+        col.where(element_type: v)
+      },
     }.merge(score_filters)
   end
   def score_filters
@@ -49,6 +52,7 @@ class ElementsController < ApplicationController
      {name: "nation", table: "skaters"},
      "number",
      {name: "name", table: "elements"},
+     "element_type",
      "credit", "info",
      {name: "base_value", table: "elements"},
      "goe", "judges", "value",

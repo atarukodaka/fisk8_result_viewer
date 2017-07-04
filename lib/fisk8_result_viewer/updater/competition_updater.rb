@@ -87,7 +87,11 @@ module Fisk8ResultViewer
                                 category_result: cr,
                                 skater: cr.skater,
                                 )
-                  score_hash[:elements].map {|e| score.elements.create(e)}
+                  score_hash[:elements].map {|e|
+                    score.elements.create(e) do |element|
+                      element.element_type = Element.parse_element_type(element.name, category)
+                    end
+                  }
                   score_hash[:components].map {|e| score.components.create(e)}
                   dputs score.summary
                 end

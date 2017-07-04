@@ -15,6 +15,7 @@ module IndexActionModules
     end
   end
   ################################################################
+
   def filters
     {}
   end
@@ -24,16 +25,17 @@ module IndexActionModules
   def create_collection
     raise "should be implemented in derived class"
   end
+=begin
   def collection
     @collection ||= create_collection
   end
-
+=end
   def create_datatable
-    FilterDatatable.create(collection, columns, filters: filters, params: params)
+    FilterDatatable.create(create_collection, columns, filters: filters, params: params)
   end
   def index
     respond_to do |format|
-      table = @table || create_datatable
+      table = create_datatable
       format.html {
         render locals: { table: table }
       }

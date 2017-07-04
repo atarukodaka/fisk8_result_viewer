@@ -28,6 +28,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
     create_table :elements do |t|
       t.integer :number
       t.string :name
+      t.string :element_type
       t.string :info
       t.float :base_value
       t.string :credit
