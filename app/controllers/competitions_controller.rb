@@ -46,13 +46,18 @@ class CompetitionsController < ApplicationController
     category = params[:category]
     segment = params[:segment]
 
-    respond_to do |format|
+    category_segments = competition.scores.order(:date).select(:category, :segment).map {|d| d.attributes}.uniq.group_by {|d| d["category"]}.map {|k, ary|
+      [k, ary.map {|d| d["segment"]}]
+    }.to_h
 
+    respond_to do |format|
       locals = {
         category: category,
         segment: segment,
         competition: competition,
-        category_summaries: Datatable.new(CategorySummary.create_summaries(competition), [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]),
+        category_segments: category_segments,
+        #category_summaries: Datatable.new(CategorySummary.create_summaries(competition), [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]),
+        #category_summaries: Datatable.new(CategorySummary.all, [:category, :short]),
         category_results: (Datatable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]) if category && segment.blank?),
         segment_scores: (Datatable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]) if segment),
       }   # dont compact which can take category, segment out

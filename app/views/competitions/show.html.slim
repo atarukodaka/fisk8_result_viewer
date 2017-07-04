@@ -21,9 +21,22 @@ table.table.table-striped.table-hover.table-condensed
     = tr_data(key, competition.decorate.send(key))
 
 ////////////////////////////////////////////////////////////////
-h2 Category Summary
+h2 Category / Segment
 
-= render partial: "datatable", locals: { table: category_summaries, decorate: true, disable_datatable: true}
+table.table.table-striped.table-hover.table-condensed
+  tr
+    - [:category, :short, :free].each do |h|
+      th= h.to_s.humanize
+  - category_segments.each do |category, ary|
+    tr
+      td= link_to_competition(competition, category: category)
+      - ary.each do |item|
+        td= link_to_competition(competition, category: category, segment: item)
+
+  - [:category, :short, :free].each do 
+    
+  
+/= render partial: "datatable", locals: { table: category_summaries, decorate: true, disable_datatable: true}
 
 - if category.present?
   - unless segment.present?

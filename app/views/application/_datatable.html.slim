@@ -36,7 +36,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}" data-sour
   thead
     tr
       - column_names.each do |key|
-        th= key.to_s.camelize
+        th= key.to_s.humanize
   tbody
     - unless ajax
       - collection = (decorate) ? table.collection.decorate : table.collection
