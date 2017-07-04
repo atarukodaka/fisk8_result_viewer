@@ -27,29 +27,14 @@ table.table.table-striped.table-hover.table-condensed
   tr
     - [:category, :short, :free].each do |h|
       th= h.to_s.humanize
-  - category_segments.each do |category, ary|
+  - categories.each do |category|
     tr
       td= link_to_competition(competition, category: category)
-      - ary.each do |item|
-        td= link_to_competition(competition, category: category, segment: item)
+      - category_segments[category].each do |segment|
+        td= link_to_competition(competition, category: category, segment: segment)
 
-  - [:category, :short, :free].each do 
-    
-  
-/= render partial: "datatable", locals: { table: category_summaries, decorate: true, disable_datatable: true}
+////////////////////////////////////////////////////////////////
+- if result_type.present?
+  h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
-- if category.present?
-  - unless segment.present?
-    ////////////////////////////////////////////////////////////////
-    h2 
-      | Category Result of 
-      = category
-    = render partial: "datatable", locals: { table: category_results, decorate: true, table_id: "category_table", page_length: 50 }
-
-  - else
-    ////////////////////////////////////////////////////////////////
-    h2 
-      | Segment Result of 
-      = [category, segment].join('/')
-    = render partial: "datatable", locals: { table: segment_scores, decorate: true, table_id: "segment_table", page_length: 50 }
-
+  = render partial: "datatable", locals: { table: result_datatable, decorate: true, table_id: "category_table", page_length: 50 }

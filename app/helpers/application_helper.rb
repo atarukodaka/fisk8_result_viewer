@@ -1,5 +1,3 @@
-using ToDirection
-
 module LinkToHelper
   def link_to_skater(text = nil, skater, params: {})
     link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
@@ -94,6 +92,7 @@ module SortHelper
 end
 
 module FilterFormHelper
+  using SortWithPreset
   def form_group(label, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       concat(content_tag(:div, label_tag(label), :class => 'col-sm-2'))
@@ -111,7 +110,7 @@ module FilterFormHelper
     col =
       case key
       when :category
-        sort_with_preset(Score.select_options(:category), ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+        Score.select_options(:category).sort_with_preset(["MEN", "LADIES", "PAIRS", "ICE DANCE"])
       when :segment
         Score.select_options(:segment).sort
       when :nation

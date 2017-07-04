@@ -1,8 +1,8 @@
-################################################################
 class CompetitionsController < ApplicationController
   include ApplicationHelper
   include Contracts
-
+  using SortWithPreset
+  
   Contract None => Hash
   def filters
     {
@@ -49,17 +49,29 @@ class CompetitionsController < ApplicationController
     category_segments = competition.scores.order(:date).select(:category, :segment).map {|d| d.attributes}.uniq.group_by {|d| d["category"]}.map {|k, ary|
       [k, ary.map {|d| d["segment"]}]
     }.to_h
-
+    #categories = sort_with_preset(category_segments.keys, ["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+    categories = category_segments.keys.sort_with_preset(["MEN", "LADIES", "PAIRS", "ICE DANCE"])
+      
+    result_type, result_datatable = 
+      if category.blank? and segment.blank?
+        [nil, nil]
+      elsif segment.blank?
+        [:category, Datatable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss])]
+      else
+        [:segment, Datatable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary])]
+      end
+    
     respond_to do |format|
       locals = {
+        competition: competition,
         category: category,
         segment: segment,
-        competition: competition,
+        categories: categories,
         category_segments: category_segments,
-        #category_summaries: Datatable.new(CategorySummary.create_summaries(competition), [:category, :short, :free, :ranker1st, :ranker2nd, :ranker3rd]),
-        #category_summaries: Datatable.new(CategorySummary.all, [:category, :short]),
-        category_results: (Datatable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]) if category && segment.blank?),
-        segment_scores: (Datatable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]) if segment),
+        result_type: result_type,
+        result_datatable: result_datatable,
+        #category_results: (Datatable.new(competition.category_results.category(category).includes(:skater, :scores), [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]) if category && segment.blank?),
+        #segment_scores: (Datatable.new(competition.scores.segment(category, segment).order(:ranking).includes(:skater, :elements, :components), [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary]) if segment),
       }   # dont compact which can take category, segment out
 
       format.html {
