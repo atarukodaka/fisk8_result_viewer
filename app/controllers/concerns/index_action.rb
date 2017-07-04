@@ -1,4 +1,4 @@
-module IndexActionModules
+module IndexAction
   ## for ajax request
   def list
     respond_to do |format|

@@ -7,8 +7,9 @@
 - default_order
 - datatable id: consistency btw ajax_search() and render => settings
 - rspec: filter search for all controllers(elements, compoments)
-- element type
-  
+- show.json w/o builder
+- isu championship to take out?
+- single data table
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -25,7 +26,10 @@
 - sitemap
 - ajax support
 - lib/fisk8viewer moved out
+- element type
 - parsers controller added
+- error handlers moved into concertn
+
 
 ## 1.0.1 2017/6/25
 

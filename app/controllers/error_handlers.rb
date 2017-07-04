@@ -1,5 +1,6 @@
 module ErrorHandlers
-  include ActiveSupport::Concern
+  extend ActiveSupport::Concern
+  
   included do
     unless Rails.env.development?
       #if Rails.env.production?
