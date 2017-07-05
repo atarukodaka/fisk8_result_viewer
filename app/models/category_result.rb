@@ -20,7 +20,7 @@ class CategoryResult < ApplicationRecord
   end
   def short
     scores.first   ## segment =~ /SHORT/
-    scores.where("scores.segment like ?", 'SHORT%').first
+    #scores.where("scores.segment like ?", 'SHORT%').first
   end
   def short_tss
     short.try(:tss)
@@ -35,7 +35,8 @@ class CategoryResult < ApplicationRecord
     short.try(:deductions)
   end
   def free
-    scores.where("scores.segment like ?", 'FREE%').first
+    #scores.where("scores.segment like ?", 'FREE%').first
+    scores.second
   end
   def free_tss
     free.try(:tss)
@@ -80,12 +81,6 @@ class CategoryResult < ApplicationRecord
           cr
         end
       end
-    end
-    def highest_score
-      pluck(:points).compact.max
-    end
-    def highest_ranking
-      pluck(:ranking).compact.reject {|d| d == 0}.min
     end
   end
 end

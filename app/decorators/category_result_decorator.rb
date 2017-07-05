@@ -8,16 +8,6 @@ class CategoryResultDecorator < EntryDecorator
   def nation
     model.skater.nation
   end
-=begin  
-  def short_tss
-    as_score(model.scores.first.try(:tss))
-  end
-  def free_tss
-    as_score(model.scores.first.try(:tss))
-  end
-  self.display_as(:ranking, [:short_ranking, :free_ranking])
-  self.display_as(:score, [:points])
-=end
   def competition_name
     name = model.competition.name
     h.link_to_competition((model.competition.isu_championships) ? h.content_tag(:b, name) : name, model.competition)

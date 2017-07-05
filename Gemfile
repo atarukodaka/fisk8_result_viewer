@@ -73,4 +73,4 @@ gem 'to_bool'
 gem 'sitemap_generator'
 
 gem 'jquery-datatables-rails'
-
+gem 'hashie'
