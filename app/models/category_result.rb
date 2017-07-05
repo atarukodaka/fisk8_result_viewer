@@ -20,6 +20,7 @@ class CategoryResult < ApplicationRecord
   end
   def short
     scores.first   ## segment =~ /SHORT/
+    scores.where("scores.segment like ?", 'SHORT%').first
   end
   def short_tss
     short.try(:tss)
@@ -34,7 +35,7 @@ class CategoryResult < ApplicationRecord
     short.try(:deductions)
   end
   def free
-    scores.second
+    scores.where("scores.segment like ?", 'FREE%').first
   end
   def free_tss
     free.try(:tss)
@@ -65,10 +66,7 @@ class CategoryResult < ApplicationRecord
     end
     def create_category_result(result_url, competition, category, parser_type: nil)
       parser = Parsers.parser(:category_result, parser_type)
-      #parser ||= Parsers.get_parser(competition.parser_type.to_sym)
-      #parser = Parsers::IsuGeneric::CategoryResultParser.new
-      #parser.parse(:category_result, result_url).each do |result|
-      parser.parse(result_url).each do |result|
+      parser.parse(result_url).map do |result|
         competition.category_results.create do |cr|
           cr.attributes = result.except(:skater_name, :nation)
           cr.category = category
@@ -79,6 +77,7 @@ class CategoryResult < ApplicationRecord
             }
           end
           puts cr.summary
+          cr
         end
       end
     end

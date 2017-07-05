@@ -8,7 +8,6 @@ class Parsers
         [page.xpath("//dd[@class='tribe-venue']").text.strip, "CAN"]
       end
     end
-    #Parsers.register(:autumn_classic, self)      
   end
 end
 

@@ -113,7 +113,6 @@ class Parsers
       end
       alias :parse :parse_category_results
     end
-    #Parsers.register(:wtt_2017, self)
   end ## class Wtt2017
 end
 

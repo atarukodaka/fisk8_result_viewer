@@ -29,17 +29,13 @@ class Competition < ApplicationRecord
     end
     def create_competition(url, parser_type: :isu_generic, comment: nil, accept_categories: nil)
       accept_categories ||= ACCEPT_CATEGORIES
-      if Competition.find_by(site_url: url)
-        puts "skip: #{url}"
-        return
+      if c = Competition.find_by(site_url: url)
+        puts "skip: #{url} as already existing"
+        return c
       end
       ActiveRecord::Base.transaction do
-        #parser = Parser::CompetitionParser.new(url)
-        #parser = Parsers::IsuGeneric::CompetitionParser.new
         parser = Parsers.parser(:competition, parser_type)
         
-        #parser = Parsers.get_parser(parser_type.to_sym)
-        #summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
         summary = Adaptor::CompetitionAdaptor.new(parser.parse(url))
         competition = summary.to_model
         competition.parser_type = parser_type
