@@ -1,3 +1,17 @@
+class Parsers
+  class << self
+    DEFAULT_PARSER_TYPE = :isu_generic
+    
+    def parser(roll, type = nil)
+      type ||= DEFAULT_PARSER_TYPE
+      klass = "Parsers::#{type.to_s.camelize}::#{roll.to_s.camelize}Parser".constantize
+      klass.new
+    end
+  end
+end
+
+
+=begin
 module Parsers
   @registered = {}
   class << self
@@ -17,8 +31,9 @@ end
 
 ## require all rb files under ./parsers
 Dir[File.expand_path('../parsers', __FILE__) << '/*.rb'].each do |file|
-  require file
+#  require file
 end
 
 # TODO
 #Parsers::IsuGeneric
+=end

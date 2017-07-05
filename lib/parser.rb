@@ -6,4 +6,13 @@ class Parser
       raise "no such roll: #{roll}"
     end
   end
+
+
+  def parse_competition(url)
+    
+  end
+
+  def parse_category_result(url)
+  end
+  
 end

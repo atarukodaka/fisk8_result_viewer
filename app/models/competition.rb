@@ -34,8 +34,13 @@ class Competition < ApplicationRecord
         return
       end
       ActiveRecord::Base.transaction do
-        parser = Parsers.get_parser(parser_type.to_sym)
-        summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
+        #parser = Parser::CompetitionParser.new(url)
+        #parser = Parsers::IsuGeneric::CompetitionParser.new
+        parser = Parsers.parser(:competition, parser_type)
+        
+        #parser = Parsers.get_parser(parser_type.to_sym)
+        #summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
+        summary = Adaptor::CompetitionAdaptor.new(parser.parse(url))
         competition = summary.to_model
         competition.parser_type = parser_type
         competition.comment = comment
@@ -48,13 +53,13 @@ class Competition < ApplicationRecord
         summary.categories.each do |category|
           next unless accept_categories.include?(category.to_sym)
           result_url = summary.result_url(category)
-          CategoryResult.create_category_result(result_url, competition, category, parser: parser)
+          CategoryResult.create_category_result(result_url, competition, category, parser_type: parser_type)
           
           # segment
           summary.segments(category).each do |segment|
             score_url = summary.score_url(category, segment)
             date = summary.starting_time(category, segment)
-            Score.create_score(score_url, competition, category, segment, parser: parser, attributes: {date: date})            
+            Score.create_score(score_url, competition, category, segment, attributes: {date: date})            
           end
         end
         competition

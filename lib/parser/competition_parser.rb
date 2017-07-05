@@ -6,6 +6,7 @@ class Parser
 
     ################
     Contract String => Hash
+    
     def parse_competition(url)
       page = get_url(url)
       #return {} if page.nil?

@@ -63,9 +63,12 @@ class CategoryResult < ApplicationRecord
       ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
       where(ranking_type => ranking).first
     end
-    def create_category_result(result_url, competition, category, parser: nil)
-      parser ||= Parsers.get_parser(competition.parser_type.to_sym)
-      parser.parse(:category_result, result_url).each do |result|
+    def create_category_result(result_url, competition, category, parser_type: nil)
+      parser = Parsers.parser(:category_result, parser_type)
+      #parser ||= Parsers.get_parser(competition.parser_type.to_sym)
+      #parser = Parsers::IsuGeneric::CategoryResultParser.new
+      #parser.parse(:category_result, result_url).each do |result|
+      parser.parse(result_url).each do |result|
         competition.category_results.create do |cr|
           cr.attributes = result.except(:skater_name, :nation)
           cr.category = category

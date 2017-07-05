@@ -1,5 +1,5 @@
-module Parsers
-  class AutomnClassic < IsuGeneric
+class Parsers
+  class AutumnClassic < IsuGeneric
     class CompetitionParser < IsuGeneric::CompetitionParser
       def parse_name(page)
           page.xpath("//h1").first.text
@@ -8,7 +8,7 @@ module Parsers
         [page.xpath("//dd[@class='tribe-venue']").text.strip, "CAN"]
       end
     end
-    Parsers.register(:autumn_classic, self)      
+    #Parsers.register(:autumn_classic, self)      
   end
 end
 

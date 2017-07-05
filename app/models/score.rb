@@ -41,10 +41,11 @@ class Score < ApplicationRecord
 
   ##
   class << self
-    def create_score(score_url, competition, category, segment, parser: nil, attributes: {})
-      parser ||= Parser::ScoreParser.new
+    def create_score(score_url, competition, category, segment, attributes: {})
+      #parser = Parsers.parser(:score, parser_type)
+      parser = Parser::ScoreParser.new
       
-      parser.parse(:score, score_url).map do |score_hash|
+      parser.parse(score_url).map do |score_hash|
         score = competition.scores.create do |sc|
           sc.attributes = score_hash.except(:skater_name, :nation, :elements, :components).merge(attributes).merge({category: category, segment: segment})
           results = competition.category_results
