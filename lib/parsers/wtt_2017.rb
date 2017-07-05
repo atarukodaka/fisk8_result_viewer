@@ -8,7 +8,7 @@ module Parsers
         ["Tokyo", "JPN"]
       end
 
-      def parse_summary_table(page)
+      def parse_summary_table(page, url: "")
         header_elem = page.xpath("//*[text()='Teams']").first
         rows = header_elem.xpath("../../tr")
         category = ""
@@ -21,7 +21,7 @@ module Parsers
           if row.xpath("td[2]").text == 'Entries'
             category = row.xpath("td[1]").text.upcase
             ## NOTE: WTT2017 doesnt provide category result, so we use entry list as a result (to get isu number for skaters)
-            entry_url = URI.join(@url,row.xpath("td[2]/a/@href").text).to_s
+            entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
             summary << {
               category: category,
               segment: '',
@@ -31,7 +31,7 @@ module Parsers
           elsif row.xpath("td").count == 2
             segment = row.xpath("td[1]").text.upcase
           elsif row.xpath("td[1]").text == "Judges Score (pdf)"
-            score_url = URI.join(@url, row.xpath("td[1]/a/@href").text).to_s
+            score_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s
             summary << {
               category: category, 
               segment: segment,

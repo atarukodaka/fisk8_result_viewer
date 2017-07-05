@@ -74,17 +74,23 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
   end
 
   context 'skater name correction' do
-    it 'corrects skater name (fc2012)' do
+    def expect_same_skater(url, category, ranking)
+      competition = Competition.create_competition(url, accept_categories: [category.to_sym])
+      cr = competition.category_results.find_by(category: category, ranking: ranking)
+      expect(cr.skater).to eq(cr.short.skater)
+      expect(cr.skater).to eq(cr.free.skater)      
+    end
+    it 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON
       url = 'http://www.isuresults.com/results/fc2012/'
 
-      competition = Competition.create_competition(url, accept_categories: [:LADIES])
-      # 15. Sandra KHOPON: 17/16
-      skater_cr = competition.category_results.find_by(category: "LADIES", ranking: 15).skater
-      skater_sp = competition.scores.find_by(category: "LADIES", segment: "SHORT PROGRAM", ranking: 17).skater
-      skater_fs = competition.scores.find_by(category: "LADIES", segment: "FREE SKATING", ranking: 16).skater
-
-      expect(skater_cr.id).to eq(skater_sp.id)
-      expect(skater_cr.id).to eq(skater_fs.id)
+      expect_same_skater(url, :LADIES, 15)
+    end
+    it 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
+      url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
+      expect_same_skater(url, :"JUNIOR LADIES", 17)
+    end
+    it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
+      ## TODO: name correction for Ho Jung LEE
     end
   end
   context 'encoding' do

@@ -1,11 +1,11 @@
+=begin
 module SelectOptions
   extend ActiveSupport::Concern
 
   class_methods do
-    def select_options(key, cache_key = nil)
-      cache_key ||= key
+    def select_options(key)
       @_options_cache ||= {}
-      @_options_cache[cache_key] ||= distinct.pluck(key).compact
+      @_options_cache[key] ||= distinct.pluck(key).compact
     end
 
     def create_from_hash(hash, *args)
@@ -14,14 +14,41 @@ module SelectOptions
         yield model if block_given?
       end
     end
-  end
-  
+  end  
 end
+=end
+################################################################
 
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
-  include SelectOptions
+  #include SelectOptions
+  class << self
+    def uniq_list(key)
+      @_list_cache ||= {}
+      @_list_cache[key] ||= distinct.pluck(key).compact
+    end
+  end
   
-#  default_scope  { limit(1000) }
-  #scope :matches, ->(type, v) { where("#{type} like ? ", "%#{v}%") }
+=begin
+  class << self
+    def findor_by(**hash)
+      arel = nil
+      hash.each do |k, v|
+        this_arel = arel_table[k].eq(v)
+        if arel
+          arel = arel.or(this_arel)
+        else
+          arel = this_arel
+        end
+      end
+      where(arel).first
+    end
+
+    def findor_or_create_by(**hash)
+      findor_by(hash) || create(hash) do |skater|
+        yield skater if block_given?
+      end
+    end
+  end
+=end
 end

@@ -48,7 +48,8 @@ class CategoryResultDecorator < EntryDecorator
     h.link_to_competition(model.free_ranking.as_ranking, model.competition, category: model.category, segment: "FREE")
   end
   def free_tss
-    (s = model.scores.second) ? h.link_to_score(s.tss.as_score, s) : "-"
+    #(s = model.scores.second) ? h.link_to_score(s.tss.as_score, s) : "-"
+    model.free_tss.as_score
   end
   def free_tes
     model.free_tes.as_score

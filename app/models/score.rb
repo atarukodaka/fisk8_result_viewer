@@ -25,11 +25,17 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
+  def elements_summary
+    elements.map(&:name).join('/')
+  end
+  def components_summary
+    components.map(&:value).join('/')
+  end
   
   ## scopes
   scope :recent, ->{ order("date desc") }
-  scope :short, -> { matches(:segment, "SHORT") }
-  scope :free, -> { matches(:segment, "FREE") }
+  scope :short, -> { where("segment like ? ", "%SHORT%") }
+  scope :free, ->  { where("segment like ? ", "%FREE%") }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(c, s){ category(c).where(segment: s) }
 
@@ -41,7 +47,9 @@ class Score < ApplicationRecord
       parser.parse(:score, score_url).map do |score_hash|
         score = competition.scores.create do |sc|
           sc.attributes = score_hash.except(:skater_name, :nation, :elements, :components).merge(attributes).merge({category: category, segment: segment})
-          sc.category_result = competition.category_results.search_by_skater_name_or_segment_ranking(skater_name: Skater.correct_name(score_hash[:skater_name]), segment: segment, ranking: score_hash[:ranking]).first || raise  # TODO
+          results = competition.category_results
+          sc.category_result = results.joins(:skater).find_by("skaters.name" => score_hash[:skater_name]) ||
+            results.find_by_segment_ranking(segment, score_hash[:ranking]) || raise("score: no relevant category results found")
           sc.skater = sc.category_result.skater
         end
         score_hash[:elements].map {|e| score.elements.create(e)}

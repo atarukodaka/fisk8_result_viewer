@@ -21,4 +21,4 @@ Dir[File.expand_path('../parsers', __FILE__) << '/*.rb'].each do |file|
 end
 
 # TODO
-Parsers::IsuGeneric
+#Parsers::IsuGeneric

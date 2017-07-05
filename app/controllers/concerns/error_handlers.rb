@@ -9,7 +9,7 @@ module ErrorHandlers
       rescue_from ActionController::RoutingError, with: :handler_404
     end
   end
-  
+  private
   def handler_404(e = nil)
     respond_to do |format|
       format.html { render 'errors/404', status: :not_found, locals: {message: e.try(:message)}}

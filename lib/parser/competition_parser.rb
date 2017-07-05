@@ -7,7 +7,6 @@ class Parser
     ################
     Contract String => Hash
     def parse_competition(url)
-      @url = url
       page = get_url(url)
       #return {} if page.nil?
       city, country = parse_city_country(page)
@@ -16,7 +15,7 @@ class Parser
         site_url: url,
         city: city,
         country: country,
-        result_summary: parse_summary_table(page),
+        result_summary: parse_summary_table(page, url: url),
         time_schedule: parse_time_schedule(page),
       }
     end
@@ -68,7 +67,7 @@ class Parser
         [str, nil]
       end
     end
-    def parse_summary_table(page)
+    def parse_summary_table(page, url: "")
       elem = page.xpath("//*[text()='Category']").first || raise
       rows = elem.xpath('ancestor::table[1]//tr')
       
@@ -91,8 +90,8 @@ class Parser
         summary << {
           category: category,
           segment: segment,
-          result_url: (result_url.present?) ? URI.join(@url, result_url).to_s: "",
-          score_url: (score_url.present?) ? URI.join(@url, score_url).to_s : "",
+          result_url: (result_url.present?) ? URI.join(url, result_url).to_s: "",
+          score_url: (score_url.present?) ? URI.join(url, score_url).to_s : "",
         }
       end
       summary

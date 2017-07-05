@@ -20,11 +20,7 @@ class ScoreDecorator < EntryDecorator
   def segment
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
-  def elements_summary
-    model.elements.map(&:name).join('/')
+  def youtube_search
+    h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end
-  def components_summary
-    model.components.map(&:value).join('/')
-  end
-
 end

@@ -1,6 +1,5 @@
-// locals: collection, display_keys, pagination
-
 - table || raise('no table given')
+
 - content_for :title do
   = controller_name
 
@@ -12,6 +11,6 @@ h2= controller_name.camelize
   = form_group("Format", select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format])))
   = form_group(nil, submit_tag("Search", id: "submit", name: nil))
 
-// ajax list table
-= render partial: "datatable", locals: { table: table, decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]}
-
+// server-side datalist table
+/= render partial: "datatable", locals: { table: table, decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]}
+= table.render(self, locals: { decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]})

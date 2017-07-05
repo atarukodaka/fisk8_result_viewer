@@ -6,6 +6,7 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
       t.string :category
       t.integer :isu_number
 
+=begin
       t.string :coach
       t.string :choreographer
       t.string :birthday
@@ -14,6 +15,7 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
       t.string :club
 
       t.timestamp :bio_updated_at
+=end
     end
   end
 end
