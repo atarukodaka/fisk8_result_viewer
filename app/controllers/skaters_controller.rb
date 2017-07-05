@@ -21,8 +21,8 @@ class SkatersController < ApplicationController
     
     ## tables
     tables = {
-      skater_info_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
-      record_summary_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
+      skater_info_table: Listtable.new(skater.decorate, [:name, :nation, :isu_number, :category]),
+      record_summary_table: Listtable.new(skater, [:highest_score, :number_of_competitions_participated, :number_of_gold_won, :highest_ranking, :most_valuable_element, :most_valuable_components]),
       competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]),
     }
     ## score graph
