@@ -1,39 +1,36 @@
-// locals: skater, scores, result_summary, category_results
+- skater || raise
+- competition_results_table || raise
 
+////////////////////////////////////////////////////////////////
 - content_for :title do
-  | skater: 
-  = skater.name
+  | skater: #{skater.name}
 
 .row
   .col-sm-6
     h2 Skaters Info
-    table.table.table-striped.table-hover.table-condensed
-      tr
-        - [:name, :nation, :isu_number, :category].each do |key|
-          = tr_data(key, skater.decorate.send(key))
+    = Listtable.new(skater.decorate, [:name, :nation, :isu_number, :category]).render(self)
+    /= render partial: "list_table", locals: { table: Listtable.new(skater.decorate, [:name, :nation, :isu_number, :category]) }
+      
 
   .col-sm-6
-    h2 Result Summary
-    div
-
-    table.table.table-striped.table-hover.table-condensed
-      tr
-        = tr_data("Highest Score", skater.category_results.highest_score)
-        = tr_data("Competitions participated", skater.category_results.count)
-        = tr_data("Gold Won", skater.category_results.where(ranking: 1).count)
-        = tr_data("Highest Ranking", skater.category_results.highest_ranking)
-        = tr_data("Most Valuable Element", skater.elements.order(:value).last.decorate.description)
-        = tr_data("Most Valuable Components", skater.components.group(:number).maximum(:value).values.join('/'))
+    h2 Record Summary
+    = Listtable.new(skater, [:highest_score, :number_of_gold_won, :highest_ranking, :most_valuable_element, :most_valuable_components]).render(self)
 
 h2 Competition Results
 
-= render partial: "datatable", locals: { table: competition_results_table, decorate: true, paging: true, page_length: 50}
+= competition_results_table.render(self, locals: {decorate: true, paging: true, page_length: 50})
+/= render partial: "datatable", locals: { table: competition_results_table, decorate: true, paging: true, page_length: 50}
 
 .row
   .col-sm-6
+    = image_tag(score_graphs.first.image_path)
+  .col-sm-6
+    = image_tag(score_graphs.second.image_path)
+/.row
+  .col-sm-6
     h3 Short
-    = (short_graph = ScoreGraph.find_image_resource(skater, :short)) ? image_tag(short_graph) : ''
+    = (sg = ScoreGraph.find_image_resource(skater, :short)) ? image_tag(sg) : ''
 
   .col-sm-6
     h3 Free
-    = (free_graph = ScoreGraph.find_image_resource(skater, :free)) ? image_tag(free_graph) : ''
+    = (fg = ScoreGraph.find_image_resource(skater, :free)) ? image_tag(fg) : ''

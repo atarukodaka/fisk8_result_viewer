@@ -1,0 +1,6 @@
+
+- table || raise
+
+table.table.table-striped.table-hover.table-condensed
+  - table.column_names.each do |key|
+    = tr_data(key, table.data.send(key))

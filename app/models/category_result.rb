@@ -5,6 +5,38 @@ class CategoryResult < ApplicationRecord
   
   belongs_to :competition
   belongs_to :skater
+
+  ## methods
+  def competition_name
+    competition.name
+  end
+  def date
+    competition.start_date
+  end
+  def short_tss
+    scores.first.try(:tss)
+  end
+  def short_tes
+    scores.first.try(:tes)
+  end
+  def short_pcs
+    scores.first.try(:pcs)
+  end
+  def short_deductions
+    scores.first.try(:deductions)
+  end
+  def free_tss
+    scores.second.try(:tss)
+  end
+  def free_tes
+    scores.second.try(:tes)
+  end
+  def free_pcs
+    scores.second.try(:pcs)
+  end
+  def free_deductions
+    scores.second.try(:deductions)
+  end
   
   ## scopes
   scope :recent, ->{ joins(:competition).order("competitions.start_date desc") }

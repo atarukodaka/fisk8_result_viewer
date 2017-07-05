@@ -27,6 +27,11 @@ class Datatable
     @options = options
   end
 
+  def render(view, partial: "datatable", locals: {})
+    view.render partial: partial, locals: {table: self }.merge(locals)
+  end
+
+  
   def add_option(key, value)
     @options[key] = value
     self
@@ -42,6 +47,11 @@ class Datatable
   end
   def collection
     @collection ||= fetch_collection
+  end
+  def as_json(opts={})
+    collection.map do |item|
+      column_names.map {|c| [c, item.send(c)]}.to_h
+    end
   end
 end
 

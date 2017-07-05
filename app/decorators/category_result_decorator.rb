@@ -22,9 +22,6 @@ class CategoryResultDecorator < EntryDecorator
     name = model.competition.name
     h.link_to_competition((model.competition.isu_championships) ? h.content_tag(:b, name) : name, model.competition)
   end
-  def date
-    model.competition.start_date
-  end
   def ranking
     #h.link_to_competition(as_ranking(model.ranking), model.competition, category: model.category)
     h.link_to_competition(model.ranking.as_ranking, model.competition, category: model.category)
@@ -36,19 +33,15 @@ class CategoryResultDecorator < EntryDecorator
   def short_ranking
     h.link_to_competition(model.short_ranking.as_ranking, model.competition, category: model.category, segment: "SHORT")
   end
-  def short_tss
-    (s = model.scores.first) ? h.link_to_score(s.tss.as_score, s) : "-"
-  end
   def short_tes
-    (s = model.scores.first) ? s.tes.as_score : "-"
+    model.short_tes.as_score
   end
   def short_pcs
-    (s = model.scores.first) ? s.pcs.as_score : "-"    
+    model.short_pcs.as_score
   end
   def short_deductions
-    (s = model.scores.first) ? s.deductions.as_score : "-"    
+    model.short_deductions.as_score
   end
-
   ## free
   def free_ranking
     #h.link_to_score(as_ranking(model.free_ranking), model.scores.first)
@@ -58,15 +51,13 @@ class CategoryResultDecorator < EntryDecorator
     (s = model.scores.second) ? h.link_to_score(s.tss.as_score, s) : "-"
   end
   def free_tes
-    (s = model.scores.second) ? s.tes.as_score : "-"
+    model.free_tes.as_score
   end
   def free_pcs
-    (s = model.scores.second) ? s.pcs.as_score : "-"
+    model.free_pcs.as_score
   end
   def free_deductions
-    (s = model.scores.second) ? s.deductions.as_score : "-"
+    model.free_deductions.as_score
   end
-
-  
 end
 

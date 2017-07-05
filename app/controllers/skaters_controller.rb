@@ -18,29 +18,33 @@ class SkatersController < ApplicationController
     skater = Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) || 
       raise(ActiveRecord::RecordNotFound.new("no such skater"))
-
-    ################
-    ## competition results
-    competition_results = skater.category_results.recent.includes(:competition, :scores)
     
-    ################
+    ## tables
+    tables = {
+      skater_info_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
+      record_summary_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
+      competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,])
+#      competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking]),
+    }
+    
     ## score graph
-    score_graph = ScoreGraph.new
-    skater.scores.recent.group_by {|s| s.segment}.each do |segment, segment_scores|
-      score_graph.plot(skater, segment_scores, segment)
+    score_graphs = skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|
+      ScoreGraph.new(skater, segment, scores).tap {|sg|
+        sg.plot
+      }
     end
-
-    ################
+    
     ## render
     respond_to do |format|
-      columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-      table = Datatable.new(competition_results, columns)
-      
       format.html {
-        render action: :show, locals: { skater: skater, competition_results_table: table, }
+        render action: :show, locals: { skater: skater, score_graphs: score_graphs}.merge(tables)
       }
       format.json {
-        render json: skater.as_json.merge({competition_results: table}) # TODO: skater record summary
+        render json: {
+          skater_info: tables[:skater_info_table],
+          record_summary_table: tables[:record_summary_table],
+          competition_results: tables[:competition_results_table],
+        }
       }
     end
   end
