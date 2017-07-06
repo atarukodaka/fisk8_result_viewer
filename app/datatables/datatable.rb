@@ -1,5 +1,5 @@
 class Datatable
-  attr_accessor :collection, :columns, :filters, :params, :order
+  attr_accessor :collection, :columns, :filters, :params, :order, :columns
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -7,26 +7,14 @@ class Datatable
     end
   end
 
-  def initialize(initial_collection, columns, filters: {}, params: {}, order: nil)
+  #def initialize(initial_collection, columns, filters: {}, params: {}, order: nil)
+  def initialize(initial_collection, columns, manipulator: nil, order: nil)
     @initial_collection = initial_collection
     @filters = filters
     @params = params
     @order = order
-    @columns = columns.map do |column|
-      case column
-      when Symbol, String
-        {
-          name: column.to_s,
-          table: initial_collection.table_name,
-          column_name: column.to_s
-        }
-      when Hash
-        column.symbolize_keys.transform_values {|v| v.to_s}
-      end.tap do |col|
-        col[:column_name] ||= column[:name]
-        col[:table] ||= initial_collection.table_name
-      end
-    end
+    @manipulator = manipulator
+    @columns = (columns.is_a? Array) ? Columns.new(columns) : columns
   end
 
   def execute_filters(col)
@@ -47,10 +35,16 @@ class Datatable
   end
 
   def fetch_collection
-    execute_filters(@initial_collection)
+    #execute_filters(@initial_collection)
+    if @manipulator
+      @manipulator.manipulate(@initial_collection)
+    else
+      @initial_collection
+    end
   end
   def column_names
-    @columns.map {|c| c[:name]}
+    #@columns.map {|c| c[:name]}
+    columns.names
   end
   def table_id
     "table_#{self.object_id}"
