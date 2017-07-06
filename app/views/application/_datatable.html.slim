@@ -5,34 +5,28 @@
 - decorate ||= false
 - page_length ||= 10
 - paging ||= false
-- default_order ||= nil
+- default_order ||= table.options[:default_order]
 
 - table_id = table.table_id
 - column_names = table.column_names
 - data_source = (ajax) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
-- disable_datatable ||= false
 
-- unless disable_datatable
-  script
-    | jQuery(function($){ 
-        $("##{table_id}").DataTable({
-          "bProcessing": true,
-          "bFilter": true,
-          "paging": #{paging},
-          "pageLength": #{page_length},
-          "columns": #{column_names.map {|column| {data: column}}.to_json.html_safe},
 
-    - if default_order
-      - key, direction = default_order
-      - column_num = column_names.index(key.to_s)
-      |  "order": [[#{column_num}, '#{direction}']],
-    - if ajax
-      |   "bServerSide": true,
-      |    "sAjaxSource": $("##{table_id}").data('source'),
-    |     }); 
-    |  });
+/- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: ajax, sAjaxSource: url_for(action: :list, format: :json), columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
 
-table.table.table-striped.table-hover.table-condensed id="#{table_id}" data-source="#{data_source}"
+- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: ajax, ajax: url_for(action: :list, format: :json), columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
+
+/- options[:order] = [[ column_names.index(default_order[0].to_s), default_order[1] ]] if default_order
+- options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order
+
+script
+  | jQuery(function($){
+  | $("##{table_id}").DataTable(
+  = options.to_json.html_safe
+  | );
+  | });
+    
+table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
       - column_names.each do |key|

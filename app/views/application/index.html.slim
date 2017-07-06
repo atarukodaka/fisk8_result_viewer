@@ -13,4 +13,4 @@ h2= controller_name.camelize
 
 // server-side datalist table
 /= render partial: "datatable", locals: { table: table, decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]}
-= table.render(self, locals: { decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]})
+= table.render(self, locals: { decorate: true, ajax: true, paging: true})

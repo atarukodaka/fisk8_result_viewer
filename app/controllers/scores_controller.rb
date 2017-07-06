@@ -6,7 +6,7 @@ class ScoresController < ApplicationController
       segment: ->(col, v)    { col.where(segment:  v) },
       nation: ->(col, v)     { col.where(skaters: {nation: v}) },
       competition_name: ->(col, v)     { col.references(:competition).where("competitions.name like ? ", "%#{v}%")},
-      isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool}) },
+      #isu_championships_only:->(col, v){ col.where(competitions: {isu_championships: v.to_bool}) },
       season: ->(col, v){ col.where(competitions: {season: v}) },
     }
   end
@@ -14,7 +14,8 @@ class ScoresController < ApplicationController
     Score.includes(:competition, :skater).all    
   end
   def create_datatable
-    super.add_option(:default_order,  [:date, :desc])
+    #super.add_option(:default_order,  [:date, :desc])
+    super
   end
   def columns
     [{name: "name", table: "scores"},

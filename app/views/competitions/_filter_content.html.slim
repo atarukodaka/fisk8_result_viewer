@@ -5,6 +5,6 @@
   = select_tag_with_options(:competition_type, onchange: ajax_search(:competition_type, table))
 
   label ISU Championships Only: 
-  = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?, onchange: " $('#filter_form').submit(); ")
+  = check_box_tag(:isu_championships_only, "true", params[:isu_championships_only].present?, onchange: ajax_search(:isu_championships, table, search_value: :checked))
 
 = form_group("Season", select_tag_with_options(:season, onchange: ajax_search(:season, table)))

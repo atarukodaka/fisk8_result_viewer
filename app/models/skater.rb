@@ -22,8 +22,7 @@ class Skater < ApplicationRecord
       ActiveRecord::Base.transaction do
         parser.parse_skaters().each do |hash|
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-            logger.debug(skater)
-            skater.update!(hash)   # TODO: if save failed
+            skater.update!(hash)
           end
         end
       end
@@ -33,20 +32,11 @@ class Skater < ApplicationRecord
         (find_by(name: name))
     end
     def find_or_create_by_isu_number_or_name(isu_number, name)
-      #name = correct_name(name)
       find_by_isu_number_or_name(isu_number, name) || create do |skater|
         skater.isu_number = isu_number
         skater.name = name
         yield skater if block_given?
       end
     end
-=begin
-    def correct_name(skater_name)
-      filename = Rails.root.join('config', 'skater_name_correction.yml')
-      @_skater_corrections ||= YAML.load_file(filename)
-      @_skater_corrections[skater_name] || skater_name
-    end
-=end
   end  ## class << self
-  
 end ## class Skater

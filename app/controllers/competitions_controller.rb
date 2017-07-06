@@ -9,7 +9,12 @@ class CompetitionsController < ApplicationController
       name: ->(col, v) { col.name_matches(v) },
       site_url: ->(col, v) { col.site_url_matches(v) },
       competition_type: ->(col, v) { col.where(competition_type: v) },
-      isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
+      #isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
+=begin
+      isu_championships: ->(col, v){
+        (v.to_bool) ? col.where(isu_championships: v.to_bool) : col
+      },
+=end
       season: ->(col, v) { col.where(season: v) },
     }
   end
@@ -18,25 +23,17 @@ class CompetitionsController < ApplicationController
     Competition.all
   end
   def create_datatable
-    super.add_option(:default_order, [:start_date, :desc])
-=begin
-    FilterDatatable.create(Competition.all, columns, filters: {}, params: params) do |table|
-      fs = {
-        name: ->(col, v) { col.name_matches(v) },
-        site_url: ->(col, v) { col.site_url_matches(v) },
-        competition_type: ->(col, v) { col.where(competition_type: v) },
-        isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
-        season: ->(col, v) { col.where(season: v) },
-      }
-      table.add_filters(fs)
-      table.add_option(:default_order, [:start_date, :desc])
-    end
-=end
+    #super.add_option(:default_order, [:start_date, :desc])
+    super.tap {|t|
+      t.order = {start_date: :desc}
+    }
   end
   
   def columns
     [:short_name, :name, :site_url, :city, :country, :competition_type,
-     :season, :start_date, :end_date]
+     :season, {name: :start_date, order: :desc}, :end_date,
+     #{name: :isu_championships, hidden: false},
+    ]
   end
 
   ################################################################

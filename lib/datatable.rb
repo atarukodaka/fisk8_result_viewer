@@ -1,5 +1,5 @@
 class Datatable
-  attr_accessor :collection, :columns, :options
+  attr_accessor :collection, :columns, :order, :options
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -7,8 +7,9 @@ class Datatable
     end
   end
 
-  def initialize(initial_collection, columns,  options: {})
+  def initialize(initial_collection, columns, order: nil, options: {})
     @initial_collection = initial_collection
+    @order ||= {}
     @columns = columns.map do |column|
       case column
       when Symbol, String
@@ -18,20 +19,23 @@ class Datatable
           column_name: column.to_s
         }
       when Hash
-        column[:column_name] ||= column[:name]
-        column[:name] = column[:name].to_s
-        column[:table] = column[:table].to_s
-        column.symbolize_keys
+        column.symbolize_keys.transform_values {|v| v.to_s}
+      end.tap do |col|
+        col[:column_name] ||= column[:name]
+        col[:table] ||= initial_collection.table_name
       end
     end
     @options = options
   end
 
   def render(view, partial: "datatable", locals: {})
-    view.render partial: partial, locals: {table: self }.merge(locals)
+    datatable_options = {
+      bProcessing: true,
+      bFilter: true,
+    }
+    view.render partial: partial, locals: {table: self, options: datatable_options }.merge(locals)
   end
 
-  
   def add_option(key, value)
     @options[key] = value
     self

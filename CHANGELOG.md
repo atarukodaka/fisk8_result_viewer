@@ -1,19 +1,10 @@
 ## TODO
-- select options default sort
-  - caching
-- spec: autosave, cr saves skater
-- factorygirls
-- DataTable => Datatable
-- default_order
-- datatable id: consistency btw ajax_search() and render => settings
-- rspec: filter search for all controllers(elements, compoments)
-- show.json w/o builder
 - isu championship to take out?
-- single data table
+- country
+- datatable: order: not limit to first order
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
-- sort in list table
 
 ### check before release
 - app/controller/application_controller: unless Rails.env.develop
@@ -25,11 +16,20 @@
 - refine for to_direction and seniorize
 - sitemap
 - ajax support
+- sort in list table
 - lib/fisk8viewer moved out
 - element type
 - parsers controller added
 - error handlers moved into concertn
-
+- single data listtable
+- show.json w/o builder
+- rspec: filter search for all controllers(elements, compoments)
+- factorygirls
+- default_order
+- select options default sort
+ - caching
+- datatable id: consistency btw ajax_search() and render => settings
+- dattatable1.10
 
 ## 1.0.1 2017/6/25
 

@@ -34,9 +34,10 @@ module FormHelper
       end
     select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), *args)
   end
-  def ajax_search(key, table)  # TODO
+  def ajax_search(key, table, search_value: :value)  # TODO
     col_num = table.column_names.index(key.to_s)
-    "$('##{table.table_id}').DataTable().column(#{col_num}).search(this.value).draw();"
+    
+    "$('##{table.table_id}').DataTable().column(#{col_num}).search(this.#{search_value}).draw();"
   end
 end
 

@@ -1,9 +1,8 @@
 class Element < ApplicationRecord
-  before_save :set_element_type
-  
   ## relations
   belongs_to :score
 
+  ## for datatable
   def score_name
     score.name
   end
@@ -35,6 +34,8 @@ class Element < ApplicationRecord
   ## scopes
   scope :recent, ->{ joins(:score).order("scores.date desc") }
 
+  ## callbacks
+  before_save :set_element_type
   
   private
   def set_element_type

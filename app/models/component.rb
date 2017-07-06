@@ -2,11 +2,10 @@ class Component < ApplicationRecord
   ## relations
   belongs_to :score
 
-  ##
+  ## for datatable
   def score_name
     score.name
   end
-
   def competition_name
     score.competition.name
   end
@@ -16,7 +15,6 @@ class Component < ApplicationRecord
   def segment
     score.segment
   end
-
   def date
     score.competition.start_date
   end
