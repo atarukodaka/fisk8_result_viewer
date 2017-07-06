@@ -31,8 +31,8 @@ class CompetitionsController < ApplicationController
   
   def columns
     [:short_name, :name, :site_url, :city, :country, :competition_type,
-     :season, {name: :start_date, order: :desc}, :end_date,
-     #{name: :isu_championships, hidden: false},
+     #:season, {name: :start_date, order: :desc}, :end_date,
+     :season, :start_date, :end_date,
     ]
   end
 

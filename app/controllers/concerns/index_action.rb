@@ -3,13 +3,25 @@ module IndexAction
   def list
     respond_to do |format|
       format.json {
-        table = create_datatable.extend(Datatable::Serversidable)
+
+        #collection = create_collection.page(0).per(10)
+        #table = create_datatable
+        table = ServersideDatatable.new(execute_filters(create_collection), columns, filters: filters, params: params)
+        collection = table.collection
+        
         render json: {
-          iTotalRecords: table.collection.model.count,
-          iTotalDisplayRecords: table.collection.total_count,
-          data: table.collection.decorate.map {|d|
+          iTotalRecords: collection.model.count,
+          iTotalDisplayRecords: collection.total_count,
+          data: collection.decorate.map {|item|
+            table.column_names.map {|c| [c, item.send(c)]}.to_h
+            #{name: item.name, short_name: item.short_name}
+          }
+          
+=begin
+          columns: collection.decorate.map {|d|
             table.column_names.map {|k| [k, d.send(k.to_sym)]}.to_h
           },
+=end
         }
       }
     end
@@ -18,6 +30,14 @@ module IndexAction
 
   def filters
     {}
+  end
+  def execute_filters(col)
+    # input params
+    filters.each do |key, pr|
+      v = params[key]
+      col = pr.call(col, v) if v.present? && pr
+    end
+    col
   end
   def columns
     {}
@@ -31,7 +51,8 @@ module IndexAction
   end
 =end
   def create_datatable
-    FilterDatatable.create(create_collection, columns, filters: filters, params: params)
+    #Datatable.create(create_collection, columns, filters: filters, params: params)
+    Datatable.create(execute_filters(create_collection), columns)
   end
   def index
     respond_to do |format|

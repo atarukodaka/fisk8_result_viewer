@@ -12,5 +12,4 @@ h2= controller_name.camelize
   = form_group(nil, submit_tag("Search", id: "submit", name: nil))
 
 // server-side datalist table
-/= render partial: "datatable", locals: { table: table, decorate: true, ajax: true, paging: true, default_order: table.options[:default_order]}
-= table.render(self, locals: { decorate: true, ajax: true, paging: true})
+= table.render(self, locals: { decorate: true, server_side: true, paging: true, ajax: url_for(action: :list, format: :json, params: params.permit!)})

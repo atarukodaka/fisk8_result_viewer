@@ -1,10 +1,11 @@
-module Datatable::Serversidable
+class ServersideDatatable < Datatable
+  attr_accessor :filters, :params
+  
   def fetch_collection
-    super.order(sort_sql).page(page).per(per)
+    execute_filters(super.order(sort_sql)).page(page).per(per)
   end
 
   def execute_filters(col)
-    col = super(col)
     return col if params[:columns].blank?
     # ajax params
     filters.each do |key, pr|

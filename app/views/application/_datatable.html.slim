@@ -1,25 +1,18 @@
 // required locals: table
 
 - table || raise('no table given')
-- ajax ||= false
+- server_side ||= false
 - decorate ||= false
 - page_length ||= 10
 - paging ||= false
-- default_order ||= table.options[:default_order]
+- server_side ||= false
+- ajax ||= ""
 
 - table_id = table.table_id
 - column_names = table.column_names
-- data_source = (ajax) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
+- data_source = (server_side) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
 
-/- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: ajax, sAjaxSource: url_for(action: :list, format: :json), columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
-
-- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
-
-- if ajax
-  - options[:bServerSide] = true
-  - options[:ajax] = url_for(action: :list, format: :json, params: params.permit!)
-
-/- options[:order] = [[ column_names.index(default_order[0].to_s), default_order[1] ]] if default_order
+- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: server_side, ajax: ajax, columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
 - options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order
 
 script
@@ -29,13 +22,14 @@ script
   | );
   | });
     
+
 table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless ajax
+    - unless server_side
       - collection = (decorate) ? table.collection.decorate : table.collection
       - collection.each do |item|
         tr
