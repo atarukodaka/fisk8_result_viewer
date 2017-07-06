@@ -11,10 +11,13 @@
 - column_names = table.column_names
 - data_source = (ajax) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
 
-
 /- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: ajax, sAjaxSource: url_for(action: :list, format: :json), columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
 
-- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: ajax, ajax: url_for(action: :list, format: :json), columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
+- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, columns: table.columns.map {|c| {data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
+
+- if ajax
+  - options[:bServerSide] = true
+  - options[:ajax] = url_for(action: :list, format: :json, params: params.permit!)
 
 /- options[:order] = [[ column_names.index(default_order[0].to_s), default_order[1] ]] if default_order
 - options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order

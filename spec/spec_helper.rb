@@ -16,10 +16,13 @@ module Helper
     controller.create_datatable.column_names.index(column_name.to_s).to_i
   end
   def filter_params(column_name, value)
-    { "sSearch_#{column_number(column_name)}" => value } 
+    #{ "sSearch_#{column_number(column_name)}" => value }
+    {columns: {column_number(column_name).to_s => { "search": {"value": value}}}}
+    
   end
   def sort_params(column_name, direction = 'asc')
-    { iSortCol_0: column_number(column_name), sSortDir_0: direction}
+    #{ iSortCol_0: column_number(column_name), sSortDir_0: direction}
+    {order: {"0": { "column": column_number(column_name), "dir": direction}}}
   end
 end
 

@@ -5,11 +5,14 @@ module Datatable::Serversidable
 
   def execute_filters(col)
     col = super(col)
+    return col if params[:columns].blank?
     # ajax params
     filters.each do |key, pr|
       column_number = column_names.index(key.to_s)
       #v = params["sSearch_#{column_number}"]
-      v = params[:columns][column_number.to_s][:search][:value]
+      h = params[:columns][column_number.to_s]
+      next if h.nil?
+      v = h[:search][:value]
       col = pr.call(col, v) if v.present? && pr
     end
     col
@@ -27,6 +30,7 @@ module Datatable::Serversidable
   
   ## for sorting
   def sort_sql
+    return "" if params[:order].blank?
     #return "" if params[:iSortCol_0].blank?
     #params[:order].permit!.map {|item|
     #params.require(:order).to_h.map {|item|
