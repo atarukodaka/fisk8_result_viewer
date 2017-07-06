@@ -20,7 +20,9 @@ class ScoresController < ApplicationController
   def columns
     [{name: "name", table: "scores"},
      {name: "competition_name", table: "competitions", column_name: "name"},
-     :category, :segment, :season, :date, :result_pdf,
+     :category, :segment,
+     {name: :season, table: "competitions"},
+     :date, :result_pdf,
      :ranking,
      {name: "skater_name", table: "skaters", column_name: "name"},
      {name: "nation", table: "skaters"},

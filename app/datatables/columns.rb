@@ -1,6 +1,6 @@
 class Columns
   extend Forwardable
-  def_delegators :@columns, :map, :[]
+  def_delegators :@columns, :map, :[], :select
   
   attr_reader :names
   def initialize(columns = [])

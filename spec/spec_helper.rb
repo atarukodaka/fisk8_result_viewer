@@ -17,7 +17,7 @@ module Helper
   end
   def filter_params(column_name, value)
     #{ "sSearch_#{column_number(column_name)}" => value }
-    {columns: {column_number(column_name).to_s => { "search": {"value": value}}}}
+    {columns: {column_number(column_name).to_s => { data: column_name, "search": {"value": value}}}}
     
   end
   def sort_params(column_name, direction = 'asc')

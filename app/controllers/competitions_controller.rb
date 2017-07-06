@@ -30,7 +30,9 @@ class CompetitionsController < ApplicationController
   end
   
   def columns
-    [:short_name, :name, :site_url, :city, :country, :competition_type,
+    [:short_name,
+     {name: :name, filter: ->(col, v) { col.name_matches(v) }},
+     :site_url, :city, :country, :competition_type,
      :season, {name: :start_date, order: :desc}, :end_date,
     ]
   end

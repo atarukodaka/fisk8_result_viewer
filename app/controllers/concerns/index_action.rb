@@ -7,9 +7,11 @@ module IndexAction
         #collection = create_collection.page(0).per(10)
         #table = create_datatable
         #table = ServersideDatatable.new(create_collection, columns, filters: filters, params: params)
-        cols = Columns.new(columns)
-        mp = ServersideManipulator.new(filters, params, columns: cols)
-        table = Datatable.new(mp.manipulate(create_collection), columns)
+        #cols = Columns.new(columns)
+        #mp = ServersideManipulator.new(filters, params, columns: cols)
+        #table = Datatable.new(mp.manipulate(create_collection), columns)
+        mp = FilterManipulator.new(filters, params)
+        table = Datatable.new(mp.manipulate(create_collection), columns, params: params)
         collection = table.collection
         
         render json: {
