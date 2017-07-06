@@ -1,0 +1,9 @@
+cript>jQuery(function($){ 
+$("#table_69917204654340").DataTable({'bProcessing': true, 'bFilter': true, 'paging': true, 'pageLength': 25, 'bServerSide': true, 'sAaxSource': $('#table_69917204654340').data('source'), 'columns': [{"data":"isu_championships"},{"data":"short_name"},{"data":"name"},{"data":"site_url"},{"data":"city"},{"data":"country"},{"data":"competition_type"},{"data":"season"},{"data":"start_date"},{"data":"end_date"},],});});</script>
+
+<script>jQuery(function($){ 
+  $("#table_69917204654340").DataTable({
+    "bProcessing": true,
+    "bFilter": true,
+    "paging": true,
+    "pageLength": 10,"columns": [{ data: "isu_championships", visible: false},{ data: "short_name", visible: true},{ data: "name", visible: true},{ data: "site_url", visible: true},{ data: "city", visible: true},{ data: "country", visible: true},{ data: "competition_type", visible: true},{ data: "season", visible: true},{ data: "start_date", visible: true},{ data: "end_date", visible: true},],  "bServerSide": true,   "sAjaxSource": $("#table_69917204654340").data('source'),    });  });</script>
