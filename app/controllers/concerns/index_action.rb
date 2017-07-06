@@ -9,7 +9,7 @@ module IndexAction
         #table = ServersideDatatable.new(create_collection, columns, filters: filters, params: params)
         cols = Columns.new(columns)
         mp = ServersideManipulator.new(filters, params, columns: cols)
-        table = Datatable.new(create_collection, columns, manipulator: mp)
+        table = Datatable.new(mp.manipulate(create_collection), columns)
         collection = table.collection
         
         render json: {
@@ -47,9 +47,10 @@ module IndexAction
 =end
   def create_datatable
     fm = FilterManipulator.new(filters, params)
+    Datatable.create(fm.manipulate(create_collection), columns)
     
-    #Datatable.create(create_collection, columns, filters: filters, params: params)
-    Datatable.create(create_collection, columns, manipulator: fm)
+    #Datatable.create(create_collection, columns, manipulator: fm)
+
   end
   def index
     respond_to do |format|
