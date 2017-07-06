@@ -6,7 +6,7 @@ module IndexAction
 
         #collection = create_collection.page(0).per(10)
         #table = create_datatable
-        table = ServersideDatatable.new(execute_filters(create_collection), columns, filters: filters, params: params)
+        table = ServersideDatatable.new(create_collection, columns, filters: filters, params: params)
         collection = table.collection
         
         render json: {
@@ -31,14 +31,6 @@ module IndexAction
   def filters
     {}
   end
-  def execute_filters(col)
-    # input params
-    filters.each do |key, pr|
-      v = params[key]
-      col = pr.call(col, v) if v.present? && pr
-    end
-    col
-  end
   def columns
     {}
   end
@@ -51,8 +43,7 @@ module IndexAction
   end
 =end
   def create_datatable
-    #Datatable.create(create_collection, columns, filters: filters, params: params)
-    Datatable.create(execute_filters(create_collection), columns)
+    Datatable.create(create_collection, columns, filters: filters, params: params)
   end
   def index
     respond_to do |format|

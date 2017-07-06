@@ -29,6 +29,15 @@ class Datatable
     end
   end
 
+  def execute_filters(col)
+    # input params
+    filters.each do |key, pr|
+      v = params[key]
+      col = pr.call(col, v) if v.present? && pr
+    end
+    col
+  end
+
   def render(view, partial: "datatable", locals: {})
     datatable_options = {
       bProcessing: true,
@@ -38,7 +47,7 @@ class Datatable
   end
 
   def fetch_collection
-    @initial_collection
+    execute_filters(@initial_collection)
   end
   def column_names
     @columns.map {|c| c[:name]}

@@ -6,6 +6,7 @@ class ServersideDatatable < Datatable
   end
 
   def execute_filters(col)
+    col = super(col)
     return col if params[:columns].blank?
     # ajax params
     filters.each do |key, pr|
