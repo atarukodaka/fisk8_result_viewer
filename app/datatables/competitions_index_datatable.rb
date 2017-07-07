@@ -1,4 +1,9 @@
 class CompetitionsIndexDatatable < IndexDatatable
+  def initialize(*args)
+    super(*args)
+    @order = [[:start_date, :desc]]
+  end
+  
   def fetch_collection
     Competition.all
   end

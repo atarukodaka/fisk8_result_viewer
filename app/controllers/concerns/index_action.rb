@@ -20,6 +20,7 @@ module IndexAction
     respond_to do |format|
       table = create_datatable
       format.html {
+        table.ajax = url_for(action: :list, format: :json)
         render locals: { table: table }
       }
       format.json {

@@ -1,4 +1,9 @@
 class ScoresIndexDatatable < IndexDatatable
+  def initialize(*args)
+    super(*args)
+    @order = [[:category, :asc], [:date, :desc]]
+  end
+    
   def fetch_collection
     Score.includes(:competition, :skater).references(:competition, :skater).all
   end

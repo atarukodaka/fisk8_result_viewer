@@ -25,6 +25,11 @@ RSpec.describe SkatersController, type: :controller do
   
   ################################################################
   context 'index: ' do
+    it 'pure index request' do
+      get :index
+      expect(response).to be_success
+    end
+
     it 'list' do
       get :list, xhr: true
       expect_to_include_skater(men_skater)

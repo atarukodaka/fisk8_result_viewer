@@ -13,6 +13,11 @@ RSpec.describe ComponentsController, type: :controller do
   end
   
   context 'index' do
+    it 'pure index request' do
+      get :index
+      expect(response).to be_success
+    end
+
     it 'lists SkatingSkill' do
       get :list, xhr: true
       expect(response.body).to include('Skating Skill')

@@ -18,6 +18,11 @@ RSpec.describe ScoresController, type: :controller do
   }
 
   context 'index: ' do
+    it 'pure index request' do
+      get :index
+      expect(response).to be_success
+    end
+
     it 'list' do
       get :list, xhr: true
       expect(response.body).to include('World FS 2017')

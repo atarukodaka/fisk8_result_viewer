@@ -14,6 +14,11 @@ RSpec.describe ElementsController, type: :controller do
   end
   
   context 'index' do
+    it 'pure index request' do
+      get :index
+      expect(response).to be_success
+    end
+
     it 'lists' do
       get :list, xhr: true
       expect(response.body).to include('4T')
