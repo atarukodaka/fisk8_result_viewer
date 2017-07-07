@@ -7,21 +7,6 @@ module IndexAction
       }
     end
   end
-  def columns
-    {}
-  end
-  def create_collection
-    raise "should be implemented in derived class"
-  end
-  def create_datatable
-    begin
-      klass = "#{controller_name.camelize}IndexDatatable".constantize
-    rescue NameError
-      Datatable.create(create_collection, columns, params: params)
-    else
-      klass.create(params: params)
-    end
-  end
   def index
     respond_to do |format|
       table = create_datatable

@@ -1,12 +1,4 @@
 class SkatersController < ApplicationController
-  def create_collection
-    Skater.having_scores
-  end
-  def columns
-    [:name, :nation, :category, :isu_number]
-  end
-  ################################################################
-  ## show
   def show
     skater = Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) || 
