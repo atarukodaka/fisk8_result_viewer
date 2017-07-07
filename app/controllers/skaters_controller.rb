@@ -1,11 +1,4 @@
 class SkatersController < ApplicationController
-  def filters
-    {
-      name: ->(col, v){ col.where("name like ? ", "%#{v}%") },
-      category: ->(col, v){ col.where(category: v) },
-      nation: ->(col, v){ col.where(nation: v) },
-    }
-  end
   def create_collection
     Skater.having_scores
   end

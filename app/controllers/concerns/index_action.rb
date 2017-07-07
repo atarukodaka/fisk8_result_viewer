@@ -10,10 +10,12 @@ module IndexAction
         #cols = Columns.new(columns)
         #mp = ServersideManipulator.new(filters, params, columns: cols)
         #table = Datatable.new(mp.manipulate(create_collection), columns)
-        mp = FilterManipulator.new(filters, params)
-        table = Datatable.new(mp.manipulate(create_collection), columns, params: params)
+
+        #mp = FilterManipulator.new(filters, params)
+        #table = Datatable.new(mp.manipulate(create_collection), columns, params: params)
+        table = Datatable.new(create_collection, columns, params: params)
         collection = table.collection
-        
+
         render json: {
           iTotalRecords: collection.model.count,
           iTotalDisplayRecords: collection.total_count,
@@ -48,10 +50,10 @@ module IndexAction
   end
 =end
   def create_datatable
-    fm = FilterManipulator.new(filters, params)
-    Datatable.create(fm.manipulate(create_collection), columns)
+    #fm = FilterManipulator.new(filters, params)
+    #Datatable.create(fm.manipulate(create_collection), columns)
     
-    #Datatable.create(create_collection, columns, manipulator: fm)
+    Datatable.create(create_collection, columns) # , manipulator: fm)
 
   end
   def index

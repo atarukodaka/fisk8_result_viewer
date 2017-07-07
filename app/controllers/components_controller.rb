@@ -1,26 +1,24 @@
 class ComponentsController < ElementsController #  ApplicationController
-  def filters
-    {
-      value: ->(col, v){
-        arel = create_arel_table_by_operator(Component, :value, params[:value_operator], v)
-        col.where(arel)
-      }
-    }.merge(score_filters)
-  end
   def columns
     [
-     {name: :score_name, table: :scores, column_name: :name},
-     {name: :competition_name, table: :competitions, column_name: :name},
-     {name: :category, table: :scores},
-     {name: :segment, table: :scores},
-     {name: :date, table: :scores},
-     {name: :season, table: :competitions},
-     {name: :ranking, table: :scores},
-     {name: :skater_name, table: :skaters, column_name: :name},
-     {name: :nation, table: :skaters},
+     {name: "score_name", by: "scores.name"},
+     {name: "competition_name", by: "competitions.name"},
+     {name: "category", by: "scores.category"},
+     {name: "segment", by: "scores.segment"},
+     {name: "date", by: "scores.date"},
+     {name: "season", by: "competitions.season"},
+     {name: "ranking", by: "scores.ranking"},
+     {name: "skater_name", by: "skaters.name"},
+     {name: "nation", by: "skaters.nation"},
      "number",
-     {name: :name, table: :components},
-     :factor, :judges, :value,
-     ]
+     {name: "name", by: "components.name"},
+     :factor, :judges,
+     {
+       name: "value", filter: ->(col, v){
+         arel = create_arel_table_by_operator(Component, :value, params[:value_operator], v)
+         col.where(arel)
+       },
+     },
+    ]
   end
 end

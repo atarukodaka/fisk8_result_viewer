@@ -1,23 +1,26 @@
+class Column
+  extend Forwardable
+  def_delegator :@data, :[]
+  def initialize(arg)
+    @data =
+      case arg
+      when Symbol, String
+        { name: arg.to_s }
+      when Hash
+        arg.symbolize_keys
+      end
+    @data[:name] = @data[:name].to_s
+    @data[:by] ||= @data[:name].to_s
+  end
+end
+
 class Columns
   extend Forwardable
-  def_delegators :@columns, :map, :[], :select
+  def_delegators :@columns, :map, :[], :select, :each
   
   attr_reader :names
   def initialize(columns = [])
-    @columns = columns.map do |column|
-      case column
-      when Symbol, String
-        {
-          name: column.to_s,
-          column_name: column.to_s
-        }
-      when Hash
-        column.symbolize_keys.transform_values {|v| v.to_s}
-      end.tap do |col|
-        col[:column_name] ||= column[:name]
-        col
-      end
-    end
+    @columns = columns.map {|column| Column.new(column) }
   end
   def names
     @columns.map {|c| c[:name]}

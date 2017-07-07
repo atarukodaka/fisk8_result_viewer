@@ -3,21 +3,6 @@ class CompetitionsController < ApplicationController
   include Contracts
   using SortWithPreset
   
-  Contract None => Hash
-  def filters
-    {
-      name: ->(col, v) { col.name_matches(v) },
-      site_url: ->(col, v) { col.site_url_matches(v) },
-      competition_type: ->(col, v) { col.where(competition_type: v) },
-      #isu_championships_only: ->(col, v) { col.where(isu_championships: v.to_bool) },
-=begin
-      isu_championships: ->(col, v){
-        (v.to_bool) ? col.where(isu_championships: v.to_bool) : col
-      },
-=end
-      season: ->(col, v) { col.where(season: v) },
-    }
-  end
   Contract None => ActiveRecord::Relation
   def create_collection
     Competition.all
@@ -30,8 +15,7 @@ class CompetitionsController < ApplicationController
   end
   
   def columns
-    [:short_name,
-     {name: :name, filter: ->(col, v) { col.name_matches(v) }},
+    [:short_name, :name,
      :site_url, :city, :country, :competition_type,
      :season, {name: :start_date, order: :desc}, :end_date,
     ]

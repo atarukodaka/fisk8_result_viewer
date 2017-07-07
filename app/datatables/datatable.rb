@@ -48,23 +48,30 @@ class Datatable
     end
     col
 =end
-    
+    columns.each do |column|
+      if (sv = params[column[:name]].presence)
+        if column[:filter]
+          col = column[:filter].call(col, sv) 
+        else
+          table = column[:table] || col.table_name
+          #col = col.where("#{table}.#{column[:column_name]} like ? ", "%#{sv}%")
+          #col = col.where("#{table}.#{column[:column_name]}" => sv)
+          col = col.where(column[:by] => sv)
+        end
+      end
+    end
     return col if params[:columns].blank?
 
+    
+    # TODO: checkinjection
     params[:columns].each do |num, hash|
-      search_value = hash[:search][:value]
       column_name = hash[:data]  # TODO
+      search_value = hash[:search][:value]  # .presence ||  params[column_name]
       if search_value.present?
-        column_info = columns.select {|h| h[:name] == column_name}.first || raise
-        key = nil
-        if (table = column_info[:table])
-          col = col.joins(table.to_s.singularize.to_sym)
-          key = "#{table}.#{column_info[:column_name]}"
-        else
-          key = "#{col.table_name}.#{column_name}"
-        end
-        
-        col = col.where("#{key} like ?", "%#{search_value}%") # TODO !!! injection
+        column = columns.select {|h| h[:name] == column_name}.first || raise
+        #table = column[:table] || col.table_name
+        #col = col.where("#{table}.#{column[:column_name]} like ?", "%#{search_value}%")
+        col = col.where("#{column[:by]} like ?", "%#{search_value}%")
       end
     end
     col
@@ -83,8 +90,8 @@ class Datatable
     return "" if params[:order].blank?
      params[:order].permit!.to_h.map do |_, hash|
       column = columns[hash[:column].to_i]
-      key = (column[:table]) ? [column[:table], column[:column_name]].join(".") : column[:column_name]
-      [key, hash[:dir]].join(' ')
+      #key = (column[:table]) ? [column[:table], column[:column_name]].join(".") : column[:column_name]
+      [column[:by], hash[:dir]].join(' ')
     end
   end
   

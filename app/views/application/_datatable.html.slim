@@ -7,7 +7,7 @@
 
 - table_id = table.table_id
 - column_names = table.column_names
-- data_source = (server_side) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
+- data_source = (server_side) ? url_for(action: :list, controller: controller_name, format: :json) : ""
 
 - options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: server_side, ajax: ajax, columns: table.columns.map {|c| { data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
 - options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order
