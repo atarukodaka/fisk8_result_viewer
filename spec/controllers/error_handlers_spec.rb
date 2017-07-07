@@ -5,36 +5,40 @@ RSpec.configure do |c|
 end
 
 RSpec.describe 'error handlers', error_handler: true do
-  describe SkatersController, type: :controller do
-    render_views
+  ## 500
+    
+  describe ApplicationController, type: :controller do
+    controller do
+      def index
+        render json: {}, status: 500
+      end
+    end
+    
+    it '500' do
+      get :index
+      expect(response).to have_http_status(500)
+    end
 
-    describe 'skaters/:isu_number 404' do
-      it {
-        get :show, params: { isu_number: -1 }
-        expect(response).to have_http_status(404)
-      }
+  end
+  ## 404
+  describe SkatersController, type: :controller do
+    it 'skaters/:isu_number 404' do
+      get :show, params: { isu_number: -1 }
+      expect(response).to have_http_status(404)
     end
   end
 
   describe CompetitionsController, type: :controller do
-    render_views
-
-    describe 'competitions/:short_name 404' do
-      it {
-        get :show, params: { short_name: "----------" }
-        expect(response).to have_http_status(404)
-      }
+    it 'competitions/:short_name 404' do
+      get :show, params: { short_name: "----------" }
+      expect(response).to have_http_status(404)
     end
   end
 
   describe ScoresController, type: :controller do
-    render_views
-
-    describe 'scores/:name 404' do
-      it {
-        get :show, params: { name: "----------" }
-        expect(response).to have_http_status(404)
-      }
+    it 'scores/:name 404' do
+      get :show, params: { name: "----------" }
+      expect(response).to have_http_status(404)
     end
   end
 end

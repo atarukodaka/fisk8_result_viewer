@@ -8,17 +8,8 @@ class ElementDecorator < EntryDecorator
   def competition_name
     h.link_to_competition(model.score.competition)
   end
-  def date
-    model.score.date
-  end
-  def season
-    model.score.competition.season
-  end
   def skater_name
     h.link_to_skater(model.score.skater)
-  end
-  def nation
-    model.score.skater.nation
   end
   def description
     "%s %s%s (%.2f=%.2f+%.2f)" % [ model.name, model.credit, model.info, model.value, model.base_value, model.goe]

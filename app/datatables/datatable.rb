@@ -1,5 +1,5 @@
 class Datatable
-  attr_accessor :collection, :order, :columns, :params
+  attr_accessor :collection, :order, :columns, :params, :column
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -13,14 +13,8 @@ class Datatable
     @params = params
     @columns = Columns.new(columns)
     @collection = nil
-
-    after_initialize
   end
-  def after_initialize
-  end
-  def columns
-    @columns ||= Columns.new(fetch_columns)
-  end
+  ################
   def render(view, partial: "datatable", locals: {})
     view.render partial: partial, locals: {table: self }.merge(locals)
   end
@@ -28,6 +22,7 @@ class Datatable
   def column_names
     columns.names
   end
+  
   def table_id
     "table_#{self.object_id}"
   end
@@ -38,9 +33,11 @@ class Datatable
   def collection
     @collection ||= manipulate_collection(fetch_collection || @init_collection)
   end
+  
   def manipulate_collection(col)
     col
   end
+  
   def as_json(opts={})
     collection.map do |item|
       column_names.map {|c| [c, item.send(c)]}.to_h
