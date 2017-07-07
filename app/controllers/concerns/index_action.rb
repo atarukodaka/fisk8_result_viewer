@@ -7,6 +7,15 @@ module IndexAction
       }
     end
   end
+  def create_datatable
+    begin
+      klass = "#{controller_name.camelize}IndexDatatable".constantize
+    rescue NameError
+      raise "#{controller_name}IndexDatatable not found"
+    else
+      klass.create(params: params)
+    end
+  end
   def index
     respond_to do |format|
       table = create_datatable
