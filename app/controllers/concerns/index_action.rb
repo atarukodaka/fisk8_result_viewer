@@ -14,7 +14,11 @@ module IndexAction
     raise "should be implemented in derived class"
   end
   def create_datatable
-    Datatable.create(create_collection, columns)
+    klass = "#{controller_name.singularize}Datatable".constantize
+    binding.pry
+    klass.create(create_collection, columns)
+    
+    #Datatable.create(create_collection, columns)
 
   end
   def index
