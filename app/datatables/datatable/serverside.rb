@@ -1,4 +1,4 @@
-class ServersideDatatable < Datatable
+module Datatable::Serverside
   def manipulate_collection(col)
     super(col).order(order_sql).page(page).per(per)
   end
@@ -45,7 +45,4 @@ class ServersideDatatable < Datatable
       [column[:by], hash[:dir]].join(' ')
     end
   end
-  
 end
-
-################################################################

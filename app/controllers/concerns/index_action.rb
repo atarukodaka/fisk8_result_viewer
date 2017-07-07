@@ -3,40 +3,9 @@ module IndexAction
   def list
     respond_to do |format|
       format.json {
-
-        #collection = create_collection.page(0).per(10)
-        #table = create_datatable
-        #table = ServersideDatatable.new(create_collection, columns, filters: filters, params: params)
-        #cols = Columns.new(columns)
-        #mp = ServersideManipulator.new(filters, params, columns: cols)
-        #table = Datatable.new(mp.manipulate(create_collection), columns)
-
-        #mp = FilterManipulator.new(filters, params)
-        #table = Datatable.new(mp.manipulate(create_collection), columns, params: params)
-        table = Datatable.new(create_collection, columns, params: params)
-        collection = table.collection
-
-        render json: {
-          iTotalRecords: collection.model.count,
-          iTotalDisplayRecords: collection.total_count,
-          data: collection.decorate.map {|item|
-            table.column_names.map {|c| [c, item.send(c)]}.to_h
-            #{name: item.name, short_name: item.short_name}
-          }
-          
-=begin
-          columns: collection.decorate.map {|d|
-            table.column_names.map {|k| [k, d.send(k.to_sym)]}.to_h
-          },
-=end
-        }
+        render json: Datatable.new(create_collection, columns, params: params).extend(Datatable::Serverside)
       }
     end
-  end
-  ################################################################
-
-  def filters
-    {}
   end
   def columns
     {}
@@ -44,16 +13,8 @@ module IndexAction
   def create_collection
     raise "should be implemented in derived class"
   end
-=begin
-  def collection
-    @collection ||= create_collection
-  end
-=end
   def create_datatable
-    #fm = FilterManipulator.new(filters, params)
-    #Datatable.create(fm.manipulate(create_collection), columns)
-    
-    Datatable.create(create_collection, columns) # , manipulator: fm)
+    Datatable.create(create_collection, columns)
 
   end
   def index

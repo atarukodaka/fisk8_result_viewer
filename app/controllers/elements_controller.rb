@@ -7,19 +7,6 @@ class ElementsController < ApplicationController
     model_klass.arel_table[key].send(operator, value.to_f)
   end
 
-  def filters
-    {
-=begin
-      name: ->(col, v) {
-        (params[:perfect_match]) ? col.where(name: v) : col.where("elements.name like ? ", "%#{v}%")
-      },
-=end
-      goe: ->(col, v){
-        arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
-        col.where(arel)
-      },
-    }
-  end
   def create_collection
     model_klass = controller_name.singularize.camelize.constantize
     model_klass.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all

@@ -13,7 +13,7 @@ class Column
     @data[:by] ||= @data[:name].to_s
   end
 end
-
+################################################################
 class Columns
   extend Forwardable
   def_delegators :@columns, :map, :[], :select, :each
@@ -25,5 +25,7 @@ class Columns
   def names
     @columns.map {|c| c[:name]}
   end
-
+  def find_by_name(name)
+    @columns.select {|c| c[:name] == name }.first
+  end
 end
