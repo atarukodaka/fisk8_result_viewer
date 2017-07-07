@@ -1,5 +1,7 @@
 class ComponentsIndexDatatable < IndexDatatable
-  def create_columns
+  def initialize(*args)
+    super(*args)
+    self.columns = 
       [
        {name: "score_name", key: "scores.name"},
        {name: "competition_name", key: "competitions.name"},

@@ -1,5 +1,5 @@
 class Datatable
-  attr_accessor :collection, :order, :columns, :params, :column, :ajax
+  attr_accessor :collection, :order, :params, :ajax
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -7,10 +7,9 @@ class Datatable
     end
   end
 
-  def initialize(params: {}, order: nil, ajax: nil)
+  def initialize(params: {})
     @params = params
-    @ajax = ajax
-    @columns = Columns.new(create_columns())
+    @columns = [] # Columns.new(create_columns())
     @collection = nil
   end
   ################
@@ -18,9 +17,14 @@ class Datatable
     view.render partial: partial, locals: {table: self }.merge(locals)
   end
 
-  def create_columns
-    []
+  def columns=(col)
+    @columns = (col.is_a? Array) ? Columns.new(col) : col
   end
+
+  def columns
+    @columns
+  end
+   
   def column_names
     columns.names
   end
