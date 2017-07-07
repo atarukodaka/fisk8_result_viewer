@@ -24,7 +24,7 @@ class IndexDatatable < Datatable
           if (filter = column[:filter] )
             filter.call(col, sv)
           else
-            col.where("#{column[:by]} like ? ", "%#{sv}%")
+            col.where("#{column[:key]} like ? ", "%#{sv}%")
           end
       end
     end

@@ -13,7 +13,7 @@ module Datatable::Serverside
       if (sv = hash[:search][:value].presence)
         #column = columns.select {|h| h[:name] == column_name}.first || raise
         column = columns.find_by_name(column_name) || raise
-        col = col.where("#{column[:by]} like ?", "%#{sv}%")
+        col = col.where("#{column[:key]} like ?", "%#{sv}%")
       end
     end
     col
@@ -42,7 +42,7 @@ module Datatable::Serverside
      params[:order].permit!.to_h.map do |_, hash|
       column = columns[hash[:column].to_i]
       #key = (column[:table]) ? [column[:table], column[:column_name]].join(".") : column[:column_name]
-      [column[:by], hash[:dir]].join(' ')
+      [column[:key], hash[:dir]].join(' ')
     end
   end
 end

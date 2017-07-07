@@ -4,22 +4,22 @@ class ElementsIndexDatatable < IndexDatatable
   end
   def create_columns
      [
-     {name: "score_name", by: "scores.name"},
-     {name: "competition_name", by: "competitions.name"},
-     {name: "category", by: "scores.category"},
-     {name: "segment", by: "scores.category"},
-     {name: "date", by: "scores.date"},
-     {name: "season", by: "competitions.season"},
-     {name: "ranking", by: "scores.ranking"},
-     {name: "skater_name", by: "skaters.name"},
-     {name: "nation", by: "skaters.nation"},
+     {name: "score_name", key: "scores.name"},
+     {name: "competition_name", key: "competitions.name"},
+     {name: "category", key: "scores.category"},
+     {name: "segment", key: "scores.category"},
+     {name: "date", key: "scores.date"},
+     {name: "season", key: "competitions.season"},
+     {name: "ranking", key: "scores.ranking"},
+     {name: "skater_name", key: "skaters.name"},
+     {name: "nation", key: "skaters.nation"},
      "number",
-     {name: "name", by: "elements", filter: ->(col, v) {
+     {name: "name", key: "elements", filter: ->(col, v) {
          (params[:perfect_match]) ? col.where(name: v) : col.where("elements.name like ? ", "%#{v}%")},
      },  # TODO
      "element_type",
      "credit", "info",
-     {name: "base_value", by: "elements.base_value"},
+     {name: "base_value", key: "elements.base_value"},
      {name: "goe", filter: ->(col, v){
          arel = create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
          col.where(arel)

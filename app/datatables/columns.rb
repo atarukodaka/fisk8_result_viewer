@@ -10,7 +10,7 @@ class Column
         arg.symbolize_keys
       end
     @data[:name] = @data[:name].to_s
-    @data[:by] ||= @data[:name].to_s
+    @data[:key] ||= @data[:name].to_s
   end
 end
 ################################################################

@@ -9,15 +9,15 @@ class ScoresIndexDatatable < IndexDatatable
   end
   def create_columns
     [
-     {name: "name", by: "scores.name"},
-     {name: "competition_name", by: "competitions.name"},
-     {name: "category", by: "scores.category"},
+     {name: "name", key: "scores.name"},
+     {name: "competition_name", key: "competitions.name"},
+     {name: "category", key: "scores.category"},
      :segment,
-     {name: "season", by: "competitions.season"},
+     {name: "season", key: "competitions.season"},
      :date, :result_pdf,
      :ranking,
-     {name: "skater_name", by: "skaters.name"},
-     {name: "nation", by: "skaters.nation"},
+     {name: "skater_name", key: "skaters.name"},
+     {name: "nation", key: "skaters.nation"},
      :tss, :tes, :pcs, :deductions, :base_value,
     ]
   end
