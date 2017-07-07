@@ -19,7 +19,7 @@ class CompetitionsController < ApplicationController
       elsif segment.blank?
         [:category, CategoryResultsDatatable.new(results: competition.category_results.category(category))]
       else
-        [:segment, SegmentScoresDatatable.new(scores: competition.scores)]
+        [:segment, SegmentScoresDatatable.new(scores: competition.scores.category(category).segment(segment))]
       end
     
     respond_to do |format|

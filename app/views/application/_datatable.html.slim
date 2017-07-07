@@ -13,12 +13,12 @@
 /- options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order
 - settings = table.table_settings
 - settings[:paging] = paging
-- settings[:pageLengh] = page_length
+- settings[:pageLength] = page_length
 
 script
   | jQuery(function($){
   | $("##{table_id}").DataTable(
-  = table.table_settings.to_json.html_safe
+  = settings.to_json.html_safe
   | );
   | });
     

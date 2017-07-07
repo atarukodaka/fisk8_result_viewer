@@ -7,12 +7,10 @@ class Datatable
     end
   end
 
-  def initialize(collection, columns, params: {}, order: nil, ajax: nil)
-    @init_collection = collection
-    @order = order
+  def initialize(params: {}, order: nil, ajax: nil)
     @params = params
-    @columns = Columns.new(columns)
     @ajax = ajax
+    @columns = Columns.new(create_columns())
     @collection = nil
   end
   ################
@@ -20,6 +18,9 @@ class Datatable
     view.render partial: partial, locals: {table: self }.merge(locals)
   end
 
+  def create_columns
+    []
+  end
   def column_names
     columns.names
   end
@@ -31,8 +32,6 @@ class Datatable
     {
       processing: true,
       filter: true,
-      paging: true,     # option
-      page_length: 25,   # opton
       columns: columns.map {|c| {data: c[:name]}},  # TODO 
       order: (order) ? order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} : [],
       serverSide: !!ajax,
@@ -43,7 +42,7 @@ class Datatable
     nil
   end
   def collection
-    @collection ||= manipulate_collection(fetch_collection || @init_collection)
+    @collection ||= manipulate_collection(fetch_collection)
   end
   
   def manipulate_collection(col)

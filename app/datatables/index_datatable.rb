@@ -1,12 +1,4 @@
 class IndexDatatable < Datatable
-  def initialize(params: {})
-    super(nil, create_columns, params: params)
-  end
-
-  def create_columns
-    []
-  end
-
   ## for elements/components
   def create_arel_table_by_operator(model_klass, key, operator_str, value)
     operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
