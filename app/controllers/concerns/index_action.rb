@@ -3,7 +3,7 @@ module IndexAction
   def list
     respond_to do |format|
       format.json {
-        render json: Datatable.new(create_collection, columns, params: params).extend(Datatable::Serverside)
+        render json: create_datatable.extend(Datatable::Serverside)
       }
     end
   end
@@ -14,12 +14,13 @@ module IndexAction
     raise "should be implemented in derived class"
   end
   def create_datatable
-    klass = "#{controller_name.singularize}Datatable".constantize
-    binding.pry
-    klass.create(create_collection, columns)
-    
-    #Datatable.create(create_collection, columns)
-
+    begin
+      klass = "#{controller_name.camelize}IndexDatatable".constantize
+    rescue NameError
+      Datatable.create(create_collection, columns, params: params)
+    else
+      klass.create(params: params)
+    end
   end
   def index
     respond_to do |format|

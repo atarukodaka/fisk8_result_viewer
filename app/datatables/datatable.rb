@@ -1,5 +1,5 @@
 class Datatable
-  attr_accessor :collection, :columns, :order, :columns, :params
+  attr_accessor :collection, :order, :columns, :params
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -12,9 +12,15 @@ class Datatable
     @order = order
     @params = params
     @columns = Columns.new(columns)
-    @manipulated_collection = nil
-  end
+    @collection = nil
 
+    after_initialize
+  end
+  def after_initialize
+  end
+  def columns
+    @columns ||= Columns.new(fetch_columns)
+  end
   def render(view, partial: "datatable", locals: {})
     view.render partial: partial, locals: {table: self }.merge(locals)
   end
@@ -26,23 +32,13 @@ class Datatable
     "table_#{self.object_id}"
   end
 
+  def fetch_collection
+    nil
+  end
   def collection
-    @manipulated_collection ||= manipulate_collection(@init_collection)
+    @collection ||= manipulate_collection(fetch_collection || @init_collection)
   end
   def manipulate_collection(col)
-    execute_filters(col)
-  end
-  def execute_filters(col)
-    columns.each do |column|
-      if (sv = params[column[:name]].presence)
-        col =
-          if (filter = column[:filter] )
-            filter.call(col, sv)
-          else
-            col.where("#{column[:by]} like ? ", "%#{sv}%")
-          end
-      end
-    end
     col
   end
   def as_json(opts={})
