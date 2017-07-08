@@ -19,8 +19,13 @@ module IndexAction
   def index
     respond_to do |format|
       table = create_datatable
+      params_to_pass = {}
+      table.column_names.map {|column_name|
+        params_to_pass[column_name] = params[column_name] if params[column_name].present?
+      }
+
       format.html {
-        table.ajax = url_for(action: :list, format: :json)
+        table.ajax = url_for(action: :list, format: :json, params: params_to_pass)
         render locals: { table: table }
       }
       format.json {
