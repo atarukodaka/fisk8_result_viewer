@@ -29,7 +29,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless settings[:server_side]
+    - unless settings[:serverSide]
       - collection = (decorate) ? table.collection.decorate : table.collection
       - collection.each do |item|
         tr
