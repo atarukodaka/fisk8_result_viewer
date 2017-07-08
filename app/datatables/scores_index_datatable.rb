@@ -1,7 +1,7 @@
 class ScoresIndexDatatable < IndexDatatable
   def initialize(*args)
     super(*args)
-    order = [[:category, :asc], [:date, :desc]]
+    self.order = [[:category, :asc], [:date, :desc]]
     self.columns =
       [
        {name: "name", model: Competition},

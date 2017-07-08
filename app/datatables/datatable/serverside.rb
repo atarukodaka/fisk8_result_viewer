@@ -10,7 +10,7 @@ module Datatable::Serverside
     return arel if params[:columns].blank?
 
     params[:columns].each do |num, hash|
-      column_name = hash[:data]  # TODO
+      column_name = hash[:data]
       if (sv = hash[:search][:value].presence)
         column = columns.find_by_name(column_name) || raise
         #col = col.where("#{column[:key]} like ?", "%#{sv}%")
@@ -23,17 +23,6 @@ module Datatable::Serverside
       end
     end
     arel
-=begin    
-    # TODO: checkinjection
-    params[:columns].each do |num, hash|
-      column_name = hash[:data]  # TODO
-      if (sv = hash[:search][:value].presence)
-        #column = columns.select {|h| h[:name] == column_name}.first || raise
-        column = columns.find_by_name(column_name) || raise
-        col = col.where("#{column[:key]} like ?", "%#{sv}%")
-      end
-    end
-=end
   end
   ## output
   def as_json(opts={})
@@ -56,9 +45,12 @@ module Datatable::Serverside
   ## for sorting
   def order_sql
     return "" if params[:order].blank?
-     params[:order].permit!.to_h.map do |_, hash|  # TODO: each for columns
+
+    ary = []
+    params[:order].each do |_, hash|  # TODO: each for columns
       column = columns[hash[:column].to_i]
-      ["#{column[:model].table_name}.#{column[:column_name]}", hash[:dir]].join(' ')
+      ary << ["#{column[:model].table_name}.#{column[:column_name]}", hash[:dir]].join(' ')
     end
+    ary
   end
 end

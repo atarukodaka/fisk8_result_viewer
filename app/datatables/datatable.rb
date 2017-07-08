@@ -36,7 +36,7 @@ class Datatable
     {
       processing: true,
       filter: true,
-      columns: columns.map {|c| {data: c[:name]}},  # TODO 
+      columns: columns.map {|c| {data: c[:name]}},
       order: (order) ? order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} : [],
       serverSide: !!ajax,
       ajax: (ajax) ? ajax : "",

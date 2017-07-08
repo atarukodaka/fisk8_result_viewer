@@ -1,7 +1,7 @@
 class CompetitionsIndexDatatable < IndexDatatable
   def initialize(*args)
     super(*args)
-    order = [[:start_date, :desc]]
+    self.order = [[:start_date, :desc]]
     self.columns =
       [
        :short_name, :name,
@@ -12,7 +12,5 @@ class CompetitionsIndexDatatable < IndexDatatable
   
   def fetch_collection
     Competition.all
-  end
-  def create_columns
   end
 end
