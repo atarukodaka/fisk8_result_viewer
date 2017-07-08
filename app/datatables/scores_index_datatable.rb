@@ -4,15 +4,15 @@ class ScoresIndexDatatable < IndexDatatable
     order = [[:category, :asc], [:date, :desc]]
     self.columns =
       [
-       {name: "name", key: "scores.name"},
-       {name: "competition_name", key: "competitions.name"},
-       {name: "category", key: "scores.category"},
+       {name: "name", model: Competition},
+       {name: "competition_name", model: Competition, column_name: "name"},
+       :category,
        :segment,
-       {name: "season", key: "competitions.season"},
+       {name: "season", model: Competition},
        :date, :result_pdf,
        :ranking,
-       {name: "skater_name", key: "skaters.name"},
-       {name: "nation", key: "skaters.nation"},
+       {name: "skater_name", model: Skater, column_name: 'name'},
+       {name: "nation", model: Skater},
        :tss, :tes, :pcs, :deductions, :base_value,
       ]
   end

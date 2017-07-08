@@ -1,12 +1,29 @@
 module Datatable::Serverside
   def manipulate_collection(col)
-    super(col).order(order_sql).page(page).per(per)
-  end
-  def execute_filters(col)
-    col = super(col)
-    ## ajax serverside search
-    return col if params[:columns].blank?
+    #super(col).order(order_sql).page(page).per(per)
+    super(col).where(ajax_filter).order(order_sql).page(page).per(per)
     
+  end
+  def ajax_filter
+    arel = nil
+    ## ajax serverside search
+    return arel if params[:columns].blank?
+
+    params[:columns].each do |num, hash|
+      column_name = hash[:data]  # TODO
+      if (sv = hash[:search][:value].presence)
+        column = columns.find_by_name(column_name) || raise
+        #col = col.where("#{column[:key]} like ?", "%#{sv}%")
+        this_arel = column[:model].arel_table[column[:column_name]].matches("%#{sv}%")
+        if arel
+          arel = arel.and(this_arel)
+        else
+          arel = this_arel
+        end
+      end
+    end
+    arel
+=begin    
     # TODO: checkinjection
     params[:columns].each do |num, hash|
       column_name = hash[:data]  # TODO
@@ -16,7 +33,7 @@ module Datatable::Serverside
         col = col.where("#{column[:key]} like ?", "%#{sv}%")
       end
     end
-    col
+=end
   end
   ## output
   def as_json(opts={})
@@ -39,10 +56,9 @@ module Datatable::Serverside
   ## for sorting
   def order_sql
     return "" if params[:order].blank?
-     params[:order].permit!.to_h.map do |_, hash|
+     params[:order].permit!.to_h.map do |_, hash|  # TODO: each for columns
       column = columns[hash[:column].to_i]
-      #key = (column[:table]) ? [column[:table], column[:column_name]].join(".") : column[:column_name]
-      [column[:key], hash[:dir]].join(' ')
+      ["#{column[:model].table_name}.#{column[:column_name]}", hash[:dir]].join(' ')
     end
   end
 end

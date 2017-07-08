@@ -1,6 +1,6 @@
 class Column
   extend Forwardable
-  def_delegator :@data, :[]
+  def_delegators :@data, :[], :[]=
   def initialize(arg)
     @data =
       case arg
@@ -10,13 +10,12 @@ class Column
         arg.symbolize_keys
       end
     @data[:name] = @data[:name].to_s
-    @data[:key] ||= @data[:name].to_s
   end
 end
 ################################################################
 class Columns
   extend Forwardable
-  def_delegators :@columns, :map, :[], :select, :each
+  def_delegators :@columns, :map, :[], :select, :each, :keys, :first, :last
   
   attr_reader :names
   def initialize(columns = [])
