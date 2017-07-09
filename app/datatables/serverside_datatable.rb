@@ -8,7 +8,7 @@ class ServersideDatatable < Datatable
     @rows
   end
   def rows
-    @manipulated_row ||= @rows.where(filter_sql).order(order_sql).page(page).per(per)
+    @manipulated_row ||= fetch_rows.where(filter_sql).order(order_sql).page(page).per(per)
   end
 
   def filter_sql
