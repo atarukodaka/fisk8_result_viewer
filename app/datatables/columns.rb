@@ -12,8 +12,14 @@ class Column
     @data[:name] = @data[:name].to_s
   end
 
+  def name
+    @data[:name].to_s
+  end
   def key
     [@data[:table], @data[:name] || @data[:column_name]].compact.join('.')    
+  end
+  def column_name
+    @data[:column_name].try(:to_s) || name
   end
 end
 ################################################################
