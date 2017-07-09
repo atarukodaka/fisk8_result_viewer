@@ -1,6 +1,6 @@
 class Column
   extend Forwardable
-  def_delegators :@data, :[], :[]=
+  #def_delegators :@data, :[], :[]=
   def initialize(arg)
     @data =
       case arg
@@ -9,14 +9,16 @@ class Column
       when Hash
         arg.symbolize_keys
       end
-    @data[:name] = @data[:name].to_s
   end
 
   def name
     @data[:name].to_s
   end
+  def table
+    @data[:table].to_s
+  end
   def key
-    [@data[:table], @data[:name] || @data[:column_name]].compact.join('.')    
+    [table, column_name].reject(&:blank?).join('.')
   end
   def column_name
     @data[:column_name].try(:to_s) || name
