@@ -1,7 +1,7 @@
 class ServersideDatatable < Datatable
   attr_reader :params
-  def initialize(columns:, rows: nil, params: params)
-    super(columns: columns, rows: rows)
+  def initialize(rows, columns, params: params)
+    super(rows, columns)
     @params = params
   end
   def fetch_rows

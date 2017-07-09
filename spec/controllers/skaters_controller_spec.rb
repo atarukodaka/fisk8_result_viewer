@@ -12,7 +12,6 @@ RSpec.describe SkatersController, type: :controller do
   let!(:men_skater){ create(:skater) }
   let!(:ladies_skater){ create(:skater, :ladies) }
   let!(:no_scores_skater){ create(:skater) {|sk| sk.name = "No SCORES" } }
-  let!(:datatable) { controller.create_datatable } 
   before do
     competition = create(:competition)
     cr = create(:category_result, competition: competition, skater: men_skater)

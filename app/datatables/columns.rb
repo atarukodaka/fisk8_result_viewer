@@ -1,6 +1,5 @@
 class Column
   extend Forwardable
-  #def_delegators :@data, :[], :[]=
   def initialize(arg)
     @data =
       case arg
@@ -23,6 +22,9 @@ class Column
   def column_name
     @data[:column_name].try(:to_s) || name
   end
+  def filter
+    @data[:filter]
+  end
 end
 ################################################################
 class Columns
@@ -34,9 +36,9 @@ class Columns
     @columns = columns.map {|column| Column.new(column) }
   end
   def names
-    @columns.map {|c| c[:name]}
+    @columns.map {|c| c.name}
   end
   def find_by_name(name)
-    @columns.select {|c| c[:name] == name }.first
+    @columns.select {|c| c.name == name }.first
   end
 end

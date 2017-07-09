@@ -1,7 +1,12 @@
 
 class Datatable
   attr_accessor :order, :columns, :settings, :rows
-  def initialize(columns: [], rows: [], settings: {})
+  def self.create(*args)
+    self.new(*args).tap do |table|
+      yield(table) if block_given?
+    end
+  end
+  def initialize(rows, columns, settings: {})
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
     @rows = rows
     @settings = settings

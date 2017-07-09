@@ -13,7 +13,8 @@ module Helper
   end
 
   def column_number(column_name)
-    controller.create_datatable.column_names.index(column_name.to_s).to_i
+    #controller.create_datatable.column_names.index(column_name.to_s).to_i
+    Columns.new(controller.columns).names.index(column_name.to_s).to_i
   end
   def filter_params(column_name, value)
     #{ "sSearch_#{column_number(column_name)}" => value }

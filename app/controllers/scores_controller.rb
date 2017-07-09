@@ -1,4 +1,25 @@
 class ScoresController < ApplicationController
+  def fetch_rows
+    Score.includes(:competition, :skater).references(:competition, :skater).all
+  end
+  def columns
+    [
+     {name: "name", table: "competitions"},
+     {name: "competition_name", table: "competitions", column_name: "name"},
+     {name: "category", table: "scores"},
+     :segment,
+     {name: "season", table: "competitions"},
+     :date, :result_pdf,
+     :ranking,
+     {name: "skater_name", table: "skaters", column_name: 'name'},
+     {name: "nation", table: "skaters"},
+     :tss, :tes, :pcs, :deductions, :base_value,
+    ]
+  end
+  def order
+    []
+  end
+  ################################################################
   def show
     score = Score.find_by(name: params[:name]) ||
       raise(ActiveRecord::RecordNotFound.new("no such score name: '#{params[:name]}'"))
