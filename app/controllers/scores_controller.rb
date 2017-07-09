@@ -17,7 +17,7 @@ class ScoresController < ApplicationController
     ]
   end
   def order
-    []
+    [[:date, :desc], [:category, :asc], [:segment, :desc], [:ranking, :asc]]
   end
   ################################################################
   def show

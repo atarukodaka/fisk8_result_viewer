@@ -24,4 +24,7 @@ class ComponentsController < ApplicationController
      },
     ]
   end
+  def order
+    [[:value, :desc]]
+  end
 end

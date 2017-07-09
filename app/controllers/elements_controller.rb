@@ -29,4 +29,7 @@ class ElementsController < ApplicationController
      "judges", "value",
     ]
   end
+  def order
+    [[:value, :desc]]
+  end
 end

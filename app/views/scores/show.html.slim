@@ -12,11 +12,11 @@ h2 Score
         
 h2 Elements
 
-= Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value]).render(self)
+= Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value]).render(self, settings: { paging: false})
 
 h2 Components
 
-= Datatable.new(score.components, [:number, :name, :factor, :judges, :value]).render(self)
+= Datatable.new(score.components, [:number, :name, :factor, :judges, :value]).render(self, settings: { paging: false} )
 
 - if score.deductions.to_f < 0
   h2 Deductions

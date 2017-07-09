@@ -37,6 +37,5 @@ table.table.table-striped.table-hover.table-condensed
 - if result_type.present?
   h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
-  = result_datatable.render(self, locals: { table: result_datatable, decorate: true, table_id: "category_table", page_length: 50 })
-  /= render partial: "datatable", locals: { table: result_datatable, decorate: true, table_id: "category_table", page_length: 50 }
+  = result_datatable.render(self, settings: {paging: false })
     

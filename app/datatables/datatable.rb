@@ -10,13 +10,15 @@ class Datatable
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
     @rows = rows
     @settings = settings
+    @order = []
   end
    
   def column_names
     @columns.map {|c| c.name }
   end
 
-  def render(view, partial: "datatable", locals: {})
+  def render(view, partial: "datatable", locals: {}, settings: {})
+    self.settings.update(settings)
     view.render partial: partial, locals: {table: self }.merge(locals)
   end
   def table_id
@@ -27,7 +29,9 @@ class Datatable
       processing: true,
       filter: true,
       columns: column_names.map {|name| {data: name}},
-      order: (order) ? order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} : [],
+      order: order.map {|name, dir|
+        [column_names.index(name.to_s), dir.to_s]
+      },
     }.merge(settings)
   end
   def as_json(opts={})

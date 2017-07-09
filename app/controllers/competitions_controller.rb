@@ -5,7 +5,7 @@ class CompetitionsController < ApplicationController
     Competition.all
   end
   def order
-    #[[:start_date, :desc]]
+    [[:start_date, :desc]]
   end
   def columns
     [

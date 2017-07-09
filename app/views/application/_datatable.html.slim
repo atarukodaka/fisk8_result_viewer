@@ -1,15 +1,8 @@
 - table || raise('no table given')
-- server_side ||= false
-- decorate ||= false
-- page_length ||= 10
-- paging ||= false
-- ajax ||= ""
 
 - table_id = table.table_id
 - column_names = table.column_names
 - settings = table.table_settings
-- settings[:paging] = paging
-- settings[:pageLength] = page_length
 
 script
   | jQuery(function($){
@@ -26,7 +19,6 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
         th= key.to_s.humanize
   tbody
     - unless settings[:ajax]
-      //- collection = (decorate) ? table.collection.decorate : table.collection
       - table.rows.each do |item|
         tr
           - column_names.each do |key|
