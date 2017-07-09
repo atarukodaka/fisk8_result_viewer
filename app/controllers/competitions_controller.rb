@@ -1,7 +1,14 @@
 class CompetitionsController < ApplicationController
   using SortWithPreset
   include Contracts
-
+  def columns
+    [
+     :short_name, :name,
+     :site_url, :city, :country, :competition_type,
+     :season, :start_date, :end_date,
+    ]
+  end
+  ################################################################
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   ## home
   root to: 'home#index'
+  get '/home' => 'home#index'
+  get '/list' => 'home#list'
   
   ## skaters
   get '/skaters' => 'skaters#index'

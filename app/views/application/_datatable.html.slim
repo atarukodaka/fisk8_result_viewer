@@ -7,10 +7,6 @@
 
 - table_id = table.table_id
 - column_names = table.column_names
-/- data_source = (server_side) ? url_for(action: :list, controller: controller_name, format: :json, params: params.permit!) : ""
-
-/- options = { bProcessing: true, bFilter: true, paging: paging, pageLength: page_length, bServerSide: server_side, ajax: ajax, columns: table.columns.map {|c| { data: c[:name], visible: (!!c[:hidden]) ? false : true }}}
-/- options[:order] = table.order.map {|name, dir| [column_names.index(name.to_s), dir.to_s]} if table.order
 - settings = table.table_settings
 - settings[:paging] = paging
 - settings[:pageLength] = page_length
@@ -29,9 +25,9 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless settings[:serverSide]
-      - collection = (decorate) ? table.collection.decorate : table.collection
-      - collection.each do |item|
+    - unless settings[:ajax]
+      //- collection = (decorate) ? table.collection.decorate : table.collection
+      - table.rows.each do |item|
         tr
           - column_names.each do |key|
             td= item.send(key)

@@ -1,5 +1,8 @@
 h2 Fisk8 Result Viewer
 
+= table.render(self)
+
+
 ul
   - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
     li= link_to(controller.to_s.camelize, controller: controller)

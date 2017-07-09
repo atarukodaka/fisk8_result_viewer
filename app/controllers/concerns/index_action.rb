@@ -18,7 +18,8 @@ module IndexAction
   end
   def index
     respond_to do |format|
-      table = create_datatable
+      #table = create_datatable
+      table = Datatable.new(columns: columns, settings: {ajax: url_for(action: :list, format: :json), serverSide: true})
       params_to_pass = {}
       table.column_names.map {|column_name|
         params_to_pass[column_name] = params[column_name] if params[column_name].present?
