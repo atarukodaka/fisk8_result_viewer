@@ -47,7 +47,6 @@ class Competition < ApplicationRecord
 
         summary.categories.each do |category|
           #next unless accept_categories.include?(category.to_sym)
-          binding.pry
           next if (Category.find_by(name: category).nil?) ||
             (Category.find_by(name: category).accept_to_update == false)
           result_url = summary.result_url(category)

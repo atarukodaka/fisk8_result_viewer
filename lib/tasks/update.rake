@@ -10,10 +10,7 @@ namespace :update do
     force =  ENV['force'].to_i.nonzero?
 
     if ary = ENV['accept_categories']
-      Category.all.map {|c| c.accept_to_update = false}
-      ary.split(/,/).each do |category|
-        Category.find_by(name: category).accept_to_update = true
-      end
+      Category.accept_to_update(ary.split(/,/))
     end
 
     if f = ENV['filename']
