@@ -34,6 +34,10 @@ class Datatable
       },
     }.merge(settings)
   end
+  def add_setting(key, value)
+    settings[key] = value
+    self
+  end
   def as_json(opts={})
     rows.map do |item|
       column_names.map do |col_name|
@@ -42,6 +46,16 @@ class Datatable
         ]
       end.to_h
     end
+  end
+  def to_csv(opt={})
+    require 'csv'
+    csv = CSV.generate(headers: column_names, write_headers: true) do |csv|
+      rows.each do |row|
+        csv << column_names.map {|k| row.send(k)}
+      end
+    end
+    #send_data csv, filename: "#{controller_name}.csv"
+    csv
   end
 end
 

@@ -30,6 +30,10 @@ class ApplicationRecord < ActiveRecord::Base
   end
   
 =begin
+  def decorate_if(flag)
+    (flag) ? decorate : self
+  end
+
   class << self
     def findor_by(**hash)
       arel = nil

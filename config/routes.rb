@@ -1,37 +1,44 @@
 Rails.application.routes.draw do
   ## home
   root to: 'home#index'
+
+  namespace :skaters do
+    get '', action: :index
+    get :list
+    get ':isu_number', action: :show
+  end
+
+  namespace :competitions do
+    get :index
+    get :list
+    get ':short_name(/:category(/:segment))', action: :show
+  end
+
+  namespace :scores do
+    get :index
+    get :list
+    get :name, action: :show
+  end
   
-  ## skaters
-  get '/skaters' => 'skaters#index'
-  get '/skaters/list' => 'skaters#list'
-  get '/skaters/update_skaters' => 'skaters#update_skaters'
-  get '/skaters/:isu_number' => 'skaters#show', as: :skater
-  #get '/skaters/:name/name' => 'skaters#show_by_name', as: :skater_name
+  namespace :elements do
+    get :index
+    get :list
+  end
 
-  ## competitions
-  get '/competitions' => 'competitions#index'
-  get '/competitions/list' => 'competitions#list'
-  get '/competitions/show_competition' => 'competitions#show_competition'
-  
-  get '/competitions/:short_name(/:category(/:segment))' => 'competitions#show', as: :competition
+  namespace :components do
+    get :index
+    get :list
+  end
 
-  ## scores##
-  get '/scores' => 'scores#index'
-  get '/scores/list' => 'scores#list'
-  get '/scores/show_scores' => 'scores#show_scores'
-  get '/scores/:name' => 'scores#show', as: :score
+  namespace :parsers do
+    get :index
+    get :competitions
+    get :scores
+  end
 
-  ## elements
-  get 'elements' => 'elements#index'
-  get '/elements/list' => 'elements#list'
-  
-  ## components
-  get '/components' => 'components#index'
-  get '/components/list' => 'components#list'
-
-  ## parser
-  get '/parsers' => 'parsers#index'
-  get '/parsers/competition' => 'parsers#competition'
-  get '/parsers/scores' => 'parsers#scores'  
+  namespace :api do
+    namespace :skaters do
+      get '', action: :index
+    end
+  end
 end

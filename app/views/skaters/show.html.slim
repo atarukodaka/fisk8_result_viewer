@@ -9,15 +9,15 @@
 .row
   .col-sm-6
     h2 Skaters Info
-    = skater_info_table.render(self)
+    = skater_info_table.render(self, locals: { decorate: true })
 
   .col-sm-6
     h2 Record Summary
-    = record_summary_table.render(self)
+    = record_summary_table.render(self )
 
 h2 Competition Results
 
-= competition_results_table.render(self, settings: {paging: true, pageLength: 50})
+= competition_results_table.render(self, settings: {paging: true, pageLength: 50}, locals: { decorate: true})
 
 .row
   - score_graphs.each do |sg|

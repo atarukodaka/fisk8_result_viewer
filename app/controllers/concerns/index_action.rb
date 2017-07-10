@@ -1,5 +1,8 @@
 module IndexAction
   ## shared
+  def create_columns
+    Columns.new(columns)
+  end
   def filter_arel(cols)
     arel = nil
     cols.map do |column|
@@ -15,45 +18,32 @@ module IndexAction
     end
     arel    
   end
-
   def list
-    render json: ServersideDatatable.create(nil, columns, params: params){|table|
-      table.rows = fetch_rows.where(filter_arel(table.columns))
-    }
-
+    cols = create_columns
+    rows = fetch_rows.where(filter_arel(cols))
+    render json: ServersideDatatable.create(rows, columns, params: params)
   end
   def index
+    cols = create_columns
+    rows = fetch_rows.where(filter_arel(cols))
+    table = Datatable.new(rows, cols)
+    
     respond_to do |format|
+
       format.html {
         render :index, locals: {
-          table: Datatable.create(nil, columns, settings: {serverSide: true}){|table|
-            #table.settings[:ajax] = url_for(action: :list, format: :json, params: params.permit(table.columns.names))
-            table.settings[:ajax] = url_for(action: :list, format: :json, params: params.permit!)
-            if order.present?
-              table.settings[:order] = order.map {|pair|
-                [table.column_names.index(pair[0].to_s), pair[1]]
-              }
-            end
-          }
+          table: table
+            .add_setting(:ajax, url_for(action: :list, format: :json, params: params.permit!))
+            .add_setting(:order, order.map {|pair|
+                           [cols.names.index(pair[0].to_s), pair[1]]
+                         })
         }
-
       }
       format.json {
-        render json: Datatable.create(nil, columns) {|table|
-          table.rows = fetch_rows.where(filter_arel(table.columns)).limit(1000)
-        }
+        render json: table
       }
       format.csv {
-        require 'csv'
-        table = Datatable.create(nil, columns){|table|
-          table.rows = fetch_rows.where(filter_arel(table.columns)).limit(1000)
-        }
-        csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
-          table.rows.each do |row|
-            csv << table.column_names.map {|k| row.send(k)}
-          end
-        end
-        send_data csv, filename: "#{controller_name}.csv"
+        send_data table.to_csv, filename: "#{controller_name}.csv"
       }
     end
   end
@@ -77,7 +67,4 @@ module IndexAction
   def columns
     []
   end
-  
-
-
 end

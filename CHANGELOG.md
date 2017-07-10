@@ -2,6 +2,8 @@
 - isu championship to take out?
 - country
 - datatable: order: not limit to first order
+- list table: decorate
+- decorate_if
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

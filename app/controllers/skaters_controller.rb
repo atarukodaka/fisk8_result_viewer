@@ -27,9 +27,9 @@ class SkatersController < ApplicationController
     
     ## tables
     tables = {
-      skater_info_table: Listtable.new(skater.decorate, [:name, :nation, :isu_number, :category]),
+      skater_info_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
       record_summary_table: Listtable.new(Hashie::Mash.new(record_summary_hash)),
-      competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores).decorate, [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]),
+      competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]),
     }
     ## score graph
     score_graphs = skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|

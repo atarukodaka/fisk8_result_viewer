@@ -1,6 +1,9 @@
 
 - table || raise
+- decorate ||= false
+
+- data = (decorate) ? table.data.decorate : table.data
 
 table.table.table-striped.table-hover.table-condensed
   - table.column_names.each do |key|
-    = tr_data(key.to_s.humanize, table.data.send(key))
+    = tr_data(key.to_s.humanize, data.send(key))

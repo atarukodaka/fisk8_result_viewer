@@ -1,12 +1,14 @@
 module LinkToHelper
   def link_to_skater(text = nil, skater, params: {})
-    link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
+    #link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
+    link_to(text || skater[:name], url_for(controller: :skaters, action: :show, isu_number: skater[:isu_number] || skater[:name]), params)
   end
 
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
     text ||= segment || category || competition.name
 
-    lt = link_to(text, competition_path(competition.short_name, category, segment))
+    #lt = link_to(text, competition_path(competition.short_name, category, segment))
+    lt = link_to(text, {controller: :competitions, action: :show, short_name: competition.short_name, category: category, segment: segment})
     (competition.isu_championships) ? lt : content_tag(:i, lt)
   end
   
@@ -20,7 +22,7 @@ module LinkToHelper
   def link_to_score(text = nil, score)
     name = (score.class == Score) ? score.name : score
 
-    (name.nil?) ? text : link_to(text || name, score_path(name))
+    (name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]

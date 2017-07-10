@@ -1,4 +1,3 @@
-
 class Listtable
   attr_reader :data, :column_names
   def initialize(data, column_names = nil)
