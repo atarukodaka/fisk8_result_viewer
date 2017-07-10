@@ -35,10 +35,9 @@ namespace :update do
     url = ENV['url'] || raise
     force = ENV['force'].to_i.nonzero?
     comment = ENV['comment']
-    parser_type = (t = ENV['parser_type']) ? t.to_sym :  :isu_generic
+    parser_type = (t = ENV['parser_type']) ? t.to_sym : :isu_generic
 
-    Competition.destroy_existings_by_url(url) if force
-    Competition.create_competition(url, parser_type: parser_type, comment: comment)
+    Competition.create_competition(url, parser_type: parser_type, comment: comment, force: force)
   end
 
 =begin
