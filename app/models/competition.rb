@@ -40,7 +40,6 @@ class Competition < ApplicationRecord
         competition.parser_type = parser_type
         competition.comment = comment
         #competition.country ||= @city_country[competition.city]  # TODO: country
-        binding.pry
         competition.save!  # TODO
         puts "*" * 100
         puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
