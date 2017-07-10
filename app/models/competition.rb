@@ -2,11 +2,7 @@ class Competition < ApplicationRecord
   #after_initialize :set_default_values
   before_save :set_short_name
   
-  ACCEPT_CATEGORIES =
-    [
-     :MEN, :LADIES, :PAIRS, :"ICE DANCE",
-     :"JUNIOR MEN", :"JUNIOR LADIES", :"JUNIOR PAIRS", :"JUNIOR ICE DANCE",
-    ]
+  ACCEPT_CATEGORIES = Category.all.map {|c| c.name.to_sym}
 
   ## relations
   has_many :category_results, dependent: :destroy
@@ -35,13 +31,16 @@ class Competition < ApplicationRecord
       end
       ActiveRecord::Base.transaction do
         parser = Parsers.parser(:competition, parser_type)
-        
-        summary = Adaptor::CompetitionAdaptor.new(parser.parse(url))
-        competition = summary.to_model
+        summary = parser.parse(url)
+        competition = Competition.create
+        [:site_url, :name, :city, :country, :start_date, :end_date, :season, ].each do |key|
+          competition[key] = summary.send(key)
+        end
+
         competition.parser_type = parser_type
         competition.comment = comment
         #competition.country ||= @city_country[competition.city]  # TODO: country
-
+        binding.pry
         competition.save!  # TODO
         puts "*" * 100
         puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
@@ -102,9 +101,10 @@ class Competition < ApplicationRecord
           else
             [:unknown, name.to_s.gsub(/\s+/, '_'), false]
           end
-    self.competition_type ||= ary[0]
-    self.short_name ||= ary[1]
-    self.isu_championships ||= ary[2]
+    self.competition_type = ary[0] if self.competition_type.blank?
+    self.short_name = ary[1] if self.short_name.blank?
+    self.isu_championships = ary[2] if self.isu_championships.blank?
+    self
   end
   
 end

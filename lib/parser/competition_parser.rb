@@ -4,14 +4,10 @@ class Parser
     include Utils
     include Contracts
 
-    ################
-    Contract String => Hash
-    
     def parse_competition(url)
       page = get_url(url)
-      #return {} if page.nil?
       city, country = parse_city_country(page)
-      {
+      h = {
         name: parse_name(page),
         site_url: url,
         city: city,
@@ -19,6 +15,7 @@ class Parser
         result_summary: parse_summary_table(page, url: url),
         time_schedule: parse_time_schedule(page),
       }
+      CompetitionSummary.new(h)
     end
     alias :parse :parse_competition
     ################################################################
