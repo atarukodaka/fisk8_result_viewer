@@ -32,9 +32,10 @@ class Competition < ApplicationRecord
       ActiveRecord::Base.transaction do
         parser = Parsers.parser(:competition, parser_type)
         summary = parser.parse(url)
-        competition = Competition.create
-        [:site_url, :name, :city, :country, :start_date, :end_date, :season, ].each do |key|
-          competition[key] = summary.send(key)
+        competition = Competition.create do |comp|
+          [:site_url, :name, :city, :country, :start_date, :end_date, :season, ].each do |key|
+            comp[key] = summary.send(key)
+          end
         end
 
         competition.parser_type = parser_type
