@@ -33,6 +33,7 @@ module IndexAction
       format.html {
         render :index, locals: {
           table: table
+            .add_setting(:serverSide, true)
             .add_setting(:ajax, url_for(action: :list, format: :json, params: params.permit!))
             .add_setting(:order, order.map {|pair|
                            [cols.names.index(pair[0].to_s), pair[1]]

@@ -11,11 +11,12 @@ class SkatersController < ApplicationController
   end
   
   ################################################################
-  def show
-    skater = Skater.find_by(isu_number: params[:isu_number]) ||
+  def get_skater
+    Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) || 
       raise(ActiveRecord::RecordNotFound.new("no such skater"))
-
+  end
+  def get_tables(skater)
     cr = skater.category_results
     record_summary_hash = {
       highest_score: cr.maximum(:points),
@@ -26,29 +27,33 @@ class SkatersController < ApplicationController
     }
     
     ## tables
-    tables = {
-      skater_info_table: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
-      record_summary_table: Listtable.new(Hashie::Mash.new(record_summary_hash)),
-      competition_results_table: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]),
+    {
+      skater_info: Listtable.new(skater, [:name, :nation, :isu_number, :category]),
+      record_summary: Listtable.new(Hashie::Mash.new(record_summary_hash)),
+      competition_results: Datatable.new(skater.category_results.recent.includes(:competition, :scores), [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]),
     }
-    ## score graph
-    score_graphs = skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|
-      ScoreGraph.new(skater, segment, scores).tap {|sg|
+  end
+  def create_graphs(skater)    
+    skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|
+      ScoreGraph.new(scores, title: "#{skater.name} - #{segment}", filename_prefix: "#{skater.name}_#{segment}").tap {|sg|
         sg.plot
       }
     end
+  end
     
+  def show
+    skater = get_skater
+    tables = get_tables(skater)
+    score_graphs = create_graphs(skater)
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: { skater: skater, score_graphs: score_graphs}.merge(tables)
+        render action: :show, locals: {
+          skater: skater, score_graphs: score_graphs, tables: tables
+        }
       }
       format.json {
-        render json: {
-          skater_info: tables[:skater_info_table],
-          record_summary_table: tables[:record_summary_table],
-          competition_results: tables[:competition_results_table],
-        }
+        render json: tables
       }
     end
   end

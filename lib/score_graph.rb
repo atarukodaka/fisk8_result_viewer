@@ -1,18 +1,24 @@
 require 'gnuplot'
 
 class ScoreGraph
-  attr_reader :skater, :segment, :scores
+  #attr_reader :skater, :segment, :scores
+  attr_reader :scores
   
-  def initialize(skater, segment, scores)
-    @skater, @segment, @scores = skater, segment, scores
+  #def initialize(skater, segment, scores)
+  def initialize(scores, title: "", filename_prefix: "")
+    @scores = scores
+    @title = title
+    @filename_prefix = filename_prefix
+    #@skater, @segment, @scores = skater, segment, scores
   end
   ################
   def image_filename
     prefix = File.join(Rails.public_path, "images", "score_graph")
 
     date = scores.pluck(:date).compact.max
-    File.join(prefix, "%s_%s_%4d-%02d-%02d_plot.png" %
-              [skater[:name].tr('/', '-'), segment,
+
+    File.join(prefix, "%s_%4d-%02d-%02d_plot.png" %
+              [@filename_prefix.tr('/', '-'),
                date.year, date.month, date.day])
   end
   def image_path
@@ -20,6 +26,8 @@ class ScoreGraph
   end
   ################
   def plot
+    return if scores.empty?
+    
     fname = image_filename
     return if File.exist?(fname)
 
@@ -27,7 +35,8 @@ class ScoreGraph
       Gnuplot::Plot.new(gp) do |plot|
         plot.terminal "png"
         plot.output   fname
-        plot.title    "#{skater[:name]} - #{segment}"
+        #plot.title    "#{skater[:name]} - #{segment}"
+        plot.title    @title
         #plot.xlabel   "x"
         plot.ylabel   "points"
         plot.grid

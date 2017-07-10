@@ -2,43 +2,40 @@ Rails.application.routes.draw do
   ## home
   root to: 'home#index'
 
-  namespace :skaters do
-    get '', action: :index
-    get :list
-    get ':isu_number', action: :show
-  end
-
-  namespace :competitions do
-    get :index
-    get :list
-    get ':short_name(/:category(/:segment))', action: :show
-  end
-
-  namespace :scores do
-    get :index
-    get :list
-    get :name, action: :show
+  resources :skaters, only: [:index, :show], param: :isu_number do
+    get :list, on: :collection
   end
   
-  namespace :elements do
-    get :index
-    get :list
+  resources :competitions, only: [:index], param: :short_name do
+    get :list, on: :collection
+    get '(/:category(/:segment))', action: :show, on: :member, as: ''
   end
 
-  namespace :components do
-    get :index
-    get :list
+  resources :scores, only: [:index, :show], param: :name do
+    get :list, on: :collection
   end
 
-  namespace :parsers do
-    get :index
-    get :competitions
-    get :scores
+  resources :elements, only: :index do
+    get :list, on: :collection
   end
 
-  namespace :api do
-    namespace :skaters do
-      get '', action: :index
+  resources :components, only: :index do
+    get :list, on: :collection
+  end
+
+  resources :parsers, only: :index do
+    collection do
+      get :competition
+      get :scores
     end
   end
+
+  namespace :api, format: "json" do
+    resources :skaters, only: [:index, :show], param: :isu_number
+    resources :competitions, only: [:index], param: :short_name
+    resources :scores, only: [:index, :show], param: :name
+    resources :elements, only: :index
+    resources :components, only: :index
+  end
+
 end

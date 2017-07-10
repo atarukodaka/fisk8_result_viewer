@@ -46,13 +46,14 @@ class ServersideDatatable < Datatable
   end
   
   def as_json(opts={})
-    {
-      iTotalRecords: rows.count,
+    h = {
+      iTotalRecords: rows.model.count,
       iTotalDisplayRecords: rows.total_count,
       data: rows.decorate.map {|item|
         column_names.map {|c| [c, item.send(c)]}.to_h
       }
     }
+    h
   end
 end
 

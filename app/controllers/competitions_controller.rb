@@ -21,19 +21,24 @@ class CompetitionsController < ApplicationController
     category = params[:category]
     segment = params[:segment]
 
-    category_segments = competition.scores.order(:date).select(:category, :segment).map {|d| d.attributes}.uniq.group_by {|d| d["category"]}.map {|k, ary|
-      [k, ary.map {|d| d["segment"]}]
-    }.to_h
-    categories = category_segments.keys.sort_with_preset(["MEN", "LADIES", "PAIRS", "ICE DANCE"])
-      
+    cat_seg = competition.scores.pluck(:category, :segment).uniq
+    categories = cat_seg.map {|ary| ary[0]}.uniq
+    cs_rows = categories.map do |category|
+      segments = [:short, :free].map do |segment|
+        [segment, cat_seg.select {|ary| ary[0] == category && ary[1] =~ /#{segment.upcase}/}.first.try(:last)]
+      end.to_h
+      CategorySummary.new(competition: competition, category: category, short: segments[:short], free: segments[:free])
+    end
+    category_summary = Datatable.new(cs_rows, [:category, :short, :free])
+
     result_type, result_datatable = 
       if category.blank? and segment.blank?
         [nil, nil]
       elsif segment.blank?
-        [:category, Datatable.new(competition.category_results.category(category).includes(:skater, :scores).decorate,
+        [:category, Datatable.new(competition.category_results.category(category).includes(:skater, :scores),
                                   [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss])]
       else
-        [:segment, Datatable.new(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater, :elements, :components).decorate,
+        [:segment, Datatable.new(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater, :elements, :components),
                                  [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,])]
       end
     
@@ -42,8 +47,7 @@ class CompetitionsController < ApplicationController
         competition: competition,
         category: category,
         segment: segment,
-        categories: categories,
-        category_segments: category_segments,
+        category_summary: category_summary,
         result_type: result_type,
         result_datatable: result_datatable,
       }

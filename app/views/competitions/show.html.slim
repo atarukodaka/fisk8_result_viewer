@@ -2,40 +2,26 @@
 //   optional: category_results (only when 'category' specified)
 /              segment_scores (only when 'segment' specified)
 
-- content_for :title do
-  | competition: 
-  = competition.name
-  - if category.present?
-    = " / #{category}"
-    - if segment.present?
-      = " / #{segment}"
-
 category_results ||= []
 segment_scores ||= []
+
+- content_for :title do
+  | competition: 
+  = [competition.name, category, segment].reject(&:blank?).join(' / ')
 
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 
-table.table.table-striped.table-hover.table-condensed
-  - [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment].each do |key|
-    = tr_data(key, competition.decorate.send(key))
+= Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment]).render(self, locals: { decorate: true })
 
 ////////////////////////////////////////////////////////////////
 h2 Category / Segment
 
-table.table.table-striped.table-hover.table-condensed
-  tr
-    - [:category, :short, :free].each do |h|
-      th= h.to_s.humanize
-  - categories.each do |category|
-    tr
-      td= link_to_competition(competition, category: category)
-      - category_segments[category].each do |segment|
-        td= link_to_competition(competition, category: category, segment: segment)
+= category_summary.render(self, settings: { paging: false }, locals: {decorate: true})
 
 ////////////////////////////////////////////////////////////////
 - if result_type.present?
   h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
-  = result_datatable.render(self, settings: {paging: false })
+  = result_datatable.render(self, settings: {paging: false }, locals: { decorate: true})
     

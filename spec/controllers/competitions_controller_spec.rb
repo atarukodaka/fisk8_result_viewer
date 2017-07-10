@@ -18,6 +18,7 @@ RSpec.describe CompetitionsController, type: :controller do
     it 'pure index request' do
       get :index
       expect(response).to be_success
+      expect(response.body).to include("\"serverSide\":true")
     end
 
     it 'list' do

@@ -74,3 +74,4 @@ gem 'sitemap_generator'
 
 gem 'jquery-datatables-rails'
 gem 'hashie'
+gem 'active_hash'

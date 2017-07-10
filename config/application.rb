@@ -11,7 +11,7 @@ module Fisk8ResultViewer
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/datatables)
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/datatables #{config.root}/refinements)
     config.generators do |g|
       g.javascripts false
       g.stylesheets false

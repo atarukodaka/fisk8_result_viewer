@@ -20,11 +20,12 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
         th= key.to_s.humanize
   tbody
     - unless settings[:ajax]
-      - rows = (decorate) ? table.rows.decorate : table.rows
-      - rows.each do |item|
+      /- rows = (decorate) ? table.rows.decorate : table.rows
+      - table.rows.each do |item|
+        - item = item.decorate if decorate
         tr
           - column_names.each do |key|
-            td= item.send(key)
+            td= (item.class == Hash) ? item[key.to_sym] : item.send(key)
 
 
 

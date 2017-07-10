@@ -5,16 +5,12 @@ class ParsersController < ApplicationController
   def competition
     url = params[:url]
     parser_type = params[:parser_type].presence || :isu_generic
-    parser = Parsers.get_parser(parser_type.to_sym)
-    
-    summary = Adaptor::CompetitionAdaptor.new(parser.parse(:competition, url))
-    
-    render locals: { summary: summary, parser: parser }
+    render locals: { parser_type: parser_type, url: url }
   end
   def scores
     url = params[:url]
-    parser = Parsers.get_parser(:isu_generic)
-    scores = parser.parse(:score, url)
+    parser = Parser::ScoreParser.new
+    scores = parser.parse(url)
 
     render locals: {scores: scores}
   end

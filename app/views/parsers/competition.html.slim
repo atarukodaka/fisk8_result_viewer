@@ -1,5 +1,6 @@
-- summary || raise
-- parser || raise
+- parser_type ||= :isu_generic
+- competition_parser = Parsers.parser(:competition, parser_type)
+- summary = Adaptor::CompetitionAdaptor.new(competition_parser.parse(url))
 
 h2 Competition
 
@@ -21,13 +22,15 @@ ul
     = category
 
   ul
-    - parser.parse(:category_result, category_url).each do |result|
+    - result_parser = Parsers.parser(:category_result, parser_type)
+    - result_parser.parse(category_url).each do |result|
       li= "%<ranking>d: %<skater_name>s [%<nation>s]: %<points>.2f: %<short_ranking>d / %<free_ranking>d" % result
 
   - summary.segments(category).each do |segment|
     h4 id="#{category}-#{segment}"
       = "Scores: " + [category, segment].join('/')
     - score_url = summary.score_url(category, segment)
-    - scores = parser.parse(:score, score_url)
+    - score_parser = Parser::ScoreParser.new
+    - scores = score_parser.parse(score_url)
     = render template: "parsers/scores", locals: { scores: scores }
   

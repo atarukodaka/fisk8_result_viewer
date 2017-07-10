@@ -1,17 +1,12 @@
 class Parser
   class SkaterParser
     include Utils
-    
-    URLS = {
-      MEN: "http://www.isuresults.com/bios/fsbiosmen.htm",
-      LADIES: "http://www.isuresults.com/bios/fsbiosladies.htm",
-      PAIRS: "http://www.isuresults.com/bios/fsbiospairs.htm",
-      :"ICE DANCE" => "http://www.isuresults.com/bios/fsbiosicedancing.htm",
-    }
-    def parse_skaters(categories = URLS.keys)
-      [categories].flatten.map do |category|
-        category = category.to_sym
-        page = get_url(URLS[category])
+
+    def parse_skaters
+      Category.senior.map do |cat|
+        category = cat.name.to_sym
+        page = get_url(cat.isu_bio_url)
+        puts "#{category}: #{cat.isu_bio_url}"
         nation = ""
         page.xpath("//table[1]/tr").map do |row|
           parse_skater(row, category: category, default_nation: nation).tap {|s|
@@ -19,7 +14,6 @@ class Parser
           }
         end
       end.flatten
-      #[{isu_number: 1, name: "foo"}]
     end
       def parse_skater(row, category:, default_nation: nil)
         nation = (n = row.xpath("td[1]").text.presence) ? n : default_nation

@@ -26,11 +26,10 @@ class ScoresController < ApplicationController
 
     elements_datatable = Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])
     components_datatable = Datatable.new(score.components, [:number, :name, :factor, :judges, :value])
-    
+
     respond_to do |format|
       format.html { render locals: {score: score, elements_datatable: elements_datatable, components_datatable: components_datatable}}
-      #format.json { render :show, handlers: :jbuilder, locals: {score: score } }
-      format.json { render json: score.as_json.merge({elememnts: score.elements, components: score.components })}
+      format.json { render json: score.as_json.merge({elememnts: elements_datatable, components: components_datatable })}
     end
   end
 end

@@ -13,7 +13,7 @@ namespace :update do
       ENV["includes_#{k}"].to_i.nonzero?
     }
     
-    CompetitionList.new.create_competitions(force: force, last: last, accept_categories: accept_categories, includes: includes) # TODO: include
+    CompetitionList.create_competitions(force: force, last: last, accept_categories: accept_categories, includes: includes) # TODO: include
   end
   
   desc "update competition of given url"
