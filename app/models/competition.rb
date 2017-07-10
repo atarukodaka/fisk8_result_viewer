@@ -101,9 +101,9 @@ class Competition < ApplicationRecord
           else
             [:unknown, name.to_s.gsub(/\s+/, '_'), false]
           end
-    self.competition_type = ary[0] if self.competition_type.blank?
-    self.short_name = ary[1] if self.short_name.blank?
-    self.isu_championships = ary[2] if self.isu_championships.blank?
+    self.competition_type ||= ary[0]
+    self.short_name ||= ary[1]
+    self.isu_championships ||= ary[2]
     self
   end
   
