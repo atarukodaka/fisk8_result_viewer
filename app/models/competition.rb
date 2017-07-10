@@ -2,7 +2,7 @@ class Competition < ApplicationRecord
   #after_initialize :set_default_values
   before_save :set_short_name
   
-  ACCEPT_CATEGORIES = Category.all.map {|c| c.name.to_sym}
+  #ACCEPT_CATEGORIES = Category.all.map {|c| c.name.to_sym}
 
   ## relations
   has_many :category_results, dependent: :destroy
@@ -23,8 +23,7 @@ class Competition < ApplicationRecord
         Competition.where(site_url: url).map(&:destroy)
       }
     end
-    def create_competition(url, parser_type: :isu_generic, comment: nil, accept_categories: nil)
-      accept_categories ||= ACCEPT_CATEGORIES
+    def create_competition(url, parser_type: :isu_generic, comment: nil)
       if c = Competition.find_by(site_url: url)
         puts "skip: #{url} as already existing"
         return c
@@ -41,12 +40,16 @@ class Competition < ApplicationRecord
         competition.parser_type = parser_type
         competition.comment = comment
         #competition.country ||= @city_country[competition.city]  # TODO: country
+        competition.country ||= Country.find_by(name: competition.city)
         competition.save!  # TODO
         puts "*" * 100
         puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
 
         summary.categories.each do |category|
-          next unless accept_categories.include?(category.to_sym)
+          #next unless accept_categories.include?(category.to_sym)
+          binding.pry
+          next if (Category.find_by(name: category).nil?) ||
+            (Category.find_by(name: category).accept_to_update == false)
           result_url = summary.result_url(category)
           CategoryResult.create_category_result(result_url, competition, category, parser_type: parser_type)
           

@@ -4,6 +4,8 @@
 - datatable: order: not limit to first order
 - list table: decorate
 - decorate_if
+- update competitions: includes junior/...
+- Category: accept
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

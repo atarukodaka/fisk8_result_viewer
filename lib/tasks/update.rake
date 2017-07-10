@@ -8,12 +8,31 @@ namespace :update do
   task :competitions => :environment do
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
-    accept_categories = ENV['accept_categories'].split(/,/).map(&:to_sym) if ENV['accept_categories']
+
+    if ary = ENV['accept_categories']
+      Category.all.map {|c| c.accept_to_update = false}
+      ary.split(/,/).each do |category|
+        Category.find_by(name: category).accept_to_update = true
+      end
+    end
+
+    if f = ENV['filename']
+      CompetitionList.filename = f
+    end
+    #accept_categories = ENV['accept_categories'].split(/,/).map(&:to_sym) if ENV['accept_categories']
+=begin
     includes = [:challenger, :junior].select {|k|
       ENV["includes_#{k}"].to_i.nonzero?
     }
-    
-    CompetitionList.create_competitions(force: force, last: last, accept_categories: accept_categories, includes: includes) # TODO: include
+=end
+    # TODO: yaml filename option
+
+    list = (last) ? CompetitionList.last(last).reverse : CompetitionList.all
+      
+    list.each do |item|
+      Competition.destroy_existings_by_url(item[:url]) if force
+      Competition.create_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment])
+    end
   end
   
   desc "update competition of given url"
