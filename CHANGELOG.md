@@ -5,7 +5,6 @@
 - list table: decorate
 - decorate_if
 - update competitions: includes junior/...
-- Category: accept
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -34,6 +33,7 @@
  - caching
 - datatable id: consistency btw ajax_search() and render => settings
 - dattatable1.10
+- Category: accept
 
 ## 1.0.1 2017/6/25
 

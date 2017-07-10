@@ -13,22 +13,20 @@ namespace :update do
       Category.accept_to_update(ary.split(/,/))
     end
 
-    if f = ENV['filename']
+    ## TODO: full_path??
+    if f = ENV['filenames']
+      CompetitionList.use_multiple_files
+      CompetitionList.set_filenames *(f.split(/,/))
+    elsif f = ENV['filename']
       CompetitionList.filename = f
     end
-    #accept_categories = ENV['accept_categories'].split(/,/).map(&:to_sym) if ENV['accept_categories']
-=begin
-    includes = [:challenger, :junior].select {|k|
-      ENV["includes_#{k}"].to_i.nonzero?
-    }
-=end
-    # TODO: yaml filename option
-
-    list = (last) ? CompetitionList.last(last).reverse : CompetitionList.all
+    #list = (last) ? CompetitionList.last(last).reverse : CompetitionList.all
+    list = CompetitionList.all
+    list = list.last(last).reverse if last
       
     list.each do |item|
-      Competition.destroy_existings_by_url(item[:url]) if force
-      Competition.create_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment])
+      #Competition.destroy_existings_by_url(item[:url]) if force
+      Competition.create_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment], force: force)
     end
   end
   
@@ -43,11 +41,12 @@ namespace :update do
     Competition.create_competition(url, parser_type: parser_type, comment: comment)
   end
 
+=begin
   desc 'show elements'
   task :show_elements => :environment do
     category = ENV['category'] || "MEN"
     puts Element.joins(:score).where("scores.category" => category).map {|e| [e.element_type, e.name]}.uniq.sort {|a, b| a[0]<=>b[0]}.map {|d| d.join(', ')}
   end
-  
+=end  
   ################################################################
 end  # namespace

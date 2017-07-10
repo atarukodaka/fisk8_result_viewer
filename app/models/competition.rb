@@ -23,10 +23,15 @@ class Competition < ApplicationRecord
         Competition.where(site_url: url).map(&:destroy)
       }
     end
-    def create_competition(url, parser_type: :isu_generic, comment: nil)
+    def create_competition(url, parser_type: :isu_generic, comment: nil, force: false)
       if c = Competition.find_by(site_url: url)
-        puts "skip: #{url} as already existing"
-        return c
+        if force
+          puts "clean up #{url}"
+          destroy_existings_by_url(url)
+        else
+          puts "skip: #{url} as already existing"
+          return c
+        end
       end
       ActiveRecord::Base.transaction do
         parser = Parsers.parser(:competition, parser_type)

@@ -1,4 +1,3 @@
-#class CompetitionList < ActiveHash::Base
 class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
@@ -15,7 +14,6 @@ class CompetitionList < ActiveYaml::Base
         case item
         when String
           {url: item, parser_type: DEFAULT_PARSER, }
-          #CompetitionList.create(url: item)
         when Hash
           {
             url: item["url"],
