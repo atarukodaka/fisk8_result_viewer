@@ -23,6 +23,7 @@ RSpec.describe 'rake', rake: true do
     expect(Skater.count).to be > 0
   end
   
+=begin
   it 'updates competition' do
     ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/'
     expect(@rake['update:competition'].invoke).to be_truthy
@@ -30,7 +31,8 @@ RSpec.describe 'rake', rake: true do
     expect(Competition.count).to be > 0
     expect(Competition.find_by(site_url: ENV['url'])).to be_truthy
   end
-
+=end
+  
   it 'updates competitions' do
     ENV['last'] = '3'
     ENV['accept_categories'] = 'MEN'
