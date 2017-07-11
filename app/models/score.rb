@@ -1,5 +1,5 @@
 class Score < ApplicationRecord
-  before_save :set_score_name  #, :set_skater_name
+  #before_save :set_score_name  #, :set_skater_name
   
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
@@ -40,6 +40,14 @@ class Score < ApplicationRecord
   scope :segment, ->(s){ where(segment: s) }
 
   ##
+  def update!(score_hash)
+    self.attributes = score_hash.except(:skater_name, :nation, :elements, :components)
+    set_score_name
+    save!
+    score_hash[:elements].map {|e| elements.create(e)}
+    score_hash[:components].map {|e| components.create(e)}
+  end
+=begin
   class << self
     def create_score(score_url, competition, category, segment, attributes: {})
       #parser = Parsers.parser(:score, parser_type)
@@ -60,7 +68,7 @@ class Score < ApplicationRecord
       end
     end
   end
-  
+=end    
   def summary
     skater_name = self.skater.try(:name) || self.skater_name
     nation = self.skater.try(:nation) || self.nation

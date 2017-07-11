@@ -1,9 +1,4 @@
 class Competition < ApplicationRecord
-  #after_initialize :set_default_values
-  before_save :set_short_name
-  
-  #ACCEPT_CATEGORIES = Category.all.map {|c| c.name.to_sym}
-
   ## relations
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
@@ -15,59 +10,60 @@ class Competition < ApplicationRecord
   scope :recent, ->(){ order("start_date desc")  }
   scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
   scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
-    
-  ## class methods
-  class << self
-    def destroy_existings_by_url(url)
-      ActiveRecord::Base.transaction {
-        Competition.where(site_url: url).map(&:destroy)
-      }
-    end
-    def create_competition(url, parser_type: :isu_generic, comment: nil, force: false)
-      if c = Competition.find_by(site_url: url)
-        if force
-          puts "clean up #{url}"
-          destroy_existings_by_url(url)
-        else
-          puts "skip: #{url} as already existing"
-          return c
-        end
-      end
-      ActiveRecord::Base.transaction do
-        parser = Parsers.parser(:competition, parser_type)
-        summary = parser.parse(url)
-        competition = Competition.create do |comp|
-          [:site_url, :name, :city, :country, :start_date, :end_date, :season, ].each do |key|
-            comp[key] = summary.send(key)
-          end
-        end
 
-        competition.parser_type = parser_type
-        competition.comment = comment
-        #competition.country ||= @city_country[competition.city]  # TODO: country
-        competition.country ||= Country.find_by(name: competition.city)
-        competition.save!  # TODO
-        puts "*" * 100
-        puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
-
-        summary.categories.each do |category|
-          #next unless accept_categories.include?(category.to_sym)
-          next if (Category.find_by(name: category).nil?) ||
-            (Category.find_by(name: category).accept_to_update == false)
-          result_url = summary.result_url(category)
-          CategoryResult.create_category_result(result_url, competition, category, parser_type: parser_type)
-          
-          # segment
-          summary.segments(category).each do |segment|
-            score_url = summary.score_url(category, segment)
-            date = summary.starting_time(category, segment)
-            Score.create_score(score_url, competition, category, segment, attributes: {date: date})            
-          end
-        end
-        competition
-      end
-    end
+  ## updater
+  def clean
+    category_results.map(&:destroy)
+    scores.map(&:destroy)
   end
+  def update!
+    ActiveRecord::Base.transaction do
+      clean
+      
+      ## parse
+      attrs = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
+      parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url)
+      self.attributes = parsed.slice(*attrs)
+      set_short_name
+      self.country ||= CityCountry.find_by(name: city).try(:country)
+      save!
+      puts "*" * 100
+      puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys
+
+      ## categories
+      parsed[:categories].each do |category, cat_item|
+        next unless Category.accept?(category)
+        Parsers.parser(:category_result, parser_type.to_sym).parse(cat_item[:result_url]).each do |cr_parsed|
+          category_results.create!(category: category) do |cr|
+            cr.update!(cr_parsed)
+            puts cr.summary
+          end
+        end
+        
+        # segments
+        parsed[:segments][category].each do |segment, seg_item|
+          Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
+            scores.create!(category: category, segment: segment) do |score|
+              relevant_cr =
+                category_results.find_by_skater_name(sc_parsed[:skater_name]) ||
+                category_results.find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
+                raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
+                      
+              score.attributes = {
+                category_result: relevant_cr,
+                skater: relevant_cr.skater,
+                date: seg_item[:date],
+              }
+              score.update!(sc_parsed)
+              puts score.summary
+            end
+          end
+        end # segments
+      end # categories
+      self
+    end # transaction
+  end # udpate
+
   ################
   private
   def set_short_name
@@ -108,9 +104,9 @@ class Competition < ApplicationRecord
           else
             [:unknown, name.to_s.gsub(/\s+/, '_'), false]
           end
-    self.competition_type ||= ary[0]
-    self.short_name ||= ary[1]
-    self.isu_championships ||= ary[2]
+    self.competition_type ||= ary[0]   # if competition_type.blank?
+    self.short_name ||= ary[1] # if short_name.blank?
+    self.isu_championships ||= ary[2] # if isu_championships.blank? # TODO
     self
   end
   

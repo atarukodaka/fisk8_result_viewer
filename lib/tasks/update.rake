@@ -1,7 +1,7 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    Skater.create_skaters   ## TODO: accept_categories
+    Category.update_skaters
   end
 
   desc "update competitions listed in config/competitions.yml"
@@ -9,8 +9,8 @@ namespace :update do
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
 
-    if ary = ENV['accept_categories']
-      Category.accept_to_update(ary.split(/,/))
+    if categories = ENV['accept_categories']
+      Category.accept!(categories.split(/,/))
     end
 
     ## TODO: full_path??
@@ -20,32 +20,22 @@ namespace :update do
     elsif f = ENV['filename']
       CompetitionList.filename = f
     end
-    #list = (last) ? CompetitionList.last(last).reverse : CompetitionList.all
     list = CompetitionList.all
     list = list.last(last).reverse if last
       
     list.each do |item|
-      #Competition.destroy_existings_by_url(item[:url]) if force
-      Competition.create_competition(item[:url], parser_type: item[:parser_type], comment: item[:comment], force: force)
+      if competitions = Competition.where(site_url: item[:url])
+        if !force
+          puts "skip: #{item[:url]}"
+          next
+        else
+          competitions.map(&:destroy)
+        end
+      end
+      Competition.create!(site_url: item[:url], parser_type: item[:parser_type]) do |competition|
+        competition.comment = item[:comment]
+        competition.update!
+      end
     end
   end
-  
-  desc "update competition of given url"
-  task :competition => :environment do
-    url = ENV['url'] || raise
-    force = ENV['force'].to_i.nonzero?
-    comment = ENV['comment']
-    parser_type = (t = ENV['parser_type']) ? t.to_sym : :isu_generic
-
-    Competition.create_competition(url, parser_type: parser_type, comment: comment, force: force)
-  end
-
-=begin
-  desc 'show elements'
-  task :show_elements => :environment do
-    category = ENV['category'] || "MEN"
-    puts Element.joins(:score).where("scores.category" => category).map {|e| [e.element_type, e.name]}.uniq.sort {|a, b| a[0]<=>b[0]}.map {|d| d.join(', ')}
-  end
-=end  
-  ################################################################
 end  # namespace

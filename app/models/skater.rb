@@ -14,19 +14,9 @@ class Skater < ApplicationRecord
     where(id: Score.select(:skater_id).group(:skater_id).having("count(skater_id)> ? ", 0))
   }
   scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
-  
+
   ## class methods
   class << self
-    def create_skaters
-      parser = Parser::SkaterParser.new
-      ActiveRecord::Base.transaction do
-        parser.parse_skaters().each do |hash|
-          Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-            skater.update!(hash)
-          end
-        end
-      end
-    end
     def find_by_isu_number_or_name(isu_number, name)
       (find_by(isu_number: isu_number) if isu_number.present?) ||
         (find_by(name: name))

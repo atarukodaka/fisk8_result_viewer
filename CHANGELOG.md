@@ -5,6 +5,7 @@
 - list table: decorate
 - decorate_if
 - update competitions: includes junior/...
+- Category: ActiveHash or Record ??
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

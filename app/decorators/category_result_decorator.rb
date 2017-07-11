@@ -12,16 +12,20 @@ class CategoryResultDecorator < EntryDecorator
     name = model.competition.name
     h.link_to_competition((model.competition.isu_championships) ? h.content_tag(:b, name) : name, model.competition)
   end
+  def category
+    h.link_to_competition(model.category, model.competition, category: model.category)
+  end
   def ranking
-    #h.link_to_competition(as_ranking(model.ranking), model.competition, category: model.category)
-    h.link_to_competition(model.ranking.as_ranking, model.competition, category: model.category)
+    model.ranking.as_ranking
   end
   def points
-    h.link_to_competition(model.points.as_score, model.competition, category: model.category)
+    #h.link_to_competition(model.points.as_score, model.competition, category: model.category)
+    model.points.as_score
   end
   ## short
   def short_ranking
-    h.link_to_competition(model.short_ranking.as_ranking, model.competition, category: model.category, segment: "SHORT")
+    #h.link_to_competition(model.short_ranking.as_ranking, model.competition, category: model.category, segment: "SHORT")
+    h.link_to_score(model.short_ranking.as_ranking, model.short)
   end
   def short_tes
     model.short_tes.as_score

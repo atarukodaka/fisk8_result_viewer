@@ -59,28 +59,24 @@ class CategoryResult < ApplicationRecord
     "  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d" %
       [self.category, self.ranking, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
   end
+  def update!(result)
+    self.attributes = result.except(:skater_name, :nation)
+    self.skater = Skater.find_or_create_by_isu_number_or_name(self.isu_number, result[:skater_name]) do |sk|
+      sk.attributes = {
+        category: category.sub(/^JUNIOR */, ''),
+        nation: result[:nation],
+      }
+    end
+    save!
+  end
 
   class << self
+    def find_by_skater_name(skater_name)
+      joins(:skater).find_by("skaters.name" => skater_name)
+    end
     def find_by_segment_ranking(segment, ranking)
       ranking_type = (segment =~ /^SHORT/) ? :short_ranking : :free_ranking
       where(ranking_type => ranking).first
-    end
-    def create_category_result(result_url, competition, category, parser_type: nil)
-      parser = Parsers.parser(:category_result, parser_type)
-      parser.parse(result_url).map do |result|
-        competition.category_results.create do |cr|
-          cr.attributes = result.except(:skater_name, :nation)
-          cr.category = category
-          cr.skater = Skater.find_or_create_by_isu_number_or_name(cr.isu_number, result[:skater_name]) do |sk|
-            sk.attributes = {
-              category: category.sub(/^JUNIOR */, ''),
-              nation: result[:nation],
-            }
-          end
-          puts cr.summary
-          cr
-        end
-      end
     end
   end
 end

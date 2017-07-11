@@ -20,6 +20,9 @@ class ScoreDecorator < EntryDecorator
   def segment
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
+  def tss
+    h.link_to_score(model.tss, model)
+  end
   def youtube_search
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end

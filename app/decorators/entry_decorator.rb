@@ -3,6 +3,7 @@ class EntryDecorator < Draper::Decorator
   include ApplicationHelper
   delegate_all
 
+=begin
   class << self
     using AsRanking
     using AsScore
@@ -23,4 +24,5 @@ class EntryDecorator < Draper::Decorator
   
   self.display_as(:ranking, [:ranking])
   self.display_as(:score, [:tss, :tes, :pcs, :deductions, :base_value, :value, :goe])
+=end
 end

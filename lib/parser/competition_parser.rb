@@ -7,15 +7,38 @@ class Parser
     def parse_competition(url)
       page = get_url(url)
       city, country = parse_city_country(page)
-      h = {
+      competition = {
         name: parse_name(page),
         site_url: url,
         city: city,
         country: country,
-        result_summary: parse_summary_table(page, url: url),
-        time_schedule: parse_time_schedule(page),
       }
-      CompetitionSummary.new(h)
+      result_summary = parse_summary_table(page, url: url)
+      time_schedule =  parse_time_schedule(page)
+
+      competition[:categories] = {}
+      competition[:segments] = Hash.new { |h,k| h[k] = {} }
+      
+      result_summary.each do |hash|
+        category, segment = hash[:category], hash[:segment]
+        cat_item = competition[:categories][category] ||= {}
+
+        if hash[:segment].blank?
+          cat_item[:result_url] = hash[:result_url]
+        else
+          seg_item = competition[:segments][category][segment] = {}
+          seg_item[:score_url] = hash[:score_url]
+          seg_item[:date] = time_schedule.select {|item| item[:category] == category && item[:segment] == segment}.first.try(:[], :time)
+        end
+      end
+      competition[:start_date] = time_schedule.map {|d| d[:time]}.min
+      competition[:end_date] = time_schedule.map {|d| d[:time]}.max
+
+      year, month = competition[:start_date].year, competition[:start_date].month
+      year -= 1 if month <= 6
+      competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
+      
+      competition
     end
     alias :parse :parse_competition
     ################################################################
@@ -62,7 +85,7 @@ class Parser
         city.sub!(/ *$/, '') if city.present?
         [city, country]
       else
-        [str, nil]
+        [str, nil]  ## to be set in competition.update
       end
     end
     def parse_summary_table(page, url: "")
