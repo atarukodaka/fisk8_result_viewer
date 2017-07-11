@@ -2,6 +2,12 @@
 - isu championship to take out?
 - component rspec
 - category_results => results ?
+- update spec: quite dputs
+- rspec: rake filenames
+- rspec: update: force
+- category_summary => category_segments ??
+- options sort_with_preset using Category
+- category: type: single/couple
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

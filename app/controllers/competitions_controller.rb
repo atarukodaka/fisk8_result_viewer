@@ -21,7 +21,7 @@ class CompetitionsController < ApplicationController
     
   def category_segments(competition)
     cat_seg = competition.scores.pluck(:category, :segment).uniq
-    categories = cat_seg.map {|ary| ary[0]}.uniq
+    categories = cat_seg.map {|ary| ary[0]}.uniq  # TODO: sort_with_preset ??
     cs_rows = categories.map do |category|
       segments = [:short, :free].map do |segment|
         [segment, cat_seg.select {|ary| ary[0] == category && ary[1] =~ /#{segment.upcase}/}.first.try(:last)]
