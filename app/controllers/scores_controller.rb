@@ -13,14 +13,15 @@ class ScoresController < ApplicationController
      :ranking,
      {name: "skater_name", table: "skaters", column_name: 'name'},
      {name: "nation", table: "skaters"},
-     :tss, :tes, :pcs, :deductions, :base_value,
+     :tss, :tes, :pcs, :deductions,
+     {name: "base_value", table: "scores"},
     ]
   end
   def order
     [[:date, :desc], [:category, :asc], [:segment, :desc], [:ranking, :asc]]
   end
   ################################################################
-  def score_info(score)
+  def score_summary(score)
     Listtable.new(score, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
 
   end
@@ -37,6 +38,7 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {
+          score: score,
           score_summary: score_summary(score),
           elements_datatable: elements_datatable(score),
           components_datatable: components_datatable(score)

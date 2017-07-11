@@ -27,6 +27,9 @@ class CategoryResultDecorator < EntryDecorator
     #h.link_to_competition(model.short_ranking.as_ranking, model.competition, category: model.category, segment: "SHORT")
     h.link_to_score(model.short_ranking.as_ranking, model.short)
   end
+  def short_tss
+    h.link_to_score(model.short_tss.as_score, model.short)
+  end
   def short_tes
     model.short_tes.as_score
   end
@@ -43,7 +46,7 @@ class CategoryResultDecorator < EntryDecorator
   end
   def free_tss
     #(s = model.scores.second) ? h.link_to_score(s.tss.as_score, s) : "-"
-    model.free_tss.as_score
+    h.link_to_score(model.free_tss.as_score, model.free)
   end
   def free_tes
     model.free_tes.as_score

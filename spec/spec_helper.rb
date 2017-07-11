@@ -12,6 +12,19 @@ module Helper
     end
   end
 
+  ## order: filter / ajax
+  def expect_order(obj1, obj2, key)
+    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
+
+    get :list, xhr: true, params: sort_params(key, 'asc')
+    expect(names.first).to appear_before(names.last)
+    
+    get :list, xhr: true, params: sort_params(key, 'desc')
+    expect(names.last).to appear_before(names.first)
+  end
+
+  ################
+  
   def column_number(column_name)
     #controller.create_datatable.column_names.index(column_name.to_s).to_i
     Columns.new(controller.columns).names.index(column_name.to_s).to_i

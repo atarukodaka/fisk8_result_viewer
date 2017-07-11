@@ -41,17 +41,13 @@ RSpec.describe CompetitionsController, type: :controller do
       end
     end
     context 'sort: ' do
-      [:name, :start_date, :city].each do |key|
-        it "by #{key}" do
-          names = [world, finlandia].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
-          get :list, xhr: true, params: sort_params(key, 'asc')
-          expect(names.first).to appear_before(names.last)
-
-          get :list, xhr: true, params: sort_params(key, 'desc')
-          expect(names.last).to appear_before(names.first)
+      [:name, :site_url, :competition_type, :season].each_with do |key|
+        it key do
+          expect_order(world, finlandia, key)
         end
       end
     end
+  
     context 'format: ' do
       {json: 'application/json', csv: 'text/csv'}.each do |format, content_type|
         it format do
@@ -88,4 +84,5 @@ RSpec.describe CompetitionsController, type: :controller do
       expect_to_include_competition(world)
     end
   end
+  ################
 end

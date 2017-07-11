@@ -1,11 +1,6 @@
 ## TODO
 - isu championship to take out?
-- country
-- datatable: order: not limit to first order
-- list table: decorate
-- decorate_if
-- update competitions: includes junior/...
-- Category: ActiveHash or Record ??
+- component rspec
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

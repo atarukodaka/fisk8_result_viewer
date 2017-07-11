@@ -50,14 +50,9 @@ RSpec.describe SkatersController, type: :controller do
       end
     end
     context 'sort: ' do
-      [:name, :isu_number, :category].each do |key|
+      [:name, :category, :nation].each do |key|
         it key do
-          names = [men_skater, ladies_skater].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
-          get :list, xhr: true, params: sort_params(key, 'asc')
-          expect(names.first).to appear_before(names.last)
-
-          get :list, xhr: true, params: sort_params(key, 'desc')
-          expect(names.last).to appear_before(names.first)
+          expect_order(men_skater, ladies_skater, key)
         end
       end
     end

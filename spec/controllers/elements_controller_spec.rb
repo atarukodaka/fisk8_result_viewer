@@ -3,15 +3,24 @@ require 'rails_helper'
 RSpec.describe ElementsController, type: :controller do
   render_views
   
-  before do
-    score1 = create(:competition).scores.create(skater: create(:skater), category: 'MEN')
-    score1.elements.create(name: "4T", base_value: 15.0, goe: 3.0)
-    score1.elements.create(name: "4T+3T", base_value: 10.0, goe: -2.0)
-    
-    score2 = create(:competition, :finlandia).scores.create(skater: create(:skater, :ladies), category: 'LADIES')
-    score2.elements.create(name: "3Lz", base_value: 9.0, goe: 2.0)
-    score2.elements.create(name: "3Lz+2T", base_value: 12.0, goe: -1.0)
-  end
+  let!(:score1) {
+    create(:competition).scores.create(skater: create(:skater), category: 'MEN', segment: "SHORT", ranking: 1)
+  }
+  let!(:elem4T){
+    score1.elements.create(name: "4T", base_value: 15.0, goe: 3.0, value: 18.0)
+  }
+  let!(:elem4T3T){
+    score1.elements.create(name: "4T+3T", base_value: 13.0, goe: -1.0, value: 12)
+  }
+  let!(:score2){
+    create(:competition, :finlandia).scores.create(skater: create(:skater, :ladies), category: 'LADIES', segment: "FREE", ranking: 2)
+  }
+  let!(:elem3Lz){
+    score2.elements.create(name: "3Lz", base_value: 9.0, goe: 2.0, value: 11.0)
+  }
+  let!(:elem3Lz2T){
+    score2.elements.create(name: "3Lz+2T", base_value: 12.0, goe: -1.0, value: 11)
+  }
   
   context 'index' do
     it 'pure index request' do
@@ -72,6 +81,13 @@ RSpec.describe ElementsController, type: :controller do
       get :list, xhr: true, params: { season: '2016-17'}
       expect(response.body).to include('4T')
       expect(response.body).not_to include('3Lz')
+    end
+  end
+  context 'sort:' do
+    [:competition_name, :category, :segment, :season, :ranking, :skater_name, :nation, :name, :base_value, :value].each do |key|
+      it key do
+        expect_order(elem4T3T, elem3Lz2T, key)
+      end
     end
   end
 end

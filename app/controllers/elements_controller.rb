@@ -21,7 +21,8 @@ class ElementsController < ApplicationController
        },  # TODO
      },
      "element_type",
-     "credit", "info", :base_value,
+     "credit", "info",
+     {name: :base_value, table: "elements"},
      {name: "goe", filter: ->(v){
          create_arel_table_by_operator(Element, :goe, params[:goe_operator], v)
        },
