@@ -20,7 +20,7 @@ class ScoresController < ApplicationController
     [[:date, :desc], [:category, :asc], [:segment, :desc], [:ranking, :asc]]
   end
   ################################################################
-  def element_datatable(score)
+  def elements_datatable(score)
     Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])
   end
 

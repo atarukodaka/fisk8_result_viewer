@@ -43,18 +43,17 @@ class SkatersController < ApplicationController
   end
     
   def show
-    skater = get_skater
-
-    score_graphs = create_graphs(skater)
-    
     ## render
     respond_to do |format|
+      skater = get_skater
+   
       tables = {
         skater_info: skater_info_listtable(skater),
         record_summary: record_summary_datatable(skater),
         competition_results: competition_results_datatable(skater),
       }
       format.html {
+        score_graphs = create_graphs(skater)
         render action: :show, locals: {
           skater: skater, score_graphs: score_graphs, tables: tables
         }
