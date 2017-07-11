@@ -20,7 +20,7 @@ h2 Category / Segment
 = category_summary.render(self, settings: { paging: false }, locals: {decorate: true})
 
 ////////////////////////////////////////////////////////////////
-- if result_type.present?
+- if result_type != :none
   h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
   = result_datatable.render(self, settings: {paging: false }, locals: { decorate: true})
