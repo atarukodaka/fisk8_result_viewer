@@ -20,6 +20,10 @@ class ScoresController < ApplicationController
     [[:date, :desc], [:category, :asc], [:segment, :desc], [:ranking, :asc]]
   end
   ################################################################
+  def score_info(score)
+    Listtable.new(score, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
+
+  end
   def elements_datatable(score)
     Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])
   end
@@ -33,7 +37,7 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       format.html { render locals: {
-          score: score,
+          score_summary: score_summary(score),
           elements_datatable: elements_datatable(score),
           components_datatable: components_datatable(score)
         }

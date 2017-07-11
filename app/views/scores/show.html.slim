@@ -8,7 +8,7 @@ h2 Score
   
 .row
   .col-sm-6
-    = Listtable.new(score.decorate, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search]).render(self)
+    = score_info.render(self, locals: { decorate: true })
         
 h2 Elements
 

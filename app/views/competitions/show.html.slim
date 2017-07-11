@@ -2,9 +2,6 @@
 //   optional: category_results (only when 'category' specified)
 /              segment_scores (only when 'segment' specified)
 
-category_results ||= []
-segment_scores ||= []
-
 - content_for :title do
   | competition: 
   = [competition.name, category, segment].reject(&:blank?).join(' / ')
@@ -12,7 +9,7 @@ segment_scores ||= []
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 
-= Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment]).render(self, locals: { decorate: true })
+= competition_info.render(self, locals: { decorate: true })
 
 ////////////////////////////////////////////////////////////////
 h2 Category / Segment

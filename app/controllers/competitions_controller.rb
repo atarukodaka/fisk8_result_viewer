@@ -15,6 +15,10 @@ class CompetitionsController < ApplicationController
     ]
   end
   ################################################################
+  def competition_info(competition)
+    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
+  end
+    
   def category_segments(competition)
     cat_seg = competition.scores.pluck(:category, :segment).uniq
     categories = cat_seg.map {|ary| ary[0]}.uniq
@@ -58,6 +62,7 @@ class CompetitionsController < ApplicationController
         competition: competition,
         category: category,
         segment: segment,
+        competition_info: competition_info(competition),
         category_summary: category_segments(competition),
         result_type: result_type(category, segment),
         result_datatable: result_datatable(competition, category, segment),
