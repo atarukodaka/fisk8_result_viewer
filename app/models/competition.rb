@@ -21,9 +21,12 @@ class Competition < ApplicationRecord
       clean
       
       ## parse
-      attrs = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
+      #attrs = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
       parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url)
+      attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
+
+
       set_short_name
       self.country ||= CityCountry.find_by(name: city).try(:country)
       save!

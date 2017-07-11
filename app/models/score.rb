@@ -40,12 +40,15 @@ class Score < ApplicationRecord
   scope :segment, ->(s){ where(segment: s) }
 
   ##
-  def update!(score_hash)
-    self.attributes = score_hash.except(:skater_name, :nation, :elements, :components)
+  def update!(parsed)
+    attrs = self.class.column_names.map(&:to_sym) & parsed.keys
+    self.attributes = parsed.slice(*attrs)
+
+    self.attributes = parsed.except(:skater_name, :nation, :elements, :components)
     set_score_name
     save!
-    score_hash[:elements].map {|e| elements.create(e)}
-    score_hash[:components].map {|e| components.create(e)}
+    parsed[:elements].map {|e| elements.create(e)}
+    parsed[:components].map {|e| components.create(e)}
   end
 =begin
   class << self

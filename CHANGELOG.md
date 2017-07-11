@@ -1,6 +1,7 @@
 ## TODO
 - isu championship to take out?
 - component rspec
+- category_results => results ?
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

@@ -41,7 +41,7 @@ RSpec.describe CompetitionsController, type: :controller do
       end
     end
     context 'sort: ' do
-      [:name, :site_url, :competition_type, :season].each_with do |key|
+      [:name, :site_url, :competition_type, :season].each do |key|
         it key do
           expect_order(world, finlandia, key)
         end

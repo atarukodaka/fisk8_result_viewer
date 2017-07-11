@@ -59,12 +59,13 @@ class CategoryResult < ApplicationRecord
     "  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d" %
       [self.category, self.ranking, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
   end
-  def update!(result)
-    self.attributes = result.except(:skater_name, :nation)
-    self.skater = Skater.find_or_create_by_isu_number_or_name(self.isu_number, result[:skater_name]) do |sk|
+  def update!(parsed)
+    attrs = self.class.column_names.map(&:to_sym) & parsed.keys
+    self.attributes = parsed.slice(*attrs)
+    self.skater = Skater.find_or_create_by_isu_number_or_name(isu_number, parsed[:skater_name]) do |sk|
       sk.attributes = {
         category: category.sub(/^JUNIOR */, ''),
-        nation: result[:nation],
+        nation: parsed[:nation],
       }
     end
     save!
