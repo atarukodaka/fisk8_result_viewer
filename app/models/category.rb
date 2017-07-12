@@ -7,27 +7,43 @@ class Category < ActiveHash::Base
        name: "MEN",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosmen.htm",
        senior: true,
+       abbr: "M",
      },
      {
        name: "LADIES",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosladies.htm",
        senior: true,
+       abbr: "L",
      },
      {
        name: "PAIRS",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiospairs.htm",
        senior: true,
+       abbr: "P",
      },
      {
        name: "ICE DANCE",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosicedancing.htm",
        senior: true,
+       abbr: "D",
      },
      #### junior
-     { name: "JUNIOR MEN"},
-     { name: "JUNIOR LADIES"},
-     { name: "JUNIOR PAIRS"},
-     { name: "JUNIOR ICE DANCE"},
+     {
+       name: "JUNIOR MEN",
+       abbr: "JM",
+     },
+     {
+       name: "JUNIOR LADIES",
+       abbr: "JL",
+     },
+     {
+       name: "JUNIOR PAIRS",
+       abbr: "JP",
+     },
+     {
+       name: "JUNIOR ICE DANCE",
+       abbr: "JD",
+     },
     ]
 
   def update_skaters

@@ -3,9 +3,9 @@ class CategorySummaryDecorator < Draper::Decorator
     h.link_to_competition(model.competition, category: model.category)
   end
   def short
-    h.link_to_competition(model.competition, category: model.category, segment: model.short)
+    h.link_to_competition(model.competition, category: model.category, segment: model.short) if model.short
   end
   def free
-    h.link_to_competition(model.competition, category: model.category, segment: model.free)
+    h.link_to_competition(model.competition, category: model.category, segment: model.free) if model.free
   end
 end

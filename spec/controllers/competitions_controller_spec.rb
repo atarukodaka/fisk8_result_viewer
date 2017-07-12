@@ -10,6 +10,9 @@ RSpec.describe CompetitionsController, type: :controller do
     score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, category_result: cr)
     competition
   }
+  let!(:score){
+    world.scores.first
+  }
   let!(:finlandia){
     create(:competition, :finlandia)
   }
@@ -23,25 +26,20 @@ RSpec.describe CompetitionsController, type: :controller do
 
     it 'list' do
       get :list, xhr: true
-      expect_to_include_competition(world)
-      expect_to_include_competition(finlandia)
+      expect_to_include(world.name)
+      expect_to_include(finlandia.name)
     end
 
+    attrs = [:name, :site_url, :competition_type, :season]
     context 'filters:' do
-      [:name, :site_url, :competition_type, :season].each do |key|
+      attrs.each do |key|
         it key do
-          get :list, xhr: true, params: {key => world.send(key) }
-          expect_to_include_competition(world)
-          expect_not_to_include('Finlandia')
-
-          get :list, xhr: true, params: filter_params(key, world.send(key))
-          expect_to_include_competition(world)
-          expect_not_to_include('Finlandia')
+          expect_filter(world, finlandia, key)
         end
       end
     end
     context 'sort: ' do
-      [:name, :site_url, :competition_type, :season].each do |key|
+      attrs.each do |key|
         it key do
           expect_order(world, finlandia, key)
         end
@@ -53,8 +51,8 @@ RSpec.describe CompetitionsController, type: :controller do
         it format do
           get :index, params: {format: format}
           expect(response.content_type).to eq(content_type)
-          expect_to_include_competition(world)
-          expect_to_include_competition(finlandia)
+          expect_to_include(world.name)
+          expect_to_include(finlandia.name)
         end
       end
     end
@@ -62,26 +60,26 @@ RSpec.describe CompetitionsController, type: :controller do
   ################
   context 'show: ' do
     it 'short_name' do
-      get :show, params: { short_name: "WORLD2017" }
-      expect_to_include_competition(world)
+      get :show, params: { short_name: world.short_name }
+      expect_to_include(world.name)
     end
 
     it 'short_name/category' do
-      get :show, params: { short_name: "WORLD2017", category: "MEN" }
-      expect_to_include_competition(world)
-      expect_to_include('MEN')
+      get :show, params: { short_name: world.short_name, category: score.category }
+      expect_to_include(world.name)
+      expect_to_include(score.category)
     end
     
     it 'short_name/category/segment' do
-      get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT" }
-      expect_to_include_competition(world)
-      expect_to_include('SHORT')
+      get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment}
+      expect_to_include(world.name)
+      expect_to_include(score.segment)
     end
     
     it 'json' do
-      get :show, params: { short_name: "WORLD2017", category: "MEN", segment: "SHORT", format: "json" }
+      get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment, format: "json" }
       expect(response.content_type).to eq("application/json")
-      expect_to_include_competition(world)
+      expect_to_include(world.name)
     end
   end
   ################

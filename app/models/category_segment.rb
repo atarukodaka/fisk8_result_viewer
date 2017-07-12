@@ -1,4 +1,4 @@
-class CategorySummary < ActiveHash::Base
+class CategorySegment < ActiveHash::Base
   include Draper::Decoratable
   
   fields :competition, :category, :short, :free

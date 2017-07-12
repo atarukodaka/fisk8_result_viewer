@@ -26,7 +26,7 @@ class CompetitionsController < ApplicationController
       segments = [:short, :free].map do |segment|
         [segment, cat_seg.select {|ary| ary[0] == category && ary[1] =~ /#{segment.upcase}/}.first.try(:last)]
       end.to_h
-      CategorySummary.new(competition: competition, category: category, short: segments[:short], free: segments[:free])
+      CategorySegment.new(competition: competition, category: category, short: segments[:short], free: segments[:free])
     end
     Datatable.new(cs_rows, [:category, :short, :free])    
   end
@@ -63,7 +63,7 @@ class CompetitionsController < ApplicationController
         category: category,
         segment: segment,
         competition_info: competition_info(competition),
-        category_summary: category_segments(competition),
+        category_segments: category_segments(competition),
         result_type: result_type(category, segment),
         result_datatable: result_datatable(competition, category, segment),
       }

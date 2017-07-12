@@ -8,6 +8,7 @@
 - category_summary => category_segments ??
 - options sort_with_preset using Category
 - category: type: single/couple
+- filter: integer columns use eq i/o match
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

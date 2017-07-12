@@ -25,24 +25,19 @@ RSpec.describe ScoresController, type: :controller do
 
     it 'list' do
       get :list, xhr: true
-      expect(response.body).to include('World FS 2017')
+      expect_to_include(world_score.name)
     end
 
+    attrs = [:skater_name, :category, :segment, :nation, :competition_name, :season]
     context 'filter: ' do
-      [:skater_name, :category, :segment, :nation, :competition_name, :season].each do |key|
+      attrs.each do |key|
         it key do
-          get :list, xhr: true, params: {key => world_score.send(key)}
-          expect_to_include_score(world_score)
-          expect_not_to_include(finlandia_score.name)
-
-          get :list, xhr: true, params: filter_params(key, world_score.send(key))
-          expect_to_include_score(world_score)
-          expect_not_to_include(finlandia_score.name)
+          expect_filter(world_score, finlandia_score, key)
         end
       end
     end
     context 'sort: ' do
-      [:skater_name, :category, :segment, :nation, :competition_name, :season].each do |key|
+      attrs.each do |key|
         it key do
           expect_order(world_score, finlandia_score, key)
         end
@@ -55,7 +50,7 @@ RSpec.describe ScoresController, type: :controller do
       expect_to_include_score(world_score)
     }
     it 'json' do
-      get :show, params: { name: world_score.name, format: "json" }
+      get :show, params: { name: world_score.name, format: :json }
       expect_to_include_score(world_score)
     end
   end

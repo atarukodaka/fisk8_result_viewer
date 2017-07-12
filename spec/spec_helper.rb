@@ -6,13 +6,29 @@ module Helper
     expect(response.body).not_to include(text.to_s)
   end
 
-  def expect_to_include_competition(competition)
-    [:name, :short_name, :city, :country].each do |key|
-      expect(response.body).to include(competition[key])
-    end
-  end
+  ## filter
+  def expect_filter(obj1, obj2, key)
+    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
 
-  ## order: filter / ajax
+    ## only obj1
+    get :list, xhr: true, params: {key => obj1.send(key) }
+    expect_to_include(obj1.name)
+    expect_not_to_include(obj2.name)
+
+    get :list, xhr: true, params: filter_params(key, obj1.send(key))
+    expect_to_include(obj1.name)
+    expect_not_to_include(obj2.name)
+
+    ## only obj2
+    get :list, xhr: true, params: {key => obj2.send(key) }
+    expect_to_include(obj2.name)
+    expect_not_to_include(obj1.name)
+
+    get :list, xhr: true, params: filter_params(key, obj2.send(key))
+    expect_to_include(obj2.name)
+    expect_not_to_include(obj1.name)
+  end 
+  ## order
   def expect_order(obj1, obj2, key)
     names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
 

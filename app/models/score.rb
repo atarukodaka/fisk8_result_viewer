@@ -1,6 +1,4 @@
 class Score < ApplicationRecord
-  #before_save :set_score_name  #, :set_skater_name
-  
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
@@ -43,35 +41,13 @@ class Score < ApplicationRecord
   def update!(parsed)
     attrs = self.class.column_names.map(&:to_sym) & parsed.keys
     self.attributes = parsed.slice(*attrs)
-
-    self.attributes = parsed.except(:skater_name, :nation, :elements, :components)
     set_score_name
-    save!
-    parsed[:elements].map {|e| elements.create(e)}
-    parsed[:components].map {|e| components.create(e)}
+    ActiveRecord::Base.transaction {
+      save!
+      parsed[:elements].map {|e| elements.create(e)}
+      parsed[:components].map {|e| components.create(e)}
+    }
   end
-=begin
-  class << self
-    def create_score(score_url, competition, category, segment, attributes: {})
-      #parser = Parsers.parser(:score, parser_type)
-      parser = Parser::ScoreParser.new
-      
-      parser.parse(score_url).map do |score_hash|
-        score = competition.scores.create do |sc|
-          sc.attributes = score_hash.except(:skater_name, :nation, :elements, :components).merge(attributes).merge({category: category, segment: segment})
-          results = competition.category_results
-          sc.category_result = results.joins(:skater).find_by("skaters.name" => score_hash[:skater_name]) ||
-            results.find_by_segment_ranking(segment, score_hash[:ranking]) || raise("score: no relevant category results found")
-          sc.skater = sc.category_result.skater
-        end
-        score_hash[:elements].map {|e| score.elements.create(e)}
-        score_hash[:components].map {|e| score.components.create(e)}
-        puts score.summary
-        score
-      end
-    end
-  end
-=end    
   def summary
     skater_name = self.skater.try(:name) || self.skater_name
     nation = self.skater.try(:nation) || self.nation
@@ -82,17 +58,12 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
-    return if self[:name].present?
-    category_abbr = self.category || ""
-    [["MEN", "M"], ["LADIES", "L"], ["PAIRS", "P"], ["ICE DANCE", "D"],
-     ["JUNIOR ", "J"]].each do |ary|
-      key, abbr = ary
-      category_abbr = category_abbr.gsub(key, abbr)
-    end
+    return if name.present?
 
-    segment_abbr = self.segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
+    category_abbr = Category.find_by(name: category).try(:abbr)
+    segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-    self[:name] = [self.competition.try(:short_name), category_abbr, segment_abbr, self.ranking].join('-')
+    self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
     self
   end
 end

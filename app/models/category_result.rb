@@ -62,13 +62,15 @@ class CategoryResult < ApplicationRecord
   def update!(parsed)
     attrs = self.class.column_names.map(&:to_sym) & parsed.keys
     self.attributes = parsed.slice(*attrs)
-    self.skater = Skater.find_or_create_by_isu_number_or_name(isu_number, parsed[:skater_name]) do |sk|
-      sk.attributes = {
-        category: category.sub(/^JUNIOR */, ''),
-        nation: parsed[:nation],
-      }
-    end
-    save!
+    ActiveRecord::Base.transaction {
+      self.skater = Skater.find_or_create_by_isu_number_or_name(isu_number, parsed[:skater_name]) do |sk|
+        sk.attributes = {
+          category: category.sub(/^JUNIOR */, ''),
+          nation: parsed[:nation],
+        }
+      end
+      save!
+    }
   end
 
   class << self
