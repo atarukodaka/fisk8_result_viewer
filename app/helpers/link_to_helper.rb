@@ -12,7 +12,8 @@ module LinkToHelper
     (competition.isu_championships) ? lt : content_tag(:i, lt)
   end
   
-  def link_to_competition_site(text = "SITE", competition)
+  def link_to_competition_site(text = nil, competition)
+    text ||= competition.site_url
     content_tag(:span) do
       concat(link_to(text, competition.site_url, target: "_blank"))
       concat(span_link_icon)

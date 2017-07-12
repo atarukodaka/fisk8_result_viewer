@@ -18,7 +18,33 @@
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 
-= competition_info.render(self, locals: { decorate: true })
+/= competition_info.render(self, locals: { decorate: true })
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Name
+    td
+      = link_to_competition(competition)
+      | (
+      = competition.short_name
+      | ) [
+      = competition.competition_type
+      | ] 
+  tr
+    th Official Site
+    td=  link_to_competition_site(competition)
+  tr
+    th City / Country
+    td= [competition.city, competition.country].join(' / ')
+  tr
+    th Date
+    td
+      = [competition.start_date, competition.end_date].join(' to ')
+      | - in the season of #{competition.season}
+  - if competition.comment.present?
+    tr
+      th Comment
+      td competition.comment
+
 
 ////////////////////////////////////////////////////////////////
 /h2 Category / Segment
@@ -26,26 +52,34 @@ h2 Competition Info
 /= category_segments.render(self, settings: { paging: false }, locals: {decorate: true})
 
 ////////////////////////////////////////////////////////////////
-h2 Category / Segment
-table.table.table-striped.table-hover.table-condensed
-  tr
-    th Category
-    - competition.category_results.pluck(:category).uniq.each do |category|
-      td= link_to_competition(competition, category: category)
-  - if result_type == :category
-  tr
-    th Segment
-    - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-      td 
-        = link_to_competition(competition, category: category, segment: s)
-        = link_to_pdf(competition.scores.first.try(:result_pdf))
+/h2 Category / Segment
 
+h2
+  - case result_type
+  - when :none
+    | Category / Segment
+  - when :category
+    | Category Result of #{category}
+  - when :segment
+    | Segment Result of #{category}/#{segment}
+
+////////////////
+// nav bar
+.nav
+  ul.nav.nav-tabs
+    - competition.category_results.pluck(:category).uniq.each do |c|
+      - category_active = (category == c) ? "active" : ""
+      li class="#{category_active}"
+        =link_to_competition(competition, category: c)
+
+  ul.nav.nav-tabs
+    - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+      - segment_active = (segment == s) ? "active" : ""
+      li class="#{segment_active}"
+        = link_to_competition(competition, category: category, segment: s)
 
 ////////////////////////////////////////////////////////////////
-- if result_type != :none
-  - section_id = [category, segment].compact.join('-')
-  h2 id="#{section_id}"
-    = (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
+- if result_type != :none
   = result_datatable.render(self, settings: {paging: false }, locals: { decorate: true})
     
