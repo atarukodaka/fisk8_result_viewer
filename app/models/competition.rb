@@ -51,9 +51,10 @@ class Competition < ApplicationRecord
         parsed[:segments][category].each do |segment, seg_item|
           Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
             scores.create!(category: category, segment: segment) do |score|
+              cr_rels = category_results.where(category: category)
               relevant_cr =
-                category_results.find_by_skater_name(sc_parsed[:skater_name]) ||
-                category_results.find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
+                cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
+                cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
                 raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
                       
               score.attributes = {

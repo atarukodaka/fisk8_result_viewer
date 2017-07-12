@@ -9,22 +9,22 @@ class Category < ActiveHash::Base
      {
        name: "MEN",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosmen.htm",
-       abbr: "M",
+       abbr: "SM",
      },
      {
        name: "LADIES",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosladies.htm",
-       abbr: "L",
+       abbr: "SL",
      },
      {
        name: "PAIRS",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiospairs.htm",
-       abbr: "P",
+       abbr: "SP",
      },
      {
        name: "ICE DANCE",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosicedancing.htm",
-       abbr: "D",
+       abbr: "SD",
      },
      #### junior
      {

@@ -43,6 +43,11 @@ crumb :scores do
   parent :root
 end
 
+crumb :score do | score|
+  link [score.competition_name, score.category, score.segment, score.ranking, score.skater_name].join(' / '), scores_path
+  parent :scores
+end
+
 ################
 crumb :elements do
   link "Elements", elements_path

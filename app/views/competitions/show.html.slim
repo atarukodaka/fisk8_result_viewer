@@ -36,7 +36,9 @@ table.table.table-striped.table-hover.table-condensed
   tr
     th Segment
     - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-      td= link_to_competition(competition, category: category, segment: s)
+      td 
+        = link_to_competition(competition, category: category, segment: s)
+        = link_to_pdf(competition.scores.first.try(:result_pdf))
 
 
 ////////////////////////////////////////////////////////////////

@@ -24,7 +24,7 @@ namespace :update do
     list = list.last(last).reverse if last
       
     list.each do |item|
-      if competitions = Competition.where(site_url: item[:url])
+      if competitions = Competition.where(site_url: item[:url]).presence
         if !force
           puts "skip: #{item[:url]}"
           next
