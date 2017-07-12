@@ -26,18 +26,24 @@ h2 Competition Info
 /= category_segments.render(self, settings: { paging: false }, locals: {decorate: true})
 
 ////////////////////////////////////////////////////////////////
+h2 Category / Segment
+table.table.table-striped.table-hover.table-condensed
+  tr
+    th Category
+    - competition.category_results.pluck(:category).uniq.each do |category|
+      td= link_to_competition(competition, category: category)
+  - if result_type == :category
+  tr
+    th Segment
+    - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+      td= link_to_competition(competition, category: category, segment: s)
 
-- case result_type
-- when :none
-  | Categories: 
-  = competition.decorate.categories
-- when :category
-  | Segments: 
-  - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-    = link_to_competition(competition, category: category, segment: s)
-    | , 
+
+////////////////////////////////////////////////////////////////
 - if result_type != :none
-  h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
+  - section_id = [category, segment].compact.join('-')
+  h2 id="#{section_id}"
+    = (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 
   = result_datatable.render(self, settings: {paging: false }, locals: { decorate: true})
     

@@ -16,20 +16,9 @@ class CompetitionsController < ApplicationController
   end
   ################################################################
   def competition_info(competition)
-    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :categories, :comment])
+    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
   end
     
-  def category_segments(competition)
-    cat_seg = competition.scores.pluck(:category, :segment).uniq
-    categories = cat_seg.map {|ary| ary[0]}.uniq  # TODO: sort_with_preset ??
-    cs_rows = categories.map do |category|
-      segments = [:short, :free].map do |segment|
-        [segment, cat_seg.select {|ary| ary[0] == category && ary[1] =~ /#{segment.upcase}/}.first.try(:last)]
-      end.to_h
-      CategorySegment.new(competition: competition, category: category, short: segments[:short], free: segments[:free])
-    end
-    Datatable.new(cs_rows, [:category, :short, :free])    
-  end
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none
@@ -63,7 +52,6 @@ class CompetitionsController < ApplicationController
         category: category,
         segment: segment,
         competition_info: competition_info(competition),
-        category_segments: category_segments(competition),
         result_type: result_type(category, segment),
         result_datatable: result_datatable(competition, category, segment),
       }
