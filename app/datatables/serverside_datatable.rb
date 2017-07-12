@@ -1,8 +1,15 @@
-class ServersideDatatable < Datatable
-  attr_reader :params
+#class ServersideDatatable < Datatable
+module ServersideDatatable
+  attr_accessor :params
+=begin
   def initialize(rows, columns, params: {})
     super(rows, columns)
     @params = params
+  end
+=end
+  def initialize(*args, params: {})
+    @params = params
+    super(*args)
   end
   def rows
     @manipulated_row ||= @rows.where(filter_sql).order(order_sql).page(page).per(per)

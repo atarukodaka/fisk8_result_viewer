@@ -5,7 +5,7 @@ class CategorySegment < ActiveHash::Base
 
   class << self
     def decorator_class
-      CategorySummaryDecorator
+      CategorySegmentDecorator
     end
   end
 end

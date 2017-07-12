@@ -1,6 +1,5 @@
 ## TODO
 - isu championship to take out?
-- component rspec
 - category_results => results ?
 - update spec: quite dputs
 - rspec: rake filenames

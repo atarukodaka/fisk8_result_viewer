@@ -1,5 +1,5 @@
 class Column
-  extend Forwardable
+  # 
   def initialize(arg)
     @data =
       case arg

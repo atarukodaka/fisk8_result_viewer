@@ -1,4 +1,4 @@
-class CategorySummaryDecorator < Draper::Decorator
+class CategorySegmentDecorator < Draper::Decorator
   def category
     h.link_to_competition(model.competition, category: model.category)
   end
