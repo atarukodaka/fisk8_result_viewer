@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rake'
 
-=begin
 RSpec.configure do |c|
   c.filter_run_excluding rake: true
 end
@@ -16,7 +15,7 @@ RSpec.describe 'rake', rake: true do
     Rake::Task.define_task(:environment)
   end
   before(:each) do
-    @rake[task].reenable
+    #@rake[task].reenable
   end
   
   it 'updates skaters' do
@@ -27,35 +26,30 @@ RSpec.describe 'rake', rake: true do
   end
 
   context 'update competition' do
-    it 'by competitions.yml' do
-      ENV['last'] = '3'
-      ENV['accept_categories'] = 'MEN'
+    def expect_url_match(num=nil)
+      num ||= 2
+      ENV['last'] = num.to_s
+      ENV['accept_categories'] = ''
       @rake['update:competitions'].execute
 
-      binding.pry
-      count = Competition.where(site_url: CompetitionList.all.last(3).map(&:url))
-      expect(count).to be > 0
-      
+      CompetitionList.all.last(num).each do |item|
+        expect( Competition.find_by(site_url: item[:url]) ).not_to be_nil
+      end
+    end
+    it 'by competitions.yml' do
+      expect_url_match
     end
     it 'by filename' do
-      ENV['last'] = '3'
-      ENV['accept_categories'] = 'MEN'
       ENV['filename'] ="competitions_junior"
-      binding.pry
-      expect(@rake['update:competitions'].invoke).to be_truthy
+      expect_url_match
     end
     it 'by filenames' do
-      ENV['last'] = '3'
-      ENV['accept_categories'] = 'MEN'
       ENV['filenames'] = "competitions_junior,competitions_challenger"
-      expect(@rake['update:competitions'].invoke).to be_truthy
+      expect_url_match
     end
-    it 'by force' do
-      ENV['last'] = '3'
-      ENV['accept_categories'] = 'MEN'
+    it 'by force' do   ## TODo
       ENV['force'] = '1'
-      ENV['filenames="competitions_junior,competitions_challenger"']
-      expect(@rake['update:competitions'].invoke).to be_truthy
+      #expect_url_match
     end
     
   end
@@ -64,4 +58,3 @@ RSpec.describe 'rake', rake: true do
     expect(@rake['parse:scores'].invoke).to be_truthy
   end
 end 
-=end
