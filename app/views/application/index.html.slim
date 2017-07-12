@@ -3,6 +3,9 @@
 - content_for :title do
   = controller_name
 
+/- breadcrumb #{controller_name.to_sym}
+- breadcrumb controller_name.to_sym
+
 h2= controller_name.humanize
 
 // filter form

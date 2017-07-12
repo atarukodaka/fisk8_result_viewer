@@ -37,6 +37,7 @@
 - datatable id: consistency btw ajax_search() and render => settings
 - dattatable1.10
 - Category: accept
+- bretel for breadcrumb
 
 ## 1.0.1 2017/6/25
 

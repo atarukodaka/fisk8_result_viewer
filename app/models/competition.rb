@@ -11,6 +11,10 @@ class Competition < ApplicationRecord
   scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
   scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
 
+  ## entries
+  def categories
+    scores.pluck(:category).uniq
+  end
   ## updater
   def clean
     category_results.map(&:destroy)

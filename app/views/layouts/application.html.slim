@@ -27,7 +27,8 @@ html
 
   body
     div.container
-      =render partial: "navbar", cached: true
+      = render partial: "navbar", cached: true
+      = raw breadcrumbs(style: :bootstrap)
       = yield
 
       div.footer

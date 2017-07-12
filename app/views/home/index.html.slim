@@ -1,5 +1,7 @@
 h2 Fisk8 Result Viewer
 
+- breadcrumb :root
+
 ul
   - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
     li= link_to(controller.to_s.camelize, controller: controller)

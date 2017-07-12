@@ -113,6 +113,8 @@ GEM
       activesupport (>= 4.2.0)
     gnuplot (2.6.2)
     google-analytics-rails (1.1.1)
+    gretel (3.0.9)
+      rails (>= 3.1.0)
     hashie (3.5.5)
     i18n (0.8.6)
     jquery-datatables-rails (3.4.0)
@@ -313,6 +315,7 @@ DEPENDENCIES
   factory_girl_rails
   gnuplot
   google-analytics-rails
+  gretel
   hashie
   jquery-datatables-rails
   kaminari

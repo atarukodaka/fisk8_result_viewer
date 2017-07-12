@@ -6,17 +6,36 @@
   | competition: 
   = [competition.name, category, segment].reject(&:blank?).join(' / ')
 
+
+- case result_type
+- when :category
+  - breadcrumb :competition_category, competition, category
+- when :segment
+  - breadcrumb :competition_segment, competition, category, segment
+- else
+  - breadcrumb :competition, competition
+
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 
 = competition_info.render(self, locals: { decorate: true })
 
 ////////////////////////////////////////////////////////////////
-h2 Category / Segment
+/h2 Category / Segment
 
-= category_segments.render(self, settings: { paging: false }, locals: {decorate: true})
+/= category_segments.render(self, settings: { paging: false }, locals: {decorate: true})
 
 ////////////////////////////////////////////////////////////////
+
+- case result_type
+- when :none
+  | Categories: 
+  = competition.decorate.categories
+- when :category
+  | Segments: 
+  - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+    = link_to_competition(competition, category: category, segment: s)
+    | , 
 - if result_type != :none
   h2= (result_type == :category) ? "Category Result of #{category}" : "Segment Result of #{category}/#{segment}"
 

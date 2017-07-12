@@ -16,7 +16,7 @@ class CompetitionsController < ApplicationController
   end
   ################################################################
   def competition_info(competition)
-    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
+    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :categories, :comment])
   end
     
   def category_segments(competition)
