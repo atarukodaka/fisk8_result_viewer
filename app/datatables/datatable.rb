@@ -1,5 +1,12 @@
 class Datatable
-  attr_accessor :order, :columns, :settings, :rows
+  #
+  # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
+  #
+  # in view,
+  #
+  # = Datatable.new(User.all, [:name, :address]).render(self)
+  #
+  attr_accessor :rows, :columns, :settings, :order
 
   def self.create(*args)
     self.new(*args).tap do |table|
@@ -39,18 +46,14 @@ class Datatable
       },
     }.merge(settings)
   end
-=begin
-  def add_setting(key, value)
-    settings[key] = value
-    self
-  end
-=end
   def add_settings(hash)
     hash.each do |key, value|
       settings[key] = value
     end
     self
   end
+  ################
+  ## output format
   def as_json(opts={})
     rows.limit(1000).map do |item|
       column_names.map do |col_name|

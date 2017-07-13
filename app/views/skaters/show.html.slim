@@ -14,11 +14,11 @@
 
   .col-sm-6
     h2 Record Summary
-    = tables[:record_summary].render(self )
+    = tables[:record_summary].render(self)
 
 h2 Competition Results
 
-= tables[:competition_results].add_settings(paging: false, pageLength: 50).render(self, locals: { decorate: true })
+= tables[:competition_results].render(self, locals: { decorate: true })
 
 .row
   - score_graphs.each do |sg|

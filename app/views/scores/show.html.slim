@@ -13,11 +13,11 @@ h2 Score
         
 h2 Elements
 
-= elements_datatable.add_settings(paging: false).render(self)
+= elements_datatable.render(self)
 
 h2 Components
 
-= components_datatable.add_settings(paging: false).render(self)
+= components_datatable.render(self)
 
 - if score.deductions.to_f < 0
   h2 Deductions

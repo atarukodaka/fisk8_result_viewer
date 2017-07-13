@@ -15,13 +15,14 @@ class CompetitionsController < ApplicationController
     end
   end
   def result_datatable(competition, category, segment)
+    settings = {info: false, paging: false}
     case result_type(category, segment)
     when :category
       Datatable.new(competition.category_results.category(category).includes(:skater, :scores),
-                    [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss])
+                    [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss], settings: settings)
     when :segment
       Datatable.new(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater, :elements, :components),
-                    [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,])
+                    [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,], settings: settings)
     else
       nil
     end

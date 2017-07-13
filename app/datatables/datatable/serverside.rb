@@ -1,6 +1,6 @@
 module Datatable::Serverside
   #
-  # include (or extend to instance) this module to work as server-side datatable.
+  # include (or extend to instance) this module to let it work as server-side datatable.
   # 
   # e.g. if /users/list is called as ajax server-side,
   #
@@ -16,6 +16,8 @@ module Datatable::Serverside
   def manipulate_rows(rws)
     super(rws).where(filter_sql).order(order_sql).page(page).per(per)
   end
+  ################
+  ## for search
   def filter_sql
     return "" if params[:columns].blank?
 
@@ -28,23 +30,22 @@ module Datatable::Serverside
       keys << "#{column.key} like ? "
       values << "%#{sv}%"
     end
-    if keys.blank?
-      ""
-    else
-      [keys.join(' and '), *values]
-    end
+    # return such as  ['name like ? and nation like ?', 'foo', 'bar']
+    (keys.blank?) ? '' : [keys.join(' and '), *values]
   end
+  ################
   ## for sorting
   def order_sql
     return "" if params[:order].blank?
 
     ary = []
-    params[:order].each do |_, hash|  # TODO: each for columns
+    params[:order].each do |_, hash|   ## params doesnt have map()
       column = columns[hash[:column].to_i]
       ary << [column.key, hash[:dir]].join(' ')
     end
     ary
   end
+  ################
   ## for paging
   def page
     params[:start].to_i / per + 1
@@ -52,7 +53,8 @@ module Datatable::Serverside
   def per
     params[:length].to_i > 0 ? params[:length].to_i : 10
   end
-  
+  ################
+  ## json output
   def as_json(opts={})
     {
       iTotalRecords: rows.model.count,
