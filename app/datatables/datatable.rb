@@ -11,9 +11,14 @@ class Datatable
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
     @rows = rows
     @settings = settings
-    @order = []
+    @order ||= []
   end
-
+  def rows
+    @manipulated_rows ||= manipulate_rows(@rows)
+  end
+  def manipulate_rows(r)
+    r
+  end
   def column_names
     @columns.map {|c| c.name }
   end
@@ -57,3 +62,4 @@ class Datatable
     end
   end
 end
+################################################################

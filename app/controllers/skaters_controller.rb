@@ -1,16 +1,4 @@
 class SkatersController < ApplicationController
-  ## controller specific
-  def fetch_rows
-    Skater.having_scores
-  end
-  def order
-    [[:name, :asc]]
-  end
-  def columns
-    [:name, :nation, :category, :isu_number]
-  end
-  
-  ################################################################
   def get_skater
     Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) || 

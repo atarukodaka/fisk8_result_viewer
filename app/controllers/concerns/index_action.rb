@@ -1,20 +1,18 @@
 module IndexAction
   ## routed actions
   def list
-    render json: create_datatable.extend(ServersideDatatable).tap {|t| t.params = params }
+    table = create_datatable.extend(Datatable::Serverside).tap {|t| t.params = params }
+    render json: table
   end
   def index
     table = create_datatable
-    
+
     respond_to do |format|
       format.html {
         render :index, locals: {
           table: table
             .add_setting(:serverSide, true)
             .add_setting(:ajax, url_for(action: :list, format: :json, params: params.permit!))
-            .add_setting(:order, order.map {|pair|
-                           [table.column_names.index(pair[0].to_s), pair[1]]
-                         })
         }
       }
       format.json {
@@ -28,9 +26,11 @@ module IndexAction
 
   ################
   # unrouted methods
+=begin
   def create_columns
     Columns.new(columns)
   end
+=end
   def filter_arel(cols)
     arel = nil
     cols.map do |column|
@@ -46,6 +46,12 @@ module IndexAction
     end
     arel    
   end
+  def create_datatable
+    klass = "#{controller_name.camelize}Datatable".constantize
+    klass.new
+  end
+  
+=begin
   def create_datatable(klass = nil)
     cols = create_columns
     rows = fetch_rows.where(filter_arel(cols))
@@ -64,16 +70,6 @@ module IndexAction
   def columns
     []
   end
-
+=end
   ################################################################
-  protected
-  ## for elements/components controllers
-  def create_arel_table_by_operator(model_klass, key, operator_str, value)
-    operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
-      '<' => :lt, '<=' => :lteq}
-    operator = operators[operator_str] || :eq
-    model_klass.arel_table[key].send(operator, value.to_f)
-  end
-
-
 end

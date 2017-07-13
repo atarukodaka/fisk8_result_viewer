@@ -1,26 +1,4 @@
 class ScoresController < ApplicationController
-  def fetch_rows
-    Score.includes(:competition, :skater).references(:competition, :skater).all
-  end
-  def columns
-    [
-     {name: "name", table: "competitions"},
-     {name: "competition_name", table: "competitions", column_name: "name"},
-     {name: "category", table: "scores"},
-     :segment,
-     {name: "season", table: "competitions"},
-     :date, :result_pdf,
-     :ranking,
-     {name: "skater_name", table: "skaters", column_name: 'name'},
-     {name: "nation", table: "skaters"},
-     :tss, :tes, :pcs, :deductions,
-     {name: "base_value", table: "scores"},
-    ]
-  end
-  def order
-    [[:date, :desc], [:category, :asc], [:segment, :desc], [:ranking, :asc]]
-  end
-  ################################################################
   def score_summary(score)
     Listtable.new(score, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
 

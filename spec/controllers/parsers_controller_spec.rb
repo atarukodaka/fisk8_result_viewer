@@ -1,6 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe ParsersController, type: :controller do
+RSpec.configure do |c|
+  c.filter_run_excluding parser: true
+end
+
+RSpec.describe ParsersController, type: :controller, parser: true do
   render_views
 
   it 'index' do

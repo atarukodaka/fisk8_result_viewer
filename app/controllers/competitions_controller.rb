@@ -1,20 +1,6 @@
 class CompetitionsController < ApplicationController
   using SortWithPreset
   include Contracts
-  def fetch_rows
-    Competition.all
-  end
-  def order
-    [[:start_date, :desc]]
-  end
-  def columns
-    [
-     :short_name, :name,
-     :site_url, :city, :country, :competition_type,
-     :season, :start_date, :end_date,
-    ]
-  end
-  ################################################################
   def competition_info(competition)
     Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
   end
