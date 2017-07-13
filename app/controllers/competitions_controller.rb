@@ -40,7 +40,7 @@ class CompetitionsController < ApplicationController
         segment: segment,
         competition_info: competition_info(competition),
         result_type: result_type(category, segment),
-        result_datatable: result_datatable(competition, category, segment),
+        result_datatable: result_datatable(competition, category, segment).extend(Datatable::Decorate),
       }
 
       format.html {

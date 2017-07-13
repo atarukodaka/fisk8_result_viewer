@@ -35,19 +35,22 @@ class SkatersController < ApplicationController
     respond_to do |format|
       skater = get_skater
    
-      tables = {
-        skater_info: skater_info_listtable(skater),
-        record_summary: record_summary_datatable(skater),
-        competition_results: competition_results_datatable(skater),
-      }
+      skater_info =  skater_info_listtable(skater)
+      record_summary =  record_summary_datatable(skater)
+      competition_results = competition_results_datatable(skater)
+
       format.html {
         score_graphs = create_graphs(skater)
         render action: :show, locals: {
-          skater: skater, score_graphs: score_graphs, tables: tables
+          skater: skater,
+          score_graphs: score_graphs,
+          skater_info: skater_info,
+          record_summary: record_summary,
+          competition_results: competition_results.extend(Datatable::Decorate),
         }
       }
       format.json {
-        render json: tables
+        render json: { skater_info: skater_info, record_summary: record_summary, competition_results: competition_results}
       }
     end
   end

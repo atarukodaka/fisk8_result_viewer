@@ -8,16 +8,19 @@ class Datatable
   #
   attr_accessor :rows, :columns, :settings, :order
 
+=begin
   def self.create(*args)
     self.new(*args).tap do |table|
       yield(table) if block_given?
     end
   end
+=end
   def initialize(rows, columns, settings: {})
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
     @rows = rows
     @settings = settings
     @order ||= []
+    yield(self) if block_given?
   end
   def rows
     @manipulated_rows ||= manipulate_rows(@rows)

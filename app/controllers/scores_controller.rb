@@ -1,6 +1,6 @@
 class ScoresController < ApplicationController
   def score_summary(score)
-    Listtable.new(score, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
+    Listtable.new(score.decorate, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
 
   end
   def elements_datatable(score)

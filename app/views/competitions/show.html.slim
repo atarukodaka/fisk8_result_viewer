@@ -18,7 +18,6 @@
 ////////////////////////////////////////////////////////////////
 h2 Competition Info
 
-/= competition_info.render(self, locals: { decorate: true })
 table.table.table-striped.table-hover.table-condensed
   tr
     th Name
@@ -74,5 +73,5 @@ h2
 ////////////////////////////////////////////////////////////////
 
 - if result_type != :none
-  = result_datatable.render(self, locals: { decorate: true})
+  = result_datatable.render(self)
     

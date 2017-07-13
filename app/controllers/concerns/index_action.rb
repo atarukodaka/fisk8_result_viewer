@@ -1,10 +1,13 @@
 module IndexAction
   ## routed actions
   def list
+=begin    
     table = create_datatable do |t|
       t.extend Datatable::Serverside
       t.params = params
     end
+=end
+    table = create_datatable.extend(Datatable::Serverside).set_params(params)
     render json: table
   end
   def index
@@ -33,7 +36,7 @@ module IndexAction
   # unrouted methods
   def create_datatable
     klass = "#{controller_name.camelize}Datatable".constantize
-    klass.create do |obj|
+    klass.new do |obj|
       yield obj if block_given?
     end
   end

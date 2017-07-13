@@ -3,4 +3,8 @@ module Datatable::Params
   def params
     @params ||= {}
   end
+  def set_params(prm)   # method chain
+    @params = prm
+    self
+  end
 end
