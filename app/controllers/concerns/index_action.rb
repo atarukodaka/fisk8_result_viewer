@@ -1,7 +1,10 @@
 module IndexAction
   ## routed actions
   def list
-    table = create_datatable.extend(Datatable::Serverside).tap {|t| t.params = params }
+    table = create_datatable do |t|
+      t.extend Datatable::Serverside
+      t.params = params
+    end
     render json: table
   end
   def index
@@ -12,7 +15,8 @@ module IndexAction
         render :index, locals: {
           table: table
             .add_setting(:serverSide, true)
-            .add_setting(:ajax, url_for(action: :list, format: :json, params: params.permit!))
+            .add_setting(:ajax, url_for(action: :list, format: :json,
+                                        params: params.permit!))
         }
       }
       format.json {
@@ -26,11 +30,13 @@ module IndexAction
 
   ################
   # unrouted methods
-=begin
-  def create_columns
-    Columns.new(columns)
+  def create_datatable
+    klass = "#{controller_name.camelize}Datatable".constantize
+    klass.create do |obj|
+      yield obj if block_given?
+    end
   end
-=end
+=begin
   def filter_arel(cols)
     arel = nil
     cols.map do |column|
@@ -46,19 +52,9 @@ module IndexAction
     end
     arel    
   end
-  def create_datatable
-    klass = "#{controller_name.camelize}Datatable".constantize
-    klass.new
-  end
+=end
   
 =begin
-  def create_datatable(klass = nil)
-    cols = create_columns
-    rows = fetch_rows.where(filter_arel(cols))
-    klass ||= Datatable
-    klass.new(rows, cols)
-  end
-    
   
   ## to be overriden
   def fetch_rows
