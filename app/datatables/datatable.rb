@@ -1,4 +1,3 @@
-
 class Datatable
   attr_accessor :order, :columns, :settings, :rows
 
@@ -40,8 +39,16 @@ class Datatable
       },
     }.merge(settings)
   end
+=begin
   def add_setting(key, value)
     settings[key] = value
+    self
+  end
+=end
+  def add_settings(hash)
+    hash.each do |key, value|
+      settings[key] = value
+    end
     self
   end
   def as_json(opts={})

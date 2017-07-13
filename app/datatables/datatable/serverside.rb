@@ -1,17 +1,18 @@
-#class ServersideDatatable < Datatable
 module Datatable::Serverside
+  #
+  # include (or extend to instance) this module to work as server-side datatable.
+  # 
+  # e.g. if /users/list is called as ajax server-side,
+  #
+  # class UsersController < ApplicationController
+  #   def list
+  #     render json: Datatable.new.extend(Datatable::Serverside).tap {|t| t.params = params}
+  #   end
+  #
+  #  note that you need to pass params into the table instance.
+  #
   include Datatable::Params
-  attr_accessor :params
-=begin
-  def initialize(rows, columns, params: {})
-    super(rows, columns)
-    @params = params
-  end
-  def initialize(*args, params: {})
-    @params = params
-    super(*args)
-  end
-=end
+
   def manipulate_rows(rws)
     super(rws).where(filter_sql).order(order_sql).page(page).per(per)
   end
@@ -53,14 +54,13 @@ module Datatable::Serverside
   end
   
   def as_json(opts={})
-    h = {
+    {
       iTotalRecords: rows.model.count,
       iTotalDisplayRecords: rows.total_count,
       data: rows.decorate.map {|item|
         column_names.map {|c| [c, item.send(c)]}.to_h
       }
     }
-    h
   end
 end
 

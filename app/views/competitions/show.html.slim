@@ -47,13 +47,6 @@ table.table.table-striped.table-hover.table-condensed
 
 
 ////////////////////////////////////////////////////////////////
-/h2 Category / Segment
-
-/= category_segments.render(self, settings: { paging: false }, locals: {decorate: true})
-
-////////////////////////////////////////////////////////////////
-/h2 Category / Segment
-
 h2
   - case result_type
   - when :none
@@ -81,5 +74,5 @@ h2
 ////////////////////////////////////////////////////////////////
 
 - if result_type != :none
-  = result_datatable.render(self, settings: {paging: false }, locals: { decorate: true})
+  = result_datatable.add_settings(paging: false).render(self, locals: { decorate: true})
     

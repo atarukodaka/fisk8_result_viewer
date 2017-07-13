@@ -12,11 +12,12 @@ module IndexAction
 
     respond_to do |format|
       format.html {
+        additional_settings = {
+          serverSide: true,
+          ajax: url_for(action: :list, format: :json, params: params.permit!)
+        }
         render :index, locals: {
-          table: table
-            .add_setting(:serverSide, true)
-            .add_setting(:ajax, url_for(action: :list, format: :json,
-                                        params: params.permit!))
+          table: table.add_settings(additional_settings)
         }
       }
       format.json {
