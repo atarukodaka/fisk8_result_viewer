@@ -1,28 +1,30 @@
 class ComponentsDatatable < IndexDatatable
   def initialize
-    rows = Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
-    cols =
-    [
-       {name: "score_name", table: "scores", column_name: "name"},
-       {name: "competition_name", table: "competitions", column_name: "name", filter: ->(r, v){ r.where("competitions.name like ?", "%#{v}%") }},
-       {name: "category", table: "scores", filter: ->(r, v) { r.where("scores.category": v)}},
-       {name: "segment", table: "scores", filter: ->(r, v){ r.where("scores.segment": v) }},
-       {name: "date", table: "scores"},
-       {name: "season", table: "competitions", filter: ->(r, v) { r.where("competitions.season": v)}},
-       {name: "ranking", table: "scores"},
-       {name: "skater_name", table: "skaters", column_name: "name", filter: ->(r, v){ r.where("skaters.name like ? ", "%#{v}%")}},
-       {name: "nation", table: "skaters", filter: ->(r, v){ r.where("skaters.nation": v)}},
+    data = Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+    cols = [:score_name, :competition_name, :category, :segment, :date, :season,
+            :ranking, :skater_name, :nation,
+            :number, :name, :factor, :judges, :value,]
 
-     "number",
-     {name: "name", table: "components"},
-     :factor, :judges,
-     {
-       name: "value", filter: ->(r, v){
-         r.where(create_arel_table_by_operator(Component, :value, params[:value_operator], v))
-       },
-     },
-    ]
-    super(rows, cols)
-    @order = [[:value, :desc]]
+    super(data, only: cols)
+    @table_keys = {
+      score_name: "scores.name",
+      competition_name: "competitions.name",
+      season: "competitions.season",
+      category: "scores.category",
+      segment: "scores.segment",
+      date: "scores.date",
+      ranking: "scores.ranking",
+      skater_name: "skaters.name",
+      nation: "skaters.nation",
+      name: "components.name",
+    }
+    add_filters(:skater_name, :competition_name, operator: :matches)
+    add_filters(:category, :segment, :nation, :season)
+
+    add_filter(:value) do |c, v|
+      c.where(create_arel_table_by_operator(Component, :value, params[:value_operator], v))
+    end
+    
+    add_settings(order: [[cols.index(:value), :desc]])
   end
 end

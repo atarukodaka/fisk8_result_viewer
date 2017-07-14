@@ -16,9 +16,9 @@ class ScoresDatatable < IndexDatatable
       nation: "skaters.nation",
       
     }
-    [:name, :competition_name, :skater_name].each {|key| add_filter(key, operator: :matches) }
-    [:category, :segment, :nation, :season].each {|key| add_filter(key, operator: :eq)}
+    add_filters(:name, :competition_name, :skater_name, operator: :matches)
+    add_filters(:category, :segment, :nation, :season)
 
-    @settings[:order] = [[cols.index(:date), :desc]]
+    add_settings(order: [[cols.index(:date), :desc]])
   end
 end

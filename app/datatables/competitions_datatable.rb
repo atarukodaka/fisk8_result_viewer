@@ -10,12 +10,8 @@ class CompetitionsDatatable < IndexDatatable
             :start_date, :end_date,]
     super(Competition.all, only: [:name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date])
     
-    @settings[:order] = [[cols.index(:start_date), :desc]]
-    @filters = {
-      name: ->(v) { where("name like ? ", "%#{v}%") },
-    }
-    [:site_url, :competition_type, :season].each do |key|
-      @filters[key] = ->(v){ where(key => v) }
-    end
+    add_filter(:name, operator: :matches)
+    add_filters(:site_url, :competition_type, :season)
+    add_settings(order: [[cols.index(:start_date), :desc]])
   end
 end

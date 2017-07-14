@@ -13,6 +13,10 @@ class IndexDatatable < Datatable
     @order ||= []
   end
 
+  def add_filters(*keys, operator: :eq)
+    [*keys].flatten.each {|key| add_filter(key)}
+    self
+  end
   def add_filter(column, operator: :eq, &block)
     key = table_keys(column)
     if block_given?
@@ -21,18 +25,20 @@ class IndexDatatable < Datatable
       @filters[column] =
         case operator
         when :eq
-          ->(v){ where(key => v) }
+          ->(c, v){ c.where(key => v) }
         when :matches
-          ->(v){ where("#{key} like ?", "%#{v}%") }
+          ->(c, v){ c.where("#{key} like ?", "%#{v}%") }
         else
           raise
         end
     end
+    self
   end
   def manipulate(collection)
     filters.reduce(super(collection)) do |col, ary|
       key, filter = ary
-      (v = params[key].presence) ? col.instance_exec(v, &filter) : col
+      #(v = params[key].presence) ? col.instance_exec(v, &filter) : col
+      (v = params[key].presence) ? filter.call(col, v) : col
     end
   end
 
