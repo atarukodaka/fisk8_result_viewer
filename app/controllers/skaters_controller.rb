@@ -5,7 +5,8 @@ class SkatersController < ApplicationController
       raise(ActiveRecord::RecordNotFound.new("no such skater"))
   end
   def skater_info_listtable(skater)
-    Listtable.new(skater, [:name, :nation, :isu_number, :category])
+    #Listtable.new(skater, [:name, :nation, :isu_number, :category])
+    Listtable.new(skater, only: [:name, :nation, :isu_number, :category])
   end
   def record_summary_datatable(skater)
     cr = skater.category_results
@@ -16,7 +17,7 @@ class SkatersController < ApplicationController
       most_valuable_element: skater.elements.order(:value).last.decorate.description,
       most_valuable_components: skater.components.group(:number).maximum(:value).values.join('/'),
     }
-    Listtable.new(Hashie::Mash.new(hash))
+    Listtable.new(Hashie::Mash.new(hash), only: hash.keys)
   end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
@@ -44,10 +45,11 @@ class SkatersController < ApplicationController
         render action: :show, locals: {
           skater: skater,
           score_graphs: score_graphs,
-          skater_info: skater_info,
+          skater_info: skater_info.decorate,
           record_summary: record_summary,
-          competition_results: competition_results.extend(Datatable::Decorate),
-          #competition_results: competition_results.decorate,
+          #competition_results: competition_results.extend(Datatable::Decorate),
+          competition_results: competition_results.decorate,
+          #competition_results: competition_results.set_manipulator(->(r){ r.decorate}),
         }
       }
       format.json {

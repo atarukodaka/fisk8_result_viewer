@@ -18,18 +18,22 @@ class Datatable
     @rows = rows
     @settings = settings
     @order ||= []
+    @manipulated_rows = nil
+    @manipulator = nil
     yield(self) if block_given?
   end
   def rows
     @manipulated_rows ||= manipulate_rows(@rows)
   end
-=begin
+  def decorate
+    set_manipulator(->(r){ r.decorate } )
+  end
+  def set_manipulator(f)
+    @manipulator = f
+    self
+  end
   def manipulate_rows(r)
     r = (manipulator) ? manipulator.call(r) : r
-  end
-=end
-  def manipulate_rows(r)
-    r
   end
   def column_names
     @columns.map {|c| c.name }

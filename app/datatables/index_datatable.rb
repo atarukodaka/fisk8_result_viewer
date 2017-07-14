@@ -4,14 +4,15 @@ class IndexDatatable < Datatable
   # 
   include Datatable::Params
   
-  def manipulate_rows(rws)
+  def manipulate_rows(r)
+    r = super(r)
     # call columns.filter if exists
     columns.each do |column|
       filter = column.filter || next
       sv = params[column.name].presence || next
-      rws = filter.call(rws, sv)
+      r = filter.call(r, sv)
     end
-    rws
+    r
   end
   protected
   ## for elements/components controllers

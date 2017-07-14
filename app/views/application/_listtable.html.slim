@@ -1,9 +1,11 @@
 
 - table || raise
-- decorate ||= false
+/- decorate ||= false
 
-- data = (decorate) ? table.data.decorate : table.data
+/- data = (decorate) ? table.data.decorate : table.data
 
 table.table.table-striped.table-hover.table-condensed
-  - table.column_names.each do |key|
+  - table.columns.each do |column|
+    = tr_data(column.to_s.humanize, table.data.send(column))
+  /- table.column_names.each do |key|
     = tr_data(key.to_s.humanize, data.send(key))
