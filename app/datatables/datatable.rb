@@ -1,4 +1,4 @@
-class Datatable
+class Datatable < Listtable
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
@@ -14,34 +14,22 @@ class Datatable
   #attr_accessor :rows, :columns, :settings, :order, :manipulator
   attr_accessor :collection, :settings, :order, :manipulator
 
-  def initialize(rows, columns, settings: {}) # , manipulators: [])
-  #def initialize(collection, only: nil, settings: {})
-    @columns = (columns.class == Array) ? Columns.new(columns) : columns
+  #def initialize(rows, columns, settings: {}) # , manipulators: [])
+  def initialize(collection, only: nil, settings: {})
+    #@columns = (columns.class == Array) ? Columns.new(columns) : columns
     #@columns = columns || []
-    @rows = rows
+    #@rows = rows
     @settings = settings
     @order ||= []
-    @manipulated_rows = nil
-    @manipulator = nil
-    yield(self) if block_given?
+    super(collection, only: only)
+    yield(self) if block_given?  # TODO: in Listtable?
   end
-  def rows
-    @manipulated_rows ||= manipulate_rows(@rows)
+  def collection
+    manipulate(@collection)
   end
   def decorate
     set_manipulator(->(r){ r.decorate } )
   end
-  def set_manipulator(f)
-    @manipulator = f
-    self
-  end
-  def manipulate_rows(r)
-    r = (manipulator) ? manipulator.call(r) : r
-  end
-  def column_names
-    @columns.map {|c| c.name }
-  end
-
   def render(view, partial: "datatable", locals: {}, settings: {})
     self.settings.update(settings)
     view.render partial: partial, locals: {table: self }.merge(locals)
@@ -55,9 +43,6 @@ class Datatable
       processing: true,
       filter: true,
       columns: column_names.map {|name| {data: name}},
-      order: order.map {|name, dir|
-        [column_names.index(name.to_s), dir.to_s]
-      },
     }.merge(settings)
   end
   def add_settings(hash)
@@ -69,7 +54,7 @@ class Datatable
   ################
   ## output format
   def as_json(opts={})
-    rows.limit(1000).as_json(only: column_names)
+    data.limit(1000).as_json(only: columns)
 =begin
     rows.limit(1000).map do |item|
       column_names.map do |col_name|
@@ -83,7 +68,7 @@ class Datatable
   def to_csv(opt={})
     require 'csv'
     CSV.generate(headers: column_names, write_headers: true) do |csv|
-      rows.limit(1000).each do |row|
+      data.limit(1000).each do |row|
         csv << column_names.map {|k| row.send(k)}
       end
     end

@@ -1,5 +1,6 @@
 class SkatersDatatable < IndexDatatable
   def initialize
+=begin
     rows = Skater.having_scores
     cols =
       [
@@ -8,8 +9,16 @@ class SkatersDatatable < IndexDatatable
        {name: "nation", filter: ->(r, v){ r.where("nation like ?", "%#{v}%") }},
        :isu_number
       ]
-    super(rows, cols)
+=end
+    cols = [:name, :category, :nation, :isu_number]
+    super(Skater.having_scores, only: cols)
+    @settings[:order] = [[cols.index(:category), :asc], [cols.index(:name), :asc]]
 
-    @order = [[:name, :asc]]    
+    @filters = {
+      #name: ->(c, v){ c.where("name like ?", "%#{v}%") },
+      name: ->(v){ where("name like ?", "%#{v}%") },
+      category: ->(v){ where(category: v) },
+      nation: ->(v){ where(nation: v)},
+    }
   end
 end

@@ -1,7 +1,13 @@
 class ElementsDatatable < IndexDatatable
   def initialize
-    rows = Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+    data = Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
 
+    cols = [:score_name, :competition_name, :category, :segment, :date, :season,
+            :ranking, :skater_name, :nation,
+            :name, :element_type, :credit, :info, :base_value, :goe, :judges, :value,]
+
+   
+=begin
     cols =
       [
        {name: "score_name", table: "scores", column_name: "name"},
@@ -30,7 +36,31 @@ class ElementsDatatable < IndexDatatable
        },
        "judges", "value",
       ]
-    super(rows, cols)
-    @order = [[:value, :desc]]
+=end
+    super(data, only: cols)
+    @table_keys = {
+      score_name: "scores.name",
+      competition_name: "competitions.name",
+      category: "scores.category",
+      segment: "scores.segment",
+      date: "scores.date",
+      ranking: "scores.ranking",
+      skater_name: "skaters.name",
+      nation: "skaters.nation",
+      name: "elements.name",
+      base_value: "elements.base_value",
+    }
+    [:skater_name, :competition_name].each {|k| add_filter(k, operator: :matches) }
+    [:category, :segment, :nation, :season].each {|k| add_filter(k)}
+
+    add_filter(:element_type)
+    add_filter(:name) do |v|
+      arel = (params[:perfect_match]) ? Element.arel_table[:name].eq(v) : Element.arel_table[:name].matches("%#{v}%")
+      where(arel)
+    end
+    add_filter(:goe) do |v|
+      where(create_arel_table_by_operator(Element, :goe, params[:goe_operator], v))
+    end
+    #@order = [[:value, :desc]]
   end
 end

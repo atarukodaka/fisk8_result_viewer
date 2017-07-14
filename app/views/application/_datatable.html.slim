@@ -24,7 +24,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
         th= key.to_s.humanize
   tbody
     - unless settings[:ajax]
-      - table.rows.each do |item|
+      - table.data.each do |item|
         tr
           - column_names.each do |key|
             td= (item.class == Hash) ? item[key.to_sym] : item.send(key)

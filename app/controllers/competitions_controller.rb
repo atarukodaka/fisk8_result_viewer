@@ -2,7 +2,7 @@ class CompetitionsController < ApplicationController
   using SortWithPreset
   include Contracts
   def competition_info(competition)
-    Listtable.new(competition, [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
+    Listtable.new(competition, only: [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
   end
     
   def result_type(category, segment)
@@ -19,10 +19,10 @@ class CompetitionsController < ApplicationController
     case result_type(category, segment)
     when :category
       Datatable.new(competition.category_results.category(category).includes(:skater, :scores),
-                    [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss], settings: settings)
+                    only: [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss], settings: settings)
     when :segment
       Datatable.new(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater, :elements, :components),
-                    [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,], settings: settings)
+                    only: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,], settings: settings)
     else
       nil
     end

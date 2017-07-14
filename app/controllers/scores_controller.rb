@@ -1,14 +1,14 @@
 class ScoresController < ApplicationController
   def score_summary(score)
-    Listtable.new(score.decorate, [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
+    Listtable.new(score.decorate, only: [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
 
   end
   def elements_datatable(score)
-    Datatable.new(score.elements, [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value], settings: {paging: false, info: false})
+    Datatable.new(score.elements, only: [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value], settings: {paging: false, info: false})
   end
 
   def components_datatable(score)
-    Datatable.new(score.components, [:number, :name, :factor, :judges, :value], settings: {paging: false, info: false, searching: false})
+    Datatable.new(score.components, only: [:number, :name, :factor, :judges, :value], settings: {paging: false, info: false, searching: false})
   end
   def show
     score = Score.find_by(name: params[:name]) ||
