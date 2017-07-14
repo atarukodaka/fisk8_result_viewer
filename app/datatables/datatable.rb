@@ -11,10 +11,13 @@ class Datatable
   # = Datatable.new(User.all, [:name, :address], settings: { server-side: true,
   #       ajax: users_list_path})
   #
-  attr_accessor :rows, :columns, :settings, :order, :manipulator
+  #attr_accessor :rows, :columns, :settings, :order, :manipulator
+  attr_accessor :collection, :settings, :order, :manipulator
 
   def initialize(rows, columns, settings: {}) # , manipulators: [])
+  #def initialize(collection, only: nil, settings: {})
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
+    #@columns = columns || []
     @rows = rows
     @settings = settings
     @order ||= []
