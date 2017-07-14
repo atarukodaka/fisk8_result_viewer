@@ -1,7 +1,11 @@
 class IndexDatatable < Datatable
+  #
+  #
+  # 
   include Datatable::Params
   
   def manipulate_rows(rws)
+    # call columns.filter if exists
     columns.each do |column|
       filter = column.filter || next
       sv = params[column.name].presence || next

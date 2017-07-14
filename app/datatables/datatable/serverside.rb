@@ -6,7 +6,7 @@ module Datatable::Serverside
   #
   # class UsersController < ApplicationController
   #   def list
-  #     render json: Datatable.new.extend(Datatable::Serverside).tap {|t| t.params = params}
+  #     render json: Datatable.new.extend(Datatable::Serverside).set_params(params)
   #   end
   #
   #  note that you need to pass params into the table instance.
@@ -59,9 +59,12 @@ module Datatable::Serverside
     {
       iTotalRecords: rows.model.count,
       iTotalDisplayRecords: rows.total_count,
+      data: rows.decorate.as_json(only: column_names),
+=begin
       data: rows.decorate.map {|item|
         column_names.map {|c| [c, item.send(c)]}.to_h
       }
+=end
     }
   end
 end

@@ -17,7 +17,9 @@ module IndexAction
       format.html {
         additional_settings = {
           serverSide: true,
-          ajax: url_for(action: :list, format: :json, params: params.permit!)
+          ajax: {
+            url: url_for(action: :list, format: :json, params: params.permit!),
+          },
         }
         render :index, locals: {
           table: table.add_settings(additional_settings)

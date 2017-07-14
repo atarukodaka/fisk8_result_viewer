@@ -6,16 +6,14 @@ class Datatable
   #
   # = Datatable.new(User.all, [:name, :address]).render(self)
   #
-  attr_accessor :rows, :columns, :settings, :order
+  # for server-side ajax,
+  #
+  # = Datatable.new(User.all, [:name, :address], settings: { server-side: true,
+  #       ajax: users_list_path})
+  #
+  attr_accessor :rows, :columns, :settings, :order, :manipulator
 
-=begin
-  def self.create(*args)
-    self.new(*args).tap do |table|
-      yield(table) if block_given?
-    end
-  end
-=end
-  def initialize(rows, columns, settings: {})
+  def initialize(rows, columns, settings: {}) # , manipulators: [])
     @columns = (columns.class == Array) ? Columns.new(columns) : columns
     @rows = rows
     @settings = settings
@@ -25,6 +23,11 @@ class Datatable
   def rows
     @manipulated_rows ||= manipulate_rows(@rows)
   end
+=begin
+  def manipulate_rows(r)
+    r = (manipulator) ? manipulator.call(r) : r
+  end
+=end
   def manipulate_rows(r)
     r
   end
@@ -39,6 +42,7 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
+  # settings
   def table_settings
     {
       processing: true,
@@ -58,6 +62,8 @@ class Datatable
   ################
   ## output format
   def as_json(opts={})
+    rows.limit(1000).as_json(only: column_names)
+=begin
     rows.limit(1000).map do |item|
       column_names.map do |col_name|
         [col_name,
@@ -65,6 +71,7 @@ class Datatable
         ]
       end.to_h
     end
+=end
   end
   def to_csv(opt={})
     require 'csv'

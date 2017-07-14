@@ -1,4 +1,7 @@
 class Column
+  #attr_writer :name, :table, :key, :column_name
+  #attr_accessor :filter
+  #
   # 
   def initialize(arg)
     @data =
