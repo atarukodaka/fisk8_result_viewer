@@ -73,5 +73,5 @@ h2
 ////////////////////////////////////////////////////////////////
 
 - if result_type != :none
-  = result_datatable.render(self)
+  = result_datatable.update_settings(paging: false, info: false).decorate.render(self)
     

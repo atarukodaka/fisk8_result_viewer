@@ -24,10 +24,10 @@ class ScoresController < ApplicationController
       }
       format.json {
         render json: score.as_json
-          .merge({
-                   elememnts: elements_datatable(score),
-                   components: components_datatable(score)
-                 })
+          .merge(
+                 elememnts: elements_datatable(score),
+                 components: components_datatable(score),
+                 )
       }
     end
   end

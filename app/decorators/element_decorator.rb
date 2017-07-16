@@ -1,4 +1,6 @@
 class ElementDecorator < EntryDecorator
+  using AsScore
+  
   def score_name
     h.link_to_score(nil, model.score)
   end
@@ -13,5 +15,14 @@ class ElementDecorator < EntryDecorator
   end
   def description
     "%s %s%s (%.2f=%.2f+%.2f)" % [ model.name, model.credit, model.info, model.value, model.base_value, model.goe]
+  end
+  def base_value
+    model.base_value.as_score
+  end
+  def goe
+    model.goe.as_score
+  end
+  def value
+    model.value.as_score
   end
 end

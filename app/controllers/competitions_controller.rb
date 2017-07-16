@@ -39,14 +39,15 @@ class CompetitionsController < ApplicationController
         segment: segment,
         competition_info: competition_info(competition),
         result_type: result_type(category, segment),
-        result_datatable: result_datatable(competition, category, segment).try(:decorate),
+        result_datatable: result_datatable(competition, category, segment),
       }
 
       format.html {
         render :show, locals: locals
       }
       format.json {
-        render json: competition.as_json.merge({results: result_datatable(competition, category, segment)})
+        render json: competition.as_json(except: :id)
+          .merge(results: result_datatable(competition, category, segment))
       }
     end
   end

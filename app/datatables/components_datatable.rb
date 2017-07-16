@@ -22,7 +22,7 @@ class ComponentsDatatable < IndexDatatable
     add_filters(:category, :segment, :nation, :season)
 
     add_filter(:value) do |c, v|
-      c.where(create_arel_table_by_operator(Component, :value, params[:value_operator], v))
+      c.where(Component.arel_table_by_operator(:value, params[:value_operator], v))
     end
     
     update_settings(order: [[cols.index(:value), :desc]])

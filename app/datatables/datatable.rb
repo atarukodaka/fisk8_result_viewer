@@ -50,18 +50,9 @@ class Datatable
     #imitted_data.as_json(only: columns)
     limitted_data.map do |item|
       column_names.map do |column|
-        item.send(column)
-      end
-    end
-=begin
-    rows.limit(1000).map do |item|
-      column_names.map do |col_name|
-        [col_name,
-         (item.class == Hash) ? item[col_name.to_sym] : item.send(col_name)
-        ]
+        [column, item.send(column)]
       end.to_h
     end
-=end
   end
   def to_csv(opt={})
     require 'csv'

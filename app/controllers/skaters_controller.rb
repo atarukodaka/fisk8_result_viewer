@@ -5,7 +5,6 @@ class SkatersController < ApplicationController
       raise(ActiveRecord::RecordNotFound.new("no such skater"))
   end
   def skater_info_listtable(skater)
-    #Listtable.new(skater, [:name, :nation, :isu_number, :category])
     Listtable.new(skater, only: [:name, :nation, :isu_number, :category])
   end
   def record_summary_datatable(skater)
@@ -35,23 +34,19 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       skater = get_skater
-   
-      skater_info =  skater_info_listtable(skater)
-      record_summary =  record_summary_datatable(skater)
-      competition_results = competition_results_datatable(skater)
 
+      hash = {
+        skater_info: skater_info_listtable(skater),
+        record_summary: record_summary_datatable(skater),
+        competition_results: competition_results_datatable(skater),
+      }
       format.html {
         score_graphs = create_graphs(skater)
-        render action: :show, locals: {
-          skater: skater,
-          score_graphs: score_graphs,
-          skater_info: skater_info.decorate,
-          record_summary: record_summary,
-          competition_results: competition_results.decorate,
-        }
+        hash.update(skater: skater, score_graph: create_graphs(skater))
+        render action: :show, locals: hash
       }
       format.json {
-        render json: { skater_info: skater_info, record_summary: record_summary, competition_results: competition_results}
+        render json: hash
       }
     end
   end

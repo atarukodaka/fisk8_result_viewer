@@ -29,7 +29,7 @@ class ElementsDatatable < IndexDatatable
       c.where(arel)
     end
     add_filter(:goe) do |c, v|
-      c.where(create_arel_table_by_operator(Element, :goe, params[:goe_operator], v))
+      c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
     end
     update_settings(order: [[cols.index(:value), :desc]])
   end

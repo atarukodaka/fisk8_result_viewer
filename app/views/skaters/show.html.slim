@@ -1,4 +1,3 @@
-- skater || tables || raise 
 - score_graphs ||= []
 
 - breadcrumb :skater, skater
@@ -10,7 +9,7 @@
 .row
   .col-sm-6
     h2 Skaters Info
-    = skater_info.render(self, locals: { decorate: true })
+    = skater_info.decorate.render(self)
 
   .col-sm-6
     h2 Record Summary
@@ -18,7 +17,7 @@
 
 h2 Competition Results
 
-= competition_results.render(self)
+= competition_results.update_settings(paging: false, info: false).decorate.render(self)
 
 .row
   - score_graphs.each do |sg|

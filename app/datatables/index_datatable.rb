@@ -5,49 +5,34 @@ class IndexDatatable < Datatable
   include Datatable::Params
   include Datatable::TableKeys
 
-  attr_reader :filters
+  property :filters
   
-  def initialize(*args)
-    super(*args)
-    @filters ||= {}
-  end
-
-  def add_filters(*keys, operator: :eq)
-    [*keys].flatten.each {|key| add_filter(key, operator: operator)}
+  def add_filters(*columns, operator: :eq)
+    [*columns].flatten.each {|column| add_filter(column, operator: operator)}
     self
   end
   def add_filter(column, operator: :eq, &block)
     key = table_key(column)
-    if block_given?
-      @filters[column] = block
-    else
-      @filters[column] =
+    proc =
+      if block_given?
+        block
+      else
         case operator
         when :eq
           ->(c, v){ c.where(key => v) }
         when :matches
           ->(c, v){ c.where("#{key} like ?", "%#{v}%") }
         else
-          raise
+          raise "no such operator: #{operator}"
         end
-    end
+      end
+    @filters ||= []
+    @filters << { column: column, proc: proc}
     self
   end
-  def manipulate(collection)
-    filters.reduce(super(collection)) do |col, ary|
-      key, filter = ary
-      #(v = params[key].presence) ? col.instance_exec(v, &filter) : col
-      (v = params[key].presence) ? filter.call(col, v) : col
+  def manipulate(data)
+    filters.reduce(super(data)) do |col, hash|
+      (v = params[hash[:column]].presence) ? hash[:proc].call(col, v) : col
     end
   end
-
-  protected
-  ## for elements/components controllers
-  def create_arel_table_by_operator(model_klass, key, operator_str, value)
-    operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
-      '<' => :lt, '<=' => :lteq}
-    operator = operators[operator_str] || :eq
-    model_klass.arel_table[key].send(operator, value.to_f)
-  end
-
 end

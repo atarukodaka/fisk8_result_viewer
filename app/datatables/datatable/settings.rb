@@ -1,0 +1,2 @@
+module Datatable::Settings
+end
