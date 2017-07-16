@@ -8,10 +8,10 @@ class CompetitionsDatatable < IndexDatatable
             { name: "competition_type", filter: ->(r, v){ r.where(competition_type: v)}},
             { name: "season",filter: ->(r, v){ r.where(season: v) }},
             :start_date, :end_date,]
-    super(Competition.all, only: [:name, :site_url, :city, :country, :competition_type, :season, :start_date, :end_date])
+    super(Competition.all, only: [:name, :site_url, :city, :country, :competition_class, :competition_type, :season, :start_date, :end_date])
     
     add_filter(:name, operator: :matches)
-    add_filters(:site_url, :competition_type, :season)
+    add_filters(:site_url, :competition_type, :competition_class, :season)
     update_settings(order: [[cols.index(:start_date), :desc]])
   end
 end

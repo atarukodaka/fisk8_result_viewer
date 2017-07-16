@@ -28,7 +28,7 @@ RSpec.describe ScoresController, type: :controller do
       expect_to_include(world_score.name)
     end
 
-    attrs = [:skater_name, :category, :segment, :nation, :competition_name, :season]
+    attrs = [:skater_name, :category, :segment, :nation, :competition_name, :competition_class, :competition_type, :season]
     context 'filter: ' do
       attrs.each do |key|
         it key do

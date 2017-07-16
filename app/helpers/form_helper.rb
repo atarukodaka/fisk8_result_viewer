@@ -25,6 +25,8 @@ module FormHelper
         Score.uniq_list(:segment).sort
       when :nation
         Skater.uniq_list(:nation).sort
+      when :competition_class
+        Competition.uniq_list(:competition_class).sort
       when :competition_type
         Competition.uniq_list(:competition_type).sort
       when :season

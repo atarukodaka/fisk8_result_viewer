@@ -9,8 +9,7 @@ class ResultDecorator < EntryDecorator
     model.skater.nation
   end
   def competition_name
-    name = model.competition.name
-    h.link_to_competition((model.competition.isu_championships) ? h.content_tag(:b, name) : name, model.competition)
+    h.link_to_competition(model.competition)
   end
   def category
     h.link_to_competition(model.category, model.competition, category: model.category)
@@ -27,7 +26,7 @@ class ResultDecorator < EntryDecorator
   def short_tss
     h.link_to_score(model.short_tss.as_score, model.short)
   end
-  decorate_as_score(:short_deductions, :free_deductions)
+  decorate_as_score(:short_deductions, :free_deductions, :short_bv)
   
   ## free
   def free_ranking
@@ -37,6 +36,6 @@ class ResultDecorator < EntryDecorator
     h.link_to_score(model.free_tss.as_score, model.free)
   end
 
-  decorate_as_score(:free_pcs,:free_deductions, :free_base_value)
+  decorate_as_score(:free_pcs, :free_deductions, :free_bv)
 end
 

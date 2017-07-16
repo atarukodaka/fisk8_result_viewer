@@ -9,6 +9,12 @@ class Result < ApplicationRecord
   def competition_name
     competition.name
   end
+  def competition_class
+    competition.competition_class
+  end
+  def competition_type
+    competition.competition_type
+  end
   def season
     competition.season
   end
@@ -37,7 +43,7 @@ class Result < ApplicationRecord
   def short_deductions
     short.try(:deductions)
   end
-  def short_base_value
+  def short_bv
     short.try(:base_value)
   end
   def free
@@ -56,7 +62,7 @@ class Result < ApplicationRecord
   def free_deductions
     free.try(:deductions)
   end
-  def free_base_value
+  def free_bv
     free.try(:base_value)
   end
   ## scopes

@@ -24,11 +24,17 @@ class Datatable
     @columns = (only) ? only : data.column_names.map(&:to_sym)
     #@settings = default_settings
 
+    #@hidden_columns = [:competition_class, :competition_type]
+    @hidden_columns ||= []
     @settings = {
       processing: true,
       filter: true,
       order: [],
-      columns: column_names.map {|name| {data: name}},
+      columns: column_names.map {|name| {
+          data: name,
+          visible: (@hidden_columns.include?(name.to_sym)) ? false : true
+          
+        }},
     }
     yield(self) if block_given?
   end

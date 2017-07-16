@@ -1,15 +1,12 @@
 module LinkToHelper
   def link_to_skater(text = nil, skater, params: {})
     link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
-    #link_to(text || skater[:name], url_for(controller: :skaters, action: :show, isu_number: skater[:isu_number] || skater[:name]), params)
   end
 
   def link_to_competition(text = nil, competition, category: nil, segment: nil)
     text ||= segment || category || competition.name
 
-    lt = link_to(text, competition_path(competition.short_name, category, segment))
-    #lt = link_to(text, {controller: :competitions, action: :show, short_name: competition.short_name, category: category, segment: segment})
-    (competition.isu_championships) ? lt : content_tag(:i, lt)
+    link_to(text, competition_path(competition.short_name, category, segment))
   end
   
   def link_to_competition_site(text = nil, competition)

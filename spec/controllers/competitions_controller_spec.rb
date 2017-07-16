@@ -30,11 +30,12 @@ RSpec.describe CompetitionsController, type: :controller do
       expect_to_include(finlandia.name)
     end
 
-    attrs = [:name, :site_url, :competition_type, :season]
+    attrs = [:name, :site_url, :competition_type, :competition_class, :season]
     context 'filters:' do
       attrs.each do |key|
         it key do
           expect_filter(world, finlandia, key)
+
         end
       end
     end

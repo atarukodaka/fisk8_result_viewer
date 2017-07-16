@@ -79,42 +79,43 @@ class Competition < ApplicationRecord
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
     ary = case name
           when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-            [:gp, "GPF#{year}", true]
+            [:gp, "GPF#{year}", :isu]
           when /^ISU GP/
-            [:gp, "GP#{country_city}#{year}", true]
+            [:gp, "GP#{country_city}#{year}", :isu]
           when /Olympic/
-            [:olympic, "OLYMPIC#{year}", true]
+            [:olympic, "OLYMPIC#{year}", :isu]
           when /^ISU World Figure/, /^ISU World Championships/
-            [:world, "WORLD#{year}", true]
+            [:world, "WORLD#{year}", :isu]
           when /^ISU Four Continents/
-            [:fcc, "FCC#{year}", true]
+            [:fcc, "FCC#{year}", :isu]
           when /^ISU European/
-            [:euro, "EURO#{year}", true]
+            [:euro, "EURO#{year}", :isu]
           when /^ISU World Team/
-            [:team, "TEAM#{year}", true]
+            [:team, "TEAM#{year}", :isu]
           when /^ISU World Junior/
-            [:jworld, "JWORLD#{year}", true]
+            [:jworld, "JWORLD#{year}", :isu]
           when /^ISU JGP/, /^ISU Junior Grand Prix/
-            [:jgp, "JGP#{country_city}#{year}", true]
+            [:jgp, "JGP#{country_city}#{year}", :isu]
             
           when /^Finlandia Trophy/
-            [:challenger, "FINLANDIA#{year}", false]
+            [:finlandia, "FINLANDIA#{year}", :challenger]
           when /Warsaw Cup/
-            [:challenger, "WARSAW#{year}", false]
+            [:warshaw, "WARSAW#{year}", :challenger]
           when /Autumn Classic/
-            [:challenger, "ACI#{year}", false]
+            [:aci, "ACI#{year}", :challenger]
           when /Nebelhorn/
-            [:challenger, "NEBELHORN#{year}", false]
+            [:nebelhorn, "NEBELHORN#{year}", :challenger]
           when /Lombardia/
-            [:challenger, "LOMBARDIA#{year}", false]
+            [:lombaridia, "LOMBARDIA#{year}", :challenger]
           when /Ondrej Nepela/
-            [:challenger, "NEPELA#{year}", false]
+            [:nepela, "NEPELA#{year}", :challenger]
           else
-            [:unknown, name.to_s.gsub(/\s+/, '_'), false]
+            [:unknown, name.to_s.gsub(/\s+/, '_'), :unknown]
           end
     self.competition_type ||= ary[0]   # if competition_type.blank?
     self.short_name ||= ary[1] # if short_name.blank?
-    self.isu_championships ||= ary[2] # if isu_championships.blank? # TODO
+    #self.isu_championships ||= ary[2] # if isu_championships.blank? # TODO
+    self.competition_class ||= ary[2]
     self
   end
   

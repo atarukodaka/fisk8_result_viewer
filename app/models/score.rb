@@ -14,6 +14,12 @@ class Score < ApplicationRecord
   def competition_name
     competition.name
   end
+  def competition_class
+    competition.competition_class
+  end
+  def competition_type
+    competition.competition_type
+  end
   def season
     competition.season
   end
