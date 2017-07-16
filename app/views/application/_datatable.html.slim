@@ -11,6 +11,12 @@ script
   | );
   | });
 
+script
+  | jQuery(function($){
+  | $("td.skater_name_").mouseover(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', 'orange')});
+  | $("td.skater_name_").mouseout(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', '')});
+  | });
+     
 /script
   | var v = $('#site_url').val();
   | jQuery(function($){$("##{table_id}").DataTable({"processing":true,"filter":true,"columns":[{"data":"short_name"},{"data":"name"},{"data":"site_url"},{"data":"city"},{"data":"country"},{"data":"competition_type"},{"data":"season"},{"data":"start_date"},{"data":"end_date"}],"order":[[7,"desc"]],"serverSide":true,"ajax":{"url":"http://192.168.33.10:3000/competitions/list.json?action=index\u0026controller=competitions" }});});
@@ -29,7 +35,8 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - table.data.each do |item|
         tr
           - column_names.each do |key|
-            td= (item.class == Hash) ? item[key.to_sym] : item.send(key)
+            td
+              = (item.class == Hash) ? item[key.to_sym] : item.send(key)
 
 
 

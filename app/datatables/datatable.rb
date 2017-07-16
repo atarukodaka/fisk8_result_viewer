@@ -32,7 +32,8 @@ class Datatable
       order: [],
       columns: column_names.map {|name| {
           data: name,
-          visible: (@hidden_columns.include?(name.to_sym)) ? false : true
+          visible: (@hidden_columns.include?(name.to_sym)) ? false : true,
+          className: name.underscore.downcase
           
         }},
     }
