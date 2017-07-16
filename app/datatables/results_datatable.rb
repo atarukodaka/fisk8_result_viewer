@@ -5,7 +5,7 @@ class ResultsDatatable < IndexDatatable
             :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
             :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
            ]
-    #@hidden_columns = [:competition_type, :competition_class]
+    @hidden_columns = [:competition_type, :competition_class]
     super(data, only: cols)
 
     @table_keys = {

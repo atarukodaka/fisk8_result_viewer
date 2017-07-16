@@ -11,12 +11,11 @@
   /= select_tag_with_options(:competition_name)
   = text_field_tag(:competition_name, params[:competition_name], size: 70, onchange: ajax_search(:competition_name, table))
 
-= form_group("Competition Class / Type") do
+= form_group("Competition Class / Type / Season") do
   label Class
   = select_tag_with_options(:competition_class, onchange: ajax_search(:competition_class, table))
   label Type
   = select_tag_with_options(:competition_type, onchange: ajax_search(:competition_type, table))
-
-
-= form_group("Season", select_tag_with_options(:season, onchange: ajax_search(:season, table)))
+  label Season
+  = select_tag_with_options(:season, onchange: ajax_search(:season, table))
 
