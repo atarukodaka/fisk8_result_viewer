@@ -18,4 +18,5 @@ class ElementDecorator < EntryDecorator
   end
 
   decorate_as_score(:base_value, :goe, :value)
+  decorate_as_score(:avg_value, :avg_base_value, :avg_goe)  
 end

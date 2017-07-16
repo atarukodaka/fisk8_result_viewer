@@ -30,6 +30,4 @@ class ScoreDecorator < EntryDecorator
   def youtube_search
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end
-
-  decorate_as_score(:avg_value, :avg_base_value, :avg_goe)
 end

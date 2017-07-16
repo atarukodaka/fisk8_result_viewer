@@ -1,7 +1,7 @@
 
 - category ||= "MEN"
 - season ||= Competition.recent.first.season
-- competition_class = "isu"
+- competition_class ||= nil
 
 ////////////////////////////////////////////////////////////////
 h2 Statics by Skater
@@ -9,35 +9,40 @@ h2 Statics by Skater
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :filter_form do |f|
   = form_group("Category", select_tag_with_options(:category))
   = form_group("Season", select_tag_with_options(:season, value: params[:season]))  
+  = form_group("Competition Class", select_tag_with_options(:competition_class, value: params[:competition_class]))  
   = form_group(nil, submit_tag("Resfresh", id: :submit, nil: nil))
 
-- scores = Score.joins(:skater, :competition, :elements).where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).group(:skater_id)
+- results = Result.joins(:competition, :skater, :scores).where(category: category, "competitions.season": season)
+- elements = Element.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
+
+- if competition_class
+  - results = results.where("competitions.competition_class": competition_class)
+  - elements = elements.where("competitions.competition_class": competition_class)
+ 
 style
   | .dataTables_filter { visibility:hidden; }
 
 ////////////////////////////////////////////////////////////////
 h3 Highest  Score
-- results = Result.joins(:competition, :skater, :scores).where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).group(:skater_id)
 .row
   .col-sm-4
     h4 Total Score
-    - data = results.select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
+    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
     - cols = [:skater_name_, :max_points]
     = Datatable.new(data, only: cols).render(self)
 
   .col-sm-4
     h4 Base Value
-    - data = results.select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
+    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
     - cols = [:skater_name_, :max_total_bv]
     = Datatable.new(data.decorate, only: cols).render(self)
 
   .col-sm-4
     h4 GOE
-    - data = results.select("skaters.name as skater_name_", "max(total_goe) as max_total_goe").order("max(total_goe) desc")
+    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_goe) as max_total_goe").order("max(total_goe) desc")
     - cols = [:skater_name_, :max_total_goe]
     = Datatable.new(data.decorate, only: cols).render(self)
 
- 
 ////////////////////////////////////////////////////////////////
 
 h3 Average Values
@@ -48,7 +53,7 @@ h3 Average Values
     - [:value, :base_value, :goe].each do |key|
       .col-sm-4
         h4= key.to_s.humanize
-        - data = scores.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}")
+        - data = elements.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}").group(:skater_id)
         - data = data.where("elements.element_type": element_type) if element_type != :all
         - cols = [:skater_name_, "avg_#{key}".to_sym]
         /- data.each do |item|
