@@ -9,6 +9,10 @@
 - category: type: single/couple
 - filter: integer columns use eq i/o match
 - instance_exe: cant have params
+- update: Timeout error:  rescue Errno::ETIMEDOUT
+- update! => udpate
+- order on results/short_tss.... has no table/column
+- competition: add year if not specified.
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -17,9 +21,6 @@
 - app/controller/application_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
-- update: Timeout error
-- update! => udpate
-- order on results/short_tss.... has no table/column
 
 ## 1.0.2-pre1
 - sortable list table
