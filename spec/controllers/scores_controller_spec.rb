@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ScoresController, type: :controller do
-  def expect_to_include_score(score)
-    expect_to_include(score.name)
-  end
 
   render_views
 
@@ -47,11 +44,11 @@ RSpec.describe ScoresController, type: :controller do
   context 'show: ' do
     it {
       get :show, params: { name: world_score.name }
-      expect_to_include_score(world_score)
+      expect_to_include(world_score.name)
     }
     it 'json' do
       get :show, params: { name: world_score.name, format: :json }
-      expect_to_include_score(world_score)
+      expect_to_include(world_score.name)
     end
   end
 end

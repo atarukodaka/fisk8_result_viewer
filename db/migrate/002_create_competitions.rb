@@ -20,6 +20,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     create_table :results do |t|
       #t.string :skater_name
       #t.string :nation
+      t.string :name
       t.integer :isu_number
       t.string :category
       t.integer :ranking

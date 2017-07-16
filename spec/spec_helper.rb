@@ -7,30 +7,29 @@ module Helper
   end
 
   ## filter
-  def expect_filter(obj1, obj2, key)
-    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
-
+  def expect_filter(obj1, obj2, key, column: :name)
     ## only obj1
     get :list, xhr: true, params: {key => obj1.send(key) }
-    expect_to_include(obj1.name)
-    expect_not_to_include(obj2.name)
+    expect_to_include(obj1.send(column))
+    expect_not_to_include(obj2.send(column))
 
     get :list, xhr: true, params: filter_params(key, obj1.send(key))
-    expect_to_include(obj1.name)
-    expect_not_to_include(obj2.name)
+    expect_to_include(obj1.send(column))
+    expect_not_to_include(obj2.send(column))
 
     ## only obj2
     get :list, xhr: true, params: {key => obj2.send(key) }
-    expect_to_include(obj2.name)
-    expect_not_to_include(obj1.name)
+    expect_to_include(obj2.send(column))
+    expect_not_to_include(obj1.send(column))
 
     get :list, xhr: true, params: filter_params(key, obj2.send(key))
-    expect_to_include(obj2.name)
-    expect_not_to_include(obj1.name)
+    expect_to_include(obj2.send(column))
+    expect_not_to_include(obj1.send(column))
   end 
   ## order
-  def expect_order(obj1, obj2, key)
-    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map(&:name)
+  def expect_order(obj1, obj2, key, column: :name)
+    
+    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(column)}
 
     get :list, xhr: true, params: sort_params(key, 'asc')
     expect(names.first).to appear_before(names.last)
