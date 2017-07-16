@@ -16,7 +16,7 @@ class ResultsDatatable < IndexDatatable
       season: "competitions.season",
       skater_name: "skaters.name",
       nation: "skaters.nation",
-      
+
     }
     add_filters(:name, :competition_name, :skater_name, operator: :matches)
     add_filters(:category, :nation, :season, :competition_class, :competition_type)

@@ -17,6 +17,9 @@
 - app/controller/application_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+- update: Timeout error
+- update! => udpate
+- order on results/short_tss.... has no table/column
 
 ## 1.0.2-pre1
 - sortable list table

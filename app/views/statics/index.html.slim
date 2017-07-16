@@ -4,7 +4,7 @@
 - competition_class ||= nil
 
 ////////////////////////////////////////////////////////////////
-h2 Statics by Skater
+h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
 
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :filter_form do |f|
   = form_group("Category", select_tag_with_options(:category))
@@ -14,11 +14,12 @@ h2 Statics by Skater
 
 - results = Result.joins(:competition, :skater, :scores).where(category: category, "competitions.season": season)
 - elements = Element.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
-
+- components = Component.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
 - if competition_class
   - results = results.where("competitions.competition_class": competition_class)
   - elements = elements.where("competitions.competition_class": competition_class)
- 
+  - components = components.where("competitions.competition_class": competition_class) 
+
 style
   | .dataTables_filter { visibility:hidden; }
 
@@ -60,3 +61,24 @@ h3 Average Values
           - item["avg_#{key}"] = "%.2f" % item["avg_#{key}"]
         = Datatable.new(data.decorate, only: cols).render(self)
 
+////////////////////////////////////////////////////////////////
+h3 Components Scores
+
+- pcs_abbr = [:Total, :SS, :TR, :CO, :PE, :IN]
+.row
+  - [0, 1, 2,].each do |num|
+    .col-sm-4
+      h3= pcs_abbr[num]
+      - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
+      - data = data.where(number: num) if num > 0
+      - cols = [:skater_name_, :avg_value]
+      = Datatable.new(data.decorate, only: cols).render(self)
+
+.row
+  - [3, 4, 5,].each do |num|
+    .col-sm-4
+      h3= pcs_abbr[num]
+      - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
+      - data = data.where(number: num) if num > 0
+      - cols = [:skater_name_, :avg_value]
+      = Datatable.new(data.decorate, only: cols).render(self)
