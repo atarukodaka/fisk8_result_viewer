@@ -24,7 +24,7 @@ class Score < ApplicationRecord
     competition.season
   end
   def skater_name
-    skater.name
+    self[:skater_name] || skater.name
   end
   def nation
     skater.nation

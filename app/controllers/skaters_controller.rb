@@ -1,4 +1,6 @@
 class SkatersController < ApplicationController
+  include Listable
+  
   def get_skater
     Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) || 

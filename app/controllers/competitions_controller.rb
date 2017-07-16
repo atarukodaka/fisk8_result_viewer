@@ -1,4 +1,6 @@
 class CompetitionsController < ApplicationController
+  include Listable
+  
   using SortWithPreset
   include Contracts
   def competition_info(competition)

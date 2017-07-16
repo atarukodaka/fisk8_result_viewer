@@ -34,6 +34,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :statics, only: :index
+  
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number
     resources :competitions, only: [:index, :show], param: :short_name

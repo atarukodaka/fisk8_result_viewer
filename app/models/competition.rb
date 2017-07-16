@@ -8,8 +8,8 @@ class Competition < ApplicationRecord
 
   ## scopes
   scope :recent, ->(){ order("start_date desc")  }
-  scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
-  scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
+  #scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
+  #scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
 
   ## entries
   def categories
@@ -25,7 +25,6 @@ class Competition < ApplicationRecord
       clean
       
       ## parse
-      #attrs = [:site_url, :name, :city, :country, :start_date, :end_date, :season, ]
       parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url)
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
@@ -39,10 +38,10 @@ class Competition < ApplicationRecord
       ## categories
       parsed[:categories].each do |category, cat_item|
         next unless Category.accept?(category)
-        Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |cr_parsed|
-          results.create!(category: category) do |cr|
-            cr.update!(cr_parsed)
-            puts cr.summary
+        Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
+          results.create!(category: category) do |result|
+            result.update!(result_parsed)
+            puts result.summary
           end
         end
         
@@ -55,7 +54,6 @@ class Competition < ApplicationRecord
                 cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
                 cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
                 raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-                      
               score.attributes = {
                 result: relevant_cr,
                 skater: relevant_cr.skater,
@@ -67,6 +65,17 @@ class Competition < ApplicationRecord
           end
         end # segments
       end # categories
+      ## udpate total_bv for results
+      
+      ActiveRecord::Base.transaction {
+        results.each do |result|
+          result.total_bv = 0
+          result.scores.each do |score|
+            result.total_bv += score.base_value
+          end
+          result.save!
+        end
+      }
       self
     end # transaction
   end # udpate
@@ -113,7 +122,6 @@ class Competition < ApplicationRecord
           end
     self.competition_type ||= ary[0]   # if competition_type.blank?
     self.short_name ||= ary[1] # if short_name.blank?
-    #self.isu_championships ||= ary[2] # if isu_championships.blank? # TODO
     self.competition_class ||= ary[2]
     self
   end

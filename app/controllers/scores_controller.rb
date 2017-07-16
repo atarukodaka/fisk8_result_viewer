@@ -1,4 +1,6 @@
 class ScoresController < ApplicationController
+  include Listable
+  
   def score_summary(score)
     Listtable.new(score.decorate, only: [:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
 

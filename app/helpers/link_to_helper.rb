@@ -1,6 +1,14 @@
 module LinkToHelper
-  def link_to_skater(text = nil, skater, params: {})
-    link_to(text || skater[:name], skater_path(skater[:isu_number] || skater[:name]), params)
+=begin
+  def link_to_skater_by_isu_number(text = nil, isu_number, params: {})
+    link_to(text || isu_number, skater_path(isu_number), params)
+  end
+=end
+  def link_to_skater(text = nil, skater, name: nil, isu_number: nil, params: {})
+    isu_number ||= skater[:isu_number]
+    name ||= skater[:name]
+    text ||= name
+    link_to(text, skater_path(isu_number || name), params)
   end
 
   def link_to_competition(text = nil, competition, category: nil, segment: nil)

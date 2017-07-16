@@ -20,7 +20,6 @@
 
 ## 1.0.2-pre1
 - sortable list table
-- refine for to_direction and seniorize
 - sitemap
 - ajax support
 - sort in list table
@@ -39,7 +38,9 @@
 - dattatable1.10
 - Category: accept
 - bretel for breadcrumb
-- category results controller added
+- results controller added
+- competition_class i/o isu_championships
+- category_results to results
 
 ## 1.0.1 2017/6/25
 

@@ -1,4 +1,4 @@
-module IndexAction
+module Listable
   ## routed actions
   def list
     render json: create_datatable(serverside: true)

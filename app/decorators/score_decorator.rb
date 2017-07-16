@@ -8,8 +8,11 @@ class ScoreDecorator < EntryDecorator
   def result_pdf
     h.link_to_pdf(model.result_pdf)
   end
+  def isu_number
+    h.link_to(model.name, skater_path(isu_number))
+  end
   def skater_name
-    h.link_to_skater(model.skater)
+    h.link_to_skater(nil, model.skater, name: model[:skater_name], isu_number: model[:isu_number])
   end
   def competition_name
     h.link_to_competition(model.competition)
