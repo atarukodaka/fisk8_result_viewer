@@ -2,13 +2,12 @@
 
 - table_id = table.table_id
 - column_names = table.column_names
-- settings = table.table_settings
 - decorate ||= false
 
 script
   | jQuery(function($){
   | $("##{table_id}").DataTable(
-  = settings.to_json.html_safe
+  = table.settings.to_json.html_safe
   | );
   | });
 
@@ -23,7 +22,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless settings[:ajax]
+    - unless table.settings[:ajax]
       - table.data.each do |item|
         tr
           - column_names.each do |key|

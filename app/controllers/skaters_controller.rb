@@ -47,9 +47,7 @@ class SkatersController < ApplicationController
           score_graphs: score_graphs,
           skater_info: skater_info.decorate,
           record_summary: record_summary,
-          #competition_results: competition_results.extend(Datatable::Decorate),
-          competition_results: competition_results,
-          #competition_results: competition_results.set_manipulator(->(r){ r.decorate}),
+          competition_results: competition_results.decorate,
         }
       }
       format.json {

@@ -13,7 +13,8 @@ module Datatable::Serverside
   #
   include Datatable::Params
   include Datatable::TableKeys
-
+  include Datatable::Manipulatable
+  
   def manipulate(data)
     super(data).where(filter_sql).order(order_sql).page(page).per(per)
     #super(data).page(page).per(per)

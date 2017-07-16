@@ -1,34 +1,30 @@
-class Datatable < Listtable
+class Datatable 
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
   # in view,
   #
-  # = Datatable.new(User.all, [:name, :address]).render(self)
+  # = Datatable.new(User.all).render(self)
   #
   # for server-side ajax,
   #
-  # = Datatable.new(User.all, [:name, :address], settings: { server-side: true,
-  #       ajax: users_list_path})
+  # = Datatable.new(User.all, settings: { server-side: true, ajax: users_list_path})
   #
   #attr_accessor :rows, :columns, :settings, :order, :manipulator
-  attr_accessor :collection, :settings, :order, :manipulator
+  attr_accessor :columns, :data, :settings
 
-  #def initialize(rows, columns, settings: {}) # , manipulators: [])
-  def initialize(collection, only: nil, settings: {})
-    #@columns = (columns.class == Array) ? Columns.new(columns) : columns
-    #@columns = columns || []
-    #@rows = rows
-    @settings = settings
-    @order ||= []
-    super(collection, only: only)
-    yield(self) if block_given?  # TODO: in Listtable?
+  prepend Datatable::Manipulatable
+  prepend Datatable::Decoratable
+
+  
+  def initialize(data, only: nil, settings: {})   ## TODO: except
+    @data = data
+    @columns = (only) ? only : data.column_names
+    @settings = default_settings.merge(settings)
+    yield(self) if block_given?
   end
-  def collection
-    manipulate(@collection)
-  end
-  def decorate
-    set_manipulator(->(r){ r.decorate } )
+  def column_names
+    @columns.map(&:to_s)
   end
   def render(view, partial: "datatable", locals: {}, settings: {})
     self.settings.update(settings)
@@ -38,12 +34,16 @@ class Datatable < Listtable
     "table_#{self.object_id}"
   end
   # settings
-  def table_settings
+  def default_settings
     {
       processing: true,
       filter: true,
+      order: [],
       columns: column_names.map {|name| {data: name}},
-    }.merge(settings)
+    }
+  end
+  def table_settings
+    default_settings.merge(@settings)    
   end
   def add_settings(hash)
     hash.each do |key, value|
@@ -53,8 +53,16 @@ class Datatable < Listtable
   end
   ################
   ## output format
+  def limitted_data
+    data.limit(1000)
+  end
   def as_json(opts={})
-    data.limit(1000).as_json(only: columns)
+    #imitted_data.as_json(only: columns)
+    limitted_data.map do |item|
+      column_names.map do |column|
+        item.send(column)
+      end
+    end
 =begin
     rows.limit(1000).map do |item|
       column_names.map do |col_name|
