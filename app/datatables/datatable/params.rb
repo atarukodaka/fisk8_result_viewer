@@ -4,7 +4,7 @@ module Datatable::Params
   #
   # usage:
   #
-  #   Datatable.new(User.all, [:name, :address]).extend(Datatable::Params).add_params(params)
+  #   Datatable.new(User.all).extend(Datatable::Params).add_params(params)
   #
   attr_writer :params
   def params

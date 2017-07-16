@@ -13,9 +13,8 @@ class Datatable
   #attr_accessor :rows, :columns, :settings, :order, :manipulator
   attr_accessor :columns, :data, :settings
 
-  prepend Datatable::Manipulatable
-  prepend Datatable::Decoratable
-
+  prepend Datatable::Manipulatable    # use pretend to override data()
+  include Datatable::Decoratable
   
   def initialize(data, only: nil, settings: {})   ## TODO: except
     @data = data

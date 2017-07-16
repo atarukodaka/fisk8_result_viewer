@@ -18,7 +18,7 @@ class IndexDatatable < Datatable
     self
   end
   def add_filter(column, operator: :eq, &block)
-    key = table_keys(column)
+    key = table_key(column)
     if block_given?
       @filters[column] = block
     else
