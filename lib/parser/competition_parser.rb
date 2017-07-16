@@ -2,7 +2,6 @@ class Parser
   class CompetitionParser
 
     include Utils
-    include Contracts
 
     def parse_competition(url)
       page = get_url(url)
@@ -44,7 +43,7 @@ class Parser
     ################################################################
     protected
     # return true if mmddyyyy format
-    Contract Array => Bool
+
     def mdy_date_format?(ary_datestr)
       dates = []
       ary_datestr.each do |datestr|
@@ -60,7 +59,6 @@ class Parser
       raise if dates.empty?
       return (dates.max - dates.min > 3600 * 24 * 10) ? true : false
     end
-    Contract String, KeywordArgs[mdy_format: Bool] => Time
     def parse_datetime(str, mdy_format: false)
       begin
         Time.zone ||= "UTC"
@@ -103,8 +101,10 @@ class Parser
         end
         #segment = trim(row.xpath("td[2]").text).upcase
         segment = row.xpath("td[2]").text.squish.upcase
+
         next if category.blank? && segment.blank?
-        
+        next if (segment.blank?) && ((row.xpath("td[4]").text =~ /result/i ) == nil) # TODO
+          
         result_url = row.xpath("td[4]//a/@href").text
         score_url = row.xpath("td[5]//a/@href").text
         

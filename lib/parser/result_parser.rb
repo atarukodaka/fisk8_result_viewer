@@ -2,9 +2,7 @@ class Parser
   class ResultParser
 
     include Utils
-    include Contracts
 
-    Contract String, String => Array
     def parse_results(url)
       begin
         page = get_url(url, read_option: 'r:iso-8859-1')
@@ -54,7 +52,7 @@ class Parser
 
       fpl.first.xpath("../../tr")
     end
-    Contract Nokogiri::XML::Element => Hash
+    
     def get_column_numbers(row)
       col_num = {}
       row.xpath("th").each_with_index do |header, i|
