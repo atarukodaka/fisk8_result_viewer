@@ -41,7 +41,7 @@ end
 ################
 # category results
 crumb :results do
-  link "Category Results", results_path
+  link "Results", results_path
   parent :root
 end
 
