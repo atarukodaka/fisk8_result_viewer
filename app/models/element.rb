@@ -60,8 +60,10 @@ class Element < ApplicationRecord
         end
       else
         case name
-        when /St/, /ChSq/
+        when /St/
           :step
+        when /ChSq/
+          :choreo
         when /Tw/ # /[1-4]A?Tw/, /[1-4]LzTw/
           :twist_lift
         when /Li/  # /[1-5][ABTSR]?Li/, /StaLi/, /SlLi/, /CuLi/, /RoLi/   # pair
@@ -94,6 +96,8 @@ class Element < ApplicationRecord
       when :step
         name =~ /([B1-4])*$/
         $1.to_i
+      when :choreo
+        1  # TODO for icedance ??
       end
     self
   end
