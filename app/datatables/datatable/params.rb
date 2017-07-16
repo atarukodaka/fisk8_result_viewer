@@ -6,15 +6,7 @@ module Datatable::Params
   #
   #   Datatable.new(User.all).extend(Datatable::Params).add_params(params)
   #
-  #include Property
+  extend Property
 
-  #property :params
-  #attr_writer :params
-  def params
-    @params ||= {}
-  end
-  def set_params(prm)   # method chain
-    @params = prm
-    self
-  end
+  property :params, {}
 end

@@ -4,11 +4,11 @@ class ScoresController < ApplicationController
 
   end
   def elements_datatable(score)
-    Datatable.new(score.elements, only: [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value], settings: {paging: false, info: false})
+    Datatable.new(score.elements, only: [:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])
   end
 
   def components_datatable(score)
-    Datatable.new(score.components, only: [:number, :name, :factor, :judges, :value], settings: {paging: false, info: false, searching: false})
+    Datatable.new(score.components, only: [:number, :name, :factor, :judges, :value])
   end
   def show
     score = Score.find_by(name: params[:name]) ||

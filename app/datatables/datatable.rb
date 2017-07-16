@@ -10,16 +10,20 @@ class Datatable
   #
   # = Datatable.new(User.all, settings: { server-side: true, ajax: users_list_path})
   #
-  #attr_accessor :rows, :columns, :settings, :order, :manipulator
-  attr_accessor :columns, :data, :settings
 
+  #attr_accessor :columns, :data, :settings
+  extend Property
+
+  properties :columns, :data, :settings
+  
   prepend Datatable::Manipulatable    # use pretend to override data()
   include Datatable::Decoratable
   
-  def initialize(data, only: nil, settings: {})   ## TODO: except
+  #def initialize(data, only: nil, settings: {})   ## TODO: except
+  def initialize(data, only: nil)   ## TODO: except
     @data = data
-    @columns = (only) ? only : data.column_names
-    @settings = default_settings.merge(settings)
+    @columns = (only) ? only : data.column_names.map(&:to_sym)
+    @settings = default_settings
     yield(self) if block_given?
   end
   def column_names

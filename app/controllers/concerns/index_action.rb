@@ -15,7 +15,7 @@ module IndexAction
           },
         }
         render :index, locals: {
-          table: table.add_settings(serverside_settings)
+          table: table.settings(serverside_settings)
         }
       }
       format.json { render json: table   }
@@ -29,7 +29,7 @@ module IndexAction
     klass = "#{controller_name.camelize}Datatable".constantize
     table = klass.new do |obj|
       yield obj if block_given?
-    end.set_params(params)
+    end.params(params)
     #(serverside) ? table.extend(Datatable::Serverside).set_params(params) : table
     (serverside) ? table.extend(Datatable::Serverside) : table
   end
