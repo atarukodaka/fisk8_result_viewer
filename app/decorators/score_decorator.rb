@@ -30,4 +30,6 @@ class ScoreDecorator < EntryDecorator
   def youtube_search
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end
+
+  decorate_as_score :max_tss
 end

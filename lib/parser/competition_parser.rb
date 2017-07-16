@@ -5,7 +5,7 @@ class Parser
 
     def parse_competition(url)
       page = get_url(url)
-      end
+
       city, country = parse_city_country(page)
       competition = {
         name: parse_name(page),

@@ -13,10 +13,14 @@ h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
   = form_group(nil, submit_tag("Resfresh", id: :submit, nil: nil))
 
 - results = Result.joins(:competition, :skater, :scores).where(category: category, "competitions.season": season)
+- short_scores = Score.joins(:competition, :skater).where(category: category, "competitions.season": season).where("segment like ?", "SHORT%")
+- free_scores = Score.joins(:competition, :skater).where(category: category, "competitions.season": season).where("segment like ?", "FREE%")
 - elements = Element.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
 - components = Component.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
 - if competition_class
   - results = results.where("competitions.competition_class": competition_class)
+  - short_scores = short_scores.where("competitions.competition_class": competition_class)
+  - free_scores = free_scores.where("competitions.competition_class": competition_class)
   - elements = elements.where("competitions.competition_class": competition_class)
   - components = components.where("competitions.competition_class": competition_class) 
 
@@ -24,14 +28,28 @@ style
   | .dataTables_filter { visibility:hidden; }
 
 ////////////////////////////////////////////////////////////////
+hr
 h3 Highest  Score
 .row
   .col-sm-4
     h4 Total Score
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
     - cols = [:skater_name_, :max_points]
-    = Datatable.new(data, only: cols).render(self)
+    = Datatable.new(data.decorate, only: cols).render(self)
 
+  .col-sm-4
+    h4 Short
+    - data = short_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
+    - cols = [:skater_name_, :max_tss]
+    = Datatable.new(data.decorate, only: cols).render(self)
+
+  .col-sm-4
+    h4 Free
+    - data = free_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
+    - cols = [:skater_name_, :max_tss]
+    = Datatable.new(data.decorate, only: cols).render(self)
+
+.row
   .col-sm-4
     h4 Base Value
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
@@ -46,6 +64,7 @@ h3 Highest  Score
 
 ////////////////////////////////////////////////////////////////
 
+hr
 h3 Average Values
 
 - [:all, :jump, :spin, :step].each do |element_type|
@@ -62,6 +81,7 @@ h3 Average Values
         = Datatable.new(data.decorate, only: cols).render(self)
 
 ////////////////////////////////////////////////////////////////
+hr
 h3 Components Scores
 
 - pcs_abbr = [:Total, :SS, :TR, :CO, :PE, :IN]
