@@ -10,11 +10,10 @@ class IndexDatatable < Datatable
   def initialize(*args)
     super(*args)
     @filters ||= {}
-    @order ||= []
   end
 
   def add_filters(*keys, operator: :eq)
-    [*keys].flatten.each {|key| add_filter(key)}
+    [*keys].flatten.each {|key| add_filter(key, operator: operator)}
     self
   end
   def add_filter(column, operator: :eq, &block)
