@@ -12,6 +12,6 @@ class CompetitionsDatatable < IndexDatatable
     
     add_filter(:name, operator: :matches)
     add_filters(:site_url, :competition_type, :season)
-    add_settings(order: [[cols.index(:start_date), :desc]])
+    update_settings(order: [[cols.index(:start_date), :desc]])
   end
 end

@@ -25,6 +25,6 @@ class ComponentsDatatable < IndexDatatable
       c.where(create_arel_table_by_operator(Component, :value, params[:value_operator], v))
     end
     
-    add_settings(order: [[cols.index(:value), :desc]])
+    update_settings(order: [[cols.index(:value), :desc]])
   end
 end

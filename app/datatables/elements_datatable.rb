@@ -31,6 +31,6 @@ class ElementsDatatable < IndexDatatable
     add_filter(:goe) do |c, v|
       c.where(create_arel_table_by_operator(Element, :goe, params[:goe_operator], v))
     end
-    add_settings(order: [[cols.index(:value), :desc]])
+    update_settings(order: [[cols.index(:value), :desc]])
   end
 end

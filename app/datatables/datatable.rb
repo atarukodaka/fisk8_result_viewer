@@ -23,7 +23,7 @@ class Datatable
   def initialize(data, only: nil)   ## TODO: except
     @data = data
     @columns = (only) ? only : data.column_names.map(&:to_sym)
-    @settings = default_settings
+    #@settings = default_settings
     yield(self) if block_given?
   end
   def column_names
@@ -36,7 +36,7 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
-  # settings
+  ################
   def default_settings
     {
       processing: true,
@@ -45,15 +45,10 @@ class Datatable
       columns: column_names.map {|name| {data: name}},
     }
   end
-  def table_settings
-    default_settings.merge(@settings)    
+  def settings
+    default_settings.merge(@settings || {})
   end
-  def add_settings(hash)
-    hash.each do |key, value|
-      settings[key] = value
-    end
-    self
-  end
+
   ################
   ## output format
   def limitted_data

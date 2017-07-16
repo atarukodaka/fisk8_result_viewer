@@ -19,6 +19,6 @@ class ScoresDatatable < IndexDatatable
     add_filters(:name, :competition_name, :skater_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
 
-    add_settings(order: [[cols.index(:date), :desc]])
+    update_settings(order: [[cols.index(:date), :desc]])
   end
 end

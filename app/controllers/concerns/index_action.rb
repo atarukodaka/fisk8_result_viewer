@@ -15,7 +15,7 @@ module IndexAction
           },
         }
         render :index, locals: {
-          table: table.settings(serverside_settings)
+          table: table.update_settings(serverside_settings)
         }
       }
       format.json { render json: table   }
