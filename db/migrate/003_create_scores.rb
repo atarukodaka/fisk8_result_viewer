@@ -29,13 +29,14 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.integer :number
       t.string :name
       t.string :element_type
+      t.integer :level
       t.string :info
       t.float :base_value
       t.string :credit
       t.float :goe
       t.string :judges
       t.float :value
-
+      
       t.belongs_to :score
     end
 

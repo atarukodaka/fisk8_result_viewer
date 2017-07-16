@@ -4,7 +4,7 @@ class ElementsDatatable < IndexDatatable
 
     cols = [:score_name, :competition_name, :category, :segment, :date, :season,
             :ranking, :skater_name, :nation,
-            :number, :name, :element_type, :credit, :info, :base_value, :goe, :judges, :value,]
+            :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
 
     super(data, only: cols)
     @table_keys = {

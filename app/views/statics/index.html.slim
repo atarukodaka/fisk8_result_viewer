@@ -66,9 +66,22 @@ h3 Average Values
         - data = elements.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}").group(:skater_id)
         - data = data.where("elements.element_type": element_type) if element_type
         - cols = [:skater_name_, "avg_#{key}".to_sym]
-        /- data.each do |item|
-          - item["avg_#{key}"] = "%.2f" % item["avg_#{key}"]
         = Datatable.new(data.decorate, only: cols).render(self)
+
+////////////////////////////////////////////////////////////////
+h3 Levels
+
+.row
+  - [:spin, :step].each do |element_type|
+    .col-sm-6
+      h4= element_type.to_s.humanize
+      - key = "level"
+      - data = elements.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}").group(:skater_id)
+      - data = data.where("elements.element_type": element_type) if element_type
+      - data = data.where.not("elements.name like ? ", "Ch%") if element_type == :step
+      - cols = [:skater_name_, "avg_#{key}".to_sym]
+      = Datatable.new(data.decorate, only: cols).render(self)
+
 
 ////////////////////////////////////////////////////////////////
 hr

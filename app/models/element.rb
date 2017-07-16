@@ -35,7 +35,7 @@ class Element < ApplicationRecord
   scope :recent, ->{ joins(:score).order("scores.date desc") }
 
   ## callbacks
-  before_save :set_element_type
+  before_save :set_element_type, :set_level
   
   private
   def set_element_type
@@ -78,6 +78,22 @@ class Element < ApplicationRecord
         else
           :unknown
         end
+      end
+    self
+  end
+  def set_level
+    self.level =
+      case element_type.to_sym
+      when :spin
+        tmp = name
+        tmp.sub!(/\*$/, '')
+        tmp.sub!(/[Vv][12]?$/, '')
+        tmp.sub!(/Sp[23]p/, 'Sp')
+        tmp =~ /Sp([B1-4])/
+        $1.to_i
+      when :step
+        name =~ /([B1-4])*$/
+        $1.to_i
       end
     self
   end

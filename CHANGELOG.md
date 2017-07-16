@@ -5,8 +5,8 @@
 - update: Timeout error:  rescue Errno::ETIMEDOUT
 - order on results/short_tss.... has no table/column
   result to have short_*, free_\*
-- elememts: level
 - normalize competition name
+- spec: statics
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -39,6 +39,7 @@
 - results controller added
 - competition\_class i/o isu_championships
 - category_results to results
+- elememts: level
 
 ## 1.0.1 2017/6/25
 

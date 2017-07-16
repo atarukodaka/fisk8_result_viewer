@@ -17,6 +17,6 @@ class ElementDecorator < EntryDecorator
     "%s %s%s (%.2f=%.2f+%.2f)" % [ model.name, model.credit, model.info, model.value, model.base_value, model.goe]
   end
 
-  decorate_as_score(:base_value, :goe, :value)
-  decorate_as_score(:avg_value, :avg_base_value, :avg_goe)  
+  decorate_as_score(:base_value, :goe, :value, :level)
+  decorate_as_score(:avg_value, :avg_base_value, :avg_goe, :avg_level)  
 end
