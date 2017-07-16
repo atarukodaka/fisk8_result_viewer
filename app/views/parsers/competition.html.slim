@@ -24,7 +24,7 @@ ul
     = category
 
   ul
-    - result_parser = Parsers.parser(:category_result, parser_type)
+    - result_parser = Parsers.parser(:result, parser_type)
     - result_parser.parse(category_url).each do |result|
       li= "%<ranking>d: %<skater_name>s [%<nation>s]: %<points>.2f: %<short_ranking>d / %<free_ranking>d" % result
 

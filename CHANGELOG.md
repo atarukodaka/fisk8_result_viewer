@@ -1,6 +1,6 @@
 ## TODO
 - isu championship to take out?
-- category_results => results ?
+- results => results ?
 - update spec: quite dputs
 - rspec: rake filenames
 - rspec: update: force
@@ -39,6 +39,7 @@
 - dattatable1.10
 - Category: accept
 - bretel for breadcrumb
+- category results controller added
 
 ## 1.0.1 2017/6/25
 

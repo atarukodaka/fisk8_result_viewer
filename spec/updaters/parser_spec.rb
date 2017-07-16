@@ -41,7 +41,7 @@ describe 'parser', parser: true do
   describe 'competition category result' do
     subject (:result) {
       url = 'http://www.isuresults.com/results/season1617/gpjpn2016/CAT001RS.HTM'
-      parser = Fisk8Viewer::Parser::CategoryResultParser.new
+      parser = Fisk8Viewer::Parser::ResultParser.new
       parser.parse(url).select {|e| e[:ranking] == 1 }.first
     }
 
@@ -86,7 +86,7 @@ describe 'parser', parser: true do
   describe 'competition category result' do
     subject (:result) {
       url = 'http://www.isuresults.com/results/season1617/gpjpn2016/CAT001RS.HTM'
-      parser = Fisk8Viewer::Parser::CategoryResultParser.new
+      parser = Fisk8Viewer::Parser::ResultParser.new
       parser.parse(url).select {|e| e[:ranking] == 1 }.first
     }
     it { expect(result[:skater_name]).to eq('Yuzuru HANYU') }

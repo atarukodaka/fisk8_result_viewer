@@ -36,12 +36,22 @@ crumb :competition_segment do |competition, category, segment|
   link segment, competition_path(competition.short_name, category: category, segment: segment)
   parent :competition_category, competition, category
 end
+
+
+################
+# category results
+crumb :results do
+  link "Category Results", results_path
+  parent :root
+end
+
 ################
 # scores
 crumb :scores do
-  link "Scores", scores_path
+  link "scores", scores_path
   parent :root
 end
+
 
 crumb :score do | score|
   link [score.competition_name, score.category, score.segment, score.ranking, score.skater_name].join(' / '), scores_path

@@ -1,6 +1,6 @@
 class Skater < ApplicationRecord
   ## relations
-  has_many :category_results
+  has_many :results
   has_many :scores
   has_many :elements, through: :scores
   has_many :components, through: :scores

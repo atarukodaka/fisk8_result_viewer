@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     get '(/:category(/:segment))', action: :show, on: :member, as: ''
   end
 
+  resources :results, only: [:index], param: :name do
+    get :list, on: :collection
+  end
+  
   resources :scores, only: [:index, :show], param: :name do
     get :list, on: :collection
   end

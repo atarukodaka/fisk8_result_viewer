@@ -8,7 +8,7 @@ class SkatersController < ApplicationController
     Listtable.new(skater, only: [:name, :nation, :isu_number, :category])
   end
   def record_summary_datatable(skater)
-    cr = skater.category_results
+    cr = skater.results
     hash = {
       highest_score: cr.maximum(:points),
       number_of_competitions_participated: cr.count,
@@ -20,7 +20,7 @@ class SkatersController < ApplicationController
   end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-    Datatable.new(skater.category_results.recent.includes(:competition, :scores), only: columns)
+    Datatable.new(skater.results.recent.includes(:competition, :scores), only: columns)
   end
   def create_graphs(skater)    
     skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|

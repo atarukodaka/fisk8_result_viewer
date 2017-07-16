@@ -5,7 +5,7 @@ class Score < ApplicationRecord
 
   belongs_to :competition
   belongs_to :skater
-  belongs_to :category_result, required: false
+  belongs_to :result, required: false
 
   ## validations
   validates  :date, presence: true

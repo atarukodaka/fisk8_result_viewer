@@ -2,7 +2,7 @@ class Parsers
   class IsuGeneric
     class CompetitionParser < Parser::CompetitionParser
     end
-    class CategoryResultParser < Parser::CategoryResultParser
+    class ResultParser < Parser::ResultParser
     end
   end
 end

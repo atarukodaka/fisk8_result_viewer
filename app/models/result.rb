@@ -1,4 +1,4 @@
-class CategoryResult < ApplicationRecord
+class Result < ApplicationRecord
   ## relations
   has_many :scores
   
@@ -8,6 +8,9 @@ class CategoryResult < ApplicationRecord
   ## methods
   def competition_name
     competition.name
+  end
+  def season
+    competition.season
   end
   def skater_name
     skater.name
@@ -34,6 +37,9 @@ class CategoryResult < ApplicationRecord
   def short_deductions
     short.try(:deductions)
   end
+  def short_base_value
+    short.try(:base_value)
+  end
   def free
     #scores.where("scores.segment like ?", 'FREE%').first
     scores.second
@@ -50,7 +56,9 @@ class CategoryResult < ApplicationRecord
   def free_deductions
     free.try(:deductions)
   end
-  
+  def free_base_value
+    free.try(:base_value)
+  end
   ## scopes
   scope :recent, ->{ joins(:competition).order("competitions.start_date desc") }
   scope :category, ->(cat) { where(category: cat) }

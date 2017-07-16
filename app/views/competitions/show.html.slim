@@ -1,5 +1,5 @@
 // locals: competition, category, segment, category_summaries
-//   optional: category_results (only when 'category' specified)
+//   optional: results (only when 'category' specified)
 /              segment_scores (only when 'segment' specified)
 
 - content_for :title do
@@ -59,7 +59,7 @@ h2
 // nav bar
 .nav
   ul.nav.nav-tabs
-    - competition.category_results.pluck(:category).uniq.each do |c|
+    - competition.results.pluck(:category).uniq.each do |c|
       - category_active = (category == c) ? "active" : ""
       li class="#{category_active}"
         =link_to_competition(competition, category: c)

@@ -6,8 +6,8 @@ RSpec.describe CompetitionsController, type: :controller do
   let!(:world) {
     skater = create(:skater)
     competition = create(:competition)
-    cr = competition.category_results.create(skater: skater, category: "MEN", ranking: 1)
-    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, category_result: cr)
+    cr = competition.results.create(skater: skater, category: "MEN", ranking: 1)
+    score = competition.scores.create(skater: skater, category: "MEN", segment: "SHORT", ranking: 1, result: cr)
     competition
   }
   let!(:score){

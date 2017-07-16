@@ -77,7 +77,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     def expect_same_skater(url, category, ranking)
       Category.accept!(category)
       competition = Competition.create(site_url: url).update!
-      cr = competition.category_results.find_by(category: category, ranking: ranking)
+      cr = competition.results.find_by(category: category, ranking: ranking)
       expect(cr.skater).to eq(cr.short.skater)
       expect(cr.skater).to eq(cr.free.skater)      
     end
@@ -99,7 +99,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
       Category.accept!("JUNIOR LADIES")
       Competition.create(site_url: url).update!
-      expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
+      expect(Competition.find_by(site_url: url).results.where(category: "JUNIOR LADIES").count).to be >= 0
     end
     it 'parses unicode (fin2014)' do
       url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
@@ -114,7 +114,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
       Category.accept!("PAIRS")
       Competition.create(site_url: url).update!
-      expect(Competition.find_by(site_url: url).category_results.where(category: "PAIRS").count).to be_zero
+      expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
     it 'raises socket error' do
         url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'

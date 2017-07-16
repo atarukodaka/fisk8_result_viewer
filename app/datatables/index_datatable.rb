@@ -5,7 +5,7 @@ class IndexDatatable < Datatable
   include Datatable::Params
   include Datatable::TableKeys
 
-  property :filters
+  property :filters, []
   
   def add_filters(*columns, operator: :eq)
     [*columns].flatten.each {|column| add_filter(column, operator: operator)}

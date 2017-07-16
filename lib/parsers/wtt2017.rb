@@ -91,14 +91,14 @@ class Parsers
       end
       # rubocop:enable all
     end  ##
-    class CategoryResultParser < IsuGeneric::CategoryResultParser
+    class ResultParser < IsuGeneric::ResultParser
       def parse_skater_name(v)
         v.xpath('a/text()').map(&:text).join(' / ').tr("\u00a0", ' ')
       end
       def parse_nation(v)
         v.delete("\u00a0")
       end
-      def parse_category_results(url)
+      def parse_results(url)
         page = get_url(url)
         page.encoding = 'iso-8859-1'
         page.xpath("//table[1]/tr")[1..-1].map do |row|
@@ -111,7 +111,7 @@ class Parsers
           }
         end
       end
-      alias :parse :parse_category_results
+      alias :parse :parse_results
     end
   end ## class Wtt2017
 end

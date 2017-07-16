@@ -1,11 +1,11 @@
 class Parser
-  class CategoryResultParser
+  class ResultParser
 
     include Utils
     include Contracts
 
     Contract String, String => Array
-    def parse_category_results(url)
+    def parse_results(url)
       begin
         page = get_url(url, read_option: 'r:iso-8859-1')
       rescue OpenURI::HTTPError
@@ -45,7 +45,7 @@ class Parser
         data
       end ## rows.each
     end ## def
-    alias :parse :parse_category_results
+    alias :parse :parse_results
     ################################################################
     protected
     def get_rows(page)

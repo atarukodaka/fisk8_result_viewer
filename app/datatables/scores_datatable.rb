@@ -1,11 +1,11 @@
 class ScoresDatatable < IndexDatatable
   def initialize
-    collection = Score.includes(:competition, :skater).references(:competition, :skater).all
+    data = Score.includes(:competition, :skater).references(:competition, :skater).all
     cols = [:name, :competition_name, :category, :segment, :season, :date,
             :result_pdf, :ranking, :skater_name, :nation,
             :tss, :tes, :pcs, :deductions, :base_value
            ]
-    super(collection, only: cols)
+    super(data, only: cols)
       
     @table_keys = {
       name: "scores.name",

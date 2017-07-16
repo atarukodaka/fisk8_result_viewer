@@ -54,7 +54,7 @@ end
 
 
 FactoryGirl.define do
-  factory :category_result do
+  factory :result do
     category "MEN"
     ranking 1
     points 300
