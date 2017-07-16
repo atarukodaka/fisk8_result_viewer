@@ -70,8 +70,10 @@ class Competition < ApplicationRecord
       ActiveRecord::Base.transaction {
         results.each do |result|
           result.total_bv = 0
+          result.total_goe = 0
           result.scores.each do |score|
             result.total_bv += score.base_value
+            result.total_goe += score.elements.map(&:goe).sum
           end
           result.save!
         end

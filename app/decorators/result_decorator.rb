@@ -35,8 +35,10 @@ class ResultDecorator < EntryDecorator
   def free_tss
     h.link_to_score(model.free_tss.as_score, model.free)
   end
-
+  
   decorate_as_score(:free_pcs, :free_deductions, :free_bv)
   decorate_as_score(:total_bv)
+  decorate_as_score(:max_total_bv, :max_total_goe)  # for statics
+  
 end
 

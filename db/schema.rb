@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "short_ranking"
     t.integer "free_ranking"
     t.float "total_bv"
+    t.float "total_goe"
     t.integer "competition_id"
     t.integer "skater_id"
     t.index ["competition_id"], name: "index_results_on_competition_id"
