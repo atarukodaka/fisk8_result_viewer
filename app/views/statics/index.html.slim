@@ -11,19 +11,8 @@ h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
   = form_group("Category", select_tag_with_options(:category))
   = form_group("Season", select_tag_with_options(:season, value: params[:season]))  
   = form_group("Competition Class", select_tag_with_options(:competition_class, value: params[:competition_class]))  
-  = form_group(nil, submit_tag("Resfresh", id: :submit, nil: nil))
+  = form_group(nil, submit_tag("Resfresh", id: :submit, name: nil))
 
-- results = Result.joins(:competition, :skater, :scores).where(category: category, "competitions.season": season)
-- short_scores = Score.joins(:competition, :skater).where(category: category, "competitions.season": season).where("segment like ?", "SHORT%")
-- free_scores = Score.joins(:competition, :skater).where(category: category, "competitions.season": season).where("segment like ?", "FREE%")
-- elements = Element.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
-- components = Component.joins(score: [:skater, :competition, :elements]).where("scores.category": category, "competitions.season": season)
-- if competition_class
-  - results = results.where("competitions.competition_class": competition_class)
-  - short_scores = short_scores.where("competitions.competition_class": competition_class)
-  - free_scores = free_scores.where("competitions.competition_class": competition_class)
-  - elements = elements.where("competitions.competition_class": competition_class)
-  - components = components.where("competitions.competition_class": competition_class) 
 
 style
   | .dataTables_filter { visibility:hidden; }
@@ -68,14 +57,14 @@ h3 Highest  Score
 hr
 h3 Average Values
 
-- [:all, :jump, :spin, :step].each do |element_type|
-  h3= element_type.to_s.pluralize.humanize
+- [nil, :jump, :spin, :step].each do |element_type|
+  h4= (element_type) ? element_type.to_s.pluralize.humanize : "All Element Type"
   .row
     - [:value, :base_value, :goe].each do |key|
       .col-sm-4
-        h4= key.to_s.humanize
+        h5= key.to_s.humanize
         - data = elements.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}").group(:skater_id)
-        - data = data.where("elements.element_type": element_type) if element_type != :all
+        - data = data.where("elements.element_type": element_type) if element_type
         - cols = [:skater_name_, "avg_#{key}".to_sym]
         /- data.each do |item|
           - item["avg_#{key}"] = "%.2f" % item["avg_#{key}"]
@@ -89,7 +78,7 @@ h3 Components Scores
 .row
   - [0, 1, 2,].each do |num|
     .col-sm-4
-      h3= pcs_abbr[num]
+      h4= pcs_abbr[num]
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
       - cols = [:skater_name_, :avg_value]
@@ -98,7 +87,7 @@ h3 Components Scores
 .row
   - [3, 4, 5,].each do |num|
     .col-sm-4
-      h3= pcs_abbr[num]
+      h4= pcs_abbr[num]
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
       - cols = [:skater_name_, :avg_value]

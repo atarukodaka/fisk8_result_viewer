@@ -1,18 +1,12 @@
 ## TODO
-- isu championship to take out?
-- results => results ?
 - update spec: quite dputs
-- rspec: rake filenames
-- rspec: update: force
-- category_summary => category_segments ??
 - options sort_with_preset using Category
-- category: type: single/couple
-- filter: integer columns use eq i/o match
-- instance_exe: cant have params
+- category: type: single/couple ?
 - update: Timeout error:  rescue Errno::ETIMEDOUT
-- update => udpate
 - order on results/short_tss.... has no table/column
-- competition: add year if not specified.
+  result to have short_*, free_\*
+- elememts: level
+- normalize competition name
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -43,7 +37,7 @@
 - Category: accept
 - bretel for breadcrumb
 - results controller added
-- competition_class i/o isu_championships
+- competition\_class i/o isu_championships
 - category_results to results
 
 ## 1.0.1 2017/6/25

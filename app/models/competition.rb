@@ -29,7 +29,7 @@ class Competition < ApplicationRecord
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
 
-      set_short_name
+      normalize_name
       self.country ||= CityCountry.find_by(city: city).try(:country)
       save!
       puts "*" * 100
@@ -84,48 +84,49 @@ class Competition < ApplicationRecord
 
   ################
   private
-  def set_short_name
+  def normalize_name
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
     ary = case name
           when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-            [:gp, "GPF#{year}", :isu]
+            [:isu, :gp, "GPF#{year}"]
           when /^ISU GP/
-            [:gp, "GP#{country_city}#{year}", :isu]
+            [:isu, :gp, "GP#{country_city}#{year}"]
           when /Olympic/
-            [:olympic, "OLYMPIC#{year}", :isu]
+            [:isu, :olympic, "OLYMPIC#{year}"]
           when /^ISU World Figure/, /^ISU World Championships/
-            [:world, "WORLD#{year}", :isu]
+            [:isu, :world, "WORLD#{year}", "ISU World Championships #{year}"]
           when /^ISU Four Continents/
-            [:fcc, "FCC#{year}", :isu]
+            [:isu, :fcc, "FCC#{year}", "ISU Four Continents Championships #{year}"]
           when /^ISU European/
-            [:euro, "EURO#{year}", :isu]
+            [:isu, :euro, "EURO#{year}", "ISU European Championships #{year}"]
           when /^ISU World Team/
-            [:team, "TEAM#{year}", :isu]
+            [:isu, :team, "TEAM#{year}"]
           when /^ISU World Junior/
-            [:jworld, "JWORLD#{year}", :isu]
+            [:isu, :jworld, "JWORLD#{year}"]
           when /^ISU JGP/, /^ISU Junior Grand Prix/
-            [:jgp, "JGP#{country_city}#{year}", :isu]
+            [:isu, :jgp, "JGP#{country_city}#{year}"]
             
           when /^Finlandia Trophy/
-            [:finlandia, "FINLANDIA#{year}", :challenger]
+            [:challenger, :finlandia, "FINLANDIA#{year}", "Finlandia Trophy #{year}"]
           when /Warsaw Cup/
-            [:warshaw, "WARSAW#{year}", :challenger]
+            [:challenger, :warshaw, "WARSAW#{year}", "Warsaw Cup #{year}"]
           when /Autumn Classic/
-            [:aci, "ACI#{year}", :challenger]
+            [:challenger, :aci, "ACI#{year}"]
           when /Nebelhorn/
-            [:nebelhorn, "NEBELHORN#{year}", :challenger]
+            [:challenger, :nebelhorn, "NEBELHORN#{year}", "Nebelhorn Trophy #{year}"]
           when /Lombardia/
-            [:lombaridia, "LOMBARDIA#{year}", :challenger]
+            [:challenger, :lombaridia, "LOMBARDIA#{year}", "Lombardia Trophy #{year}"]
           when /Ondrej Nepela/
-            [:nepela, "NEPELA#{year}", :challenger]
+            [:challenger, :nepela, "NEPELA#{year}", "Nebelhorn Trophy #{year}"]
           else
-            [:unknown, name.to_s.gsub(/\s+/, '_'), :unknown]
+            [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
           end
-    self.competition_type ||= ary[0]   # if competition_type.blank?
-    self.short_name ||= ary[1] # if short_name.blank?
-    self.competition_class ||= ary[2]
+    self.competition_class ||= ary[0]
+    self.competition_type ||= ary[1]   # if competition_type.blank?
+    self.short_name ||= ary[2] # if short_name.blank?
+    self.name = ary[3] if ary[3]
+    
     self
   end
-  
 end
