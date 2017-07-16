@@ -18,7 +18,10 @@ class CompetitionsController < ApplicationController
     case result_type(category, segment)
     when :category
       Datatable.new(competition.results.category(category).includes(:skater, :scores),
-                    only: [:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :free_ranking, :free_tss])
+                    only: [:ranking, :skater_name, :nation, :points,
+                           :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value,
+                           :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,])
+
     when :segment
       Datatable.new(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater, :elements, :components),
                     only: [:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,])
