@@ -30,9 +30,8 @@ class Competition < ApplicationRecord
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
 
-
       set_short_name
-      self.country ||= CityCountry.find_by(name: city).try(:country)
+      self.country ||= CityCountry.find_by(city: city).try(:country)
       save!
       puts "*" * 100
       puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys
