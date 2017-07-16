@@ -20,7 +20,7 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
-  def update!
+  def update
     ActiveRecord::Base.transaction do
       clean
       
@@ -40,7 +40,7 @@ class Competition < ApplicationRecord
         next unless Category.accept?(category)
         Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
           results.create!(category: category) do |result|
-            result.update!(result_parsed)
+            result.update(result_parsed)
             puts result.summary
           end
         end
@@ -59,7 +59,7 @@ class Competition < ApplicationRecord
                 skater: relevant_cr.skater,
                 date: seg_item[:date],
               }
-              score.update!(sc_parsed)
+              score.update(sc_parsed)
               puts score.summary
             end
           end

@@ -50,7 +50,7 @@ class Datatable
   ################
   ## output format
   def limitted_data
-    data.limit(1000)
+    data.limit(10000)
   end
   def as_json(opts={})
     #imitted_data.as_json(only: columns)
@@ -63,7 +63,7 @@ class Datatable
   def to_csv(opt={})
     require 'csv'
     CSV.generate(headers: column_names, write_headers: true) do |csv|
-      data.limit(1000).each do |row|
+      limitted_data.each do |row|
         csv << column_names.map {|k| row.send(k)}
       end
     end

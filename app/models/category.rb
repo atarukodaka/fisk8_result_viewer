@@ -50,7 +50,7 @@ class Category < ActiveHash::Base
     ActiveRecord::Base.transaction do
       parser.parse_skaters(name, isu_bio_url).each do |hash|
         Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-          skater.update!(hash)
+          skater.update(hash)
         end
       end
     end  # transaction

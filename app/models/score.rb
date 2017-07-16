@@ -44,7 +44,7 @@ class Score < ApplicationRecord
   scope :segment, ->(s){ where(segment: s) }
 
   ##
-  def update!(parsed)
+  def update(parsed)
     attrs = self.class.column_names.map(&:to_sym) & parsed.keys
     self.attributes = parsed.slice(*attrs)
     set_score_name

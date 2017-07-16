@@ -10,7 +10,7 @@
 - filter: integer columns use eq i/o match
 - instance_exe: cant have params
 - update: Timeout error:  rescue Errno::ETIMEDOUT
-- update! => udpate
+- update => udpate
 - order on results/short_tss.... has no table/column
 - competition: add year if not specified.
 
