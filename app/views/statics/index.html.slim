@@ -1,58 +1,52 @@
+
 - category ||= "MEN"
 - season ||= "2016-17"
 - competition_class = "isu"
+
+////////////////////////////////////////////////////////////////
+h2 Statics by Skater
 
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :filter_form do |f|
   = form_group("Category", select_tag_with_options(:category))
   = form_group("Season", select_tag_with_options(:season))  
   = form_group(nil, submit_tag("Resfresh", id: :submit, nil: nil))
 
-- results = Result.includes(:competition, :skater, :scores).where(category: category, "competitions.competition_class": competition_class).group(:skater_id).limit(100)
-
+- results = Result.includes(:competition, :skater, :scores).where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).group(:skater_id)
+- scores = Score.joins(:skater, :competition, :elements).where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).group(:skater_id)
 style
   | .dataTables_filter { visibility:hidden; }
 
-h2 Statics by Skater
+////////////////////////////////////////////////////////////////
+h3 Highest  Score
+.row
+  .col-sm-6
+    h4 Total Score
+    - data = results.order("points desc")
+    - cols = [:skater_name, :points, :ranking, :short_ranking, :free_ranking]
+    = Datatable.new(data, only: cols).render(self)
 
-h3 Highest Total Score
+  .col-sm-6
+    h4 Base Value
+    - data = results.order("total_bv desc").group(:skater_id)
 
-- data = results.order("points desc")
-- cols = [:skater_name, :competition_name, :points, :ranking, :short_ranking, :free_ranking]
-= Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:skater_name, :total_bv]
+    - data.each do |item|
+      - item[:total_bv] = "%.2f" % item[:total_bv]
 
-h3 Base Value
-
-- data = Result.includes(:competition, :skater).where(category: category, "competitions.competition_class": competition_class).order("total_bv desc").group(:skater_id)
-
-- cols = [:skater_name, :competition_name, :total_bv]
-
-= Datatable.new(data.decorate, only: cols).render(self)
+    = Datatable.new(data, only: cols).render(self)
 
  
 ////////////////////////////////////////////////////////////////
-h3 Base Value by type
-- scores = Score.where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).joins(:competition, :elements, :skater).group(:skater_id).order("avg(elements.base_value) desc").select("skater_id, skaters.name as skater_name, skaters.isu_number as isu_number, avg(elements.base_value) as avg_base_value")
-.row
-  - [nil, :jump, :spin, :step].each do |element_type|
-    .col-sm-3
-      h4= (element_type) ? element_type.to_s.pluralize.humanize : "All"
 
-      - data = (element_type) ? scores.where("elements.element_type": element_type) : scores
-      - cols = [:skater_name, :avg_base_value]
-      - data.each do |item|
-        - item[:avg_base_value] = "%.2f" % item[:avg_base_value]
-      = Datatable.new(data, only: cols).render(self)
+- [:jump, :spin, :step].each do |element_type|
+  h3= element_type.to_s.pluralize.humanize
+  .row
+    - [:value, :base_value, :goe].each do |key|
+      .col-sm-4
+        h4= key.to_s.humanize
+        - data = scores.order("avg(elements.#{key}) desc").select("skaters.name as skater_name, avg(elements.#{key}) as avg_#{key}").where("elements.element_type": element_type)
+        - cols = [:skater_name, "avg_#{key}".to_sym]
+        - data.each do |item|
+          - item["avg_#{key}"] = "%.2f" % item["avg_#{key}"]
+        = Datatable.new(data, only: cols).render(self)
 
-////////////////////////////////////////////////////////////////
-h3 Average GOE
-- scores = Score.where(category: category, "competitions.competition_class": competition_class, "competitions.season": season).joins(:competition, :elements, :skater).group(:skater_id).order("avg(elements.goe) desc").select("skater_id, skaters.name as skater_name, skaters.isu_number as isu_number, avg(elements.goe) as avg_goe")
-.row
-  - [nil, :jump, :spin, :step].each do |element_type|
-    .col-sm-3
-      h4= (element_type) ? element_type.to_s.pluralize.humanize : "All"
-
-      - data = (element_type) ? scores.where("elements.element_type": element_type) : scores
-      - cols = [:skater_name, :avg_goe]
-      - data.each do |item|
-        - item[:avg_goe] = "%.2f" % item[:avg_goe]
-      = Datatable.new(data, only: cols).render(self)
