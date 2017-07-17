@@ -41,6 +41,7 @@ RSpec.describe ComponentsController, type: :controller do
 
 
     context 'sort:' do
+#      "#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
       attrs.each do |key|
         it key do
           expect_order(short_ss, free_tr, key)

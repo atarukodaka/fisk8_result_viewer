@@ -15,6 +15,7 @@ class Datatable
   extend Property
 
   properties :columns, :data, :settings
+  property :hidden_columns, []
   
   prepend Datatable::Manipulatable    # use pretend to override data()
   include Datatable::Decoratable
@@ -23,7 +24,7 @@ class Datatable
     @data = data
     @columns = (only) ? only : data.column_names.map(&:to_sym)
     @settings ||= {}
-    @hidden_columns ||= []
+    #@hidden_columns ||= []
     yield(self) if block_given?
   end
   def default_settings
@@ -33,7 +34,7 @@ class Datatable
       order: [],
       columns: column_names.map {|name| {
           data: name,
-          visible: (@hidden_columns.include?(name.to_sym)) ? false : true,
+          visible: (hidden_columns.include?(name.to_sym)) ? false : true,
 #          className: name.underscore.downcase
           
         }},

@@ -34,7 +34,7 @@ RSpec.describe ElementsController, type: :controller do
         expect_to_include(elem.name)
       end
     end
-    attrs = [:competition_name, :category, :segment, :season, :skater_name, :nation, :name]  ## MEMO: integer columns doesnt work for filter param
+    attrs = [:competition_name, :category, :segment, :season, :skater_name, :name]  ## MEMO: integer columns doesnt work for filter param
     context "filter" do
       context 'filter' do
         attrs.each do |key|
@@ -67,6 +67,7 @@ RSpec.describe ElementsController, type: :controller do
 =end
     end
     context 'sort:' do
+      #      "#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
       attrs.each do |key|
         it key do
           expect_order(elem4T3T, elem3Lz, key)

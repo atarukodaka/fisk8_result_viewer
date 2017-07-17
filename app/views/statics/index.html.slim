@@ -4,6 +4,9 @@
 
 - breadcrumb :statics
 
+- content_for :title do
+  = controller_name
+
 script
   | jQuery(function($){
   | $("td").mouseover(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', 'lightyellow')});

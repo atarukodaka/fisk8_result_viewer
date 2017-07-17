@@ -31,15 +31,13 @@ module Property
       self
     end
 
-=begin
     define_method("add_#{sym}") do |*args|
       variable_name = "@#{sym.to_sym}"
-      value = instance_variable_get(variable_name) || {}  # TODO: check if array
-      value << args.first
-      instance_variable_set(variable_name, value)
+      value = instance_variable_get(variable_name) || []  # TODO: check if array
+      value << [*args]
+      instance_variable_set(variable_name, value.flatten)
       self
     end
-=end
   end
   def properties(*syms)
     [*syms].flatten.each {|sym| property sym }

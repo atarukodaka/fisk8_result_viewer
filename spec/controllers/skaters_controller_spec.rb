@@ -39,7 +39,8 @@ RSpec.describe SkatersController, type: :controller do
       end
     end
     context 'sort: ' do
-      attrs.each do |key|
+      "#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
+        .column_names.each do |key|
         it key do
           expect_order(men_skater, ladies_skater, key)
         end

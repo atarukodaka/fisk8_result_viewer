@@ -6,11 +6,11 @@ RSpec.describe ResultsController, type: :controller do
   let!(:men_skater) { create(:skater) }
   let!(:ladies_skater) { create(:skater, :ladies) }
   let!(:world_result) {
-    create(:competition).results.create(category: "MEN",ranking: 1, skater: men_skater)
+    create(:competition).results.create(category: "MEN",ranking: 1, skater: men_skater, points: 300, short_ranking: 1, free_ranking: 1)
   }
 
   let!(:finlandia_result){
-    create(:competition, :finlandia).results.create(category: "LADIES", ranking: 2, skater: ladies_skater)
+    create(:competition, :finlandia).results.create(category: "LADIES", ranking: 2, skater: ladies_skater, points: 200, short_ranking: 2, free_ranking: 2)
   }
 
   context 'index: ' do
@@ -34,7 +34,8 @@ RSpec.describe ResultsController, type: :controller do
       end
     end
     context 'sort: ' do
-      attrs.each do |key|
+      datatable ="#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
+      datatable.column_names.each do |key|
         it key do
           expect_order(world_result, finlandia_result, key, column: :competition_name)
         end

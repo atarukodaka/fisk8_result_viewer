@@ -1,6 +1,6 @@
 class ResultsDatatable < IndexDatatable
   def initialize
-    data = Result.includes(:competition, :skater).references(:competition, :skater).all
+    data = Result.includes(:competition, :skater, :scores).references(:competition, :skater).all
     cols = [:competition_name, :competition_class, :competition_type, :category, :season,
             :ranking, :skater_name, :nation, :points,
             :short_ranking,
@@ -8,9 +8,9 @@ class ResultsDatatable < IndexDatatable
             :free_ranking,
 #            :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
            ]
-    @hidden_columns = [:competition_type, :competition_class]
-    super(data, only: cols)
 
+    super(data, only: cols)
+    add_hidden_columns(:competition_type, :competition_class)
     @table_keys = {
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
@@ -19,6 +19,7 @@ class ResultsDatatable < IndexDatatable
       season: "competitions.season",
       skater_name: "skaters.name",
       nation: "skaters.nation",
+      ranking: "results.ranking",
 
     }
     add_filters(:name, :competition_name, :skater_name, operator: :matches)
