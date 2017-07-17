@@ -11,9 +11,7 @@ module Datatable::Serverside
   #
   #  note that you need to pass params into the table instance.
   #
-  #include Datatable::TableKeys
-  include Datatable::Manipulatable
-  
+  ####
   def manipulate(data)
     super(data).where(filter_sql).order(order_sql).page(page).per(per)
   end

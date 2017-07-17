@@ -13,11 +13,11 @@ class Datatable
 
   extend Property
 
-  properties :columns, :data
+  properties :columns
   properties :params, :settings, :table_keys, default: {}
   property :hidden_columns, []
   
-  prepend Datatable::Manipulatable    # use pretend to override data()
+  #prepend Datatable::Manipulatable    # use pretend to override data()
   include Datatable::Decoratable
   
   def initialize(data, only: nil)   ## TODO: except
@@ -38,6 +38,22 @@ class Datatable
         }},
     }
   end
+  ################
+  ## data manipulation
+  def data
+    @manipulated_data ||= manipulate(@data)
+  end
+  def manipulate(data)
+    manipulators.reduce(data){|d, m| m.call(d)}
+  end
+  def manipulators
+    @manipulators ||= []
+  end
+  def add_manipulator(f)
+    manipulators << f
+    self
+  end
+
   def settings
     default_settings.merge(@settings)
   end
