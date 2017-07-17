@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SkatersController, type: :controller do
+RSpec.describe StaticsController, type: :controller do
   render_views
 
   it do

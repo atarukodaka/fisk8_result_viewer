@@ -55,7 +55,7 @@ class Datatable
   end
 
   def settings
-    default_settings.merge(@settings)
+    default_settings.merge(@settings || {})
   end
   def column_names
     @columns.map(&:to_s)
