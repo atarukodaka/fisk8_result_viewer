@@ -6,10 +6,10 @@ class ScoresDatatable < IndexDatatable
             :result_pdf, :ranking, :skater_name, :nation,
             :tss, :tes, :pcs, :deductions, :base_value
            ]
-    @hidden_columns = [:competition_type, :competition_class]
     super(data, only: cols)
-      
-    @table_keys = {
+    
+    self.hidden_columns = [:competition_type, :competition_class]      
+    self.table_keys = {
       name: "scores.name",
       category: "scores.category",
       competition_name: "competitions.name",

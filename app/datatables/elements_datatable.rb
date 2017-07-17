@@ -6,9 +6,10 @@ class ElementsDatatable < IndexDatatable
             :skater_name,
             :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
 
-    @hidden_columns = [:category, :segment, :competition_name, :season]
+
     super(data, only: cols)
-    @table_keys = {
+    self.hidden_columns = [:category, :segment, :competition_name, :season]
+    self.table_keys = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",

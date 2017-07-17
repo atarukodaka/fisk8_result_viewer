@@ -8,7 +8,7 @@ class Datatable
   #
   # for server-side ajax,
   #
-  # = Datatable.new(User.all, settings: { server-side: true, ajax: users_list_path})
+  # = Datatable.new(User.all).update_settings(server-side: true, ajax: users_list_path).render(self)
   #
 
   extend Property

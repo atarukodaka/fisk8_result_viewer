@@ -6,7 +6,7 @@ class ComponentsDatatable < IndexDatatable
             :number, :name, :factor, :judges, :value,]
 
     super(data, only: cols)
-    @table_keys = {
+    self.table_keys = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",
