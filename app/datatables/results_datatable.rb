@@ -22,7 +22,7 @@ class ResultsDatatable < IndexDatatable
       ranking: "results.ranking",
 
     }
-    add_filters(:name, :competition_name, :skater_name, operator: :matches)
+    add_filters(:competition_name, :skater_name, operator: :matches)
     add_filters(:category, :season, :competition_class, :competition_type)
 
     update_settings(order: [[cols.index(:season), :desc]])

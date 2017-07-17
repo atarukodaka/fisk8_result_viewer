@@ -3,6 +3,7 @@
 - category: type: single/couple ?
 - let/context DRA for filter/order
 - hide/show filters
+- results.name nesecarry? ?? : for spec func
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
