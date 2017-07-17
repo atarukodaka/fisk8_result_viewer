@@ -2,10 +2,8 @@ class IndexDatatable < Datatable
   #
   #
   #
-  include Datatable::Params
   include Datatable::TableKeys
 
-  property :table_keys, {}
   property :filters, []
   
   def add_filters(*columns, operator: :eq)

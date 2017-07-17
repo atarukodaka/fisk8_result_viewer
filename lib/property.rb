@@ -39,7 +39,7 @@ module Property
       self
     end
   end
-  def properties(*syms)
-    [*syms].flatten.each {|sym| property sym }
+  def properties(*syms, default: nil)
+    [*syms].flatten.each {|sym| property sym, default }
   end
 end

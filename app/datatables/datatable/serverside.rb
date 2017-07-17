@@ -11,7 +11,6 @@ module Datatable::Serverside
   #
   #  note that you need to pass params into the table instance.
   #
-  include Datatable::Params
   include Datatable::TableKeys
   include Datatable::Manipulatable
   

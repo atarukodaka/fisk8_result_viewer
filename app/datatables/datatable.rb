@@ -11,10 +11,10 @@ class Datatable
   # = Datatable.new(User.all, settings: { server-side: true, ajax: users_list_path})
   #
 
-  #attr_accessor :columns, :data, :settings
   extend Property
 
-  properties :columns, :data, :settings
+  properties :columns, :data
+  properties :params, :settings, :table_keys, default: {}
   property :hidden_columns, []
   
   prepend Datatable::Manipulatable    # use pretend to override data()
@@ -23,8 +23,6 @@ class Datatable
   def initialize(data, only: nil)   ## TODO: except
     @data = data
     @columns = (only) ? only : data.column_names.map(&:to_sym)
-    @settings ||= {}
-    #@hidden_columns ||= []
     yield(self) if block_given?
   end
   def default_settings
