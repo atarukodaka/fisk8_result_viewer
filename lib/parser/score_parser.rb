@@ -5,7 +5,7 @@ class Parser
 
     SCORE_DELIMITER = /Score Score/
 
-    def parse_scores(score_url)
+    def parse(score_url)
       begin
         text = convert_pdf(score_url, dir: "tmp/pdf")
       rescue OpenURI::HTTPError
@@ -20,7 +20,6 @@ class Parser
         end
       end.flatten
     end
-    alias :parse :parse_scores
     ################################################################
     protected
     def parse_score(text)

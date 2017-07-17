@@ -3,7 +3,7 @@ class Parser
 
     include Utils
 
-    def parse_results(url)
+    def parse(url)
       page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
       rows = get_rows(page)
       col_numbers = get_column_numbers(rows[0])
@@ -37,7 +37,6 @@ class Parser
         data
       end ## rows.each
     end ## def
-    alias :parse :parse_results
     ################################################################
     protected
     def get_rows(page)

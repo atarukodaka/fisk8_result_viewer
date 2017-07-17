@@ -1,9 +1,8 @@
 class Parser
   class CompetitionParser
-
     include Utils
 
-    def parse_competition(url)
+    def parse(url)
       page = get_url(url) || return
 
       city, country = parse_city_country(page)
@@ -40,7 +39,6 @@ class Parser
       
       competition
     end
-    alias :parse :parse_competition
     ################################################################
     protected
     # return true if mmddyyyy format
