@@ -2,7 +2,7 @@ class IndexDatatable < Datatable
   #
   #
   #
-  include Datatable::TableKeys
+  #include Datatable::TableKeys
 
   property :filters, []
   
@@ -11,7 +11,7 @@ class IndexDatatable < Datatable
     self
   end
   def add_filter(column, operator: :eq, &block)
-    key = table_key(column.to_sym)
+    key = table_keys[column.to_sym] || column.to_s
     proc =
       if block_given?
         block
