@@ -64,9 +64,9 @@ h3 Average Values
     - [:value, :base_value, :goe].each do |key|
       .col-sm-4
         h5= key.to_s.humanize
-        - data = data.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}, avg(elements.level) as avg_level").group(:skater_id)
+        - data2 = data.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}, avg(elements.level) as avg_level").group(:skater_id)
         - cols = [:skater_name_, "avg_#{key}".to_sym, "avg_level"]
-        = Datatable.new(data.decorate, only: cols).render(self)
+        = Datatable.new(data2.decorate, only: cols).render(self)
 
 ////////////////////////////////////////////////////////////////
 hr
