@@ -117,18 +117,23 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
       Competition.create(site_url: url).update
       expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
-    it 'raises socket error' do
+    it 'rescue socket error' do
         url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
+=begin
       expect {
         Category.accept!("MEN")
         Competition.create(site_url: url).update
       }.to raise_error SocketError
+=end
+      Category.accept!("MEN")
+      expect( Competition.create(site_url: url).update).to be_nil
     end
     
-    it 'raises http error' do
+    it 'rescue http error' do
       url = 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf'
       Category.accept!("MEN")
-      expect { Competition.create(site_url: url).update }.to raise_error OpenURI::HTTPError
+      #expect { Competition.create(site_url: url).update }.to raise_error OpenURI::HTTPError
+      expect( Competition.create(site_url: url).update).to be_nil
     end
   end
 end

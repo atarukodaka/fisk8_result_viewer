@@ -4,7 +4,7 @@ class Parser
     include Utils
 
     def parse_competition(url)
-      page = get_url(url)
+      page = get_url(url) || return
 
       city, country = parse_city_country(page)
       competition = {

@@ -25,7 +25,7 @@ class Competition < ApplicationRecord
       clean
       
       ## parse
-      parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url)
+      parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url).presence || (return nil)
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
 

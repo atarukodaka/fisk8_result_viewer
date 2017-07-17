@@ -4,13 +4,7 @@ class Parser
     include Utils
 
     def parse_results(url)
-      begin
-        page = get_url(url, read_option: 'r:iso-8859-1')
-      rescue OpenURI::HTTPError
-        ##http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
-        Rails.logger.warn("!!! #{url} not found")
-        return []
-      end
+      page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
       rows = get_rows(page)
       col_numbers = get_column_numbers(rows[0])
 
