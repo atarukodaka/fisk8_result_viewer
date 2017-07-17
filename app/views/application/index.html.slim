@@ -7,6 +7,8 @@
 
 h2= controller_name.humanize
 
+= button_tag("show/hide filters", onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
+
 style
   | label { margin-left: 10px; margin-right: 10px; }
   | .dataTables_filter { visibility: hidden; }

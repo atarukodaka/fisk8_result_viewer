@@ -2,6 +2,7 @@
 - update spec: quite dputs
 - category: type: single/couple ?
 - let/context DRA for filter/order
+- hide/show filters
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
