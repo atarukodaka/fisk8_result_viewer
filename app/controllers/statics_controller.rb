@@ -28,3 +28,13 @@ class StaticsController < ApplicationController
     
   end
 end
+
+class StaticsDatatable < Datatable
+  def default_settings
+    super.merge(info: false, pagingType: "simple", lengthChange: false)
+  end
+
+  def render(view, locals: {})
+    super(view, locals: locals.merge(numbering: true))
+  end
+end

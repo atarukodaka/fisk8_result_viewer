@@ -58,6 +58,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     end
 
     it 'parses wtt2017' do
+      Category.accept!("MEN")
       url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
       Competition.create(site_url: url, parser_type: :wtt_2017).update
       

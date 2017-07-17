@@ -1,9 +1,12 @@
 class ResultsDatatable < IndexDatatable
   def initialize
     data = Result.includes(:competition, :skater).references(:competition, :skater).all
-    cols = [:competition_name, :competition_class, :competition_type, :category, :season, :ranking, :skater_name, :nation, :points,
-            :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
-            :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
+    cols = [:competition_name, :competition_class, :competition_type, :category, :season,
+            :ranking, :skater_name, :nation, :points,
+            :short_ranking,
+#            :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
+            :free_ranking,
+#            :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
            ]
     @hidden_columns = [:competition_type, :competition_class]
     super(data, only: cols)

@@ -1,6 +1,6 @@
 class CompetitionsDatatable < IndexDatatable
   def initialize
-    cols = [:name, :site_url, :city, :country, :competition_class, :competition_type, :season, :start_date, :end_date]
+    cols = [:name, :site_url, :city, :country, :competition_class, :competition_type, :season, :start_date]
     super(Competition.all, only: cols)
     
     add_filter(:name, operator: :matches)

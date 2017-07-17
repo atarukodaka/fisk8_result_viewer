@@ -3,9 +3,10 @@ class ElementsDatatable < IndexDatatable
     data = Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
 
     cols = [:score_name, :competition_name, :category, :segment, :date, :season,
-            :ranking, :skater_name, :nation,
+            :skater_name,
             :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
 
+    @hidden_columns = [:category, :segment, :competition_name, :season]
     super(data, only: cols)
     @table_keys = {
       score_name: "scores.name",
@@ -32,5 +33,6 @@ class ElementsDatatable < IndexDatatable
       c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
     end
     update_settings(order: [[cols.index(:value), :desc]])
+
   end
 end

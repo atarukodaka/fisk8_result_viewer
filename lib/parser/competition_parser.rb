@@ -81,7 +81,12 @@ class Parser
       str = (node.present?) ? node.first.text.strip : ""
       if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
         city, country = $1, $2
-        city.sub!(/ *$/, '') if city.present?
+        if city.present?
+          city.sub!(/ *$/, '')
+          city.sub!(/,.*$/, '')
+          city.sub!(/ *\(.*\)$/, '')
+          city.sub!(/ *\/.*$/, '')
+        end
         [city, country]
       else
         [str, nil]  ## to be set in competition.update

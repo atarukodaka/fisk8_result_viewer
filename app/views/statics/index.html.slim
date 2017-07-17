@@ -4,6 +4,12 @@
 
 - breadcrumb :statics
 
+script
+  | jQuery(function($){
+  | $("td").mouseover(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', 'lightyellow')});
+  | $("td").mouseout(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', '')});
+  | });
+
 ////////////////////////////////////////////////////////////////
 h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
 
@@ -15,42 +21,43 @@ h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
 
 
 style
-  | .dataTables_filter { visibility:hidden; }
+  | .dataTables_filter { visibility: hidden; }
 
 ////////////////////////////////////////////////////////////////
+
 hr
 h3 Highest  Score
 .row
   .col-sm-4
     h4 Total Score
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
-    - cols = [:skater_name_, :max_points]
-    = Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:no, :skater_name_, :max_points]
+    = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
   .col-sm-4
     h4 Short
     - data = short_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
-    - cols = [:skater_name_, :max_tss]
-    = Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:no, :skater_name_, :max_tss]
+    = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
   .col-sm-4
     h4 Free
     - data = free_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
-    - cols = [:skater_name_, :max_tss]
-    = Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:no, :skater_name_, :max_tss]
+    = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
 .row
   .col-sm-4
     h4 Base Value
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
-    - cols = [:skater_name_, :max_total_bv]
-    = Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:no, :skater_name_, :max_total_bv]
+    = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
   .col-sm-4
     h4 GOE
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_goe) as max_total_goe").order("max(total_goe) desc")
-    - cols = [:skater_name_, :max_total_goe]
-    = Datatable.new(data.decorate, only: cols).render(self)
+    - cols = [:no, :skater_name_, :max_total_goe]
+    = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
 ////////////////////////////////////////////////////////////////
 
@@ -65,8 +72,8 @@ h3 Average Values
       .col-sm-4
         h5= key.to_s.humanize
         - data2 = data.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}, avg(elements.level) as avg_level").group(:skater_id)
-        - cols = [:skater_name_, "avg_#{key}".to_sym, "avg_level"]
-        = Datatable.new(data2.decorate, only: cols).render(self)
+        - cols = [:no, :skater_name_, "avg_#{key}".to_sym, "avg_level"]
+        = StaticsDatatable.new(data2.decorate, only: cols).render(self)
 
 ////////////////////////////////////////////////////////////////
 hr
@@ -79,8 +86,8 @@ h3 Components Scores
       h4= pcs_abbr[num]
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
-      - cols = [:skater_name_, :avg_value]
-      = Datatable.new(data.decorate, only: cols).render(self)
+      - cols = [:no, :skater_name_, :avg_value]
+      = StaticsDatatable.new(data.decorate, only: cols).render(self)
 
 .row
   - [3, 4, 5,].each do |num|
@@ -88,5 +95,5 @@ h3 Components Scores
       h4= pcs_abbr[num]
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
-      - cols = [:skater_name_, :avg_value]
-      = Datatable.new(data.decorate, only: cols).render(self)
+      - cols = [:no, :skater_name_, :avg_value]
+      = StaticsDatatable.new(data.decorate, only: cols).render(self)

@@ -9,6 +9,7 @@ h2= controller_name.humanize
 
 style
   | label { margin-left: 10px; margin-right: 10px; }
+  | .dataTables_filter { visibility: hidden; }
 
 // filter form
 = form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|
@@ -21,4 +22,4 @@ style
 /  = form_group(nil, submit_tag("Search", id: "submit", name: nil))
 
 // server-side datalist table
-= table.render(self, locals: { decorate: true, server_side: true, paging: true, ajax: url_for(action: :list, format: :json, params: params.permit!)})
+= table.update_settings(pageLength: 20).render(self) 

@@ -15,29 +15,32 @@ class Datatable
   extend Property
 
   properties :columns, :data, :settings
+  
   prepend Datatable::Manipulatable    # use pretend to override data()
   include Datatable::Decoratable
   
-  #def initialize(data, only: nil, settings: {})   ## TODO: except
   def initialize(data, only: nil)   ## TODO: except
     @data = data
     @columns = (only) ? only : data.column_names.map(&:to_sym)
-    #@settings = default_settings
-
-    #@hidden_columns = [:competition_class, :competition_type]
+    @settings ||= {}
     @hidden_columns ||= []
-    @settings = {
+    yield(self) if block_given?
+  end
+  def default_settings
+    {
       processing: true,
       filter: true,
       order: [],
       columns: column_names.map {|name| {
           data: name,
           visible: (@hidden_columns.include?(name.to_sym)) ? false : true,
-          className: name.underscore.downcase
+#          className: name.underscore.downcase
           
         }},
     }
-    yield(self) if block_given?
+  end
+  def settings
+    default_settings.merge(@settings)
   end
   def column_names
     @columns.map(&:to_s)

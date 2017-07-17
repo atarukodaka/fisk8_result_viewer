@@ -1,7 +1,9 @@
 - table || raise
 
-= form_group("Element", text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table)))
-= form_group("perfect match", check_box_tag(:perfect_match, "true", params[:perfect_match].present?))
+= form_group("Element") do
+  = text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table))
+  label perfect match
+  = check_box_tag(:perfect_match, "true", params[:perfect_match].present?)
 = form_group("Type", select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table)))
 
 = form_group("GOE") do
