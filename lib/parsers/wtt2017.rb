@@ -98,7 +98,7 @@ class Parsers
       def parse_nation(v)
         v.delete("\u00a0")
       end
-      def parse_results(url)
+      def parse(url)
         page = get_url(url)
         page.encoding = 'iso-8859-1'
         page.xpath("//table[1]/tr")[1..-1].map do |row|
@@ -111,7 +111,6 @@ class Parsers
           }
         end
       end
-      alias :parse :parse_results
     end
   end ## class Wtt2017
 end

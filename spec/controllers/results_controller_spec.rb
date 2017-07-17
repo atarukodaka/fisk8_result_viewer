@@ -24,10 +24,11 @@ RSpec.describe ResultsController, type: :controller do
       expect_to_include(world_result.competition_name)
     end
 
-    attrs = [:skater_name, :category, :nation, :competition_name, :competition_class, :competition_type, :season]
+    #attrs = [:skater_name, :category, :competition_name, :competition_class, :competition_type, :season]
       
     context 'filter: ' do
-      attrs.each do |key|
+      datatable ="#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new # TODO
+      datatable.filters.map {|d| d[:column]}.each do |key|
         it key do
           expect_filter(world_result, finlandia_result, key, column: :competition_name)
         end

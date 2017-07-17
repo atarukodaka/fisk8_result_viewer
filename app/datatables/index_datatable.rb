@@ -30,8 +30,12 @@ class IndexDatatable < Datatable
     self
   end
   def manipulate(data)
-    filters.reduce(super(data)) do |col, hash|
+    ## filters
+    new_data = filters.reduce(super(data)) do |col, hash|
       (v = params[hash[:column]].presence) ? hash[:proc].call(col, v) : col
     end
+
+    ## offset
+    (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
   end
 end

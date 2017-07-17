@@ -1,7 +1,7 @@
 ## TODO
 - update spec: quite dputs
 - category: type: single/couple ?
-- update: Timeout error:  rescue Errno::ETIMEDOUT
+- let/context DRA for filter/order
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -36,7 +36,9 @@
 - category_results to results
 - elememts: level
 - normalize competition name
-  results have short\_*, free_\*
+- results have short\_*, free_\*
+- update: Timeout error:  rescue Errno::ETIMEDOUT
+- offset for csv/json
 
 ## 1.0.1 2017/6/25
 

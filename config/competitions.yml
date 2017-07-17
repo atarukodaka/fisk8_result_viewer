@@ -100,17 +100,7 @@
 - http://www.isuresults.com/results/season1617/wc2017/
 -
   url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
+  parser: :wtt2017
   comment: "no category results provided"
   
 ## for debug
-- http://www.isuresults.com/results/season1617/wc2017/
-
-- http://www.isuresults.com/results/season1516/gpfra2015/
-- http://www.isuresults.com/results/owg2014/
-- http://pfsa.com.pl/cspol2016/
--
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt_2017
-  comment: "no category results provided"
-- http://www.isuresults.com/results/season1516/fc2016/

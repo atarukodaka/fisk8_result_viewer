@@ -26,7 +26,7 @@ module IndexActions
   ################
   # unrouted methods
   def create_datatable(serverside: false)
-    klass = "#{controller_name.classify}Datatable".constantize
+    klass = "#{controller_name.camelize}Datatable".constantize
     table = klass.new do |obj|
       yield obj if block_given?
     end.params(params)
