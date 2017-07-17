@@ -18,8 +18,6 @@ module FormHelper
     col =
       case key
       when :category
-        #Score.uniq_list(:category).sort_with_preset(["MEN", "LADIES", "PAIRS", "ICE DANCE"])
-
         Score.uniq_list(:category).sort_with_preset(Category.all.map(&:name))
       when :segment
         Score.uniq_list(:segment).sort

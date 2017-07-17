@@ -1,10 +1,7 @@
 ## TODO
 - update spec: quite dputs
-- options sort_with_preset using Category
 - category: type: single/couple ?
 - update: Timeout error:  rescue Errno::ETIMEDOUT
-- order on results/short_tss.... has no table/column
-  result to have short_*, free_\*
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -39,6 +36,7 @@
 - category_results to results
 - elememts: level
 - normalize competition name
+  results have short\_*, free_\*
 
 ## 1.0.1 2017/6/25
 
