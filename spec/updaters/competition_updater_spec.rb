@@ -5,6 +5,9 @@ RSpec.configure do |c|
 end
 
 RSpec.describe 'update competition', type: :competition_updater, updater: true do
+  before {
+    Category.accept_all
+  }
   context 'update' do
     it 'updates wc2017' do
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
@@ -60,7 +63,7 @@ RSpec.describe 'update competition', type: :competition_updater, updater: true d
     it 'parses wtt2017' do
       Category.accept!("MEN")
       url = 'http://www.jsfresults.com/intl/2016-2017/wtt/'
-      Competition.create(site_url: url, parser_type: :wtt_2017).update
+      Competition.create(site_url: url, parser_type: :wtt2017).update
       
       comp = Competition.find_by(site_url: url)
       expect(comp.site_url).to eq(url)

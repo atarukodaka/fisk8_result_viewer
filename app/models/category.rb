@@ -63,6 +63,9 @@ class Category < ActiveHash::Base
       categories = [categories].flatten.map(&:to_s) # set true on the specified categories
       where(name: categories).map {|item| item.accept_to_update = true }
     end
+    def accept_all
+      all.map {|item| item.accept_to_update = true}
+    end
     def accept?(category)
       where(accept_to_update: true, name: category.to_s).present?
     end
