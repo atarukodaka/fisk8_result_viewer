@@ -1,3 +1,3 @@
 class ComponentsController < ApplicationController
-  include Listable
+  include IndexActions
 end

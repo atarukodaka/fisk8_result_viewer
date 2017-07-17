@@ -6,11 +6,11 @@ RSpec.describe ResultsController, type: :controller do
   let!(:men_skater) { create(:skater) }
   let!(:ladies_skater) { create(:skater, :ladies) }
   let!(:world_result) {
-    create(:competition).results.create(category: "MEN",ranking: 1, skater: men_skater, points: 300, short_ranking: 1, free_ranking: 1)
+    create(:competition).results.create(category: "MEN",ranking: 1, skater: men_skater, points: 300, short_ranking: 1, short_tss: 100, short_tes: 50, short_pcs: 50, short_deductions: 0, short_bv: 50, free_ranking: 1, free_tss: 200, free_tes: 100, free_pcs: 100, free_deductions: 0, free_bv: 100, )
   }
 
   let!(:finlandia_result){
-    create(:competition, :finlandia).results.create(category: "LADIES", ranking: 2, skater: ladies_skater, points: 200, short_ranking: 2, free_ranking: 2)
+    create(:competition, :finlandia).results.create(category: "LADIES", ranking: 2, skater: ladies_skater, points: 200, short_ranking: 2, short_tss: 80, short_tes: 40, short_pcs: 40, short_deductions: -1, short_bv: 40, free_ranking: 2, free_tss: 160, free_tes: 80, free_pcs: 80, free_deductions: -1, free_bv: 80, )
   }
 
   context 'index: ' do

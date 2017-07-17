@@ -56,7 +56,7 @@ h2
     | Segment Result of #{category}/#{segment}
 
 ////////////////
-// nav bar
+// nav bar for category/segment
 .nav
   ul.nav.nav-tabs
     - competition.results.pluck(:category).uniq.each do |c|
@@ -73,5 +73,5 @@ h2
 ////////////////////////////////////////////////////////////////
 
 - if result_type != :none
-  = result_datatable.update_settings(paging: false, info: false).decorate.render(self)
+  = results.update_settings(paging: false, info: false).decorate.render(self)
     

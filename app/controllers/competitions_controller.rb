@@ -1,7 +1,6 @@
 class CompetitionsController < ApplicationController
-  include Listable
+  include IndexActions
   
-  using SortWithPreset
   include Contracts
   def competition_info(competition)
     Listtable.new(competition, only: [:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
@@ -44,7 +43,7 @@ class CompetitionsController < ApplicationController
         segment: segment,
         competition_info: competition_info(competition),
         result_type: result_type(category, segment),
-        result_datatable: result_datatable(competition, category, segment),
+        results: result_datatable(competition, category, segment),
       }
 
       format.html {

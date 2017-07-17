@@ -1,3 +1,3 @@
 class ResultsController < ApplicationController
-  include Listable
+  include IndexActions
 end

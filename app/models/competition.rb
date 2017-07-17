@@ -61,12 +61,21 @@ class Competition < ApplicationRecord
               }
               score.update(sc_parsed)
               puts score.summary
+
+              ## update segment details into results
+              segment_type = (segment =~ /SHORT/) ? :short : :free
+              [:tss, :tes, :pcs, :deductions].each do |key|
+                score.result["#{segment_type}_#{key}"] = score[key]
+              end
+              score.result["#{segment_type}_bv"] = score[:base_value]
+              score.result.save
             end
           end
+          
         end # segments
       end # categories
-      ## udpate total_bv for results
       
+      ## udpate total_bv, goe into results
       ActiveRecord::Base.transaction {
         results.each do |result|
           result.total_bv = 0

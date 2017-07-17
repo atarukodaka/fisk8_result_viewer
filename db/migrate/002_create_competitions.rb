@@ -1,5 +1,7 @@
 class CreateCompetitions < ActiveRecord::Migration[5.1]
   def change
+    ################
+    # competitions
     create_table :competitions do |t|
       t.string :short_name
       t.string :name
@@ -16,7 +18,9 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       
       t.string :comment
     end
-    
+
+    ################
+    # results
     create_table :results do |t|
       #t.string :skater_name
       #t.string :nation
@@ -25,11 +29,28 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :category
       t.integer :ranking
       t.float :points
+
+      ## short
       t.integer :short_ranking
+      t.float :short_tss
+      t.float :short_tes
+      t.float :short_pcs
+      t.integer :short_deductions
+      t.float :short_bv
+
+      ## free
       t.integer :free_ranking
+      t.float :free_tss
+      t.float :free_tes
+      t.float :free_pcs
+      t.integer :free_deductions
+      t.float :free_bv
+
+      ## total
       t.float :total_bv
       t.float :total_goe
-      
+
+      ## relations
       t.belongs_to :competition
       t.references :skater
     end

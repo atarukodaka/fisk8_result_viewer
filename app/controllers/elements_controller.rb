@@ -1,3 +1,3 @@
 class ElementsController < ApplicationController
-  include Listable
+  include IndexActions
 end
