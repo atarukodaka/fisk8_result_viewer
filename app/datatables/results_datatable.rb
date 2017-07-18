@@ -1,15 +1,7 @@
 class ResultsDatatable < IndexDatatable
-  def initialize
-    data = Result.includes(:competition, :skater, :scores).references(:competition, :skater).all
-    cols = [:competition_name, :competition_short_name, :competition_class, :competition_type, :category, :season,
-            :ranking, :skater_name, :nation, :points,
-            :short_ranking,
-            :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
-            :free_ranking,
-            :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
-           ]
-
-    super(data, only: cols)
+  def initialize(view=nil)
+    super view
+    
     add_hidden_columns(:competition_name, :competition_type, :competition_class,
                        :short_tes, :short_pcs,
                        :short_deductions, :short_bv,
@@ -17,7 +9,7 @@ class ResultsDatatable < IndexDatatable
                        :free_deductions, :free_bv,
                        )
     
-    @table_keys = {
+    @sources = {
       competition_name: "competitions.name",
       competition_short_name: "competitions.short_name",    
       competition_class: "competitions.competition_class",
@@ -32,7 +24,20 @@ class ResultsDatatable < IndexDatatable
     add_filters(:competition_name, :skater_name, operator: :matches)
     add_filters(:category, :season, :competition_class, :competition_type)
 
-    update_settings(order: [[cols.index(:season), :desc]])
+    update_settings(order: [[columns.index(:season), :desc]])
     
   end
+  def fetch_records
+    Result.includes(:competition, :skater, :scores).references(:competition, :skater).all
+  end
+  def columns
+    [:competition_name, :competition_short_name, :competition_class, :competition_type, :category, :season,
+     :ranking, :skater_name, :nation, :points,
+     :short_ranking,
+     :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
+     :free_ranking,
+     :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
+    ]
+  end
+    
 end

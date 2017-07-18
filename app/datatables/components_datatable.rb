@@ -1,12 +1,8 @@
 class ComponentsDatatable < IndexDatatable
-  def initialize
-    data = Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
-    cols = [:score_name, :competition_name, :category, :segment, :date, :season,
-            :ranking, :skater_name, :nation,
-            :number, :name, :factor, :judges, :value,]
+  def initialize(view=nil)
+    super view
 
-    super(data, only: cols)
-    self.table_keys = {
+    self.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",
@@ -25,6 +21,15 @@ class ComponentsDatatable < IndexDatatable
       c.where(Component.arel_table_by_operator(:value, params[:value_operator], v))
     end
     
-    update_settings(order: [[cols.index(:value), :desc]])
+    update_settings(order: [[columns.index(:value), :desc]])
   end
+  def fetch_records
+    Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+  end
+  def columns
+    
+    [:score_name, :competition_name, :category, :segment, :date, :season,
+     :ranking, :skater_name, :nation,
+     :number, :name, :factor, :judges, :value,]
+  end    
 end

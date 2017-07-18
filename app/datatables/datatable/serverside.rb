@@ -13,11 +13,11 @@ module Datatable::Serverside
   #
   ####
   def manipulate(data)
-    super(data).where(filter_sql).order(order_sql).page(page).per(per)
+    super(data).where(search_sql).order(order_sql).page(page).per(per)
   end
   ################
   ## for search
-  def filter_sql
+  def search_sql
     return "" if params[:columns].blank?
 
     keys = []
@@ -26,7 +26,8 @@ module Datatable::Serverside
       column_name = hash[:data]
       sv = hash[:search][:value].presence || next
 
-      key = table_keys[column_name.to_sym] || column_name
+      #key = table_keys[column_name.to_sym] || column_name
+      key = sources[column_name.to_sym] || column_name
       keys << "#{key} like ? "
       values << "%#{sv}%"
     end
@@ -41,7 +42,8 @@ module Datatable::Serverside
     ary = []
     params[:order].each do |_, hash|   ## params doesnt have map()
       column_name = columns[hash[:column].to_i]
-      key = table_keys[column_name.to_sym] || column_name
+      #key = table_keys[column_name.to_sym] || column_name
+      key = sources[column_name.to_sym] || column_name
       ary << [key, hash[:dir]].join(' ')
     end
     ary

@@ -1,15 +1,9 @@
 class ElementsDatatable < IndexDatatable
-  def initialize
-    data = Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
-
-    cols = [:score_name, :competition_name, :category, :segment, :date, :season,
-            :skater_name,
-            :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
-
-
-    super(data, only: cols)
+  def initialize(view=nil)
+    super view
+    
     self.hidden_columns = [:category, :segment, :competition_name, :season]
-    self.table_keys = {
+    self.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",
@@ -33,7 +27,16 @@ class ElementsDatatable < IndexDatatable
     add_filter(:goe) do |c, v|
       c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
     end
-    update_settings(order: [[cols.index(:value), :desc]])
-
+    update_settings(order: [[columns.index(:value), :desc]])
   end
+
+  def fetch_records
+    Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+  end
+  def columns
+    [:score_name, :competition_name, :category, :segment, :date, :season,
+     :skater_name,
+     :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
+  end
+
 end

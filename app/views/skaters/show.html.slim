@@ -9,15 +9,15 @@
 .row
   .col-sm-6
     h2 Skaters Info
-    = skater_info.decorate.render(self)
+    = skater_info.decorate.render
 
   .col-sm-6
     h2 Record Summary
-    = record_summary.render(self)
+    = render partial: "listtable", locals: { table: record_summary }
 
 h2 Competition Results
 
-= competition_results.update_settings(paging: false, info: false).decorate.render(self)
+= render partial: "datatable", locals: { table: competition_results.decorate }
 
 .row
   - score_graphs.each do |sg|

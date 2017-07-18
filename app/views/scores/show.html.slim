@@ -9,15 +9,15 @@ h2 Score
   
 .row
   .col-sm-6
-    = score_summary.render(self)
+    = score_summary.decorate.render
         
 h2 Elements
 
-= elements_datatable.update_settings(paging: false, info: false).decorate.render(self)
+= elements_datatable.update_settings(paging: false, info: false).decorate.render
 
 h2 Components
 
-= components_datatable.update_settings(paging: false, info: false).decorate.render(self)
+= components_datatable.update_settings(paging: false, info: false).decorate.render
 
 - if score.deductions.to_f < 0
   h2 Deductions

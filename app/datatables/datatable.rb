@@ -11,18 +11,24 @@ class Datatable
   # = Datatable.new(User.all).update_settings(server-side: true, ajax: users_list_path).render(self)
   #
 
+  extend Forwardable
   extend Property
 
-  properties :columns
-  properties :params, :settings, :table_keys, default: {}
+  def_delegators :@view_context, :params
+
+  properties :records, :columns, default: []
+  properties :settings, :sources, default: {}
   property :hidden_columns, []
   
   #prepend Datatable::Manipulatable    # use pretend to override data()
   include Datatable::Decoratable
   
-  def initialize(data, only: nil)   ## TODO: except
-    @data = data
-    @columns = (only) ? only : data.column_names.map(&:to_sym)
+  def initialize(view_context = nil)
+    @data = nil
+    @records = nil
+    @columns = nil
+    @view_context = view_context
+    #@columns = (only) ? only : data.column_names.map(&:to_sym)
     yield(self) if block_given?
   end
   def default_settings
@@ -39,9 +45,12 @@ class Datatable
     }
   end
   ################
-  ## data manipulation
+  ## data fetching/manipulation
+  def fetch_records
+    @records || []
+  end
   def data
-    @manipulated_data ||= manipulate(@data)
+    @manipulated_data ||= manipulate(fetch_records)
   end
   def manipulate(data)
     manipulators.reduce(data){|d, m| m.call(d)}
@@ -58,10 +67,10 @@ class Datatable
     default_settings.merge(@settings || {})
   end
   def column_names
-    @columns.map(&:to_s)
+    columns.map(&:to_s)
   end
-  def render(view, partial: "datatable", locals: {})
-    view.render partial: partial, locals: {table: self }.merge(locals)
+  def render(partial: "datatable", locals: {})
+    @view_context.render(partial: partial, locals: {table: self }.merge(locals))
   end
   def table_id
     "table_#{self.object_id}"
@@ -77,14 +86,6 @@ class Datatable
       column_names.map do |column|
         [column, item.send(column)]
       end.to_h
-    end
-  end
-  def to_csv(opt={})
-    require 'csv'
-    CSV.generate(headers: column_names, write_headers: true) do |csv|
-      limitted_data.each do |row|
-        csv << column_names.map {|k| row.send(k)}
-      end
     end
   end
 end

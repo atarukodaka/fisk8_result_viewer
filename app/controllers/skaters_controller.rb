@@ -7,7 +7,7 @@ class SkatersController < ApplicationController
       raise(ActiveRecord::RecordNotFound.new("no such skater"))
   end
   def skater_info_listtable(skater)
-    Listtable.new(skater, only: [:name, :nation, :isu_number, :category])
+    Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :category])
   end
   def record_summary_datatable(skater)
     cr = skater.results
@@ -18,11 +18,11 @@ class SkatersController < ApplicationController
       most_valuable_element: skater.elements.order(:value).last.decorate.description,
       most_valuable_components: skater.components.group(:number).maximum(:value).values.join('/'),
     }
-    Listtable.new(Hashie::Mash.new(hash), only: hash.keys)
+    Listtable.new(self).records(Hashie::Mash.new(hash)).columns(hash.keys)
   end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-    Datatable.new(skater.results.recent.includes(:competition, :scores), only: columns)
+    Datatable.new(self).records(skater.results.recent.includes(:competition, :scores)).columns(columns)
   end
   def create_graphs(skater)    
     skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|

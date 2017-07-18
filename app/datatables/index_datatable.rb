@@ -14,7 +14,8 @@ class IndexDatatable < Datatable
     self
   end
   def add_filter(column, operator: :eq, &block)
-    key = table_keys[column.to_sym] || column.to_s
+    #key = table_keys[column.to_sym] || column.to_s
+    key = sources[column.to_sym] || column.to_s
     proc =
       if block_given?
         block
@@ -41,4 +42,15 @@ class IndexDatatable < Datatable
     ## offset
     (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
   end
+  ################
+  ## output
+  def to_csv(opt={})
+    require 'csv'
+    CSV.generate(headers: column_names, write_headers: true) do |csv|
+      limitted_data.each do |row|
+        csv << column_names.map {|k| row.send(k)}
+      end
+    end
+  end
+
 end
