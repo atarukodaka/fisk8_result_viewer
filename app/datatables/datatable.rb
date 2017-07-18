@@ -75,18 +75,61 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
-  ################
-  ## output format
-  def limitted_data
-    data.limit(10000)
-  end
-  def as_json(opts={})
-    #imitted_data.as_json(only: columns)
-    limitted_data.map do |item|
-      column_names.map do |column|
-        [column, item.send(column)]
-      end.to_h
+  ################################################################
+  ## for server-side ajax
+  ## for search
+  def search_sql
+    return "" if params[:columns].blank?
+
+    keys = []
+    values = []
+    params[:columns].each do |num, hash|
+      column_name = hash[:data]
+      sv = hash[:search][:value].presence || next
+
+      #key = table_keys[column_name.to_sym] || column_name
+      key = sources[column_name.to_sym] || column_name
+      keys << "#{key} like ? "
+      values << "%#{sv}%"
     end
+    # return such as  ['name like ? and nation like ?', 'foo', 'bar']
+    (keys.blank?) ? '' : [keys.join(' and '), *values]
   end
+  ################
+  ## for sorting
+  def order_sql
+    return "" if params[:order].blank?
+
+    ary = []
+    params[:order].each do |_, hash|   ## params doesnt have map()
+      column_name = columns[hash[:column].to_i]
+      #key = table_keys[column_name.to_sym] || column_name
+      key = sources[column_name.to_sym] || column_name
+      ary << [key, hash[:dir]].join(' ')
+    end
+    ary
+  end
+  ################
+  ## for paging
+  def page
+    params[:start].to_i / per + 1
+  end
+  def per
+    params[:length].to_i > 0 ? params[:length].to_i : 10
+  end
+  ################
+  ## json output
+  def as_json(opts={})
+    new_data = data.where(search_sql).order(order_sql).page(page).per(per)    
+    {
+      iTotalRecords: new_data.model.count,
+      iTotalDisplayRecords: new_data.total_count,
+#      data: data.decorate.as_json(only: column_names),
+      data: new_data.decorate.map {|item|
+        column_names.map {|c| [c, item.send(c)]}.to_h
+      }
+    }
+  end
+
 end
 ################################################################

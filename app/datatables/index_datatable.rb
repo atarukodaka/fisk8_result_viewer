@@ -42,8 +42,24 @@ class IndexDatatable < Datatable
     ## offset
     (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
   end
+=begin
   ################
   ## output
+  def limitted_data
+    data.limit(10000)
+  end
+
+  def as_json(opts={})
+    #imitted_data.as_json(only: columns)
+    limitted_data.map do |item|
+      column_names.map do |column|
+        [column, item.send(column)]
+      end.to_h
+    end
+  end
+=end
+
+=begin
   def to_csv(opt={})
     require 'csv'
     CSV.generate(headers: column_names, write_headers: true) do |csv|
@@ -52,5 +68,5 @@ class IndexDatatable < Datatable
       end
     end
   end
-
+=end
 end
