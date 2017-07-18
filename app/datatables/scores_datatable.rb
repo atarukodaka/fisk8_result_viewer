@@ -1,6 +1,6 @@
 class ScoresDatatable < IndexDatatable
-  def initialize(view=nil)
-    super view
+  def initialize(*args)
+    super *args
     self.hidden_columns = [:competition_type, :competition_class, :competition_name,
                           :season, ]
     self.sources = {
@@ -17,7 +17,7 @@ class ScoresDatatable < IndexDatatable
     add_filters(:name, :competition_name, :competition_class, :competition_type, :skater_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
 
-    update_settings(order: [[columns.index(:date), :desc]])
+    settings.update(order: [[columns.index(:date), :desc]])
   end
   def fetch_records
     Score.includes(:competition, :skater).references(:competition, :skater).all

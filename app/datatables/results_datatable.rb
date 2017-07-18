@@ -1,6 +1,6 @@
 class ResultsDatatable < IndexDatatable
-  def initialize(view=nil)
-    super view
+  def initialize(*args)
+    super(*args)
     
     add_hidden_columns(:competition_name, :competition_type, :competition_class,
                        :short_tes, :short_pcs,
@@ -24,7 +24,7 @@ class ResultsDatatable < IndexDatatable
     add_filters(:competition_name, :skater_name, operator: :matches)
     add_filters(:category, :season, :competition_class, :competition_type)
 
-    update_settings(order: [[columns.index(:season), :desc]])
+    settings.update(order: [[columns.index(:season), :desc]])
     
   end
   def fetch_records

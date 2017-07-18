@@ -1,9 +1,9 @@
 class CompetitionsDatatable < IndexDatatable
-  def initialize(view=nil)
-    super view
+  def initialize(*args)
+    super(*args)
     add_filter(:name, operator: :matches)
     add_filters(:site_url, :competition_type, :competition_class, :season)
-    update_settings(order: [[columns.index(:start_date), :desc]])
+    settings.update(order: [[columns.index(:start_date), :desc]])
   end
 
   def fetch_records

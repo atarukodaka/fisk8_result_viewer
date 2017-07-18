@@ -1,14 +1,15 @@
+################################################################
 class Datatable 
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
   # in view,
   #
-  # = Datatable.new(User.all).render(self)
+  # = Datatable.new(self).records(User.all).columns([:name, :address]).render
   #
   # for server-side ajax,
   #
-  # = Datatable.new(User.all).update_settings(server-side: true, ajax: users_list_path).render(self)
+  # = Datatable.new(self).update_settings(server-side: true, ajax: users_list_path).render
   #
 
   extend Forwardable
@@ -16,20 +17,20 @@ class Datatable
 
   def_delegators :@view_context, :params
 
-  properties :records, :columns, default: []
-  properties :settings, :sources, default: {}
-  property :hidden_columns, []
-  
-  #prepend Datatable::Manipulatable    # use pretend to override data()
+  properties :records, :columns, :hidden_columns, default: []
+  properties :sources, default: {}
+  properties :settings
+
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
     @data = nil
-    @records = nil
-    @columns = nil
+    @settings = nil
     @view_context = view_context
-    #@columns = (only) ? only : data.column_names.map(&:to_sym)
     yield(self) if block_given?
+  end
+  def column_def
+    @column_def ||= Datatable::ColumnDef.new(self)
   end
   def default_settings
     {
@@ -39,8 +40,6 @@ class Datatable
       columns: column_names.map {|name| {
           data: name,
           visible: (hidden_columns.include?(name.to_sym)) ? false : true,
-#          className: name.underscore.downcase
-          
         }},
     }
   end
@@ -62,10 +61,12 @@ class Datatable
     manipulators << f
     self
   end
-
+  ################
+  ## settings, etc
   def settings
-    default_settings.merge(@settings || {})
+    @settings ||= default_settings
   end
+
   def column_names
     columns.map(&:to_s)
   end
@@ -77,7 +78,7 @@ class Datatable
   end
   ################################################################
   ## for server-side ajax
-  ## for search
+  ## searching
   def search_sql
     return "" if params[:columns].blank?
 
@@ -87,8 +88,7 @@ class Datatable
       column_name = hash[:data]
       sv = hash[:search][:value].presence || next
 
-      #key = table_keys[column_name.to_sym] || column_name
-      key = sources[column_name.to_sym] || column_name
+      key = column_def.source(column_name)
       keys << "#{key} like ? "
       values << "%#{sv}%"
     end
@@ -96,21 +96,20 @@ class Datatable
     (keys.blank?) ? '' : [keys.join(' and '), *values]
   end
   ################
-  ## for sorting
+  ## sorting
   def order_sql
     return "" if params[:order].blank?
 
     ary = []
     params[:order].each do |_, hash|   ## params doesnt have map()
       column_name = columns[hash[:column].to_i]
-      #key = table_keys[column_name.to_sym] || column_name
-      key = sources[column_name.to_sym] || column_name
+      key = column_def.source(column_name)
       ary << [key, hash[:dir]].join(' ')
     end
     ary
   end
   ################
-  ## for paging
+  ## paging
   def page
     params[:start].to_i / per + 1
   end
@@ -124,7 +123,6 @@ class Datatable
     {
       iTotalRecords: new_data.model.count,
       iTotalDisplayRecords: new_data.total_count,
-#      data: data.decorate.as_json(only: column_names),
       data: new_data.decorate.map {|item|
         column_names.map {|c| [c, item.send(c)]}.to_h
       }

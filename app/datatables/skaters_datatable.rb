@@ -1,12 +1,11 @@
 class SkatersDatatable < IndexDatatable
-  def initialize(view=nil)
-    #super(Skater.having_scores, only: cols)
-    super(view)
+  def initialize(*args)
+    super(*args)
 
     add_filter(:name, operator: :matches)
     add_filters(:category, :nation)
 
-    update_settings(order: [[columns.index(:category), :asc], [columns.index(:name), :asc]])
+    settings.update(order: [[columns.index(:category), :asc], [columns.index(:name), :asc]])
   end
 
   def columns
