@@ -70,8 +70,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       its(:short_name) { is_expected.to eq(short_name) }
     end
   end
-
-  describe 'skater name correction' do
+  ################################################################
+  describe 'skater name correction' do    
     def expect_same_skater(url, category, ranking)  # TODO
       Category.accept!(category)
       competition = Competition.create(site_url: url).update
@@ -79,18 +79,31 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       expect(cr.skater).to eq(cr.short.skater)
       expect(cr.skater).to eq(cr.free.skater)      
     end
-    it 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON
+    shared_context :skater_having_different_name do |url, category, ranking|
+      subject(:result) {
+        Category.accept!(category)
+        Competition.create(site_url: url).update.results.find_by(category: category, ranking: ranking)
+      }
+    end
+    shared_examples :same_name_between_segments do
+      its(:skater) { is_expected.to eq(result.short.skater) }
+      its(:skater) { is_expected.to eq(result.free.skater) }
+    end
+    context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON
       url = 'http://www.isuresults.com/results/fc2012/'
-
-      expect_same_skater(url, :LADIES, 15)
+      include_context :skater_having_different_name, url, "LADIES", 15
+      it_behaves_like :same_name_between_segments
     end
-    it 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
+    context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
-      expect_same_skater(url, :"JUNIOR LADIES", 17)
+      include_context :skater_having_different_name, url, "JUNIOR LADIES", 17
+      it_behaves_like :same_name_between_segments
     end
+=begin
     it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
       ## TODO: name correction for Ho Jung LEE
     end
+=end
   end
   ################################################################
   describe 'encoding' do
