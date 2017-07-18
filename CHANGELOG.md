@@ -5,6 +5,7 @@
 - hide/show filters
 - results.name nesecarry? ?? : for spec func
 - spec: Category before accept all
+- spec: score graphs
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

@@ -25,7 +25,7 @@ class Datatable
   
   def initialize(view_context = nil)
     @data = nil
-    @settings = nil
+    @settings = default_settings
     @view_context = view_context
     yield(self) if block_given?
   end
@@ -49,6 +49,13 @@ class Datatable
     @records || []
   end
   def data
+    @data ||= manipulate(fetch_records)
+  end
+  def manipulate(r)
+    r
+  end
+=begin
+  def data
     @manipulated_data ||= manipulate(fetch_records)
   end
   def manipulate(data)
@@ -61,6 +68,7 @@ class Datatable
     manipulators << f
     self
   end
+=end
   ################
   ## settings, etc
   def settings

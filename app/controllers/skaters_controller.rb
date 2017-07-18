@@ -43,8 +43,7 @@ class SkatersController < ApplicationController
         competition_results: competition_results_datatable(skater),
       }
       format.html {
-        score_graphs = create_graphs(skater)
-        hash.update(skater: skater, score_graph: create_graphs(skater))
+        hash.update(skater: skater, score_graphs: create_graphs(skater))
         render action: :show, locals: hash
       }
       format.json {

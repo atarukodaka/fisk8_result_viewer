@@ -1,7 +1,7 @@
 module Datatable::Decoratable
   def decorate
     #add_manipulator(->(r){ r.decorate })
-    self.prepend Datatable::Decorate
+    self.extend Datatable::Decorate
     self
   end
 end  
