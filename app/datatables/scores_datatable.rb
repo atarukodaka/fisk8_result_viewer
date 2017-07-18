@@ -8,7 +8,8 @@ class ScoresDatatable < IndexDatatable
            ]
     super(data, only: cols)
     
-    self.hidden_columns = [:competition_type, :competition_class]      
+    self.hidden_columns = [:competition_type, :competition_class, :competition_name,
+                          :season, ]
     self.table_keys = {
       name: "scores.name",
       category: "scores.category",

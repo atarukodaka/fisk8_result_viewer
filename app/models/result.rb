@@ -9,6 +9,9 @@ class Result < ApplicationRecord
   def competition_name
     competition.name
   end
+  def competition_short_name
+    competition.short_name
+  end
   def competition_class
     competition.competition_class
   end

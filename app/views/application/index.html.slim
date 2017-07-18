@@ -7,8 +7,6 @@
 
 h2= controller_name.humanize
 
-= button_tag("show/hide filters", onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
-
 style
   | label { margin-left: 10px; margin-right: 10px; }
   | .dataTables_filter { visibility: hidden; }
@@ -20,8 +18,12 @@ style
     = submit_tag("Search", id: "submit", name: nil)
     label with format of
     = select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format]))
-/  = form_group("Format", select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format])))
-/  = form_group(nil, submit_tag("Search", id: "submit", name: nil))
+
+    label
+= button_tag("show/hide filters", onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
+
 
 // server-side datalist table
 = table.update_settings(pageLength: 20).render(self) 
+
+
