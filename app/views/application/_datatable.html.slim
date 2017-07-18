@@ -28,16 +28,17 @@ script
     |  } );
 
 
-  |  $('#toggle_details').on('click', function(e){ 
-  - table.hidden_columns.each do |column|
-    | var column = t.column( #{table.column_names.index(column.to_s)});
-    |    column.visible( ! column.visible() ) ;
-  |  })
+  - if table.hidden_columns.present?
+    |  $('#toggle_details').on('click', function(e){ 
+    - table.hidden_columns.each do |column|
+      | var column = t.column( #{table.column_names.index(column.to_s)});
+      |    column.visible( ! column.visible() ) ;
+    |  })
   | });
 
-
-button type="submit" id="toggle_details"
-  | show/hide details
+- if table.hidden_columns.present?
+  button type="submit" id="toggle_details"
+    | show/hide details
 
     
 / TODO: move to index controller view
