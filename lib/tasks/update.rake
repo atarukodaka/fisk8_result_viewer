@@ -34,7 +34,7 @@ namespace :update do
       end
       Competition.create!(site_url: item[:url], parser_type: item[:parser_type]) do |competition|
         competition.comment = item[:comment]
-        competition.update
+        competition.update(verbose: true)
       end
     end
   end

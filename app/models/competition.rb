@@ -20,7 +20,7 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
-  def update
+  def update(verbose: false)
     ActiveRecord::Base.transaction do
       clean
       
@@ -32,8 +32,8 @@ class Competition < ApplicationRecord
       normalize_name
       self.country ||= CityCountry.find_by(city: city).try(:country)
       save!
-      puts "*" * 100
-      puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys
+      puts "*" * 100 if verbose
+      puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys if verbose
 
       ## categories
       parsed[:categories].each do |category, cat_item|
@@ -41,7 +41,7 @@ class Competition < ApplicationRecord
         Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
           results.create!(category: category) do |result|
             result.update(result_parsed)
-            puts result.summary
+            puts result.summary if verbose
           end
         end
         
@@ -60,7 +60,7 @@ class Competition < ApplicationRecord
                 date: seg_item[:date],
               }
               score.update(sc_parsed)
-              puts score.summary
+              puts score.summary if verbose
 
               ## update segment details into results
               segment_type = (segment =~ /SHORT/) ? :short : :free

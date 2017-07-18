@@ -4,14 +4,13 @@ RSpec.configure do |c|
   c.filter_run_excluding updater: true
 end
 
-RSpec.describe 'update skaters', updater: true do
-  it 'updates skaters' do
+RSpec.describe Skater, updater: true do
+  before(:all) {
     Category.update_skaters
-    num_skaters = Skater.group(:category).count
-    
-    expect(num_skaters["MEN"]).to be > 0
-    expect(num_skaters["LADIES"]).to be > 0
-    expect(num_skaters["PAIRS"]).to be > 0
-    expect(num_skaters["ICE DANCE"]).to be > 0        
+  }
+  [:MEN, :LADIES, :PAIRS, :"ICE DANCE"].each do |category|
+    describe "\# of skater in '#{category}'" do
+      it { expect(Skater.where(category: category).count).to be > 0 }
+    end
   end
 end
