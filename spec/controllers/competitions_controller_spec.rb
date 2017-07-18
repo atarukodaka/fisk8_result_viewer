@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CompetitionsController, type: :controller do
   render_views
-
+  
   let!(:world) {
     skater = create(:skater)
     competition = create(:competition)
@@ -17,72 +17,78 @@ RSpec.describe CompetitionsController, type: :controller do
     create(:competition, :finlandia)
   }
   ################################################################
-  context 'index: ' do
-    it 'pure index request' do
-      get :index
-      expect(response).to be_success
-      expect(response.body).to include("\"serverSide\":true")
+  describe '#index' do
+    subject { get :index }
+    it { is_expected.to be_success }
+    its(:body) { is_expected.to include("\"serverSide\":true") }
+  end
+
+  shared_examples :having_all do
+    its(:body) { is_expected.to include(world.name) }
+    its(:body) { is_expected.to include(finlandia.name)}
+  end
+
+  describe '#list' do
+    context 'all' do
+      subject { get :list, xhr: true }
+      it_behaves_like :having_all
     end
 
-    it 'list' do
-      get :list, xhr: true
-      expect_to_include(world.name)
-      expect_to_include(finlandia.name)
-    end
-
-    attrs = [:name, :site_url, :competition_type, :competition_class, :season]
-    context 'filters:' do
-      attrs.each do |key|
-        it key do
-          expect_filter(world, finlandia, key)
-
-        end
+    datatable = CompetitionsDatatable.new
+    describe 'filters: ' do
+      datatable.filter_keys.each do |key|
+        it key do; expect_filter(world, finlandia, key); end
       end
     end
     context 'sort: ' do
-      "#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
-        .column_names.each do |key|
-        it key do
-          expect_order(world, finlandia, key)
-        end
+      datatable.column_names.each do |key|
+        it key do; expect_order(world, finlandia, key); end
       end
     end
-  
-    context 'format: ' do
-      {json: 'application/json', csv: 'text/csv'}.each do |format, content_type|
-        it format do
-          get :index, params: {format: format}
-          expect(response.content_type).to eq(content_type)
-          expect_to_include(world.name)
-          expect_to_include(finlandia.name)
+    describe 'format: ' do
+      [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, content_type|
+        context ".#{format}" do
+          subject { get :index, { format: format } }
+          its(:content_type) { is_expected.to eq(content_type) }
+          it_behaves_like :having_all
         end
       end
     end
   end
+
   ################
-  context 'show: ' do
-    it 'short_name' do
-      get :show, params: { short_name: world.short_name }
-      expect_to_include(world.name)
+  describe '#show' do
+    context 'short_name' do
+      subject { get :show, params: { short_name: world.short_name } }
+      its(:body) { is_expected.to include(world.name) }
     end
 
-    it 'short_name/category' do
-      get :show, params: { short_name: world.short_name, category: score.category }
-      expect_to_include(world.name)
-      expect_to_include(score.category)
+    context 'short_name/category' do
+      subject {
+        get :show, params: { short_name: world.short_name, category: score.category }
+      }
+      its(:body) {
+        is_expected.to include(world.name)
+        is_expected.to include(score.category)
+      }
     end
-    
-    it 'short_name/category/segment' do
-      get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment}
-      expect_to_include(world.name)
-      expect_to_include(score.segment)
+    context 'short_name/category/segment' do
+      subject {
+        get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment}
+      }
+      its(:body) {
+        is_expected.to include(world.name)
+        is_expected.to include(score.category)
+        is_expected.to include(score.segment)        
+      }
     end
-    
-    it 'json' do
-      get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment, format: "json" }
-      expect(response.content_type).to eq("application/json")
-      expect_to_include(world.name)
+    context 'format: json' do
+      subject {
+        get :show, params: { short_name: world.short_name, category: score.category, segment: score.segment, format: "json" }
+      }
+      its(:content_type) { is_expected.to eq('application/json')}
+      its(:body) { is_expected.to include(world.name) }
     end
+
   end
-  ################
 end

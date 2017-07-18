@@ -98,6 +98,8 @@ class Element < ApplicationRecord
         $1.to_i
       when :choreo
         1  # TODO for icedance ??
+      else
+        0
       end
     self
   end

@@ -3,39 +3,36 @@ require 'rails_helper'
 RSpec.describe ResultsController, type: :controller do
   render_views
 
-  let!(:men_skater) { create(:skater) }
-  let!(:ladies_skater) { create(:skater, :ladies) }
   let!(:world_result) {
-    create(:competition).results.create(category: "MEN",ranking: 1, skater: men_skater, points: 300, short_ranking: 1, short_tss: 100, short_tes: 50, short_pcs: 50, short_deductions: 0, short_bv: 50, free_ranking: 1, free_tss: 200, free_tes: 100, free_pcs: 100, free_deductions: 0, free_bv: 100, )
+    create(:result)
   }
 
   let!(:finlandia_result){
-    create(:competition, :finlandia).results.create(category: "LADIES", ranking: 2, skater: ladies_skater, points: 200, short_ranking: 2, short_tss: 80, short_tes: 40, short_pcs: 40, short_deductions: -1, short_bv: 40, free_ranking: 2, free_tss: 160, free_tes: 80, free_pcs: 80, free_deductions: -1, free_bv: 80, )
+    create(:result, :finlandia)
   }
 
-  context 'index: ' do
-    it 'pure index request' do
-      get :index
-      expect(response).to be_success
+  describe '#index' do
+    describe 'pure index request' do
+      subject { get :index }
+      it { is_expected.to be_success }
     end
+  end
 
-    it 'list' do
-      get :list, xhr: true
-      expect_to_include(world_result.competition_name)
+  describe '#list' do
+    describe 'all' do
+      subject { get :list, xhr: true }
+      its(:body) { is_expected.to include(world_result.competition_name) }
     end
-
-    #attrs = [:skater_name, :category, :competition_name, :competition_class, :competition_type, :season]
-      
+    
+    datatable = ResultsDatatable.new
     context 'filter: ' do
-      datatable ="#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new # TODO
-      datatable.filters.map {|d| d[:column]}.each do |key|
+      datatable.filter_keys.each do |key|
         it key do
           expect_filter(world_result, finlandia_result, key, column: :competition_name)
         end
       end
     end
     context 'sort: ' do
-      datatable ="#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
       datatable.column_names.each do |key|
         it key do
           expect_order(world_result, finlandia_result, key, column: :competition_name)

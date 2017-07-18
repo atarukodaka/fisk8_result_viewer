@@ -5,7 +5,10 @@ class IndexDatatable < Datatable
   #include Datatable::TableKeys
 
   property :filters, []
-  
+
+  def filter_keys
+    filters.map {|d| d[:column].to_sym}
+  end
   def add_filters(*columns, operator: :eq)
     [*columns].flatten.each {|column| add_filter(column, operator: operator)}
     self

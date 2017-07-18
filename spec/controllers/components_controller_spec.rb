@@ -3,78 +3,72 @@ require 'rails_helper'
 RSpec.describe ComponentsController, type: :controller do
   render_views
   
-  let!(:men_skater) { create(:skater)}
-  let!(:ladies_skater) { create(:skater, :ladies)}  
-  let!(:world) { create(:competition) }
-  let!(:finlandia) { create(:competition, :finlandia) }  
   let!(:short_ss){
-    short = world.scores.create(category: "MEN", segment: "SHORT", skater: men_skater, ranking: 1)
-    short.components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0)
+    create(:score).components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0, judges: '10 10 10')
   }
   let!(:free_tr){
-    free = finlandia.scores.create(category: "LADIES", segment: "FREE", skater: ladies_skater, ranking: 2)
-    free.components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0)
+    create(:score, :finlandia).components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0, judges: '9 9 9')
   }
   
-  context 'index' do
-    it 'pure index request' do
-      get :index
-      expect(response).to be_success
+  describe '#index' do
+    describe 'all' do
+      subject { get :index }
+      it { is_expected.to be_success }
     end
-    
-    it 'lists SkatingSkill' do
-      get :list, xhr: true
-      expect(response).to be_succes
-      expect_to_include(short_ss.name)
+  end
+
+  describe '#list' do
+    describe 'all' do
+      subject { get :list, xhr: true }
+      its(:body) { is_expected.to include(short_ss.name) }
     end
 
-    attrs = [:competition_name, :category, :segment, :season, :ranking, :skater_name, :nation, :name, :number, :factor, :value]
-    context 'filter: ' do
-      attrs.each do |key|
+    datatable = ComponentsDatatable.new
+    describe 'filter: ' do
+      datatable.filters.map {|d| d[:column] }.each do |key|
         it key do
-          get :list, xhr: true, params: { segment: "SHORT"}
-          expect_to_include(short_ss.name)
-          expect_not_to_include(free_tr.name)
+          expect_filter(short_ss, free_tr, key)          
         end
       end
     end
-
-
-    context 'sort:' do
-#      "#{controller_class.to_s.sub(/Controller/, '')}Datatable".constantize.new
-      attrs.each do |key|
+    
+    describe 'sort:' do
+      datatable.column_names.each do |key|
         it key do
           expect_order(short_ss, free_tr, key)
         end
       end
     end
-    
-    context 'value comparison' do
-      it 'compares by >' do
-        get :list, xhr: true, params: { value: "9.5", value_operator: '>'}
-        expect_to_include(short_ss.name)
-        expect_not_to_include(free_tr.name)
-      end
-      it 'compares by <' do
-        get :list, xhr: true, params: { value: "9.5", value_operator: '<'}
-        expect_to_include(free_tr.name)
-        expect_not_to_include(short_ss.name)
-      end
-      it 'compares by <=' do
-        get :list, xhr: true, params: { value: "9", value_operator: '<='}
-        expect_to_include(free_tr.name)
-        expect_not_to_include(short_ss.name)
 
+    describe 'value comparison' do
+      shared_examples :short_ss_only do
+        its(:body) { is_expected.to include(short_ss.name) }
+        its(:body) { is_expected.not_to include(free_tr.name) }
       end
-      it 'compares by >=' do
-        get :list, xhr: true, params: { value: "9", value_operator: '>='}
-        expect_to_include(short_ss.name)
-        expect_to_include(free_tr.name)
+      shared_examples :free_tr_only do
+        its(:body) { is_expected.not_to include(short_ss.name) }
+        its(:body) { is_expected.to include(free_tr.name) }
       end
-      it 'compares by =' do
-        get :list, xhr: true, params: { value: "9", value_operator: '='}
-        expect_to_include(free_tr.name)
-        expect_not_to_include(short_ss.name)
+
+      context 'compares by >' do
+        subject { get :list, xhr: true, params: { value: "9.5", value_operator: '>'} }
+        it_behaves_like :short_ss_only
+      end
+      context 'compares by <' do
+        subject { get :list, xhr: true, params: { value: "9.5", value_operator: '<'} }
+        it_behaves_like :free_tr_only
+      end
+      context 'compares by <=' do
+        subject { get :list, xhr: true, params: { value: "9", value_operator: '<='} }
+        it_behaves_like :free_tr_only
+      end
+      context 'compares by >=' do
+        subject { get :list, xhr: true, params: { value: "10", value_operator: '>='} }
+        it_behaves_like :short_ss_only
+      end
+      context 'compares by =' do
+        subject { get :list, xhr: true, params: { value: "9", value_operator: '='} }
+        it_behaves_like :free_tr_only
       end
     end
   end

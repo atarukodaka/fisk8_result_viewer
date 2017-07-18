@@ -28,7 +28,6 @@ module Helper
   end 
   ## order
   def expect_order(obj1, obj2, key, column: :name)
-    
     names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(column)}
 
     get :list, xhr: true, params: sort_params(key, 'asc')
