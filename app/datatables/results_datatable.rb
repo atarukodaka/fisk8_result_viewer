@@ -19,6 +19,7 @@ class ResultsDatatable < IndexDatatable
     
     @table_keys = {
       competition_name: "competitions.name",
+      competition_short_name: "competitions.short_name",    
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       category: "results.category",

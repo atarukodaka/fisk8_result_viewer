@@ -7,9 +7,11 @@ end
 class Api::CompetitionsController < CompetitionsController
 end
 
-class Api::ScoresController < ScoresController
+class Api::ResultsController < ResultsController
 end
 
+class Api::ScoresController < ScoresController
+end
 
 class Api::ElementsController < ElementsController
 end

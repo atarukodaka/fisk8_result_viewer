@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number
     resources :competitions, only: [:index, :show], param: :short_name
+    resources :results, only: :index
     resources :scores, only: [:index, :show], param: :name
     resources :elements, only: :index
     resources :components, only: :index
