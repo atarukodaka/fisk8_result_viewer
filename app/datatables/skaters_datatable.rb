@@ -5,7 +5,7 @@ class SkatersDatatable < IndexDatatable
     add_filter(:name, operator: :matches)
     add_filters(:category, :nation)
 
-    settings.update(order: [[columns.index(:category), :asc], [columns.index(:name), :asc]])
+    #settings.update(order: [[columns.index(:category), :asc], [columns.index(:name), :asc]])
   end
 
   def columns
@@ -14,5 +14,9 @@ class SkatersDatatable < IndexDatatable
 
   def fetch_records
     Skater.having_scores
+  end
+
+  def order
+    [[:category, :asc], [:name, :asc]]
   end
 end

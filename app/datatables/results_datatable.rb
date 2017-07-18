@@ -24,7 +24,7 @@ class ResultsDatatable < IndexDatatable
     add_filters(:competition_name, :skater_name, operator: :matches)
     add_filters(:category, :season, :competition_class, :competition_type)
 
-    settings.update(order: [[columns.index(:season), :desc]])
+    #settings.update(order: [[columns.index(:season), :desc]])
     
   end
   def fetch_records
@@ -39,5 +39,7 @@ class ResultsDatatable < IndexDatatable
      :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
     ]
   end
-    
+  def order
+    [[:season, :desc]]
+  end
 end

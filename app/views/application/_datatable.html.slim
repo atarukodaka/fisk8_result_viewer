@@ -7,7 +7,7 @@
 script
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable(
-  = table.settings.to_json.html_safe
+  = table.table_settings.to_json.html_safe
   | );
 
   - if numbering

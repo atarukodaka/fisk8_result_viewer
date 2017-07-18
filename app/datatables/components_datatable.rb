@@ -20,8 +20,6 @@ class ComponentsDatatable < IndexDatatable
     add_filter(:value) do |c, v|
       c.where(Component.arel_table_by_operator(:value, params[:value_operator], v))
     end
-    
-    update_settings(order: [[columns.index(:value), :desc]])
   end
   def fetch_records
     Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
@@ -32,4 +30,8 @@ class ComponentsDatatable < IndexDatatable
      :ranking, :skater_name, :nation,
      :number, :name, :factor, :judges, :value,]
   end    
+  def order
+    [[:value, :desc]]
+  end
+
 end

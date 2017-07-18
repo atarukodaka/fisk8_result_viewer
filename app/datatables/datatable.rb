@@ -32,18 +32,6 @@ class Datatable
   def column_def
     @column_def ||= Datatable::ColumnDef.new(self)
   end
-  def default_settings
-    {
-      processing: true,
-      filter: true,
-      order: [],
-      columns: column_names.map {|name| {
-          data: name,
-          visible: (hidden_columns.include?(name.to_sym)) ? false : true,
-        }},
-    }
-  end
-  ################
   ## data fetching/manipulation
   def fetch_records
     @records || []
@@ -71,10 +59,27 @@ class Datatable
 =end
   ################
   ## settings, etc
+  def default_settings
+    {
+      processing: true,
+      filter: true,
+      order: [],
+    }
+  end
   def settings
     @settings ||= default_settings
   end
-
+  def table_settings
+    settings.merge(columns: column_names.map {|name|
+                     {
+                       data: name,
+                       visible: (hidden_columns.include?(name.to_sym)) ? false : true,
+                     }},
+                   order: order.map {|column, dir|
+                     [column_names.index(column.to_s), dir]
+                   },
+                   )
+  end
   def column_names
     columns.map(&:to_s)
   end
@@ -83,6 +88,9 @@ class Datatable
   end
   def table_id
     "table_#{self.object_id}"
+  end
+  def order
+    []
   end
   ################################################################
   ## for server-side ajax

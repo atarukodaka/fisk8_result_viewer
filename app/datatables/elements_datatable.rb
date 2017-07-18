@@ -27,7 +27,6 @@ class ElementsDatatable < IndexDatatable
     add_filter(:goe) do |c, v|
       c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
     end
-    update_settings(order: [[columns.index(:value), :desc]])
   end
 
   def fetch_records
@@ -38,5 +37,7 @@ class ElementsDatatable < IndexDatatable
      :skater_name,
      :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
   end
-
+  def order
+    [[:value, :desc]]
+  end
 end
