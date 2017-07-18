@@ -6,6 +6,7 @@
 - results.name nesecarry? ?? : for spec func
 - spec: Category before accept all
 - spec: score graphs
+- property defered blcok evaluation
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

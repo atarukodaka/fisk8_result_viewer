@@ -17,7 +17,7 @@ class Datatable
 
   def_delegators :@view_context, :params
 
-  properties :records, :columns, :hidden_columns, default: []
+  properties :records, :columns, :hidden_columns, :order, default: []
   properties :sources, default: {}
   properties :settings
 
@@ -63,7 +63,6 @@ class Datatable
     {
       processing: true,
       filter: true,
-      order: [],
     }
   end
   def settings
@@ -88,9 +87,6 @@ class Datatable
   end
   def table_id
     "table_#{self.object_id}"
-  end
-  def order
-    []
   end
   ################################################################
   ## for server-side ajax
