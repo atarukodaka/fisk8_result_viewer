@@ -13,11 +13,12 @@
 
   .col-sm-6
     h2 Record Summary
-    = render partial: "listtable", locals: { table: record_summary }
+    /= render partial: "listtable", locals: { datatable: record_summary }
+    /= record_summary.render
 
 h2 Competition Results
 
-= render partial: "datatable", locals: { table: competition_results.decorate }
+= render partial: "datatable", locals: { datatable: competition_results.decorate }
 
 .row
   - score_graphs.each do |sg|

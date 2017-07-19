@@ -10,11 +10,8 @@ module Datatable::Serverside
       column_name = item[:data]
       #next unless column_defs.searchable(column_name)
 
-      #table_name, table_column = column_defs.source(column_name).split(/\./)
-
       table_name, table_column = sources[column_name].split(/\./)
       model = table_name.classify.constantize
-      #condition = column_defs.condition(column_name) || :eq
       arel_table = model.arel_table[table_column]
       condition = :matches
       
