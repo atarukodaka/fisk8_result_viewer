@@ -51,8 +51,15 @@ module Datatable::Serverside
       iTotalRecords: new_data.model.count,
       iTotalDisplayRecords: new_data.total_count,
       data: new_data.decorate.map {|item|
-        column_names.map {|c| [c, item.send(c)]}.to_h
+        foo(item)
       }
     }
+  end
+  def foo(item)
+    #column_names.map {|c| [c, item.send(c)]}.to_h
+    {
+
+    }
+    item
   end
 end

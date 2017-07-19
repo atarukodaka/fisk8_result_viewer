@@ -12,6 +12,8 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.2-pre2
+
 ## 1.0.2-pre1
 - sortable list table
 - sitemap
