@@ -1,7 +1,5 @@
 ## TODO
 - category: type: single/couple ?
-
-- let/context DRY for filter/order
 - property: readonly, writeonly
 
 ### new feature
@@ -12,7 +10,7 @@
 - config/application: Version
 - config/competitions.yml: debug
 
-## 1.0.2-pre1
+## 1.0.2-pre1 2017/7/19
 - sortable list table
 - sitemap
 - ajax support
