@@ -5,16 +5,19 @@ module Datatable::Serverside
   def search_sql
     return "" if params[:columns].blank?
 
-    a = params.require(:columns).values.map {|item|
+    params.require(:columns).values.map {|item|
       sv = item[:search][:value].presence || next
       column_name = item[:data]
-      next unless column_defs.searchable(column_name)
+      #next unless column_defs.searchable(column_name)
 
-      table_name, table_column = column_defs.source(column_name).split(/\./)
+      #table_name, table_column = column_defs.source(column_name).split(/\./)
+
+      table_name, table_column = sources[column_name].split(/\./)
       model = table_name.classify.constantize
-      condition = column_defs.condition(column_name) || :eq
+      #condition = column_defs.condition(column_name) || :eq
       arel_table = model.arel_table[table_column]
-
+      condition = :matches
+      
       case condition
       when :eq
         arel_table.eq(sv)
@@ -22,8 +25,6 @@ module Datatable::Serverside
         arel_table.matches("%#{sv}%")
       end
     }.compact.reduce(&:and)
-
-    a
   end
   ################
   ## sorting
@@ -32,7 +33,8 @@ module Datatable::Serverside
 
     params.require(:order).values.map do |hash|
       column_name = columns[hash[:column].to_i]
-      key = column_defs.source(column_name)
+      #key = column_defs.source(column_name)
+      key = sources[column_name.to_sym]
       [key, hash[:dir]].join(' ')
     end
   end

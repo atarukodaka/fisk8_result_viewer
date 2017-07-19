@@ -3,19 +3,19 @@ class ElementsDatatable < IndexDatatable
     super view
     
     self.hidden_columns = [:category, :segment, :competition_name, :season]
-    self.sources = {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      season: "competitions.season",
-      category: "scores.category",
-      segment: "scores.segment",
-      date: "scores.date",
-      ranking: "scores.ranking",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      name: "elements.name",
-      base_value: "elements.base_value",
-    }
+    sources.update(
+                   score_name: "scores.name",
+                   competition_name: "competitions.name",
+                   season: "competitions.season",
+                   category: "scores.category",
+                   segment: "scores.segment",
+                   date: "scores.date",
+                   ranking: "scores.ranking",
+                   skater_name: "skaters.name",
+                   nation: "skaters.nation",
+                   name: "elements.name",
+                   base_value: "elements.base_value",
+                   )
     add_filters(:skater_name, :competition_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
 

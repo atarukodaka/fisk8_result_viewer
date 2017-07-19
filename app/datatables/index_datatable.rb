@@ -16,7 +16,8 @@ class IndexDatatable < Datatable
   def add_filter(column, operator: :eq, &block)
     #key = table_keys[column.to_sym] || column.to_s
     #key = sources[column.to_sym] || column.to_s
-    key = column_defs.source(column)
+    #key = column_defs.source(column)
+    key = sources[column]
     proc =
       if block_given?
         block

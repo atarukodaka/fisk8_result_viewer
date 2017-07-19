@@ -28,7 +28,7 @@ class Datatable
     table_name = records.table_name
     columns.map {|column|
       [column, [table_name, column].join('.')]
-    }.to_h
+    }.to_h.with_indifferent_access
   }
   
   include Datatable::Serverside
@@ -36,13 +36,15 @@ class Datatable
   
   def initialize(view_context = nil)
     @data = nil
-    @settings = default_settings
+    @settings = default_settings.with_indifferent_access
     @view_context = view_context
     yield(self) if block_given?
   end
+=begin
   def column_defs
     @column_defs ||= Datatable::ColumnDefs.new(self)
   end
+=end
   ## data fetching/manipulation
   def fetch_records
     raise "implemtent in derived class or give records directory"

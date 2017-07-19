@@ -2,18 +2,18 @@ class ComponentsDatatable < IndexDatatable
   def initialize(view=nil)
     super view
 
-    self.sources = {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      season: "competitions.season",
-      category: "scores.category",
-      segment: "scores.segment",
-      date: "scores.date",
-      ranking: "scores.ranking",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      name: "components.name",
-    }
+    sources.update(
+                   score_name: "scores.name",
+                   competition_name: "competitions.name",
+                   season: "competitions.season",
+                   category: "scores.category",
+                   segment: "scores.segment",
+                   date: "scores.date",
+                   ranking: "scores.ranking",
+                   skater_name: "skaters.name",
+                   nation: "skaters.nation",
+                   name: "components.name",
+                   )
     add_filters(:skater_name, :competition_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
 
