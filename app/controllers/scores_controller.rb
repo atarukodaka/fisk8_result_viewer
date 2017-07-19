@@ -17,19 +17,15 @@ class ScoresController < ApplicationController
       raise(ActiveRecord::RecordNotFound.new("no such score name: '#{params[:name]}'"))
 
     respond_to do |format|
-      format.html { render locals: {
-          score: score,
-          score_summary: score_summary(score),
-          elements_datatable: elements_datatable(score),
-          components_datatable: components_datatable(score)
-        }
+      data = {
+        score: score,
+        score_summary: score_summary(score),
+        elements: elements_datatable(score),
+        components: components_datatable(score)
       }
+      format.html { render locals: data.merge(score: score)  }
       format.json {
-        render json: score.as_json
-          .merge(
-                 elememnts: elements_datatable(score),
-                 components: components_datatable(score),
-                 )
+        render json: data
       }
     end
   end

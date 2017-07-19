@@ -1,7 +1,7 @@
 class CompetitionsController < ApplicationController
   include IndexActions
-  
   include Contracts
+  
   def competition_info(competition)
     Listtable.new(view_context).records(competition).columns([:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
   end
@@ -32,25 +32,24 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category = params[:category]
-    segment = params[:segment]
+    category, segment = params[:category], params[:segment]
 
     respond_to do |format|
-      locals = {
-        competition: competition,
-        category: category,
-        segment: segment,
+      data = {
         competition_info: competition_info(competition),
         result_type: result_type(category, segment),
         results: result_datatable(competition, category, segment),
       }
 
       format.html {
-        render :show, locals: locals
+        render :show, locals: data.merge(competition: competition,
+                                         category: category,
+                                         segment: segment,
+                                         )
+
       }
       format.json {
-        render json: competition.as_json(except: :id)
-          .merge(results: result_datatable(competition, category, segment))
+        render json: data
       }
     end
   end

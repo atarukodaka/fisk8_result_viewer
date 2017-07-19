@@ -1,5 +1,4 @@
 ## TODO
-- update spec: quite dputs
 - category: type: single/couple ?
 
 - let/context DRY for filter/order

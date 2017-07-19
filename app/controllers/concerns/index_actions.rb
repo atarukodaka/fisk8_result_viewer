@@ -9,14 +9,8 @@ module IndexActions
 
     respond_to do |format|
       format.html {
-        serverside_settings = {
-          serverSide: true,
-          ajax: {
-            url: url_for(action: :list, format: :json, params: params.permit!),
-          },
-        }
         render :index, locals: {
-          table: table.update_settings(serverside_settings)
+          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json, params: params.permit!))
         }
       }
       format.json { render json:
@@ -39,7 +33,7 @@ module IndexActions
 
   ################
   # unrouted methods
-  def create_datatable(serverside: false)
+  def create_datatable
     [controller_name.camelize, Datatable].join.constantize.new(view_context)
   end
 end

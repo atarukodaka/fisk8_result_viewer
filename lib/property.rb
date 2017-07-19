@@ -18,8 +18,8 @@ module Property
     define_method(sym) do |*args|
       variable_name = "@#{sym.to_sym}"
 
-      #if !args.empty?    # set value and return self for method chain
-      if args.present?  # TODO: not depend on activesupport
+      if !args.empty?    # set value and return self for method chain
+      #if args.present?  # TODO: not depend on activesupport
         instance_variable_set variable_name, args.first
         self
       else   # get value

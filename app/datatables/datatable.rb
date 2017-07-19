@@ -74,6 +74,10 @@ class Datatable
                    },
                    )
   end
+  def ajax(serverside: false, url: )
+    settings.update(serverSide: serverside, ajax: {url: url})
+    self
+  end
   def column_names
     columns.map(&:to_s)
   end
