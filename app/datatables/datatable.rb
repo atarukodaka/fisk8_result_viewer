@@ -23,8 +23,9 @@ class Datatable
   property :numbering, nil
   property(:searchable_columns){ columns }
 
-#  properties :sources, default: {}
   property(:sources) {
+    # on default, sources for each columns have "table_name.column_name"
+    # note that records required to get table_name
     table_name = records.table_name
     columns.map {|column|
       [column, [table_name, column].join('.')]
@@ -40,11 +41,6 @@ class Datatable
     @view_context = view_context
     yield(self) if block_given?
   end
-=begin
-  def column_defs
-    @column_defs ||= Datatable::ColumnDefs.new(self)
-  end
-=end
   ## data fetching/manipulation
   def fetch_records
     raise "implemtent in derived class or give records directory"
@@ -71,7 +67,7 @@ class Datatable
                      {
                        data: name,
                        visible: !(hidden_columns.include?(name.to_sym)),
-#                       searchable: (searchable_columns.include?(name.to_sym)),
+                       searchable: (searchable_columns.include?(name.to_sym)),
                      }},
                    order: default_orders.map {|column, dir|
                      [column_names.index(column.to_s), dir]
@@ -82,7 +78,7 @@ class Datatable
     columns.map(&:to_s)
   end
   def render(partial: "datatable", locals: {})
-    @view_context.render(partial: partial, locals: {table: self }.merge(locals))
+    @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
   end
   def table_id
     "table_#{self.object_id}"

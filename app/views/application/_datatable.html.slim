@@ -1,4 +1,4 @@
-- table || raise('no table given')
+- datatable || raise('no table given')
 
 - table_id = table.table_id
 - column_names = table.column_names
@@ -7,29 +7,29 @@
 script
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable(
-  = table.table_settings.to_json.html_safe
+  = datatable.table_settings.to_json.html_safe
   | );
 
-  - if table.numbering
-    | var numbering_column = #{table.column_names.index(table.numbering.to_s) || 0};
+  - if datatable.numbering
+    | var numbering_column = #{datatable.column_names.index(datatable.numbering.to_s) || 0};
     | t.on('order.dt search.dt', function(){
     |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
     |         cell.innerHTML = i+1;
     |     } );
     |  } );
-    - unless table.settings[:serverSide]
+    - unless datatable.settings[:serverSide]
       | t.draw();
 
-  - if table.hidden_columns.present?
+  - if datatable.hidden_columns.present?
     |  $('#toggle_details').on('click', function(e){ 
     |    e.preventDefault();
-    - table.hidden_columns.each do |column|
-      | var column = t.column( #{table.column_names.index(column.to_s)});
+    - datatable.hidden_columns.each do |column|
+      | var column = t.column( #{datatable.column_names.index(column.to_s)});
       |    column.visible( ! column.visible() ) ;
     |  })
   | });
 
-- if table.hidden_columns.present?
+- if datatable.hidden_columns.present?
   button type="submit" id="toggle_details"
     | show/hide details
 
@@ -40,12 +40,15 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless table.settings[:ajax]
-      - table.data.each do |item|
+    - unless datatable.settings[:ajax]
+      - datatable.data.each do |item|
         tr
           - column_names.each do |key|
             td
-              = item.send(key) if item.respond_to?(key)
+              - if item.respond_to? key
+                = item.send(key)
+              - else
+                = item[:key]
 
 
 
