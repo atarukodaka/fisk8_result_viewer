@@ -63,14 +63,12 @@ class Datatable
   end
   def table_settings
     settings.merge(
-=begin
                    columns: column_names.map {|name|
                      {
                        data: name,
                        visible: !(hidden_columns.include?(name.to_sym)),
                        searchable: (searchable_columns.include?(name.to_sym)),
                      }},
-=end
                    order: default_orders.map {|column, dir|
                      [column_names.index(column.to_s), dir]
                    },
