@@ -35,32 +35,32 @@ h3 Highest  Score
     h4 Total Score
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
     - cols = [:no, :skater_name_, :max_points]
-    = StaticsDatatable.new(data.decorate, only: cols).render(self)
+    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
   .col-sm-4
     h4 Short
     - data = short_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
     - cols = [:no, :skater_name_, :max_tss]
-    = StaticsDatatable.new(data.decorate, only: cols).render(self)
+    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
   .col-sm-4
     h4 Free
     - data = free_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
     - cols = [:no, :skater_name_, :max_tss]
-    = StaticsDatatable.new(data.decorate, only: cols).render(self)
+    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
 .row
   .col-sm-4
     h4 Base Value
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
     - cols = [:no, :skater_name_, :max_total_bv]
-    = StaticsDatatable.new(data.decorate, only: cols).render(self)
+    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
   .col-sm-4
     h4 GOE
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_goe) as max_total_goe").order("max(total_goe) desc")
     - cols = [:no, :skater_name_, :max_total_goe]
-    = StaticsDatatable.new(data.decorate, only: cols).render(self)
+    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
 ////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ h3 Average Values
         h5= key.to_s.humanize
         - data2 = data.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}, avg(elements.level) as avg_level").group(:skater_id)
         - cols = [:no, :skater_name_, "avg_#{key}".to_sym, "avg_level"]
-        = StaticsDatatable.new(data2.decorate, only: cols).render(self)
+        = StaticsDatatable.new(self).records(data2).columns(cols).decorate.render
 
 ////////////////////////////////////////////////////////////////
 hr
@@ -90,7 +90,7 @@ h3 Components Scores
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
       - cols = [:no, :skater_name_, :avg_value]
-      = StaticsDatatable.new(data.decorate, only: cols).render(self)
+      = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
 .row
   - [3, 4, 5,].each do |num|
@@ -99,4 +99,4 @@ h3 Components Scores
       - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
       - data = data.where(number: num) if num > 0
       - cols = [:no, :skater_name_, :avg_value]
-      = StaticsDatatable.new(data.decorate, only: cols).render(self)
+      = StaticsDatatable.new(self).records(data).columns(cols).decorate.render

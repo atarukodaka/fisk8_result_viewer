@@ -9,7 +9,7 @@ class Datatable
   #
   # for server-side ajax,
   #
-  # = Datatable.new(self).update_settings(server-side: true, ajax: users_list_path).render
+  # = Datatable.new(self).settings(serverSide: true, ajax: users_list_path).render
   #
 
   extend Forwardable
@@ -17,10 +17,14 @@ class Datatable
 
   def_delegators :@view_context, :params
 
-  properties :records, :columns, :hidden_columns, :order, default: []
+  properties :columns, :hidden_columns, :order, default: []
   properties :sources, default: {}
   properties :settings
-
+  property(:records) {
+    fetch_records()
+  }
+  property :numbering, nil
+  
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
@@ -33,30 +37,20 @@ class Datatable
     @column_def ||= Datatable::ColumnDef.new(self)
   end
   ## data fetching/manipulation
+=begin
+  def records
+    @records ||= fetch_records
+  end
+=end
   def fetch_records
-    @records || []
+    raise
   end
   def data
-    @data ||= manipulate(fetch_records)
+    @data ||= manipulate(records)
   end
   def manipulate(r)
     r
   end
-=begin
-  def data
-    @manipulated_data ||= manipulate(fetch_records)
-  end
-  def manipulate(data)
-    manipulators.reduce(data){|d, m| m.call(d)}
-  end
-  def manipulators
-    @manipulators ||= []
-  end
-  def add_manipulator(f)
-    manipulators << f
-    self
-  end
-=end
   ################
   ## settings, etc
   def default_settings
@@ -112,13 +106,11 @@ class Datatable
   def order_sql
     return "" if params[:order].blank?
 
-    ary = []
-    params[:order].each do |_, hash|   ## params doesnt have map()
+    params.require(:order).values.map do |hash|
       column_name = columns[hash[:column].to_i]
       key = column_def.source(column_name)
-      ary << [key, hash[:dir]].join(' ')
+      [key, hash[:dir]].join(' ')
     end
-    ary
   end
   ################
   ## paging
@@ -140,6 +132,5 @@ class Datatable
       }
     }
   end
-
 end
 ################################################################

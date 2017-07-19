@@ -36,7 +36,6 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       skater = get_skater
-
       hash = {
         skater_info: skater_info_listtable(skater),
         record_summary: record_summary_datatable(skater),

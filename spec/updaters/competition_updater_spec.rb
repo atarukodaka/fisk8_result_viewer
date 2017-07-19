@@ -15,6 +15,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
     
     describe 'wc2017 with isu_generic' do
+      Category.accept_all
       let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
       subject {  Competition.create(site_url: url).update   }
       it_behaves_like :having_competition_with_url
@@ -40,25 +41,26 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     before { Category.accept!([]) }
 
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
-      :gp, 'GPJPN2016'],
+      :gp, :isu, 'GPJPN2016'],
      ['http://www.isuresults.com/results/season1617/gpf1617/',
-      :gp, 'GPF2016'],
+      :gp, :isu,'GPF2016'],
      ['http://www.isuresults.com/results/owg2014/',
-      :olympic, 'OLYMPIC2014'],
+      :olympic, :isu,'OLYMPIC2014'],
      ['http://www.isuresults.com/results/season1617/wc2017/',
-      :world, 'WORLD2017'],
+      :world, :isu,'WORLD2017'],
      ['http://www.isuresults.com/results/season1617/fc2017/',
-      :fcc, 'FCC2017'],
+      :fcc, :isu,'FCC2017'],
      ['http://www.isuresults.com/results/season1617/ec2017/',
-      :euro, 'EURO2017'],
+      :euro, :isu,'EURO2017'],
      ['http://www.isuresults.com/results/wtt2012/',
-      :team, 'TEAM2012'],
+      :team, :isu,'TEAM2012'],
      ['http://www.isuresults.com/results/season1617/wjc2017/',
-      :jworld, 'JWORLD2017'],
+      :jworld, :isu,'JWORLD2017'],
      ['http://www.isuresults.com/results/season1617/jgpger2016/',
-      :jgp, 'JGPGER2016'],
-     #['',
-     #:challenger, 'FINLANDIA2016'],  # TODO: competition_class, and other examples to add
+      :jgp, :isu,'JGPGER2016'],
+     ['http://www.figureskatingresults.fi/results/1617/CSFIN2016/',
+      :finlandia, :challenger, 'FINLANDIA2016'],
+     # TODO: competition_class, and other examples to add
     ].each do |ary|
       let(:url) { ary[0] }
       let(:competition_type) { ary[1] }

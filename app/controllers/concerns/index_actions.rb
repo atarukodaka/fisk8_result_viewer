@@ -1,10 +1,11 @@
 module IndexActions
   ## routed actions
   def list
-    render json: create_datatable   # (serverside: true)
+    render json: create_datatable
   end
   def index
     table = create_datatable
+    max_limit = 10_000
 
     respond_to do |format|
       format.html {
@@ -19,7 +20,7 @@ module IndexActions
         }
       }
       format.json { render json:
-        table.data.limit(10000).map do |item|
+        table.data.limit(max_limit).map do |item|
           column_names.map do |column|
             [column, item.send(column)]
           end.to_h
@@ -28,7 +29,7 @@ module IndexActions
       format.csv {
         require 'csv'
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
-          table.data.limit(10000).each do |row|
+          table.data.limit(max_limit).each do |row|
             csv << table.column_names.map {|k| row.send(k)}
           end
         end
@@ -39,11 +40,6 @@ module IndexActions
   ################
   # unrouted methods
   def create_datatable(serverside: false)
-    klass = "#{controller_name.camelize}Datatable".constantize
-    klass.new(view_context) do |obj|
-      yield obj if block_given?
-    end
-    #(serverside) ? table.extend(Datatable::Serverside).set_params(params) : table
-    #(serverside) ? table.extend(Datatable::Serverside) : table
+    [controller_name.camelize, Datatable].join.constantize.new(view_context)
   end
 end

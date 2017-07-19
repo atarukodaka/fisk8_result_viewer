@@ -1,12 +1,11 @@
 ## TODO
 - update spec: quite dputs
 - category: type: single/couple ?
-- let/context DRA for filter/order
-- hide/show filters
-- results.name nesecarry? ?? : for spec func
-- spec: Category before accept all
-- spec: score graphs
-- property defered blcok evaluation
+
+- let/context DRY for filter/order
+- property defered block evaluation
+- property: readonly, writeonly
+- datatable: numbering
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

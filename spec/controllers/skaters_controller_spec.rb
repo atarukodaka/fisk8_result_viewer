@@ -71,6 +71,7 @@ RSpec.describe SkatersController, type: :controller do
     context 'isu_number' do
       subject { get :show, params: { isu_number: men_skater.isu_number } }
       it_behaves_like :men_skater
+      its(:body) { is_expected.to include("_plot.png") }  ## score graphs
     end
     context 'name' do
       subject { get :show, params: { isu_number: men_skater.name } }

@@ -8,7 +8,7 @@ end
 
 module Datatable::Decorate
   def manipulate(r)
-    r.decorate
+    super(r).decorate
   end
 end
 

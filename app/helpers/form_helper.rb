@@ -1,6 +1,4 @@
 module FormHelper
-  using SortWithPreset
-
   def form_group(label, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       concat(content_tag(:div, label_tag(label), :class => 'col-sm-2'))
@@ -18,6 +16,7 @@ module FormHelper
     col =
       case key
       when :category
+        using SortWithPreset
         Score.uniq_list(:category).sort_with_preset(Category.all.map(&:name))
       when :segment
         Score.uniq_list(:segment).sort

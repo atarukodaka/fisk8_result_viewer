@@ -3,6 +3,8 @@ class EntryDecorator < Draper::Decorator
   include ApplicationHelper
   delegate_all
 
+  def no  ## for numbering
+  end
   class << self
     using AsScore
     using AsRanking

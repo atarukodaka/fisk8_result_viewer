@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(version: 3) do
   end
 
   create_table "results", force: :cascade do |t|
-    t.string "name"
     t.integer "isu_number"
     t.string "category"
     t.integer "ranking"
