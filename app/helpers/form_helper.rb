@@ -12,12 +12,13 @@ module FormHelper
       #concat(yield) if block_given?
     end
   end
+  
+  # using SortWithPreset
   def select_tag_with_options(key, *args)
     col =
       case key
       when :category
-        using SortWithPreset
-        Score.uniq_list(:category).sort_with_preset(Category.all.map(&:name))
+        Category.all.map(&:name) & Score.uniq_list(:category)
       when :segment
         Score.uniq_list(:segment).sort
       when :nation

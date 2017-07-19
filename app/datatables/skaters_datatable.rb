@@ -4,7 +4,6 @@ class SkatersDatatable < IndexDatatable
 
     add_filter(:name, operator: :matches)
     add_filters(:category, :nation)
-    self.numbering = :name
   end
 
   def columns
