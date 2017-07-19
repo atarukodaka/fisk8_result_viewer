@@ -39,7 +39,7 @@ class ResultsDatatable < IndexDatatable
      :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
     ]
   end
-  def order
+  def default_orders
     [[:season, :desc]]
   end
 end

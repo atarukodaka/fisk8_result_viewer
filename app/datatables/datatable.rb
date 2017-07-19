@@ -17,14 +17,21 @@ class Datatable
 
   def_delegators :@view_context, :params
 
-  properties :columns, :hidden_columns, :order, default: []
-  properties :sources, default: {}
-  properties :settings
-  property(:records) {
-    fetch_records()
-  }
+  properties :columns, :hidden_columns, :default_orders, default: []
+  properties :settings, default: nil
+  property(:records) {  fetch_records() }
   property :numbering, nil
+  property(:searchable_columns){ columns }
+
+#  properties :sources, default: {}
+  property(:sources) {
+    table_name = records.table_name
+    columns.map {|column|
+      [column, [table_name, column].join('.')]
+    }.to_h
+  }
   
+  include Datatable::Serverside
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
@@ -33,17 +40,12 @@ class Datatable
     @view_context = view_context
     yield(self) if block_given?
   end
-  def column_def
-    @column_def ||= Datatable::ColumnDef.new(self)
+  def column_defs
+    @column_defs ||= Datatable::ColumnDefs.new(self)
   end
   ## data fetching/manipulation
-=begin
-  def records
-    @records ||= fetch_records
-  end
-=end
   def fetch_records
-    raise
+    raise "implemtent in derived class or give records directory"
   end
   def data
     @data ||= manipulate(records)
@@ -56,19 +58,20 @@ class Datatable
   def default_settings
     {
       processing: true,
-      filter: true,
     }
   end
   def settings
     @settings ||= default_settings
   end
   def table_settings
-    settings.merge(columns: column_names.map {|name|
+    settings.merge(
+                   columns: column_names.map {|name|
                      {
                        data: name,
-                       visible: (hidden_columns.include?(name.to_sym)) ? false : true,
+                       visible: !(hidden_columns.include?(name.to_sym)),
+#                       searchable: (searchable_columns.include?(name.to_sym)),
                      }},
-                   order: order.map {|column, dir|
+                   order: default_orders.map {|column, dir|
                      [column_names.index(column.to_s), dir]
                    },
                    )
@@ -81,56 +84,6 @@ class Datatable
   end
   def table_id
     "table_#{self.object_id}"
-  end
-  ################################################################
-  ## for server-side ajax
-  ## searching
-  def search_sql
-    return "" if params[:columns].blank?
-
-    keys = []
-    values = []
-    params[:columns].each do |num, hash|
-      column_name = hash[:data]
-      sv = hash[:search][:value].presence || next
-
-      key = column_def.source(column_name)
-      keys << "#{key} like ? "
-      values << "%#{sv}%"
-    end
-    # return such as  ['name like ? and nation like ?', 'foo', 'bar']
-    (keys.blank?) ? '' : [keys.join(' and '), *values]
-  end
-  ################
-  ## sorting
-  def order_sql
-    return "" if params[:order].blank?
-
-    params.require(:order).values.map do |hash|
-      column_name = columns[hash[:column].to_i]
-      key = column_def.source(column_name)
-      [key, hash[:dir]].join(' ')
-    end
-  end
-  ################
-  ## paging
-  def page
-    params[:start].to_i / per + 1
-  end
-  def per
-    params[:length].to_i > 0 ? params[:length].to_i : 10
-  end
-  ################
-  ## json output
-  def as_json(opts={})
-    new_data = data.where(search_sql).order(order_sql).page(page).per(per)    
-    {
-      iTotalRecords: new_data.model.count,
-      iTotalDisplayRecords: new_data.total_count,
-      data: new_data.decorate.map {|item|
-        column_names.map {|c| [c, item.send(c)]}.to_h
-      }
-    }
   end
 end
 ################################################################

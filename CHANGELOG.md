@@ -3,9 +3,7 @@
 - category: type: single/couple ?
 
 - let/context DRY for filter/order
-- property defered block evaluation
 - property: readonly, writeonly
-- datatable: numbering
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -43,6 +41,7 @@
 - results have short\_*, free_\*
 - update: Timeout error:  rescue Errno::ETIMEDOUT
 - offset for csv/json
+- datatable: numbering
 
 ## 1.0.1 2017/6/25
 

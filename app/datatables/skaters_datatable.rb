@@ -14,7 +14,7 @@ class SkatersDatatable < IndexDatatable
     Skater.having_scores
   end
 
-  def order
+  def default_orders
     [[:category, :asc], [:name, :asc]]
   end
 end

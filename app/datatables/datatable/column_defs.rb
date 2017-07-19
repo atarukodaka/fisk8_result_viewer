@@ -1,4 +1,4 @@
-class Datatable::ColumnDef
+class Datatable::ColumnDefs
   def initialize(datatable)
     @datatable = datatable
   end
@@ -10,6 +10,12 @@ class Datatable::ColumnDef
       else
         column.to_s
       end
+  end
+  def condition(column)
+    :matches
+  end
+  def searchable(column)
+    @datatable.searchable_columns.index(column.to_sym).present?
   end
 =begin
   def hidden?(column)

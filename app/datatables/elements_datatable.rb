@@ -37,7 +37,7 @@ class ElementsDatatable < IndexDatatable
      :skater_name,
      :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
   end
-  def order
+  def default_orders
     [[:value, :desc]]
   end
 end

@@ -12,7 +12,7 @@ class CompetitionsDatatable < IndexDatatable
   def columns
     [:name, :site_url, :city, :country, :competition_class, :competition_type, :season, :start_date]
   end
-  def order
+  def default_orders
     [[:start_date, :desc]]
   end
 end

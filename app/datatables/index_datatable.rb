@@ -16,7 +16,7 @@ class IndexDatatable < Datatable
   def add_filter(column, operator: :eq, &block)
     #key = table_keys[column.to_sym] || column.to_s
     #key = sources[column.to_sym] || column.to_s
-    key = column_def.source(column)
+    key = column_defs.source(column)
     proc =
       if block_given?
         block
@@ -45,4 +45,10 @@ class IndexDatatable < Datatable
     ## offset
     (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
   end
+  ################
+  # columns
+  def searchable_columns
+    filter_keys
+  end
+
 end

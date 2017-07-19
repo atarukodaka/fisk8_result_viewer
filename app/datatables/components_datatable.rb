@@ -30,7 +30,7 @@ class ComponentsDatatable < IndexDatatable
      :ranking, :skater_name, :nation,
      :number, :name, :factor, :judges, :value,]
   end    
-  def order
+  def default_orders
     [[:value, :desc]]
   end
 

@@ -3,17 +3,17 @@ class ScoresDatatable < IndexDatatable
     super *args
     self.hidden_columns = [:competition_type, :competition_class, :competition_name,
                           :season, ]
-    self.sources = {
-      name: "scores.name",
-      category: "scores.category",
-      competition_name: "competitions.name",
-      competition_class: "competitions.competition_class",
-      competition_type: "competitions.competition_type",
-      season: "competitions.season",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      
-    }
+    sources.update(
+                   name: "scores.name",
+                   category: "scores.category",
+                   competition_name: "competitions.name",
+                   competition_class: "competitions.competition_class",
+                   competition_type: "competitions.competition_type",
+                   season: "competitions.season",
+                   skater_name: "skaters.name",
+                   nation: "skaters.nation",
+                   )
+
     add_filters(:name, :competition_name, :competition_class, :competition_type, :skater_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
   end
@@ -27,7 +27,7 @@ class ScoresDatatable < IndexDatatable
      :tss, :tes, :pcs, :deductions, :base_value
     ]
   end
-  def order
+  def default_orders
     [[:date, :desc]]
   end
 end
