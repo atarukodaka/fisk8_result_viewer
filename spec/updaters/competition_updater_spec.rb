@@ -41,35 +41,41 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     before { Category.accept!([]) }
 
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
-      :gp, :isu, 'GPJPN2016'],
+      :isu, :gp, 'GPJPN2016'],
      ['http://www.isuresults.com/results/season1617/gpf1617/',
-      :gp, :isu,'GPF2016'],
+      :isu, :gp,'GPF2016'],
      ['http://www.isuresults.com/results/owg2014/',
-      :olympic, :isu,'OLYMPIC2014'],
+      :isu, :olympic, 'OLYMPIC2014'],
      ['http://www.isuresults.com/results/season1617/wc2017/',
-      :world, :isu,'WORLD2017'],
+      :isu, :world, 'WORLD2017'],
      ['http://www.isuresults.com/results/season1617/fc2017/',
-      :fcc, :isu,'FCC2017'],
+      :isu, :fcc, 'FCC2017'],
      ['http://www.isuresults.com/results/season1617/ec2017/',
-      :euro, :isu,'EURO2017'],
+      :isu, :euro, 'EURO2017'],
      ['http://www.isuresults.com/results/wtt2012/',
-      :team, :isu,'TEAM2012'],
+      :isu, :team, 'TEAM2012'],
      ['http://www.isuresults.com/results/season1617/wjc2017/',
-      :jworld, :isu,'JWORLD2017'],
+      :isu, :jworld, 'JWORLD2017'],
      ['http://www.isuresults.com/results/season1617/jgpger2016/',
-      :jgp, :isu,'JGPGER2016'],
+      :isu, :jgp, 'JGPGER2016'],
      ['http://www.figureskatingresults.fi/results/1617/CSFIN2016/',
-      :finlandia, :challenger, 'FINLANDIA2016'],
+      :challenger, :finlandia, 'FINLANDIA2016'],
      # TODO: competition_class, and other examples to add
     ].each do |ary|
-      let(:url) { ary[0] }
-      let(:competition_type) { ary[1] }
-      let(:short_name) { ary[2] }
-      
-      subject { Competition.create(site_url: url).update }
-      its(:site_url) { is_expected.to eq(url) }
-      its(:competition_type) { is_expected.to eq(competition_type.to_s) } 
-      its(:short_name) { is_expected.to eq(short_name) }
+      context ary[0] do
+        let(:url) { ary[0] }
+        let(:competition_class) { ary[1].to_s }
+        let(:competition_type) { ary[2].to_s }
+        let(:short_name) { ary[3] }
+
+        subject(:competition) { Competition.create(site_url: url).update }
+        it {
+          expect(competition.site_url).to eq(url)
+          expect(competition.competition_class).to eq(competition_class)
+          expect(competition.competition_type).to eq(competition_type)
+          expect(competition.short_name).to eq(short_name)
+        }
+      end
     end
   end
   ################################################################
