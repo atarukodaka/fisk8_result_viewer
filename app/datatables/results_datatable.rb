@@ -39,6 +39,7 @@ class ResultsDatatable < IndexDatatable
   def default_orders
     [[:season, :desc]]
   end
+=begin
   def value(item, column_name)
     case column_name.to_sym
     when :season
@@ -47,4 +48,5 @@ class ResultsDatatable < IndexDatatable
       super(item, column_name)
     end
   end
+=end
 end
