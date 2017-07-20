@@ -13,10 +13,11 @@ module IndexActions
           table: table.ajax(serverside: true, url: url_for(action: :list, format: :json, params: params.permit!))
         }
       }
-      format.json { render json:
-        table.data.limit(max_limit).map do |item|
-          column_names.map do |column|
-            [column, item.send(column)]
+      format.json {
+        render json: table.data.limit(max_limit).map do |item|
+          table.column_names.map do |column|
+            #[column, item.send(column)]
+            [column, table.value(item, column)]
           end.to_h
         end
       }
@@ -24,7 +25,7 @@ module IndexActions
         require 'csv'
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
           table.data.limit(max_limit).each do |row|
-            csv << table.column_names.map {|k| row.send(k)}
+            csv << table.column_names.map {|k| table.value(row, k)}
           end
         end
         send_data csv, filename: "#{controller_name}.csv" }

@@ -40,6 +40,8 @@ class IndexDatatable < Datatable
   def manipulate(data)
     ## filters
     new_data = filters.reduce(super(data)) do |col, hash|
+
+      
       (v = params[hash[:column]].presence) ? hash[:proc].call(col, v) : col
     end
 

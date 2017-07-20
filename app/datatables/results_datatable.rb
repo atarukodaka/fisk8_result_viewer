@@ -39,4 +39,12 @@ class ResultsDatatable < IndexDatatable
   def default_orders
     [[:season, :desc]]
   end
+  def value(item, column_name)
+    case column_name.to_sym
+    when :season
+      item.competition.season
+    else
+      super(item, column_name)
+    end
+  end
 end

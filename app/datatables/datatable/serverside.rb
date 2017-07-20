@@ -14,7 +14,6 @@ module Datatable::Serverside
       model = table_name.classify.constantize
       arel_table = model.arel_table[table_column]
       condition = :matches
-      
       case condition
       when :eq
         arel_table.eq(sv)
@@ -51,15 +50,9 @@ module Datatable::Serverside
       iTotalRecords: new_data.model.count,
       iTotalDisplayRecords: new_data.total_count,
       data: new_data.decorate.map {|item|
-        foo(item)
+        #column_names.map {|c| [c, item.send(c)]}.to_h
+        column_names.map {|c| [c, value(item, c)]}.to_h
       }
     }
-  end
-  def foo(item)
-    #column_names.map {|c| [c, item.send(c)]}.to_h
-    {
-
-    }
-    item
   end
 end

@@ -87,5 +87,8 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
+  def value(item, column_name)
+    item.try(:send,column_name.to_sym) || item[column_name.to_sym]
+  end
 end
 ################################################################
