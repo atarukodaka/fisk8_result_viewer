@@ -3,6 +3,7 @@
 
 - let/context DRY for filter/order
 - property: readonly, writeonly
+- expand_data...?
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

@@ -45,14 +45,16 @@ module Datatable::Serverside
   ################
   ## json output
   def as_json(opts={})
-    new_data = data.where(search_sql).order(order_sql).page(page).per(per)    
+    @data = data.where(search_sql).order(order_sql).page(page).per(per)    
     {
-      iTotalRecords: new_data.model.count,
-      iTotalDisplayRecords: new_data.total_count,
-      data: new_data.decorate.map {|item|
-        #column_names.map {|c| [c, item.send(c)]}.to_h
-        column_names.map {|c| [c, value(item, c)]}.to_h
+      iTotalRecords: data.model.count,
+      iTotalDisplayRecords: data.total_count,
+=begin
+      data: data.map {|item|
+        column_names.map {|c| [c, item.decorate.send(c)]}.to_h
       }
+=end
+      data: expand_data(data.decorate)
     }
   end
 end

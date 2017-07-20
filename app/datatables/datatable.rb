@@ -1,4 +1,4 @@
-################################################################
+###############################################################
 class Datatable 
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
@@ -22,6 +22,7 @@ class Datatable
   property(:records) {  fetch_records() }
   property :numbering, nil
   property(:searchable_columns){ columns }
+  property :data, nil
 
   property(:sources) {
     # on default, sources for each columns have "table_name.column_name"
@@ -36,7 +37,6 @@ class Datatable
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
-    @data = nil
     @settings = default_settings.with_indifferent_access
     @view_context = view_context
     yield(self) if block_given?
@@ -50,6 +50,13 @@ class Datatable
   end
   def manipulate(r)
     r
+  end
+  def expand_data(d=nil)
+    (d || data).map do |item|
+      column_names.map do |column_name|
+        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
+      end.to_h
+    end
   end
   ################
   ## settings, etc
@@ -87,8 +94,7 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
-  def value(item, column_name)
-    item.try(:send,column_name.to_sym) || item[column_name.to_sym]
+  def row(r)
   end
 end
 ################################################################
