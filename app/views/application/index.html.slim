@@ -29,10 +29,9 @@ style
 
 //
 
-/script
+script
   | jQuery(function($){
-  | var t = $('##{table.table_id}').DataTable;
-  | debugger;
+  | var t = $('##{table.table_id}').DataTable();
   - if table.hidden_columns.present?
     |  $('#toggle_details').on('click', function(e){ 
     |    e.preventDefault();
@@ -42,7 +41,7 @@ style
     |  })
   |});
 
-/- if table.hidden_columns.present?
+- if table.hidden_columns.present?
   button type="button" id="toggle_details"
     | show/hide details
 

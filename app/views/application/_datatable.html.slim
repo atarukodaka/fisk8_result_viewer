@@ -12,6 +12,7 @@ script
   | var t = $("##{table_id}").DataTable(
   /= datatable.table_settings.to_json.html_safe
   | {
+  |   retrieve: true,
   - if dl = settings[:deferLoading].presence
     - datatable.data = datatable.data.limit(settings[:pageLength] || 10).decorate
     |   deferLoading: #{settings[:deferLoading]},
