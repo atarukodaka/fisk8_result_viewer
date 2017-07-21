@@ -49,8 +49,10 @@ script
 
   | );
 
-  - if datatable.numbering
-    | var numbering_column = #{datatable.column_names.index(datatable.numbering.to_s) || 0};
+  // numbering
+  - numbering_column_name = datatable.options[:numbering_column_name]
+  - if numbering_column_index = datatable.column_names.index(numbering_column_name).presence
+    | var numbering_column = #{numbering_column_index};
     | t.on('order.dt search.dt', function(){
     |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
     |         cell.innerHTML = i+1;

@@ -19,9 +19,9 @@ class Datatable
   def_delegators :@view_context, :params
 
   properties :columns, :hidden_columns, :default_orders, default: []
+  properties :options, default: {}
   property(:settings){ default_settings }
   property(:records) {  fetch_records() }
-  property :numbering, nil
   property(:searchable_columns){ columns }
   property(:orderable_columns) { columns }
   property :data, nil
@@ -50,6 +50,9 @@ class Datatable
   end
   def manipulate(r)
     # order
+    default_sort(r)
+  end
+  def default_sort(r)
     if default_orders.present?
       r.order(default_orders.map {|column, dir| [sources[column], dir].join(' ')})
     else
