@@ -9,9 +9,6 @@ class IndexDatatable < Datatable
   def manipulate(d)
     search(d)
   end
-  def default_settings
-    super.merge(deferLoading: records.count)
-  end
   def search(d)
     node = searchable_columns.map(&:to_s).map do |column_name|
       next unless sv = params[column_name].presence
