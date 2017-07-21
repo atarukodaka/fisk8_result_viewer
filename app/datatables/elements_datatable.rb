@@ -16,19 +16,6 @@ class ElementsDatatable < IndexDatatable
                    name: "elements.name",
                    base_value: "elements.base_value",
                    )
-=begin
-    add_filters(:skater_name, :competition_name, operator: :matches)
-    add_filters(:category, :segment, :nation, :season)
-
-    add_filter(:element_type)
-    add_filter(:name) do |c, v|
-      arel = (params[:perfect_match]) ? Element.arel_table[:name].eq(v) : Element.arel_table[:name].matches("%#{v}%")
-      c.where(arel)
-    end
-    add_filter(:goe) do |c, v|
-      c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
-    end
-=end
   end
   def fetch_records
     Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all

@@ -14,14 +14,6 @@ class ComponentsDatatable < IndexDatatable
                    nation: "skaters.nation",
                    name: "components.name",
                    )
-=begin
-    add_filters(:skater_name, :competition_name, operator: :matches)
-    add_filters(:category, :segment, :nation, :season)
-
-    add_filter(:value) do |c, v|
-      c.where(Component.arel_table_by_operator(:value, params[:value_operator], v))
-    end
-=end
   end
   def fetch_records
     Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all

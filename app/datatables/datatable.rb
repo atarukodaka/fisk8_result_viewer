@@ -149,7 +149,7 @@ class Datatable
   def as_json(opts={})
     @data = data.where(search_sql).order(order_sql).page(page).per(per)    
     {
-      iTotalRecords: data.count,
+      iTotalRecords: records.count,
       iTotalDisplayRecords: data.total_count,
 =begin
       data: data.map {|item|
