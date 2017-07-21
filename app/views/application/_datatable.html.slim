@@ -32,9 +32,12 @@ script
   -    datatable.column_names.each do |column_name|
     |    { 
     |        data: "#{column_name}",
-    |        visible: #{ (datatable.hidden_columns.index(column_name.to_sym)) ? false : true },
-    |        orderable: #{ (datatable.orderable_columns.index(column_name.to_sym)) ? true : false },
-    |        searchable: #{ (datatable.searchable_columns.index(column_name.to_sym)) ? true : false },
+    |        visible: #{ datatable.column_def(column_name).visible },
+    /|        visible: #{ (datatable.hidden_columns.index(column_name.to_sym)) ? false : true },
+    |        orderable: #{ datatable.column_def(column_name).orderable },
+    /|        orderable: #{ (datatable.orderable_columns.index(column_name.to_sym)) ? true : false },
+    |        searchable: #{ datatable.column_def(column_name).searchable },
+    /|        searchable: #{ (datatable.searchable_columns.index(column_name.to_sym)) ? true : false },
     |    },
   |  ],
       order: #{datatable.order.to_json.html_safe}

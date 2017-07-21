@@ -78,6 +78,10 @@ class Datatable
   def column_names
     columns.map(&:to_s)
   end
+  def column_def(column_name)
+    @column_defs ||= {}
+    @column_defs[column_name] ||= Datatable::Column.new(column_name, self)
+  end
   def render(partial: "datatable", locals: {})
     @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
   end
@@ -150,3 +154,19 @@ class Datatable
 
 end
 ################################################################
+class Datatable::Column
+  def initialize(name, datatable)
+    @name = name
+    @datatable = datatable
+  end
+  def visible
+    (@datatable.hidden_columns.index(@name.to_sym)) ? false : true
+  end
+  def orderable
+    (@datatable.orderable_columns.index(@name.to_sym)) ? true : false
+  end
+  def searchable
+    (@datatable.searchable_columns.index(@name.to_sym)) ? true : false
+  end
+end
+
