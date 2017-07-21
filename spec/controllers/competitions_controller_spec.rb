@@ -17,12 +17,6 @@ RSpec.describe CompetitionsController, type: :controller do
     create(:competition, :finlandia)
   }
   ################################################################
-  describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-    its(:body) { is_expected.to include("\"serverSide\":true") }
-  end
-
   shared_examples :having_all do
     its(:body) { is_expected.to include(world.name) }
     its(:body) { is_expected.to include(finlandia.name)}

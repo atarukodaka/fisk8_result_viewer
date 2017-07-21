@@ -13,7 +13,7 @@
 
   .col-sm-6
     h2 Record Summary
-    /= render partial: "listtable", locals: { datatable: record_summary }
+    = render partial: "listtable", locals: { datatable: record_summary }
     /= record_summary.render
 
 h2 Competition Results

@@ -52,23 +52,23 @@ RSpec.describe ComponentsController, type: :controller do
       end
 
       context 'compares by >' do
-        subject { get :list, xhr: true, params: { value: "9.5", value_operator: '>'} }
+        subject { get :list, xhr: true, params: { value: "9.5", value_operator: 'gt'} }
         it_behaves_like :short_ss_only
       end
       context 'compares by <' do
-        subject { get :list, xhr: true, params: { value: "9.5", value_operator: '<'} }
+        subject { get :list, xhr: true, params: { value: "9.5", value_operator: 'lt'} }
         it_behaves_like :free_tr_only
       end
       context 'compares by <=' do
-        subject { get :list, xhr: true, params: { value: "9", value_operator: '<='} }
+        subject { get :list, xhr: true, params: { value: "9", value_operator: 'lteq'} }
         it_behaves_like :free_tr_only
       end
       context 'compares by >=' do
-        subject { get :list, xhr: true, params: { value: "10", value_operator: '>='} }
+        subject { get :list, xhr: true, params: { value: "10", value_operator: 'gteq'} }
         it_behaves_like :short_ss_only
       end
       context 'compares by =' do
-        subject { get :list, xhr: true, params: { value: "9", value_operator: '='} }
+        subject { get :list, xhr: true, params: { value: "9", value_operator: 'eq'} }
         it_behaves_like :free_tr_only
       end
     end

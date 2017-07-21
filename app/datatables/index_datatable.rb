@@ -38,6 +38,14 @@ class IndexDatatable < Datatable
   ################
   ## manipulator
   def manipulate(data)
+    node = searchable_columns.map(&:to_s).map do |column_name|
+      next unless sv = params[column_name].presence
+      node = searching_arel_table_node(column_name, sv)
+    end.compact.reduce(&:and)
+    data = data.where(node)
+  end
+=begin  
+  def __manipulate(data)
     ## filters
     new_data = filters.reduce(super(data)) do |col, hash|
 
@@ -48,6 +56,7 @@ class IndexDatatable < Datatable
     ## offset
     (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
   end
+=end
   ################
   # columns
   def searchable_columns

@@ -33,7 +33,7 @@ class Datatable
     }.to_h.with_indifferent_access
   }
   
-  include Datatable::Serverside
+  #include Datatable::Serverside
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
@@ -68,6 +68,7 @@ class Datatable
   def settings
     @settings ||= default_settings
   end
+=begin
   def table_settings
     settings.merge(
                    columns: column_names.map {|name|
@@ -81,6 +82,7 @@ class Datatable
                    },
                    )
   end
+=end
   def ajax(serverside: false, url: )
     settings.update(serverSide: serverside, ajax: {url: url})
     self
@@ -94,7 +96,81 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
-  def row(r)
+  def order
+    default_orders.map {|column, dir|
+      [column_names.index(column.to_s), dir]
+    }
   end
+  ################################################################
+  ## for server-side ajax
+  ## searching
+  def searching_arel_table_node(column_name, sv)
+      table_name, table_column = sources[column_name].split(/\./)
+      model = table_name.classify.constantize
+      arel_table = model.arel_table[table_column]
+      operator = params["#{table_column}_operator"].to_s.to_sym
+      
+      case operator
+      when :eq
+        arel_table.eq(sv)
+      when :lt
+        arel_table.lt(sv)
+      when :lteq
+        arel_table.lteq(sv)
+      when :gt
+        arel_table.gt(sv)
+      when :gteq
+        arel_table.gteq(sv)
+      else
+        arel_table.matches("%#{sv}%")
+      end
+  end
+  def search_sql
+    return "" if params[:columns].blank?
+
+    params.require(:columns).values.map {|item|
+      sv = item[:search][:value].presence || next
+      column_name = item[:data]
+      #next unless column_defs.searchable(column_name)
+
+      searching_arel_table_node(column_name, sv)
+    }.compact.reduce(&:and)
+  end
+  ################
+  ## sorting
+  def order_sql
+    return "" if params[:order].blank?
+
+    params.require(:order).values.map do |hash|
+      column_name = columns[hash[:column].to_i]
+      #key = column_defs.source(column_name)
+      key = sources[column_name.to_sym]
+      [key, hash[:dir]].join(' ')
+    end
+  end
+  ################
+  ## paging
+  def page
+    params[:start].to_i / per + 1
+  end
+  def per
+    params[:length].to_i > 0 ? params[:length].to_i : 10
+  end
+  ################
+  ## json output
+  def as_json(opts={})
+    @data = data.where(search_sql).order(order_sql).page(page).per(per)    
+    {
+      iTotalRecords: data.model.count,
+      iTotalDisplayRecords: data.total_count,
+=begin
+      data: data.map {|item|
+        column_names.map {|c| [c, item.decorate.send(c)]}.to_h
+      }
+=end
+      data: expand_data(data.decorate)
+    }
+  end
+
 end
 ################################################################

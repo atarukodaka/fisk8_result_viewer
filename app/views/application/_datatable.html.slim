@@ -4,13 +4,43 @@
 - column_names = datatable.column_names
 - numbering ||= false
 
+- settings = datatable.settings
+
 script
+  | jQuery(function($){
+  | var t = $("##{table_id}").DataTable(
+  /= datatable.table_settings.to_json.html_safe
+  | {
+  - if settings[:serverSide].present?
+  |  serverSide: true,
+  - if settings[:ajax].present?
+    |  ajax: { 
+    |    url: "#{settings[:ajax][:url]}",
+    |    data: function(d){ 
+    |      d.name_operator = $('#name_operator').val(),
+    |      d.goe_operator = $('#goe_operator').val(),
+    |      d.value_operator = $('#value_operator').val()
+    |    }
+    |  },
+  |  columns: [
+  -    datatable.column_names.each do |column_name|
+    |    { data: "#{column_name}" },
+  |  ]
+  /    order: #{datatable.order.to_json}
+  |    order: []
+  | } 
+
+
+  | );
+  | });
+
+/script
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable(
   = datatable.table_settings.to_json.html_safe
   | );
 
-  - if datatable.numbering
+  /- if datatable.numbering
     | var numbering_column = #{datatable.column_names.index(datatable.numbering.to_s) || 0};
     | t.on('order.dt search.dt', function(){
     |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
@@ -29,7 +59,7 @@ script
     |  })
   | });
 
-- if datatable.hidden_columns.present?
+/- if datatable.hidden_columns.present?
   button type="submit" id="toggle_details"
     | show/hide details
 

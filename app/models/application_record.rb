@@ -8,9 +8,12 @@ class ApplicationRecord < ActiveRecord::Base
     end
 
     def arel_table_by_operator(key, operator_str, value)
-      operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
-        '<' => :lt, '<=' => :lteq}
-      operator = operators[operator_str] || :eq
+      #operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
+      #<' => :lt, '<=' => :lteq}
+      #operator = operators[operator_str] || :eq
+      operators = [:eq, :gt, :gteq, :lt, :lteq]
+      operator = (operators.include?(operator_str.to_sym)) ? operator_str : :eq
+
       arel_table[key].send(operator, value.to_f)
     end
   end

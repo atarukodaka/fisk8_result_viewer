@@ -4,6 +4,8 @@
 - let/context DRY for filter/order
 - property: readonly, writeonly
 - expand_data...?
+- goe operator, value_operator ajax search
+- order, etc ajax settings _datatable.html.slim
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
