@@ -5,7 +5,21 @@ class IndexDatatable < Datatable
   property :filters, []
 
   ################
+  ## manipulator
+  def manipulate(d)
+    search(d)
+  end
+  def search(d)
+    node = searchable_columns.map(&:to_s).map do |column_name|
+      next unless sv = params[column_name].presence
+      node = searching_arel_table_node(column_name, sv)
+    end.compact.reduce(&:and)
+    d.where(node)
+  end
+  
+  ################
   ## filters
+=begin
   def filter_keys
     filters.map {|d| d[:column].to_sym}
   end
@@ -35,15 +49,7 @@ class IndexDatatable < Datatable
     @filters << { column: column, proc: proc}
     self
   end
-  ################
-  ## manipulator
-  def manipulate(data)
-    node = searchable_columns.map(&:to_s).map do |column_name|
-      next unless sv = params[column_name].presence
-      node = searching_arel_table_node(column_name, sv)
-    end.compact.reduce(&:and)
-    data = data.where(node)
-  end
+=end
 =begin  
   def __manipulate(data)
     ## filters

@@ -5,14 +5,15 @@
 - numbering ||= false
 
 - settings = datatable.settings
+/- deferLoading = datatable.records.model.count
 
 script
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable(
   /= datatable.table_settings.to_json.html_safe
   | {
-  /  deferLoading: 100,
-  |   processing: true,
+  /  deferLoading: #{deferLoading},
+  /   processing: true,
   /=   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
   /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
   - [:paging, :pageLength, :info, :pagingType, :lengthChange].each do |key|
@@ -77,6 +78,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
         th= key.to_s.humanize
   tbody
     - unless datatable.settings[:ajax]
+    /- unless datatable.settings[:ajax] && deferLoading.blank?
       - datatable.data.each do |item|
         tr
           - column_names.each do |key|

@@ -48,7 +48,8 @@ class Datatable
     @data ||= manipulate(records)
   end
   def manipulate(r)
-    r
+    # order
+    r.order(default_orders.map {|column, dir| [sources[column], dir].join(' ')})
   end
   def expand_data(d=nil)
     (d || data).map do |item|
