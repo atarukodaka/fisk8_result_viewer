@@ -25,9 +25,9 @@ script
   |  columns: [
   -    datatable.column_names.each do |column_name|
     |    { data: "#{column_name}" },
-  |  ]
-  /    order: #{datatable.order.to_json}
-  |    order: []
+  |  ],
+      order: #{datatable.order.to_json.html_safe}
+  /    order: []
   | } 
 
 
