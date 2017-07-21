@@ -18,7 +18,7 @@ class Datatable
   def_delegators :@view_context, :params
 
   properties :columns, :hidden_columns, :default_orders, default: []
-  properties :settings, default: nil
+  properties :settings, default: {}.with_indifferent_access
   property(:records) {  fetch_records() }
   property :numbering, nil
   property(:searchable_columns){ columns }
@@ -37,7 +37,6 @@ class Datatable
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
-    @settings = default_settings.with_indifferent_access
     @view_context = view_context
     yield(self) if block_given?
   end
@@ -60,14 +59,6 @@ class Datatable
   end
   ################
   ## settings, etc
-  def default_settings
-    {
-      processing: true,
-    }
-  end
-  def settings
-    @settings ||= default_settings
-  end
 =begin
   def table_settings
     settings.merge(

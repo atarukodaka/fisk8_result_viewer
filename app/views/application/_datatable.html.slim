@@ -11,6 +11,9 @@ script
   | var t = $("##{table_id}").DataTable(
   /= datatable.table_settings.to_json.html_safe
   | {
+  |   processing: true,
+  =   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
+  =    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
   - if settings[:serverSide].present?
   |  serverSide: true,
   - if settings[:ajax].present?
