@@ -6,7 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
       @_list_cache ||= {}
       @_list_cache[key] ||= distinct.pluck(key).compact
     end
-
+=begin    
     def arel_table_by_operator(key, operator_str, value)
       #operators = {'=' => :eq, '>' => :gt, '>=' => :gteq,
       #<' => :lt, '<=' => :lteq}
@@ -16,5 +16,6 @@ class ApplicationRecord < ActiveRecord::Base
 
       arel_table[key].send(operator, value.to_f)
     end
+=end
   end
 end

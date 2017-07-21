@@ -59,21 +59,6 @@ class Datatable
   end
   ################
   ## settings, etc
-=begin
-  def table_settings
-    settings.merge(
-                   columns: column_names.map {|name|
-                     {
-                       data: name,
-                       visible: !(hidden_columns.include?(name.to_sym)),
-                       searchable: (searchable_columns.include?(name.to_sym)),
-                     }},
-                   order: default_orders.map {|column, dir|
-                     [column_names.index(column.to_s), dir]
-                   },
-                   )
-  end
-=end
   def ajax(serverside: false, url: )
     settings.update(serverSide: serverside, ajax: {url: url})
     self

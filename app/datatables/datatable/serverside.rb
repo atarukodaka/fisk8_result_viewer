@@ -1,2 +1,0 @@
-module Datatable::Serverside
-end

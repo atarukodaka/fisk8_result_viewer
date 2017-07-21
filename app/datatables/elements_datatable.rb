@@ -16,6 +16,7 @@ class ElementsDatatable < IndexDatatable
                    name: "elements.name",
                    base_value: "elements.base_value",
                    )
+=begin
     add_filters(:skater_name, :competition_name, operator: :matches)
     add_filters(:category, :segment, :nation, :season)
 
@@ -27,8 +28,8 @@ class ElementsDatatable < IndexDatatable
     add_filter(:goe) do |c, v|
       c.where(Element.arel_table_by_operator(:goe, params[:goe_operator], v))
     end
+=end
   end
-
   def fetch_records
     Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
   end
@@ -36,6 +37,10 @@ class ElementsDatatable < IndexDatatable
     [:score_name, :competition_name, :category, :segment, :date, :season,
      :skater_name,
      :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
+  end
+  def searchable_columns
+    [:skater_name, :competition_name, :category, :segment, :nation, :season,
+     :element_type, :name, :goe]
   end
   def default_orders
     [[:value, :desc]]

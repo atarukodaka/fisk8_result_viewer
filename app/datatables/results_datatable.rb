@@ -21,8 +21,8 @@ class ResultsDatatable < IndexDatatable
                    ranking: "results.ranking",
                    )
 
-    add_filters(:competition_name, :skater_name, operator: :matches)
-    add_filters(:category, :season, :competition_class, :competition_type)
+    #add_filters(:competition_name, :skater_name, operator: :matches)
+    #add_filters(:category, :season, :competition_class, :competition_type)
   end
   def fetch_records
     Result.includes(:competition, :skater, :scores).references(:competition, :skater).all
@@ -35,6 +35,9 @@ class ResultsDatatable < IndexDatatable
      :free_ranking,
      :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
     ]
+  end
+  def searchable_columns
+    [:competition_name, :skater_name, :category, :season, :competition_class, :competition_type]
   end
   def default_orders
     [[:season, :desc]]

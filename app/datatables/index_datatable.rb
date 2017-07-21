@@ -59,8 +59,9 @@ class IndexDatatable < Datatable
 =end
   ################
   # columns
+=begin
   def searchable_columns
     filter_keys
   end
-
+=end
 end
