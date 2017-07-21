@@ -27,6 +27,24 @@ style
     label
 = button_tag("show/hide filters", onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
 
+//
+
+/script
+  | jQuery(function($){
+  | var t = $('##{table.table_id}').DataTable;
+  | debugger;
+  - if table.hidden_columns.present?
+    |  $('#toggle_details').on('click', function(e){ 
+    |    e.preventDefault();
+    - table.hidden_columns.each do |column|
+      | var column = t.column( #{table.column_names.index(column.to_s)});
+      |    column.visible( ! column.visible() ) ;
+    |  })
+  |});
+
+/- if table.hidden_columns.present?
+  button type="button" id="toggle_details"
+    | show/hide details
 
 // server-side datalist table
 = table.update_settings(pageLength: 20).render

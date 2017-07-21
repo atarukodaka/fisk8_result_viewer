@@ -6,6 +6,7 @@
 - expand_data...?
 - goe operator, value_operator ajax search
 - order, etc ajax settings _datatable.html.slim
+- hide/show toggle details
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -17,6 +18,7 @@
 
 ## 1.0.2-pre2
 - defer loading
+- _datatable rewrite
 
 ## 1.0.2-pre1
 - sortable list table

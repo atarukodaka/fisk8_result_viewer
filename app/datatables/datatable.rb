@@ -22,6 +22,7 @@ class Datatable
   property(:records) {  fetch_records() }
   property :numbering, nil
   property(:searchable_columns){ columns }
+  property(:orderable_columns) { columns }
   property :data, nil
 
   property(:sources) {
@@ -108,6 +109,7 @@ class Datatable
     return "" if params[:columns].blank?
 
     params.require(:columns).values.map {|item|
+      next if item[:searchable] == "false"
       sv = item[:search][:value].presence || next
       column_name = item[:data]
       #next unless column_defs.searchable(column_name)
@@ -120,7 +122,7 @@ class Datatable
   def order_sql
     return "" if params[:order].blank?
 
-    params.require(:order).values.map do |hash|
+    params.require(:order).values.map do |hash| # TODO: chk orderable of each colmuns
       column_name = columns[hash[:column].to_i]
       #key = column_defs.source(column_name)
       key = sources[column_name.to_sym]

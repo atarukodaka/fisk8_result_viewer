@@ -15,9 +15,6 @@ script
   - if dl = settings[:deferLoading].presence
     - datatable.data = datatable.data.limit(settings[:pageLength] || 10).decorate
     |   deferLoading: #{settings[:deferLoading]},
-  /   processing: true,
-  /=   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
-  /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
   - [:paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide].each do |key|
     - next unless settings.has_key?(key)
     |  #{key}: #{settings[key].to_json.html_safe},
@@ -32,7 +29,12 @@ script
     |  },
   |  columns: [
   -    datatable.column_names.each do |column_name|
-    |    { data: "#{column_name}" },
+    |    { 
+    |        data: "#{column_name}",
+    |        visible: #{ (datatable.hidden_columns.index(column_name.to_sym)) ? false : true },
+    |        orderable: #{ (datatable.orderable_columns.index(column_name.to_sym)) ? true : false },
+    |        searchable: #{ (datatable.searchable_columns.index(column_name.to_sym)) ? true : false },
+    |    },
   |  ],
       order: #{datatable.order.to_json.html_safe}
   | } 
@@ -51,22 +53,10 @@ script
       | t.draw();
 
 
-  - if datatable.hidden_columns.present?
-    |  $('#toggle_details').on('click', function(e){ 
-    |    e.preventDefault();
-    - datatable.hidden_columns.each do |column|
-      | var column = t.column( #{datatable.column_names.index(column.to_s)});
-      |    column.visible( ! column.visible() ) ;
-    |  })
 
   | });
 
 
-- if datatable.hidden_columns.present?
-  button type="submit" id="toggle_details"
-    | show/hide details
-
-    
 table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
