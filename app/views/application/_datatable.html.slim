@@ -11,9 +11,12 @@ script
   | var t = $("##{table_id}").DataTable(
   /= datatable.table_settings.to_json.html_safe
   | {
+  /  deferLoading: 100,
   |   processing: true,
-  =   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
-  =    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
+  /=   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
+  /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
+  - [:paging, :pageLength, :info, :pagingType, :lengthChange].each do |key|
+    =  "#{key}: '#{settings[key]}',".html_safe if settings.has_key?(key)
   - if settings[:serverSide].present?
   |  serverSide: true,
   - if settings[:ajax].present?

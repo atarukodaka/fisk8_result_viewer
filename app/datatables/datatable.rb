@@ -18,7 +18,7 @@ class Datatable
   def_delegators :@view_context, :params
 
   properties :columns, :hidden_columns, :default_orders, default: []
-  properties :settings, default: {}.with_indifferent_access
+  property(:settings){ default_settings }
   property(:records) {  fetch_records() }
   property :numbering, nil
   property(:searchable_columns){ columns }
@@ -59,6 +59,12 @@ class Datatable
   end
   ################
   ## settings, etc
+  def default_settings
+    {
+      paging: true,
+      pageLength: 25,
+    }
+  end
   def ajax(serverside: false, url: )
     settings.update(serverSide: serverside, ajax: {url: url})
     self
