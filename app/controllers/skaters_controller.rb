@@ -22,7 +22,7 @@ class SkatersController < ApplicationController
   end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
-    Datatable.new(self).records(skater.results.recent.includes(:competition, :scores)).columns(columns).default_orders([[:date, :desc]])
+    Datatable.new(self).records(skater.results.recent.includes(:competition, :scores)).columns(columns).sources(date: "competitions.start_date").default_orders([[:date, :desc]])
   end
   def create_graphs(skater)    
     skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|

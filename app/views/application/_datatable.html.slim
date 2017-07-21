@@ -12,7 +12,9 @@ script
   | var t = $("##{table_id}").DataTable(
   /= datatable.table_settings.to_json.html_safe
   | {
-  /  deferLoading: #{deferLoading},
+  - if dl = settings[:deferLoading].presence
+    - datatable.data = datatable.data.limit(settings[:pageLength] || 10).decorate
+    |   deferLoading: #{settings[:deferLoading]},
   /   processing: true,
   /=   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
   /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
@@ -77,8 +79,8 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - column_names.each do |key|
         th= key.to_s.humanize
   tbody
-    - unless datatable.settings[:ajax]
-    /- unless datatable.settings[:ajax] && deferLoading.blank?
+    /- unless datatable.settings[:ajax] 
+    - unless datatable.settings[:ajax] && settings[:deferLoading].blank?
       - datatable.data.each do |item|
         tr
           - column_names.each do |key|

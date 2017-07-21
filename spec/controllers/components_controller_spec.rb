@@ -25,7 +25,7 @@ RSpec.describe ComponentsController, type: :controller do
 
     datatable = ComponentsDatatable.new
     describe 'filter: ' do
-      datatable.filter_keys.each do |key|
+      datatable.searchable_columns.each do |key|
         next if key == :value  # TODO
         it key do
           expect_filter(short_ss, free_tr, key)          

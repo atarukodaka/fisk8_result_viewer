@@ -49,7 +49,11 @@ class Datatable
   end
   def manipulate(r)
     # order
-    r.order(default_orders.map {|column, dir| [sources[column], dir].join(' ')})
+    if default_orders.present?
+      r.order(default_orders.map {|column, dir| [sources[column], dir].join(' ')})
+    else
+      r
+    end
   end
   def expand_data(d=nil)
     (d || data).map do |item|
@@ -64,6 +68,7 @@ class Datatable
     {
       paging: true,
       pageLength: 25,
+      #deferLoading: data.count,
     }
   end
   def ajax(serverside: false, url: )
@@ -144,7 +149,7 @@ class Datatable
   def as_json(opts={})
     @data = data.where(search_sql).order(order_sql).page(page).per(per)    
     {
-      iTotalRecords: data.model.count,
+      iTotalRecords: data.count,
       iTotalDisplayRecords: data.total_count,
 =begin
       data: data.map {|item|
