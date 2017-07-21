@@ -28,6 +28,12 @@ style
 
 ////////////////////////////////////////////////////////////////
 
+
+/- data = results.group(:skater_id).select("results.id as no, skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
+/- cols = [:no, :skater_name_, :max_points]
+/= StaticsDatatable.new(self).records(data).columns(cols).decorate.render
+
+
 hr
 h3 Highest  Score
 .row

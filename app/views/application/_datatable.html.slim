@@ -18,10 +18,12 @@ script
   /   processing: true,
   /=   "paging: #{settings[:paging]}," if settings.has_key?(:paging)
   /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
-  - [:paging, :pageLength, :info, :pagingType, :lengthChange].each do |key|
-    =  "#{key}: '#{settings[key]}',".html_safe if settings.has_key?(key)
-  - if settings[:serverSide].present?
-  |  serverSide: true,
+  - [:paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide].each do |key|
+    - next unless settings.has_key?(key)
+    - if settings[key].class == String
+      =  "#{key}: '#{settings[key]}',".html_safe 
+    - else
+      =  "#{key}: #{settings[key]},"
   - if settings[:ajax].present?
     |  ajax: { 
     |    url: "#{settings[:ajax][:url]}",
@@ -41,6 +43,19 @@ script
 
 
   | );
+
+  - if datatable.numbering
+    | var numbering_column = #{datatable.column_names.index(datatable.numbering.to_s) || 0};
+    | t.on('order.dt search.dt', function(){
+    |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+    |         cell.innerHTML = i+1;
+    |     } );
+    |  } );
+    - unless datatable.settings[:serverSide]
+      | t.draw();
+
+
+
   | });
 
 /script

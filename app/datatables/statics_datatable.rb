@@ -4,7 +4,7 @@ class StaticsDatatable < Datatable
     self.numbering = :no
   end
   def default_settings
-    super.merge(info: false, pagingType: "simple", lengthChange: false)
+    super.merge(info: false, pagingType: "simple", lengthChange: false, pageLength: 10)
 #                columnDefs: [ {searchable: false, orderable: false, targets: "0"} ])
   end
 end
