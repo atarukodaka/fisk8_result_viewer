@@ -20,10 +20,7 @@ script
   /=    "pageLength: #{settings[:pageLength]}," if settings.has_key?(:pageLength)
   - [:paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide].each do |key|
     - next unless settings.has_key?(key)
-    - if settings[key].class == String
-      =  "#{key}: '#{settings[key]}',".html_safe 
-    - else
-      =  "#{key}: #{settings[key]},"
+    |  #{key}: #{settings[key].to_json.html_safe},
   - if settings[:ajax].present?
     |  ajax: { 
     |    url: "#{settings[:ajax][:url]}",
@@ -38,7 +35,6 @@ script
     |    { data: "#{column_name}" },
   |  ],
       order: #{datatable.order.to_json.html_safe}
-  /    order: []
   | } 
 
 
@@ -55,25 +51,6 @@ script
       | t.draw();
 
 
-
-  | });
-
-/script
-  | jQuery(function($){
-  | var t = $("##{table_id}").DataTable(
-  = datatable.table_settings.to_json.html_safe
-  | );
-
-  /- if datatable.numbering
-    | var numbering_column = #{datatable.column_names.index(datatable.numbering.to_s) || 0};
-    | t.on('order.dt search.dt', function(){
-    |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-    |         cell.innerHTML = i+1;
-    |     } );
-    |  } );
-    - unless datatable.settings[:serverSide]
-      | t.draw();
-
   - if datatable.hidden_columns.present?
     |  $('#toggle_details').on('click', function(e){ 
     |    e.preventDefault();
@@ -81,9 +58,11 @@ script
       | var column = t.column( #{datatable.column_names.index(column.to_s)});
       |    column.visible( ! column.visible() ) ;
     |  })
+
   | });
 
-/- if datatable.hidden_columns.present?
+
+- if datatable.hidden_columns.present?
   button type="submit" id="toggle_details"
     | show/hide details
 

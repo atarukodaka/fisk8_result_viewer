@@ -33,7 +33,6 @@ class Datatable
     }.to_h.with_indifferent_access
   }
   
-  #include Datatable::Serverside
   include Datatable::Decoratable
   
   def initialize(view_context = nil)
@@ -93,25 +92,17 @@ class Datatable
   ## for server-side ajax
   ## searching
   def searching_arel_table_node(column_name, sv)
-      table_name, table_column = sources[column_name].split(/\./)
-      model = table_name.classify.constantize
-      arel_table = model.arel_table[table_column]
-      operator = params["#{table_column}_operator"].to_s.to_sym
-      
-      case operator
-      when :eq
-        arel_table.eq(sv)
-      when :lt
-        arel_table.lt(sv)
-      when :lteq
-        arel_table.lteq(sv)
-      when :gt
-        arel_table.gt(sv)
-      when :gteq
-        arel_table.gteq(sv)
-      else
-        arel_table.matches("%#{sv}%")
-      end
+    table_name, table_column = sources[column_name].split(/\./)
+    model = table_name.classify.constantize
+    arel_table = model.arel_table[table_column]
+    operator = params["#{table_column}_operator"].to_s.to_sym
+
+    case operator
+      when :eq, :lt, :lteq, :gt, :gteq
+      arel_table.send(operator, sv)
+    else
+      arel_table.matches("%#{sv}%")
+    end
   end
   def search_sql
     return "" if params[:columns].blank?
@@ -151,11 +142,6 @@ class Datatable
     {
       iTotalRecords: records.count,
       iTotalDisplayRecords: data.total_count,
-=begin
-      data: data.map {|item|
-        column_names.map {|c| [c, item.decorate.send(c)]}.to_h
-      }
-=end
       data: expand_data(data.decorate)
     }
   end
