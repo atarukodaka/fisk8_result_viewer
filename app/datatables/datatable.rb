@@ -14,7 +14,8 @@ class Datatable
 
   extend Forwardable
   extend Property
-
+  include Datatable::DeferLoadable
+  
   def_delegators :@view_context, :params
 
   properties :columns, :hidden_columns, :default_orders, default: []
@@ -66,6 +67,7 @@ class Datatable
   ## settings, etc
   def default_settings
     {
+      processing: true,
       paging: true,
       pageLength: 25,
       #deferLoading: data.count,
@@ -170,3 +172,4 @@ class Datatable::Column
   end
 end
 
+################################################################

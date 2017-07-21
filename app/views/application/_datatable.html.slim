@@ -3,6 +3,7 @@
 - table_id = datatable.table_id
 - column_names = datatable.column_names
 - numbering ||= false
+- datatable.defer_load
 
 - settings = datatable.settings
 /- deferLoading = datatable.records.model.count
@@ -13,12 +14,13 @@ script
   /= datatable.table_settings.to_json.html_safe
   | {
   |   retrieve: true,
-  - if dl = settings[:deferLoading].presence
+  /- if dl = settings[:deferLoading].presence
     - datatable.data = datatable.data.limit(settings[:pageLength] || 10).decorate
     |   deferLoading: #{settings[:deferLoading]},
   - [:paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide].each do |key|
     - next unless settings.has_key?(key)
     |  #{key}: #{settings[key].to_json.html_safe},
+  |   deferLoading: #{  settings[:deferLoading] },
   - if settings[:ajax].present?
     |  ajax: { 
     |    url: "#{settings[:ajax][:url]}",
@@ -77,6 +79,5 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
                 = item.send(key)
               - else
                 = item[:key]
-
 
 
