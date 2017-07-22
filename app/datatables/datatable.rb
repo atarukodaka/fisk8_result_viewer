@@ -24,56 +24,22 @@ class Datatable
   properties :options, default: {}
   property(:settings){ default_settings }
   property(:records) {  fetch_records() }
+  property(:column_defs) { ColumnDefs.new(columns, table_name: records.table_name) }
+  property :sources
   property :data, nil
-  property(:column_defs) { ColumnDefs.new(columns, self) }
-=begin
-  property(:column_defs){
-    @column_defs ||= {}.with_indifferent_access
-    columns.each do |col|
-      @column_defs[col.to_s] = ColumnDef.new(col.to_s, self)
-    end
-    @column_defs
-  }
-=end
-  property(:sources)
   
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
-  end
-  def columns=(cols)
-    @columns = cols
-=begin
-    cols.each do |col|
-      column_defs[col.to_sym] = ColumnDef.new(col, self)
-    end
-=end
   end
   def sources=(hash)
     hash.map do|column, source|
       column_defs[column.to_s].source = source
     end
   end
-=begin
-  def searchable_columns=(cols)
-    cols.each do |col|
-      column_defs[col.to_sym].searchable = true
-    end
-  end
-=end
   def searchable_columns
     column_defs.values.select(&:searchable).map(&:name)
   end
-=begin
-  def orderable_columns=(cols)
-    cols.each do |col|
-      column_defs[col.to_sym].orderable = true
-    end
-  end
-  def orderable_columns(cols)
-    column_defs.values.select {|col| col.orderable == true}.map(&:name)
-  end
-=end
   ## data fetching/manipulation
   def fetch_records
     raise "implemtent in derived class or give records directory"
@@ -100,17 +66,6 @@ class Datatable
   def column_names
     columns.map(&:to_s)
   end
-=begin
-  def column_def(column_name)
-    column_defs[column_name]
-  end
-=end
-=begin
-  def column_def(column_name)
-    @column_defs ||= {}
-    @column_defs[column_name] ||= Datatable::ColumnDef.new(column_name, self)
-  end
-=end
   def render(partial: "datatable", locals: {})
     @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
   end
