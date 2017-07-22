@@ -18,14 +18,12 @@ class ComponentsDatatable < IndexDatatable
       nation: "skaters.nation",
       name: "components.name",
     }
+    self.default_orders = [[:value, :desc]]
+    
     ## searchble
     column_defs[:date].searchable = false
   end
   def fetch_records
     Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
   end
-  def default_orders
-    [[:value, :desc]]
-  end
-
 end
