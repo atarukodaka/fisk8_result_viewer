@@ -43,9 +43,8 @@ module Datatable::Serverside
 
     params.require(:order).values.map do |hash| # TODO: chk orderable of each colmuns
       column_name = columns[hash[:column].to_i]
-      #key = column_defs.source(column_name)
-      key = sources[column_name.to_sym]
-      [key, hash[:dir]].join(' ')
+      source = column_defs[column_name].source
+      [source, hash[:dir]].join(' ')
     end
   end
   ################

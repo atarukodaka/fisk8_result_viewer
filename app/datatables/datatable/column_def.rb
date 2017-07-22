@@ -1,13 +1,25 @@
 class Datatable::ColumnDef
+  extend Property
+  
+  properties :name, :source
+  properties :visible, :orderable, :searchable, default: true
+  property :operator, :matches
+  
   def initialize(name, datatable)
-    @name = name
+    @name = name.to_s
     @datatable = datatable
+    @source = [datatable.records.table_name, @name].join('.')
   end
+=begin
   def name
     @name
   end
   def source
     @datatable.sources[name.to_sym]
+  end
+=end
+  def source=(src)
+    @source = src
   end
   def table_name
     source.split(/\./).first
@@ -19,6 +31,7 @@ class Datatable::ColumnDef
     table_name.classify.constantize
   end
   ################
+=begin  
   def visible
     (@datatable.hidden_columns.index(@name.to_sym)) ? false : true
   end
@@ -28,6 +41,7 @@ class Datatable::ColumnDef
   def searchable
     (@datatable.searchable_columns.index(@name.to_sym)) ? true : false
   end
+=end
 end
 
 ################################################################

@@ -24,11 +24,21 @@ class Datatable
   properties :options, default: {}
   property(:settings){ default_settings }
   property(:records) {  fetch_records() }
-  property(:searchable_columns){ columns }
-  property(:orderable_columns) { columns }
+  #property(:searchable_columns){ columns }
+  #property(:orderable_columns) { columns }
   property :data, nil
+  property(:column_defs){
+    @column_defs ||= {}.with_indifferent_access
+    columns.each do |col|
+      @column_defs[col.to_s] = ColumnDef.new(col.to_s, self)
+    end
+    @column_defs
+  }
 
+  property(:sources)
+=begin
   property(:sources) {
+
     # on default, sources for each columns have "table_name.column_name"
     # note that records required to get table_name
     table_name = records.table_name
@@ -36,10 +46,45 @@ class Datatable
       [column, [table_name, column].join('.')]
     }.to_h.with_indifferent_access
   }
-
+=end
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
+  end
+  def columns=(cols)
+    @columns = cols
+    cols.each do |col|
+      column_defs[col.to_sym] = ColumnDef.new(col, self)
+    end
+  end
+  def sources=(hash)
+    hash.map do|column, source|
+      column_defs[column.to_s].source = source
+    end
+  end
+  def searchable_columns=(cols)
+    cols.each do |col|
+      column_defs[col.to_sym].searchable = true
+    end
+  end
+  def searchable_columns
+    column_defs.values.select {|col| col.searchable == true}.map(&:name)
+  end
+  def hidden_columns=(cols)
+    cols.each do |col|
+      column_defs[col.to_sym].visible = false
+    end
+  end
+  def hidden_columns
+    column_defs.values.select {|col| col.visible == false }.map(&:name)
+  end
+  def orderable_columns=(cols)
+    cols.each do |col|
+      column_defs[col.to_sym].orderable = true
+    end
+  end
+  def orderable_columns(cols)
+    column_defs.values.select {|col| col.orderable == true}.map(&:name)
   end
   ## data fetching/manipulation
   def fetch_records
@@ -83,15 +128,6 @@ class Datatable
       [column_names.index(column.to_s), dir]
     }
   end
-=begin
-  def searching_arel_table_node(column_name, sv)  # TODO: move to module ?
-    table_column = column_def(column_name).table_column
-    model = column_def(column_name).model
-    operator = params["#{table_column}_operator"].to_s.to_sym
-
-    model.searching_arel_table_node(table_column, sv, operator: operator)
-  end
-=end  
   ##
   ################
   ## format
