@@ -49,8 +49,6 @@ class Datatable
     @data ||= manipulate(records)
   end
   def manipulate(r)
-    # order
-    #default_sort(r)
     r
   end
   ################
@@ -85,13 +83,16 @@ class Datatable
       [column_names.index(column.to_s), dir]
     }
   end
-  def searching_arel_table_node(column_name, sv)  # TODO: nesecary ??
-    column_def = column_def(column_name)
-    operator = params["#{column_def.table_column}_operator"].to_s.to_sym
+=begin
+  def searching_arel_table_node(column_name, sv)  # TODO: move to module ?
+    table_column = column_def(column_name).table_column
+    model = column_def(column_name).model
+    operator = params["#{table_column}_operator"].to_s.to_sym
 
-    column_def.model.searching_arel_table_node(column_def.table_column, sv, operator: operator)
+    model.searching_arel_table_node(table_column, sv, operator: operator)
   end
-  
+=end  
+  ##
   ################
   ## format
   def as_json(*args)

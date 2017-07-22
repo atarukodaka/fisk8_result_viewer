@@ -5,14 +5,28 @@ module Datatable::Serversidable
 end
 
 module Datatable::Serverside
+  include Datatable::Searchable
+  
   ## for server-side ajax
 
   def manipulate(r)
-    r = super(r).where(search_sql).order(order_sql).page(page).per(per)
+    #r = super(r).where(search_sql).order(order_sql).page(page).per(per)
+    r = super(r).where(searching_sql(columns_searching_nodes)).order(order_sql).page(page).per(per)
   end
   
   ################
   ## searching
+  def columns_searching_nodes
+    return [] if params[:columns].blank?
+
+    params.require(:columns).values.map {|item|
+      next if item[:searchable] == "false"
+      sv = item[:search][:value].presence || next
+      column_name = item[:data]
+      #searching_arel_table_node(column_name, sv)
+      {column_name: item[:data], search_value: sv}
+    }.compact
+  end
   def search_sql
     return "" if params[:columns].blank?
 
@@ -20,8 +34,6 @@ module Datatable::Serverside
       next if item[:searchable] == "false"
       sv = item[:search][:value].presence || next
       column_name = item[:data]
-      #next unless column_defs.searchable(column_name)
-
       searching_arel_table_node(column_name, sv)
     }.compact.reduce(&:and)
   end

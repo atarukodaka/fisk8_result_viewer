@@ -20,6 +20,7 @@
 ## 1.0.2-pre2
 - defer loading
 - _datatable rewrite
+- virtual attributes of scores
 
 ## 1.0.2-pre1
 - sortable list table
