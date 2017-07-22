@@ -24,8 +24,6 @@ class Datatable
   properties :options, default: {}
   property(:settings){ default_settings }
   property(:records) {  fetch_records() }
-  #property(:searchable_columns){ columns }
-  #property(:orderable_columns) { columns }
   property :data, nil
   property(:column_defs){
     @column_defs ||= {}.with_indifferent_access
@@ -34,19 +32,8 @@ class Datatable
     end
     @column_defs
   }
-
   property(:sources)
-=begin
-  property(:sources) {
-
-    # on default, sources for each columns have "table_name.column_name"
-    # note that records required to get table_name
-    table_name = records.table_name
-    columns.map {|column|
-      [column, [table_name, column].join('.')]
-    }.to_h.with_indifferent_access
-  }
-=end
+  
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
@@ -68,18 +55,8 @@ class Datatable
     end
   end
   def searchable_columns
-    column_defs.values.select {|col| col.searchable == true}.map(&:name)
+    column_defs.values.select(&:searchable).map(&:name)
   end
-=begin
-  def hidden_columns=(cols)
-    cols.each do |col|
-      column_defs[col.to_sym].visible = false
-    end
-  end
-  def hidden_columns
-    column_defs.values.select {|col| col.visible == false }.map(&:name)
-  end
-=end
   def orderable_columns=(cols)
     cols.each do |col|
       column_defs[col.to_sym].orderable = true
@@ -105,7 +82,6 @@ class Datatable
       processing: true,
       paging: true,
       pageLength: 25,
-      #deferLoading: data.count,
     }
   end
   def ajax(serverside: false, url: )
