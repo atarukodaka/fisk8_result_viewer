@@ -22,8 +22,9 @@ class ElementsDatatable < IndexDatatable
 
     ## searchable
     [:credit, :info, :date].each {|key| column_defs[key].searchable = false }    
+    self.default_orders = [[:value, :desc]]
   end
-  self.default_orders = [[:value, :desc]]
+
   def fetch_records
     Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
   end
