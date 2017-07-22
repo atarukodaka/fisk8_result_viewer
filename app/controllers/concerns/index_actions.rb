@@ -1,7 +1,7 @@
 module IndexActions
   ## routed actions
   def list
-    render json: create_datatable
+    render json: create_datatable.serverside
   end
   def index
     table = create_datatable
@@ -14,12 +14,13 @@ module IndexActions
         }
       }
       format.json {
-        render json: table.expand_data(table.data.limit(max_limit))
+        #render json: table.expand_data(table.data.limit(max_limit))
+        render json: table.as_json
       }
       format.csv {
         require 'csv'
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
-          table.expand_data(table.data.limit(max_limit)).each do |row|
+          table.as_json.each do |row|
             csv << row
           end
         end

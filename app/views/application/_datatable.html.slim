@@ -74,7 +74,11 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   tbody
     /- unless datatable.settings[:ajax] 
     - unless datatable.settings[:ajax] && settings[:deferLoading].blank?
-      - datatable.data.each do |item|
+      - datatable.as_json.each do |item|
+        tr
+          - item.each do |_key, value|
+            td= value
+      /- datatable.data.each do |item|
         tr
           - column_names.each do |key|
             td

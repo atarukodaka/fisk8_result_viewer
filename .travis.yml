@@ -2,6 +2,7 @@ language: ruby
 
 rvm:
   - 2.2.5
+  - 2.4.0
 
 install: bundle install --deployment
 cache:
@@ -9,9 +10,9 @@ cache:
   
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
-  - bundle exec rspec
-  - bundle exec rspec --tag updater
-  - bundle exec rspec --tag error_handler
+  - bundle exec rspec -fd
+  - bundle exec rspec --tag updater -fd
+  - bundle exec rspec --tag error_handler -fd
 #  - bundle exec rspec --tag rake
 #  - bundle exec rspec --tag parser
 

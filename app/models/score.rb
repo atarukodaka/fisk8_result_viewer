@@ -10,6 +10,14 @@ class Score < ApplicationRecord
   ## validations
   validates  :date, presence: true
 
+=begin
+  def as_json(*args)
+    methods = [:competition_name, :competition_class, :competition_type, :season,
+               :skater_name, :nation, :elements_summary, :components_summary]
+    h = super(methods: methods)
+    h.as_json(*args)
+  end
+=end
   ## relevant model
   def competition_name
     competition.name
@@ -24,7 +32,7 @@ class Score < ApplicationRecord
     competition.season
   end
   def skater_name
-    self[:skater_name] || skater.name
+    self[:skater_name] || skater.name   ## TODO: ??? why refer hash?
   end
   def nation
     skater.nation

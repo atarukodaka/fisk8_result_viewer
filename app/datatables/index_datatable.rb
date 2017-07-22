@@ -7,7 +7,7 @@ class IndexDatatable < Datatable
   ################
   ## manipulator
   def manipulate(d)
-    search(d)
+    search(super(d))
   end
   def search(d)
     node = searchable_columns.map(&:to_s).map do |column_name|

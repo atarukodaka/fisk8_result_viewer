@@ -15,6 +15,8 @@ class Datatable
   extend Forwardable
   extend Property
   include Datatable::DeferLoadable
+  include Datatable::Serversidable
+  include Datatable::Decoratable
   
   def_delegators :@view_context, :params
 
@@ -34,9 +36,7 @@ class Datatable
       [column, [table_name, column].join('.')]
     }.to_h.with_indifferent_access
   }
-  
-  include Datatable::Decoratable
-  
+
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
@@ -50,21 +50,8 @@ class Datatable
   end
   def manipulate(r)
     # order
-    default_sort(r)
-  end
-  def default_sort(r)
-    if default_orders.present?
-      r.order(default_orders.map {|column, dir| [sources[column], dir].join(' ')})
-    else
-      r
-    end
-  end
-  def expand_data(d=nil)
-    (d || data).map do |item|
-      column_names.map do |column_name|
-        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
-      end.to_h
-    end
+    #default_sort(r)
+    r
   end
   ################
   ## settings, etc
@@ -98,64 +85,31 @@ class Datatable
       [column_names.index(column.to_s), dir]
     }
   end
-  ################################################################
-  ## for server-side ajax
-  ## searching
-  def searching_arel_table_node(column_name, sv)
-    table_name, table_column = sources[column_name].split(/\./)
-    model = table_name.classify.constantize
-    arel_table = model.arel_table[table_column]
-    operator = params["#{table_column}_operator"].to_s.to_sym
+  def searching_arel_table_node(column_name, sv)  # TODO: nesecary ??
+    column_def = column_def(column_name)
+    operator = params["#{column_def.table_column}_operator"].to_s.to_sym
 
-    case operator
-      when :eq, :lt, :lteq, :gt, :gteq
-      arel_table.send(operator, sv)
-    else
-      arel_table.matches("%#{sv}%")
+    column_def.model.searching_arel_table_node(column_def.table_column, sv, operator: operator)
+  end
+  
+  ################
+  ## format
+=begin
+  def expand_data(d=nil)
+    (d || data).map do |item|
+      column_names.map do |column_name|
+        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
+      end.to_h
     end
   end
-  def search_sql
-    return "" if params[:columns].blank?
-
-    params.require(:columns).values.map {|item|
-      next if item[:searchable] == "false"
-      sv = item[:search][:value].presence || next
-      column_name = item[:data]
-      #next unless column_defs.searchable(column_name)
-
-      searching_arel_table_node(column_name, sv)
-    }.compact.reduce(&:and)
-  end
-  ################
-  ## sorting
-  def order_sql
-    return "" if params[:order].blank?
-
-    params.require(:order).values.map do |hash| # TODO: chk orderable of each colmuns
-      column_name = columns[hash[:column].to_i]
-      #key = column_defs.source(column_name)
-      key = sources[column_name.to_sym]
-      [key, hash[:dir]].join(' ')
+=end
+  def as_json(*args)
+    data.map do |item|
+      column_names.map do |column_name|
+        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
+      end.to_h
     end
   end
-  ################
-  ## paging
-  def page
-    params[:start].to_i / per + 1
-  end
-  def per
-    params[:length].to_i > 0 ? params[:length].to_i : 10
-  end
-  ################
-  ## json output
-  def as_json(opts={})
-    @data = data.where(search_sql).order(order_sql).page(page).per(per)    
-    {
-      iTotalRecords: records.count,
-      iTotalDisplayRecords: data.total_count,
-      data: expand_data(data.decorate)
-    }
-  end
-
 end
-################################################################
+
+## -- end of datatable.rb
