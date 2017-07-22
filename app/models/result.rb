@@ -5,7 +5,7 @@ class Result < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
 
-  ## methods
+  ## virtual attributes
   def competition_name
     competition.name
   end

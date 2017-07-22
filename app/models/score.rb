@@ -10,15 +10,7 @@ class Score < ApplicationRecord
   ## validations
   validates  :date, presence: true
 
-=begin
-  def as_json(*args)
-    methods = [:competition_name, :competition_class, :competition_type, :season,
-               :skater_name, :nation, :elements_summary, :components_summary]
-    h = super(methods: methods)
-    h.as_json(*args)
-  end
-=end
-  ## relevant model
+  ## virtual attributes
   def competition_name
     competition.name
   end

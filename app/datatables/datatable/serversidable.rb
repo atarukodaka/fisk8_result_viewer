@@ -47,13 +47,12 @@ module Datatable::Serverside
   end
   ################
   ## json output
-  def as_json(opts={})
+  def as_json(*args)
     self.decorate
     {
       iTotalRecords: records.count,
       iTotalDisplayRecords: data.total_count,
-      #data: expand_data(data.decorate)
-      data: super.as_json
+      data: super.as_json(*args)
     }
   end
 end

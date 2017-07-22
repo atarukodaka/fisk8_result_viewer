@@ -94,20 +94,11 @@ class Datatable
   
   ################
   ## format
-=begin
-  def expand_data(d=nil)
-    (d || data).map do |item|
-      column_names.map do |column_name|
-        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
-      end.to_h
-    end
-  end
-=end
   def as_json(*args)
     data.map do |item|
       column_names.map do |column_name|
         [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
-      end.to_h
+      end.to_h.as_json(*args)
     end
   end
 end
