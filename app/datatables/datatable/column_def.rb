@@ -3,8 +3,17 @@ class Datatable::ColumnDef
   
   properties :name, :source
   properties :visible, :orderable, :searchable, default: true
-  property :operator, :matches
-  
+  property(:operator){
+    orm_column = model.columns.find {|c| c.name == table_column}
+    
+    case orm_column.try(:type)
+    when :integer, :float
+      :eq
+    else
+      :matches
+    end
+  }
+    
   def initialize(name, datatable)
     @name = name.to_s
     @datatable = datatable

@@ -70,6 +70,7 @@ class Datatable
   def searchable_columns
     column_defs.values.select {|col| col.searchable == true}.map(&:name)
   end
+=begin
   def hidden_columns=(cols)
     cols.each do |col|
       column_defs[col.to_sym].visible = false
@@ -78,6 +79,7 @@ class Datatable
   def hidden_columns
     column_defs.values.select {|col| col.visible == false }.map(&:name)
   end
+=end
   def orderable_columns=(cols)
     cols.each do |col|
       column_defs[col.to_sym].orderable = true

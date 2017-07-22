@@ -6,11 +6,6 @@ class ComponentsDatatable < IndexDatatable
      :ranking, :skater_name, :nation,
      :number, :name, :factor, :judges, :value,]
 
-    columns_to_search = [:skater_name, :competition_name, :category, :segment, :nation, :season, :name, :value]
-    (self.columns - columns_to_search).each do |key|
-      self.column_defs[key].searchable = false
-    end
-
     self.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
@@ -23,6 +18,8 @@ class ComponentsDatatable < IndexDatatable
       nation: "skaters.nation",
       name: "components.name",
     }
+    ## searchble
+    column_defs[:date].searchable = false
   end
   def fetch_records
     Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all

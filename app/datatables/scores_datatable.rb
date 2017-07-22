@@ -1,7 +1,8 @@
 class ScoresDatatable < IndexDatatable
   def initialize(*args)
     super *args
-    self.columns =     [:name, :competition_name, :competition_class, :competition_type,
+    
+    self.columns = [:name, :competition_name, :competition_class, :competition_type,
      :category, :segment, :season, :date,
      :result_pdf, :ranking, :skater_name, :nation,
      :tss, :tes, :pcs, :deductions, :base_value
@@ -18,13 +19,8 @@ class ScoresDatatable < IndexDatatable
       nation: "skaters.nation",
     }
 
-    
     [:competition_type, :competition_class, :competition_name, :season, ].each do |column|
       self.column_defs[column].visible = false
-    end
-
-    [:ranking, :tss, :tes, :pcs, :deductions, :base_value].each do |column|
-      self.column_defs[column].operator = :eq
     end
 
   end
