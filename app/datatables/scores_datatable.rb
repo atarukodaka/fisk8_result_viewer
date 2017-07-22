@@ -22,12 +22,9 @@ class ScoresDatatable < IndexDatatable
     [:competition_type, :competition_class, :competition_name, :season, ].each do |column|
       self.column_defs[column].visible = false
     end
-
+    self.default_orders = [[:date, :desc]]
   end
   def fetch_records
     Score.includes(:competition, :skater).references(:competition, :skater).all
-  end
-  def default_orders
-    [[:date, :desc]]
   end
 end
