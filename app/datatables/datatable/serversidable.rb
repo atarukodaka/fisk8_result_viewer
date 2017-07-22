@@ -10,7 +10,6 @@ module Datatable::Serverside
   ## for server-side ajax
 
   def manipulate(r)
-    #r = super(r).where(search_sql).order(order_sql).page(page).per(per)
     r = super(r).where(searching_sql(columns_searching_nodes)).order(order_sql).page(page).per(per)
   end
   

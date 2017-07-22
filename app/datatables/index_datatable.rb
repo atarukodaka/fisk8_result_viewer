@@ -1,7 +1,8 @@
 class IndexDatatable < Datatable
-  include Datatable::Searchable  
-  def manipulate(d)
-    super(d).where(searching_sql(filter_search_nodes))
+  include Datatable::Searchable
+  
+  def manipulate(r)
+    super(r).where(searching_sql(filter_search_nodes))
   end
   def filter_search_nodes
     
