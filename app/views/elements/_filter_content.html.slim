@@ -1,13 +1,15 @@
 - table || raise
 
 = form_group("Element") do
+  = select_tag(:name_operator, options_for_select({'=': :eq, "&sube;".html_safe => :matches}, params[:name_operator]), onchange: ajax_search_operator(:name, table))
   = text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table))
-  label perfect match
-  = check_box_tag(:perfect_match, "true", params[:perfect_match].present?)
+  /label perfect match
+  /= check_box_tag(:name_operator, "eq", params[:element_operator].present?, onchange: ajax_search_operator(:name, table))
+  /= check_box_tag(:perfect_match, nil,nil, onchange: ajax_search(:perfect_match, table))
 = form_group("Type", select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table)))
 
 = form_group("GOE") do
-  = select_tag(:goe_operator, options_for_select(['=', '<', '<=', '>', '>='], params[:goe_operator]))
+  = select_tag(:goe_operator, options_for_select({'=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq}, params[:goe_operator]), onchange: ajax_search_operator(:goe, table))
   = text_field_tag(:goe, params[:goe], size: 60, onchange: ajax_search(:goe, table))
 
 hr

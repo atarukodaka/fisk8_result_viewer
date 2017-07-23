@@ -16,13 +16,14 @@ class ScoresController < ApplicationController
     score = Score.find_by(name: params[:name]) ||
       raise(ActiveRecord::RecordNotFound.new("no such score name: '#{params[:name]}'"))
 
-    respond_to do |format|
-      data = {
-        score: score,
+    data = {
+      score: score,
         score_summary: score_summary(score),
-        elements: elements_datatable(score),
-        components: components_datatable(score)
-      }
+      elements: elements_datatable(score),
+      components: components_datatable(score)
+    }
+    
+    respond_to do |format|
       format.html { render locals: data.merge(score: score)  }
       format.json {
         render json: data

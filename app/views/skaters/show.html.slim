@@ -8,12 +8,12 @@
 
 .row
   .col-sm-6
-    h2 Skaters Info
-    = skater_info.decorate.render
+    h2 Skaters Summary
+    = skater_summary.decorate.render
 
   .col-sm-6
     h2 Record Summary
-    /= render partial: "listtable", locals: { datatable: record_summary }
+    = render partial: "listtable", locals: { datatable: record_summary }
     /= record_summary.render
 
 h2 Competition Results

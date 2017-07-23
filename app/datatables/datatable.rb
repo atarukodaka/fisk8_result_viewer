@@ -1,45 +1,35 @@
-################################################################
+###############################################################
 class Datatable 
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
   # in view,
-  #
   # = Datatable.new(self).records(User.all).columns([:name, :address]).render
   #
   # for server-side ajax,
-  #
-  # = Datatable.new(self).settings(serverSide: true, ajax: users_list_path).render
-  #
+  # = Datatable.new(self).ajax(serverside: true, url: users_list_path).render
 
   extend Forwardable
   extend Property
-
-  def_delegators :@view_context, :params
-
-  properties :columns, :hidden_columns, :default_orders, default: []
-  properties :settings, default: nil
-  property(:records) {  fetch_records() }
-  property :numbering, nil
-  property(:searchable_columns){ columns }
-
-  property(:sources) {
-    # on default, sources for each columns have "table_name.column_name"
-    # note that records required to get table_name
-    table_name = records.table_name
-    columns.map {|column|
-      [column, [table_name, column].join('.')]
-    }.to_h.with_indifferent_access
-  }
-  
-  include Datatable::Serverside
+  include Datatable::DeferLoadable
+  include Datatable::Serversidable
   include Datatable::Decoratable
   
+  def_delegators :@view_context, :params
+
+  property :data, nil
+  property(:records) {  fetch_records() }
+  properties :columns, :default_orders, default: []
+  property(:settings){ default_settings }
+  property(:column_defs) { ColumnDefs.new(columns, table_name: records.table_name) }
+  properties :options, default: {}
+  
   def initialize(view_context = nil)
-    @data = nil
-    @settings = default_settings.with_indifferent_access
     @view_context = view_context
     yield(self) if block_given?
+  end
+  def searchable_columns
+    column_defs.values.select(&:searchable).map(&:name)
   end
   ## data fetching/manipulation
   def fetch_records
@@ -56,23 +46,9 @@ class Datatable
   def default_settings
     {
       processing: true,
+      paging: true,
+      pageLength: 25,
     }
-  end
-  def settings
-    @settings ||= default_settings
-  end
-  def table_settings
-    settings.merge(
-                   columns: column_names.map {|name|
-                     {
-                       data: name,
-                       visible: !(hidden_columns.include?(name.to_sym)),
-                       searchable: (searchable_columns.include?(name.to_sym)),
-                     }},
-                   order: default_orders.map {|column, dir|
-                     [column_names.index(column.to_s), dir]
-                   },
-                   )
   end
   def ajax(serverside: false, url: )
     settings.update(serverSide: serverside, ajax: {url: url})
@@ -87,5 +63,21 @@ class Datatable
   def table_id
     "table_#{self.object_id}"
   end
+  def order
+    default_orders.map {|column, dir|
+      [column_names.index(column.to_s), dir]
+    }
+  end
+  ##
+  ################
+  ## format
+  def as_json(*args)
+    data.map do |item|
+      column_names.map do |column_name|
+        [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
+      end.to_h.as_json(*args)
+    end
+  end
 end
-################################################################
+
+## -- end of datatable.rb

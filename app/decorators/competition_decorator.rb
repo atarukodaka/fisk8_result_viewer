@@ -6,5 +6,14 @@ class CompetitionDecorator < EntryDecorator
   def site_url
     h.link_to_competition_site("Official", model)
   end
+
+=begin
+  def city_country
+    [city, country].join(' / ')
+  end
+  def during
+    [start_date.to_s, end_date.to_s].join(' to ')
+  end
+=end
 end
 

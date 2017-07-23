@@ -1,6 +1,6 @@
 = form_group("Component Score") do
-  = select_tag(:value_operator, options_for_select(['=', '<', '<=', '>', '>='], params[:value_operator]))    
-  = text_field_tag(:value, params[:value], size: 60)
+  = select_tag(:value_operator, options_for_select({'=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq}, params[:value_operator]), onchange: ajax_search_operator(:value, table))
+  = text_field_tag(:value, params[:value], size: 60, onchange: ajax_search(:value, table))
 
 
 hr

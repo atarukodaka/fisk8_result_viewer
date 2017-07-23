@@ -33,20 +33,21 @@ class SkatersController < ApplicationController
   end
     
   def show
+    skater = get_skater
+    data = {
+      skater_summary: skater_info_listtable(skater),
+      record_summary: record_summary_datatable(skater),
+      competition_results: competition_results_datatable(skater),
+    }
+    
     ## render
     respond_to do |format|
-      skater = get_skater
-      hash = {
-        skater_info: skater_info_listtable(skater),
-        record_summary: record_summary_datatable(skater),
-        competition_results: competition_results_datatable(skater),
-      }
       format.html {
-        hash.update(skater: skater, score_graphs: create_graphs(skater))
-        render action: :show, locals: hash
+        render action: :show, locals: data
+          .merge(skater: skater, score_graphs: create_graphs(skater))
       }
       format.json {
-        render json: hash
+        render json: data
       }
     end
   end

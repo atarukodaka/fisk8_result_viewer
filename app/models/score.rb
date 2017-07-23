@@ -10,7 +10,7 @@ class Score < ApplicationRecord
   ## validations
   validates  :date, presence: true
 
-  ## relevant model
+  ## virtual attributes
   def competition_name
     competition.name
   end
@@ -24,7 +24,7 @@ class Score < ApplicationRecord
     competition.season
   end
   def skater_name
-    self[:skater_name] || skater.name
+    self[:skater_name] || skater.name   ## TODO: ??? why refer hash?
   end
   def nation
     skater.nation

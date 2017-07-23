@@ -17,12 +17,6 @@ RSpec.describe CompetitionsController, type: :controller do
     create(:competition, :finlandia)
   }
   ################################################################
-  describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-    its(:body) { is_expected.to include("\"serverSide\":true") }
-  end
-
   shared_examples :having_all do
     its(:body) { is_expected.to include(world.name) }
     its(:body) { is_expected.to include(finlandia.name)}
@@ -36,7 +30,8 @@ RSpec.describe CompetitionsController, type: :controller do
 
     datatable = CompetitionsDatatable.new
     describe 'filters: ' do
-      datatable.filter_keys.each do |key|
+      datatable.searchable_columns.each do |key|
+      #datatable.column_defs.values.select(&:searchable).each do |column_def|
         it key do; expect_filter(world, finlandia, key); end
       end
     end

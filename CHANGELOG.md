@@ -2,6 +2,10 @@
 - category: type: single/couple ?
 - property: readonly, writeonly
 
+- order, etc ajax settings _datatable.html.slim
+- hide/show toggle details
+- numbering_column_name
+
 ### new feature
 - embed youtube in score (or just link to search page ?)
 
@@ -10,7 +14,13 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.2-pre2
+- defer loading
+- _datatable rewrite
+- virtual attributes of scores
+
 ## 1.0.2-pre1 2017/7/19
+>>>>>>> develop
 - sortable list table
 - sitemap
 - ajax support
@@ -39,6 +49,7 @@
 - update: Timeout error:  rescue Errno::ETIMEDOUT
 - offset for csv/json
 - datatable: numbering
+- goe operator, value_operator ajax search
 
 ## 1.0.1 2017/6/25
 

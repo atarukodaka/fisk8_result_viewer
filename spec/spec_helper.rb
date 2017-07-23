@@ -38,19 +38,15 @@ module Helper
   end
 
   ################
-  
   def column_number(column_name)
     controller.create_datatable.column_names.index(column_name.to_s).to_i
-    #Columns.new(controller.columns).names.index(column_name.to_s).to_i    
-    #datatable = "#{controller.controller_name.camelize}IndexDatatable".constantize.new
   end
+
   def filter_params(column_name, value)
-    #{ "sSearch_#{column_number(column_name)}" => value }
     {columns: {column_number(column_name).to_s => { data: column_name, "search": {"value": value}}}}
     
   end
   def sort_params(column_name, direction = 'asc')
-    #{ iSortCol_0: column_number(column_name), sSortDir_0: direction}
     {order: {"0": { "column": column_number(column_name), "dir": direction}}}
   end
 end

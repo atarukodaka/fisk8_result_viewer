@@ -1,55 +1,13 @@
 class IndexDatatable < Datatable
-  #
-  #
-  #
-  property :filters, []
-
-  ################
-  ## filters
-  def filter_keys
-    filters.map {|d| d[:column].to_sym}
+  include Datatable::Searchable
+  
+  def manipulate(r)
+    super(r).where(searching_sql(filter_search_nodes))
   end
-  def add_filters(*columns, operator: :eq)
-    [*columns].flatten.each {|column| add_filter(column, operator: operator)}
-    self
+  def filter_search_nodes
+    column_defs.values.select(&:searchable).map do |column|
+      next unless sv = params[column.name].presence
+      {column_name: column.name, search_value: sv}
+    end.compact
   end
-  def add_filter(column, operator: :eq, &block)
-    #key = table_keys[column.to_sym] || column.to_s
-    #key = sources[column.to_sym] || column.to_s
-    #key = column_defs.source(column)
-    key = sources[column]
-    proc =
-      if block_given?
-        block
-      else
-        case operator
-        when :eq
-          ->(c, v){ c.where(key => v) }
-        when :matches
-          ->(c, v){ c.where("#{key} like ?", "%#{v}%") }
-        else
-          raise "no such operator: #{operator}"
-        end
-      end
-    @filters ||= []
-    @filters << { column: column, proc: proc}
-    self
-  end
-  ################
-  ## manipulator
-  def manipulate(data)
-    ## filters
-    new_data = filters.reduce(super(data)) do |col, hash|
-      (v = params[hash[:column]].presence) ? hash[:proc].call(col, v) : col
-    end
-
-    ## offset
-    (offset = params[:offset].presence) ? new_data.offset(offset) : new_data
-  end
-  ################
-  # columns
-  def searchable_columns
-    filter_keys
-  end
-
 end
