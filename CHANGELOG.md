@@ -1,10 +1,7 @@
 ## TODO
 - category: type: single/couple ?
-
-- let/context DRY for filter/order
 - property: readonly, writeonly
-- expand_data...?
-- goe operator, value_operator ajax search
+
 - order, etc ajax settings _datatable.html.slim
 - hide/show toggle details
 - numbering_column_name
@@ -51,6 +48,7 @@
 - update: Timeout error:  rescue Errno::ETIMEDOUT
 - offset for csv/json
 - datatable: numbering
+- goe operator, value_operator ajax search
 
 ## 1.0.1 2017/6/25
 
