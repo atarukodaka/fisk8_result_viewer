@@ -6,7 +6,7 @@ class ComponentsDatatable < IndexDatatable
      :ranking, :skater_name, :nation,
      :number, :name, :factor, :judges, :value,]
 
-    self.sources = {
+    column_defs.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",

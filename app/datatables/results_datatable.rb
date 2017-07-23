@@ -10,7 +10,7 @@ class ResultsDatatable < IndexDatatable
      :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
     ]
 
-    self.sources = {
+    column_defs.sources = {
       competition_name: "competitions.name",
       competition_short_name: "competitions.short_name",    
       competition_class: "competitions.competition_class",

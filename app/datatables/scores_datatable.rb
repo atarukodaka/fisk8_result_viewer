@@ -8,7 +8,7 @@ class ScoresDatatable < IndexDatatable
      :tss, :tes, :pcs, :deductions, :base_value
     ]
 
-    self.sources = {
+    column_defs.sources = {
       name: "scores.name",
       category: "scores.category",
       competition_name: "competitions.name",

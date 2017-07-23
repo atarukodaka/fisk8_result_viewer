@@ -7,7 +7,7 @@ class ElementsDatatable < IndexDatatable
                      :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
 
    
-    self.sources = {
+    column_defs.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",

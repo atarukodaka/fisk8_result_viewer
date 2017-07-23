@@ -1,12 +1,17 @@
 class Datatable::ColumnDefs
   extend Forwardable
-  def_delegators :@data, :[], :[]=, :keys, :values
+  def_delegators :@data, :[], :[]=, :keys, :values, :each, :map
 
   def initialize(columns, table_name: nil)
     @data = {}.with_indifferent_access
     columns.each do |col|
       @data[col] = Datatable::ColumnDef.new(col)
       @data[col].source = [table_name, col].compact.join('.')
+    end
+  end
+  def sources=(hash)
+    hash.map do|column, source|
+      self[column.to_s].source = source
     end
   end
 end
@@ -18,10 +23,8 @@ class Datatable::ColumnDef
   properties :visible, :orderable, :searchable, default: true
   property :operator
 
-  def initialize(name) # , datatable)
+  def initialize(name)
     @name = name.to_s
-    #@datatable = datatable
-    #@source = [datatable.records.table_name, @name].join('.')
   end
   def table_name
     source.split(/\./).first

@@ -4,13 +4,10 @@ class Datatable
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
   # in view,
-  #
   # = Datatable.new(self).records(User.all).columns([:name, :address]).render
   #
   # for server-side ajax,
-  #
-  # = Datatable.new(self).settings(serverSide: true, ajax: users_list_path).render
-  #
+  # = Datatable.new(self).ajax(serverside: true, url: users_list_path).render
 
   extend Forwardable
   extend Property
@@ -20,22 +17,16 @@ class Datatable
   
   def_delegators :@view_context, :params
 
-  properties :columns, :hidden_columns, :default_orders, default: []
-  properties :options, default: {}
-  property(:settings){ default_settings }
-  property(:records) {  fetch_records() }
-  property(:column_defs) { ColumnDefs.new(columns, table_name: records.table_name) }
-  property :sources
   property :data, nil
+  property(:records) {  fetch_records() }
+  properties :columns, :default_orders, default: []
+  property(:settings){ default_settings }
+  property(:column_defs) { ColumnDefs.new(columns, table_name: records.table_name) }
+  properties :options, default: {}
   
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
-  end
-  def sources=(hash)
-    hash.map do|column, source|
-      column_defs[column.to_s].source = source
-    end
   end
   def searchable_columns
     column_defs.values.select(&:searchable).map(&:name)

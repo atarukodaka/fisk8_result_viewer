@@ -31,6 +31,7 @@ RSpec.describe CompetitionsController, type: :controller do
     datatable = CompetitionsDatatable.new
     describe 'filters: ' do
       datatable.searchable_columns.each do |key|
+      #datatable.column_defs.values.select(&:searchable).each do |column_def|
         it key do; expect_filter(world, finlandia, key); end
       end
     end
