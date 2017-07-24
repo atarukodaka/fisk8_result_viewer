@@ -22,7 +22,6 @@ module Datatable::Serverside
       next if item[:searchable] == "false"
       sv = item[:search][:value].presence || next
       column_name = item[:data]
-      #searching_arel_table_node(column_name, sv)
       {column_name: item[:data], search_value: sv}
     }.compact
   end
@@ -41,7 +40,8 @@ module Datatable::Serverside
   def order_sql
     return "" if params[:order].blank?
 
-    params.require(:order).values.map do |hash| # TODO: chk orderable of each colmuns
+    params.require(:order).values.map do |hash|
+      next if item[:orderable] == "false"
       column_name = columns[hash[:column].to_i]
       source = column_defs[column_name].source
       [source, hash[:dir]].join(' ')

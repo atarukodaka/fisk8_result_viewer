@@ -24,7 +24,7 @@ class Score < ApplicationRecord
     competition.season
   end
   def skater_name
-    self[:skater_name] || skater.name   ## TODO: ??? why refer hash?
+    skater.name
   end
   def nation
     skater.nation
