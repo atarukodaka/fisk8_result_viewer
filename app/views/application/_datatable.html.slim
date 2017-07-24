@@ -37,8 +37,7 @@ script
   | );
 
   // numbering
-  /- numbering_column_name = datatable.options[:numbering_column_name]
-  - numbering_column_name = "no"
+  - numbering_column_name = datatable.column_defs.values.find(&:numbering).try(:name)
   - if numbering_column_index = datatable.column_names.index(numbering_column_name).presence
     | var numbering_column = #{numbering_column_index};
     | t.on('order.dt search.dt', function(){
