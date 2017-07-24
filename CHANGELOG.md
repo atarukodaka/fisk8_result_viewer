@@ -19,7 +19,6 @@
 - virtual attributes of scores
 
 ## 1.0.2-pre1 2017/7/19
->>>>>>> develop
 - sortable list table
 - sitemap
 - ajax support

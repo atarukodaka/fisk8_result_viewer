@@ -22,12 +22,20 @@ class Datatable
   property(:records) {  fetch_records() }
   properties :columns, :default_orders, default: []
   property(:settings){ default_settings }
-  property(:column_defs) { ColumnDefs.new(columns, table_name: records.table_name) }
-  properties :options, default: {}
-  
+  property(:column_defs) { ColumnDefs.new([], datatable: self) }
+  #properties :options, default: {}
+
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
+  end
+  ## columns
+  def columns(cols)
+    self.columns = cols
+    self
+  end
+  def columns=(cols)
+    @column_defs = ColumnDefs.new(cols, datatable: self)
   end
   def searchable_columns
     column_defs.values.select(&:searchable).map(&:name)
@@ -56,7 +64,7 @@ class Datatable
     self
   end
   def column_names
-    columns.map(&:to_s)
+    column_defs.keys.map(&:to_s)
   end
   def render(partial: "datatable", locals: {})
     @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))

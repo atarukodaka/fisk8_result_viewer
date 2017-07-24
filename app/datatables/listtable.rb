@@ -4,6 +4,6 @@ class Listtable < Datatable
   end
   
   def as_json(opts={})
-    data.as_json(only: columns)
+    data.as_json(only: column_names)
   end
 end

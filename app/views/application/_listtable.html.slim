@@ -5,7 +5,5 @@
 /- data = (decorate) ? table.data.decorate : table.data
 
 table.table.table-striped.table-hover.table-condensed
-  - datatable.columns.each do |column|
-    = tr_data(column.to_s.humanize, datatable.data.send(column))
-  /- table.column_names.each do |key|
-    = tr_data(key.to_s.humanize, data.send(key))
+  - datatable.column_names.each do |column_name|
+    = tr_data(column_name.humanize, datatable.data.send(column_name.to_sym))
