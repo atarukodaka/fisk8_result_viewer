@@ -30,11 +30,6 @@ class Datatable::ColumnDef
     #@datatable = datatable
     @source = source || @name
   end
-=begin
-  def source
-    @source ||= [@datatable.records.table_name, name].join('.')
-  end
-=end
   def table_name
     (source =~ /\./) ? source.split(/\./).first : ""
   end

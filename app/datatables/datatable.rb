@@ -20,7 +20,7 @@ class Datatable
 
   property :data, nil
   property(:records) {  fetch_records() }
-  properties :columns, :default_orders, default: []
+  properties :default_orders, default: []
   property(:settings){ default_settings }
   property(:column_defs) { ColumnDefs.new([], datatable: self) }
   #properties :options, default: {}
@@ -30,9 +30,13 @@ class Datatable
     yield(self) if block_given?
   end
   ## columns
-  def columns(cols)
-    self.columns = cols
-    self
+  def columns(cols=nil)
+    if cols
+      self.columns = cols
+      self
+    else
+      column_defs
+    end
   end
   def columns=(cols)
     @column_defs = ColumnDefs.new(cols, datatable: self)

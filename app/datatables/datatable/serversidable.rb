@@ -42,6 +42,7 @@ module Datatable::Serverside
 
     params.require(:order).values.map do |item|
       next if item[:orderable] == "false"
+
       #column_name = columns[item[:column].to_i].name
       column_name = column_names[item[:column].to_i]
       source = column_defs[column_name].source

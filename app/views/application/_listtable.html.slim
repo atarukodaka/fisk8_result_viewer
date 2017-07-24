@@ -1,8 +1,4 @@
-
-- datatable || raise
-/- decorate ||= false
-
-/- data = (decorate) ? table.data.decorate : table.data
+- datatable || raise("no datatable given")
 
 table.table.table-striped.table-hover.table-condensed
   - datatable.column_names.each do |column_name|
