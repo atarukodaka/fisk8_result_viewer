@@ -13,6 +13,8 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.2-pre3
+
 ## 1.0.2-pre2 2017/7/24
 - defer loading
 - _datatable rewrite

@@ -2,14 +2,14 @@ class ScoresDatatable < IndexDatatable
   def initialize(*args)
     super *args
     
-    self.columns = [:name, :competition_name, :competition_class, :competition_type,
+    self.columns = [{name: "name", source: "scores.name"}, :competition_name, :competition_class, :competition_type,
      :category, :segment, :season, :date,
      :result_pdf, :ranking, :skater_name, :nation,
      :tss, :tes, :pcs, :deductions, :base_value
     ]
 
     column_defs.sources = {
-      name: "scores.name",
+#      name: "scores.name",
       category: "scores.category",
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
