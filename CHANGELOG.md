@@ -14,7 +14,7 @@
 - config/application: Version
 - config/competitions.yml: debug
 
-## 1.0.2-pre2
+## 1.0.2-pre2 2017/7/24
 - defer loading
 - _datatable rewrite
 - virtual attributes of scores
