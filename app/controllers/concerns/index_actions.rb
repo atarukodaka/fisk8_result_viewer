@@ -10,11 +10,10 @@ module IndexActions
     respond_to do |format|
       format.html {
         render :index, locals: {
-          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json, params: params.permit!)).defer_load
+          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
         }
       }
       format.json {
-        #render json: table.expand_data(table.data.limit(max_limit))
         render json: table.as_json
       }
       format.csv {
