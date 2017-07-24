@@ -2,22 +2,17 @@
 
 - table_id = datatable.table_id
 - column_names = datatable.column_names
-- numbering ||= false
-/- datatable.defer_load
-
 - settings = datatable.settings
-/- deferLoading = datatable.records.model.count
 
 script
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable(
-  /= datatable.table_settings.to_json.html_safe
   | {
   |   retrieve: true,
-  - [:processing, :paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide].each do |key|
+  - [:processing, :paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide, :deferLoading].each do |key|
     - next unless settings.has_key?(key)
     |  #{key}: #{settings[key].to_json.html_safe},
-  - if settings[:deferLoading]
+  /- if settings[:deferLoading]
     |   deferLoading: #{ settings[:deferLoading] },
   - if settings[:ajax].present?
     |  ajax: { 
@@ -54,9 +49,6 @@ script
     |  } );
     - unless datatable.settings[:serverSide]
       | t.draw();
-
-
-
   | });
 
 
@@ -72,13 +64,4 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
         tr
           - item.each do |_key, value|
             td= value
-      /- datatable.data.each do |item|
-        tr
-          - column_names.each do |key|
-            td
-              - if item.respond_to? key
-                = item.send(key)
-              - else
-                = item[:key]
-
 

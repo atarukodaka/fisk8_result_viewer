@@ -2,9 +2,8 @@
 - category: type: single/couple ?
 - property: readonly, writeonly
 
-- order, etc ajax settings _datatable.html.slim
-- hide/show toggle details
-- numbering_column_name
+- numbering\_column_name
+- capybara
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

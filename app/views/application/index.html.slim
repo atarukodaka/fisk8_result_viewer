@@ -16,9 +16,9 @@ style
 = form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|
   = render partial: "filter_content", locals: { table: table }
   = form_group(nil) do
-    = button_tag("json", type: "button", name: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
+    = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
     label
-    = button_tag("csv", type: "button", name: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
+    = button_tag("csv", type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
   /= form_group(nil) do
     = submit_tag("Search", id: "submit", name: nil)
     label with format of
