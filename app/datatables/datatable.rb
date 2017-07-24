@@ -1,5 +1,5 @@
 ###############################################################
-class Datatable 
+class Datatable
   #
   # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
   #
@@ -14,6 +14,7 @@ class Datatable
   include Datatable::DeferLoadable
   include Datatable::Serversidable
   include Datatable::Decoratable
+  include Datatable::Limitable
   
   def_delegators :@view_context, :params
 

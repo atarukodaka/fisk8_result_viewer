@@ -40,11 +40,11 @@ module Datatable::Serverside
   def order_sql
     return "" if params[:order].blank?
 
-    params.require(:order).values.map do |hash|
+    params.require(:order).values.map do |item|
       next if item[:orderable] == "false"
-      column_name = columns[hash[:column].to_i]
+      column_name = columns[item[:column].to_i]
       source = column_defs[column_name].source
-      [source, hash[:dir]].join(' ')
+      [source, item[:dir]].join(' ')
     end
   end
   ################

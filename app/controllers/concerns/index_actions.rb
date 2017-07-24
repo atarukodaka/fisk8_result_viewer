@@ -14,12 +14,12 @@ module IndexActions
         }
       }
       format.json {
-        render json: table.as_json
+        render json: table.limit.as_json
       }
       format.csv {
         require 'csv'
         csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
-          table.as_json.each do |row|
+          table.limit.as_json.each do |row|
             csv << row
           end
         end
