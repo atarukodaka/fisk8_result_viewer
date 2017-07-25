@@ -1,5 +1,5 @@
 class ComponentsDatatable < IndexDatatable
-  def initialize(*)
+  def initialize(*args)
     super
 
     columns([:score_name, :competition_name, :category, :segment, :date, :season,
@@ -21,7 +21,7 @@ class ComponentsDatatable < IndexDatatable
   
     ## searchble
     columns[:date].searchable = false
-    columns[:value].operator = params[:value_operator].presence || :eq
+    columns[:value].operator = params[:value_operator].presence || :eq      if view_context
 
     default_orders([[:value, :desc]])
   end

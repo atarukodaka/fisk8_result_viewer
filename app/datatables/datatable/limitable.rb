@@ -1,5 +1,5 @@
 module Datatable::Limitable
-  def limit(n=10_000)
+  def limit(n=1_000)
     @limit = n
     self.extend Datatable::Limit
   end

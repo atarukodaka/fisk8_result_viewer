@@ -22,8 +22,10 @@ class ElementsDatatable < IndexDatatable
     [:credit, :info, :date].each {|key| columns[key].searchable = false }    
 
     ## operartor
-    columns[:name].operator = params[:name_operator].presence || :matches
-    columns[:goe].operator = params[:goe_operator].presence || :eq
+    if view_context
+      columns[:name].operator = params[:name_operator].presence || :matches
+      columns[:goe].operator = params[:goe_operator].presence || :eq
+    end
     
 
     default_orders([[:value, :desc]])
