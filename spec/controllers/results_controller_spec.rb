@@ -26,7 +26,7 @@ RSpec.describe ResultsController, type: :controller do
     
     datatable = ResultsDatatable.new
     context 'filter: ' do
-      datatable.searchable_columns.each do |key|
+      datatable.columns.select(&:searchable).map(&:name).each do |key|
         it key do
           expect_filter(world_result, finlandia_result, key, column: :competition_name)
         end

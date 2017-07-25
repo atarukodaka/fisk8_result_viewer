@@ -39,7 +39,7 @@ RSpec.describe SkatersController, type: :controller do
     
     datatable = SkatersDatatable.new
     describe 'filters: ' do
-      datatable.searchable_columns.each do |key|
+      datatable.columns.select(&:searchable).map(&:name).each do |key|
         it key do
           expect_filter(men_skater, ladies_skater, key)
         end

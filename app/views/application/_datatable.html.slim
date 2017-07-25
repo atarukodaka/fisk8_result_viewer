@@ -9,11 +9,8 @@ script
   | var t = $("##{table_id}").DataTable(
   | {
   |   retrieve: true,
-  - [:processing, :paging, :pageLength, :info, :pagingType, :lengthChange, :serverSide, :deferLoading].each do |key|
-    - next unless settings.has_key?(key)
-    |   #{key}: #{settings[key].to_json.html_safe},
-  /- if settings[:deferLoading]
-    |   deferLoading: #{ settings[:deferLoading] },
+  - settings.each do |key, value|
+    |   #{key}: #{value.to_json.html_safe},
   - if settings[:ajax].present?
     |  ajax: { 
     |    url: "#{settings[:ajax][:url]}",

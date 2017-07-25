@@ -26,7 +26,7 @@ RSpec.describe ScoresController, type: :controller do
 
     datatable = ScoresDatatable.new
     describe 'filter: ' do
-      datatable.searchable_columns.each do |key|
+      datatable.columns.select(&:searchable).map(&:name).each do |key|
         it key do
           expect_filter(world_score, finlandia_score, key)
         end

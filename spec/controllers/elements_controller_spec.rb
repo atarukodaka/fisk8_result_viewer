@@ -24,7 +24,7 @@ RSpec.describe ElementsController, type: :controller do
     datatable = ElementsDatatable.new
     
     describe "filters:" do
-      datatable.searchable_columns.each do |key|
+      datatable.columns.select(&:searchable).map(&:name).each do |key|
         next if key.to_sym == :goe  # TODO
         it key do
           expect_filter(elem4T, elemLSp, key)

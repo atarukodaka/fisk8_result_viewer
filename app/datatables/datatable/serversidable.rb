@@ -64,7 +64,7 @@ module Datatable::Serverside
     {
       iTotalRecords: records.count,
       iTotalDisplayRecords: data.total_count,
-      data: super.as_json(*args)
+      data: super.as_json(*args),
     }
   end
 end

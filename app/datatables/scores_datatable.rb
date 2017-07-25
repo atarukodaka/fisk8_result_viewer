@@ -2,11 +2,11 @@ class ScoresDatatable < IndexDatatable
   def initialize(*args)
     super *args
     
-    self.columns = [:name, :competition_name, :competition_class, :competition_type,
-     :category, :segment, :season, :date,
-     :result_pdf, :ranking, :skater_name, :nation,
-     :tss, :tes, :pcs, :deductions, :base_value
-    ]
+    columns([:name, :competition_name, :competition_class, :competition_type,
+             :category, :segment, :season, :date,
+             :result_pdf, :ranking, :skater_name, :nation,
+             :tss, :tes, :pcs, :deductions, :base_value
+             ])
     columns.sources = {
       name: "scores.name",
       category: "scores.category",
@@ -19,10 +19,9 @@ class ScoresDatatable < IndexDatatable
     }
 
     [:competition_type, :competition_class, :competition_name, :season, ].each do |key|
-      #self.column_defs[column].visible = false
       columns[key].visible = false
     end
-    self.default_orders = [[:date, :desc]]
+    default_orders([[:date, :desc]])
   end
   def fetch_records
     Score.includes(:competition, :skater).references(:competition, :skater).all

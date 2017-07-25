@@ -8,7 +8,19 @@ class Datatable
   #
   # for server-side ajax,
   # = Datatable.new(self).ajax(serverside: true, url: users_list_path).render
-
+  #
+  # of you can implement your derived class corresponding to controller/model.
+  #  class UsersDatatable < Datatable
+  #    def initialize(*)
+  #      super
+  #      columns([:name, :address])
+  #      default_orders([[:name, :asc]])
+  #    end
+  #    def fetch_records
+  #      User.all
+  #    end
+  #  end
+  
   extend Forwardable
   extend Property
   include Datatable::DeferLoadable
@@ -22,40 +34,26 @@ class Datatable
   property(:records) {  fetch_records() }
   properties :default_orders, default: []
   property(:settings){ default_settings }
-  #property(:column_defs) { ColumnDefs.new([], datatable: self) }
-  #property(:columns) { Columns.new([], datatable: self) }
 
   def initialize(view_context = nil)
     @view_context = view_context
     yield(self) if block_given?
   end
-  ## columns
-  def columns(cols=nil)
+  ## columns accessors
+  def columns(cols=nil)     # cols can be array of Hash or Symbol/String
     if cols
       self.columns = cols
-      self
+      self                  # setter for method chain
     else
-      #column_defs
-      @columns
+      @columns              # getter
     end
   end
-  def columns=(cols)
-    #@column_defs = ColumnDefs.new(cols, datatable: self)
+  def columns=(cols)        # setter
     @columns = Datatable::Columns.new(cols, datatable: self)
   end
-  def searchable_columns
-    #column_defs.values.select(&:searchable).map(&:name)
-    columns.select(&:searchable).map(&:name)
-  end
-
-=begin
-  def column_defs
-    columns
-  end
-=end
   ## data fetching/manipulation
   def fetch_records
-    raise "implemtent in derived class or give records directory"
+    []
   end
   def data
     @data ||= manipulate(records)
@@ -69,7 +67,7 @@ class Datatable
     {
       processing: true,
       paging: true,
-      pageLength: 25,
+      pageLength: 10,
     }
   end
   def ajax(serverside: false, url: )
@@ -77,7 +75,6 @@ class Datatable
     self
   end
   def column_names
-    #column_defs.keys.map(&:to_s)
     columns.map(&:name)
   end
   def render(partial: "datatable", locals: {})
