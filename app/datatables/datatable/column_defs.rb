@@ -29,11 +29,9 @@ class Datatable::ColumnDefs
   end
   ################
   protected
-=begin  
-  def table_name
+  def default_table_name
     @datatable.records.try(:table_name)
   end
-=end
   def create_column_def(col)
     column_def = Datatable::ColumnDef.new
     case col
@@ -50,8 +48,8 @@ class Datatable::ColumnDefs
     else
       column_def.name = col.to_s
     end
-    #column_def.source ||= [table_name.presence, column_def.name].compact.join('.')
-    column_def.source ||= column_def.name
+    column_def.source ||= [default_table_name, column_def.name].compact.join('.')
+    #column_def.source ||= column_def.name
     column_def
   end
 end
@@ -62,7 +60,6 @@ class Datatable::ColumnDef
   properties :name, :source, default: nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
-#  property :operator
 
   def initialize(name=nil)
     @name = name.to_s
@@ -71,30 +68,12 @@ class Datatable::ColumnDef
   def table_name
     (source =~ /\./) ? source.split(/\./).first : ""
   end
-  def table_column
+  def table_field
     source.split(/\./).last
   end
   def model
     (table_name.present?) ? table_name.classify.constantize : nil
   end
-
-=begin
-  def operator
-    @operator ||=
-      begin
-        #orm_column = model.columns.find {|c| c.name == table_column}
-        column_type = (model) ? model.columns.find{|c| c.name == table_column}.type : :string
-        
-        #case orm_column.try(:type)
-        case column_type
-        when :integer, :float
-          :eq
-        else
-          :matches
-        end
-      end
-  end
-=end
 end
 
 ################################################################
