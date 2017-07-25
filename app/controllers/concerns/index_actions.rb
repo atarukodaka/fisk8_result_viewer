@@ -5,12 +5,10 @@ module IndexActions
   end
   def index
     table = create_datatable
-    max_limit = 10_000
-
     respond_to do |format|
       format.html {
         render :index, locals: {
-          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json)) #.defer_load
+          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
         }
       }
       format.json {

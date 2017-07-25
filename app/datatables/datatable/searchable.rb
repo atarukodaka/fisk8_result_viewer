@@ -4,8 +4,8 @@ module Datatable::Searchable
       column = columns[hash[:column_name]]
       table_field = column.table_field
       model = column.model || records.model
-      sv = hash[:search_value]      
-      operator = params["#{hash[:column_name]}_operator"].presence ||
+      sv = hash[:search_value]
+      operator = column.operator ||
         begin
           column_type = model.columns.find {|c| c.name == table_field}.type
           case column_type

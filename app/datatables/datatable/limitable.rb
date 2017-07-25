@@ -6,7 +6,7 @@ module Datatable::Limitable
 end
 
 module Datatable::Limit
-  def decorate(r)
+  def manipulate(r)
     super(r).limit(@limit)
   end
 end

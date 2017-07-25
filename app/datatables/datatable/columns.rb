@@ -14,6 +14,7 @@ class Datatable::Columns
   #      if you give datatable which has any records, each sources will be added automatically, e.g.:
   #             columns[:address].source => "users.address"
   #
+ 
   def initialize(cols=[], datatable: nil)
     @datatable = datatable
     @data = cols.map do |col|
@@ -70,6 +71,7 @@ class Datatable::Column
   properties :name, :source, default: nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
+  property :operator, nil     # set nil as default so that Searchable module can guess by field type later on
 
   def initialize(name: nil)
     @name = name.to_s

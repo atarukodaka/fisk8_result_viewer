@@ -1,7 +1,7 @@
 ###############################################################
 class Datatable
   #
-  # class for datatable gem. refer 'app/views/application/_datatable.html.slim' as well.
+  # class for jquery-datatable. refer 'app/views/application/_datatable.html.slim' as well.
   #
   # in view,
   # = Datatable.new(self).records(User.all).columns([:name, :address]).render
@@ -28,12 +28,13 @@ class Datatable
   include Datatable::Decoratable
   include Datatable::Limitable
   
-  def_delegators :@view_context, :params
+  def_delegators :@view_context, :params, :link_to, :url_for
 
   property :data, nil
   property(:records) {  fetch_records() }
   properties :default_orders, default: []
   property(:settings){ default_settings }
+  attr_reader :view_context
 
   def initialize(view_context = nil)
     @view_context = view_context
@@ -88,7 +89,9 @@ class Datatable
       [column_names.index(column.to_s), dir]
     }
   end
-  ##
+  def view    # short cut for view_context
+    @view_context
+  end
   ################
   ## format
   def as_json(*args)

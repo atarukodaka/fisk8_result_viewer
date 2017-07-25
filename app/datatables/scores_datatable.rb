@@ -1,6 +1,6 @@
 class ScoresDatatable < IndexDatatable
-  def initialize(*args)
-    super *args
+  def initialize(*)
+    super
     
     columns([:name, :competition_name, :competition_class, :competition_type,
              :category, :segment, :season, :date,
@@ -21,6 +21,9 @@ class ScoresDatatable < IndexDatatable
     [:competition_type, :competition_class, :competition_name, :season, ].each do |key|
       columns[key].visible = false
     end
+
+    columns[:ranking].operator = :eq
+    
     default_orders([[:date, :desc]])
   end
   def fetch_records

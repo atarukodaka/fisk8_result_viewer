@@ -1,10 +1,10 @@
 class ComponentsDatatable < IndexDatatable
-  def initialize(view=nil)
-    super view
+  def initialize(*)
+    super
 
-    self.columns = [:score_name, :competition_name, :category, :segment, :date, :season,
-     :ranking, :skater_name, :nation,
-     :number, :name, :factor, :judges, :value,]
+    columns([:score_name, :competition_name, :category, :segment, :date, :season,
+             :ranking, :skater_name, :nation,
+             :number, :name, :factor, :judges, :value,])
 
     columns.sources = {
       score_name: "scores.name",
@@ -18,10 +18,12 @@ class ComponentsDatatable < IndexDatatable
       nation: "skaters.nation",
       name: "components.name",
     }
-    self.default_orders = [[:value, :desc]]
-    
+  
     ## searchble
     columns[:date].searchable = false
+    columns[:value].operator = params[:value_operator].presence || :eq
+
+    default_orders([[:value, :desc]])
   end
   def fetch_records
     Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all

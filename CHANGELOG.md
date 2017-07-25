@@ -4,6 +4,7 @@
 
 - numbering\_column_name
 - capybara
+- date search
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

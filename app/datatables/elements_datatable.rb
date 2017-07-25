@@ -1,12 +1,11 @@
 class ElementsDatatable < IndexDatatable
-  def initialize(view=nil)
-    super view
+  def initialize(*)
+    super
 
-    self.columns =  [:score_name, :competition_name, :category, :segment, :date, :season,
-                     :skater_name, :nation,
-                     :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
+    columns([:score_name, :competition_name, :category, :segment, :date, :season,
+             :skater_name, :nation,
+             :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
-   
     columns.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
@@ -19,10 +18,15 @@ class ElementsDatatable < IndexDatatable
       name: "elements.name",
       base_value: "elements.base_value",
     }
-
     ## searchable
     [:credit, :info, :date].each {|key| columns[key].searchable = false }    
-    self.default_orders = [[:value, :desc]]
+
+    ## operartor
+    columns[:name].operator = params[:name_operator].presence || :matches
+    columns[:goe].operator = params[:goe_operator].presence || :eq
+    
+
+    default_orders([[:value, :desc]])
   end
 
   def fetch_records
