@@ -21,19 +21,8 @@ module Datatable::Serverside
     params.require(:columns).values.map {|item|
       next if item[:searchable] == "false"
       sv = item[:search][:value].presence || next
-      column_name = item[:data]
-      {column_name: item[:data], search_value: sv}
+      { column_name: item[:data], search_value: sv }
     }.compact
-  end
-  def search_sql
-    return "" if params[:columns].blank?
-
-    params.require(:columns).values.map {|item|
-      next if item[:searchable] == "false"
-      sv = item[:search][:value].presence || next
-      column_name = item[:data]
-      searching_arel_table_node(column_name, sv)
-    }.compact.reduce(&:and)
   end
   ################
   ## sorting
@@ -43,10 +32,7 @@ module Datatable::Serverside
     params.require(:order).values.map do |item|
       next if item[:orderable] == "false"
 
-      #column_name = columns[item[:column].to_i].name
-      column_name = column_names[item[:column].to_i]
-      source = columns[column_name].source
-      [source, item[:dir]].join(' ')
+      [columns[item[:column].to_i].source, item[:dir]].join(' ')
     end
   end
   ################

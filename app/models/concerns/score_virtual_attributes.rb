@@ -6,6 +6,12 @@ module ScoreVirtualAttributes
   def competition_name
     score.competition.name
   end
+  def competition_class
+    score.competition.competition_class
+  end
+  def competition_type
+    score.competition.competition_type
+  end
   def category
     score.category
   end

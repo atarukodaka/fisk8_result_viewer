@@ -5,6 +5,7 @@
 - numbering\_column_name
 - capybara
 - date search
+- season: multiple selection
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

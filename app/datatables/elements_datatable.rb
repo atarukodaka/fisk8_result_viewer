@@ -2,13 +2,16 @@ class ElementsDatatable < IndexDatatable
   def initialize(*)
     super
 
-    columns([:score_name, :competition_name, :category, :segment, :date, :season,
+    columns([:score_name, :competition_name, :competition_class, :competition_type,
+             :category, :segment, :date, :season,
              :skater_name, :nation,
              :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
+      competition_class: "competitions.class",
+      competition_type: "competitions.type",
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",
@@ -20,6 +23,9 @@ class ElementsDatatable < IndexDatatable
     }
     ## searchable
     [:credit, :info, :date].each {|key| columns[key].searchable = false }    
+
+    ## visible
+    [:competition_class, :competition_type].each {|key| columns[key].visible = false }
 
     ## operartor
     if view_context
