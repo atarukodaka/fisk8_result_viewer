@@ -7,8 +7,7 @@ class ScoresDatatable < IndexDatatable
      :result_pdf, :ranking, :skater_name, :nation,
      :tss, :tes, :pcs, :deductions, :base_value
     ]
-
-    column_defs.sources = {
+    columns.sources = {
       name: "scores.name",
       category: "scores.category",
       competition_name: "competitions.name",
@@ -19,8 +18,9 @@ class ScoresDatatable < IndexDatatable
       nation: "skaters.nation",
     }
 
-    [:competition_type, :competition_class, :competition_name, :season, ].each do |column|
-      self.column_defs[column].visible = false
+    [:competition_type, :competition_class, :competition_name, :season, ].each do |key|
+      #self.column_defs[column].visible = false
+      columns[key].visible = false
     end
     self.default_orders = [[:date, :desc]]
   end

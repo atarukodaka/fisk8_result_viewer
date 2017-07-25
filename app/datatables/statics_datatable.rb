@@ -5,7 +5,7 @@ class StaticsDatatable < Datatable
     #column_defs[:no].numbering = "true"
   end
   def default_settings
-    column_defs["no"].numbering = true
+    columns["no"].numbering = true
     super.merge(info: false, pagingType: "simple", lengthChange: false, pageLength: 10)
 #                columnDefs: [ {searchable: false, orderable: false, targets: "0"} ])
   end

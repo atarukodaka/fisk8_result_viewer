@@ -22,8 +22,8 @@ class Datatable
   property(:records) {  fetch_records() }
   properties :default_orders, default: []
   property(:settings){ default_settings }
-  property(:column_defs) { ColumnDefs.new([], datatable: self) }
-  #properties :options, default: {}
+  #property(:column_defs) { ColumnDefs.new([], datatable: self) }
+  #property(:columns) { Columns.new([], datatable: self) }
 
   def initialize(view_context = nil)
     @view_context = view_context
@@ -35,15 +35,24 @@ class Datatable
       self.columns = cols
       self
     else
-      column_defs
+      #column_defs
+      @columns
     end
   end
   def columns=(cols)
-    @column_defs = ColumnDefs.new(cols, datatable: self)
+    #@column_defs = ColumnDefs.new(cols, datatable: self)
+    @columns = Datatable::Columns.new(cols, datatable: self)
   end
   def searchable_columns
-    column_defs.values.select(&:searchable).map(&:name)
+    #column_defs.values.select(&:searchable).map(&:name)
+    columns.select(&:searchable).map(&:name)
   end
+
+=begin
+  def column_defs
+    columns
+  end
+=end
   ## data fetching/manipulation
   def fetch_records
     raise "implemtent in derived class or give records directory"
@@ -68,7 +77,8 @@ class Datatable
     self
   end
   def column_names
-    column_defs.keys.map(&:to_s)
+    #column_defs.keys.map(&:to_s)
+    columns.map(&:name)
   end
   def render(partial: "datatable", locals: {})
     @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))

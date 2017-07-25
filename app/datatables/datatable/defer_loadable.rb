@@ -10,7 +10,7 @@ module Datatable::DeferLoading
   end
   def manipulate(r)
     super(r)
-      .order(default_orders.map {|column, dir| [column_defs[column].source, dir].join(' ')})
+      .order(default_orders.map {|column, dir| [columns[column].source, dir].join(' ')})
       .limit(settings[:pageLength] || 25).decorate
 
 

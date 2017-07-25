@@ -10,7 +10,7 @@ class ResultsDatatable < IndexDatatable
      :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,
     ]
 
-    column_defs.sources = {
+    columns.sources = {
       competition_name: "competitions.name",
       competition_short_name: "competitions.short_name",    
       competition_class: "competitions.competition_class",
@@ -24,7 +24,7 @@ class ResultsDatatable < IndexDatatable
 
     ## hidden
     [:competition_class, :competition_type].each do |key|
-      column_defs[key].visible = false
+      columns[key].visible = false
     end
     self.default_orders = [[:season, :desc]]
   end

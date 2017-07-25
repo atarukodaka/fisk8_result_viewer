@@ -7,7 +7,7 @@ class ElementsDatatable < IndexDatatable
                      :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,]
 
    
-    column_defs.sources = {
+    columns.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
       season: "competitions.season",
@@ -21,7 +21,7 @@ class ElementsDatatable < IndexDatatable
     }
 
     ## searchable
-    [:credit, :info, :date].each {|key| column_defs[key].searchable = false }    
+    [:credit, :info, :date].each {|key| columns[key].searchable = false }    
     self.default_orders = [[:value, :desc]]
   end
 

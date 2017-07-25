@@ -1,9 +1,9 @@
 module Datatable::Searchable
   def searching_sql(nodes)   ## nodes: array of hash {column_name:, search_value: }
     nodes.map do |hash|
-      column_def = column_defs[hash[:column_name]]
-      table_field = column_def.table_field
-      model = column_def.model || records.model
+      column = columns[hash[:column_name]]
+      table_field = column.table_field
+      model = column.model || records.model
       sv = hash[:search_value]      
       operator = params["#{hash[:column_name]}_operator"].presence ||
         begin

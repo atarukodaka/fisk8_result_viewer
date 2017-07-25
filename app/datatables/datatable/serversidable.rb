@@ -45,7 +45,7 @@ module Datatable::Serverside
 
       #column_name = columns[item[:column].to_i].name
       column_name = column_names[item[:column].to_i]
-      source = column_defs[column_name].source
+      source = columns[column_name].source
       [source, item[:dir]].join(' ')
     end
   end
