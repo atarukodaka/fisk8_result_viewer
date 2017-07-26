@@ -13,6 +13,7 @@ script:
   - bundle exec rspec -fd
   - bundle exec rspec --tag updater -fd
   - bundle exec rspec --tag error_handler -fd
+  - bundle exec rspec --tag feature -fd
 #  - bundle exec rspec --tag rake
 #  - bundle exec rspec --tag parser
 

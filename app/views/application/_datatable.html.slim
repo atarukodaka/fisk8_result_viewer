@@ -26,6 +26,7 @@ script
   -    datatable.column_names.each do |column_name|
     |    { 
     |        data: "#{column_name}",
+    |        name: "#{column_name}",
     |        visible: #{ datatable.columns[column_name].visible },
     |        orderable: #{ datatable.columns[column_name].orderable },
     |        searchable: #{ datatable.columns[column_name].searchable },
@@ -36,11 +37,11 @@ script
   | );
 
   // numbering
-  - numbering_column_name = datatable.columns.find(&:numbering).try(:name)
-  - if numbering_column_index = datatable.column_names.index(numbering_column_name).presence
-    | var numbering_column = #{numbering_column_index};
+  - if numbering_column_name = datatable.columns.find(&:numbering).try(:name)
+    /- numbering_column_index = datatable.column_names.index(numbering_column_name)
+    / var numbering_column = #{numbering_column_index};
     | t.on('order.dt search.dt', function(){
-    |     t.column(numbering_column, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+    |     t.column("#{numbering_column_name}:name", {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
     |         cell.innerHTML = i+1;
     |     } );
     |  } );
@@ -53,7 +54,8 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
       - column_names.each do |key|
-        th= key.to_s.humanize
+        th id="column_#{key}"
+          = key.to_s.humanize
   tbody
     /- unless datatable.settings[:ajax] 
     - unless datatable.settings[:ajax] && settings[:deferLoading].blank?

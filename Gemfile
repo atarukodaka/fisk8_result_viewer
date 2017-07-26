@@ -25,6 +25,8 @@ end
 
 group :test do
   gem 'capybara', '~> 2.13.0'
+  gem 'poltergeist'
+  gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'rspec-its'

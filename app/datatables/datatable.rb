@@ -87,6 +87,7 @@ class Datatable
   def order
     default_orders.map {|column, dir|
       [column_names.index(column.to_s), dir]
+      #["#{column.to_s}:name", dir]
     }
   end
   def view    # short cut for view_context

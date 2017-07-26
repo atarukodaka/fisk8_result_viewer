@@ -1,4 +1,27 @@
+module AjaxFeatureHelper
+  def ajax_trigger
+    page.evaluate_script("$('table.display').trigger('change')")
+    #sleep 1
+  end
+  def ajax_action(path:, input_type: , key:, object: )
+    visit path
+    case input_type
+    when :fill_in
+      fill_in key, with: object.send(key)
+    when :select
+      select object.send(key), from: key
+    when :click
+      find(key).click
+    end
+    # trigger
+    ajax_trigger
+    page
+  end
+end  
+
+################################################################
 module Helper
+  include AjaxFeatureHelper
   def expect_to_include(text)
     expect(response.body).to include(text.to_s)
   end
