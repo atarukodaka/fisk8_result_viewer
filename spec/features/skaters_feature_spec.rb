@@ -5,7 +5,6 @@ RSpec.configure do |c|
 end
 
 feature SkatersController, type: :feature, feature: true do
-
   let!(:skater) { create(:skater) }
   let!(:ladies_skater) { create(:skater, :ladies) }
   let!(:score) { create(:score)}
@@ -36,17 +35,12 @@ feature SkatersController, type: :feature, feature: true do
         end
       end
     end
-    def ajax_compare_sorting(obj1, obj2, key: key)
-      dir = find("#column_#{key}")['class']
-      names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(:name)}
-      names.reverse! if dir =~ /sorting_desc/
-      expect(page.body.index(names.first)).to be < page.body.index(names.second)
-    end
     context 'order' do
-      [:name, :category].each do |key|
+      datatable = SkatersDatatable.new
+      datatable.column_names.each do |key|
         context key do
           subject! {
-            ajax_action(object: nil, key: "#column_#{key}", input_type: :click, path: skaters_path)
+            ajax_action(key: "#column_#{key}", input_type: :click, path: skaters_path)
           }
           it { ajax_compare_sorting(skater, ladies_skater, key: key) }
         end

@@ -1,15 +1,26 @@
 module AjaxFeatureHelper
+  ## matcher
+  RSpec::Matchers.define :appear_before_on_page do |later_content|
+    match do |earlier_content|
+      page.body.index(earlier_content.to_s) < page.body.index(later_content.to_s)
+    end
+  end
+  
+  ## functions
+
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
     #sleep 1
   end
-  def ajax_action(path:, input_type: , key:, object: )
+  def ajax_action(path:, input_type: , key:, value: nil, object: nil)
     visit path
     case input_type
     when :fill_in
-      fill_in key, with: object.send(key)
+      value ||= object.send(key)
+      fill_in key, with: value
     when :select
-      select object.send(key), from: key
+      value ||= object.send(key)
+      select value, from: key
     when :click
       find(key).click
     end
@@ -17,11 +28,28 @@ module AjaxFeatureHelper
     ajax_trigger
     page
   end
+  def ajax_compare_sorting(obj1, obj2, key: key, identifer_key: :name)
+    dir = find("#column_#{key}")['class']
+    identifers = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
+    identifers.reverse! if dir =~ /sorting_desc/
+    #expect(page.body.index(identifers.first)).to be < page.body.index(identifers.second)
+    expect(identifers.first).to appear_before_on_page identifers.second
+  end
 end  
 
 ################################################################
 module Helper
   include AjaxFeatureHelper
+
+  ## customized matches
+
+  RSpec::Matchers.define :appear_before do |later_content|
+    match do |earlier_content|
+      response.body.index(earlier_content.to_s) < response.body.index(later_content.to_s)
+    end
+  end
+
+  ## functions
   def expect_to_include(text)
     expect(response.body).to include(text.to_s)
   end
@@ -98,30 +126,7 @@ RSpec.configure do |config|
 end
 
 ################
-## customized matches
-
-RSpec::Matchers.define :appear_before do |later_content|
-  match do |earlier_content|
-    response.body.index(earlier_content.to_s) < response.body.index(later_content.to_s)
-  end
-end
-
-## coveralls
-=begin
-require 'coveralls'
-Coveralls.wear!
-
-require 'simplecov'
-require 'coveralls'
-
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-SimpleCov.start do
-  add_filter 'spec/'
-  add_filter 'lib/fisk8viewer'
-  add_filter 'app/controllers/feedback_controller.rb'
-end
-=end
-
+## Codecov
 require 'simplecov'
 require 'codecov'
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
