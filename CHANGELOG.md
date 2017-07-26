@@ -2,10 +2,7 @@
 - category: type: single/couple ?
 - property: readonly, writeonly
 
-- numbering\_column_name
-- capybara
 - date search
-- season: multiple selection
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -16,6 +13,9 @@
 - config/competitions.yml: debug
 
 ## 1.0.2-pre3
+- season: from/to selection
+- numbering\_column_name
+- capybara
 
 ## 1.0.2-pre2 2017/7/24
 - defer loading

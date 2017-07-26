@@ -57,8 +57,7 @@ feature CompetitionsController, type: :feature, feature: true do
       end
     end
     context 'order' do
-      datatable = CompetitionsDatatable.new
-      datatable.column_names.each do |key|
+      SkatersDatatable.new.datatable.select(&:searchable).map(&:name).each do |key|
         context key do
           subject! {
             ajax_action(key: "#column_#{key}", input_type: :click, path: competitions_path)
