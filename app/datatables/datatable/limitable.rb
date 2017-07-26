@@ -7,6 +7,6 @@ end
 
 module Datatable::Limit
   def manipulate(r)
-    super(r).limit(@limit)
+    super(r).limit(@limit).offset(params[:offset].to_i || 0)
   end
 end

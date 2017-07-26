@@ -7,9 +7,10 @@ RSpec.describe ComponentsController, type: :controller do
     create(:score).components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0, judges: '10 10 10')
   }
   let!(:free_tr){
+    
     create(:score, :finlandia).components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0, judges: '9 9 9')
   }
-  
+
   describe '#index' do
     describe 'all' do
       subject { get :index }

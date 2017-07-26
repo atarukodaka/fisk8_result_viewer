@@ -1,10 +1,4 @@
 
-= form_group("Name", text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table)))
+= render partial: "competition_filter", locals: {table: table}
+
 = form_group("Site URL", text_field_tag(:site_url, params[:site_url], size: 70, onchange: ajax_search(:site_url, table)))
-= form_group("Class / Type / Season") do
-  label Class
-  = select_tag_with_options(:competition_class, onchange: ajax_search(:competition_class, table))
-  label Type
-  = select_tag_with_options(:competition_type, onchange: ajax_search(:competition_type, table))
-  label Season
-  = select_tag_with_options(:season, onchange: ajax_search(:season, table))

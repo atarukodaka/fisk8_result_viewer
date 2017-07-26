@@ -1,11 +1,11 @@
 module Datatable::Searchable
-  def searching_sql(nodes)   ## nodes: array of hash {column_name:, search_value: }
+  def searching_sql(nodes)   ## nodes: array of hash {column_name:, search_value:, operator:nil }
     nodes.map do |hash|
       column = columns[hash[:column_name]]
       table_field = column.table_field
       model = column.model || records.model
       sv = hash[:search_value]
-      operator = column.operator ||
+      operator = hash[:operator] || column.operator ||
         begin
           column_type = model.columns.find {|c| c.name == table_field}.type
           case column_type

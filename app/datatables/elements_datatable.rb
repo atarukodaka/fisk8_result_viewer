@@ -10,8 +10,8 @@ class ElementsDatatable < IndexDatatable
     columns.sources = {
       score_name: "scores.name",
       competition_name: "competitions.name",
-      competition_class: "competitions.class",
-      competition_type: "competitions.type",
+      competition_class: "competitions.competition_class",
+      competition_type: "competitions.competition_type",
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",

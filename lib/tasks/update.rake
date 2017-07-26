@@ -4,6 +4,20 @@ namespace :update do
     Category.update_skaters
   end
 
+  desc "update compeitition with specific url"
+  task :competition => :environment do
+    url = ENV['url']
+    ## TODO: parser_type, comment
+    
+    if categories = ENV['accept_categories']
+      Category.accept!(categories.split(/,/))
+    end
+
+    Competition.where(site_url: url).map(&:destory)
+    Competition.create(site_url: url) do |competition|
+      competition.update(verbose: true)
+    end
+  end
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
     last =  ENV['last'].to_i if ENV['last']
@@ -13,7 +27,7 @@ namespace :update do
       Category.accept!(categories.split(/,/))
     end
 
-    ## TODO: full_path??
+    ## filename
     if f = ENV['filenames']
       CompetitionList.use_multiple_files
       CompetitionList.set_filenames *(f.split(/,/))

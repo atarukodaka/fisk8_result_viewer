@@ -1,5 +1,6 @@
 = form_group("Skater Name", text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name, table)))
 
+= render partial: "competition_filter", locals: {table: table, competition_name_key: :competition_name}
 = form_group("Category / Segment") do
   = select_tag_with_options(:category, onchange: ajax_search(:category, table))
   label -
@@ -7,15 +8,5 @@
     
 /= form_group("Nation", select_tag_with_options(:nation, onchange: ajax_search(:nation, table)))
 
-= form_group("Competition") do
-  /= select_tag_with_options(:competition_name)
-  = text_field_tag(:competition_name, params[:competition_name], size: 70, onchange: ajax_search(:competition_name, table))
 
-= form_group("Competition Class / Type / Season") do
-  label Class
-  = select_tag_with_options(:competition_class, onchange: ajax_search(:competition_class, table))
-  label Type
-  = select_tag_with_options(:competition_type, onchange: ajax_search(:competition_type, table))
-  label Season
-  = select_tag_with_options(:season, onchange: ajax_search(:season, table))
 

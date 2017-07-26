@@ -11,7 +11,7 @@ module Property
   #
   #   foo.bar = 3  #{ => 3 }
 
-  def property(sym, default = nil, &initializer)   # TODO: readonly
+  def property(sym, default = nil, readonly: false, &initializer)
     initializer ||= -> * { default }
     
     ## define getter and setter with method change
@@ -19,40 +19,42 @@ module Property
       variable_name = "@#{sym.to_sym}"
 
       if !args.empty?    # set value and return self for method chain
-        instance_variable_set variable_name, args.first
+        instance_variable_set variable_name, args.first unless readonly
         self
       else   # get value
-        if !instance_variable_defined?(variable_name) # set default value if undef
+        if !instance_variable_defined?(variable_name) and !readonly # set default value if undef
           instance_variable_set(variable_name, instance_eval(&initializer))
         else
           instance_variable_get(variable_name)
         end
       end
     end
-    ## define setter
-    define_method("#{sym}=") do |*args|
-      variable_name = "@#{sym.to_sym}"
-      
-      instance_variable_set(variable_name, args.first)
-    end
+    unless readonly
+      ## define setter
+      define_method("#{sym}=") do |*args|
+        variable_name = "@#{sym.to_sym}"
 
-    ## define updater for hash
-    define_method("update_#{sym}") do |*args|
-      variable_name = "@#{sym.to_sym}"
-      
-      value = instance_variable_get(variable_name) || {}  # TODO: check if hash
-      value.update(*args)
-      instance_variable_set(variable_name, value)
-      self
-    end
+        instance_variable_set(variable_name, args.first)
+      end
 
-    ## define adder for array
-    define_method("add_#{sym}") do |*args|
-      variable_name = "@#{sym.to_sym}"
-      value = instance_variable_get(variable_name) || []  # TODO: check if array
-      value << [*args]
-      instance_variable_set(variable_name, value.flatten)
-      self
+      ## define updater for hash
+      define_method("update_#{sym}") do |*args|
+        variable_name = "@#{sym.to_sym}"
+
+        value = instance_variable_get(variable_name) || {}
+        value.update(*args)
+        instance_variable_set(variable_name, value)
+        self
+      end
+
+      ## define adder for array
+      define_method("add_#{sym}") do |*args|
+        variable_name = "@#{sym.to_sym}"
+        value = instance_variable_get(variable_name) || []
+        value << [*args]
+        instance_variable_set(variable_name, value.flatten)
+        self
+      end
     end
   end
   def properties(*syms, default: nil, &initializer)
