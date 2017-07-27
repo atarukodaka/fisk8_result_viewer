@@ -19,4 +19,8 @@ class IndexDatatable < Datatable
     end
     nodes
   end
+
+  def default_settings
+    super.merge( pageLength: 20 )
+  end
 end

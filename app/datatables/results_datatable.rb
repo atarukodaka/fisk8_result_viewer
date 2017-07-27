@@ -25,6 +25,7 @@ class ResultsDatatable < IndexDatatable
     ## hidden
     [:competition_class, :competition_type].each do |key|
       columns[key].visible = false
+      columns[key].orderable = false
     end
     default_orders([[:season, :desc]])
   end

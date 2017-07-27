@@ -25,11 +25,8 @@ feature SkatersController, type: :feature, feature: true do
       end
     end
     context 'order' do
-      SkatersDatatable.new.columns.select(&:searchable).map(&:name).each do |key|
-        context key do
-          subject! { ajax_action(key: "#column_#{key}", input_type: :click, path: index_path) }
-          it { ajax_compare_sorting(main, sub, key: key) }
-        end
+      SkatersDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
+        include_context :ajax_order, key        
       end
     end
   end

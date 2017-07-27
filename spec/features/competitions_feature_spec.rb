@@ -26,9 +26,23 @@ feature CompetitionsController, type: :feature, feature: true do
       include_context :filter_season
     end
     context 'order' do
-      CompetitionsDatatable.new.columns.select(&:searchable).map(&:name).each do |key|
+      CompetitionsDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
         include_context :ajax_order, key
       end
+    end
+    context 'paging' do
+      it {
+        page_length = CompetitionsDatatable.new.settings[:pageLength]
+        competition = Competition.create
+        100.times do |i|
+          Competition.create(name: i)
+        end
+        visit index_path
+        expect(page.body).to have_content("Showing 1 to #{page_length}")
+        find(:xpath, '//ul[@class="pagination"]/li/a[@data-dt-idx="2"]').click
+        ajax_trigger
+        expect(page.body).to have_content("Showing #{page_length+1} to #{page_length * 2}")
+      }
     end
   end
 end

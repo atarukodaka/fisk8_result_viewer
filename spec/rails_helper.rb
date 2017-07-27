@@ -12,13 +12,16 @@ ActiveRecord::Migration.maintain_test_schema!
 
 ################################################################
 module AjaxFeatureHelper
+=begin
   ## matcher
   RSpec::Matchers.define :appear_before_on_page do |later_content|
     match do |earlier_content|
-      page.body.index(earlier_content.to_s) < page.body.index(later_content.to_s)
+      body = (respond_to? :page) ? page.body : response.body
+      body.index(earlier_content.to_s) < body.index(later_content.to_s)
     end
   end
-
+=end
+  
   ## examples  
   shared_examples :only_main do
     it {
@@ -50,7 +53,15 @@ module AjaxFeatureHelper
       is_expected.to have_content(later.name)
     }
   end
-  
+  shared_examples :order_main_sub do |key, identifer_key: :name|
+    it {
+      dir = find("#column_#{key}")['class']
+      identifers = [main, sub].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
+      identifers.reverse! if dir =~ /sorting_desc/
+      expect(identifers.first).to appear_before identifers.second
+    }
+  end
+
   ## context
   shared_context :filter_season do
     ## main, sub, index_path requried to declair
@@ -70,7 +81,8 @@ module AjaxFeatureHelper
   shared_context :ajax_order do |key, identifer_key: :name|
     context key do
       subject! { ajax_action(key: "#column_#{key}", input_type: :click, path: index_path) }
-      it { ajax_compare_sorting(main, sub, key: key, identifer_key: identifer_key) }
+      #it { ajax_compare_sorting(main, sub, key: key, identifer_key: identifer_key) }
+      it_behaves_like :order_main_sub, key, identifer_key: identifer_key
     end
   end
 
@@ -93,13 +105,15 @@ module AjaxFeatureHelper
     ajax_trigger
     page
   end
+=begin  
   def ajax_compare_sorting(obj1, obj2, key:, identifer_key: :name)
     dir = find("#column_#{key}")['class']
     identifers = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
     identifers.reverse! if dir =~ /sorting_desc/
     #expect(page.body.index(identifers.first)).to be < page.body.index(identifers.second)
-    expect(identifers.first).to appear_before_on_page identifers.second
+    expect(identifers.first).to appear_before identifers.second
   end
+=end
 end  
 
 ################################################################
@@ -110,37 +124,30 @@ module Helper
 
   RSpec::Matchers.define :appear_before do |later_content|
     match do |earlier_content|
-      response.body.index(earlier_content.to_s) < response.body.index(later_content.to_s)
+      body = (respond_to? :page) ? page.body : response.body
+      body.index(earlier_content.to_s) < body.index(later_content.to_s)
     end
-  end
-
-  ## functions
-  def expect_to_include(text)
-    expect(response.body).to include(text.to_s)
-  end
-  def expect_not_to_include(text)
-    expect(response.body).not_to include(text.to_s)
   end
 
   ## filter
   def expect_filter(obj1, obj2, key, column: :name)
     ## only obj1
     get :list, xhr: true, params: {key => obj1.send(key) }
-    expect_to_include(obj1.send(column))
-    expect_not_to_include(obj2.send(column))
+    expect(response.body).to have_content(obj1.send(column))
+    expect(response.body).not_to have_content(obj2.send(column))
 
     get :list, xhr: true, params: filter_params(key, obj1.send(key))
-    expect_to_include(obj1.send(column))
-    expect_not_to_include(obj2.send(column))
+    expect(response.body).to have_content(obj1.send(column))
+    expect(response.body).not_to have_content(obj2.send(column))
 
     ## only obj2
     get :list, xhr: true, params: {key => obj2.send(key) }
-    expect_to_include(obj2.send(column))
-    expect_not_to_include(obj1.send(column))
+    expect(response.body).not_to have_content(obj1.send(column))
+    expect(response.body).to have_content(obj2.send(column))
 
     get :list, xhr: true, params: filter_params(key, obj2.send(key))
-    expect_to_include(obj2.send(column))
-    expect_not_to_include(obj1.send(column))
+    expect(response.body).not_to have_content(obj1.send(column))
+    expect(response.body).to have_content(obj2.send(column))
   end 
   ## order
   def expect_order(obj1, obj2, key, column: :name)

@@ -20,6 +20,7 @@ class ScoresDatatable < IndexDatatable
 
     [:competition_type, :competition_class, :competition_name, :season, ].each do |key|
       columns[key].visible = false
+      columns[key].orderable = false
     end
 
     columns[:ranking].operator = :eq

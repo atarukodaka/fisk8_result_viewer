@@ -25,7 +25,10 @@ class ElementsDatatable < IndexDatatable
     [:credit, :info, :date].each {|key| columns[key].searchable = false }    
 
     ## visible
-    [:competition_class, :competition_type].each {|key| columns[key].visible = false }
+    [:competition_class, :competition_type].each {|key|
+      columns[key].visible = false
+      columns[key].orderable = false
+    }
 
     ## operartor
     if view_context

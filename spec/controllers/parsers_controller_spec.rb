@@ -7,20 +7,30 @@ end
 RSpec.describe ParsersController, type: :controller, parser: true do
   render_views
 
-  it 'index' do
-    get :index
-    expect(response).to be_success
-  end
-  it 'competition' do
-    url = 'http://www.isuresults.com/results/season1617/wc2017/'
-    get :competition, params: {url: url}
-    expect(response).to be_success
-    expect_to_include(url)
+  context 'index' do
+    subject { get :index }
+    it { is_expected.to be_success }
   end
 
-  it 'scores' do
-    url = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
-    get :scores, params: {url: url}
-    expect(response).to be_success
+  context 'competition' do
+    subject {
+      url = 'http://www.isuresults.com/results/season1617/wc2017/'
+      get :competition, params: {url: url}
+    }
+    it {
+      expect(response).to be_success
+      expect(response.body).to have_content(url)
+    }
+  end
+
+  context 'scores' do
+    subject {
+      url = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
+      get :scores, params: {url: url}
+    }
+    it {
+      expect(response).to be_success
+      expect(response.body).to have_content(url)
+    }
   end
 end

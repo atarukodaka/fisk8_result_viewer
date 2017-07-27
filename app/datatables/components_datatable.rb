@@ -27,7 +27,10 @@ class ComponentsDatatable < IndexDatatable
     columns[:value].operator = params[:value_operator].presence || :eq      if view_context
 
     ## visible
-    [:competition_class, :competition_type].each {|key| columns[key].visible = false }
+    [:competition_class, :competition_type].each {|key|
+      columns[key].visible = false
+      columns[key].orderable = false
+    }
 
     
     default_orders([[:value, :desc]])
