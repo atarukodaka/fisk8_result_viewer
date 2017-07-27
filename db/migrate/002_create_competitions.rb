@@ -3,7 +3,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # competitions
     create_table :competitions do |t|
-      t.string :short_name, default: ""
+      t.string :short_name
       t.string :name
       t.string :city
       t.string :country
