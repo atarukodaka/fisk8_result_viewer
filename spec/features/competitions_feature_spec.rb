@@ -33,9 +33,8 @@ feature CompetitionsController, type: :feature, feature: true do
     context 'paging' do
       it {
         page_length = CompetitionsDatatable.new.settings[:pageLength]
-        competition = Competition.create
         100.times do |i|
-          Competition.create(name: i, short_name: i)
+          create(:competition)
         end
         visit index_path
         expect(page.body).to have_content("Showing 1 to #{page_length}")
