@@ -89,7 +89,7 @@ module AjaxFeatureHelper
   ## functions
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
-    #sleep 1
+    sleep 1
   end
   def ajax_action(path:, input_type: , key:, value: nil)
     visit path
@@ -102,6 +102,7 @@ module AjaxFeatureHelper
       find(key).click
     end
     # trigger
+    binding.pry
     ajax_trigger
     page
   end
