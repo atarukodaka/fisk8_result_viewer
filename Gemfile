@@ -50,6 +50,7 @@ end
 
 group :production do
   gem 'passenger'
+  gem 'pg'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
