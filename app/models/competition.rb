@@ -127,7 +127,7 @@ class Competition < ApplicationRecord
           when /Lombardia/
             [:challenger, :lombaridia, "LOMBARDIA#{year}", "Lombardia Trophy #{year}"]
           when /Ondrej Nepela/
-            [:challenger, :nepela, "NEPELA#{year}", "Nebelhorn Trophy #{year}"]
+            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepeta Trophy #{year}"]
           else
             [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
           end
