@@ -1,16 +1,17 @@
 ## Challenger Series
 
 ## nebelhorn
-- http://www.deu-event.de/results/Nebelhorn_2016/index.html
-- http://www.isuresults.com/results/season1516/csger2015/
-- http://www.isuresults.com/results/nt2014/
-- http://www.isuresults.com/results/nt2013/
-- http://www.deu-event.de/results/Nebelhorn_2012/
-- http://www.deu-event.de/results/Nebelhorn_2011/
 - http://www.deu-event.de/results/Nebelhorn_2010/
+- http://www.deu-event.de/results/Nebelhorn_2011/
+- http://www.deu-event.de/results/Nebelhorn_2012/
+- http://www.isuresults.com/results/nt2013/
+- http://www.isuresults.com/results/nt2014/
+- http://www.isuresults.com/results/season1516/csger2015/
+- http://www.deu-event.de/results/Nebelhorn_2016/index.html
 - http://www.isuresults.com/results/season1718/csger2017/
   
 ## finlandia
+- http://www.figureskatingresults.fi/results/1718/CSFIN2017/
 - http://www.figureskatingresults.fi/results/1617/CSFIN2016/
 - http://www.figureskatingresults.fi/results/1516/CSFIN2015/
 - http://www.figureskatingresults.fi/results/1415/CSFIN2014/
@@ -20,11 +21,13 @@
 - http://www.figureskatingresults.fi/results/1011/FT2010/
 
 ## lombardia
+- http://www.fisg.it/upload/result/4468/index.html
 - http://www.fisg.it/upload/result/4144/senior/index2.html
 - http://www.fisg.it/upload/result/3860/index.html
 - http://www.fisg.it/upload/result/4468/index.html
 
 ## ondreij nepela
+- http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/index.htm
 - http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
@@ -37,6 +40,9 @@
 - http://www.pfsa.com.pl/results/1314/WC2013/
 
 ## autumn classic
+-
+  url: https://skatecanada.ca/2017-autumn-classic-international/#fusion-tab-startorders/results
+  parser: automn_classic
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic

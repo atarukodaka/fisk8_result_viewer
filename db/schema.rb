@@ -12,9 +12,6 @@
 
 ActiveRecord::Schema.define(version: 3) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "competitions", force: :cascade do |t|
     t.string "short_name"
     t.string "name"
@@ -36,7 +33,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "factor"
     t.string "judges"
     t.float "value"
-    t.bigint "score_id"
+    t.integer "score_id"
     t.index ["score_id"], name: "index_components_on_score_id"
   end
 
@@ -51,7 +48,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "goe"
     t.string "judges"
     t.float "value"
-    t.bigint "score_id"
+    t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
@@ -74,8 +71,8 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "free_bv"
     t.float "total_bv"
     t.float "total_goe"
-    t.bigint "competition_id"
-    t.bigint "skater_id"
+    t.integer "competition_id"
+    t.integer "skater_id"
     t.index ["competition_id"], name: "index_results_on_competition_id"
     t.index ["skater_id"], name: "index_results_on_skater_id"
   end
@@ -94,9 +91,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "deductions", default: 0.0
     t.string "deduction_reasons"
     t.float "base_value", default: 0.0
-    t.bigint "competition_id"
-    t.bigint "skater_id"
-    t.bigint "result_id"
+    t.integer "competition_id"
+    t.integer "skater_id"
+    t.integer "result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
     t.index ["result_id"], name: "index_scores_on_result_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
