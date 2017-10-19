@@ -40,12 +40,13 @@
 - http://www.pfsa.com.pl/results/1314/WC2013/
 
 ## autumn classic
--
-  url: https://skatecanada.ca/2017-autumn-classic-international/#fusion-tab-startorders/results
-  parser: automn_classic
+##  this result format is shxt
+#-
+#  url: https://skatecanada.ca/2017-autumn-classic-international/
+#  parser: autumn_classic
 -
   url: https://skatecanada.ca/event/2016-autumn-classic-international/
   parser: :autumn_classic
 
 ## debug
-- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+#- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
