@@ -16,7 +16,9 @@
 - season: from/to selection
 - numbering\_column_name
 - capybara
-
+- parsers/statis controllers work only development env
+  - specs deleted
+  
 ## 1.0.2-pre2 2017/7/24
 - defer loading
 - _datatable rewrite

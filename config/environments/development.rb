@@ -67,6 +67,9 @@ Rails.application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
   end
+
+  # development badge
+  config.rack_dev_mark.enable = true
 end
 
 
