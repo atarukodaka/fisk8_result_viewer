@@ -19,32 +19,6 @@
 h2 Competition Info
 
 = competition_summary.decorate.render
-/table.table.table-striped.table-hover.table-condensed
-  tr
-    th Name
-    td
-      = link_to_competition(competition)
-      | (
-      = competition.short_name
-      | ) [
-      = competition.competition_type
-      | ] 
-  tr
-    th Official Site
-    td=  link_to_competition_site(competition)
-  tr
-    th City / Country
-    td= [competition.city, competition.country].join(' / ')
-  tr
-    th Date
-    td
-      = [competition.start_date, competition.end_date].join(' to ')
-      | - in the season of #{competition.season}
-  - if competition.comment.present?
-    tr
-      th Comment
-      td competition.comment
-
 
 ////////////////////////////////////////////////////////////////
 h2
@@ -60,13 +34,14 @@ h2
 // nav bar for category/segment
 .nav
   ul.nav.nav-tabs
-    - competition.results.pluck(:category).uniq.each do |c|
+    - competition.scores.order("date asc").pluck(:category).uniq.each do |c|
       - category_active = (category == c) ? "active" : ""
       li class="#{category_active}"
         =link_to_competition(competition, category: c)
 
   ul.nav.nav-tabs
-    - competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+    /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+    - competition.scores.where(category: category).order("date asc").pluck(:segment).uniq.each do |s|
       - segment_active = (segment == s) ? "active" : ""
       li class="#{segment_active}"
         = link_to_competition(competition, category: category, segment: s)
