@@ -21,6 +21,7 @@ style
     =text_field_tag(:offset, params[:offset])
     label
     = button_tag("html", type: "submit", name: "format", value: "html", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
+    label
     = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
     label
     = button_tag("csv", type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
