@@ -12,6 +12,8 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.2 2017/1024
+
 ## 1.0.2-pre3 2017/10/21
 - season: from/to selection
 - numbering\_column_name
