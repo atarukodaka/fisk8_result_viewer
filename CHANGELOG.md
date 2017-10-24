@@ -13,7 +13,7 @@
 - config/competitions.yml: debug
 
 ## 1.0.3-pre1
-
+- default orders: :number, :asc in scores/elements, components
 
 ## 1.0.2 2017/1024
 
