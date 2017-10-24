@@ -3,7 +3,7 @@ class Listtable < Datatable
     super(partial: partial, locals: locals)
   end
   
-  def as_json(opts={})
+  def as_json(_opts={})
     data.as_json(only: column_names)
   end
 end

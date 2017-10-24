@@ -12,6 +12,9 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.3-pre1
+
+
 ## 1.0.2 2017/1024
 
 ## 1.0.2-pre3 2017/10/21

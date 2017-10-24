@@ -102,7 +102,7 @@ module AjaxFeatureHelper
       find(key).click
     end
     # trigger
-    binding.pry
+    #binding.pry
     ajax_trigger
     page
   end

@@ -46,10 +46,7 @@ module LinkToHelper
     end
   end
   def link_to_pdf(url, target: "_blank")
-    #img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
-    img_url = '/assets/pdf_icon.png'
     link_to(image_tag(asset_path('pdf_icon.png')), url, target: target)
-    #link_to(image_tag(img_url), url, target: target)
   end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")

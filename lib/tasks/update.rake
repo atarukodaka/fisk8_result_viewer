@@ -9,7 +9,7 @@ namespace :update do
     url = ENV['url']
     ## TODO: parser_type, comment
     
-    if categories = ENV['accept_categories']
+    if (categories = ENV['accept_categories'])
       Category.accept!(categories.split(/,/))
     end
 
@@ -23,15 +23,15 @@ namespace :update do
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
 
-    if categories = ENV['accept_categories']
+    if (categories = ENV['accept_categories'])
       Category.accept!(categories.split(/,/))
     end
 
     ## filename
-    if f = ENV['filenames']
+    if (f = ENV['filenames'])
       CompetitionList.use_multiple_files
-      CompetitionList.set_filenames *(f.split(/,/))
-    elsif f = ENV['filename']
+      CompetitionList.set_filenames *(f.split(/,/)) ## TODO
+    elsif (f = ENV['filename'])
       CompetitionList.filename = f
     end
     list = CompetitionList.all
