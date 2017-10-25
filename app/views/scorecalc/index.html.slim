@@ -24,7 +24,8 @@ form
           input type="text" id="element_#{i}_name"
         td  
           input type="checkbox" id="element_#{i}_credit"  
-        td  id="element_#{i}_goe"
+        td
+          = select_tag "element_#{i}_goe", options_for_select([-3, -2, -1, 0, 1, 2, 3], selected: 0)
         td  id="element_#{i}_bv"
         td  id="element_#{i}_value"
         td  id="element_#{i}_comment"
