@@ -1,0 +1,40 @@
+h2
+
+h3 Elements
+
+- num_elements = 13
+
+div#box
+  | asdfasdf
+
+form 
+  table.table.table-striped.table-hover.table-condensed
+    tr
+      th Number
+      th Element Name
+      th Credit
+      th GOE
+      th BV
+      th Value
+      th Comment
+    - 1.upto(num_elements).each do |i|
+      tr
+        td= i
+        td  
+          input type="text" id="element_#{i}_name"
+        td  
+          input type="checkbox" id="element_#{i}_credit"  
+        td  id="element_#{i}_goe"
+        td  id="element_#{i}_bv"
+        td  id="element_#{i}_value"
+        td  id="element_#{i}_comment"
+    tr
+      td Total
+      td
+      td
+      td
+      td id="total_bv"
+      td id="tes"
+  input type="button" value="Calc" id="calc"
+
+h3 Components
