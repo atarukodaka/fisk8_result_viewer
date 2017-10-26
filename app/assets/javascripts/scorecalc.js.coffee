@@ -1,16 +1,17 @@
 class RuleSet
         constructor: ->
-                @bv =
-                        '4T': 10
-                        '3T': 8
-                @v =
-                        '4T': [8]
-                        '3T': [6]
-                        
-                @sov =
-                        '4T': [-4, -2.4, -1.2, 0, 1, 2, 3]
-                        '3T': [-3, -2, -1, 0, 1, 2, 3]
-
+                @bvsov =
+                        '4T': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
+                        '3T': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
+                        '3A': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
+                        'LSp4': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
+        bv: (element, v) ->
+                v ||= 0
+                @bvsov[element][v]
+                
+        sov: (element, goe) ->
+                offset = 6
+                @bvsov[element][goe+offset]
 
 class Element
         @rule_set = new RuleSet
@@ -20,14 +21,29 @@ class Element
                 
                 # for jump
                 @indivisual_jumps = []
-
+                @normalized_name = @name
                 @parse()
 
         bv: ->
-                10
+                if @type is 'jump'
+                        _bv = 0
+                        for jump in @indivisual_jumps
+                                _bv += jump.bv()
+                        return _bv
+                else
+                        Element.rule_set.bv[@normalized_name]
 
         goe_value: ->
-                0
+                if @type is 'jump'
+                        max_bv = 0
+                        max_element = ''
+                        for jump in @indivisual_jumps
+                                max_bv = jump.bv() if jump.bv > max_bv
+                                max_element = jump
+                        Element.rule_set.bv(max_element.normalized_name)
+                else
+                        Element.rule_set.bv(@normalized_name)
+                                                
 
         value: ->
                 @bv() + @goe_value()
@@ -46,25 +62,37 @@ class Element
 
 class IndivisualJump extends Element
         constructor: (@name, @goe, @credit) ->
-                super(@name, @goe, @credit)
                 @error = false
                 @attention = false
                 @underrotated = false
                 @downgraded = false
-                
+                @name_for_bv = @name
+                super(@name, @goe, @credit)
+
+
+        bv: ->
+                console.log(@downgraded)
+                _bv = Element.rule_set.bv(@normalized_name, 0)
+                _bv *= 0.7 if @underrotated
+                _bv *= 0.5 if @downgraded
+                return _bv
         parse: ->
                 # check <, <<, !, e
-                if @name.match(/(.*)e$/)  # wronge edge
+                if @name.match(/^(.*)e$/)  # wronge edge
                         @error = true
-                else if @name.match(/\!$/)  # attention
+                        @normalized_name = RegExp.$1
+                else if @name.match(/^(.*)\!$/)  # attention
                         @attention = true
-                if @name.match(/(.*)(<+)$/)  # under, downgrade
+                        @normalized_name = RegExp.$1
+                if @name.match(/^([^<]*)(<<?)$/)  # under, downgrade
+                        console.log(RegExp.$1)
+                        @normalized_name = RegExp.$1
                         if RegExp.$2 is '<'
                                 @underrotated = true
                         else
                                 @downgraded = true
 
-                
+               
                        
 class TechnicalScore
         constructor: ->
