@@ -4,6 +4,7 @@ class RuleSet
                         '4T': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
                         '3T': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
                         '3A': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
+                        '2T':  [10, 8, 5, -4, -2.4, -1.2, 0, 0.7, 1.4, 2.1]
                         'LSp4': [10, 8, 5, -4, -2.4, -1.2, 0, 1, 2, 3]
         bv: (element, v) ->
                 v ||= 0
@@ -11,6 +12,8 @@ class RuleSet
                 
         sov: (element, goe) ->
                 offset = 6
+                # console.log(parseInt(goe)+offset)
+                console.log(@bvsov[element][parseInt(goe)+offset])
                 @bvsov[element][goe+offset]
 
 class Element
@@ -38,11 +41,12 @@ class Element
                         max_bv = 0
                         max_element = ''
                         for jump in @indivisual_jumps
-                                max_bv = jump.bv() if jump.bv > max_bv
-                                max_element = jump
-                        Element.rule_set.bv(max_element.normalized_name)
+                                if jump.bv() > max_bv
+                                        max_bv = jump.bv() 
+                                        max_element = jump
+                        Element.rule_set.sov(max_element.normalized_name, parseInt(@goe))
                 else
-                        Element.rule_set.bv(@normalized_name)
+                        Element.rule_set.sov(@normalized_name, @goe)
                                                 
 
         value: ->
@@ -67,26 +71,31 @@ class IndivisualJump extends Element
                 @underrotated = false
                 @downgraded = false
                 @name_for_bv = @name
+                @rotation = 0
+                @type = ''
                 super(@name, @goe, @credit)
 
 
         bv: ->
-                console.log(@downgraded)
                 _bv = Element.rule_set.bv(@normalized_name, 0)
                 _bv *= 0.7 if @underrotated
                 _bv *= 0.5 if @downgraded
                 return _bv
         parse: ->
+                if @name.match(/^([1-4])([ASLozFT]+)/)
+                        @rotation = parseInt(RegExp.$1)
+                        @type = RegExp.$2
+                else if @name.match(/^([ASLozFT]+)/)
+                        @rotation = 1
+                        @type = RegExp.$2
+                @normalized_name = "#{@rotation}#{@type}"
+                        
                 # check <, <<, !, e
                 if @name.match(/^(.*)e$/)  # wronge edge
                         @error = true
-                        @normalized_name = RegExp.$1
                 else if @name.match(/^(.*)\!$/)  # attention
                         @attention = true
-                        @normalized_name = RegExp.$1
                 if @name.match(/^([^<]*)(<<?)$/)  # under, downgrade
-                        console.log(RegExp.$1)
-                        @normalized_name = RegExp.$1
                         if RegExp.$2 is '<'
                                 @underrotated = true
                         else
