@@ -7,6 +7,6 @@ class ScorecalcController < ApplicationController
     #score_name = "TEAM2017-SL-FS-1"
     score_name = params[:score_name]
     score = Score.find_by(name: score_name)
-    render json: score.elements.map {|element| {name: element.name, credit: element.credit, goe: element.goe}}
+    render json: score.elements.sort_by {|e| e.number }.map {|element| {name: element.name, credit: element.credit, goe: element.goe}}
   end
 end
