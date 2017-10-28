@@ -122,7 +122,7 @@ this.hello = ->
 this.score_calc = ->
         technical_score = new TechnicalScore
 
-        num_elements = 3
+        num_elements = 13
         for i in [1...num_elements]
                 name = $("#element_#{i}_name").val()
                 goe = $("#element_#{i}_goe").val()
@@ -146,5 +146,9 @@ $ ->
 
         $('#load_score_form')
                 .on "ajax:success", (data, status, xhr) ->
-                        console.log(data)
-                        console.log(data.detail[0])
+                        for element, i in data.detail[0]
+                                console.log(element)
+                                console.log(element['name'])
+                                $("#element_#{i+1}_name").val(element['name'])
+                                $("#element_#{i+1}_credit").prop('checked', true) if element['credit'] is 'x'
+                        score_calc()

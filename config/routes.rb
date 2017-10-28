@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :statics, only: :index
 
   resources :scorecalc, only: :index do
-    get :load_score, on: :collection
+    post :load_score, on: :collection
   end
   
   namespace :api, format: "json" do
