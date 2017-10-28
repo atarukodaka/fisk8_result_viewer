@@ -21,11 +21,11 @@ form
       tr
         td= i
         td  
-          input type="text" id="element_#{i}_name"
+          input type="text" id="element_#{i}_name" onchange="score_calc()"
         td  
-          input type="checkbox" id="element_#{i}_credit"  
+          input type="checkbox" id="element_#{i}_credit"  onchange="score_calc()"
         td
-          = select_tag "element_#{i}_goe", options_for_select([-3, -2, -1, 0, 1, 2, 3], selected: 0)
+          = select_tag "element_#{i}_goe", options_for_select([-3, -2, -1, 0, 1, 2, 3], selected: 0), onchange: "score_calc()"
         td  id="element_#{i}_bv"
         td  id="element_#{i}_value"
         td  id="element_#{i}_comment"
