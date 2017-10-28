@@ -4,6 +4,12 @@ h3 Elements
 
 - num_elements = 13
 
+
+// = form_tag controller: :scorecalc, action: :load_score, remote: true, method: "get", id: "load_score_form"
+= form_tag("/scorecalc/load_score.json", method: :get, remote: true, id: "load_score_form")
+  input type="text" id="score_id"
+  input type="submit" id="load_score" value="Load"
+
 form 
   table.table.table-striped.table-hover.table-condensed
     tr

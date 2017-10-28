@@ -143,5 +143,8 @@ this.score_calc = ->
 $ ->
         $('input#calc').click ->
                 score_calc()
-        
 
+        $('#load_score_form')
+                .on "ajax:success", (data, status, xhr) ->
+                        console.log(data)
+                        console.log(data.detail[0])
