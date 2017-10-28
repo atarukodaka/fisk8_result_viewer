@@ -123,7 +123,7 @@ this.score_calc = ->
         technical_score = new TechnicalScore
 
         num_elements = 13
-        for i in [1...num_elements]
+        for i in [1..num_elements]
                 name = $("#element_#{i}_name").val()
                 goe = $("#element_#{i}_goe").val()
                 credit = $("#element_#{i}_credit").prop('checked')
@@ -134,21 +134,36 @@ this.score_calc = ->
         for element in technical_score.elements
                 $("#element_#{i}_bv").text(element.bv())
                 $("#element_#{i}_value").text(element.value())
-                $("#element_#{i}_comment").text(element.name)
                 i++
         $('#total_bv').text(technical_score.total_bv)
         $('#tes').text(technical_score.tes)
 
+this.reset = ->
+        num_elements = 13
+        for i in [0...num_elements]
+                $("#element_#{i+1}_name").val('')
+                $("#element_#{i+1}_credit").prop('checked', false)
+                $("#element_#{i+1}_goe").val('')
+                $("#element_#{i+1}_bv").text('')
+                $("#element_#{i+1}_value").text('')
+        $('#total_bv').text('')
+        $('#tes').text('')
 
 $ ->
         $('input#calc').click ->
                 score_calc()
 
+        $('#reset').click ->
+                reset()
+                
         $('#load_score_form')
                 .on "ajax:success", (data, status, xhr) ->
+                        reset()
                         for element, i in data.detail[0]
                                 console.log(element)
                                 console.log(element['name'])
                                 $("#element_#{i+1}_name").val(element['name'])
-                                $("#element_#{i+1}_credit").prop('checked', true) if element['credit'] is 'x'
+                                credit = if element['credit'] is 'x' then true else false
+                                $("#element_#{i+1}_credit").prop('checked', credit) 
+                        console.log("i: #{i}")
                         score_calc()
