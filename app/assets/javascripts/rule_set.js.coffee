@@ -473,12 +473,14 @@ class RuleSet
 
         bv: (element, v) ->
                 v ||= 0
-                @bvsov[element]["bv"][v]
+                e = @bvsov[element]
+                if e then e["bv"][v] else 0
+                        
                 
         sov: (element, goe) ->
                 offset = 3
-                
-                @bvsov[element]["sov"][goe+offset]
+                e = @bvsov[element]
+                if e then e["sov"][goe+offset] else 0
 
 
 window.RuleSetProject = {}

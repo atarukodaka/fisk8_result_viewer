@@ -5,6 +5,8 @@ class Element
                 @type = ""
                 @indivisual_jumps = []  # for jump
                 @normalized_name = @name
+                @goe = parseInt(@goe)
+                @invalid = false
                 
                 @parse()
 
@@ -20,7 +22,9 @@ class Element
                         _bv *= 1.1 if @credit
 
                 else
-                        _bv = Element.rule_set.bv[@normalized_name]
+                        _bv = Element.rule_set.bv(@normalized_name)
+                        console.log(_bv)
+
                 @round(_bv, 2)
 
         goe_value: ->
@@ -36,10 +40,12 @@ class Element
                         gv = Element.rule_set.sov(max_element.normalized_name, parseInt(@goe))
                 else
                         gv = Element.rule_set.sov(@normalized_name, @goe)
+                        #console.log("#{@normalized_name}, #{@goe}")
+                        #console.log(Element.rule_set.sov("LSp4", @goe))
                 @round(gv, 2)
 
         value: ->
-                @bv() + @goe_value()
+                @round(@bv() + @goe_value(), 2)
                 
         parse: ->
                 if @name.match(/Sp/)
