@@ -1,16 +1,13 @@
-h2
-
-h3 Elements
+h2 Technical Score Calculater
 
 - num_elements = 13
 
-
-// = form_tag controller: :scorecalc, action: :load_score, remote: true, id: "load_score_form"
-//= form_tag("/scorecalc/load_score.json", remote: true, id: "load_score_form")
 = form_tag({controller: :scorecalc, action: :load_score}, remote: true, id: "load_score_form")
   input type="text" name="score_name"
   input type="submit" id="load_score" value="Load"
 
+hr
+  
 form 
   table.table.table-striped.table-hover.table-condensed
     tr
@@ -40,7 +37,7 @@ form
       td
       td id="total_bv"
       td id="tes"
+      td
   input type="button" value="Calc" id="calc"
   input type="reset" value="Reset" id="reset"
 
-h3 Components

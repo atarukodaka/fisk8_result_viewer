@@ -1,5 +1,9 @@
 class Element
         @rule_set = new RuleSetProject.RuleSet
+        @round: (value, n) ->
+                n ||= 2
+                return Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)
+                
         
         constructor: (@name, @goe,  @credit) ->
                 @type = ""
@@ -10,10 +14,8 @@ class Element
                 
                 @parse()
 
-        round: (value, n) ->
-                return Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)
-                
         bv: ->
+                return 0 if @invalid
                 value = 0
                 if @type is 'jump'
                         _bv= 0
@@ -25,9 +27,10 @@ class Element
                         _bv = Element.rule_set.bv(@normalized_name)
                         console.log(_bv)
 
-                @round(_bv, 2)
+                Element.round(_bv, 2)
 
         goe_value: ->
+                return 0 if @invalid
                 gv = 0
                 if @type is 'jump'
                         max_bv = 0
@@ -42,10 +45,10 @@ class Element
                         gv = Element.rule_set.sov(@normalized_name, @goe)
                         #console.log("#{@normalized_name}, #{@goe}")
                         #console.log(Element.rule_set.sov("LSp4", @goe))
-                @round(gv, 2)
+                Element.round(gv, 2)
 
         value: ->
-                @round(@bv() + @goe_value(), 2)
+                Element.round(@bv() + @goe_value(), 2)
                 
         parse: ->
                 if @name.match(/Sp/)
@@ -55,9 +58,14 @@ class Element
                 else
                         @type = "jump"
 
-                 if @type is "jump"
-                        for each_name in @name.split('+')
-                                @indivisual_jumps.push(new IndivisualJump(each_name, 0, @credit))
+                if @type is "jump"
+                        if @name.match(/^(.*)\+REP$/)
+                                jump = new IndivisualJump(RegExp.$1, 0, @credit)
+                                jump.rep = true
+                                @indivisual_jumps.push(jump)
+                        else
+                                for each_name in @name.split('+')
+                                        @indivisual_jumps.push(new IndivisualJump(each_name, 0, @credit))
 
 class IndivisualJump extends Element
         constructor: (@name, @goe, @credit) ->
@@ -65,11 +73,13 @@ class IndivisualJump extends Element
                 @attention = false
                 @underrotated = false
                 @downgraded = false
+                @rep = false
                 @rotation = 0
                 @type = ''
                 super(@name, @goe, @credit)
 
         bv: ->
+                return 0 if @invalid
                 name = @normalized_name
                 if @downgraded
                         less_rotation = @rotation - 1
@@ -78,10 +88,14 @@ class IndivisualJump extends Element
                 v = 0
                 v++ if @underrotated
                 v++ if @error
-                _bv = Element.rule_set.bv(name, v)
-                # TODO: downgraded
-                return _bv
+                if @rep
+                        return Element.rule_set.bv(name, v) * 0.7
+                else
+                        return Element.round(Element.rule_set.bv(name, v), 2)
+                               
         parse: ->
+                if @name.match(/\*$/)
+                        @invalid = true
                 if @name.match(/^([1-4])([ASLozFT]+)/)
                         @rotation = parseInt(RegExp.$1)
                         @type = RegExp.$2
@@ -101,8 +115,7 @@ class IndivisualJump extends Element
                         else
                                 @downgraded = true
 
-               
-                       
+#
 class TechnicalScore
         constructor: ->
                 @elements =  []
@@ -114,8 +127,10 @@ class TechnicalScore
                 for element in @elements
                         @tes += element.bv() + element.goe_value()
                         @total_bv += element.bv()
-                
+                @tes = Element.round(@tes)
+                @total_bv = Element.round(@total_bv)
 
+#================
 this.hello = ->
         console.log("hel")
         
@@ -143,7 +158,7 @@ this.reset = ->
         for i in [0...num_elements]
                 $("#element_#{i+1}_name").val('')
                 $("#element_#{i+1}_credit").prop('checked', false)
-                $("#element_#{i+1}_goe").val('')
+                $("#element_#{i+1}_goe").val(0)
                 $("#element_#{i+1}_bv").text('')
                 $("#element_#{i+1}_value").text('')
         $('#total_bv').text('')
