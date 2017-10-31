@@ -17,8 +17,8 @@ class Element
         bv: ->
                 return 0 if @invalid
                 value = 0
+                _bv= 0
                 if @type is 'jump'
-                        _bv= 0
                         for jump in @indivisual_jumps
                                 _bv += jump.bv()
                         _bv *= 1.1 if @credit

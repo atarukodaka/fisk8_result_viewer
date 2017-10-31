@@ -9,6 +9,9 @@ h2 Technical Score Calculater
 hr
   
 form 
+  | season: 
+  = select_tag "season", options_for_select(['2017-18']), onchange: 'score_calc()'
+
   table.table.table-striped.table-hover.table-condensed
     tr
       th Number
