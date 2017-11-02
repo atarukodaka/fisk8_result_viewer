@@ -1,5 +1,5 @@
 class Element
-        @rule_set = new RuleSetProject.RuleSet
+        @rule_set = new ScorecalcProject.RuleSet
         @round: (value, n) ->
                 n ||= 2
                 return Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)
@@ -43,8 +43,6 @@ class Element
                         gv = Element.rule_set.sov(max_element.normalized_name, parseInt(@goe))
                 else
                         gv = Element.rule_set.sov(@normalized_name, @goe)
-                        #console.log("#{@normalized_name}, #{@goe}")
-                        #console.log(Element.rule_set.sov("LSp4", @goe))
                 Element.round(gv, 2)
 
         value: ->
@@ -118,6 +116,7 @@ class IndivisualJump extends Element
 #
 class TechnicalScore
         constructor: ->
+                @num_elements = 13
                 @elements =  []
         add_element: (name, goe, credit) ->
                 @elements.push(new Element(name, goe, credit))
@@ -131,14 +130,10 @@ class TechnicalScore
                 @total_bv = Element.round(@total_bv)
 
 #================
-this.hello = ->
-        console.log("hel")
-        
 this.score_calc = ->
         technical_score = new TechnicalScore
 
-        num_elements = 13
-        for i in [1..num_elements]
+        for i in [1..technical_score.num_elements]
                 name = $("#element_#{i}_name").val()
                 goe = $("#element_#{i}_goe").val()
                 credit = $("#element_#{i}_credit").prop('checked')
@@ -154,8 +149,9 @@ this.score_calc = ->
         $('#tes').text(technical_score.tes)
 
 this.reset = ->
-        num_elements = 13
-        for i in [0...num_elements]
+        technical_score = new TechnicalScore
+        
+        for i in [0...technical_score.num_elements]
                 $("#element_#{i+1}_name").val('')
                 $("#element_#{i+1}_credit").prop('checked', false)
                 $("#element_#{i+1}_goe").val(0)
@@ -172,7 +168,7 @@ $ ->
                 reset()
                 
         $('#load_score_form')
-                .on "ajax:success", (data, status, xhr) ->
+                .on "ajax:success", (data) ->
                         reset()
                         for element, i in data.detail[0]
                                 console.log(element)
@@ -180,5 +176,5 @@ $ ->
                                 $("#element_#{i+1}_name").val(element['name'])
                                 credit = if element['credit'] is 'x' then true else false
                                 $("#element_#{i+1}_credit").prop('checked', credit) 
-                        console.log("i: #{i}")
+                        # console.log("i: #{i}")
                         score_calc()

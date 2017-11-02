@@ -487,5 +487,5 @@ class RuleSet
                 e = RuleSet.bvsov[@season][element]
                 if e then e["sov"][goe+offset] else 0
 
-window.RuleSetProject = {}
-window.RuleSetProject.RuleSet = RuleSet
+window.ScorecalcProject = {}
+window.ScorecalcProject.RuleSet = RuleSet
