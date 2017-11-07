@@ -161,20 +161,15 @@ this.reset = ->
         $('#tes').text('')
 
 $ ->
+        # score_name = purl(location.href).param('score_name')
+        if score_name isnt ''
+                #console.log(score_name)
+                # reset()
+                score_calc()
+                #console.log("done")
+
         $('input#calc').click ->
                 score_calc()
 
         $('#reset').click ->
                 reset()
-                
-        $('#load_score_form')
-                .on "ajax:success", (data) ->
-                        reset()
-                        for element, i in data.detail[0]
-                                console.log(element)
-                                console.log(element['name'])
-                                $("#element_#{i+1}_name").val(element['name'])
-                                credit = if element['credit'] is 'x' then true else false
-                                $("#element_#{i+1}_credit").prop('checked', credit) 
-                        # console.log("i: #{i}")
-                        score_calc()

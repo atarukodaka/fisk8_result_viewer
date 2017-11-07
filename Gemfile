@@ -15,7 +15,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', platforms: :ruby
 
 gem 'coffee-rails', '~> 4.2'
-gem 'turbolinks', '~> 5'
+#gem 'turbolinks', '~> 5'
 #gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
