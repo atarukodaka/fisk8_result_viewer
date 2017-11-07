@@ -161,11 +161,12 @@ this.reset = ->
         $('#tes').text('')
 
 $ ->
+        score_calc()
         # score_name = purl(location.href).param('score_name')
-        if score_name isnt ''
+        #if score_name isnt ''
                 #console.log(score_name)
                 # reset()
-                score_calc()
+                #score_calc()
                 #console.log("done")
 
         $('input#calc').click ->

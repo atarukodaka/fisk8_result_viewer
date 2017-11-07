@@ -2,7 +2,7 @@ class ScoresController < ApplicationController
   include IndexActions
   
   def score_summary(score)
-    Listtable.new(view_context).records(score).columns([:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :youtube_search])
+    Listtable.new(view_context).records(score).columns([:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf, :scorecalc, :youtube_search])
 
   end
   def elements_datatable(score)

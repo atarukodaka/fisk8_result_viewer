@@ -23,6 +23,9 @@ class ScoreDecorator < EntryDecorator
   def tss
     h.link_to_score(model.tss, model)
   end
+  def scorecalc
+    h.link_to(model.name, controller: :scorecalc, score_name: model.name)
+  end
   decorate_as_score(:tes, :pcs, :deductions, :base_value)
   def youtube_search
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
