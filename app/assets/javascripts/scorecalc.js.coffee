@@ -25,7 +25,7 @@ class Element
 
                 else
                         _bv = Element.rule_set.bv(@normalized_name)
-                        console.log(_bv)
+                        #console.log(_bv)
 
                 Element.round(_bv, 2)
 
@@ -151,24 +151,18 @@ this.score_calc = ->
 this.reset = ->
         technical_score = new TechnicalScore
         
-        for i in [0...technical_score.num_elements]
-                $("#element_#{i+1}_name").val('')
-                $("#element_#{i+1}_credit").prop('checked', false)
-                $("#element_#{i+1}_goe").val(0)
-                $("#element_#{i+1}_bv").text('')
-                $("#element_#{i+1}_value").text('')
+        for i in [1...technical_score.num_elements-1]
+                $("#element_#{i}_name").val('')
+                $("#element_#{i}_credit").prop('checked', false)
+                $("#element_#{i}_goe").val(0)
+                $("#element_#{i}_bv").text('')
+                $("#element_#{i}_value").text('')
         $('#total_bv').text('')
         $('#tes').text('')
 
 $ ->
         score_calc()
-        # score_name = purl(location.href).param('score_name')
-        #if score_name isnt ''
-                #console.log(score_name)
-                # reset()
-                #score_calc()
-                #console.log("done")
-
+        
         $('input#calc').click ->
                 score_calc()
 
