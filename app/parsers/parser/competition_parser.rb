@@ -141,6 +141,7 @@ class Parser
         end
         tm_str = row.xpath("td[2]").text
         tm = parse_datetime("#{dt_str} #{tm_str}", mdy_format: mdy_format)
+
         next if tm.nil?
         tm = tm + 2000.years if tm.year < 100
         

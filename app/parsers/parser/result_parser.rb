@@ -7,9 +7,9 @@ class Parser
       page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
       rows = get_rows(page)
       col_numbers = get_column_numbers(rows[0])
-
       rows[1..-1].map do |row|
         tds = row.xpath("td")
+        next if tds.size == 1
         data = {}
         
         [
@@ -35,7 +35,7 @@ class Parser
         href = tds[col_num].xpath("a/@href").text
         data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
         data
-      end ## rows.each
+      end.compact ## rows.each
     end ## def
     ################################################################
     protected

@@ -42,11 +42,11 @@
 ## autumn classic
 ##  this result format is shxt
 #-
-#  url: https://skatecanada.ca/2017-autumn-classic-international/
-#  parser: autumn_classic
+#  site_url: https://skatecanada.ca/2017-autumn-classic-international/
+#  parser_type: autumn_classic
 -
-  url: https://skatecanada.ca/event/2016-autumn-classic-international/
-  parser: :autumn_classic
+  site_url: https://skatecanada.ca/event/2016-autumn-classic-international/
+  parser_type: :autumn_classic
 
 ## debug
 #- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/

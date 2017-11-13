@@ -26,16 +26,16 @@ class CompetitionList < ActiveYaml::Base
   class << self
     def load_file
       raw_data.map do |item|
+        hash = {}
         case item
         when String
-          {url: item, parser_type: DEFAULT_PARSER, }
+          hash[:url] = item
         when Hash
-          {
-            url: item["url"],
-            parser_type: item["parser"] || DEFAULT_PARSER,
-            comment: item['comment'],
-          }
+          hash = item
         end
+        hash[:parser_type] ||= DEFAULT_PARSER
+        hash
+        
       end
     end
   end

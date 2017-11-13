@@ -32,9 +32,11 @@ class Competition < ApplicationRecord
       normalize_name
       self.country ||= CityCountry.find_by(city: city).try(:country)
       save!
-      puts "*" * 100 if verbose
-      puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys if verbose
-
+      if verbose
+        puts "*" * 100
+        puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys
+      end
+      
       ## categories
       parsed[:categories].each do |category, cat_item|
         next unless Category.accept?(category)

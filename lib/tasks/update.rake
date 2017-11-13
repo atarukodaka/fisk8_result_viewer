@@ -38,7 +38,7 @@ namespace :update do
     list = list.last(last).reverse if last
       
     list.each do |item|
-      if competitions = Competition.where(site_url: item[:url]).presence
+      if competitions = Competition.where(site_url: item[:site_url]).presence
         if !force
           puts "skip: #{item[:url]}"
           next
@@ -46,9 +46,14 @@ namespace :update do
           competitions.map(&:destroy)
         end
       end
-      Competition.create!(site_url: item[:url], parser_type: item[:parser_type]) do |competition|
-        competition.comment = item[:comment]
+      Competition.create! do |competition|
+        competition.attributes = {
+          site_url: item[:site_url],
+          parser_type: item[:parser_type],
+          comment: item[:comment],
+        }
         competition.update(verbose: true)
+        competition.city = item[:city] if item[:city]
       end
     end
   end
