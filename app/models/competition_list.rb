@@ -29,7 +29,7 @@ class CompetitionList < ActiveYaml::Base
         hash = {}
         case item
         when String
-          hash[:url] = item
+          hash[:site_url] = item
         when Hash
           hash = item
         end

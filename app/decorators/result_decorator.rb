@@ -33,7 +33,8 @@ class ResultDecorator < EntryDecorator
   
   ## free
   def free_ranking
-    h.link_to_competition(model.free_ranking.as_ranking, model.competition, category: model.category, segment: "FREE")
+    #h.link_to_competition(model.free_ranking.as_ranking, model.competition, category: model.category, segment: "FREE")
+    h.link_to_score(model.free_ranking.as_ranking, model.free)
   end
   def free_tss
     h.link_to_score(model.free_tss.as_score, model.free)

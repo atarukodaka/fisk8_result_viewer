@@ -18,6 +18,7 @@ namespace :update do
       competition.update(verbose: true)
     end
   end
+
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
     last =  ENV['last'].to_i if ENV['last']

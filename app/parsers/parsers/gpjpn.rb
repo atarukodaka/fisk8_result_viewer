@@ -96,7 +96,7 @@ class Parsers
         fpl.first.xpath("../../tr")
       end
       def get_column_numbers(_)
-        {ranking: 0, skater_name: 1, nation: 2, points: 3, short_ranking: 4, free_ranking: 5}
+        {ranking: 0, skater_name: 1, nation: 2, short_ranking: 3, free_ranking: 4, points: 5,}
       end
     end ## class ResultParser
   end ## class Gpjpn
