@@ -1,6 +1,6 @@
-class Parsers
+module CompetitionParser
   class Wtt2017 < IsuGeneric
-    class CompetitionParser < IsuGeneric::CompetitionParser
+    class SummaryParser < IsuGeneric::SummaryParser
       def parse_name(_page)
         "ISU World Team Trophy 2017"
       end

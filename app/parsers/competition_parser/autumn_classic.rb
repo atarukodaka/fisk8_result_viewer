@@ -1,6 +1,6 @@
-class Parsers
+module CompetitionParser
   class AutumnClassic < IsuGeneric
-    class CompetitionParser < IsuGeneric::CompetitionParser
+    class SummaryParser < IsuGeneric::SummaryParser
       def parse_name(page)
           page.xpath("//h1").first.text
       end

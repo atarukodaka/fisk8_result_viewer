@@ -46,7 +46,8 @@ class Category < ActiveHash::Base
     ]
 
   def update_skaters
-    parser = Parser::SkaterParser.new
+    #parser = Parser::SkaterParser.new
+    parser = SkaterParser.new
     ActiveRecord::Base.transaction do
       parser.parse_skaters(name, isu_bio_url).each do |hash|
         Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|

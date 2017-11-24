@@ -25,7 +25,12 @@ class Competition < ApplicationRecord
       clean
       
       ## parse
-      parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url).presence || (return nil)
+      #parser = CompetitionParser::IsuGeneric.new
+      #parser = CompetitionParser::Gpjpn.new
+      parser = "CompetitionParser::#{parser_type.camelize}".constantize.new
+      parsed = parser.parse_summary(site_url).presence || (return nil)
+      
+      #parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url).presence || (return nil)
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
 
@@ -40,7 +45,8 @@ class Competition < ApplicationRecord
       ## categories
       parsed[:categories].each do |category, cat_item|
         next unless Category.accept?(category)
-        Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
+        #Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
+        parser.parse_result(cat_item[:result_url]).each do |result_parsed|
           results.create!(category: category) do |result|
             result.update(result_parsed)
             puts result.summary if verbose
@@ -49,7 +55,8 @@ class Competition < ApplicationRecord
         
         # segments
         parsed[:segments][category].each do |segment, seg_item|
-          Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
+          #Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
+          parser.parse_score(seg_item[:score_url]).each do |sc_parsed|
             scores.create!(category: category, segment: segment) do |score|
               cr_rels = results.where(category: category)
               relevant_cr =

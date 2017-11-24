@@ -1,6 +1,6 @@
-class Parsers
+module CompetitionParser
   class Gpjpn < IsuGeneric
-    class CompetitionParser < IsuGeneric::CompetitionParser
+    class SummaryParser  < IsuGeneric::SummaryParser
       def parse_name(_page)
         "ISU GP NHK Trophy 2017"
       end
@@ -86,8 +86,7 @@ class Parsers
            },
           ]
       end
-
-    end  ## class CompetitionParser
+    end  ## class SummaryParser
     class ResultParser < IsuGeneric::ResultParser
       def get_rows(page)
         fpl = page.xpath("//td[contains(text(), 'PL')]")
@@ -101,4 +100,3 @@ class Parsers
     end ## class ResultParser
   end ## class Gpjpn
 end
-
