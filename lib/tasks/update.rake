@@ -41,7 +41,7 @@ namespace :update do
     list.each do |item|
       if competitions = Competition.where(site_url: item[:site_url]).presence
         if !force
-          puts "skip: #{item[:url]}"
+          puts "skip: #{item[:site_url]}"
           next
         else
           competitions.map(&:destroy)

@@ -111,6 +111,7 @@
   site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
   parser_type: gpjpn
   city: Osaka
-#- http://www.isuresults.com/results/season1718/gpfra2017/
+- http://www.isuresults.com/results/season1718/gpfra2017/
+- http://www.isuresults.com/results/season1718/gpusa2017/
 
 ## for debug
