@@ -81,14 +81,24 @@ class Competition < ApplicationRecord
               score.result["#{segment_type}_bv"] = score[:base_value]
               score.result.save
 
-              ## GOEs
+              ## judge details
+              ### elements
               score.elements.each do |element|
                 element.judges.split(/\s/).each_with_index do |value, i|
-                  #element.gradeofexecutions.create(panel_name: panels[:judges][i+1][:name],
                   element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
                                                        panel_nation: panels[:judges][i+1][:nation],
                                                        number: i,
                                                        value: value)
+                end
+              end
+
+              ### component
+              score.components.each do |component|
+                component.judges.split(/\s/).each_with_index do |value, i|
+                  component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
+                                                           panel_nation: panels[:judges][i+1][:nation],
+                                                           number: i,
+                                                           value: value)
                 end
               end
             end
