@@ -27,6 +27,7 @@ module CompetitionParser
             cat_item[:result_url] = hash[:result_url]
           else
             seg_item = competition[:segments][category][segment] = {}
+            seg_item[:panel_url] = hash[:panel_url]
             seg_item[:score_url] = hash[:score_url]
             seg_item[:date] = time_schedule.select {|item| item[:category] == category && item[:segment] == segment}.first.try(:[], :time)
           end
@@ -37,7 +38,6 @@ module CompetitionParser
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6
         competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
-
         competition
       end
       ################################################################
@@ -110,12 +110,14 @@ module CompetitionParser
           next if category.blank? && segment.blank?
           next if (segment.blank?) && ((row.xpath("td[4]").text =~ /result/i ) == nil) # TODO
 
+          panel_url = row.xpath("td[3]//a/@href").text
           result_url = row.xpath("td[4]//a/@href").text
           score_url = row.xpath("td[5]//a/@href").text
 
           summary << {
             category: category,
             segment: segment,
+            panel_url: (panel_url.present?) ? URI.join(url, panel_url).to_s: "",
             result_url: (result_url.present?) ? URI.join(url, result_url).to_s: "",
             score_url: (score_url.present?) ? URI.join(url, score_url).to_s : "",
           }

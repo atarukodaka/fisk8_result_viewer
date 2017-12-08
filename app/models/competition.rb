@@ -53,9 +53,11 @@ class Competition < ApplicationRecord
           end
         end
         
-        # segments
+        # segment scores
         parsed[:segments][category].each do |segment, seg_item|
           #Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
+          panels = parser.parse_panel(seg_item[:panel_url])
+
           parser.parse_score(seg_item[:score_url]).each do |sc_parsed|
             scores.create!(category: category, segment: segment) do |score|
               cr_rels = results.where(category: category)
@@ -78,9 +80,22 @@ class Competition < ApplicationRecord
               end
               score.result["#{segment_type}_bv"] = score[:base_value]
               score.result.save
+
+              ## GOEs
+              score.elements.each do |element|
+                element.judges.split(/\s/).each_with_index do |value, i|
+                  #element.gradeofexecutions.create(panel_name: panels[:judges][i+1][:name],
+                  element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
+                                                       panel_nation: panels[:judges][i+1][:nation],
+                                                       number: i,
+                                                       value: value)
+                end
+              end
             end
           end
+
           
+          #binding.pry
         end # segments
       end # categories
       

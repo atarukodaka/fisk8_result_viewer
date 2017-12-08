@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
+ActiveRecord::Schema.define(version: 4) do
 
   create_table "competitions", force: :cascade do |t|
     t.string "short_name"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "comment"
   end
 
+  create_table "component_judge_details", force: :cascade do |t|
+    t.string "panel_name"
+    t.string "panel_nation"
+    t.integer "number"
+    t.float "value"
+    t.integer "component_id"
+    t.index ["component_id"], name: "index_component_judge_details_on_component_id"
+  end
+
   create_table "components", force: :cascade do |t|
     t.integer "number"
     t.string "name"
@@ -35,6 +44,15 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "value"
     t.integer "score_id"
     t.index ["score_id"], name: "index_components_on_score_id"
+  end
+
+  create_table "element_judge_details", force: :cascade do |t|
+    t.string "panel_name"
+    t.string "panel_nation"
+    t.integer "number"
+    t.float "value"
+    t.integer "element_id"
+    t.index ["element_id"], name: "index_element_judge_details_on_element_id"
   end
 
   create_table "elements", force: :cascade do |t|

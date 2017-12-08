@@ -34,6 +34,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :analysis
+
   resources :statics, only: :index
 
   resources :scorecalc, only: :index do

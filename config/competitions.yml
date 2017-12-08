@@ -98,19 +98,19 @@
 - http://www.isuresults.com/results/season1617/fc2017/
 - http://www.isuresults.com/results/season1617/ec2017/
 - http://www.isuresults.com/results/season1617/wc2017/
--
-  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser_type: :wtt2017
-  comment: "no category results provided"
+#-
+#  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
+#  parser_type: :wtt2017
+#  comment: "no category results provided"
 
 ## 2017-18
 - http://www.isuresults.com/results/season1718/gprus2017/
 - http://www.isuresults.com/results/season1718/gpcan2017/
 - http://www.isuresults.com/results/season1718/gpchn2017/
--
-  site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
-  parser_type: gpjpn
-  city: Osaka
+#-
+#  site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
+#  parser_type: gpjpn
+#  city: Osaka
 - http://www.isuresults.com/results/season1718/gpfra2017/
 - http://www.isuresults.com/results/season1718/gpusa2017/
 
