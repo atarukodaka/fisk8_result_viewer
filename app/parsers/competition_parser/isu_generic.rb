@@ -27,3 +27,8 @@ module CompetitionParser
     end
   end
 end
+
+CompetitionParser::IsuGeneric::SummaryParser
+CompetitionParser::IsuGeneric::ResultParser
+CompetitionParser::IsuGeneric::ScoreParser
+CompetitionParser::IsuGeneric::PanelParser

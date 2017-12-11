@@ -5,7 +5,8 @@ module CompetitionParser
 
       def parse(url)
         page = get_url(url).presence || (return [])
-        elem = page.xpath("//th[contains(text(), 'Function')]").presence || []
+        elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
+               page.xpath("//td[contains(text(), 'Function')]").presence ||  []
         rows = elem.xpath('ancestor::table[1]//tr')
         hash = {judges: []}
         rows.each do |row|

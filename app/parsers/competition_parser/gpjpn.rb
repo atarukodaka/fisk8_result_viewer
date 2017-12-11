@@ -15,6 +15,7 @@ module CompetitionParser
         segment = ""
         summary = []
         entry_url = ""
+        panel_url = ""
         rows[0..-1].each do |row|
           next if row.xpath("td").blank?
 
@@ -29,6 +30,7 @@ module CompetitionParser
             }
           elsif row.xpath("td").count == 2
             segment = row.xpath("td[1]").text.upcase
+            panel_url = URI.join(url, row.xpath("td[2]/a/@href").text).to_s
           elsif row.xpath("td[1]").text == "Judges Score (pdf)"
             score_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s
             summary << {
@@ -36,13 +38,19 @@ module CompetitionParser
               segment: segment,
               result_url: "",
               score_url: score_url,
+              panel_url: panel_url,
             }
           end
         end
         summary
       end
       def parse_time_schedule(page)
-          Time.zone ||= "UTC"
+        Time.zone ||= "UTC"
+        header_elem = page.xpath("//*[text()='Date']").first
+        rows = header_elem.xpath("../../tr")
+        rows.each do |row|
+        end
+                      
           [
            {
              time: Time.zone.parse("2017/11/11 12:45:00"),
