@@ -20,20 +20,17 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
-  def update(verbose: false)
+  def update(verbose: false, params: {})
     ActiveRecord::Base.transaction do
       clean
       
       ## parse
-      #parser = CompetitionParser::IsuGeneric.new
-      #parser = CompetitionParser::Gpjpn.new
       parser = "CompetitionParser::#{parser_type.camelize}".constantize.new
       parsed = parser.parse_summary(site_url).presence || (return nil)
-      
-      #parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url).presence || (return nil)
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
-
+      self.attributes = params
+      
       normalize_name
       self.country ||= CityCountry.find_by(city: city).try(:country)
       save!

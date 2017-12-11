@@ -1,9 +1,9 @@
 module CompetitionParser
   class Gpjpn < IsuGeneric
     class SummaryParser  < IsuGeneric::SummaryParser
-      def parse_name(_page)
-        "ISU GP NHK Trophy 2017"
-      end
+#      def parse_name(_page)
+#        "ISU GP NHK Trophy 2017"
+#      end
       def parse_city_country(_page)
         ['', "JPN"]
       end
@@ -16,7 +16,8 @@ module CompetitionParser
         summary = []
         entry_url = ""
         panel_url = ""
-        rows[0..-1].each do |row|
+        #rows[0..-1].each do |row|
+        rows.each do |row|
           next if row.xpath("td").blank?
 
           if row.xpath("td[2]").text == 'Entries'
@@ -47,54 +48,58 @@ module CompetitionParser
       def parse_time_schedule(page)
         Time.zone ||= "UTC"
         header_elem = page.xpath("//*[text()='Date']").first
-        rows = header_elem.xpath("../../tr")
-        rows.each do |row|
+        table = header_elem.xpath("../..")
+
+        i = 1
+        bHeader = true
+        summary = []
+        date = nil
+        time = nil
+        category = ""
+        segment = ""
+        
+        table.children.each do |elem|
+          case elem.name
+          when "text"
+            next
+          when "td"
+            case i
+            when 1
+              date = elem.text
+            when 2
+              time = elem.text
+            when 3
+              category = elem.text.upcase
+            when 4
+              segment = elem.text.upcase
+              summary << {
+                category: category,
+                segment: segment,
+                time: Time.zone.parse("#{date} #{time}")
+              }
+            end
+            if i == 4
+              i = 1
+            else
+              i += 1
+            end
+          when "tr"
+            if bHeader  # skip if header
+              bHeader = false
+              next
+            end
+            summary << {
+              category: elem.xpath("td[2]").text.upcase,
+              segment: elem.xpath("td[3]").text.upcase,
+              time: Time.zone.parse("#{date} #{elem.xpath("td[1]").text}"),
+            }
+          end
         end
-                      
-          [
-           {
-             time: Time.zone.parse("2017/11/11 12:45:00"),
-             category: "ICE DANCE",
-             segment: "SHORT DANCE",
-           },
-           {
-             time: Time.zone.parse("2017/11/10 16:10:00"),
-             category: "LADIES",
-             segment: "SHORT PROGRAM",
-           },
-           {
-             time: Time.zone.parse("2017/11/11 19:05:00"),
-             category: "MEN",
-             segment: "SHORT PROGRAM",
-           },
-           {
-             time: Time.zone.parse("2017/11/10 14:20:00"),
-             category: "PAIRS",
-             segment: "SHORT PROGRAM",
-           },
-           {
-             time: Time.zone.parse("2017/11/12 11:45:00"),
-             category: "ICE DANCE",
-             segment: "FREE DANCE",
-           },
-           {
-             time: Time.zone.parse("2017/11/11 19:30:00"),
-             category: "MEN",
-             segment: "FREE SKATING",
-           },
-           {
-             time: Time.zone.parse("2017/11/11 14:35:00"),
-             category: "PAIRS",
-             segment: "FREE SKATING",
-           },
-           {
-             time: Time.zone.parse("2017/11/11 16:40:00"),
-             category: "LADIES",
-             segment: "FREE SKATING",
-           },
-          ]
+        summary
       end
     end  ## class SummaryParser
+
+    ################
     class ResultParser < IsuGeneric::ResultParser
       def get_rows(page)
         fpl = page.xpath("//td[contains(text(), 'PL')]")

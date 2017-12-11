@@ -53,8 +53,12 @@ namespace :update do
           parser_type: item[:parser_type],
           comment: item[:comment],
         }
-        competition.update(verbose: true)
-        competition.city = item[:city] if item[:city]
+        params = {}
+        [:city, :name].each do |tag|
+          params[tag] = item[tag] if item[tag]
+        end
+
+        competition.update(verbose: true, params: params)
       end
     end
   end
