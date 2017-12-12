@@ -2,7 +2,7 @@ class Element < ApplicationRecord
   include ScoreVirtualAttributes
   
   ## relations
-  has_many :element_judge_details
+  has_many :element_judge_details, dependent: :destroy
   belongs_to :score
 
   ## scopes

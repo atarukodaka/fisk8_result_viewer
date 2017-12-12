@@ -3,6 +3,8 @@
 - property: readonly, writeonly
 
 - date search
+- delete country-city mapping
+- panels: panel db entries
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -11,6 +13,9 @@
 - app/controller/application_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.4-pre1
+- panels
 
 ## 1.0.3-pre1
 - default orders: :number, :asc in scores/elements, components

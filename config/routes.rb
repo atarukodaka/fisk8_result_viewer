@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     end
   end
 
-  ## resources :analysis  # for temtative panel analysis
+  resources :analysis  # for temtative panel analysis
 
   resources :statics, only: :index
 
