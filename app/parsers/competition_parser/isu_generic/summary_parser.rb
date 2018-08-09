@@ -38,6 +38,7 @@ module CompetitionParser
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6
         competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
+        binding.pry
         competition
       end
       ################################################################
@@ -102,7 +103,7 @@ module CompetitionParser
           next if row.xpath("td").blank?
 
           if (c = row.xpath("td[1]").text.presence)
-            category = c.squish.upcase.gsub(/^SENIOR /, '')
+            category = normalize_category(c)
           end
           #segment = trim(row.xpath("td[2]").text).upcase
           segment = row.xpath("td[2]").text.squish.upcase
@@ -150,7 +151,7 @@ module CompetitionParser
 
           time_schedule << {
             time: tm,
-            category: row.xpath("td[3]").text.squish.upcase.gsub(/^SENIOR /, ''),
+            category: normalize_category(row.xpath("td[3]").text),
             segment: row.xpath("td[4]").text.squish.upcase,
           }
         end
@@ -158,6 +159,11 @@ module CompetitionParser
       end
       def parse_name(page)
         page.title.strip
+      end
+
+      ###
+      def normalize_category(category)
+        category.squish.upcase.gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, "").gsub(/ SKATING/, "")
       end
     end
   end

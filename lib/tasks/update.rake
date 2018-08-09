@@ -13,7 +13,7 @@ namespace :update do
       Category.accept!(categories.split(/,/))
     end
 
-    Competition.where(site_url: url).map(&:destory)
+    Competition.where(site_url: url).map(&:destroy)
     Competition.create(site_url: url) do |competition|
       competition.update(verbose: true)
     end
