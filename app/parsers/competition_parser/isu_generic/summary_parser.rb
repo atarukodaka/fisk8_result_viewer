@@ -38,7 +38,6 @@ module CompetitionParser
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6
         competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
-        binding.pry
         competition
       end
       ################################################################
