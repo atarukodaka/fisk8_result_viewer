@@ -5,7 +5,7 @@ module CompetitionParser
         summary: "#{self.class}::SummaryParser".constantize.new,
         result: "#{self.class}::ResultParser".constantize.new,
         score: "#{self.class}::ScoreParser".constantize.new,
-        panel: "#{self.class}::PanelParser".constantize.new,
+#        panel: "#{self.class}::PanelParser".constantize.new,
       }
 
     end
@@ -31,4 +31,4 @@ end
 CompetitionParser::IsuGeneric::SummaryParser
 CompetitionParser::IsuGeneric::ResultParser
 CompetitionParser::IsuGeneric::ScoreParser
-CompetitionParser::IsuGeneric::PanelParser
+#CompetitionParser::IsuGeneric::PanelParser

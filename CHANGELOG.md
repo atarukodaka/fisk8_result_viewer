@@ -5,6 +5,7 @@
 - date search
 - delete country-city mapping
 - panels: panel db entries
+- delete pdf graph
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

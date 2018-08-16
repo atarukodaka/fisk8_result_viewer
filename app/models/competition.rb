@@ -53,7 +53,7 @@ class Competition < ApplicationRecord
         # segment scores
         parsed[:segments][category].each do |segment, seg_item|
           #Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
-          panels = parser.parse_panel(seg_item[:panel_url])
+          # panels = parser.parse_panel(seg_item[:panel_url])
 
           parser.parse_score(seg_item[:score_url]).each do |sc_parsed|
             scores.create!(category: category, segment: segment) do |score|
@@ -78,6 +78,7 @@ class Competition < ApplicationRecord
               score.result["#{segment_type}_bv"] = score[:base_value]
               score.result.save
 
+=begin
               ## judge details
               if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
                 ### elements
@@ -100,11 +101,9 @@ class Competition < ApplicationRecord
                   end
                 end
               end
+=end
             end
           end
-
-          
-          #binding.pry
         end # segments
       end # categories
       
