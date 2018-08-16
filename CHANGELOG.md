@@ -16,7 +16,7 @@
 - config/competitions.yml: debug
 
 ## 1.0.4-pre1
-- panels
+- delete graphs on skater
 
 ## 1.0.3-pre1
 - default orders: :number, :asc in scores/elements, components

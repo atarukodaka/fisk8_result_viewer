@@ -69,7 +69,7 @@ gem 'google-analytics-rails'
 gem 'draper'
 gem 'config'
 
-gem 'gnuplot'
+#gem 'gnuplot'
 gem 'open_uri_redirections'    # for http: -> https: redirect
 gem 'contracts'
 gem 'to_bool'

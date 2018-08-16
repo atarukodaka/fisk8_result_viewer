@@ -1,4 +1,4 @@
-- score_graphs ||= []
+// - score_graphs ||= []
 
 - breadcrumb :skater, skater
 
@@ -20,7 +20,7 @@ h2 Competition Results
 
 = render partial: "datatable", locals: { datatable: competition_results.decorate }
 
-.row
+//.row
   - score_graphs.each do |sg|
     .col-sm-6
       = image_tag(sg.image_path)

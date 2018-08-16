@@ -22,9 +22,11 @@ module CompetitionParser
       @parser[:score].parse(url)
     end
 
+=begin
     def parse_panel(url)
       @parser[:panel].parse(url)
     end
+=end
   end
 end
 
