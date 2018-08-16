@@ -37,6 +37,7 @@ group :test do
   gem 'coveralls', require: false
   gem 'codecov', :require => false
   gem 'factory_girl_rails'
+  #gem 'factory_bot_rails'
 end
 
 group :development do
@@ -78,7 +79,7 @@ gem 'sitemap_generator'
 
 gem 'jquery-datatables-rails'
 gem 'hashie'
-gem 'active_hash'
+gem 'active_hash', '~> 1.5'   # 2.x doenst support Ruby < 2.4 and Rails < 5
 gem 'gretel'
 gem 'rack-dev-mark'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
