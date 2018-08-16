@@ -47,6 +47,7 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     arel (8.0.0)
+    ast (2.4.0)
     autoprefixer-rails (9.1.1)
       execjs
     bindex (0.5.0)
@@ -136,10 +137,10 @@ GEM
       dry-types (~> 0.13.1)
     erubi (1.7.1)
     execjs (2.7.0)
-    factory_girl (4.9.0)
+    factory_bot (4.11.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
+    factory_bot_rails (4.11.0)
+      factory_bot (~> 4.11.0)
       railties (>= 3.0.0)
     ffi (1.9.25)
     globalid (0.4.1)
@@ -150,6 +151,7 @@ GEM
     hashie (3.6.0)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
+    jaro_winkler (1.5.1)
     jquery-datatables-rails (3.4.0)
       actionpack (>= 3.1)
       jquery-rails
@@ -193,6 +195,9 @@ GEM
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     open_uri_redirections (0.2.1)
+    parallel (1.12.1)
+    parser (2.5.1.2)
+      ast (~> 2.4.0)
     passenger (5.3.4)
       rack
       rake (>= 0.8.1)
@@ -203,6 +208,7 @@ GEM
       capybara (>= 2.1, < 4)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    powerpack (0.1.2)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -241,6 +247,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    rainbow (3.0.0)
     rake (12.3.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
@@ -268,6 +275,17 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    rubocop (0.58.2)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.5, != 2.5.1.1)
+      powerpack (~> 0.1)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-rspec (1.28.0)
+      rubocop (>= 0.58.0)
+    ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
     sass (3.5.7)
@@ -329,6 +347,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.18)
       execjs (>= 0.3.0, < 3)
+    unicode-display_width (1.4.0)
     uniform_notifier (1.11.0)
     url (0.3.2)
     web-console (3.6.2)
@@ -358,7 +377,7 @@ DEPENDENCIES
   database_cleaner
   dotenv-rails
   draper
-  factory_girl_rails
+  factory_bot_rails
   google-analytics-rails
   gretel
   hashie
@@ -377,6 +396,7 @@ DEPENDENCIES
   rails (~> 5.1.0)
   rspec-its
   rspec-rails
+  rubocop-rspec
   sass-rails (~> 5.0)
   selenium-webdriver
   sitemap_generator

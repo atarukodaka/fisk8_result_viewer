@@ -36,8 +36,9 @@ group :test do
 
   gem 'coveralls', require: false
   gem 'codecov', :require => false
-  gem 'factory_girl_rails'
-  #gem 'factory_bot_rails'
+  #gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
+  # gem 'rubocop-rspec'
 end
 
 group :development do
