@@ -5,7 +5,6 @@ module CompetitionParser
 
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
-        binding.pry
         city, country = parse_city_country(page)
         #puts "#{city}, #{country}"
         competition = {
@@ -36,7 +35,6 @@ module CompetitionParser
             }
           end
         end
-        binding.pry
         competition[:start_date] = time_schedule.map {|d| d[:time]}.min
         competition[:end_date] = time_schedule.map {|d| d[:time]}.max
 
