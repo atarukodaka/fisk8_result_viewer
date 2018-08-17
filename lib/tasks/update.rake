@@ -52,13 +52,18 @@ namespace :update do
           site_url: item[:site_url],
           parser_type: item[:parser_type],
           comment: item[:comment],
+          date_format: item[:date_format],
         }
         params = {}
         [:city, :name].each do |tag|
           params[tag] = item[tag] if item[tag]
         end
 
-        competition.update(verbose: true, params: params)
+        #competition.update(verbose: true, params: params)
+        competition.attributes = item.attributes
+        competition.update(params: params, verbose: true)
+
+
       end
     end
   end

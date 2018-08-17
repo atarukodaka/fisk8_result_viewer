@@ -39,13 +39,13 @@ module CompetitionParser
               segment: segment,
               result_url: "",
               score_url: score_url,
-              panel_url: panel_url,
+#              panel_url: panel_url,
             }
           end
         end
         summary
       end
-      def parse_time_schedule(page)
+      def parse_time_schedule(page, date_format: "")
         Time.zone ||= "UTC"
         header_elem = page.xpath("//*[text()='Date']").first
         table = header_elem.xpath("../..")
@@ -57,7 +57,7 @@ module CompetitionParser
         time = nil
         category = ""
         segment = ""
-        
+        binding.pry
         table.children.each do |elem|
           case elem.name
           when "text"
@@ -75,7 +75,7 @@ module CompetitionParser
               summary << {
                 category: category,
                 segment: segment,
-                time: Time.zone.parse("#{date} #{time}")
+                time: "#{date} #{time}".in_time_zone("Asia/Tokyo"),
               }
             end
             if i == 4

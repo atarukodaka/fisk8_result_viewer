@@ -10,8 +10,8 @@ module CompetitionParser
 
     end
 
-    def parse_summary(url)
-      @parser[:summary].parse(url)
+    def parse_summary(url, date_format: )
+      @parser[:summary].parse(url, date_format: date_format)
     end
 
     def parse_result(url)

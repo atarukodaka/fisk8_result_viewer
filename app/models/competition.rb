@@ -20,13 +20,14 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
-  def update(verbose: false, params: {})
+  def update(params: {}, verbose: false)
     ActiveRecord::Base.transaction do
       clean
-      
+
       ## parse
       parser = "CompetitionParser::#{parser_type.camelize}".constantize.new
-      parsed = parser.parse_summary(site_url).presence || (return nil)
+      parsed = parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
+      
       attrs = self.class.column_names.map(&:to_sym) & parsed.keys
       self.attributes = parsed.slice(*attrs)
       self.attributes = params
@@ -159,7 +160,7 @@ class Competition < ApplicationRecord
           when /Lombardia/
             [:challenger, :lombaridia, "LOMBARDIA#{year}", "Lombardia Trophy #{year}"]
           when /Ondrej Nepela/
-            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepeta Trophy #{year}"]
+            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepela Trophy #{year}"]
           else
             [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
           end
