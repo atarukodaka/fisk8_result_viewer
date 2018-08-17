@@ -22,13 +22,16 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
     describe 'jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
-      subject { Competition.create(site_url: url).update   }
+      let(:date_format) { "%m/%d/%Y" }
+      subject { Competition.create(site_url: url, date_format: date_format).update   }
       it_behaves_like :having_competition_with_url
     end
+=begin
     describe 'wtt2017' do
       let(:url) { 'http://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject { Competition.create(site_url: url, parser_type: :wtt2017).update   }
       it_behaves_like :having_competition_with_url
+=end
     end
     describe 'aci' do
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }

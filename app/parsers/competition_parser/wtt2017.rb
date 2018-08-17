@@ -43,7 +43,7 @@ module CompetitionParser
         summary
       end
       # rubocop:disable all
-      def parse_time_schedule(_page)
+      def parse_time_schedule(_page, date_format:)
         Time.zone ||= "UTC"
         [
          {
