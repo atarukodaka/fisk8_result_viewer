@@ -31,8 +31,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       let(:url) { 'http://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject { Competition.create(site_url: url, parser_type: :wtt2017).update   }
       it_behaves_like :having_competition_with_url
-=end
     end
+=end
     describe 'aci' do
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
       subject { Competition.create(site_url: url, parser_type: :autumn_classic).update   }
