@@ -48,14 +48,6 @@ namespace :update do
         end
       end
       Competition.create! do |competition|
-=begin
-        competition.attributes = {
-          site_url: item[:site_url],
-          parser_type: item[:parser_type],
-          comment: item[:comment],
-          date_format: item[:date_format],
-        }
-=end
         attrs = [:site_url, :parser_type, :comment, :date_format]
         competition.attributes = item.slice(*attrs)
         params = {}
