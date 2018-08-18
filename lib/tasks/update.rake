@@ -47,8 +47,8 @@ namespace :update do
           competitions.map(&:destroy)
         end
       end
-      updator = Updator.new(item[:parser_type], verbose: true)
-      competition = updator.update_competition(site_url: item[:site_url], date_format: item[:date_format])
+      updater = Updater.new(item[:parser_type], verbose: true)
+      competition = updater.update_competition(site_url: item[:site_url], date_format: item[:date_format])
 
       ## override attributes
       ActiveRecord::Base.transaction do

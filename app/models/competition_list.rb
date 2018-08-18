@@ -17,10 +17,10 @@ class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
 
-  DEFAULT_PARSER = :isu_generic
+  #DEFAULT_PARSER = :isu_generic
   
   field :url
-  field :parser_type, default: DEFAULT_PARSER
+  field :parser_type, default: CompetitionParser::DEFAULT_PARSER
   field :comment
   
   class << self
@@ -33,7 +33,7 @@ class CompetitionList < ActiveYaml::Base
         when Hash
           hash = item
         end
-        hash[:parser_type] ||= DEFAULT_PARSER
+        hash[:parser_type] ||= CompetitionParser::DEFAULT_PARSER
         hash
         
       end
