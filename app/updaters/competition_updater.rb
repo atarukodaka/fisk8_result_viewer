@@ -1,11 +1,11 @@
-class Updater
-  def initialize(parser_type = :isu_generic, verbose: false)
+class CompetitionUpdater
+  def initialize(parser_type = CompetitionParser::DEFAULT_PARSER, verbose: false)
     @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     @verbose = verbose
   end
-  def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil, verbose: false)
+  def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil)
     parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
-    competition = nil
+    #competition = nil
     ActiveRecord::Base.transaction do
       competition = Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
@@ -28,8 +28,8 @@ class Updater
           end
         end
       end
+      ## ensure to return competition object
     end  ## transaction
-    competition
   end
   ################
   def update_result(competition, category, result_url)
@@ -49,7 +49,7 @@ class Updater
         puts result.summary if @verbose
       end
     end
-  end  ## update_result
+  end 
   ################
   def update_score(competition, category, segment, score_url, date: nil)
     @parser.parse_score(score_url).each do |sc_parsed|
@@ -59,37 +59,37 @@ class Updater
           cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
           cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
           raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-        score.attributes = {
-          result: relevant_cr,
-          skater: relevant_cr.skater,
-          date: date,
-        }
-        attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
-        score.attributes = sc_parsed.slice(*attrs)
 
-        ## set abbr, name
-        if score.name.present?
-          category_abbr = Category.find_by(name: category).try(:abbr)
-          segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-          
-          score.name = [competition.try(:short_name), category_abbr, segment_abbr, score.ranking].join('-')
-        end
-          
         ActiveRecord::Base.transaction {
-          score.save!
+          score.attributes = {
+            result: relevant_cr,
+            skater: relevant_cr.skater,
+            date: date,
+          }
+          attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
+          score.attributes = sc_parsed.slice(*attrs)
+          
+          ## set abbr, name
+          if score.name.present?
+            category_abbr = Category.find_by(name: category).try(:abbr)
+            segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
+            
+            score.name = [competition.try(:short_name), category_abbr, segment_abbr, score.ranking].join('-')
+          end
+          score.save!  ## need to save score to create children
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
-        }
         
-        puts score.summary if @verbose
+          puts score.summary if @verbose
         
-        ## update segment details into results
-        segment_type = (segment =~ /SHORT/) ? :short : :free
-        [:tss, :tes, :pcs, :deductions].each do |key|
-          score.result["#{segment_type}_#{key}"] = score[key]
-        end
-        score.result["#{segment_type}_bv"] = score[:base_value]
-        score.result.save!
+          ## update segment details into results
+          segment_type = (segment =~ /SHORT/) ? :short : :free
+          [:tss, :tes, :pcs, :deductions].each do |key|
+            score.result["#{segment_type}_#{key}"] = score[key]
+
+            score.result["#{segment_type}_bv"] = score[:base_value]
+            score.result.save!
+          end
 =begin
               ## judge details
               if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
@@ -114,11 +114,12 @@ class Updater
                 end
               end
 =end
-
+        }
       end
     end
   end
-
+  ################
+  private
   def normalize_competition_info(competition)
     year = competition.start_date.year
     country_city = competition.country || competition.city.to_s.upcase.gsub(/\s+/, '_')        
@@ -155,7 +156,7 @@ class Updater
           when /Ondrej Nepela/
             [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepela Trophy #{year}"]
           else
-            [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
+            [:unknown, :unknown, competition.name.to_s.gsub(/\s+/, '_')]
           end
     competition.competition_class ||= ary[0]
     competition.competition_type ||= ary[1]

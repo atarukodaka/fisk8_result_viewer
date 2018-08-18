@@ -45,6 +45,7 @@ class Category < ActiveHash::Base
      },
     ]
 
+=begin
   def update_skaters
     #parser = Parser::SkaterParser.new
     parser = SkaterParser.new
@@ -56,7 +57,7 @@ class Category < ActiveHash::Base
       end
     end  # transaction
   end
-    
+=end    
   class << self
     ## class methods
     def accept!(categories)
@@ -70,8 +71,10 @@ class Category < ActiveHash::Base
     def accept?(category)
       where(accept_to_update: true, name: category.to_s).present?
     end
+=begin
     def update_skaters
       all.select(&:isu_bio_url).map(&:update_skaters)
     end
+=end
   end ## self
 end

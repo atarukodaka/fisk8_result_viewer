@@ -1,9 +1,6 @@
 module CompetitionParser
   class Gpjpn < IsuGeneric
     class SummaryParser  < IsuGeneric::SummaryParser
-#      def parse_name(_page)
-#        "ISU GP NHK Trophy 2017"
-#      end
       def parse_city_country(_page)
         ['', "JPN"]
       end
@@ -57,7 +54,7 @@ module CompetitionParser
         time = nil
         category = ""
         segment = ""
-        binding.pry
+
         table.children.each do |elem|
           case elem.name
           when "text"
