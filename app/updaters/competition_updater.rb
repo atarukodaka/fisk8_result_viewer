@@ -10,8 +10,14 @@ class CompetitionUpdater
       competition = Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)
-        normalize_competition_info(competition)
         competition.country ||= CityCountry.find_by(city: city).try(:country)
+
+        competition.name = name if name.present?
+        competition.city = city if city.present?
+        competition.comment = comment if comment.present?
+        
+        normalize_competition_info(competition)
+
         if @verbose
           puts "*" * 100
           puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
@@ -70,7 +76,7 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs)
           
           ## set abbr, name
-          if score.name.present?
+          if score.name.blank?
             category_abbr = Category.find_by(name: category).try(:abbr)
             segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
             

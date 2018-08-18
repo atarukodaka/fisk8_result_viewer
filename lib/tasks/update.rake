@@ -50,13 +50,8 @@ namespace :update do
         end
       end
 
-      CompetitionUpdater.new(item[:parser_type], verbose: true).update_competition(item[:site_url], date_format: item[:date_format]).tap do |competition|
-        ## override attributes
-        ActiveRecord::Base.transaction do
-          [:city, :name, :comment].each do |tag|
-            competition[tag] = item[tag] if item[tag]
-          end
-          competition.save!
+      ActiveRecord::Base.transaction do
+        CompetitionUpdater.new(item[:parser_type], verbose: true).update_competition(item[:site_url], date_format: item[:date_format], city: item[:city], name: item[:name], comment: item[:comment]).tap do |competition|
         end
       end
     end  ## each
