@@ -3,8 +3,7 @@ class Updater
     @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     @verbose = verbose
   end
-  def update_competition(site_url: "", date_format: nil, comment: nil,
-                         city: nil, name: nil, verbose: false)
+  def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil, verbose: false)
     parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
     competition = nil
     ActiveRecord::Base.transaction do
@@ -23,16 +22,17 @@ class Updater
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 
-          update_result(competition, category: category, result_url: cat_item[:result_url])
+          update_result(competition, category, cat_item[:result_url])
           parsed[:segments][category].each do |segment, seg_item|
-            update_score(competition, category: category, segment: segment, score_url: seg_item[:score_url], date: seg_item[:date])
+            update_score(competition, category, segment, seg_item[:score_url], date: seg_item[:date])
           end
         end
       end
     end  ## transaction
     competition
   end
-  def update_result(competition, category: "", result_url: "")
+  ################
+  def update_result(competition, category, result_url)
     @parser.parse_result(result_url).each do |result_parsed|
       competition.results.create!(category: category) do |result|
         attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
@@ -50,7 +50,8 @@ class Updater
       end
     end
   end  ## update_result
-  def update_score(competition, category: "", segment: "", score_url: "", date: nil)
+  ################
+  def update_score(competition, category, segment, score_url, date: nil)
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
         cr_rels = competition.results.where(category: category)
