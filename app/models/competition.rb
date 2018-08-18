@@ -100,7 +100,6 @@ class Competition < ApplicationRecord
       self
     end # transaction
   end # udpate
-=end
   ################
 
   def normalize_name
@@ -148,4 +147,5 @@ class Competition < ApplicationRecord
     
     self
   end
+=end
 end
