@@ -15,15 +15,13 @@ class CompetitionUpdater
         competition.name = name if name.present?
         competition.city = city if city.present?
         competition.comment = comment if comment.present?
-        
-        normalize_competition_info(competition)
+        #competition.normalize
+        competition.save!  ## need to save here to create children
 
         if @verbose
           puts "*" * 100
           puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
         end
-
-        competition.save!  ## need to save here
 
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
@@ -73,8 +71,10 @@ class CompetitionUpdater
             date: date,
           }
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
-          score.attributes = sc_parsed.slice(*attrs)
+          #score.attributes = sc_parsed.slice(*attrs)
+          score.update(sc_parsed.slice(*attrs))
           
+=begin
           ## set abbr, name
           if score.name.blank?
             category_abbr = Category.find_by(name: category).try(:abbr)
@@ -82,6 +82,8 @@ class CompetitionUpdater
             
             score.name = [competition.try(:short_name), category_abbr, segment_abbr, score.ranking].join('-')
           end
+=end
+
           score.save!  ## need to save score to create children
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
@@ -123,50 +125,5 @@ class CompetitionUpdater
         }
       end
     end
-  end
-  ################
-  private
-  def normalize_competition_info(competition)
-    year = competition.start_date.year
-    country_city = competition.country || competition.city.to_s.upcase.gsub(/\s+/, '_')        
-    ary = case competition.name
-          when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
-            [:isu, :gp, "GPF#{year}"]
-          when /^ISU GP/
-            [:isu, :gp, "GP#{country_city}#{year}"]
-          when /Olympic/
-            [:isu, :olympic, "OLYMPIC#{year}"]
-          when /^ISU World Figure/, /^ISU World Championships/
-            [:isu, :world, "WORLD#{year}", "ISU World Championships #{year}"]
-          when /^ISU Four Continents/
-            [:isu, :fcc, "FCC#{year}", "ISU Four Continents Championships #{year}"]
-          when /^ISU European/
-            [:isu, :euro, "EURO#{year}", "ISU European Championships #{year}"]
-          when /^ISU World Team/
-            [:isu, :team, "TEAM#{year}"]
-          when /^ISU World Junior/
-            [:isu, :jworld, "JWORLD#{year}"]
-          when /^ISU JGP/, /^ISU Junior Grand Prix/
-            [:isu, :jgp, "JGP#{country_city}#{year}"]
-            
-          when /^Finlandia Trophy/
-            [:challenger, :finlandia, "FINLANDIA#{year}", "Finlandia Trophy #{year}"]
-          when /Warsaw Cup/
-            [:challenger, :warshaw, "WARSAW#{year}", "Warsaw Cup #{year}"]
-          when /Autumn Classic/
-            [:challenger, :aci, "ACI#{year}"]
-          when /Nebelhorn/
-            [:challenger, :nebelhorn, "NEBELHORN#{year}", "Nebelhorn Trophy #{year}"]
-          when /Lombardia/
-            [:challenger, :lombaridia, "LOMBARDIA#{year}", "Lombardia Trophy #{year}"]
-          when /Ondrej Nepela/
-            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepela Trophy #{year}"]
-          else
-            [:unknown, :unknown, competition.name.to_s.gsub(/\s+/, '_')]
-          end
-    competition.competition_class ||= ary[0]
-    competition.competition_type ||= ary[1]
-    competition.short_name ||= ary[2]
-    competition.name = ary[3] if ary[3]
   end
 end

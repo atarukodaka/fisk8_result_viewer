@@ -1,4 +1,6 @@
 class Score < ApplicationRecord
+  before_save :set_score_name
+  
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
@@ -63,6 +65,7 @@ class Score < ApplicationRecord
       parsed[:components].map {|e| components.create(e)}
     }
   end
+=end
 
   def set_score_name
     return if name.present?
@@ -73,6 +76,6 @@ class Score < ApplicationRecord
     self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
     self
   end
-=end
+
 end
 
