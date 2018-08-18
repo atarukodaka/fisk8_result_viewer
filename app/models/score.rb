@@ -44,6 +44,15 @@ class Score < ApplicationRecord
   scope :segment, ->(s){ where(segment: s) }
 
   ##
+  def summary
+    skater_name = self.skater.try(:name) || self.skater_name
+    nation = self.skater.try(:nation) || self.nation
+    isu_number = self.skater.try(:isu_number) || 0
+    
+    "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+  end
+
+=begin
   def update(parsed)
     attrs = self.class.column_names.map(&:to_sym) & parsed.keys
     self.attributes = parsed.slice(*attrs)
@@ -54,15 +63,7 @@ class Score < ApplicationRecord
       parsed[:components].map {|e| components.create(e)}
     }
   end
-  def summary
-    skater_name = self.skater.try(:name) || self.skater_name
-    nation = self.skater.try(:nation) || self.nation
-    isu_number = self.skater.try(:isu_number) || 0
-    
-    "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
-  end
 
-  private
   def set_score_name
     return if name.present?
 
@@ -72,5 +73,6 @@ class Score < ApplicationRecord
     self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
     self
   end
+=end
 end
 

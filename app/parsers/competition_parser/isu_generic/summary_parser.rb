@@ -35,8 +35,8 @@ module CompetitionParser
             }
           end
         end
-        competition[:start_date] = time_schedule.map {|d| d[:time]}.min
-        competition[:end_date] = time_schedule.map {|d| d[:time]}.max
+        competition[:start_date] = time_schedule.map {|d| d[:time]}.min || Time.new(1970, 1, 1)
+        competition[:end_date] = time_schedule.map {|d| d[:time]}.max || Time.new(1970, 1, 1)
 
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6
@@ -122,7 +122,7 @@ module CompetitionParser
           tz = "Etc/GMT#{local_tz_hour}"
 
           tm = 
-            if date_format
+            unless date_format.blank?
               Time.strptime("#{dt_tm_str}", "#{date_format} %H:%M:%S")
             else
               dt_tm_str

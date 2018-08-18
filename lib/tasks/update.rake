@@ -47,9 +47,21 @@ namespace :update do
           competitions.map(&:destroy)
         end
       end
+      updator = Updator.new(item[:parser_type], verbose: true)
+      competition = updator.update_competition(site_url: item[:site_url], date_format: item[:date_format])
+
+      ## override attributes
+      ActiveRecord::Base.transaction do
+        [:city, :name, :comment].each do |tag|
+          competition[tag] = item[tag] if item[tag]
+        end
+        competition.save!
+      end
+=begin
       Competition.create! do |competition|
+        updator.update_competition(competition, site_url: item[:site_url])
         attrs = [:site_url, :parser_type, :comment, :date_format]
-        competition.attributes = item.slice(*attrs)
+        competition.attributes = item.attributes.slice(*attrs)
         params = {}
         [:city, :name].each do |tag|
           params[tag] = item[tag] if item[tag]
@@ -57,8 +69,9 @@ namespace :update do
 
         #competition.update(verbose: true, params: params)
         #competition.attributes = item.attributes
-        competition.update(params: params, verbose: true)
+        #competition.update(params: params, verbose: true)
       end
+=end
     end
   end
 end  # namespace

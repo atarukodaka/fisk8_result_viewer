@@ -20,6 +20,7 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
+=begin
   def update(params: {}, verbose: false)
     ActiveRecord::Base.transaction do
       clean
@@ -79,30 +80,6 @@ class Competition < ApplicationRecord
               score.result["#{segment_type}_bv"] = score[:base_value]
               score.result.save
 
-=begin
-              ## judge details
-              if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
-                ### elements
-                score.elements.each do |element|
-                  element.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                         panel_nation: panels[:judges][i+1][:nation],
-                                                         number: i, value: value)
-                  end
-                end
-
-                ### component
-                score.components.each do |component|
-                  component.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                             panel_nation: panels[:judges][i+1][:nation],
-                                                             number: i, value: value)
-                  end
-                end
-              end
-=end
             end
           end
         end # segments
@@ -123,9 +100,9 @@ class Competition < ApplicationRecord
       self
     end # transaction
   end # udpate
-
+=end
   ################
-  private
+
   def normalize_name
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
