@@ -2,9 +2,8 @@ module ErrorHandlers
   extend ActiveSupport::Concern
   
   included do
-    #unless Rails.env.development?
-    #f Rails.env.production?
-    if false
+    unless Rails.env.development?
+    #if false
       rescue_from Exception, with: :handler_500
       rescue_from ActiveRecord::RecordNotFound, with: :handler_404
       rescue_from ActionController::RoutingError, with: :handler_404
