@@ -3,6 +3,9 @@
 - property: readonly, writeonly
 
 - date search
+- delete country-city mapping
+- panels: panel db entries
+- factory_bot
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -11,6 +14,10 @@
 - app/controller/application_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.4-pre1
+- delete graphs on skater
+- updater to update competitions, scores, skaters
 
 ## 1.0.3-pre1
 - default orders: :number, :asc in scores/elements, components

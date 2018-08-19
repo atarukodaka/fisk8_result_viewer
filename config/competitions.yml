@@ -1,21 +1,28 @@
 # add any competitions that you want to add into the database.
 # if the result site conform to ISU standards format, just add the url as array.
-# if it requires specific parser, add it with parser key as hash e.g.
+# if it requires specific parser_type, add it with parser_type key as hash e.g.
 #   -
-#     url: http://www.foo.bar/results/xxxx2017/
-#     parser: foo
+#     site_url: http://www.foo.bar/results/xxxx2017/
+#     parser_type: foo
 #
-#  in that case you need to register the parser into Fisk8Viewer::CompetitionSummaryParser.registered. see fisk8viewer/competition_summary_parser.rb and fisk8viewer/competition_summary_parser/isu_generic.rb for dettails.
+#  in that case you need to register the parser_type into Fisk8Viewer::CompetitionSummaryParser_Type.registered. see fisk8viewer/competition_summary_parser_type.rb and fisk8viewer/competition_summary_parser_type/isu_generic.rb for dettails.
 
 ##2010-11
-- http://www.isuresults.com/results/gpusa2010/
-- http://www.isuresults.com/results/gpcan2010/
+-
+  site_url: http://www.isuresults.com/results/gpusa2010/
+  date_format: "%m/%d/%Y"
+- site_url: http://www.isuresults.com/results/gpcan2010/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/gpchn2010/
-- http://www.isuresults.com/results/gpfra2010/
+-
+  site_url: http://www.isuresults.com/results/gpfra2010/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/gprus2010/
 - http://www.isuresults.com/results/gpjpn2010/
 - http://www.isuresults.com/results/gpf1011/
-- http://www.isuresults.com/results/ec2011/
+-
+  site_url: http://www.isuresults.com/results/ec2011/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/fc2011/
 - http://www.isuresults.com/results/wc2011/
 
@@ -29,7 +36,9 @@
 - http://www.isuresults.com/results/gprus2011/
 - http://www.isuresults.com/results/gpjpn2011/
 - http://www.isuresults.com/results/gpf1112/
-- http://www.isuresults.com/results/ec2012/
+-
+  site_url: http://www.isuresults.com/results/ec2012/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/fc2012/
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
@@ -43,7 +52,9 @@
 - http://www.isuresults.com/results/gpjpn2012/
 - http://www.isuresults.com/results/gpf1213/
 - http://www.isuresults.com/results/fc2013/
-- http://www.isuresults.com/results/ec2013/
+-
+  site_url: http://www.isuresults.com/results/ec2013/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/wc2013/
 
 
@@ -77,7 +88,7 @@
 - http://www.isuresults.com/results/season1516/gpcan2015/
 - http://www.isuresults.com/results/season1516/gpchn2015/
 -
-  url: http://www.isuresults.com/results/season1516/gpfra2015/
+  site_url: http://www.isuresults.com/results/season1516/gpfra2015/
   comment: "Free Skating has been canceled due to explusion in Paris. refere: http://static.isu.org/media/1012/1980-isu-gp-fra-2015-partial-cancelation-info-to-members-public.pdf"
 
 - http://www.isuresults.com/results/season1516/gprus2015/
@@ -99,13 +110,36 @@
 - http://www.isuresults.com/results/season1617/ec2017/
 - http://www.isuresults.com/results/season1617/wc2017/
 -
-  url: http://www.jsfresults.com/intl/2016-2017/wtt/
-  parser: :wtt2017
+  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
   comment: "no category results provided"
 
 ## 2017-18
 - http://www.isuresults.com/results/season1718/gprus2017/
 - http://www.isuresults.com/results/season1718/gpcan2017/
 - http://www.isuresults.com/results/season1718/gpchn2017/
-
+-
+  site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
+  parser_type: gpjpn
+  name: ISU GP NHK Trophy 2017
+  city: Osaka
+- http://www.isuresults.com/results/season1718/gpfra2017/
+- http://www.isuresults.com/results/season1718/gpusa2017/
+-
+  site_url: http://www.isuresults.com/results/season1718/gpf1718/
+  parser_type: gpjpn
+- http://www.isuresults.com/results/season1718/owg2018/
+  
 ## for debug
+-
+  name: ISU Grand Prix of Figure Skating Final 2017
+  site_url: http://www.isuresults.com/results/season1718/gpf1718/
+  parser_type: gpjpn
+  city: Nagoya
+
+#-
+#  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
+#  parser_type: :wtt2017
+#  comment: "no category results provided"
+
+#- http://www.isuresults.com/results/season1718/gpfra2017/

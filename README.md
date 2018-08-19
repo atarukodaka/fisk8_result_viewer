@@ -13,23 +13,31 @@ Result and Score viewer of figureskating competitions. you can see below details
 ## Install
 
 ```sh
-% sudo yum -y install poppler-utils gnuplot
+% sudo yum -y install poppler-utils
 % bundle install
-% bundle exec rake db:migrate
-% bundle exec rake update:skaters
-% bundle exec rake update:competitions
-% bundle exec rails server
 ```
 
-#### on production
+on development,
 
+```sh
+% bundle exec rake db:migrate
+```
+
+on production,
 ```sh
 % bundle exec rake assets:precompile
 % bundle exec rake secret
 % export SECRET_KEY_BASE=.....
 ```
 
-and run migrate, update and server upon RACK_ENV=production.
+### Usage
+```sh
+% bundle exec rake update:skaters
+% bundle exec rake update:competitions
+% bundle exec rails server
+```
+
+If you want to add new competition(s), edit config/competitions.yml and run updates.
 
 ## Maintain competitions list
 

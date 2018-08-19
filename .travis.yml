@@ -1,8 +1,8 @@
 language: ruby
 
 rvm:
-  - 2.2.8
-  - 2.4.2
+  - 2.2.10
+  - 2.4.4
 
 install: bundle install --deployment
 cache:
@@ -29,7 +29,7 @@ addons:
   apt:
     packages:
       - poppler-utils
-      - gnuplot
+#      - gnuplot
 
 after_success:
   - codecov        

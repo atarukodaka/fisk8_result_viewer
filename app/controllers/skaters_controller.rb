@@ -24,6 +24,7 @@ class SkatersController < ApplicationController
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
     Datatable.new(self).records(skater.results.recent.includes(:competition, :scores)).columns(columns).default_orders([[:date, :desc]])
   end
+=begin
   def create_graphs(skater)    
     skater.scores.order(:date).group_by {|s| s.segment}.map do |segment, scores|
       ScoreGraph.new(scores, title: "#{skater.name} - #{segment}", filename_prefix: "#{skater.name}_#{segment}").tap {|sg|
@@ -31,7 +32,7 @@ class SkatersController < ApplicationController
       }
     end
   end
-    
+=end    
   def show
     skater = get_skater
     data = {
@@ -43,8 +44,8 @@ class SkatersController < ApplicationController
     ## render
     respond_to do |format|
       format.html {
-        render action: :show, locals: data
-          .merge(skater: skater, score_graphs: create_graphs(skater))
+        render action: :show, locals: data.merge(skater: skater)
+#          .merge(skater: skater, score_graphs: create_graphs(skater))
       }
       format.json {
         render json: data

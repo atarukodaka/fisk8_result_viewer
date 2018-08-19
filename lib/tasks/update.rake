@@ -1,9 +1,11 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    Category.update_skaters
+    #Category.update_skaters
+    SkaterUpdater.new.update_skaters
   end
 
+  ################
   desc "update compeitition with specific url"
   task :competition => :environment do
     url = ENV['url']
@@ -13,13 +15,16 @@ namespace :update do
       Category.accept!(categories.split(/,/))
     end
 
-    Competition.where(site_url: url).map(&:destory)
+    Competition.where(site_url: url).map(&:destroy)
     Competition.create(site_url: url) do |competition|
       competition.update(verbose: true)
     end
   end
+
+  ################
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
+    ## options
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
 
@@ -27,29 +32,28 @@ namespace :update do
       Category.accept!(categories.split(/,/))
     end
 
-    ## filename
-    if (f = ENV['filenames'])
-      CompetitionList.use_multiple_files
-      CompetitionList.set_filenames *(f.split(/,/)) ## TODO
-    elsif (f = ENV['filename'])
+    if (f = ENV['filename'])
       CompetitionList.filename = f
     end
+
+    ################
     list = CompetitionList.all
     list = list.last(last).reverse if last
-      
+
     list.each do |item|
-      if competitions = Competition.where(site_url: item[:url]).presence
-        if !force
-          puts "skip: #{item[:url]}"
-          next
-        else
+      if competitions = Competition.where(site_url: item[:site_url]).presence
+        if force
           competitions.map(&:destroy)
+        else
+          puts "skip: #{item[:site_url]}"
+          next
         end
       end
-      Competition.create!(site_url: item[:url], parser_type: item[:parser_type]) do |competition|
-        competition.comment = item[:comment]
-        competition.update(verbose: true)
+
+      ActiveRecord::Base.transaction do
+        CompetitionUpdater.new(item[:parser_type], verbose: true).update_competition(item[:site_url], date_format: item[:date_format], city: item[:city], name: item[:name], comment: item[:comment]).tap do |competition|
+        end
       end
-    end
+    end  ## each
   end
 end  # namespace

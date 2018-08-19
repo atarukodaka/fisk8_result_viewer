@@ -6,7 +6,7 @@ end
 
 RSpec.describe Skater, updater: true do
   before(:all) {
-    Category.update_skaters
+    SkaterUpdater.new.update_skaters
   }
   [:MEN, :LADIES, :PAIRS, :"ICE DANCE"].each do |category|
     context "\# of skater in '#{category}'" do

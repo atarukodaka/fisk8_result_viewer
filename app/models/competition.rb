@@ -1,4 +1,6 @@
 class Competition < ApplicationRecord
+  before_save :normalize
+  
   ## relations
   has_many :results, dependent: :destroy
   has_many :scores, dependent: :destroy
@@ -20,80 +22,7 @@ class Competition < ApplicationRecord
     results.map(&:destroy)
     scores.map(&:destroy)
   end
-  def update(verbose: false)
-    ActiveRecord::Base.transaction do
-      clean
-      
-      ## parse
-      parsed = Parsers.parser(:competition, parser_type.to_sym).parse(site_url).presence || (return nil)
-      attrs = self.class.column_names.map(&:to_sym) & parsed.keys
-      self.attributes = parsed.slice(*attrs)
-
-      normalize_name
-      self.country ||= CityCountry.find_by(city: city).try(:country)
-      save!
-      puts "*" * 100 if verbose
-      puts "%<name>s [%<short_name>s] (%<site_url>s)" % attributes.symbolize_keys if verbose
-
-      ## categories
-      parsed[:categories].each do |category, cat_item|
-        next unless Category.accept?(category)
-        Parsers.parser(:result, parser_type.to_sym).parse(cat_item[:result_url]).each do |result_parsed|
-          results.create!(category: category) do |result|
-            result.update(result_parsed)
-            puts result.summary if verbose
-          end
-        end
-        
-        # segments
-        parsed[:segments][category].each do |segment, seg_item|
-          Parser::ScoreParser.new.parse(seg_item[:score_url]).each do |sc_parsed|
-            scores.create!(category: category, segment: segment) do |score|
-              cr_rels = results.where(category: category)
-              relevant_cr =
-                cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
-                cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
-                raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-              score.attributes = {
-                result: relevant_cr,
-                skater: relevant_cr.skater,
-                date: seg_item[:date],
-              }
-              score.update(sc_parsed)
-              puts score.summary if verbose
-
-              ## update segment details into results
-              segment_type = (segment =~ /SHORT/) ? :short : :free
-              [:tss, :tes, :pcs, :deductions].each do |key|
-                score.result["#{segment_type}_#{key}"] = score[key]
-              end
-              score.result["#{segment_type}_bv"] = score[:base_value]
-              score.result.save
-            end
-          end
-          
-        end # segments
-      end # categories
-      
-      ## udpate total_bv, goe into results
-      ActiveRecord::Base.transaction {
-        results.each do |result|
-          result.total_bv = 0
-          result.total_goe = 0
-          result.scores.each do |score|
-            result.total_bv += score.base_value
-            result.total_goe += score.elements.map(&:goe).sum
-          end
-          result.save!
-        end
-      }
-      self
-    end # transaction
-  end # udpate
-
-  ################
-  private
-  def normalize_name
+  def normalize
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
     ary = case name
@@ -127,7 +56,7 @@ class Competition < ApplicationRecord
           when /Lombardia/
             [:challenger, :lombaridia, "LOMBARDIA#{year}", "Lombardia Trophy #{year}"]
           when /Ondrej Nepela/
-            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepeta Trophy #{year}"]
+            [:challenger, :nepela, "NEPELA#{year}", "Ondrej Nepela Trophy #{year}"]
           else
             [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
           end
