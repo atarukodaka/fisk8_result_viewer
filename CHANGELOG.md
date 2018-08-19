@@ -17,6 +17,7 @@
 
 ## 1.0.4-pre1
 - delete graphs on skater
+- updater to update competitions, scores, skaters
 
 ## 1.0.3-pre1
 - default orders: :number, :asc in scores/elements, components
