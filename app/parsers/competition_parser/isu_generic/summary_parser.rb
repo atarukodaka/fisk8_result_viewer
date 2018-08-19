@@ -6,7 +6,7 @@ module CompetitionParser
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
         city, country = parse_city_country(page)
-        #puts "#{city}, #{country}"
+
         competition = {
           name: parse_name(page),
           site_url: site_url,
@@ -37,7 +37,7 @@ module CompetitionParser
         end
         competition[:start_date] = time_schedule.map {|d| d[:time]}.min || Time.new(1970, 1, 1)
         competition[:end_date] = time_schedule.map {|d| d[:time]}.max || Time.new(1970, 1, 1)
-        competition[:timezone] = time_schedule.first[:time].time_zone.name if time_schedule.present?
+        competition[:timezone] = (time_schedule.present) ? time_schedule.first[:time].time_zone.name : "UTC"
 
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6
