@@ -8,8 +8,8 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :city
       t.string :country
       t.string :timezone
-      t.date :start_date, default: Time.new(1970, 1, 1, 0, 0, 0)
-      t.date :end_date, default: Time.new(1970, 1, 1, 0, 0, 0)
+      t.date :start_date, default: Date.new(1970, 1, 1)
+      t.date :end_date, default: Date.new(1970, 1, 1)
       t.string :season
       t.string :site_url
       t.string :competition_type
@@ -23,9 +23,6 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # results
     create_table :results do |t|
-      #t.string :skater_name
-      #t.string :nation
-      #t.string :name
       t.integer :isu_number
       t.string :category
       t.integer :ranking

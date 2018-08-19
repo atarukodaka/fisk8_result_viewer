@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "name"
     t.string "city"
     t.string "country"
-    t.string "date_format"
     t.string "timezone"
     t.date "start_date", default: "1970-01-01"
     t.date "end_date", default: "1970-01-01"
