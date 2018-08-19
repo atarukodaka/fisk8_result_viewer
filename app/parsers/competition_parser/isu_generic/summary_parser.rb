@@ -29,7 +29,7 @@ module CompetitionParser
             competition[:segments][category][segment] = {
               panel_url: hash[:panel_url],
               score_url: hash[:score_url],
-              date: time_schedule.select {|item|
+              time: time_schedule.select {|item|      ## time ? date ? 
                 item[:category] == category && item[:segment] == segment
               }.first.try(:[], :time),
             }
@@ -94,6 +94,7 @@ module CompetitionParser
         end
         summary
       end
+      ################
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
@@ -106,8 +107,10 @@ module CompetitionParser
         time_schedule = []
         page.xpath("//*[contains(text(), 'Local Time')]").text() =~ / ([\+\-]\d\d:\d\d)/
         local_tz = $1 || "+00:00"
-        $1 =~ /([\+\-])(\d\d)/
-        local_tz_hour = "%s%d" % [$1, $2.to_i]
+        #$1 =~ /([\+\-])(\d\d)/
+        #local_tz_hour = "%s%d" % [$1, $2.to_i]
+        $1 =~ /([\+\-]\d\d)/
+        utc_offset = $1.to_i
         
         rows.each do |row|
           next if row.xpath("td").blank?
@@ -120,14 +123,14 @@ module CompetitionParser
           tm_str = row.xpath("td[2]").text
           dt_tm_str = "#{dt_str} #{tm_str}"
           #dt_tm_str += " #{local_tz}" if tz == "UTC"
-          tz = "Etc/GMT#{local_tz_hour}"
+          #tz = "Etc/GMT#{local_tz_hour.to_i }"
 
           tm = 
             unless date_format.blank?
               Time.strptime("#{dt_tm_str}", "#{date_format} %H:%M:%S")
             else
               dt_tm_str
-            end.in_time_zone(tz)
+            end.in_time_zone(ActiveSupport::TimeZone[utc_offset])
           
           #next if tm.nil?
           tm = tm + 2000.years if tm.year < 100  ## for ondrei nepela

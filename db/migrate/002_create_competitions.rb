@@ -7,7 +7,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :city
       t.string :country
-      t.string :timezone
+      t.string :timezone, default: "0"
       t.date :start_date, default: Date.new(1970, 1, 1)
       t.date :end_date, default: Date.new(1970, 1, 1)
       t.string :season

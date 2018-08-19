@@ -34,14 +34,14 @@ h2
 // nav bar for category/segment
 .nav
   ul.nav.nav-tabs
-    - competition.scores.order("date asc").pluck(:category).uniq.each do |c|
+    - competition.scores.recent.pluck(:category).uniq.each do |c|
       - category_active = (category == c) ? "active" : ""
       li class="#{category_active}"
         =link_to_competition(competition, category: c)
 
   ul.nav.nav-tabs
     /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-    - competition.scores.where(category: category).order("date asc").pluck(:segment).uniq.each do |s|
+    - competition.scores.where(category: category).recent.reverse.pluck(:segment).uniq.each do |s|
       - segment_active = (segment == s) ? "active" : ""
       li class="#{segment_active}"
         = link_to_competition(competition, category: category, segment: s)

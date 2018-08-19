@@ -6,7 +6,9 @@ class CompetitionDecorator < EntryDecorator
   def site_url
     h.link_to_competition_site("Official", model)
   end
-
+  def timezone
+    ActiveSupport::TimeZone[model.timezone || 0].utc_offset/3600
+  end
 =begin
   def city_country
     [city, country].join(' / ')

@@ -10,7 +10,7 @@ class Score < ApplicationRecord
   belongs_to :result, required: false
 
   ## validations
-  validates  :date, presence: true
+  validates  :segment_starting_time, presence: true
 
   ## virtual attributes
   def competition_name
@@ -39,7 +39,7 @@ class Score < ApplicationRecord
   end
   
   ## scopes
-  scope :recent, ->{ order("date desc") }
+  scope :recent, ->{ order("segment_starting_time desc") }
   scope :short, -> { where("segment like ? ", "%SHORT%") }
   scope :free, ->  { where("segment like ? ", "%FREE%") }
   scope :category,->(c){ where(category: c) }
