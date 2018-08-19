@@ -28,6 +28,7 @@ on production,
 % bundle exec rake assets:precompile
 % bundle exec rake secret
 % export SECRET_KEY_BASE=.....
+% bundle exec rake db:migrate
 ```
 
 ### Usage
@@ -37,7 +38,7 @@ on production,
 % bundle exec rails server
 ```
 
-If you want to add new competition(s), edit config/competitions.yml and run updates.
+If you want to add new competition(s), edit 'config/competitions.yml' and run update:competitions as above.
 
 ## Maintain competitions list
 

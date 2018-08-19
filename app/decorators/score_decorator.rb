@@ -29,10 +29,9 @@ class ScoreDecorator < EntryDecorator
   def segment_starting_time
     model.segment_starting_time.in_time_zone(competition.timezone).strftime("%Y-%m-%d %H:%M %z")
   end
-  decorate_as_score(:tes, :pcs, :deductions, :base_value)
   def youtube_search
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end
 
-  decorate_as_score :max_tss
+  decorate_as_score(:tes, :pcs, :deductions, :base_value, :max_tss)
 end

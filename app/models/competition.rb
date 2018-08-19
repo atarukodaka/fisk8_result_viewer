@@ -1,5 +1,5 @@
 class Competition < ApplicationRecord
-  before_save :normalize
+  #before_save :normalize
   
   ## relations
   has_many :results, dependent: :destroy
@@ -26,12 +26,12 @@ class Competition < ApplicationRecord
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
     ary = case name
-          when /^ISU Grand Prix .*Final/, /^ISU GP.*Final/
+          when /Grand Prix .*Final/, /^ISU GP.*Final/
             [:isu, :gp, "GPF#{year}"]
           when /^ISU GP/
             [:isu, :gp, "GP#{country_city}#{year}"]
           when /Olympic/
-            [:isu, :olympic, "OLYMPIC#{year}"]
+            [:isu, :olympic, "OLYMPIC#{year}", "Olympic Winter Games #{city} #{year}"]
           when /^ISU World Figure/, /^ISU World Championships/
             [:isu, :world, "WORLD#{year}", "ISU World Championships #{year}"]
           when /^ISU Four Continents/
@@ -39,7 +39,7 @@ class Competition < ApplicationRecord
           when /^ISU European/
             [:isu, :euro, "EURO#{year}", "ISU European Championships #{year}"]
           when /^ISU World Team/
-            [:isu, :team, "TEAM#{year}"]
+            [:isu, :team, "TEAM#{year}", "ISU World Team Trophy #{year}"]
           when /^ISU World Junior/
             [:isu, :jworld, "JWORLD#{year}"]
           when /^ISU JGP/, /^ISU Junior Grand Prix/
