@@ -37,6 +37,7 @@ module CompetitionParser
         end
         competition[:start_date] = time_schedule.map {|d| d[:time]}.min || Time.new(1970, 1, 1)
         competition[:end_date] = time_schedule.map {|d| d[:time]}.max || Time.new(1970, 1, 1)
+        competition[:timezone] = time_schedule.first[:time].time_zone.name if time_schedule.present?
 
         year, month = competition[:start_date].year, competition[:start_date].month
         year -= 1 if month <= 6

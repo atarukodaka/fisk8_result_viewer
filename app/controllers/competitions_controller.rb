@@ -3,7 +3,7 @@ class CompetitionsController < ApplicationController
   include Contracts
   
   def competition_summary(competition)
-    Listtable.new(view_context).records(competition).columns([:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :comment])
+    Listtable.new(view_context).records(competition).columns([:name, :short_name, :competition_type, :city, :country, :site_url, :start_date, :end_date, :timezone, :comment])
   end
     
   def result_type(category, segment)

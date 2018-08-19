@@ -16,7 +16,7 @@ class CompetitionUpdater
         competition.name = name if name.present?
         competition.city = city if city.present?
         competition.comment = comment if comment.present?
-        #competition.normalize
+
         competition.save!  ## need to save here to create children
 
         if @verbose
