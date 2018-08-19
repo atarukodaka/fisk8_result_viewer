@@ -54,28 +54,15 @@ class Score < ApplicationRecord
     "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category, self.segment, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
 
-=begin
-  def update(parsed)
-    attrs = self.class.column_names.map(&:to_sym) & parsed.keys
-    self.attributes = parsed.slice(*attrs)
-    set_score_name
-    ActiveRecord::Base.transaction {
-      save!
-      parsed[:elements].map {|e| elements.create(e)}
-      parsed[:components].map {|e| components.create(e)}
-    }
-  end
-=end
-
+  private
   def set_score_name
-    return if name.present?
+    if name.blank?
+      category_abbr = Category.find_by(name: category).try(:abbr)
+      segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-    category_abbr = Category.find_by(name: category).try(:abbr)
-    segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-
-    self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
+      self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
+    end
     self
   end
-
 end
 

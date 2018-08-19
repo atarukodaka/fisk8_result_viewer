@@ -3,11 +3,12 @@ class CompetitionUpdater
     @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     @verbose = verbose
   end
+
   def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil)
     parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
-    #competition = nil
+
     ActiveRecord::Base.transaction do
-      competition = Competition.create do |competition|
+      Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)
         competition.country ||= CityCountry.find_by(city: city).try(:country)
@@ -23,6 +24,7 @@ class CompetitionUpdater
           puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
         end
 
+        ## for each categories, segments(scores)
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 
@@ -39,9 +41,9 @@ class CompetitionUpdater
   def update_result(competition, category, result_url)
     @parser.parse_result(result_url).each do |result_parsed|
       competition.results.create!(category: category) do |result|
-        attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
-        result.attributes = result_parsed.slice(*attrs)
         ActiveRecord::Base.transaction {
+          attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
+          result.update(result_parsed.slice(*attrs))
           result.skater = Skater.find_or_create_by_isu_number_or_name(result.isu_number, result_parsed[:skater_name]) do |sk|
             sk.attributes = {
               category: category.sub(/^JUNIOR */, ''),
@@ -71,33 +73,20 @@ class CompetitionUpdater
             date: date,
           }
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
-          #score.attributes = sc_parsed.slice(*attrs)
           score.update(sc_parsed.slice(*attrs))
-          
-=begin
-          ## set abbr, name
-          if score.name.blank?
-            category_abbr = Category.find_by(name: category).try(:abbr)
-            segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-            
-            score.name = [competition.try(:short_name), category_abbr, segment_abbr, score.ranking].join('-')
-          end
-=end
 
-          score.save!  ## need to save score to create children
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
-        
-          puts score.summary if @verbose
         
           ## update segment details into results
           segment_type = (segment =~ /SHORT/) ? :short : :free
           [:tss, :tes, :pcs, :deductions].each do |key|
             score.result["#{segment_type}_#{key}"] = score[key]
-
             score.result["#{segment_type}_bv"] = score[:base_value]
             score.result.save!
           end
+
+          puts score.summary if @verbose
 =begin
               ## judge details
               if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
