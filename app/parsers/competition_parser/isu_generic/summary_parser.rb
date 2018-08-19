@@ -95,6 +95,14 @@ module CompetitionParser
         summary
       end
       ################
+      def get_timezone(page)
+        page.xpath("//*[contains(text(), 'Local Time')]").text() =~ / ([\+\-]\d\d:\d\d)/
+        local_tz = $1 || "+00:00"
+        $1 =~ /([\+\-]\d\d)/
+        utc_offset = $1.to_i
+
+        "Etc/GMT%+d" % [ utc_offset * -1]
+      end
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
@@ -105,12 +113,7 @@ module CompetitionParser
         rows = get_time_schedule_rows(page)
         dt_str = ""
         time_schedule = []
-        page.xpath("//*[contains(text(), 'Local Time')]").text() =~ / ([\+\-]\d\d:\d\d)/
-        local_tz = $1 || "+00:00"
-        #$1 =~ /([\+\-])(\d\d)/
-        #local_tz_hour = "%s%d" % [$1, $2.to_i]
-        $1 =~ /([\+\-]\d\d)/
-        utc_offset = $1.to_i
+        timezone = get_timezone(page)
         
         rows.each do |row|
           next if row.xpath("td").blank?
@@ -130,7 +133,7 @@ module CompetitionParser
               Time.strptime("#{dt_tm_str}", "#{date_format} %H:%M:%S")
             else
               dt_tm_str
-            end.in_time_zone(ActiveSupport::TimeZone[utc_offset])
+            end.in_time_zone(ActiveSupport::TimeZone[timezone])
           
           #next if tm.nil?
           tm = tm + 2000.years if tm.year < 100  ## for ondrei nepela
