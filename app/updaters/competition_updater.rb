@@ -74,7 +74,6 @@ class CompetitionUpdater
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
           skater = Skater.where(isu_number: h[:isu_number]).first
 
-
           score.attributes = {
             #result: relevant_cr,
             skater: skater,
@@ -91,15 +90,17 @@ class CompetitionUpdater
           ## update segment details into results
           if (relevant_cr = competition.results.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]))
             segment_type = (segment =~ /SHORT/) ? :short : :free
+            score.result = relevant_cr
             [:tss, :tes, :pcs, :deductions].each do |key|
+=begin
               relevant_cr["#{segment_type}_#{key}"] = score[key]
               relevant_cr["#{segment_type}_bv"] = score[:base_value]
               relevant_cr.save!
-=begin
+=end
               score.result["#{segment_type}_#{key}"] = score[key]
               score.result["#{segment_type}_bv"] = score[:base_value]
               score.result.save!
-=end
+
             end
           end
 

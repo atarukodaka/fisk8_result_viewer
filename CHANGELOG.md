@@ -9,6 +9,8 @@
 - youtube register
 - owg team
 - i18n
+- relevant cr required ???
+- spec
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
