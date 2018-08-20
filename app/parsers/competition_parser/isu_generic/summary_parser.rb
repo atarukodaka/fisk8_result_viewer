@@ -28,6 +28,7 @@ module CompetitionParser
           else
             competition[:segments][category][segment] = {
               panel_url: hash[:panel_url],
+              result_url: hash[:result_url],
               score_url: hash[:score_url],
               time: time_schedule.select {|item|      ## time ? date ? 
                 item[:category] == category && item[:segment] == segment

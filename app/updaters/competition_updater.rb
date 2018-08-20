@@ -30,7 +30,7 @@ class CompetitionUpdater
 
           update_result(competition, category, cat_item[:result_url])
           parsed[:segments][category].each do |segment, seg_item|
-            update_score(competition, category, segment, seg_item[:score_url], segment_starting_time: seg_item[:time])
+            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], segment_starting_time: seg_item[:time])
           end
         end
       end
@@ -57,19 +57,28 @@ class CompetitionUpdater
     end
   end 
   ################
-  def update_score(competition, category, segment, score_url, segment_starting_time: nil)
+  def update_score(competition, category, segment, score_url, result_url, segment_starting_time: nil)
+    segment_results = @parser.parse_segment_result(result_url)
+
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
+
+=begin
         cr_rels = competition.results.where(category: category)
         relevant_cr =
           cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
           cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
           raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-
+=end
         ActiveRecord::Base.transaction {
+          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
+          skater = Skater.where(isu_number: h[:isu_number]).first
+          relevant_cr = competition.results.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking])
+
           score.attributes = {
             result: relevant_cr,
-            skater: relevant_cr.skater,
+            # skater: relevant_cr.skater,
+            skater: skater,
             segment_starting_time: segment_starting_time,
           }
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys

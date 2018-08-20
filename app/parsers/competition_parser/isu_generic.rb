@@ -4,6 +4,7 @@ module CompetitionParser
       @parser = {
         summary: "#{self.class}::SummaryParser".constantize.new,
         result: "#{self.class}::ResultParser".constantize.new,
+        segment_result: "#{self.class}::SegmentResultParser".constantize.new,
         score: "#{self.class}::ScoreParser".constantize.new,
 #        panel: "#{self.class}::PanelParser".constantize.new,
       }
@@ -16,6 +17,10 @@ module CompetitionParser
 
     def parse_result(url)
       @parser[:result].parse(url)
+    end
+
+    def parse_segment_result(url)
+      @parser[:segment_result].parse(url)
     end
 
     def parse_score(url)
@@ -33,4 +38,5 @@ end
 CompetitionParser::IsuGeneric::SummaryParser
 CompetitionParser::IsuGeneric::ResultParser
 CompetitionParser::IsuGeneric::ScoreParser
+CompetitionParser::IsuGeneric::SegmentResultParser
 #CompetitionParser::IsuGeneric::PanelParser
