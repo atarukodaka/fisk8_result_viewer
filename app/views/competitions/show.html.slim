@@ -6,7 +6,6 @@
   | competition: 
   = [competition.name, category, segment].reject(&:blank?).join(' / ')
 
-
 - case result_type
 - when :category
   - breadcrumb :competition_category, competition, category
@@ -16,10 +15,27 @@
   - breadcrumb :competition, competition
 
 ////////////////////////////////////////////////////////////////
-h2 Competition Info
+.row
+  .col-sm-6
+    h2 Competition Info
+    = competition_summary.decorate.render
 
-= competition_summary.decorate.render
+  .col-sm-6
+    h2 Performed Segments
 
+    table class="table table-striped table-hover table-condensed"
+      tr
+        th Category
+        th Segment
+        th Starting Time
+        th Winner
+      - competition.scores.where(ranking: 1).includes(:skater).each do |score|
+        tr
+          td= link_to_competition(competition, category: score.category)
+          td= link_to_competition(competition, category: score.category, segment: score.segment)            
+          td= score.segment_starting_time.in_time_zone(competition.timezone)
+          td= link_to_skater(score.skater)
+  
 ////////////////////////////////////////////////////////////////
 h2
   - case result_type
@@ -34,14 +50,14 @@ h2
 // nav bar for category/segment
 .nav
   ul.nav.nav-tabs
-    - competition.scores.order("date asc").pluck(:category).uniq.each do |c|
+    - competition.scores.recent.pluck(:category).uniq.each do |c|
       - category_active = (category == c) ? "active" : ""
       li class="#{category_active}"
         =link_to_competition(competition, category: c)
 
   ul.nav.nav-tabs
     /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-    - competition.scores.where(category: category).order("date asc").pluck(:segment).uniq.each do |s|
+    - competition.scores.where(category: category).recent.reverse.pluck(:segment).uniq.each do |s|
       - segment_active = (segment == s) ? "active" : ""
       li class="#{segment_active}"
         = link_to_competition(competition, category: category, segment: s)

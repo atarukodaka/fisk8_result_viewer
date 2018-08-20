@@ -54,7 +54,8 @@ module CompetitionParser
         time = nil
         category = ""
         segment = ""
-
+        timezone = "Asia/Tokyo"
+        
         table.children.each do |elem|
           case elem.name
           when "text"
@@ -72,7 +73,7 @@ module CompetitionParser
               summary << {
                 category: category,
                 segment: segment,
-                time: "#{date} #{time}".in_time_zone("Asia/Tokyo"),
+                time: "#{date} #{time}".in_time_zone(timezone),
               }
             end
             if i == 4
@@ -88,7 +89,7 @@ module CompetitionParser
             summary << {
               category: elem.xpath("td[2]").text.upcase,
               segment: elem.xpath("td[3]").text.upcase,
-              time: Time.zone.parse("#{date} #{elem.xpath("td[1]").text}"),
+              time: "#{date} #{elem.xpath("td[1]").text}".in_time_zone(timezone),
             }
           end
         end

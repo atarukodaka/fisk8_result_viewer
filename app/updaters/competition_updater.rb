@@ -16,21 +16,21 @@ class CompetitionUpdater
         competition.name = name if name.present?
         competition.city = city if city.present?
         competition.comment = comment if comment.present?
-        #competition.normalize
+        
+        competition.normalize
         competition.save!  ## need to save here to create children
 
         if @verbose
           puts "*" * 100
           puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
         end
-
         ## for each categories, segments(scores)
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 
           update_result(competition, category, cat_item[:result_url])
           parsed[:segments][category].each do |segment, seg_item|
-            update_score(competition, category, segment, seg_item[:score_url], date: seg_item[:date])
+            update_score(competition, category, segment, seg_item[:score_url], segment_starting_time: seg_item[:time])
           end
         end
       end
@@ -57,7 +57,7 @@ class CompetitionUpdater
     end
   end 
   ################
-  def update_score(competition, category, segment, score_url, date: nil)
+  def update_score(competition, category, segment, score_url, segment_starting_time: nil)
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
         cr_rels = competition.results.where(category: category)
@@ -70,11 +70,13 @@ class CompetitionUpdater
           score.attributes = {
             result: relevant_cr,
             skater: relevant_cr.skater,
-            date: date,
+            segment_starting_time: segment_starting_time,
           }
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
-          score.update(sc_parsed.slice(*attrs))
+          score.attributes = sc_parsed.slice(*attrs)
 
+          score.save!  ## need to save here to create children
+          
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
         

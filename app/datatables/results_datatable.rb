@@ -2,7 +2,7 @@ class ResultsDatatable < IndexDatatable
   def initialize(*)
     super
     
-    columns([:competition_name, :competition_short_name, :competition_class, :competition_type, :category, :season,
+    columns([:competition_name, :competition_class, :competition_type, :category, :season,
              :ranking, :skater_name, :nation, :points,
              :short_ranking,
              :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv,
@@ -12,7 +12,6 @@ class ResultsDatatable < IndexDatatable
     
     columns.sources = {
       competition_name: "competitions.name",
-      competition_short_name: "competitions.short_name",    
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       category: "results.category",

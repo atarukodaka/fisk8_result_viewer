@@ -2,15 +2,13 @@ class CreateScores < ActiveRecord::Migration[5.1]
   def change
     create_table :scores do |t|
       t.string :name
-      #t.string :skater_name
-      #t.string :nation
       t.integer :ranking
       t.integer :starting_number
 
-      #t.string :competition_name
       t.string :category
       t.string :segment
-      t.date :date, default: Time.new(1970, 1, 1, 0, 0, 0)
+      #t.date :date, default: Date.new(1970, 1, 1)
+      t.datetime :segment_starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
       t.string :result_pdf
       
       t.float :tss, default: 0.0

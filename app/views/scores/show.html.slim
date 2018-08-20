@@ -3,12 +3,37 @@
 
 - breadcrumb :score, score
 
-h2 Score
-  
+ 
 .row
   .col-sm-6
+    h2 Score
     = score_summary.decorate.render
-        
+
+  .col-sm-6
+    h2 Relevant Video
+    - query = "#{score.skater.name} #{score.competition.name} #{score.segment}"
+    - api_key = ENV['YOUTUBE_API_KEY']
+    - if api_key.blank?
+      div set ENV['YOUTUBE_API_KEY'] to search youtube videos.
+    - else
+      - begin
+        - response = open("https://www.googleapis.com/youtube/v3/search?part=snippet&q='#{query}'&order=relevance&key=#{api_key}").read
+        - json = JSON.parse(response)
+        - if (item = json["items"].first)
+          - video_id = item["id"]["videoId"]
+          - video_title = item["snippet"]["title"]
+          - video_published_at = item["snippet"]["publishedAt"].in_time_zone("UTC")
+          iframe id="ytplayer" src="http://www.youtube.com/embed/#{video_id}" width=640 height=360
+          ul
+            li= "query: #{query}"
+            li= "title: #{video_title}"
+            li= "date: #{video_published_at}"
+        - else
+          div No relevant videos found
+      - rescue OpenURI::HTTPError
+        div HTTP ERROR
+    div= link_to("see other relevant videos", "http://www.youtube.com/results?q=#{query}")
+
 h2 Elements
 
 = elements.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render

@@ -6,7 +6,6 @@ class CompetitionDecorator < EntryDecorator
   def site_url
     h.link_to_competition_site("Official", model)
   end
-
 =begin
   def city_country
     [city, country].join(' / ')

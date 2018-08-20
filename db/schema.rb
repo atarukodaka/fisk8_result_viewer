@@ -17,8 +17,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "name"
     t.string "city"
     t.string "country"
-    t.string "date_format"
-    t.string "tz"
+    t.string "timezone", default: "UTC"
     t.date "start_date", default: "1970-01-01"
     t.date "end_date", default: "1970-01-01"
     t.string "season"
@@ -85,7 +84,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "starting_number"
     t.string "category"
     t.string "segment"
-    t.date "date", default: "1970-01-01"
+    t.datetime "segment_starting_time", default: "1969-12-31 15:00:00"
     t.string "result_pdf"
     t.float "tss", default: 0.0
     t.float "tes", default: 0.0
