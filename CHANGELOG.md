@@ -5,8 +5,9 @@
 - date search
 - delete country-city mapping
 - panels: panel db entries
-- factory_bot
 - timezone
+- youtube register
+- team trophy
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

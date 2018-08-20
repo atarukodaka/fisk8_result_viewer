@@ -6,3 +6,4 @@ about:
   site_url: <%= ENV['SITE_URL'] || 'http://your_site.com/' %>
   mail_address: your@mail.address
   twitter_account: your_twitter_account
+

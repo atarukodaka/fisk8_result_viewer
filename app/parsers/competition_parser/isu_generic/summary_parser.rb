@@ -154,7 +154,7 @@ module CompetitionParser
       ###
       private
       def normalize_category(category)
-        category.squish.upcase.gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, "").gsub(/ SKATING/, "")
+        category.squish.upcase.gsub(/^PAIR SKATING$/, "PAIRS").gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, "").gsub(/ SKATING/, "")
       end
     end
   end

@@ -3,12 +3,12 @@
 
 - breadcrumb :score, score
 
-h2 Score
-  
+ 
 .row
   .col-sm-6
+    h2 Score
     = score_summary.decorate.render
-        
+
 h2 Elements
 
 = elements.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render
