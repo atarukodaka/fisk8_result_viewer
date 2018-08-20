@@ -18,7 +18,7 @@ class ScoresController < ApplicationController
 
     data = {
       score: score,
-        score_summary: score_summary(score),
+      score_summary: score_summary(score),
       elements: elements_datatable(score),
       components: components_datatable(score)
     }
