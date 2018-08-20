@@ -7,7 +7,8 @@
 - panels: panel db entries
 - timezone
 - youtube register
-- team trophy
+- owg team
+- i18n
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
