@@ -23,6 +23,8 @@ group :development, :test do
   gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
 end
 
+gem 'rspec'   ## for heroku
+
 group :test do
   gem 'capybara', '~> 2.13.0'
   gem 'poltergeist'
