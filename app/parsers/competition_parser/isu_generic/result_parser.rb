@@ -6,10 +6,10 @@ module CompetitionParser
       def parse(url)
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page)
+        return [] if rows.blank?
         col_numbers = get_column_numbers(rows[0])
 
         rows[1..-1].map do |row|
-          
           tds = row.xpath("td")
           next if tds.size == 1
           data = {}

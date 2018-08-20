@@ -94,7 +94,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "base_value", default: 0.0
     t.integer "competition_id"
     t.integer "skater_id"
+    t.integer "result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
+    t.index ["result_id"], name: "index_scores_on_result_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
 

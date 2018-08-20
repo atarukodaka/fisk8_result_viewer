@@ -72,8 +72,12 @@ class CompetitionUpdater
 =end
         ActiveRecord::Base.transaction {
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
-          skater = Skater.where(isu_number: h[:isu_number]).first
 
+          skater = (h[:isu_number].present? ) ?
+                     Skater.where(isu_number: h[:isu_number]).first :
+                     Skater.where(name: h[:skater_name]).first 
+
+          skater  || raise("no such skater")
           score.attributes = {
             #result: relevant_cr,
             skater: skater,

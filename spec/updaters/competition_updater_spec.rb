@@ -107,7 +107,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       its(:skater) { is_expected.to eq(result.short.skater) }
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
-    context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON
+    context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
       include_context :skater_having_different_name, url, "LADIES", 15
       it_behaves_like :same_name_between_segments
@@ -143,7 +143,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   end
   ################################################################
   describe 'network errors' do
-    describe 'rescue not found on nepera2014/pairs and count' do
+    describe 'rescue not found on nepela2014/pairs and count' do
       let(:competition){
         url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
         Category.accept!("PAIRS")
