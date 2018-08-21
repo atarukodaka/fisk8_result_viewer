@@ -34,6 +34,7 @@ class CompetitionUpdater
           puts "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys
         end
         ## for each categories, segments(scores)
+        binding.pry
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 

@@ -66,7 +66,6 @@ module CompetitionParser
       def parse_summary_table(page, url: "")
         elem = page.xpath("//*[text()='Category']").first || raise
         rows = elem.xpath('ancestor::table[1]//tr')
-
         category = ""
         summary = []
 

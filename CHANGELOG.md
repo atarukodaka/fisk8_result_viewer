@@ -21,6 +21,7 @@
 ## 1.0.4-pre2
 - competition.date as Date
 - delete result controller
+- owg team
 
 ## 1.0.4-pre1
 - delete graphs on skater
