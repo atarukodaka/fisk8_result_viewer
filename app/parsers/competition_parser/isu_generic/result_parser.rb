@@ -31,7 +31,7 @@ module CompetitionParser
           page.xpath("//th[contains(text(), 'Pl')]").first || 
           page.xpath("//td[contains(text(), 'Pl')]").first || 
           page.xpath("//td[contains(text(), 'PL')]").first     ## gpjpn
-          
+        raise "No Placement Cell found" if place_elem.nil?
         return place_elem.xpath("../../tr")
       end
       def get_headers(row)

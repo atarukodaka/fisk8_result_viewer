@@ -87,6 +87,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
   end
   ################################################################
+
   describe 'skater name correction' do    
     def expect_same_skater(url, category, ranking)  # TODO
       Category.accept!(category)
@@ -107,6 +108,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       its(:skater) { is_expected.to eq(result.short.skater) }
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
+=begin
+## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
       include_context :skater_having_different_name, url, "LADIES", 15
@@ -117,6 +120,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       include_context :skater_having_different_name, url, "JUNIOR LADIES", 17
       it_behaves_like :same_name_between_segments
     end
+=end
 =begin
     it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
       ## TODO: name correction for Ho Jung LEE
@@ -143,6 +147,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   end
   ################################################################
   describe 'network errors' do
+=begin
+## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'rescue not found on nepela2014/pairs and count' do
       let(:competition){
         url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
@@ -153,6 +159,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it { expect(competition.results.where(category: "PAIRS").count).to be_zero }
       #expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
+=end
     describe 'rescue socket error and return value' do
       subject {
         url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
