@@ -22,7 +22,7 @@ module CompetitionParser
           ranking: { header: ['FPl.', 'PL'] , callback: callbacks[:to_i]},
           points: { header: 'Points', callback: callbacks[:to_f]},
           short_ranking: { header: ['SP', 'SD'], callback: callbacks[:to_i] },
-          free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
+          free_ranking: { header: ['FS', 'FD', 'OD'], callback: callbacks[:to_i] },
         }
       end
       def get_rows(page)
