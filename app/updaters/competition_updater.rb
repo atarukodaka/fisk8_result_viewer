@@ -48,6 +48,7 @@ class CompetitionUpdater
   end
   ################
   def update_result(competition, category, result_url)
+    return if result_url.blank?
     @parser.parse_result(result_url).each do |result_parsed|
       competition.results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {

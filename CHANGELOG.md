@@ -8,6 +8,7 @@
 - youtube register
 - owg team
 - i18n
+- components controller is necessary ??
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

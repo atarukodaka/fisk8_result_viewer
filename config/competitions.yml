@@ -152,3 +152,8 @@
   parser_type: gpjpn
   name: ISU GP NHK Trophy 2017
   city: Osaka
+
+-
+  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
+  comment: "no category results provided"
