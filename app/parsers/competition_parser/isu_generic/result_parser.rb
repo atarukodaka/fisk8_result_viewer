@@ -27,11 +27,13 @@ module CompetitionParser
       end
       def get_rows(page)
         place_elem =
-          page.xpath("//th[contains(text(), 'FPl')]").first || ## TODO: td or th ??
-          page.xpath("//th[contains(text(), 'Pl')]").first || 
-          page.xpath("//td[contains(text(), 'Pl')]").first || 
-          page.xpath("//td[contains(text(), 'PL')]").first     ## gpjpn
-        raise "No Placement Cell found" if place_elem.nil?
+          page.xpath("//th[text()='FPl']").first ||
+          page.xpath("//th[text()='FPl.']").first ||
+          page.xpath("//td[text()='PL']").first     ## gpjpn
+        
+#          page.xpath("//th[contains(text(), 'FPl')]").first || ## TODO: td or th ??
+#          page.xpath("//td[contains(text(), 'PL')]").first     ## gpjpn
+        raise "No Placement Cell found (#{self.class})" if place_elem.nil?
         return place_elem.xpath("../../tr")
       end
       def get_headers(row)
@@ -41,6 +43,7 @@ module CompetitionParser
         end
       end
       def parse(url)
+        puts "   --  parsing #{url}"
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page)
         headers = get_headers(rows[0])

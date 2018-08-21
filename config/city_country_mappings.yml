@@ -12,6 +12,8 @@
   country: GER
 - city: 'Bergamo (BG)'
   country: ITA
+- city: 'Bergamo'
+  country: ITA
 - city: Vantaa
   country:  SWE
 - city: Sesto San Giovanni (MI)

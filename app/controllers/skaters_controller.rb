@@ -9,6 +9,7 @@ class SkatersController < ApplicationController
   def skater_info_listtable(skater)
     Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :category])
   end
+=begin
   def record_summary_datatable(skater)
     cr = skater.results
     hash = {
@@ -20,6 +21,7 @@ class SkatersController < ApplicationController
     }
     Listtable.new(self).records(Hashie::Mash.new(hash)).columns(hash.keys)
   end
+=end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
     Datatable.new(self).records(skater.results.recent.includes(:competition, :scores)).columns(columns).default_orders([[:date, :desc]])
@@ -37,7 +39,7 @@ class SkatersController < ApplicationController
     skater = get_skater
     data = {
       skater_summary: skater_info_listtable(skater),
-      record_summary: record_summary_datatable(skater),
+#      record_summary: record_summary_datatable(skater),
       competition_results: competition_results_datatable(skater),
     }
     
