@@ -28,13 +28,14 @@
         th Category
         th Segment
         th Starting Time
-        th Winner
-      - competition.scores.where(ranking: 1).includes(:skater).each do |score|
+        // th Winner
+      // - competition.scores.where(ranking: 1).includes(:skater).each do |score|
+      - competition.scores.where(ranking: 1).each do |score|
         tr
           td= link_to_competition(competition, category: score.category)
           td= link_to_competition(competition, category: score.category, segment: score.segment)            
           td= score.segment_starting_time.in_time_zone(competition.timezone)
-          td= link_to_skater(score.skater)
+          // td= link_to_skater(score.skater)
   
 ////////////////////////////////////////////////////////////////
 h2
@@ -48,7 +49,7 @@ h2
 
 ////////////////
 // nav bar for category/segment
-.nav
+//.nav
   ul.nav.nav-tabs
     - competition.scores.recent.pluck(:category).uniq.each do |c|
       - category_active = (category == c) ? "active" : ""

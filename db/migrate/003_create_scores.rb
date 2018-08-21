@@ -18,6 +18,9 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.string :deduction_reasons
       t.float :base_value, default: 0.0
 
+      t.string :elements_summary
+      t.string :components_summary
+
       t.belongs_to :competition
       t.references :skater
       t.references :result

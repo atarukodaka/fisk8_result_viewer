@@ -52,7 +52,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
      ['http://www.isuresults.com/results/season1617/gpf1617/',
       :isu, :gp,'GPF2016'],
      ['http://www.isuresults.com/results/owg2014/',
-      :isu, :olympic, 'OWGSOTCHI2014'],
+      :isu, :olympic, 'OWG2014'],
      ['http://www.isuresults.com/results/season1617/wc2017/',
       :isu, :world, 'WORLD2017'],
      ['http://www.isuresults.com/results/season1617/fc2017/',

@@ -1,21 +1,30 @@
 class CompetitionUpdater
-  def initialize(parser_type = CompetitionParser::DEFAULT_PARSER, verbose: false)
+  def initialize(parser_type: CompetitionParser::DEFAULT_PARSER, verbose: false)
     @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     @verbose = verbose
   end
 
-  def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil)
+  def update_competition(site_url, date_format: nil, force: false, params: {})
+    if (competitions = Competition.where(site_url: site_url).presence)
+      if force
+        competitions.map(&:destroy)
+      else
+        puts "skip: '#{site_url}' already exists"
+        return nil
+      end
+    end
+    
     parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
 
     ActiveRecord::Base.transaction do
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)
-        competition.country ||= CityCountry.find_by(city: city).try(:country)
 
-        competition.name = name if name.present?
-        competition.city = city if city.present?
-        competition.comment = comment if comment.present?
+        [:name, :city, :comment].each do |key|
+          competition[key] = params[key] if params[key].present?
+        end
+        competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
         
         competition.normalize
         competition.save!  ## need to save here to create children
@@ -94,6 +103,9 @@ class CompetitionUpdater
           
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
+
+          score.update(elements_summary: score.elements.map(&:name).join('/'))
+          score.update(components_summary: score.components.map(&:value).join('/'))
         
           ## update segment details into results
 =begin

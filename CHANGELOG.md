@@ -3,14 +3,11 @@
 - property: readonly, writeonly
 
 - date search
-- delete country-city mapping
+- delete country-city mapping?
 - panels: panel db entries
-- timezone
 - youtube register
 - owg team
 - i18n
-- relevant cr required ???
-- spec
 
 ### new feature
 - embed youtube in score (or just link to search page ?)
@@ -22,6 +19,7 @@
 
 ## 1.0.4-pre2
 - competition.date as Date
+- delete result controller
 
 ## 1.0.4-pre1
 - delete graphs on skater

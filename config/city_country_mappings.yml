@@ -1,18 +1,13 @@
 - city: Espoo
   country: FIN
-  tz: Helsinki
 - city: Warsaw
   country: POL
-  tz: Warsaw
 - city: Saransk
   country: RUS
-  tz: Europe/Moscow
 - city: Moscow
   country: RUS
-  tz: Europe/Moscow
 - city: Bratislava
   country:  SVK
-  tz: Bratislava
 - city: Oberstdorf
   country: GER
 - city: 'Bergamo (BG)'

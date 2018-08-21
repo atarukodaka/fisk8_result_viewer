@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "deductions", default: 0.0
     t.string "deduction_reasons"
     t.float "base_value", default: 0.0
+    t.string "elements_summary"
+    t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "result_id"

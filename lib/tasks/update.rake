@@ -6,6 +6,7 @@ namespace :update do
   end
 
   ################
+=begin
   desc "update compeitition with specific url"
   task :competition => :environment do
     url = ENV['url']
@@ -20,7 +21,7 @@ namespace :update do
       competition.update(verbose: true)
     end
   end
-
+=end
   ################
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
@@ -41,6 +42,7 @@ namespace :update do
     list = list.last(last).reverse if last
 
     list.each do |item|
+=begin
       if competitions = Competition.where(site_url: item[:site_url]).presence
         if force
           competitions.map(&:destroy)
@@ -49,9 +51,13 @@ namespace :update do
           next
         end
       end
-
+=end
       ActiveRecord::Base.transaction do
-        CompetitionUpdater.new(item[:parser_type], verbose: true).update_competition(item[:site_url], date_format: item[:date_format], city: item[:city], name: item[:name], comment: item[:comment]).tap do |competition|
+        params = {
+          city: item[:city], name: item[:name], comment: item[:comment]
+        }
+        CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true).
+          update_competition(item[:site_url], date_format: item[:date_format], force: force, params: params).tap do |competition|
         end
       end
     end  ## each

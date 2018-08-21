@@ -31,7 +31,7 @@ class Competition < ApplicationRecord
           when /^ISU GP/
             [:isu, :gp, "GP#{country_city}#{year}"]
           when /Olympic/
-            [:isu, :olympic, "OWG#{city.upcase}#{year}", "Olympic Winter Games #{city} #{year}"]
+            [:isu, :olympic, "OWG#{year}", "Olympic Winter Games #{city} #{year}"]
           when /^ISU World Figure/, /^ISU World Championships/
             [:isu, :world, "WORLD#{year}", "ISU World Championships #{year}"]
           when /^ISU Four Continents/

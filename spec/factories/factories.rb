@@ -54,17 +54,7 @@ FactoryBot.define do
     ranking { 1 }
     points { 300 }
     short_ranking { 1 }
-    short_tss { 100 }
-    short_tes { 50 }
-    short_pcs { 50 }
-    short_bv { 25 }
-    short_deductions { 0 }
     free_ranking { 1 }
-    free_tss { 200 }
-    free_tes { 100 }
-    free_pcs { 100 }
-    free_bv { 50 }
-    free_deductions { 0 }
 
     trait :finlandia do
       association :skater, factory: [:skater, :ladies]
@@ -72,22 +62,10 @@ FactoryBot.define do
       category { "LADIES" }
       ranking { 2 }
       points { 240 }
-      short_ranking { 2 }
-      short_tss { 40 }
-      short_tes { 40 }
-      short_pcs { 40 }
-      short_bv { 20 }
-      short_deductions { -1 }
       free_ranking { 2 }
-      free_tss { 160 }
-      free_tes { 80 }
-      free_pcs { 80 }
-      free_bv { 40 }
-      free_deductions { -1 }
     end
   end
 end
-
 
 # scores
 FactoryBot.define do
@@ -106,6 +84,10 @@ FactoryBot.define do
     segment_starting_time { '2017-2-1 00:00:00'.in_time_zone('UTC') }
     result_pdf { 'http://world2017.isu.org/results/men/short.pdf' }
 
+    trait :world_free do
+      segment { "FREE" }
+    end
+
     trait :finlandia do
       association :skater, factory: [:skater, :ladies]
       association :competition, factory: [:competition, :finlandia]
@@ -120,6 +102,10 @@ FactoryBot.define do
       deductions { -1 }
       segment_starting_time { '2015-7-1 00:00:00'.in_time_zone('UTC')}
       result_pdf { "http://finlandia-2015/ladies/free.pdf" }
+    end
+
+    trait :finlandia_short do
+      segment { 'SHORT' }
     end
   end
 end
