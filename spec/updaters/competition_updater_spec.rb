@@ -134,7 +134,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       Category.accept!("JUNIOR LADIES")
       #Competition.create(site_url: url).update
       CompetitionUpdater.new.update_competition(url)
-      expect(Competition.find_by(site_url: url).results.where(category: "JUNIOR LADIES").count).to be >= 0
+      expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
     end
     it 'parses unicode (fin2014)' do
       url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'

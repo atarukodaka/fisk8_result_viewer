@@ -20,8 +20,8 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     end
 
     ################
-    # results
-    create_table :results do |t|
+    # category results
+    create_table :category_results do |t|
       t.string :category
       t.integer :ranking
       t.float :points

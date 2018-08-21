@@ -19,7 +19,7 @@ class CompetitionsController < ApplicationController
   def result_datatable(competition, category, segment)
     case result_type(category, segment)
     when :category
-      Datatable.new(view_context).records(competition.results.category(category).includes(:skater, :scores)).
+      Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :scores)).
         columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,]).tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
       
     when :segment

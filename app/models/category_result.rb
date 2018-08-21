@@ -1,4 +1,4 @@
-class Result < ApplicationRecord
+class CategoryResult < ApplicationRecord
   ## relations
   has_many :scores
   

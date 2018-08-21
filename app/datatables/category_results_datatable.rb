@@ -1,4 +1,4 @@
-class ResultsDatatable < IndexDatatable
+class CategoryResultsDatatable < IndexDatatable
   def initialize(*)
     super
     
@@ -14,11 +14,11 @@ class ResultsDatatable < IndexDatatable
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
-      category: "results.category",
+      category: "category_results.category",
       season: "competitions.season",
       skater_name: "skaters.name",
       nation: "skaters.nation",
-      ranking: "results.ranking",
+      ranking: "category_results.ranking",
     }
 
     ## hidden
@@ -29,6 +29,6 @@ class ResultsDatatable < IndexDatatable
     default_orders([[:season, :desc]])
   end
   def fetch_records
-    Result.includes(:competition, :skater, :scores).references(:competition, :skater).all
+    CategoryResult.includes(:competition, :skater, :scores).references(:competition, :skater).all
   end
 end

@@ -1,4 +1,4 @@
-class ResultDecorator < EntryDecorator
+class CategoryResultDecorator < EntryDecorator
   using AsScore
   using AsRanking
   

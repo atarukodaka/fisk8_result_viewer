@@ -12,6 +12,18 @@
 
 ActiveRecord::Schema.define(version: 3) do
 
+  create_table "category_results", force: :cascade do |t|
+    t.string "category"
+    t.integer "ranking"
+    t.float "points"
+    t.integer "short_ranking"
+    t.integer "free_ranking"
+    t.integer "competition_id"
+    t.integer "skater_id"
+    t.index ["competition_id"], name: "index_category_results_on_competition_id"
+    t.index ["skater_id"], name: "index_category_results_on_skater_id"
+  end
+
   create_table "competitions", force: :cascade do |t|
     t.string "short_name"
     t.string "name"
@@ -53,18 +65,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
-  create_table "results", force: :cascade do |t|
-    t.string "category"
-    t.integer "ranking"
-    t.float "points"
-    t.integer "short_ranking"
-    t.integer "free_ranking"
-    t.integer "competition_id"
-    t.integer "skater_id"
-    t.index ["competition_id"], name: "index_results_on_competition_id"
-    t.index ["skater_id"], name: "index_results_on_skater_id"
-  end
-
   create_table "scores", force: :cascade do |t|
     t.string "name"
     t.integer "ranking"
@@ -83,9 +83,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "result_id"
+    t.integer "category_result_id"
+    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["result_id"], name: "index_scores_on_result_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
 

@@ -45,9 +45,9 @@ FactoryBot.define do
   end
 end
 
-# results
+# category results
 FactoryBot.define do
-  factory :result do
+  factory :category_result do
     association :skater, factory: :skater
     association :competition, factory: :competition
     category { "MEN" }
