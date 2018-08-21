@@ -2,106 +2,67 @@ module CompetitionParser
   class IsuGeneric
     class ResultParser
       include Utils
+      def callbacks
+        {
+          to_i: lambda {|elem| elem.text.squish.to_i},
+          to_f: lambda {|elem| elem.text.squish.to_f},
+          isu_number: lambda {|elem|
+              href = elem.xpath('a/@href').text
+              (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
+            }
+        }
+      end
 
+      def columns
+        {
+          name: { header: 'Name'},
+          isu_number: { header: 'Name', callback: callbacks[:isu_number] },
+          nation: { header: 'Nation' },
+          
+          ranking: { header: ['FPl.', 'PL'] , callback: callbacks[:to_i]},
+          points: { header: 'Points', callback: callbacks[:to_f]},
+          short_ranking: { header: ['SP', 'SD'], callback: callbacks[:to_i] },
+          free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
+        }
+      end
+      def get_rows(page)
+        place_elem = page.xpath("//th[contains(text(), 'FPl')]").first ||
+                     page.xpath("//th[contains(text(), 'Pl')]").first || 
+                     page.xpath("//td[contains(text(), 'Pl')]").first || 
+                     page.xpath("//td[contains(text(), 'PL')]").first  ## TODO: td or th ??
+        return place_elem.xpath("../../tr")
+      end
+      def get_headers(row)
+        row.children.map do |elem|
+          elem.text.squish.gsub(/[[:space:]]/, '')
+        end
+      end
       def parse(url)
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page)
-        return [] if rows.blank?
-        col_numbers = get_column_numbers(rows[0])
+        headers = get_headers(rows[0])
 
+        ##
         rows[1..-1].map do |row|
-          tds = row.xpath("td")
-          next if tds.size == 1
-          data = {}
-
-          col_numbers.each do |key, number|
-            text = tds[number].text.squish
-            data[key] = text
-=begin
-            data[key] = 
-              case column_type[key]
-              when :int
-                text.to_i
-              when :string
-                text.squish
-              when :float
-                text.to_f
-              end
-=end
-          end
-          # isu_number by href  : TODO: to move out to hook function
-          col_num = col_numbers[:skater_name] || raise("parsing error in category results")
-          href = tds[col_num].xpath("a/@href").text
-          data[:isu_number] = (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
-          data
+          elems = row.xpath('td')
+          next if elems.size == 1
           
-        end.compact ## rows.each
-      end ## def
-      ################################################################
-      protected
-      def header_mapping
-        {
-          "FPl." => :ranking,
-          "Name" => :skater_name,
-          "Nation" => :nation,
-          "Points" => :points,
-          "SP" => :short_ranking,
-          "SD" => :short_ranking,
-          "OD" => :short_ranking,
-          "FS" => :free_ranking,
-          "FD" => :free_ranking,
-        }
-      end
-=begin
-      def column_type
-        {
-          ranking: :int,
-          skater_name: :string,
-          nation: :string,
-          points: :float,
-          short_ranking: :int,
-          free_ranking: :int,
-        }
-      end
-=end      
-      def first_header_name
-        "FPl."
-      end
-        
-      def get_rows(page)
-        fpl = page.xpath("//th[contains(text(), #{first_header_name()})]")
-        return [] if fpl.blank?
-
-        fpl.first.xpath("../../tr")
-      end
-
-      def get_column_numbers(row)
-        col_num = {}
-        row.xpath("th").each_with_index do |header, i|
-          header_mapping.each do |h, k|
-            if header.text.strip.gsub(/[[:space:]]/, '') == h
-              col_num[k] = i
-            end
+          data = {}
+          columns.each do |key, params|
+            relevant_headers = [params[:header],].flatten
+            
+            col_number = headers.index {|d| relevant_headers.index(d)}
+            elem = elems[col_number]
+            data[key] =
+              if (callback = params[:callback])
+                callback.call(elem)
+              else
+                elem.text.squish
+              end
           end
-=begin
-          case header.text.strip
-          when 'FPl.'
-            col_num[:ranking] = i
-          when 'Name'
-            col_num[:skater_name] = i
-          when 'Nation'
-            col_num[:nation] = i
-          when 'Points'
-            col_num[:points] = i
-          when 'SP', 'SD', 'OD'
-            col_num[:short_ranking] = i
-          when 'FS', 'FD'
-            col_num[:free_ranking] = i
-          end
-=end
-        end
-        col_num
+          data
+        end  ## rows
       end
-    end  ## class ResultParser
+    end  ## class
   end
-end    
+end
