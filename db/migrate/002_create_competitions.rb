@@ -23,21 +23,23 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # results
     create_table :results do |t|
-      t.integer :isu_number
+      #t.integer :isu_number   # TODO: ?? required ?
       t.string :category
       t.integer :ranking
       t.float :points
 
       ## short
       t.integer :short_ranking
+=begin
       t.float :short_tss
       t.float :short_tes
       t.float :short_pcs
       t.integer :short_deductions
       t.float :short_bv
-
+=end
       ## free
       t.integer :free_ranking
+=begin      
       t.float :free_tss
       t.float :free_tes
       t.float :free_pcs
@@ -47,7 +49,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       ## total
       t.float :total_bv
       t.float :total_goe
-
+=end
       ## relations
       t.belongs_to :competition
       t.references :skater

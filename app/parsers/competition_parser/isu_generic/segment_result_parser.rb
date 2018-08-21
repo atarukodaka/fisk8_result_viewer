@@ -17,6 +17,7 @@ module CompetitionParser
           "StN." => :starting_number,
         }
       end
+=begin
       def column_type
         {
           ranking: :int,
@@ -24,6 +25,7 @@ module CompetitionParser
           starting_number: :string, ## '#12' => 12 done after
         }
       end
+=end
       def first_header_name
         "Pl."
       end

@@ -44,7 +44,7 @@ class CompetitionUpdater
         ActiveRecord::Base.transaction {
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
           result.update(result_parsed.slice(*attrs))
-          result.skater = Skater.find_or_create_by_isu_number_or_name(result.isu_number, result_parsed[:skater_name]) do |sk|
+          result.skater = Skater.find_or_create_by_isu_number_or_name(result_parsed[:isu_number], result_parsed[:skater_name]) do |sk|
             sk.attributes = {
               category: category.sub(/^JUNIOR */, ''),
               nation: result_parsed[:nation],
@@ -71,15 +71,19 @@ class CompetitionUpdater
           raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
 =end
         ActiveRecord::Base.transaction {
+          ## find skater
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
 
-          skater = (h[:isu_number].present? ) ?
+          skater = ((h[:isu_number].present? ) ?
                      Skater.where(isu_number: h[:isu_number]).first :
-                     Skater.where(name: h[:skater_name]).first 
+                     Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
 
-          skater  || raise("no such skater")
+          ## find relevant category result
+          segment_type = (segment =~ /SHORT/) ? :short : :free
+          relevant_cr = competition.results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          ## set attributes
           score.attributes = {
-            #result: relevant_cr,
+            result: relevant_cr,
             skater: skater,
             segment_starting_time: segment_starting_time,
           }
@@ -92,22 +96,22 @@ class CompetitionUpdater
           sc_parsed[:components].map {|e| score.components.create(e)}
         
           ## update segment details into results
+=begin
           if (relevant_cr = competition.results.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]))
             segment_type = (segment =~ /SHORT/) ? :short : :free
             score.result = relevant_cr
+            score.save!
             [:tss, :tes, :pcs, :deductions].each do |key|
-=begin
-              relevant_cr["#{segment_type}_#{key}"] = score[key]
-              relevant_cr["#{segment_type}_bv"] = score[:base_value]
-              relevant_cr.save!
-=end
+              #relevant_cr["#{segment_type}_#{key}"] = score[key]
+              #relevant_cr["#{segment_type}_bv"] = score[:base_value]
+              #relevant_cr.save!
+
               score.result["#{segment_type}_#{key}"] = score[key]
               score.result["#{segment_type}_bv"] = score[:base_value]
-              score.result.save!
-
+            score.result.save!
             end
           end
-
+=end
           puts score.summary if @verbose
 =begin
               ## judge details

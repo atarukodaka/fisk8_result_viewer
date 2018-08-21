@@ -15,7 +15,9 @@ module CompetitionParser
           data = {}
 
           col_numbers.each do |key, number|
-            text = tds[number].text
+            text = tds[number].text.squish
+            data[key] = text
+=begin
             data[key] = 
               case column_type[key]
               when :int
@@ -25,6 +27,7 @@ module CompetitionParser
               when :float
                 text.to_f
               end
+=end
           end
           # isu_number by href  : TODO: to move out to hook function
           col_num = col_numbers[:skater_name] || raise("parsing error in category results")
@@ -49,6 +52,7 @@ module CompetitionParser
           "FD" => :free_ranking,
         }
       end
+=begin
       def column_type
         {
           ranking: :int,
@@ -59,7 +63,7 @@ module CompetitionParser
           free_ranking: :int,
         }
       end
-      
+=end      
       def first_header_name
         "FPl."
       end
