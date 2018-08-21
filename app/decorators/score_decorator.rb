@@ -22,9 +22,11 @@ class ScoreDecorator < EntryDecorator
   def segment
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
+=begin
   def tss
-    h.link_to_score(model.tss, model)
+    h.link_to_score(model.tss.as_score, model)
   end
+=end
   def scorecalc
     h.link_to(model.name, controller: :scorecalc, score_name: model.name)
   end
@@ -37,5 +39,5 @@ class ScoreDecorator < EntryDecorator
   end
 =end
   decorate_as_ranking(:ranking)
-  decorate_as_score(:tes, :pcs, :deductions, :base_value, :max_tss)
+  decorate_as_score(:tss, :tes, :pcs, :deductions, :base_value, :max_tss)
 end
