@@ -1,7 +1,9 @@
 class ScoreDecorator < EntryDecorator
+=begin
   def ranking
     h.link_to_score(model.ranking, model)
   end
+=end
   def name
     h.link_to_score(model.name, model)
   end
@@ -34,5 +36,6 @@ class ScoreDecorator < EntryDecorator
     h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
   end
 =end
+  decorate_as_ranking(:ranking)
   decorate_as_score(:tes, :pcs, :deductions, :base_value, :max_tss)
 end

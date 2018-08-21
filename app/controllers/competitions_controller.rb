@@ -20,11 +20,11 @@ class CompetitionsController < ApplicationController
     case result_type(category, segment)
     when :category
       Datatable.new(view_context).records(competition.results.category(category).includes(:skater, :scores)).
-        columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,]).tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
+        columns([:ranking, :skater_name, :nation, :points, :short_score_name, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv, :free_score_name, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,]).tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
       
     when :segment
       Datatable.new(view_context).records(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
-        columns([:ranking, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
+        columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
     else
       nil
     end
