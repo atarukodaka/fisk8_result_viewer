@@ -9,6 +9,8 @@
 - owg team
 - i18n
 - components controller is necessary ??
+- elements: UR, DG, EE
+- codecov: icedance elements
 
 ### new feature
 - embed youtube in score (or just link to search page ?)

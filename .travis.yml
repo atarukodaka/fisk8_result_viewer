@@ -14,16 +14,16 @@ script:
   - bundle exec rspec --tag updater -fd
   - bundle exec rspec --tag error_handler -fd
   - bundle exec rspec --tag feature -fd
-#  - bundle exec rspec --tag rake
-#  - bundle exec rspec --tag parser
+  - bundle exec rspec --tag rake -fd
+  - bundle exec rspec --tag parser -fd
 
 env: TEST=true
 
-#branches:
-#  only:
-#    - master
-#    - develop
-#    - /^release/
+branches:
+  only:
+    - master
+    - develop
+    - /^release/
 
 addons:
   apt:

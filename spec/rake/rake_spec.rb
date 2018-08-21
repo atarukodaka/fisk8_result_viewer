@@ -5,7 +5,6 @@ RSpec.configure do |c|
   c.filter_run_excluding rake: true
 end
 
-
 RSpec.describe 'rake', rake: true do
   before(:all) do
     @rake = Rake::Application.new
@@ -14,9 +13,11 @@ RSpec.describe 'rake', rake: true do
     Rake.application.rake_require('parse', ["#{Rails.root}/lib/tasks"])
     Rake::Task.define_task(:environment)
   end
+=begin
   before(:each) do
     #@rake[task].reenable
   end
+=end
   
   it 'updates skaters' do
     ENV['accept_categories'] = 'LADIES'
@@ -33,7 +34,7 @@ RSpec.describe 'rake', rake: true do
       @rake['update:competitions'].execute
 
       CompetitionList.all.last(num).each do |item|
-        expect( Competition.find_by(site_url: item[:url]) ).not_to be_nil
+        expect( Competition.find_by(site_url: item[:site_url]) ).not_to be_nil
       end
     end
     it 'by competitions.yml' do
