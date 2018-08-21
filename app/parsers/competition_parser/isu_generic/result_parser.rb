@@ -25,23 +25,24 @@ module CompetitionParser
           free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
         }
       end
+
       def get_rows(page)
         place_elem =
           page.xpath("//th[text()='FPl']").first ||
           page.xpath("//th[text()='FPl.']").first ||
           page.xpath("//td[text()='PL']").first     ## gpjpn
         
-#          page.xpath("//th[contains(text(), 'FPl')]").first || ## TODO: td or th ??
-#          page.xpath("//td[contains(text(), 'PL')]").first     ## gpjpn
         raise "No Placement Cell found (#{self.class})" if place_elem.nil?
         return place_elem.xpath("../../tr")
       end
+
       def get_headers(row)
         elems = row.xpath("th").presence || row.xpath("td")
         elems.map do |elem|
           elem.text.squish.gsub(/[[:space:]]/, '')
         end
       end
+      ################
       def parse(url)
         puts "   --  parsing #{url}"
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
@@ -59,7 +60,6 @@ module CompetitionParser
             
             col_number = headers.index {|d| relevant_headers.index(d)} ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")
-            #binding.pry if self.class == CompetitionParser::Gpjpn::SegmentResultParser
             elem = elems[col_number]
             data[key] =
               if (callback = params[:callback])

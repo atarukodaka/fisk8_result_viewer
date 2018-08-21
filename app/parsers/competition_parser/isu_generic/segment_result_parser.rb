@@ -11,7 +11,7 @@ module CompetitionParser
           page.xpath("//th[text()='Pl.']").first || 
           page.xpath("//td[text()='PL.']").first ||                  # gpjpn
           page.xpath("//td[text()='Pl.']").first ||                  # wtt2017
-          page.xpath("//th[contains(text(), ' Pl. ')]").first      # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM
+          page.xpath("//th[contains(text(), ' Pl. ')]").first      # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM has spaces
         raise "No Placement Cell found (#{self.class})" if place_elem.nil?
         return place_elem.xpath("../../tr")
       end
