@@ -1,27 +1,9 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    #Category.update_skaters
     SkaterUpdater.new.update_skaters
   end
 
-  ################
-=begin
-  desc "update compeitition with specific url"
-  task :competition => :environment do
-    url = ENV['url']
-    ## TODO: parser_type, comment
-    
-    if (categories = ENV['accept_categories'])
-      Category.accept!(categories.split(/,/))
-    end
-
-    Competition.where(site_url: url).map(&:destroy)
-    Competition.create(site_url: url) do |competition|
-      competition.update(verbose: true)
-    end
-  end
-=end
   ################
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
@@ -42,16 +24,6 @@ namespace :update do
     list = list.last(last).reverse if last
 
     list.each do |item|
-=begin
-      if competitions = Competition.where(site_url: item[:site_url]).presence
-        if force
-          competitions.map(&:destroy)
-        else
-          puts "skip: #{item[:site_url]}"
-          next
-        end
-      end
-=end
       ActiveRecord::Base.transaction do
         params = {
           city: item[:city], name: item[:name], comment: item[:comment]

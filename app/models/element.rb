@@ -71,7 +71,7 @@ class Element < ApplicationRecord
         name =~ /([B1-4])*$/
         $1.to_i
       when :choreo
-        1  # TODO for icedance ??
+        1  # TODO: choreo for icedance ??
       else
         0
       end

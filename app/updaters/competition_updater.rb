@@ -71,14 +71,6 @@ class CompetitionUpdater
 
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
-
-=begin
-        cr_rels = competition.results.where(category: category)
-        relevant_cr =
-          cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
-          cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
-          raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-=end
         ActiveRecord::Base.transaction {
           ## find skater
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
@@ -90,6 +82,7 @@ class CompetitionUpdater
           ## find relevant category result
           segment_type = (segment =~ /SHORT/) ? :short : :free
           relevant_cr = competition.results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          
           ## set attributes
           score.attributes = {
             result: relevant_cr,
@@ -106,24 +99,6 @@ class CompetitionUpdater
 
           score.update(elements_summary: score.elements.map(&:name).join('/'))
           score.update(components_summary: score.components.map(&:value).join('/'))
-        
-          ## update segment details into results
-=begin
-          if (relevant_cr = competition.results.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]))
-            segment_type = (segment =~ /SHORT/) ? :short : :free
-            score.result = relevant_cr
-            score.save!
-            [:tss, :tes, :pcs, :deductions].each do |key|
-              #relevant_cr["#{segment_type}_#{key}"] = score[key]
-              #relevant_cr["#{segment_type}_bv"] = score[:base_value]
-              #relevant_cr.save!
-
-              score.result["#{segment_type}_#{key}"] = score[key]
-              score.result["#{segment_type}_bv"] = score[:base_value]
-            score.result.save!
-            end
-          end
-=end
           puts score.summary if @verbose
 =begin
               ## judge details
