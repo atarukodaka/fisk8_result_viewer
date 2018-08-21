@@ -15,25 +15,28 @@ module CompetitionParser
 
       def columns
         {
-          name: { header: 'Name'},
+          skater_name: { header: 'Name'},
           isu_number: { header: 'Name', callback: callbacks[:isu_number] },
           nation: { header: 'Nation' },
           
-          ranking: { header: ['FPl.', 'PL'] , callback: callbacks[:to_i]},
+          ranking: { header: ['FPl.', 'PL', 'PL.'] , callback: callbacks[:to_i]},
           points: { header: 'Points', callback: callbacks[:to_f]},
-          short_ranking: { header: ['SP', 'SD'], callback: callbacks[:to_i] },
-          free_ranking: { header: ['FS', 'FD', 'OD'], callback: callbacks[:to_i] },
+          short_ranking: { header: ['SP', 'SD', 'OD'], callback: callbacks[:to_i] },
+          free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
         }
       end
       def get_rows(page)
-        place_elem = page.xpath("//th[contains(text(), 'FPl')]").first ||
-                     page.xpath("//th[contains(text(), 'Pl')]").first || 
-                     page.xpath("//td[contains(text(), 'Pl')]").first || 
-                     page.xpath("//td[contains(text(), 'PL')]").first  ## TODO: td or th ??
+        place_elem =
+          page.xpath("//th[contains(text(), 'FPl')]").first || ## TODO: td or th ??
+          page.xpath("//th[contains(text(), 'Pl')]").first || 
+          page.xpath("//td[contains(text(), 'Pl')]").first || 
+          page.xpath("//td[contains(text(), 'PL')]").first     ## gpjpn
+          
         return place_elem.xpath("../../tr")
       end
       def get_headers(row)
-        row.children.map do |elem|
+        elems = row.xpath("th").presence || row.xpath("td")
+        elems.map do |elem|
           elem.text.squish.gsub(/[[:space:]]/, '')
         end
       end
@@ -41,17 +44,19 @@ module CompetitionParser
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page)
         headers = get_headers(rows[0])
-
         ##
         rows[1..-1].map do |row|
           elems = row.xpath('td')
           next if elems.size == 1
-          
+
           data = {}
           columns.each do |key, params|
             relevant_headers = [params[:header],].flatten
+
             
-            col_number = headers.index {|d| relevant_headers.index(d)}
+            col_number = headers.index {|d| relevant_headers.index(d)} ||
+                         raise("no relevant column found: #{key}: #{relevant_headers}")
+            #binding.pry if self.class == CompetitionParser::Gpjpn::SegmentResultParser
             elem = elems[col_number]
             data[key] =
               if (callback = params[:callback])
@@ -61,7 +66,7 @@ module CompetitionParser
               end
           end
           data
-        end  ## rows
+        end.compact  ## rows
       end
     end  ## class
   end

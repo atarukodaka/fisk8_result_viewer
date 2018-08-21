@@ -8,8 +8,8 @@ module CompetitionParser
       end
       def columns
         {
-          ranking: { header: ['Pl.', 'PL'] },
-          name: { header: "Name" },
+          ranking: { header: ['Pl.', 'PL.'] },
+          skater_name: { header: "Name" },
           nation: { header: "Nation" },
           starting_number: { header: "StN.", callback: callbacks[:starting_number] },
           isu_number: { header: "Name", callback: callbacks[:isu_number] },

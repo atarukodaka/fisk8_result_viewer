@@ -51,6 +51,7 @@ class CompetitionUpdater
     @parser.parse_result(result_url).each do |result_parsed|
       competition.results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {
+
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
           result.update(result_parsed.slice(*attrs))
           result.skater = Skater.find_or_create_by_isu_number_or_name(result_parsed[:isu_number], result_parsed[:skater_name]) do |sk|
