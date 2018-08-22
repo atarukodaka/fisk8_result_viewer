@@ -27,7 +27,7 @@ class CategoryResultDecorator < EntryDecorator
   end
   #decorate_as_ranking(:short_ranking)
   decorate_as_score(:short_tss, :short_tes, :short_pcs, :short_deductions, :free_deductions, :short_bv)
-  
+=begin  
   def short_tss
     model.short.tss.as_score
   end
@@ -43,12 +43,13 @@ class CategoryResultDecorator < EntryDecorator
   def short_bv
     model.short.base_value.as_score
   end
+=end
 
   ## free
   def free_ranking
     h.link_to_score(model.free.try(:ranking).as_ranking, model.free)
   end
-
+=begin
   def free_tss
     model.free.tss.as_score
   end
@@ -64,8 +65,9 @@ class CategoryResultDecorator < EntryDecorator
   def free_bv
     model.free.base_value.as_score
   end
+=end
   #decorate_as_ranking(:free_ranking)
-#  decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv)
+  decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv)
 #  decorate_as_score(:total_bv)
 #  decorate_as_score(:max_points, :max_total_bv, :max_total_goe)  # for statics
   

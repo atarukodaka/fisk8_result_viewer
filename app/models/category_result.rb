@@ -39,7 +39,7 @@ class CategoryResult < ApplicationRecord
     scores.second || Score.new
   end
   ################
-=begin
+
   def short_tss
     short.try(:tss)
   end
@@ -70,7 +70,7 @@ class CategoryResult < ApplicationRecord
   def free_bv
     free.try(:base_value)
   end
-=end
+
   ## scopes
   scope :recent, ->{ joins(:competition).order("competitions.start_date desc") }
   scope :category, ->(cat) { where(category: cat) }
