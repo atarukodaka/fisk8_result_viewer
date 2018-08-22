@@ -31,14 +31,15 @@ class CategoryResult < ApplicationRecord
     competition.start_date
   end
   def short
-    scores.first   ## segment =~ /SHORT/
+    scores.first || Score.new  ## segment =~ /SHORT/
     #scores.where("scores.segment like ?", 'SHORT%').first
   end
   def free
     #scores.where("scores.segment like ?", 'FREE%').first
-    scores.second
+    scores.second || Score.new
   end
   ################
+=begin
   def short_tss
     short.try(:tss)
   end
@@ -69,7 +70,7 @@ class CategoryResult < ApplicationRecord
   def free_bv
     free.try(:base_value)
   end
-
+=end
   ## scopes
   scope :recent, ->{ joins(:competition).order("competitions.start_date desc") }
   scope :category, ->(cat) { where(category: cat) }
