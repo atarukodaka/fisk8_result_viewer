@@ -2,7 +2,7 @@ class Competition < ApplicationRecord
   #before_save :normalize
   
   ## relations
-  has_many :results, dependent: :destroy
+  has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
 
   ## validations
@@ -18,10 +18,6 @@ class Competition < ApplicationRecord
     scores.pluck(:category).uniq
   end
   ## updater
-  def clean
-    results.map(&:destroy)
-    scores.map(&:destroy)
-  end
   def normalize
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        

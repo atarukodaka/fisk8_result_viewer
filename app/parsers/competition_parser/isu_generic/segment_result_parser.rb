@@ -1,6 +1,6 @@
 module CompetitionParser
   class IsuGeneric
-    class SegmentResultParser < ResultParser
+    class SegmentResultParser < CategoryResultParser
       def callbacks
         super.merge(starting_number: lambda {|elem|
                       elem.text.sub(/^#/, '').to_i

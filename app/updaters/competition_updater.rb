@@ -37,7 +37,7 @@ class CompetitionUpdater
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 
-          update_result(competition, category, cat_item[:result_url])
+          update_category_result(competition, category, cat_item[:result_url])
           parsed[:segments][category].each do |segment, seg_item|
             update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], segment_starting_time: seg_item[:time])
           end
@@ -47,10 +47,10 @@ class CompetitionUpdater
     end  ## transaction
   end
   ################
-  def update_result(competition, category, result_url)
+  def update_category_result(competition, category, result_url)
     return if result_url.blank?
-    @parser.parse_result(result_url).each do |result_parsed|
-      competition.results.create!(category: category) do |result|
+    @parser.parse_category_result(result_url).each do |result_parsed|
+      competition.category_results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {
 
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
@@ -83,11 +83,11 @@ class CompetitionUpdater
 
           ## find relevant category result
           segment_type = (segment =~ /SHORT/) ? :short : :free
-          relevant_cr = competition.results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
           
           ## set attributes
           score.attributes = {
-            result: relevant_cr,
+            category_result: relevant_cr,
             skater: skater,
             segment_starting_time: segment_starting_time,
           }
