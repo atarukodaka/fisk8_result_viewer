@@ -8,7 +8,7 @@
 
 .row
   .col-sm-6
-    h2 Skaters Summary
+    h2= I18n.t("view.skater.skater_summary")
     = skater_summary.decorate.render
 
   /.col-sm-6
@@ -16,7 +16,7 @@
     = render partial: "listtable", locals: { datatable: record_summary }
     /= record_summary.render
 
-h2 Competition Results
+h2=I18n.t("view.skater.competition_results")
 
 = render partial: "datatable", locals: { datatable: competition_results.decorate }
 
