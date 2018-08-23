@@ -6,14 +6,12 @@
 - delete country-city mapping?
 - panels: panel db entries
 - youtube register
-- owg team
 - i18n
 - components controller is necessary ??
 - elements: UR, DG, EE
 - codecov: icedance elements
 
 ### new feature
-- embed youtube in score (or just link to search page ?)
 
 ### check before release
 - app/controller/application_controller: unless Rails.env.develop
@@ -24,6 +22,8 @@
 - competition.date as Date
 - delete result controller
 - owg team
+- ajax-databases into lib/
+- embed youtube in score (or just link to search page ?)
 
 ## 1.0.4-pre1
 - delete graphs on skater
