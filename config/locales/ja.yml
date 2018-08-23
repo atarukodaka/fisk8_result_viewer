@@ -1,11 +1,11 @@
 ja:
-  nav:
+  controller:
     home: ホーム
     skaters: スケーター
     competitions: 競技会
     scores: スコア
-    elements: 要素検索
-    components: PCS
+    elements: 技術要素
+    components: コンポーネント
     scorecalc: スコア計算
     
   view:
@@ -16,6 +16,16 @@ ja:
       skater_summary: 選手情報
       competition_results: 競技会結果
       
+  field:
+    name: 名前
+    category: カテゴリー
+    nation: 国名
+    site_url: サイトURL
+    skater_name: スケーター名
+    competition_name: 競技会名
+    element: 要素名
+    type: 要素型
+
   activerecord:
     models:
       skater: スケーター
@@ -48,4 +58,19 @@ ja:
         skater_name: 選手名
         nation: 国名
         deductions: 減点
+        base_value: 基礎点
+
+      element:
+        score_name: スコア名
+        competition_name: 競技会名
+        category: カテゴリー
+        segment: セグメント
+        date: 日付
+        season: シーズン
+        skater_name: スケーター名
+        nation: 国名
+        number: 番号
+        name: 要素名
+        element_type: 要素の型
+        level: レベル
         base_value: 基礎点

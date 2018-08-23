@@ -5,7 +5,7 @@
 
 - breadcrumb controller_name.to_sym 
 
-h2= controller_name.humanize
+h2= I18n.t("controller.#{controller_name}", default: controller_name.humanize)
 
 style
   | label { margin-left: 10px; margin-right: 10px; }

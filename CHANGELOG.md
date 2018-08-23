@@ -24,6 +24,7 @@
 - owg team
 - ajax-databases into lib/
 - embed youtube in score (or just link to search page ?)
+- i18n
 
 ## 1.0.4-pre1
 - delete graphs on skater
