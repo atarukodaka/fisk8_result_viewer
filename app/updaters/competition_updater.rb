@@ -102,30 +102,30 @@ class CompetitionUpdater
           score.update(elements_summary: score.elements.map(&:name).join('/'))
           score.update(components_summary: score.components.map(&:value).join('/'))
           puts score.summary if @verbose
-=begin
-              ## judge details
-              if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
-                ### elements
-                score.elements.each do |element|
-                  element.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
+
+          ## judge details
+          if competition.start_date > Time.zone.parse("2016-7-1") # was random order in the past
+            ### elements
+            score.elements.each do |element|
+              element.judges.split(/\s/).each_with_index do |value, i|
+                #next if panels[:judges].count <= i+1
+                element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
+                                                     panel_nation: panels[:judges][i+1][:nation],
+                                                     number: i, value: value)
+              end
+            end
+            
+            ### component
+            score.components.each do |component|
+              component.judges.split(/\s/).each_with_index do |value, i|
+                #next if panels[:judges].count <= i+1
+                component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
                                                          panel_nation: panels[:judges][i+1][:nation],
                                                          number: i, value: value)
-                  end
-                end
-
-                ### component
-                score.components.each do |component|
-                  component.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                             panel_nation: panels[:judges][i+1][:nation],
-                                                             number: i, value: value)
-                  end
-                end
               end
-=end
+            end
+          end
+          
         }
       end
     end

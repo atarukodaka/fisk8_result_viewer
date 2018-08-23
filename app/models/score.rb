@@ -31,14 +31,7 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
-=begin
-  def elements_summary
-    elements.map(&:name).join('/')
-  end
-  def components_summary
-    components.map(&:value).join('/')
-  end
-=end  
+
   ## scopes
   scope :recent, ->{ order("segment_starting_time desc") }
   scope :short, -> { where("segment like ? ", "%SHORT%") }
