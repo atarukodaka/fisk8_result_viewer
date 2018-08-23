@@ -17,11 +17,11 @@
 ////////////////////////////////////////////////////////////////
 .row
   .col-sm-6
-    h2= I18n.t("view.competition.competition_info")
+    h2= I18n.t("view.competition.competition_info", default: "Competition Info")
     = competition_summary.decorate.render
 
   .col-sm-6
-    h2= I18n.t("view.competition.performed_segment")
+    h2= I18n.t("view.competition.performed_segment", default: "Performed Segment")
 
     table class="table table-striped table-hover table-condensed"
       tr

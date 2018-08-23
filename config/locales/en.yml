@@ -8,11 +8,3 @@ en:
     components: Components
     scorecalc: Score Calc
     
-  view:
-    competition:
-      competition_info: Competition Info
-      performed_segment: Performed Segment
-    skater:
-      skater_summary: Skater Summary
-      competition_results: Competition Results
-      
