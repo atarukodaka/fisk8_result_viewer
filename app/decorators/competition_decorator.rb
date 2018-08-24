@@ -14,7 +14,13 @@ class CompetitionDecorator < EntryDecorator
     h.link_to_competition_site("Official", model)
   end
   def period
-    [model.start_date, model.end_date].join(' - ') + " [#{model.timezone}]"
+    [l(model.start_date), l(model.end_date)].join(' - ') + " [#{model.timezone}]"
+  end
+  def start_date
+    l(model.start_date)
+  end
+  def end_date
+    l(model.end_date)
   end
 =begin
   def city_country

@@ -18,6 +18,9 @@ class CategoryResultDecorator < EntryDecorator
     h.link_to_competition(model.category, model.competition, category: model.category)
   end
 
+  def date
+    l(model.date)
+  end
   decorate_as_ranking(:ranking)
   decorate_as_score(:points)
 

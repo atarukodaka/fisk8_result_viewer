@@ -6,12 +6,12 @@
  
 .row
   .col-sm-6
-    h2 Score
+    h2= t("view.score.score_summary", default: "Score Summary")
     /= score_summary.decorate.render
     = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category, :segment, :segment_starting_time, :tss, :tes, :pcs, :deductions, :result_pdf]).render
   .col-sm-6
 
-    h2 Relevant Video
+    h2= t("view.score.relevant_video", default: "Relevant Video")
     - query = "#{score.skater.name} #{score.competition.name} #{score.segment}"
     - api_key = ENV['YOUTUBE_API_KEY']
     - if api_key.blank?
@@ -33,18 +33,18 @@
           div No relevant videos found
       - rescue OpenURI::HTTPError
         div HTTP ERROR
-    div= link_to("see other relevant videos", "http://www.youtube.com/results?q=#{query}")
+    div= link_to(t("view.score.see_other_relevant_videos", default: "see other relevant videos"), "http://www.youtube.com/results?q=#{query}")
 
-h2 Elements
+h2= t("view.score.elements", default: "Elements")
 
 = elements.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render
 
-h2 Components
+h2= t("view.score.components", default: "Components")
 
 = components.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render
 
 - if score.deductions.to_f < 0
-  h2 Deductions
+  h2= t("view.score.deductions", default: "Deductions")
   = score.deduction_reasons
 
 
