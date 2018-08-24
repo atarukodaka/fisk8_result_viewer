@@ -29,9 +29,11 @@ class ScoreDecorator < EntryDecorator
     h.link_to_score(model.tss.as_score, model)
   end
 =end
+=begin
   def scorecalc
     h.link_to(model.name, controller: :scorecalc, score_name: model.name)
   end
+=end
   def segment_starting_time
     model.segment_starting_time.in_time_zone(competition.timezone).strftime("%Y-%m-%d %H:%M %z")
   end

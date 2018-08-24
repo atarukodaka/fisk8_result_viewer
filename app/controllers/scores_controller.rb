@@ -3,7 +3,7 @@ class ScoresController < ApplicationController
   
 =begin
   def score_summary(score)
-    Listtable.new(view_context).records(score).columns([:skater_name, :competition_name, :category, :segment, :segment_starting_time, :tss, :tes, :pcs, :deductions, :result_pdf, :scorecalc])
+    Listtable.new(view_context).records(score).columns([:skater_name, :competition_name, :category, :segment, :segment_starting_time, :tss, :tes, :pcs, :deductions, :result_pdf])
 
   end
 =end
