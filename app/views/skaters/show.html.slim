@@ -2,14 +2,14 @@
 
 - breadcrumb :skater, skater
 
-////////////////////////////////////////////////////////////////
 - content_for :title do
   | skater: #{skater.name}
 
 .row
   .col-sm-6
     h2 Skaters Summary
-    = skater_summary.decorate.render
+    /= skater_summary.decorate.render
+    = Listtable.new(self).records(skater.decorate).columns([:name, :nation, :isu_number, :category]).render
 
   /.col-sm-6
     h2 Record Summary
