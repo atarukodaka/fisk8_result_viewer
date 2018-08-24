@@ -32,20 +32,39 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category, segment = params[:category], params[:segment]
-    data = {
-      competition_summary: competition_summary(competition),
-      result_type: result_type(category, segment),
-      results: result_datatable(competition, category, segment),
-    }
+    category, segment, ranking = params[:category], params[:segment], params[:ranking]
 
-    respond_to do |format|
-      format.html {
-        render :show, locals: data.merge(competition: competition, category: category, segment: segment,)
+    if ranking.present?
+      # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
+      score = competition.scores.where(category: category, segment: segment, ranking: ranking).first
+      if score.nil?
+        render plain: "ERROR: no such score: " + [competition.short_name, category, segment, ranking].join('/')
+        return
+      end
+
+      respond_to do |format|
+        format.html {
+          redirect_to(controller: :scores, action: :show, name: score.name)
+        }
+        format.json {
+          redirect_to(controller: :scores, action: :show, name: score.name, format: :json)
+        }
+      end
+    else
+      data = {
+        competition_summary: competition_summary(competition),
+        result_type: result_type(category, segment),
+        results: result_datatable(competition, category, segment),
       }
-      format.json {
-        render json: data
-      }
+
+      respond_to do |format|
+        format.html {
+          render :show, locals: data.merge(competition: competition, category: category, segment: segment,)
+        }
+        format.json {
+          render json: data
+        }
+      end
     end
   end
 end
