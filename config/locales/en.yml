@@ -1,10 +1,7 @@
 en:
-  nav:
-    home: Home
-    skaters: Skaters
-    competitions: Competitions
-    scores: Scores
-    elements: Elements
-    components: Components
-    scorecalc: Score Calc
-    
+  date:
+    formats:
+      default: "%-d %b, %Y"
+  time:
+    formats:
+      default: "%-d %b, %Y %H:%M:%S %z"

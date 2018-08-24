@@ -1,4 +1,12 @@
 ja:
+  date:
+    formats:
+      default: "%Y/%m/%d"
+
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M:%S %z"
+
   controller:
     home: ホーム
     skaters: スケーター

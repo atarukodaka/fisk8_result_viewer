@@ -22,19 +22,6 @@ class CompetitionsController < ApplicationController
       columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
   end
 
-  def result_datatable(competition, category, segment)
-    case result_type(category, segment)
-    when :category
-      AjaxDatatables::Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :scores)).
-        columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_bv, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_bv,]).tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
-      
-    when :segment
-      AjaxDatatables::Datatable.new(view_context).records(competition.scores.category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
-        columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
-    else
-      nil
-    end
-  end    
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 

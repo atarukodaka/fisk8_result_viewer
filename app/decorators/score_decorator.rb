@@ -33,7 +33,7 @@ class ScoreDecorator < EntryDecorator
     h.link_to(model.name, controller: :scorecalc, score_name: model.name)
   end
   def segment_starting_time
-    model.segment_starting_time.in_time_zone(competition.timezone).strftime("%Y-%m-%d %H:%M %z")
+    l(model.segment_starting_time.in_time_zone(competition.timezone))
   end
 =begin
   def youtube_search
