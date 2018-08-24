@@ -7,9 +7,10 @@
 .row
   .col-sm-6
     h2= t("view.score.score_summary", default: "Score Summary")
-    = score_summary.decorate.render
-
+    /= score_summary.decorate.render
+    = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category, :segment, :segment_starting_time, :tss, :tes, :pcs, :deductions, :result_pdf]).render
   .col-sm-6
+
     h2= t("view.score.relevant_video", default: "Relevant Video")
     - query = "#{score.skater.name} #{score.competition.name} #{score.segment}"
     - api_key = ENV['YOUTUBE_API_KEY']
