@@ -26,16 +26,6 @@ ja:
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
-#    name: 名前
-#    category: カテゴリー
-#    segment: セグメント
-#    nation: 国名
-#    site_url: サイトURL
-#    skater_name: スケーター名
-#    competition_name: 競技会名
-#    element: 要素名
-#    type: 要素型
-#    site_url: サイトURL
 
   attributes:
     skater_name: スケーター名

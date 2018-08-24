@@ -1,5 +1,5 @@
 module FormHelper
-  def form_group(label, input_tag = nil)
+  def form_group(label = nil, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
       concat(content_tag(:div, label_tag(label_str), :class => 'col-sm-2'))
