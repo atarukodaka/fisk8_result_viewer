@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe Datatable::Columns do
-  describe Datatable do
+RSpec.describe AjaxDatatables::Columns do
+  describe AjaxDatatables do
     context 'giving column as symbol' do
       subject(:column){
-        Datatable.new.columns([:foo]).columns[:foo]
+        AjaxDatatables::Datatable.new.columns([:foo]).columns[:foo]
       }
       its(:name) { is_expected.to eq("foo") }
       its(:source) { is_expected.to eq("foo") }
     end
     context 'giving column as hash' do
       subject(:column){
-        Datatable.new.columns([{name: "foo", source: "foos.foo"}]).columns[:foo]
+        AjaxDatatables::Datatable.new.columns([{name: "foo", source: "foos.foo"}]).columns[:foo]
       }
       its(:name) { is_expected.to eq("foo") }
       its(:source) { is_expected.to eq("foos.foo") }

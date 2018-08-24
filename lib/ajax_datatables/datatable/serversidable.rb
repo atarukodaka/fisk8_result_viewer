@@ -1,11 +1,11 @@
-module Datatable::Serversidable
+module AjaxDatatables::Datatable::Serversidable
   def serverside
-    self.extend Datatable::Serverside
+    self.extend AjaxDatatables::Datatable::Serverside
   end
 end
 
-module Datatable::Serverside
-  include Datatable::Searchable
+module AjaxDatatables::Datatable::Serverside
+  include AjaxDatatables::Datatable::Searchable
   
   ################
   ## for server-side ajax

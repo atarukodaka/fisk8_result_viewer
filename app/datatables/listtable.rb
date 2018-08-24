@@ -1,4 +1,4 @@
-class Listtable < Datatable
+class Listtable < AjaxDatatables::Datatable
   def render(partial: "listtable", locals: {})
     super(partial: partial, locals: locals)
   end
