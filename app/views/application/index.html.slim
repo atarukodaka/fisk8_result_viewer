@@ -3,9 +3,9 @@
 - content_for :title do
   = controller_name
 
-- breadcrumb controller_name.to_sym 
+- breadcrumb controller_name.to_sym
 
-h2= I18n.t("controller.#{controller_name}", default: controller_name.humanize)
+h2= t("controller.#{controller_name}", default: controller_name.humanize)
 
 style
   | label { margin-left: 10px; margin-right: 10px; }
@@ -13,12 +13,12 @@ style
 
 
 // filter form
-= button_tag("show/hide filters", onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
+= button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
 = form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|
   = render partial: "filter_content", locals: { table: table }
   = form_group(nil) do
-    label Offset
-    =text_field_tag(:offset, params[:offset])
+    label= t("filter.offset", default: "Offset")
+    =text_field_tag(:offset, params[:offset], label: "AAA")
     label
     = button_tag("html", type: "submit", name: "format", value: "html", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
     label

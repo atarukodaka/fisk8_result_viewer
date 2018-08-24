@@ -83,6 +83,6 @@ gem 'sitemap_generator'
 gem 'jquery-datatables-rails'
 gem 'hashie'
 gem 'active_hash', '~> 1.5'   # 2.x doenst support Ruby < 2.4 and Rails < 5
-gem 'gretel'
+gem 'gretel'       ## breadcriumb
 gem 'rack-dev-mark'
 gem 'dotenv-rails', require: 'dotenv/rails-now'

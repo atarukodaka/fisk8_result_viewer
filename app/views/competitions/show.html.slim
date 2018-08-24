@@ -25,9 +25,9 @@
 
     table class="table table-striped table-hover table-condensed"
       tr
-        th Category
-        th Segment
-        th Starting Time
+        th= Score.human_attribute_name(:category)
+        th= Score.human_attribute_name(:segment)
+        th= Score.human_attribute_name(:segment_starting_time)
         // th Winner
       // - competition.scores.where(ranking: 1).includes(:skater).each do |score|
       - competition.scores.where(ranking: 1).each do |score|
@@ -41,7 +41,7 @@
 h2
   - case result_type
   - when :none
-    | Category / Segment
+    ="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
   - when :category
     | Category Result of #{category}
   - when :segment
