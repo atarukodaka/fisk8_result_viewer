@@ -1,4 +1,4 @@
-class StaticsDatatable < Datatable
+class StaticsDatatable < AjaxDatatables::Datatable
   def initialize(*args)
     super(*args)
     #self.options[:numbering_column_name] = "no"
