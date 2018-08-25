@@ -30,6 +30,9 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.integer :number
       t.string :name
       t.string :element_type
+      t.boolean :edgeerror
+      t.boolean :underrotated
+      t.boolean :downgraded
       t.integer :level
       t.string :info
       t.float :base_value
