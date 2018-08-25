@@ -8,14 +8,13 @@
 - youtube register
 - i18n
 - components controller is necessary ??
-- elements: UR, DG, EE
 - codecov: icedance elements
 - competition feature: adding :short_name column brings us error somehow
 
 ### new feature
 
 ### check before release
-- app/controller/application_controller: unless Rails.env.develop
+- app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
 
@@ -26,6 +25,7 @@
 - ajax-databases into lib/
 - embed youtube in score (or just link to search page ?)
 - i18n
+- elements: UR, DG, EE
 
 ## 1.0.4-pre1
 - delete graphs on skater
