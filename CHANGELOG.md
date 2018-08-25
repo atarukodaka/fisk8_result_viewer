@@ -10,6 +10,7 @@
 - components controller is necessary ??
 - elements: UR, DG, EE
 - codecov: icedance elements
+- competition feature: adding :short_name column brings us error somehow
 
 ### new feature
 
