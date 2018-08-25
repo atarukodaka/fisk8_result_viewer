@@ -6,7 +6,7 @@ RSpec.describe SkatersController, type: :controller do
   let!(:men_skater){
     create(:skater) do |skater|
       competition = create(:competition)
-      cr = create(:result, competition: competition, skater: skater)
+      cr = create(:category_result, competition: competition, skater: skater)
       score = create(:score, competition: competition, skater: skater)
       score.elements.create(number: 1, name: "3T", goe: 3, base_value: 10, value: 13)
       score.components.create(number: 1, name: "Skating Skills", value: 9)

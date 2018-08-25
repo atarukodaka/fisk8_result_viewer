@@ -13,6 +13,7 @@ module CompetitionParser
         summary = []
         entry_url = ""
         panel_url = ""
+        segment_result_url = ""
         #rows[0..-1].each do |row|
         rows.each do |row|
           next if row.xpath("td").blank?
@@ -29,12 +30,14 @@ module CompetitionParser
           elsif row.xpath("td").count == 2
             segment = row.xpath("td[1]").text.upcase
             panel_url = URI.join(url, row.xpath("td[2]/a/@href").text).to_s
+          elsif row.xpath("td[1]").text == "Starting Order/Detailed Classification"
+            segment_result_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s
           elsif row.xpath("td[1]").text == "Judges Score (pdf)"
             score_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s
             summary << {
               category: category, 
               segment: segment,
-              result_url: "",
+              result_url: segment_result_url,
               score_url: score_url,
 #              panel_url: panel_url,
             }
@@ -96,18 +99,5 @@ module CompetitionParser
         summary
       end
     end  ## class SummaryParser
-
-    ################
-    class ResultParser < IsuGeneric::ResultParser
-      def get_rows(page)
-        fpl = page.xpath("//td[contains(text(), 'PL')]")
-        return [] if fpl.blank?
-        
-        fpl.first.xpath("../../tr")
-      end
-      def get_column_numbers(_)
-        {ranking: 0, skater_name: 1, nation: 2, short_ranking: 3, free_ranking: 4, points: 5,}
-      end
-    end ## class ResultParser
   end ## class Gpjpn
 end

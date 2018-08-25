@@ -3,7 +3,7 @@ h2 Fisk8 Result Viewer
 - breadcrumb :root
 
 ul
-  - [:skaters, :competitions, :results, :scores, :elements, :components].each do |controller|
+  - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
     li= link_to(controller.to_s.camelize, controller: controller)
 
 h2 About

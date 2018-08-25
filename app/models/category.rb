@@ -41,6 +41,23 @@ class Category < ActiveHash::Base
        name: "JUNIOR ICE DANCE",
        abbr: "JD",
      },
+     #### TEAM
+     {
+       name: "TEAM MEN",
+       abbr: "TM",
+     },
+     {
+       name: "TEAM LADIES",
+       abbr: "TL",
+     },
+     {
+       name: "TEAM PAIRS",
+       abbr: "TP",
+     },
+     {
+       name: "TEAM ICE DANCE",
+       abbr: "TD",
+     },
     ]
 
   ################

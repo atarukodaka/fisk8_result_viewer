@@ -12,6 +12,18 @@
 
 ActiveRecord::Schema.define(version: 3) do
 
+  create_table "category_results", force: :cascade do |t|
+    t.string "category"
+    t.integer "ranking"
+    t.float "points"
+    t.integer "short_ranking"
+    t.integer "free_ranking"
+    t.integer "competition_id"
+    t.integer "skater_id"
+    t.index ["competition_id"], name: "index_category_results_on_competition_id"
+    t.index ["skater_id"], name: "index_category_results_on_skater_id"
+  end
+
   create_table "competitions", force: :cascade do |t|
     t.string "short_name"
     t.string "name"
@@ -42,6 +54,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "number"
     t.string "name"
     t.string "element_type"
+    t.boolean "edgeerror"
+    t.boolean "underrotated"
+    t.boolean "downgraded"
     t.integer "level"
     t.string "info"
     t.float "base_value"
@@ -51,31 +66,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "value"
     t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
-  end
-
-  create_table "results", force: :cascade do |t|
-    t.integer "isu_number"
-    t.string "category"
-    t.integer "ranking"
-    t.float "points"
-    t.integer "short_ranking"
-    t.float "short_tss"
-    t.float "short_tes"
-    t.float "short_pcs"
-    t.integer "short_deductions"
-    t.float "short_bv"
-    t.integer "free_ranking"
-    t.float "free_tss"
-    t.float "free_tes"
-    t.float "free_pcs"
-    t.integer "free_deductions"
-    t.float "free_bv"
-    t.float "total_bv"
-    t.float "total_goe"
-    t.integer "competition_id"
-    t.integer "skater_id"
-    t.index ["competition_id"], name: "index_results_on_competition_id"
-    t.index ["skater_id"], name: "index_results_on_skater_id"
   end
 
   create_table "scores", force: :cascade do |t|
@@ -92,11 +82,13 @@ ActiveRecord::Schema.define(version: 3) do
     t.float "deductions", default: 0.0
     t.string "deduction_reasons"
     t.float "base_value", default: 0.0
+    t.string "elements_summary"
+    t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "result_id"
+    t.integer "category_result_id"
+    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["result_id"], name: "index_scores_on_result_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
 

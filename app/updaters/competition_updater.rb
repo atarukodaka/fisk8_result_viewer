@@ -1,21 +1,30 @@
 class CompetitionUpdater
-  def initialize(parser_type = CompetitionParser::DEFAULT_PARSER, verbose: false)
+  def initialize(parser_type: CompetitionParser::DEFAULT_PARSER, verbose: false)
     @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     @verbose = verbose
   end
 
-  def update_competition(site_url, date_format: nil, comment: nil, city: nil, name: nil)
+  def update_competition(site_url, date_format: nil, force: false, params: {})
+    if (competitions = Competition.where(site_url: site_url).presence)
+      if force
+        competitions.map(&:destroy)
+      else
+        puts "skip: '#{site_url}' already exists"
+        return nil
+      end
+    end
+    
     parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
 
     ActiveRecord::Base.transaction do
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)
-        competition.country ||= CityCountry.find_by(city: city).try(:country)
 
-        competition.name = name if name.present?
-        competition.city = city if city.present?
-        competition.comment = comment if comment.present?
+        [:name, :city, :comment].each do |key|
+          competition[key] = params[key] if params[key].present?
+        end
+        competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
         
         competition.normalize
         competition.save!  ## need to save here to create children
@@ -28,9 +37,9 @@ class CompetitionUpdater
         parsed[:categories].each do |category, cat_item|
           next unless Category.accept?(category)
 
-          update_result(competition, category, cat_item[:result_url])
+          update_category_result(competition, category, cat_item[:result_url])
           parsed[:segments][category].each do |segment, seg_item|
-            update_score(competition, category, segment, seg_item[:score_url], segment_starting_time: seg_item[:time])
+            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], segment_starting_time: seg_item[:time])
           end
         end
       end
@@ -38,13 +47,15 @@ class CompetitionUpdater
     end  ## transaction
   end
   ################
-  def update_result(competition, category, result_url)
-    @parser.parse_result(result_url).each do |result_parsed|
-      competition.results.create!(category: category) do |result|
+  def update_category_result(competition, category, result_url)
+    return if result_url.blank?
+    @parser.parse_category_result(result_url).each do |result_parsed|
+      competition.category_results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {
+
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
           result.update(result_parsed.slice(*attrs))
-          result.skater = Skater.find_or_create_by_isu_number_or_name(result.isu_number, result_parsed[:skater_name]) do |sk|
+          result.skater = Skater.find_or_create_by_isu_number_or_name(result_parsed[:isu_number], result_parsed[:skater_name]) do |sk|
             sk.attributes = {
               category: category.sub(/^JUNIOR */, ''),
               nation: result_parsed[:nation],
@@ -57,19 +68,27 @@ class CompetitionUpdater
     end
   end 
   ################
-  def update_score(competition, category, segment, score_url, segment_starting_time: nil)
+  def update_score(competition, category, segment, score_url, result_url, segment_starting_time: nil)
+    segment_results = @parser.parse_segment_result(result_url)
+
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
-        cr_rels = competition.results.where(category: category)
-        relevant_cr =
-          cr_rels.find_by_skater_name(sc_parsed[:skater_name]) ||
-          cr_rels.where(category: category).find_by_segment_ranking(segment, sc_parsed[:ranking]) ||
-          raise("no relevant category results for %<skater_name>s %<segment>s#%<ranking>d" % sc_parsed.merge(segment: segment))
-
         ActiveRecord::Base.transaction {
+          ## find skater
+          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
+
+          skater = ((h[:isu_number].present? ) ?
+                     Skater.where(isu_number: h[:isu_number]).first :
+                     Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
+
+          ## find relevant category result
+          segment_type = (segment =~ /SHORT/) ? :short : :free
+          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          
+          ## set attributes
           score.attributes = {
-            result: relevant_cr,
-            skater: relevant_cr.skater,
+            category_result: relevant_cr,
+            skater: skater,
             segment_starting_time: segment_starting_time,
           }
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
@@ -79,15 +98,9 @@ class CompetitionUpdater
           
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
-        
-          ## update segment details into results
-          segment_type = (segment =~ /SHORT/) ? :short : :free
-          [:tss, :tes, :pcs, :deductions].each do |key|
-            score.result["#{segment_type}_#{key}"] = score[key]
-            score.result["#{segment_type}_bv"] = score[:base_value]
-            score.result.save!
-          end
 
+          score.update(elements_summary: score.elements.map(&:name).join('/'))
+          score.update(components_summary: score.components.map(&:value).join('/'))
           puts score.summary if @verbose
 =begin
               ## judge details

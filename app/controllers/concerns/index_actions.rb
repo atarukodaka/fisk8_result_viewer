@@ -29,6 +29,6 @@ module IndexActions
   ################
   # unrouted methods
   def create_datatable
-    [controller_name.camelize, Datatable].join.constantize.new(view_context)
+    [controller_name.camelize, "Datatable"].join.constantize.new(view_context)
   end
 end

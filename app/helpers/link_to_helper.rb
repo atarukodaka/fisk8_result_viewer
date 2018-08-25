@@ -11,10 +11,10 @@ module LinkToHelper
     link_to(text, skater_path(isu_number || name), params)
   end
 
-  def link_to_competition(text = nil, competition, category: nil, segment: nil)
+  def link_to_competition(text = nil, competition, category: nil, segment: nil, ranking: nil)
     text ||= segment || category || competition.name
 
-    link_to(text, competition_path(competition.short_name, category, segment))
+    link_to(text, competition_path(competition.short_name, category, segment, ranking))
   end
   
   def link_to_competition_site(text = nil, competition)

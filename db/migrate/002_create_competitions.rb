@@ -14,40 +14,21 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :site_url
       t.string :competition_type
       t.string :competition_class
-      #t.boolean :isu_championships, default: false, null: false
       t.string :parser_type, default: "isu_generic"
       
       t.string :comment
     end
 
     ################
-    # results
-    create_table :results do |t|
-      t.integer :isu_number
+    # category results
+    create_table :category_results do |t|
       t.string :category
       t.integer :ranking
       t.float :points
 
-      ## short
       t.integer :short_ranking
-      t.float :short_tss
-      t.float :short_tes
-      t.float :short_pcs
-      t.integer :short_deductions
-      t.float :short_bv
-
-      ## free
       t.integer :free_ranking
-      t.float :free_tss
-      t.float :free_tes
-      t.float :free_pcs
-      t.integer :free_deductions
-      t.float :free_bv
-
-      ## total
-      t.float :total_bv
-      t.float :total_goe
-
+      
       ## relations
       t.belongs_to :competition
       t.references :skater

@@ -28,6 +28,7 @@ module CompetitionParser
           else
             competition[:segments][category][segment] = {
               panel_url: hash[:panel_url],
+              result_url: hash[:result_url],
               score_url: hash[:score_url],
               time: time_schedule.select {|item|      ## time ? date ? 
                 item[:category] == category && item[:segment] == segment
@@ -65,7 +66,6 @@ module CompetitionParser
       def parse_summary_table(page, url: "")
         elem = page.xpath("//*[text()='Category']").first || raise
         rows = elem.xpath('ancestor::table[1]//tr')
-
         category = ""
         summary = []
 
@@ -78,7 +78,7 @@ module CompetitionParser
           segment = row.xpath("td[2]").text.squish.upcase
 
           next if category.blank? && segment.blank?
-          next if (segment.blank?) && ((row.xpath("td[4]").text =~ /result/i ) == nil) # TODO
+          next if (segment.blank?) && ((row.xpath("td[4]").text =~ /result/i ) == nil) # TODO: ??
 
           panel_url = row.xpath("td[3]//a/@href").text
           result_url = row.xpath("td[4]//a/@href").text

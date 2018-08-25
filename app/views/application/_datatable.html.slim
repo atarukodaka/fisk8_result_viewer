@@ -49,13 +49,13 @@ script
       | t.draw();
   | });
 
-
 table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
       - column_names.each do |key|
         th id="column_#{key}"
-          = key.to_s.humanize
+          /= key.to_s.humanize
+          = datatable.records.human_attribute_name key
   tbody
     /- unless datatable.settings[:ajax] 
     - unless datatable.settings[:ajax] && settings[:deferLoading].blank?

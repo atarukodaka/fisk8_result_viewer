@@ -1,4 +1,4 @@
-class Datatable::Columns
+class AjaxDatatables::Columns
   extend Forwardable
 
   def_delegators :@data, :[], :each, :map, :find, :select
@@ -45,7 +45,7 @@ class Datatable::Columns
     @datatable.try(:records).try(:table_name)
   end
   def create_column(col)
-    column = Datatable::Column.new
+    column = AjaxDatatables::Column.new
     case col
     when Hash
       acceptable_keys = [:name, :source, :searchable, :orderable, :numbering]
@@ -65,7 +65,7 @@ class Datatable::Columns
   end
 end
 ################################################################
-class Datatable::Column
+class AjaxDatatables::Column
   extend Property
   
   properties :name, :source, default: nil

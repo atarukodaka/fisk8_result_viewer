@@ -1,14 +1,14 @@
 class ParsersController < ApplicationController
   def index
-    if Rails.env.development?
-      render
+    if Rails.env.production?
+      render plain: "works for only development/test"
     else
-      render plain: "works for only development"
+      render
     end
   end
     
   def competition
-    unless Rails.env.development?
+    if Rails.env.production?
       render plain: "works for only development", layout: :application
     else
       url = params[:url]
@@ -17,11 +17,11 @@ class ParsersController < ApplicationController
     end
   end
   def scores
-    unless Rails.env.development?
+    if Rails.env.production?
       render plain: "works for only development", layout: :application      
     else
       url = params[:url]
-      parser = Parser::ScoreParser.new
+      parser = CompetitionParser::ScoreParser.new
       scores = parser.parse(url)
     
       render locals: {scores: scores}
