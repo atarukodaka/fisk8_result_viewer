@@ -11,6 +11,7 @@
 - codecov: icedance elements
 - competition feature: adding :short_name column brings us error somehow
 - skater: age ??
+- elements/components: date or starting_time of score ?
 
 ### new feature
 

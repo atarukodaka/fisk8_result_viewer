@@ -56,6 +56,6 @@ class SkaterParser
         end
       end
     end
-     data
+    data
   end
 end

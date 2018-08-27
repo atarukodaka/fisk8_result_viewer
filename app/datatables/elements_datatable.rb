@@ -4,7 +4,7 @@ class ElementsDatatable < IndexDatatable
 
     columns([:score_name, :competition_name, :competition_class, :competition_type,
              #:category, :segment, :date, :season,
-             :category, :segment, :date, :season,
+             :category, :segment, :season,
              :skater_name, :nation,
              :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
@@ -16,14 +16,14 @@ class ElementsDatatable < IndexDatatable
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",
-      date: "scores.segment_starting_time",
+      #date: "scores.performed_starting_time.starting_time",
       skater_name: "skaters.name",
       nation: "skaters.nation",
       name: "elements.name",
       base_value: "elements.base_value",
     }
     ## searchable
-    [:credit, :info, :date].each {|key| columns[key].searchable = false }    
+    [:credit, :info].each {|key| columns[key].searchable = false }    
 
     ## visible
     [:competition_class, :competition_type].each {|key|

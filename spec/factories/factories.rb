@@ -48,7 +48,6 @@ FactoryBot.define do
       site_url { "http://finlandia-2015/" }
       start_date { "2015-9-1" }
       end_date { "2015-9-3" }
-
     end
   end
 end
@@ -75,11 +74,31 @@ FactoryBot.define do
   end
 end
 
+# performed segments
+FactoryBot.define do
+  factory :performed_segment do
+    association :competition, factory: :competition
+
+    category { "MEN" }
+    segment { "SHORT" }
+    starting_time { Time.new(2017, 2, 1, 15, 0, 0) }
+  
+    trait :finlandia do
+      association :competition, factory: [:competition, :finlandia]
+      category { "LADIES" }
+      segment { "FREE" }
+      starting_time { Time.new(2015, 9, 2, 17, 0, 0) }
+    end
+  end
+end
+
 # scores
 FactoryBot.define do
   factory :score do
     association :skater, factory: :skater
     association :competition, factory: :competition
+    association :performed_segment, factory: :performed_segment
+    
     name { "WORLD2017-M-S-1" }
     category { "MEN" }
     segment { "SHORT" }
@@ -89,7 +108,7 @@ FactoryBot.define do
     pcs { 50 }
     base_value { 25 }
     deductions { 0 }
-    segment_starting_time { '2017-2-1 00:00:00'.in_time_zone('UTC') }
+    #segment_starting_time { '2017-2-1 00:00:00'.in_time_zone('UTC') }
     result_pdf { 'http://world2017.isu.org/results/men/short.pdf' }
 
     trait :world_free do
@@ -108,7 +127,7 @@ FactoryBot.define do
       pcs { 80 }
       base_value { 40 }
       deductions { -1 }
-      segment_starting_time { '2015-7-1 00:00:00'.in_time_zone('UTC')}
+      #segment_starting_time { '2015-7-1 00:00:00'.in_time_zone('UTC')}
       result_pdf { "http://finlandia-2015/ladies/free.pdf" }
     end
 

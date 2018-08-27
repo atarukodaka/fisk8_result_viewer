@@ -10,16 +10,6 @@
     h2= t("view.skater.skater_summary", default: "Skater Summary")
     = Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :isu_records, :category, :birthday, :height, :hometown, :club, :coach, :choreographer, :bio_updated_at]).decorate.render
 
-  /.col-sm-6
-    h2 Record Summary
-    = render partial: "listtable", locals: { datatable: record_summary }
-    /= record_summary.render
-
 h2=t("view.skater.competition_results", default: "Competition Results")
 
 = render partial: "datatable", locals: { datatable: competition_results.decorate }
-
-//.row
-  - score_graphs.each do |sg|
-    .col-sm-6
-      = image_tag(sg.image_path)
