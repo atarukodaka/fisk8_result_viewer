@@ -28,6 +28,7 @@
 - embed youtube in score (or just link to search page ?)
 - i18n
 - elements: UR, DG, EE
+- score has date column
 
 ## 1.0.4-pre1
 - delete graphs on skater

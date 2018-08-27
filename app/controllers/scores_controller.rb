@@ -29,7 +29,7 @@ class ScoresController < ApplicationController
       }
       format.json {
         render json: 
-                 score.slice(*[:name, :competition_name, :category, :segment, :segment_starting_time,
+                 score.slice(*[:name, :competition_name, :category, :segment, :date,
                                :tss, :tes, :pcs, :deductions, :result_pdf]).
                 merge({elements: elements_datatable(score),
                        components: components_datatable(score)})

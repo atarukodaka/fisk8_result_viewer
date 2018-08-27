@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "starting_number"
     t.string "category"
     t.string "segment"
+    t.date "date", default: "1970-01-01"
     t.string "result_pdf"
     t.float "tss", default: 0.0
     t.float "tes", default: 0.0
@@ -94,10 +95,8 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "category_result_id"
-    t.integer "performed_segment_id"
     t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
 

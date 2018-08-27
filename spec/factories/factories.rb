@@ -97,7 +97,6 @@ FactoryBot.define do
   factory :score do
     association :skater, factory: :skater
     association :competition, factory: :competition
-    association :performed_segment, factory: :performed_segment
     
     name { "WORLD2017-M-S-1" }
     category { "MEN" }
@@ -108,7 +107,7 @@ FactoryBot.define do
     pcs { 50 }
     base_value { 25 }
     deductions { 0 }
-    #segment_starting_time { '2017-2-1 00:00:00'.in_time_zone('UTC') }
+    date { '2017-2-1' }
     result_pdf { 'http://world2017.isu.org/results/men/short.pdf' }
 
     trait :world_free do
@@ -127,7 +126,7 @@ FactoryBot.define do
       pcs { 80 }
       base_value { 40 }
       deductions { -1 }
-      #segment_starting_time { '2015-7-1 00:00:00'.in_time_zone('UTC')}
+      date { '2015-7-1' }
       result_pdf { "http://finlandia-2015/ladies/free.pdf" }
     end
 

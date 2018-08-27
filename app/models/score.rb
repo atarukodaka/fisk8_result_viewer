@@ -8,7 +8,7 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, required: false
-  belongs_to :performed_segment, required: false
+  #belongs_to :performed_segment, required: false
 
   ## validations
   #validates  :segment_starting_time, presence: true
@@ -32,10 +32,12 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
+=begin
   def segment_starting_time
     performed_segment.starting_time.in_time_zone(competition.timezone)
   end
-
+=end
+  
 =begin
   def elements_summary
     elements.map(&:name).join('/')

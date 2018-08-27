@@ -5,11 +5,11 @@ RSpec.describe ScoresController, type: :controller do
   render_views
 
   let!(:world_score) {
-    create(:score, skater: create(:skater), competition: create(:competition), performed_segment: create(:performed_segment))
+    create(:score, skater: create(:skater), competition: create(:competition))
   }
 
   let!(:finlandia_score){
-    create(:score, :finlandia, skater: create(:skater, :ladies), competition: create(:competition, :finlandia), performed_segment: create(:performed_segment, :finlandia))
+    create(:score, :finlandia, skater: create(:skater, :ladies), competition: create(:competition, :finlandia))
   }
 
   describe '#index' do
