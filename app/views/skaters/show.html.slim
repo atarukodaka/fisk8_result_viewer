@@ -8,7 +8,7 @@
 .row
   .col-sm-6
     h2= t("view.skater.skater_summary", default: "Skater Summary")
-    = Listtable.new(self).records(skater.decorate).columns([:name, :nation, :isu_number, :category]).render
+    = Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :isu_records, :category, :birthday, :height, :age, :hometown, :club, :coach, :choreographer, :bio_updated_at]).decorate.render
 
   /.col-sm-6
     h2 Record Summary

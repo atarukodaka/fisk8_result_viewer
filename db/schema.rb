@@ -97,6 +97,14 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "nation"
     t.string "category"
     t.integer "isu_number"
+    t.string "coach"
+    t.string "choreographer"
+    t.string "birthday"
+    t.string "hobbies"
+    t.string "hometown"
+    t.string "height"
+    t.string "club"
+    t.datetime "bio_updated_at"
   end
 
 end
