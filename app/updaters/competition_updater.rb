@@ -38,8 +38,16 @@ class CompetitionUpdater
           next unless Category.accept?(category)
 
           update_category_result(competition, category, cat_item[:result_url])
+
           parsed[:segments][category].each do |segment, seg_item|
-            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], segment_starting_time: seg_item[:time])
+            ###
+            ps = competition.performed_segments.create do |ps|
+              ps.category = category
+              ps.segment = segment
+              ps.starting_time = seg_item[:time]
+            end
+            ###
+            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: ps.starting_time.to_date)
           end
         end
       end
@@ -68,7 +76,7 @@ class CompetitionUpdater
     end
   end 
   ################
-  def update_score(competition, category, segment, score_url, result_url, segment_starting_time: nil)
+  def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = @parser.parse_segment_result(result_url)
 
     @parser.parse_score(score_url).each do |sc_parsed|
@@ -89,8 +97,8 @@ class CompetitionUpdater
           score.attributes = {
             category_result: relevant_cr,
             skater: skater,
-            segment_starting_time: segment_starting_time,
-          }
+            #segment_starting_time: segment_starting_time,
+          }.merge(additionals)
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs)
 
@@ -102,30 +110,6 @@ class CompetitionUpdater
           score.update(elements_summary: score.elements.map(&:name).join('/'))
           score.update(components_summary: score.components.map(&:value).join('/'))
           puts score.summary if @verbose
-=begin
-              ## judge details
-              if self.start_date > Time.zone.parse("2016-7-1") # was random order in the past
-                ### elements
-                score.elements.each do |element|
-                  element.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                         panel_nation: panels[:judges][i+1][:nation],
-                                                         number: i, value: value)
-                  end
-                end
-
-                ### component
-                score.components.each do |component|
-                  component.judges.split(/\s/).each_with_index do |value, i|
-                    #next if panels[:judges].count <= i+1
-                    component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                             panel_nation: panels[:judges][i+1][:nation],
-                                                             number: i, value: value)
-                  end
-                end
-              end
-=end
         }
       end
     end

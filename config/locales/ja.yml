@@ -53,11 +53,21 @@ ja:
       skater:
         name: スケーター名
         isu_number: ISU登録番号
+        isu_records: ISU記録
+        birthday: 誕生日
+        height: 身長
+        club: 所属クラブ
+        hometown: ホームタウン
+        coach: コーチ
+        choreographer: 振付師
+        bio_updated_at: バイオ更新日時
 
       competition:
         name: 競技会名
         city: 開催都市
         country: 開催国
+        location: 開催場所
+        period: 開催期間
         competition_class: 競技クラス
         competition_type: 競技タイプ
         season: シーズン

@@ -8,7 +8,7 @@
   .col-sm-6
     h2= t("view.score.score_summary", default: "Score Summary")
     /= score_summary.decorate.render
-    = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category, :segment, :segment_starting_time, :tss, :tes, :pcs, :deductions, :result_pdf]).render
+    = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf]).render
   .col-sm-6
 
     h2= t("view.score.relevant_video", default: "Relevant Video")
@@ -24,7 +24,7 @@
           - video_id = item["id"]["videoId"]
           - video_title = item["snippet"]["title"]
           - video_published_at = item["snippet"]["publishedAt"].in_time_zone("UTC")
-          iframe id="ytplayer" src="http://www.youtube.com/embed/#{video_id}" width=640 height=360
+          iframe id="ytplayer" src="https://www.youtube.com/embed/#{video_id}" width=640 height=360
           ul
             li= "query: #{query}"
             li= "title: #{video_title}"
