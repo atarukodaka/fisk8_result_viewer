@@ -8,9 +8,10 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, required: false
+  belongs_to :performed_segment, required: false
 
   ## validations
-  validates  :segment_starting_time, presence: true
+  #validates  :segment_starting_time, presence: true
 
   ## virtual attributes
   def competition_name

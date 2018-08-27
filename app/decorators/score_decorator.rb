@@ -35,7 +35,7 @@ class ScoreDecorator < EntryDecorator
   end
 =end
   def segment_starting_time
-    l(model.segment_starting_time.in_time_zone(competition.timezone))
+    l(model.performed_segment.starting_time.in_time_zone(competition.timezone))
   end
 =begin
   def youtube_search

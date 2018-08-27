@@ -19,5 +19,9 @@ class SkaterParser
     {
       isu_number: isu_number, nation: nation, name: name, category: category,
     }
-    end
+  end
+  def parse_skater_details(isu_number)
+    page = get_url(isu_bio_url(isu_number))
+    
+  end
 end

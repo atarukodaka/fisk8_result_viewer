@@ -16,6 +16,7 @@ class ScoresDatatable < IndexDatatable
       season: "competitions.season",
       skater_name: "skaters.name",
       nation: "skaters.nation",
+      segment_starting_time: "performed_segments.starting_time",
     }
 
     [:competition_type, :competition_class, :competition_name, :season, ].each do |key|
@@ -29,6 +30,6 @@ class ScoresDatatable < IndexDatatable
     default_orders([[:segment_starting_time, :desc]])
   end
   def fetch_records
-    Score.includes(:competition, :skater).references(:competition, :skater).all
+    Score.includes(:competition, :skater, :performed_segment).references(:competition, :skater, :performed_segment).all
   end
 end
