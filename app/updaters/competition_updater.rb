@@ -76,7 +76,7 @@ class CompetitionUpdater
     end
   end 
   ################
-  def update_score(competition, category, segment, score_url, result_url, date:)
+  def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = @parser.parse_segment_result(result_url)
 
     @parser.parse_score(score_url).each do |sc_parsed|
@@ -97,9 +97,8 @@ class CompetitionUpdater
           score.attributes = {
             category_result: relevant_cr,
             skater: skater,
-            date: date,
             #segment_starting_time: segment_starting_time,
-          }
+          }.merge(additionals)
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs)
 
