@@ -1,7 +1,9 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    SkaterUpdater.new.update_skaters
+    details = ENV['details'].to_i.nonzero?
+    
+    SkaterUpdater.new(verbose: true).update_skaters(details: details)
   end
 
   ################

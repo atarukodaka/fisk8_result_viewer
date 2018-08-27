@@ -10,6 +10,7 @@
 - components controller is necessary ??
 - codecov: icedance elements
 - competition feature: adding :short_name column brings us error somehow
+- skater: age ??
 
 ### new feature
 
