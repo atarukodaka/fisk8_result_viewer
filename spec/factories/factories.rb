@@ -5,12 +5,20 @@ FactoryBot.define do
     nation { "JPN" }
     isu_number { 1 }
     category { "MEN" }
+    birthday { "1.1.1980" } 
+    coach { "Jiro YAMADA" }
+    hometown { "TOKYO" }
+    club { "Jingu" } 
 
     trait :ladies do
       name { "Leia ORGANA" }
       nation { "USA" }
       isu_number { 2 }
       category { "LADIES" }
+      birthday { "1.1.1990" }
+      coach { "Rola ORGANA" }
+      hometown { "L.A." }
+      club { "Cri" } 
     end
   end
 end

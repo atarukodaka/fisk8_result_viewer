@@ -14,15 +14,8 @@ class SkaterDecorator < EntryDecorator
       h.concat(h.span_link_icon())
     end
   end
-  def age
-    if model.birthday.present?
-      ((Date.today - Date.parse(model.birthday))/365).to_i
-    else
-      ""
-    end
-  end
   def bio_updated_at
-    l(model.bio_updated_at)
+    (model.bio_updated_at.present?) ? l(model.bio_updated_at) : ""
   end
 end
 

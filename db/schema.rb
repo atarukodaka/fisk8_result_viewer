@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "isu_number"
     t.string "coach"
     t.string "choreographer"
-    t.string "birthday"
+    t.date "birthday"
     t.string "hobbies"
     t.string "hometown"
     t.string "height"
