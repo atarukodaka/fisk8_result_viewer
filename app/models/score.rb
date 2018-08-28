@@ -37,7 +37,6 @@ class Score < ApplicationRecord
     performed_segment.starting_time.in_time_zone(competition.timezone)
   end
 =end
-  
 =begin
   def elements_summary
     elements.map(&:name).join('/')
