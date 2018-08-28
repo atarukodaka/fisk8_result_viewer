@@ -83,19 +83,15 @@ class CompetitionUpdater
       competition.scores.create!(category: category, segment: segment) do |score|
         ActiveRecord::Base.transaction {
           ## find skater
-          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first ## TODO: for nil
+          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {} 
 
           skater = ((h[:isu_number].present? ) ?
                      Skater.where(isu_number: h[:isu_number]).first :
                      Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
 
-          ## find relevant category result
-          segment_type = (segment =~ /SHORT/) ? :short : :free
-          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
-          
           ## set attributes
           score.attributes = {
-            category_result: relevant_cr,
+            #category_result: relevant_cr,
             skater: skater,
             #segment_starting_time: segment_starting_time,
           }.merge(additionals)
@@ -103,6 +99,18 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs)
 
           score.save!  ## need to save here to create children
+
+          ## relevant cr
+          segment_type = (segment =~ /SHORT/) ? :short : :free
+          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          case segment_type
+          when :short
+            relevant_cr.update(short: score)
+          when :free
+            relevant_cr.update(free: score)
+          else
+            raise "segment type error: #{segment_type}"
+          end
           
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}

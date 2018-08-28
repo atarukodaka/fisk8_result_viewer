@@ -7,6 +7,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       t.string :category
       t.string :segment
+      t.string :segment_type
       t.date :date, default: Date.new(1970, 1, 1)
       #t.datetime :segment_starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
       t.string :result_pdf
@@ -23,7 +24,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       t.belongs_to :competition
       t.references :skater
-      t.references :category_result
+      #t.references :category_result
       #t.references :performed_segment
     end
 

@@ -32,6 +32,9 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       ## relations
       t.belongs_to :competition
       t.references :skater
+
+      t.belongs_to :short, class_name: "Score"
+      t.belongs_to :free, class_name: "Score"
     end
 
     ################

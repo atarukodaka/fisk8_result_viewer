@@ -20,7 +20,11 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "free_ranking"
     t.integer "competition_id"
     t.integer "skater_id"
+    t.integer "short_id"
+    t.integer "free_id"
     t.index ["competition_id"], name: "index_category_results_on_competition_id"
+    t.index ["free_id"], name: "index_category_results_on_free_id"
+    t.index ["short_id"], name: "index_category_results_on_short_id"
     t.index ["skater_id"], name: "index_category_results_on_skater_id"
   end
 
@@ -82,6 +86,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "starting_number"
     t.string "category"
     t.string "segment"
+    t.string "segment_type"
     t.date "date", default: "1970-01-01"
     t.string "result_pdf"
     t.float "tss", default: 0.0
@@ -94,8 +99,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "category_result_id"
-    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
