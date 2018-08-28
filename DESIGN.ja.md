@@ -10,4 +10,8 @@ CategoryResult.short, CategoryResult.free と持たせようと思ったが、�
 
 ## AjaxDatabales
 
-ajax-datatables-rails という mod もあるが、
+レコードのテーブル表示。ajax-datatables-rails という module もあるが、使いやすいよう自分で作った。
+
+
+
+

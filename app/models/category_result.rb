@@ -44,7 +44,7 @@ class CategoryResult < ApplicationRecord
   end
 
   ################
-
+=begin
   def short_tss
     short.try(:tss)
   end
@@ -74,6 +74,15 @@ class CategoryResult < ApplicationRecord
   end
   def free_bv
     free.try(:base_value)
+  end
+=end
+  [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
+    define_method("short_#{key}".to_sym) do
+      short.send(key)
+    end
+    define_method("free_#{key}".to_sym) do
+      free.send(key)
+    end
   end
 
   ## scopes
