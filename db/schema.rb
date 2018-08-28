@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
+    t.integer "category_result_id"
+    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end

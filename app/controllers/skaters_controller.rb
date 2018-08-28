@@ -13,6 +13,7 @@ class SkatersController < ApplicationController
 =end
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
+    #AjaxDatatables::Datatable.new(self).records(skater.category_results.recent.includes(:competition, :scores)).columns(columns).default_orders([[:date, :desc]])
     AjaxDatatables::Datatable.new(self).records(skater.category_results.recent.includes(:competition, :scores)).columns(columns).default_orders([[:date, :desc]])
   end
   def show

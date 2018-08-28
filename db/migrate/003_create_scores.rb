@@ -24,7 +24,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       t.belongs_to :competition
       t.references :skater
-      #t.references :category_result
+      t.references :category_result
       #t.references :performed_segment
     end
 
