@@ -23,6 +23,10 @@ ja:
       category_results: カテゴリー結果
       segment_results: セグメント結果
 
+  home:
+    index:
+      about: このサイトについて
+    
   skaters:
     show:
       skater_summary: 選手情報

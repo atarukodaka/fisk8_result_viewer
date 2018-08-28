@@ -41,13 +41,13 @@ class CompetitionUpdater
 
           parsed[:segments][category].each do |segment, seg_item|
             ###
-            ps = competition.performed_segments.create do |ps|
+            competition.performed_segments.create do |ps|
               ps.category = category
               ps.segment = segment
               ps.starting_time = seg_item[:time]
             end
             ###
-            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: ps.starting_time.to_date)
+            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
       end
