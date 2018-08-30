@@ -11,10 +11,10 @@ module LinkToHelper
     link_to(text, skater_path(isu_number || name), params)
   end
 
-  def link_to_competition(text = nil, competition, category: nil, segment: nil)
+  def link_to_competition(text = nil, competition, category: nil, segment: nil, ranking: nil)
     text ||= segment || category || competition.name
 
-    link_to(text, competition_path(competition.short_name, category, segment))
+    link_to(text, competition_path(competition.short_name, category, segment, ranking))
   end
   
   def link_to_competition_site(text = nil, competition)
@@ -46,10 +46,7 @@ module LinkToHelper
     end
   end
   def link_to_pdf(url, target: "_blank")
-    #img_url = "http://wwwimages.adobe.com/content/dam/acom/en/legal/images/badges/Adobe_PDF_file_icon_24x24.png"
-    img_url = '/assets/pdf_icon.png'
     link_to(image_tag(asset_path('pdf_icon.png')), url, target: target)
-    #link_to(image_tag(img_url), url, target: target)
   end
   def span_link_icon
     content_tag(:span, "", :class => "glyphicon glyphicon-link")

@@ -1,0 +1,131 @@
+ja:
+  date:
+    formats:
+      default: "%Y/%m/%d"
+
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M:%S %z"
+
+  controller:
+    home: ホーム
+    skaters: スケーター
+    competitions: 競技会
+    scores: スコア
+    elements: 技術要素
+    components: コンポーネント
+    scorecalc: スコア計算
+    
+  view:
+    competition:
+      competition_info: 競技会情報
+      performed_segment: 実施セグメント
+    skater:
+      skater_summary: 選手情報
+      competition_results: 競技会結果
+    score:
+      score_summary: スコア情報
+      relevant_video: 関連映像
+      elements: 実施要素
+      components: コンポーネント
+      deductions: 減点
+      see_other_relevant_videos: 他の映像をご参照ください
+      
+  filter:
+    toggle_filter: 検索フィルターを表示/非表示
+    offset: オフセット
+
+  attributes:
+    skater_name: スケーター名
+    category: カテゴリー
+    segment: セグメント
+    nation: 国名
+    ranking: 順位
+    date: 日付
+    points: 得点
+  
+  activerecord:
+    models:
+      skater: スケーター
+      competition: 競技会
+
+    attributes:
+      skater:
+        name: スケーター名
+        isu_number: ISU登録番号
+        isu_records: ISU記録
+        birthday: 誕生日
+        height: 身長
+        club: 所属クラブ
+        hometown: ホームタウン
+        coach: コーチ
+        choreographer: 振付師
+        bio_updated_at: バイオ更新日時
+
+      competition:
+        name: 競技会名
+        city: 開催都市
+        country: 開催国
+        location: 開催場所
+        period: 開催期間
+        competition_class: 競技クラス
+        competition_type: 競技タイプ
+        season: シーズン
+        start_date: 開始日
+        end_date: 終了日
+        timezone: タイムゾーン
+        comment: コメント
+        site_url: サイトURL
+        short_name: 略称
+
+      category_result:
+        competition_name: 競技会名
+        short_ranking: ショート順位
+        short_tss: ショートTSS
+        short_tes: ショートTES
+        short_pcs: ショートPCS
+        short_deductions: ショート減点
+        short_bv: ショート基礎点
+        free_ranking: フリー順位
+        free_tss: フリーTSS
+        free_tes: フリーTES
+        free_pcs: フリーPCS
+        free_deductions: フリー減点
+        free_bv: フリー基礎点
+
+      score:
+        name: スコア名
+        segment_starting_time: セグメント開始時刻
+        result_pdf: リザルトPDF
+        skater_name: 選手名
+        deductions: 減点
+        base_value: 基礎点
+        elements_summary: 要素一覧
+        components_summary: コンポーネント一覧
+        segment_starting_time: 開始時刻
+        starting_number: 開始番号
+
+      element:
+        score_name: スコア名
+        competition_name: 競技会名
+        category: カテゴリー
+        segment: セグメント
+        season: シーズン
+        number: 番号
+        name: 要素名
+        element_type: 要素の型
+        level: レベル
+        info: 付加情報
+        credit: クレジット
+        judges: ジャッジ
+        value: 得点
+        base_value: 基礎点
+
+      component:
+        score_name: スコア名
+        competition_name: 競技会名
+        number: 番号
+        name: コンポーネント名
+        factor: ファクター
+        judges: ジャッジ
+        value: 得点

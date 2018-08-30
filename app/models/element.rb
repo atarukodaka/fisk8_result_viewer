@@ -2,6 +2,7 @@ class Element < ApplicationRecord
   include ScoreVirtualAttributes
   
   ## relations
+  #has_many :element_judge_details, dependent: :destroy
   belongs_to :score
 
   ## scopes
@@ -9,7 +10,7 @@ class Element < ApplicationRecord
 
   ## callbacks
   before_save :set_element_type, :set_level
-  
+
   private
   def set_element_type
     self[:element_type] = 
@@ -70,7 +71,7 @@ class Element < ApplicationRecord
         name =~ /([B1-4])*$/
         $1.to_i
       when :choreo
-        1  # TODO for icedance ??
+        1  # TODO: choreo for icedance ??
       else
         0
       end

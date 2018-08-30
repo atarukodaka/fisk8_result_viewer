@@ -19,12 +19,14 @@ RSpec.describe 'api routings', type: :routing do
     }
   end
   ################
+=begin
   describe Api::ResultsController do
     it {
       expect(get('/api/results')).to route_to(controller: "api/results", action: "index", format: "json")
     }
     
   end
+=end
   ################
   describe Api::ScoresController do
     it {

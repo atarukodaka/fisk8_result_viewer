@@ -1,6 +1,6 @@
-class Parsers
+module CompetitionParser
   class Wtt2017 < IsuGeneric
-    class CompetitionParser < IsuGeneric::CompetitionParser
+    class SummaryParser < IsuGeneric::SummaryParser
       def parse_name(_page)
         "ISU World Team Trophy 2017"
       end
@@ -15,27 +15,31 @@ class Parsers
         segment = ""
         summary = []
         entry_url = ""
+        segment_result_url = ""
+
         rows[1..-1].each do |row|
           next if row.xpath("td").blank?
 
           if row.xpath("td[2]").text == 'Entries'
             category = row.xpath("td[1]").text.upcase
             ## NOTE: WTT2017 doesnt provide category result, so we use entry list as a result (to get isu number for skaters)
-            entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
+            #entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
             summary << {
               category: category,
               segment: '',
-              result_url: entry_url,
+              result_url: '',
               score_url: '',
             }
           elsif row.xpath("td").count == 2
             segment = row.xpath("td[1]").text.upcase
+          elsif row.xpath("td[1]").text == "Starting Order/Detailed Classification"
+            segment_result_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s            
           elsif row.xpath("td[1]").text == "Judges Score (pdf)"
             score_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s
             summary << {
               category: category, 
               segment: segment,
-              result_url: "",
+              result_url: segment_result_url,
               score_url: score_url,
             }
           end
@@ -43,7 +47,7 @@ class Parsers
         summary
       end
       # rubocop:disable all
-      def parse_time_schedule(_page)
+      def parse_time_schedule(_page, date_format:)
         Time.zone ||= "UTC"
         [
          {
@@ -91,27 +95,6 @@ class Parsers
       end
       # rubocop:enable all
     end  ##
-    class ResultParser < IsuGeneric::ResultParser
-      def parse_skater_name(v)
-        v.xpath('a/text()').map(&:text).join(' / ').tr("\u00a0", ' ')
-      end
-      def parse_nation(v)
-        v.delete("\u00a0")
-      end
-      def parse(url)
-        page = get_url(url)
-        page.encoding = 'iso-8859-1'
-        page.xpath("//table[1]/tr")[1..-1].map do |row|
-          {
-            #ranking: row.xpath("td[1]").text.to_i,
-            ranking: 0,
-            skater_name: parse_skater_name(row.xpath("td[2]")),
-            nation: parse_nation(row.xpath("td[3]").text),
-            isu_number: (row.xpath("td[2]/a/@href").text =~ /([0-9]+)\.htm$/) ? $1.to_i : nil,
-          }
-        end
-      end
-    end
   end ## class Wtt2017
 end
 

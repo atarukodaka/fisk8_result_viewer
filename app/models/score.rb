@@ -1,14 +1,17 @@
 class Score < ApplicationRecord
+  before_save :set_score_name
+  
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
 
   belongs_to :competition
   belongs_to :skater
-  belongs_to :result, required: false
+  belongs_to :category_result, optional: true
+  #belongs_to :performed_segment, required: false
 
   ## validations
-  validates  :date, presence: true
+  #validates  :segment_starting_time, presence: true
 
   ## virtual attributes
   def competition_name
@@ -29,13 +32,19 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
+=begin
+  def segment_starting_time
+    performed_segment.starting_time.in_time_zone(competition.timezone)
+  end
+=end
+=begin
   def elements_summary
     elements.map(&:name).join('/')
   end
   def components_summary
     components.map(&:value).join('/')
   end
-  
+=end  
   ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "%SHORT%") }
@@ -44,16 +53,6 @@ class Score < ApplicationRecord
   scope :segment, ->(s){ where(segment: s) }
 
   ##
-  def update(parsed)
-    attrs = self.class.column_names.map(&:to_sym) & parsed.keys
-    self.attributes = parsed.slice(*attrs)
-    set_score_name
-    ActiveRecord::Base.transaction {
-      save!
-      parsed[:elements].map {|e| elements.create(e)}
-      parsed[:components].map {|e| components.create(e)}
-    }
-  end
   def summary
     skater_name = self.skater.try(:name) || self.skater_name
     nation = self.skater.try(:nation) || self.nation
@@ -64,12 +63,13 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
-    return if name.present?
+    segment_type = (segment =~ /SHORT/) ? :short : :free
+    if name.blank?
+      category_abbr = Category.find_by(name: category).try(:abbr)
+      segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-    category_abbr = Category.find_by(name: category).try(:abbr)
-    segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-
-    self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
+      self.name = [competition.try(:short_name), category_abbr, segment_abbr, ranking].join('-')
+    end
     self
   end
 end

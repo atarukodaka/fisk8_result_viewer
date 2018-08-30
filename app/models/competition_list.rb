@@ -17,25 +17,25 @@ class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
 
-  DEFAULT_PARSER = :isu_generic
+  #DEFAULT_PARSER = :isu_generic
   
   field :url
-  field :parser_type, default: DEFAULT_PARSER
+  field :parser_type, default: CompetitionParser::DEFAULT_PARSER
   field :comment
   
   class << self
     def load_file
       raw_data.map do |item|
+        hash = {}
         case item
         when String
-          {url: item, parser_type: DEFAULT_PARSER, }
+          hash[:site_url] = item
         when Hash
-          {
-            url: item["url"],
-            parser_type: item["parser"] || DEFAULT_PARSER,
-            comment: item['comment'],
-          }
+          hash = item
         end
+        hash[:parser_type] ||= CompetitionParser::DEFAULT_PARSER
+        hash
+        
       end
     end
   end

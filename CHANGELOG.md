@@ -3,14 +3,40 @@
 - property: readonly, writeonly
 
 - date search
+- delete country-city mapping?
+- panels: panel db entries
+- youtube register
+- i18n
+- components controller is necessary ??
+- codecov: icedance elements
+- competition feature: adding :short_name column brings us error somehow
+- skater: age ??
+- elements/components: date or starting_time of score ?
 
 ### new feature
-- embed youtube in score (or just link to search page ?)
 
 ### check before release
-- app/controller/application_controller: unless Rails.env.develop
+- app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.4-pre2
+- competition.date as Date
+- delete result controller
+- owg team
+- ajax-databases into lib/
+- embed youtube in score (or just link to search page ?)
+- i18n
+- elements: UR, DG, EE
+- score has date column
+
+## 1.0.4-pre1
+- delete graphs on skater
+- updater to update competitions, scores, skaters
+
+## 1.0.3-pre1
+- default orders: :number, :asc in scores/elements, components
+- score calculater(techinical only) implemented
 
 ## 1.0.2 2017/1024
 

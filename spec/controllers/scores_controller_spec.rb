@@ -28,6 +28,7 @@ RSpec.describe ScoresController, type: :controller do
     describe 'filter: ' do
       datatable.columns.select(&:searchable).map(&:name).each do |key|
         it key do
+          binding.pry if key == "segment_starting_time"
           expect_filter(world_score, finlandia_score, key)
         end
       end

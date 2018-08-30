@@ -102,7 +102,7 @@ module AjaxFeatureHelper
       find(key).click
     end
     # trigger
-    binding.pry
+    #binding.pry
     ajax_trigger
     page
   end
@@ -202,12 +202,13 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  ## FactoryGirl
-  require 'factory_girl_rails'
-  config.include FactoryGirl::Syntax::Methods
+  ## FactoryBot
+  require 'factory_bot_rails'
+  config.include FactoryBot::Syntax::Methods
   config.before(:all) do
-    FactoryGirl.reload
+    FactoryBot.reload
   end
+
   config.include Helper
 end
 

@@ -15,6 +15,7 @@ class ComponentsDatatable < IndexDatatable
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",
+      #date: "scores.performed_segment.starting_time",
       date: "scores.date",
       ranking: "scores.ranking",
       skater_name: "skaters.name",

@@ -5,12 +5,14 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module Fisk8ResultViewer
-  VERSION = "1.0.2-pre3"
+  VERSION = "1.0.4-pre2"
   
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
+    #config.i18n.default_locale = :ja
 
+    config.enable_dependency_loading = true     # for rails 5 production
     config.autoload_paths += %W(#{config.root}/lib #{config.root}/datatables #{config.root}/refinements)
     config.generators do |g|
       g.javascripts false

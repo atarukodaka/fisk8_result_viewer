@@ -8,20 +8,22 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.0'
-gem 'sqlite3'
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', platforms: :ruby
 
 gem 'coffee-rails', '~> 4.2'
-gem 'turbolinks', '~> 5'
+#gem 'turbolinks', '~> 5'
 #gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
 end
+
+gem 'rspec'   ## for heroku
 
 group :test do
   gem 'capybara', '~> 2.13.0'
@@ -36,7 +38,9 @@ group :test do
 
   gem 'coveralls', require: false
   gem 'codecov', :require => false
-  gem 'factory_girl_rails'
+  #gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
+  # gem 'rubocop-rspec'
 end
 
 group :development do
@@ -69,7 +73,7 @@ gem 'google-analytics-rails'
 gem 'draper'
 gem 'config'
 
-gem 'gnuplot'
+#gem 'gnuplot'
 gem 'open_uri_redirections'    # for http: -> https: redirect
 gem 'contracts'
 gem 'to_bool'
@@ -78,7 +82,7 @@ gem 'sitemap_generator'
 
 gem 'jquery-datatables-rails'
 gem 'hashie'
-gem 'active_hash'
-gem 'gretel'
+gem 'active_hash', '~> 1.5'   # 2.x doenst support Ruby < 2.4 and Rails < 5
+gem 'gretel'       ## breadcriumb
 gem 'rack-dev-mark'
 gem 'dotenv-rails', require: 'dotenv/rails-now'

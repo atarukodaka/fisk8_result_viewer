@@ -16,9 +16,9 @@ module IndexActions
       }
       format.csv {
         require 'csv'
-        csv = CSV.generate(headers: table.column_names, write_headers: true) do |csv|
+        csv = CSV.generate(headers: table.column_names, write_headers: true) do |c|
           table.limit.as_json.each do |row|
-            csv << row
+            c << row
           end
         end
         
@@ -29,6 +29,6 @@ module IndexActions
   ################
   # unrouted methods
   def create_datatable
-    [controller_name.camelize, Datatable].join.constantize.new(view_context)
+    [controller_name.camelize, "Datatable"].join.constantize.new(view_context)
   end
 end

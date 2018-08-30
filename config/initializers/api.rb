@@ -7,8 +7,8 @@ end
 class Api::CompetitionsController < CompetitionsController
 end
 
-class Api::ResultsController < ResultsController
-end
+#class Api::ResultsController < ResultsController
+#end
 
 class Api::ScoresController < ScoresController
 end

@@ -1,8 +1,6 @@
 class Category < ActiveHash::Base
-  #
-  #
-  #
   field :accept_to_update, default: true
+
   self.data =
     [
      ### senior
@@ -43,19 +41,26 @@ class Category < ActiveHash::Base
        name: "JUNIOR ICE DANCE",
        abbr: "JD",
      },
+     #### TEAM
+     {
+       name: "TEAM MEN",
+       abbr: "TM",
+     },
+     {
+       name: "TEAM LADIES",
+       abbr: "TL",
+     },
+     {
+       name: "TEAM PAIRS",
+       abbr: "TP",
+     },
+     {
+       name: "TEAM ICE DANCE",
+       abbr: "TD",
+     },
     ]
 
-  def update_skaters
-    parser = Parser::SkaterParser.new
-    ActiveRecord::Base.transaction do
-      parser.parse_skaters(name, isu_bio_url).each do |hash|
-        Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-          skater.update(hash)
-        end
-      end
-    end  # transaction
-  end
-    
+  ################
   class << self
     ## class methods
     def accept!(categories)
@@ -68,9 +73,6 @@ class Category < ActiveHash::Base
     end
     def accept?(category)
       where(accept_to_update: true, name: category.to_s).present?
-    end
-    def update_skaters
-      all.select(&:isu_bio_url).map(&:update_skaters)
     end
   end ## self
 end
