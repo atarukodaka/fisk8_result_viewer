@@ -79,6 +79,30 @@ module AjaxDatatables
     def column_names
       columns.map(&:name)
     end
+    def datatable_attrs
+      attrs = settings.merge(
+        {
+          retrieve: true,
+        })
+      attrs[:columns] = column_names.map {|name| { data: name, name: name, visible: columns[name].visible, orderable: columns[name].orderable, searchable: columns[name].searchable } }
+      attrs
+    end
+    def attrs
+      settings.merge(
+        {
+          retrieve: true,
+          columns: column_names.map {|name|
+            {
+              data: name, 
+              name: name, 
+              visible: columns[name].visible, 
+              orderable: columns[name].orderable,
+              searchable: columns[name].searchable
+            }
+          },
+          order: order,
+        })
+    end
     def render(partial: "datatable", locals: {})
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
     end
