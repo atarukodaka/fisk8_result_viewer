@@ -1,10 +1,8 @@
 - datatable || raise('no table given')
-
 - table_id = datatable.table_id
-
 - attrs = datatable.attrs
-div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 
+div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 script
   | attrs = $('#attrs-#{table_id}').data('json');
   - if attrs[:ajax]
@@ -18,46 +16,8 @@ script
 
   | jQuery(function($){
   | var t = $("##{table_id}").DataTable( attrs );
-  | });
-
-/- column_names = datatable.column_names
-
-/script
-  | jQuery(function($){
-  | var t = $("##{table_id}").DataTable(
-  | {
-  |   retrieve: true,
-  - settings.each do |key, value|
-    |   #{key}: #{value.to_json.html_safe},
-  - if settings[:ajax].present?
-    |  ajax: { 
-    |    url: "#{settings[:ajax][:url]}",
-    |    data: function(d){ 
-    |      d.name_operator = $('#name_operator').val(),
-    |      d.goe_operator = $('#goe_operator').val(),
-    |      d.value_operator = $('#value_operator').val(),
-    |      d.season_from = $('#season_from').val(),
-    |      d.season_to = $('#season_to').val()
-    |    }
-    |  },
-  |    columns: [
-  -    datatable.column_names.each do |column_name|
-    |    { 
-    |        data: "#{column_name}",
-    |        name: "#{column_name}",
-    |        visible: #{ datatable.columns[column_name].visible },
-    |        orderable: #{ datatable.columns[column_name].orderable },
-    |        searchable: #{ datatable.columns[column_name].searchable },
-    |    },
-  |    ],
-      order: #{datatable.order.to_json.html_safe}
-  |   } 
-  | );
-
   // numbering
   - if numbering_column_name = datatable.columns.find(&:numbering).try(:name)
-    /- numbering_column_index = datatable.column_names.index(numbering_column_name)
-    / var numbering_column = #{numbering_column_index};
     | t.on('order.dt search.dt', function(){
     |     t.column("#{numbering_column_name}:name", {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
     |         cell.innerHTML = i+1;
