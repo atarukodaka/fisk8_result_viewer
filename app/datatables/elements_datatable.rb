@@ -26,7 +26,6 @@ class ElementsDatatable < IndexDatatable
     [:date, :credit, :info].each {|key| columns[key].searchable = false }    
 
     ## visible
-
     [:competition_class, :competition_type].each {|key|
       columns[key].visible = false
       columns[key].orderable = false

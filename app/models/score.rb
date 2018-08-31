@@ -10,9 +10,6 @@ class Score < ApplicationRecord
   belongs_to :category_result, optional: true
   #belongs_to :performed_segment, required: false
 
-  ## validations
-  #validates  :segment_starting_time, presence: true
-
   ## virtual attributes
   def competition_name
     competition.name
@@ -32,19 +29,7 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
-=begin
-  def segment_starting_time
-    performed_segment.starting_time.in_time_zone(competition.timezone)
-  end
-=end
-=begin
-  def elements_summary
-    elements.map(&:name).join('/')
-  end
-  def components_summary
-    components.map(&:value).join('/')
-  end
-=end  
+
   ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "%SHORT%") }

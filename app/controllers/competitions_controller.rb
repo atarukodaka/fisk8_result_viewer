@@ -1,6 +1,5 @@
 class CompetitionsController < ApplicationController
   include IndexActions
-  include Contracts
   
   def result_type(category, segment)
     if category.blank? && segment.blank?
@@ -30,8 +29,8 @@ class CompetitionsController < ApplicationController
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise("ERROR: no such score: " + [competition.short_name, category, segment, ranking].join('/'))
-
+              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category, segment, ranking].join('/')))
+      
       respond_to do |format|
         format.html {
           redirect_to(controller: :scores, action: :show, name: score.name)
@@ -48,19 +47,16 @@ class CompetitionsController < ApplicationController
         }
         format.html {
           data = {
-            #competition_summary: competition_summary(competition),
             competition: competition,
             category: category,
             segment: segment,
             result_type: result_type(category, segment),
-            #results: result_datatable(competition, category, segment),
           }.merge(results)
           render :show, locals: data
         }
         format.json {
           render json: competition.slice(*[:name, :short_name, :competition_class, :competition_type,
                                            :city, :country, :start_date, :end_date, :timezone, :comment]).merge(results)
-
         }
       end
     end

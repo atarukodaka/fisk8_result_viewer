@@ -31,21 +31,28 @@ module AjaxDatatables
 
     def_delegators :@view_context, :params, :link_to, :url_for
 
-    property :data, nil
+    property(:data, nil)
     property(:records) {  fetch_records() }
-    properties :default_orders, default: []
-    property(:settings){ default_settings }
+    property(:settings) { default_settings }
+    properties(:default_orders, default: [])
+
     attr_reader :view_context
 
     def initialize(view_context = nil)
       @view_context = view_context
       yield(self) if block_given?
     end
+    def table_id
+      "table_#{self.object_id}"
+    end
+    
+    def view    # short cut for view_context
+      @view_context
+    end
     ## columns accessors
     def columns(cols=nil)     # cols can be array of Hash or Symbol/String
       if cols                   # setter for method chain
-        self.columns = cols
-        self 
+        self.tap {|d| d.columns = cols }
       else                     # getter
         @columns   
       end
@@ -53,6 +60,7 @@ module AjaxDatatables
     def columns=(cols) # setter
       @columns = AjaxDatatables::Columns.new(cols, datatable: self)
     end
+    
     ## data fetching/manipulation
     def fetch_records
       []
@@ -69,7 +77,7 @@ module AjaxDatatables
       {
         processing: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 25,
       }
     end
     def ajax(serverside: false, url: )
@@ -79,15 +87,7 @@ module AjaxDatatables
     def column_names
       columns.map(&:name)
     end
-    def datatable_attrs
-      attrs = settings.merge(
-        {
-          retrieve: true,
-        })
-      attrs[:columns] = column_names.map {|name| { data: name, name: name, visible: columns[name].visible, orderable: columns[name].orderable, searchable: columns[name].searchable } }
-      attrs
-    end
-    def attrs
+    def as_attrs
       settings.merge(
         {
           retrieve: true,
@@ -106,17 +106,10 @@ module AjaxDatatables
     def render(partial: "datatable", locals: {})
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
     end
-    def table_id
-      "table_#{self.object_id}"
-    end
     def order
       default_orders.map {|column, dir|
         [column_names.index(column.to_s), dir]
-        #["#{column.to_s}:name", dir]
       }
-    end
-    def view    # short cut for view_context
-      @view_context
     end
     ################
     ## format

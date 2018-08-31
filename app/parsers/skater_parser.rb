@@ -4,7 +4,6 @@ class SkaterParser
   
   def parse_skaters(category, url)
     page = get_url(url)
-    puts "#{category}: #{url}"
     nation = ""
     page.xpath("//table[1]/tr").map do |row|
       parse_skater(row, category: category, default_nation: nation).tap {|s|
