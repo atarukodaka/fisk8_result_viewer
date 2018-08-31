@@ -13,6 +13,8 @@
 - skater: age ??
 - elements/components: date or starting_time of score ?
 
+- skater updater spec: detail
+
 ### new feature
 
 ### check before release
