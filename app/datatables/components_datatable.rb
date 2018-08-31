@@ -33,7 +33,6 @@ class ComponentsDatatable < IndexDatatable
       columns[key].orderable = false
     }
 
-    
     default_orders([[:value, :desc]])
   end
   def fetch_records

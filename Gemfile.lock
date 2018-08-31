@@ -85,7 +85,6 @@ GEM
       activesupport (>= 3.0)
       deep_merge (~> 1.2.1)
       dry-validation (>= 0.10.4)
-    contracts (0.16.0)
     coveralls (0.8.22)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -357,7 +356,6 @@ DEPENDENCIES
   codecov
   coffee-rails (~> 4.2)
   config
-  contracts
   coveralls
   database_cleaner
   dotenv-rails

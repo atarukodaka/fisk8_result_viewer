@@ -75,7 +75,6 @@ gem 'config'
 
 #gem 'gnuplot'
 gem 'open_uri_redirections'    # for http: -> https: redirect
-gem 'contracts'
 gem 'to_bool'
 #gem 'csv_builder'
 gem 'sitemap_generator'

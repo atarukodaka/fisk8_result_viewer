@@ -7,6 +7,8 @@ class SkaterUpdater
     parser = SkaterParser.new
 
     Category.all.select(&:isu_bio_url).each do |category|
+      puts "#{category.name}: #{category.isu_bio_url}" if @verbose
+    
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|

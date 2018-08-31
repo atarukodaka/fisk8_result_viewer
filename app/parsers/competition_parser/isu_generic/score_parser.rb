@@ -1,7 +1,6 @@
 module CompetitionParser
   class IsuGeneric
     class ScoreParser
-      include Contracts
       include PdfConvertable
       
       SCORE_DELIMITER = /Score Score/

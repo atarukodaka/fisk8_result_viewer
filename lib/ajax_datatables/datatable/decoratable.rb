@@ -1,6 +1,5 @@
 module AjaxDatatables::Datatable::Decoratable
   def decorate
-    #add_manipulator(->(r){ r.decorate })
     self.extend AjaxDatatables::Datatable::Decorate
     self
   end

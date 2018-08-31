@@ -1,6 +1,6 @@
 - datatable || raise('no table given')
 - table_id = datatable.table_id
-- attrs = datatable.attrs
+- attrs = datatable.as_attrs
 
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 script
