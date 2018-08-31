@@ -12,7 +12,5 @@ module AjaxDatatables::Datatable::DeferLoading
     super(r)
       .order(default_orders.map {|column, dir| [columns[column].source, dir].join(' ')})
       .limit(settings[:pageLength] || 25).decorate
-
-
   end
 end

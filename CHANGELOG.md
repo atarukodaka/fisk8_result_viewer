@@ -10,6 +10,8 @@
 - components controller is necessary ??
 - codecov: icedance elements
 - competition feature: adding :short_name column brings us error somehow
+- skater: age ??
+- elements/components: date or starting_time of score ?
 
 ### new feature
 
@@ -26,6 +28,7 @@
 - embed youtube in score (or just link to search page ?)
 - i18n
 - elements: UR, DG, EE
+- score has date column
 
 ## 1.0.4-pre1
 - delete graphs on skater

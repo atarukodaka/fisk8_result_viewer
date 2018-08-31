@@ -10,7 +10,7 @@ class StaticsController < ApplicationController
       common_sql = {"competitions.season": season}
       common_sql.update("competitions.competition_class": competition_class) if competition_class.present?
       
-      results = Result.joins(:competition, :skater, :scores).where(common_sql).where(category: category)
+      results = CategoryResult.joins(:competition, :skater, :scores).where(common_sql).where(category: category)
       scores = Score.joins(:competition, :skater).where(common_sql).where(category: category)
       short_scores = scores.short
       free_scores = scores.free
