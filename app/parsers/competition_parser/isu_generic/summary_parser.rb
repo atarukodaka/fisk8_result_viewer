@@ -36,17 +36,20 @@ module CompetitionParser
             }
           end
         end
-        competition[:start_date] = time_schedule.map {|d| d[:time]}.min || Time.new(1970, 1, 1)
-        competition[:end_date] = time_schedule.map {|d| d[:time]}.max || Time.new(1970, 1, 1)
+        competition[:start_date] = time_schedule.map {|d| d[:time]}.min.to_date || Date.new(1970, 1, 1)
+        competition[:end_date] = time_schedule.map {|d| d[:time]}.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] = (time_schedule.present? ) ? time_schedule.first[:time].time_zone.name : "UTC"
-
-        year, month = competition[:start_date].year, competition[:start_date].month
-        year -= 1 if month <= 6
-        competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
+        competition[:season] = skate_season(competition[:start_date])
         competition
       end
       ################################################################
       protected
+      def skate_season(date)
+        year = date.year
+        year -= 1 if date.month <= 6
+        "%04d-%02d" % [year, (year+1) % 100]
+      end
+
       def parse_city_country(page)
         node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""

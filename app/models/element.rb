@@ -10,7 +10,7 @@ class Element < ApplicationRecord
 
   ## callbacks
   before_save :set_element_type, :set_level
-  
+
   private
   def set_element_type
     self[:element_type] = 

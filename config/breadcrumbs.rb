@@ -1,10 +1,10 @@
 crumb :root do
-  link "Home", root_path
+  link t("controller.home", default: "Home"), root_path
 end
 
 ################
 crumb :skaters do
-  link "Skaters", skaters_path
+  link t("controller.skaters", default: "Skaters"), skaters_path
   parent :root
 end
 crumb :skater do |skater|
@@ -14,7 +14,7 @@ end
 ################
 # competitions
 crumb :competitions do
-  link "Competitions", competitions_path
+  link t("controller.competitions", default: "Competitions"), competitions_path
   parent :root
 end
 crumb :competition do |competition|
@@ -40,15 +40,17 @@ end
 
 ################
 # category results
+=begin
 crumb :results do
   link "Results", results_path
   parent :root
 end
+=end
 
 ################
 # scores
 crumb :scores do
-  link "scores", scores_path
+  link t("controller.scores", default: "scores"), scores_path
   parent :root
 end
 
@@ -60,7 +62,7 @@ end
 
 ################
 crumb :elements do
-  link "Elements", elements_path
+  link t("controller.elements", default: "Elements"), elements_path
   parent :root
 end
 

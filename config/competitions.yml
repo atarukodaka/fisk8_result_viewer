@@ -125,13 +125,12 @@
   city: Osaka
 - http://www.isuresults.com/results/season1718/gpfra2017/
 - http://www.isuresults.com/results/season1718/gpusa2017/
-- http://www.isuresults.com/results/season1718/owg2018/
 -
   name: ISU Grand Prix of Figure Skating Final 2017
   site_url: http://www.isuresults.com/results/season1718/gpf1718/
   parser_type: gpjpn
   city: Nagoya
-
+- http://www.isuresults.com/results/season1718/owg2018/
   
 ## for debug
 #-
@@ -142,11 +141,6 @@
 #- http://www.isuresults.com/results/season1718/gpfra2017/
 
 #- http://www.isuresults.com/results/fc2012/
--
-  site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
-  parser_type: gpjpn
-  name: ISU GP NHK Trophy 2017
-  city: Osaka
 #- http://www.pfsa.com.pl/results/1314/WC2013/
 #- http://www.isuresults.com/results/season1718/owg2018
-- http://www.isuresults.com/results/season1718/gpusa2017/
+#- http://www.isuresults.com/results/season1718/gpusa2017/

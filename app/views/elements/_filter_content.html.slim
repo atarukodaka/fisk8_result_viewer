@@ -1,11 +1,12 @@
 - table || raise
 
-= form_group("Element") do
+/= form_group(t("activerecord.attributes.element.name", default: "name")) do
+= form_group(Element.human_attribute_name(:name)) do
   = select_tag(:name_operator, options_for_select({'=': :eq, "&sube;".html_safe => :matches}, params[:name_operator]), onchange: ajax_draw(table))
   = text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table))
-= form_group("Type", select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table)))
+= form_group(Element.human_attribute_name(:element_type), select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table)))
 
-= form_group("GOE") do
+= form_group(Element.human_attribute_name(:goe)) do
   = select_tag(:goe_operator, options_for_select({'=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq}, params[:goe_operator]), onchange: ajax_draw(table))
   = text_field_tag(:goe, params[:goe], size: 60, onchange: ajax_search(:goe, table))
 

@@ -55,7 +55,7 @@ h3 Highest  Score
     - cols = [:no, :skater_name_, :max_tss]
     = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
 
-.row
+/.row
   .col-sm-4
     h4 Base Value
     - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")

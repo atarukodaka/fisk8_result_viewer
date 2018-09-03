@@ -2,7 +2,7 @@ class SkatersDatatable < IndexDatatable
   def initialize(*)
     super
 
-    columns([:name, :category, :nation, :isu_number])
+    columns([:name, :category, :nation, :isu_number, :birthday, :club, :coach])
     default_orders([[:category, :asc], [:name, :asc]])
   end
 

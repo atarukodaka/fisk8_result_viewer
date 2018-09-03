@@ -20,7 +20,11 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "free_ranking"
     t.integer "competition_id"
     t.integer "skater_id"
+    t.integer "short_id"
+    t.integer "free_id"
     t.index ["competition_id"], name: "index_category_results_on_competition_id"
+    t.index ["free_id"], name: "index_category_results_on_free_id"
+    t.index ["short_id"], name: "index_category_results_on_short_id"
     t.index ["skater_id"], name: "index_category_results_on_skater_id"
   end
 
@@ -54,6 +58,9 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "number"
     t.string "name"
     t.string "element_type"
+    t.boolean "edgeerror"
+    t.boolean "underrotated"
+    t.boolean "downgraded"
     t.integer "level"
     t.string "info"
     t.float "base_value"
@@ -65,13 +72,22 @@ ActiveRecord::Schema.define(version: 3) do
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
+  create_table "performed_segments", force: :cascade do |t|
+    t.string "category"
+    t.string "segment"
+    t.datetime "starting_time", default: "1969-12-31 15:00:00"
+    t.integer "competition_id"
+    t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
+  end
+
   create_table "scores", force: :cascade do |t|
     t.string "name"
     t.integer "ranking"
     t.integer "starting_number"
     t.string "category"
     t.string "segment"
-    t.datetime "segment_starting_time", default: "1969-12-31 15:00:00"
+    t.string "segment_type"
+    t.date "date", default: "1970-01-01"
     t.string "result_pdf"
     t.float "tss", default: 0.0
     t.float "tes", default: 0.0
@@ -94,6 +110,14 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "nation"
     t.string "category"
     t.integer "isu_number"
+    t.string "coach"
+    t.string "choreographer"
+    t.date "birthday"
+    t.string "hobbies"
+    t.string "hometown"
+    t.string "height"
+    t.string "club"
+    t.datetime "bio_updated_at"
   end
 
 end

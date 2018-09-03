@@ -7,10 +7,8 @@ class Score < ApplicationRecord
 
   belongs_to :competition
   belongs_to :skater
-  belongs_to :category_result, required: false
-
-  ## validations
-  validates  :segment_starting_time, presence: true
+  belongs_to :category_result, optional: true
+  #belongs_to :performed_segment, required: false
 
   ## virtual attributes
   def competition_name
@@ -31,16 +29,9 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
-=begin
-  def elements_summary
-    elements.map(&:name).join('/')
-  end
-  def components_summary
-    components.map(&:value).join('/')
-  end
-=end  
+
   ## scopes
-  scope :recent, ->{ order("segment_starting_time desc") }
+  scope :recent, ->{ order("date desc") }
   scope :short, -> { where("segment like ? ", "%SHORT%") }
   scope :free, ->  { where("segment like ? ", "%FREE%") }
   scope :category,->(c){ where(category: c) }
@@ -57,6 +48,7 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
+    segment_type = (segment =~ /SHORT/) ? :short : :free
     if name.blank?
       category_abbr = Category.find_by(name: category).try(:abbr)
       segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'

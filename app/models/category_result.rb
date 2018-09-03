@@ -5,6 +5,9 @@ class CategoryResult < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
 
+  #belongs_to :short, class_name: "Score", optional: true  # requried: true on default. see https://github.com/rails/rails/issues/18233
+  #belongs_to :free, class_name: "Score", optional: true
+  
   ## virtual attributes
   def competition_name
     competition.name
@@ -30,6 +33,7 @@ class CategoryResult < ApplicationRecord
   def date
     competition.start_date
   end
+
   def short
     scores.first || Score.new  ## segment =~ /SHORT/
     #scores.where("scores.segment like ?", 'SHORT%').first
@@ -38,8 +42,9 @@ class CategoryResult < ApplicationRecord
     #scores.where("scores.segment like ?", 'FREE%').first
     scores.second || Score.new
   end
-  ################
 
+  ################
+=begin
   def short_tss
     short.try(:tss)
   end
@@ -69,6 +74,15 @@ class CategoryResult < ApplicationRecord
   end
   def free_bv
     free.try(:base_value)
+  end
+=end
+  [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
+    define_method("short_#{key}".to_sym) do
+      short.send(key)
+    end
+    define_method("free_#{key}".to_sym) do
+      free.send(key)
+    end
   end
 
   ## scopes

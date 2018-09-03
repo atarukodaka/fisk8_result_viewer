@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   
   resources :competitions, only: [:index], param: :short_name do
     get :list, on: :collection
-    get '(/:category(/:segment))', action: :show, on: :member, as: ''
+    #get '(/:category(/:segment))', action: :show, on: :member, as: ''
+    get '(/:category(/:segment(/:ranking)))', action: :show, on: :member, as: ''
   end
 
   resources :results, only: [:index], param: :name do

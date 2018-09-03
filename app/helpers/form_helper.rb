@@ -1,7 +1,8 @@
 module FormHelper
-  def form_group(label, input_tag = nil)
+  def form_group(label = nil, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
-      concat(content_tag(:div, label_tag(label), :class => 'col-sm-2'))
+      label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
+      concat(content_tag(:div, label_tag(label_str), :class => 'col-sm-2'))
       if block_given?
         concat(content_tag(:div, :class => 'col-sm-10') do
           yield
@@ -18,7 +19,7 @@ module FormHelper
     col =
       case key
       when :category
-        Category.all.map(&:name) & Score.uniq_list(:category)
+      Category.all.map(&:name) & Score.uniq_list(:category)
       when :segment
         Score.uniq_list(:segment).sort
       when :nation
