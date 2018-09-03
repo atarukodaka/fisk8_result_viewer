@@ -5,12 +5,12 @@ module AjaxDatatables::Datatable::Serversidable
 end
 
 module AjaxDatatables::Datatable::Serverside
-  include AjaxDatatables::Datatable::Search
+  include AjaxDatatables::Datatable::ConditionBuilder
   
   ################
   ## for server-side ajax
   def manipulate(r)
-    super(r).where(build_conditions_by_nodes(columns_searching_nodes)).order(sorting_sql).page(page).per(per)
+    super(r).where(build_conditions(columns_searching_nodes)).order(sorting_sql).page(page).per(per)
   end
   
   ################

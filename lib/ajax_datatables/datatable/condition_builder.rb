@@ -1,6 +1,6 @@
-module AjaxDatatables::Datatable::Search
-  #  def searching_sql(nodes)   ## nodes: array of hash {column_name:, search_value:, operator:nil }
-  def build_conditions_by_nodes(nodes)
+module AjaxDatatables::Datatable::ConditionBuilder
+  def build_conditions(nodes)
+    ## nodes: array of hash {column_name:, search_value:, operator:nil }
     nodes.map do |hash|
       column = columns[hash[:column_name]]
       table_field = column.table_field
