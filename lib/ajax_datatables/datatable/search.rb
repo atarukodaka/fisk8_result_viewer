@@ -1,4 +1,4 @@
-module AjaxDatatables::Datatable::Searchable
+module AjaxDatatables::Datatable::Search
   def searching_sql(nodes)   ## nodes: array of hash {column_name:, search_value:, operator:nil }
     nodes.map do |hash|
       column = columns[hash[:column_name]]

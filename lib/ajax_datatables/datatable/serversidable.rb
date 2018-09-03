@@ -5,7 +5,6 @@ module AjaxDatatables::Datatable::Serversidable
 end
 
 module AjaxDatatables::Datatable::Serverside
-  AjaxDatatables::Datatable::Searchable
   include AjaxDatatables::Datatable::Search
   
   ################
