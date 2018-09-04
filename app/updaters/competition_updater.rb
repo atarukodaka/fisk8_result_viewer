@@ -104,6 +104,9 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs)
 
           score.save!  ## need to save here to create children
+
+          relevant_cr.update(segment_type => score)
+=begin
           case segment_type
           when :short
             relevant_cr.short = score
@@ -111,7 +114,7 @@ class CompetitionUpdater
             relevant_cr.free = score
           end
           relevant_cr.save!
-          
+=end          
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 
