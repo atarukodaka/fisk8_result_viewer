@@ -92,4 +92,9 @@
   site_url: http://www.isuresults.com/results/season1718/jgpita2017/
   date_format: "%m/%d/%Y"  
  
+## 2018-19
+-
+  site_url: http://www.isuresults.com/results/season1819/jgpaut2018/
+  date_format: "%d/%m/%y"    
+
 ## debug

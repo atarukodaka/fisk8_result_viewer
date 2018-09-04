@@ -57,6 +57,8 @@ FactoryBot.define do
   factory :category_result do
     association :skater, factory: :skater
     association :competition, factory: :competition
+    association :short, factory: :score
+    association :free, factory: :score
     category { "MEN" }
     ranking { 1 }
     points { 300 }
@@ -66,6 +68,8 @@ FactoryBot.define do
     trait :finlandia do
       association :skater, factory: [:skater, :ladies]
       association :competition, factory: [:competition, :finlandia]
+      association :short, factory: [:score, :finlandia]
+      association :free, factory: [:score, :finlandia]
       category { "LADIES" }
       ranking { 2 }
       points { 240 }
@@ -101,6 +105,7 @@ FactoryBot.define do
     name { "WORLD2017-M-S-1" }
     category { "MEN" }
     segment { "SHORT" }
+    segment_type { "short" } 
     ranking { 1 }
     tss { 100 }
     tes { 50 }
@@ -112,6 +117,7 @@ FactoryBot.define do
 
     trait :world_free do
       segment { "FREE" }
+      segment_type { "free" } 
     end
 
     trait :finlandia do
@@ -120,6 +126,7 @@ FactoryBot.define do
       name { 'FIN2015-L-F-2' }
       category { 'LADIES' }
       segment { 'FREE' }
+      segment_type { "free" } 
       ranking { 2 }
       tss { 160 }
       tes { 80 }
@@ -132,6 +139,7 @@ FactoryBot.define do
 
     trait :finlandia_short do
       segment { 'SHORT' }
+      segment_type { "short" }
     end
   end
 end

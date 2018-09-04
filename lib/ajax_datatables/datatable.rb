@@ -88,6 +88,10 @@ module AjaxDatatables
       columns.map(&:name)
     end
     def as_attrs
+      order = default_orders.map {|column, dir|
+        [column_names.index(column.to_s), dir]
+      }
+
       settings.merge(
         {
           retrieve: true,
@@ -105,11 +109,6 @@ module AjaxDatatables
     end
     def render(partial: "datatable", locals: {})
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
-    end
-    def order
-      default_orders.map {|column, dir|
-        [column_names.index(column.to_s), dir]
-      }
     end
     ################
     ## format

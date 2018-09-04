@@ -1,8 +1,8 @@
 class IndexDatatable < AjaxDatatables::Datatable
-  include AjaxDatatables::Datatable::Searchable
+  include AjaxDatatables::Datatable::ConditionBuilder
   
   def manipulate(r)
-    super(r).where(searching_sql(filter_search_nodes))
+    super(r).where(build_conditions(filter_search_nodes))
   end
   
   def filter_search_nodes

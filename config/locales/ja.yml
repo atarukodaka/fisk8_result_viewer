@@ -16,15 +16,25 @@ ja:
     components: コンポーネント
     scorecalc: スコア計算
     
-  view:
-    competition:
-      competition_info: 競技会情報
+  competitions:
+    show:
+      competition_summary: 競技会情報
       performed_segment: 実施セグメント
-    skater:
+      category_results: カテゴリー結果
+      segment_results: セグメント結果
+
+  home:
+    index:
+      about: このサイトについて
+    
+  skaters:
+    show:
       skater_summary: 選手情報
       competition_results: 競技会結果
-    score:
+  scores:
+    show:
       score_summary: スコア情報
+      results: 結果
       relevant_video: 関連映像
       elements: 実施要素
       components: コンポーネント
