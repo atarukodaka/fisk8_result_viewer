@@ -1,4 +1,8 @@
 class StaticsController < ApplicationController
+
+  def show
+  end
+
   def index
   end
 =begin

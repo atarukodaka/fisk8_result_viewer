@@ -1,19 +1,16 @@
 - category = params[:category]
 - season = params[:season]
 
-- binding.pry
-
 h3 Highest  Score
 .row
+  - cols = [:tes, :tss, :skater_name, :name]
   - records = Score.includes(:competition, :skater).order(tss: :desc).where("competitions.season" => season, category: category)
   .col-sm-6
     h4 Short
-    - cols = [:tes, :tss, :skater_name]
-    = AjaxDatatables::Datatable.new(self).records(records).columns(cols).render
+    = StaticsDatatable.new(self).records(records.short).columns(cols).decorate.render
      
   .col-sm-6
     h4 Free
-    - cols = [:skater_name, :tss, :competition_short_name]
     = StaticsDatatable.new(self).records(records.free).columns(cols).decorate.render
 
 h3 Most Valuable Elements

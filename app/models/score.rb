@@ -14,6 +14,9 @@ class Score < ApplicationRecord
   def competition_name
     competition.name
   end
+  def competition_short_name
+    competition.short_name
+  end
   def competition_class
     competition.competition_class
   end
@@ -32,8 +35,10 @@ class Score < ApplicationRecord
 
   ## scopes
   scope :recent, ->{ order("date desc") }
-  scope :short, -> { where("segment like ? ", "%SHORT%") }
-  scope :free, ->  { where("segment like ? ", "%FREE%") }
+  #scope :short, -> { where("segment like ? ", "%SHORT%") }
+  #scope :free, ->  { where("segment like ? ", "%FREE%") }
+  scope :short, -> { where(segment_type: :short) }
+  scope :free, -> { where(segment_type:  :free) }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(s){ where(segment: s) }
 
