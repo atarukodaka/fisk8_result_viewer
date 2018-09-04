@@ -90,7 +90,7 @@ class CompetitionUpdater
                      Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
 
           ## relevant cr
-          segment_type = (segment =~ /SHORT/) ? :short : :free
+          segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
           relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
           #relevant_cr.update(segment_type => score)
 
@@ -98,7 +98,7 @@ class CompetitionUpdater
           score.attributes = {
             category_result: relevant_cr,
             skater: skater,
-            #segment_starting_time: segment_starting_time,
+            segment_type: segment_type,
           }.merge(additionals)
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs)

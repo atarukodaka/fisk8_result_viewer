@@ -20,11 +20,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "free_ranking"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "short_id"
-    t.integer "free_id"
     t.index ["competition_id"], name: "index_category_results_on_competition_id"
-    t.index ["free_id"], name: "index_category_results_on_free_id"
-    t.index ["short_id"], name: "index_category_results_on_short_id"
     t.index ["skater_id"], name: "index_category_results_on_skater_id"
   end
 
