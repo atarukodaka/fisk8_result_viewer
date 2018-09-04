@@ -105,6 +105,7 @@ FactoryBot.define do
     name { "WORLD2017-M-S-1" }
     category { "MEN" }
     segment { "SHORT" }
+    segment_type { "short" } 
     ranking { 1 }
     tss { 100 }
     tes { 50 }
@@ -116,6 +117,7 @@ FactoryBot.define do
 
     trait :world_free do
       segment { "FREE" }
+      segment_type { "free" } 
     end
 
     trait :finlandia do
@@ -124,6 +126,7 @@ FactoryBot.define do
       name { 'FIN2015-L-F-2' }
       category { 'LADIES' }
       segment { 'FREE' }
+      segment_type { "free" } 
       ranking { 2 }
       tss { 160 }
       tes { 80 }
@@ -136,6 +139,7 @@ FactoryBot.define do
 
     trait :finlandia_short do
       segment { 'SHORT' }
+      segment_type { "short" }
     end
   end
 end
