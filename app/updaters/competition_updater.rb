@@ -90,22 +90,31 @@ class CompetitionUpdater
                      Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
 
           ## relevant cr
-          segment_type = (segment =~ /SHORT/) ? :short : :free
+          segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
           relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
           #relevant_cr.update(segment_type => score)
 
           ## set attributes
           score.attributes = {
-            category_result: relevant_cr,
+            #category_result: relevant_cr,  # TODO
             skater: skater,
-            #segment_starting_time: segment_starting_time,
+            segment_type: segment_type,
           }.merge(additionals)
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs)
 
           score.save!  ## need to save here to create children
 
-          
+          relevant_cr.update(segment_type => score)
+=begin
+          case segment_type
+          when :short
+            relevant_cr.short = score
+          when :free
+            relevant_cr.free = score
+          end
+          relevant_cr.save!
+=end          
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 

@@ -133,11 +133,10 @@ module CompetitionParser
 
           tm = 
             unless date_format.blank?
-              Time.strptime("#{dt_tm_str}", "#{date_format} %H:%M:%S")
+              Time.strptime(dt_tm_str, "#{date_format} %H:%M:%S")
             else
               dt_tm_str
             end.in_time_zone(ActiveSupport::TimeZone[timezone])
-          
           #next if tm.nil?
           tm = tm + 2000.years if tm.year < 100  ## for ondrei nepela
 

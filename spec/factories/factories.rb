@@ -57,6 +57,8 @@ FactoryBot.define do
   factory :category_result do
     association :skater, factory: :skater
     association :competition, factory: :competition
+    association :short, factory: :score
+    association :free, factory: :score
     category { "MEN" }
     ranking { 1 }
     points { 300 }
@@ -66,6 +68,8 @@ FactoryBot.define do
     trait :finlandia do
       association :skater, factory: [:skater, :ladies]
       association :competition, factory: [:competition, :finlandia]
+      association :short, factory: [:score, :finlandia]
+      association :free, factory: [:score, :finlandia]
       category { "LADIES" }
       ranking { 2 }
       points { 240 }

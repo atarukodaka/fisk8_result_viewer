@@ -20,6 +20,10 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.5
+- category result has short and free
+- icedance Rhythm Dance as short
+
 ## 1.0.4-pre2
 - competition.date as Date
 - delete result controller
