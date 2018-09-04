@@ -1,8 +1,7 @@
-
-
 - category = params[:category]
 - season = params[:season]
 
+- binding.pry
 
 h3 Highest  Score
 .row
@@ -10,7 +9,7 @@ h3 Highest  Score
   .col-sm-6
     h4 Short
     - cols = [:tes, :tss, :skater_name]
-    = StaticsDatatable.new(self).records(records.short).columns(cols).decorate.render
+    = AjaxDatatables::Datatable.new(self).records(records).columns(cols).render
      
   .col-sm-6
     h4 Free

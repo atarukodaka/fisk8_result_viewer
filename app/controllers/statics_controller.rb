@@ -1,10 +1,13 @@
 class StaticsController < ApplicationController
   def index
+  end
+=begin
+  def index
     unless Rails.env.development?
       render plain: "works for only development"
     else
       category = params[:category].presence || "MEN"
-      season =  params[:season].presence || "2016-17"   # TODO: recent season
+      season =  params[:season].presence || "2017-18"   # TODO: recent season
       competition_class = params[:competition_class]
       
       common_sql = {"competitions.season": season}
@@ -29,5 +32,6 @@ class StaticsController < ApplicationController
              }
     end
   end
+=end
 end
 

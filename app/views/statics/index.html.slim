@@ -1,108 +1,13 @@
-- category ||= "MEN"
-- season ||= Competition.recent.first.season
-- competition_class ||= nil
-
 - breadcrumb :statics
 
 - content_for :title do
   = controller_name
 
-script
-  | jQuery(function($){
-  | $("td").mouseover(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', 'lightyellow')});
-  | $("td").mouseout(function(){$("tr:contains(" + this.innerText+ ")").css('background-color', '')});
-  | });
+h2= t("controller.statics", default: "Statics")
 
-////////////////////////////////////////////////////////////////
-h2 Statics by Skater: Category of '#{category}' in the season of '#{season}'
-
-= form_tag statics_path, method: :get, enforce_utf8: false, id: :filter_form do |f|
+/= form_tag url_for(controller: :statics, action: :show), method: :get, enforce_utf8: false, id: :filter_form do |f|
   = form_group("Category", select_tag_with_options(:category))
   = form_group("Season", select_tag_with_options(:season, value: params[:season]))  
-  = form_group("Competition Class", select_tag_with_options(:competition_class, value: params[:competition_class]))  
-  = form_group(nil, submit_tag("Resfresh", id: :submit, name: nil))
+  = form_group(nil, submit_tag("Submit", id: :submit, name: nil))
 
 
-style
-  | .dataTables_filter { visibility: hidden; }
-
-////////////////////////////////////////////////////////////////
-
-
-/- data = results.group(:skater_id).select("results.id as no, skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
-/- cols = [:no, :skater_name_, :max_points]
-/= StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-
-hr
-h3 Highest  Score
-.row
-  .col-sm-4
-    h4 Total Score
-    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(points) as max_points").order("max(points) desc")
-    - cols = [:no, :skater_name_, :max_points]
-    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-  .col-sm-4
-    h4 Short
-    - data = short_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
-    - cols = [:no, :skater_name_, :max_tss]
-    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-  .col-sm-4
-    h4 Free
-    - data = free_scores.group(:skater_id).select("skaters.name as skater_name_", "max(tss) as max_tss").order("max(tss) desc")
-    - cols = [:no, :skater_name_, :max_tss]
-    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-/.row
-  .col-sm-4
-    h4 Base Value
-    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_bv) as max_total_bv").order("max(total_bv) desc")
-    - cols = [:no, :skater_name_, :max_total_bv]
-    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-  .col-sm-4
-    h4 GOE
-    - data = results.group(:skater_id).select("skaters.name as skater_name_", "max(total_goe) as max_total_goe").order("max(total_goe) desc")
-    - cols = [:no, :skater_name_, :max_total_goe]
-    = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-////////////////////////////////////////////////////////////////
-
-hr
-h3 Average Values
-
-- [nil, :jump, :spin, :step, :choreo].each do |element_type|
-  h4= (element_type) ? element_type.to_s.pluralize.humanize : "All Element Type"
-  - data = (element_type) ? elements.where("elements.element_type": element_type) : elements
-  .row
-    - [:value, :base_value, :goe].each do |key|
-      .col-sm-4
-        h5= key.to_s.humanize
-        - data2 = data.order("avg(elements.#{key}) desc").select("skaters.name as skater_name_, avg(elements.#{key}) as avg_#{key}, avg(elements.level) as avg_level").group(:skater_id)
-        - cols = [:no, :skater_name_, "avg_#{key}".to_sym, "avg_level"]
-        = StaticsDatatable.new(self).records(data2).columns(cols).decorate.render
-
-////////////////////////////////////////////////////////////////
-hr
-h3 Components Scores
-
-- pcs_abbr = [:Total, :SS, :TR, :CO, :PE, :IN]
-.row
-  - [0, 1, 2,].each do |num|
-    .col-sm-4
-      h4= pcs_abbr[num]
-      - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
-      - data = data.where(number: num) if num > 0
-      - cols = [:no, :skater_name_, :avg_value]
-      = StaticsDatatable.new(self).records(data).columns(cols).decorate.render
-
-.row
-  - [3, 4, 5,].each do |num|
-    .col-sm-4
-      h4= pcs_abbr[num]
-      - data = components.order("avg(components.value) desc").select("avg(components.value) as avg_value, skaters.name as skater_name_").group(:skater_id)
-      - data = data.where(number: num) if num > 0
-      - cols = [:no, :skater_name_, :avg_value]
-      = StaticsDatatable.new(self).records(data).columns(cols).decorate.render

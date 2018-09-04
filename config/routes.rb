@@ -35,13 +35,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :analysis  # for temtative panel analysis
+  #resources :analysis  # for temtative panel analysis
 
-  resources :statics, only: :index
+  resources :statics, only: [:index, :show], param: :season do
+    get '/(:category)', action: :show, on: :member, as: ''
+  end
 
+=begin
   resources :scorecalc, only: :index do
     post :load_score, on: :collection
   end
+=end
   
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number
