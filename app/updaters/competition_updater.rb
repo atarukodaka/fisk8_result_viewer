@@ -85,13 +85,13 @@ class CompetitionUpdater
           ## find skater
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {} 
 
-          skater = ((h[:isu_number].present? ) ?
-                     Skater.where(isu_number: h[:isu_number]).first :
-                     Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
+          skater = Skater.find_or_create_by_isu_number_or_name(h[:isu_number], h[:skater_name]) do |s|
+            s.update(nation: h[:nation], category: category)
+            score.update(skater: s)
+          end
 
-          ## relevant cr
           segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
-          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+
           #relevant_cr.update(segment_type => score)
 
           ## set attributes
@@ -105,7 +105,9 @@ class CompetitionUpdater
 
           score.save!  ## need to save here to create children
 
-          relevant_cr.update(segment_type => score)
+          if (relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first)
+            relevant_cr.update(segment_type => score)
+          end
 =begin
           case segment_type
           when :short
