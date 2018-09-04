@@ -96,7 +96,7 @@ class CompetitionUpdater
 
           ## set attributes
           score.attributes = {
-            category_result: relevant_cr,
+            #category_result: relevant_cr,  # TODO
             skater: skater,
             segment_type: segment_type,
           }.merge(additionals)
@@ -104,7 +104,13 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs)
 
           score.save!  ## need to save here to create children
-
+          case segment_type
+          when :short
+            relevant_cr.short = score
+          when :free
+            relevant_cr.free = score
+          end
+          relevant_cr.save!
           
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
