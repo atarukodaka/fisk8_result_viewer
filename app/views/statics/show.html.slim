@@ -1,0 +1,31 @@
+
+
+- category = params[:category]
+- season = params[:season]
+
+
+h3 Highest  Score
+.row
+  - records = Score.includes(:competition, :skater).order(tss: :desc).where("competitions.season" => season, category: category)
+  .col-sm-6
+    h4 Short
+    - cols = [:tes, :tss, :skater_name]
+    = StaticsDatatable.new(self).records(records.short).columns(cols).decorate.render
+     
+  .col-sm-6
+    h4 Free
+    - cols = [:skater_name, :tss, :competition_short_name]
+    = StaticsDatatable.new(self).records(records.free).columns(cols).decorate.render
+
+h3 Most Valuable Elements
+
+= AjaxDatatables::Datatable.new(self).records(Competition.all).columns([:id]).render
+
+.row
+  /- records = Element.joins(:score, [score: :competition]).order(value: :desc).where("scores.segment LIKE ? ", "%SHORT%").where("competitions.season" => "2017-18", "scores.category" => "MEN", "element_type" => "jump").references(:score, [scores: :competition, scores: :skater])
+  .col-sm-6
+    / - cols = [:skater_name, :name, :base_value, :goe, :value]
+    - records = Score.all
+    - cols = [:name]
+    /= StaticsDatatable.new(self).records(records).columns(cols).decorate.render
+
