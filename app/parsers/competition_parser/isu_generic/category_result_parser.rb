@@ -21,7 +21,7 @@ module CompetitionParser
           
           ranking: { header: ['FPl.', 'PL', 'PL.'] , callback: callbacks[:to_i]},
           points: { header: 'Points', callback: callbacks[:to_f]},
-          short_ranking: { header: ['SP', 'SD', 'OD'], callback: callbacks[:to_i] },
+          short_ranking: { header: ['SP', 'SD', 'OD', 'RD'], callback: callbacks[:to_i] },
           free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
         }
       end
