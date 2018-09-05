@@ -40,6 +40,7 @@ class CompetitionUpdater
           update_category_result(competition, category, cat_item[:result_url])
 
           parsed[:segments][category].each do |segment, seg_item|
+            next if seg_item[:result_url].blank?
             ###
             competition.performed_segments.create do |ps|
               ps.category = category
@@ -47,6 +48,7 @@ class CompetitionUpdater
               ps.starting_time = seg_item[:time]
             end
             ###
+
             update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
@@ -57,6 +59,7 @@ class CompetitionUpdater
   ################
   def update_category_result(competition, category, result_url)
     return if result_url.blank?
+
     @parser.parse_category_result(result_url).each do |result_parsed|
       competition.category_results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {
@@ -82,17 +85,19 @@ class CompetitionUpdater
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
         ActiveRecord::Base.transaction {
-          ## find skater
-          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {} 
-
-          skater = Skater.find_or_create_by_isu_number_or_name(h[:isu_number], h[:skater_name]) do |s|
-            s.update(nation: h[:nation], category: category)
-            score.update(skater: s)
-          end
+          
           ## NOTE: Short Dance renamed to Rhythm Dance on Ice dance from 2018-19 season
           segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
-          
 
+          ## find relevant cr
+          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+
+          ## find skater
+          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
+          skater_name = h[:skater_name] || sc_parsed[:skater_name]
+          skater = Skater.find_by_isu_number_or_name(h[:isu_number], skater_name) ||
+                   (relevant_cr.present?) ? relevant_cr.skater : Skater.create(name: skater_name, isu_number: h[:isu_number])
+          
           ## set attributes
           score.attributes = {
             skater: skater,
@@ -103,9 +108,7 @@ class CompetitionUpdater
 
           score.save!  ## need to save here to create children
 
-          if (relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first)
-            relevant_cr.update(segment_type => score)
-          end
+          relevant_cr.update(segment_type => score) if relevant_cr
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 
