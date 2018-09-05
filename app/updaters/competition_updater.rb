@@ -95,7 +95,7 @@ class CompetitionUpdater
           h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
           skater_name = h[:skater_name] || sc_parsed[:skater_name]
           skater = Skater.find_by_isu_number_or_name(h[:isu_number], skater_name) ||
-                   (relevant_cr.present?) ? relevant_cr.skater : Skater.create(name: skater_name, isu_number: h[:isu_number])
+                   ((relevant_cr.present?) ? relevant_cr.skater : Skater.create(name: skater_name, isu_number: h[:isu_number]))
           
           ## set attributes
           score.attributes = {
