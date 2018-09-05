@@ -1,13 +1,76 @@
-- breadcrumb :statics
+- category = params[:category] ||= "MEN"
+- season = params[:season] ||= Competition.recent.first.try(:season) || "2017-18"
 
-- content_for :title do
-  = controller_name
+= form_tag statics_path, method: :get, enforce_utf8: false, id: :statics_form do |f|
+  = form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, onchange:"$('#statics_form').submit()"))
+  = form_group(Score.human_attribute_name(:category), select_tag_with_options(:category, onchange: "$('#statics_form').submit()"))
+  = form_group(nil, button_tag("REFRESH", type: :submit))
 
-h2= t("controller.statics", default: "Statics")
+////////////////////////////////////////////////////////////////
+h3= t(".highest_score", default: "Highest  Score")
 
-/= form_tag url_for(controller: :statics, action: :show), method: :get, enforce_utf8: false, id: :filter_form do |f|
-  = form_group("Category", select_tag_with_options(:category))
-  = form_group("Season", select_tag_with_options(:season, value: params[:season]))  
-  = form_group(nil, submit_tag("Submit", id: :submit, name: nil))
+.row
+  - cols = [:no, :skater_name, :nation, :name, :tss, :tes, :pcs]
+  - records = Score.includes(:competition, :skater).order(tss: :desc).where("competitions.season" => season, category: category)
+  .col-sm-6
+    h4= t(".short", default: "Short")
+    = StaticsDatatable.new(self).records(records.short).columns(cols).decorate.render
+     
+  .col-sm-6
+    h4= t(".free", default: "Free")
+    = StaticsDatatable.new(self).records(records.free).columns(cols).decorate.render
 
+h3 Most Valuable Elements
+
+.row
+  - records = Element.includes(:score, score: [:competition, :skater]).where("competitions.season" => season, "scores.category" => category).order(value: :desc).references(:score, score: [:competition])
+  - cols = [:no, :skater_name, :score_name, :name, :base_value, :goe, :value]
+  .col-sm-6
+    h4 Jump
+    = render partial: "element_datatable", locals: {element_type: "jump", cols: cols, records: records}
+  .col-sm-6
+    h4 Spin
+    = render partial: "element_datatable", locals: {element_type: "spin", cols: cols, records: records}
+
+.row
+  .col-sm-6
+    h4 Step
+    = render partial: "element_datatable", locals: {element_type: "step", cols: cols, records: records}
+
+  .col-sm-6
+    h4 Choreo
+    = render partial: "element_datatable", locals: {element_type: "choreo", cols: cols, records: records}
+.row
+  .col-sm-6
+    h4 Lift
+    = StaticsDatatable.new(self).records(records.where(element_type: :lift)).columns(cols).decorate.render
+
+  .col-sm-6
+    h4 Death Spiral
+    = StaticsDatatable.new(self).records(records.where(element_type: :death_spiral)).columns(cols).decorate.render
+
+- if category =~ /ICE DANCE/
+  .row
+    .col-sm-6
+      h4 Twizzle
+      = StaticsDatatable.new(self).records(records.where(element_type: :twizzle)).columns(cols).decorate.render
+
+    .col-sm-6
+      h4 Pattern Dance
+      = StaticsDatatable.new(self).records(records.where(element_type: :pattern_dance)).columns(cols).decorate.render
+
+
+h3 PCS
+
+.row
+  - cols = [:no, :skater_name, :pcs, :component_SS, :component_TR, :component_PE, :component_CO, :component_IN]
+  .col-sm-6
+    h4= t(".short", default: "Short")
+    - records = Score.includes(:competition, :skater, :components).order(pcs: :desc).where("competitions.season" => season, category: category).short
+    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
+
+  .col-sm-6
+    h4= t(".free", default: "Free")
+    - records = Score.includes(:competition, :skater, :components).order(pcs: :desc).where("competitions.season" => season, category: category).free
+    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
 

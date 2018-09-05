@@ -79,10 +79,12 @@ class CategoryResult < ApplicationRecord
 =end
   [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
     define_method("short_#{key}".to_sym) do
-      short.send(key)
+      #(short.present?) ? short.send(key) : nil
+      short.try(:send, key)
     end
     define_method("free_#{key}".to_sym) do
-      free.send(key)
+      #(free.present?) ? free.send(key) : nil
+      free.try(:send, key)
     end
   end
 

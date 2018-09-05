@@ -89,19 +89,12 @@ class CompetitionUpdater
             s.update(nation: h[:nation], category: category)
             score.update(skater: s)
           end
-=begin
-          skater = ((h[:isu_number].present? ) ?
-                     Skater.where(isu_number: h[:isu_number]).first :
-                      Skater.where(name: h[:skater_name]).first ) || raise("no such skater")
-=end          
-
-          ## relevant cr
+          ## NOTE: Short Dance renamed to Rhythm Dance on Ice dance from 2018-19 season
           segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
-          #relevant_cr.update(segment_type => score)
+          
 
           ## set attributes
           score.attributes = {
-            #category_result: relevant_cr,  # TODO
             skater: skater,
             segment_type: segment_type,
           }.merge(additionals)
@@ -113,15 +106,6 @@ class CompetitionUpdater
           if (relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first)
             relevant_cr.update(segment_type => score)
           end
-=begin
-          case segment_type
-          when :short
-            relevant_cr.short = score
-          when :free
-            relevant_cr.free = score
-          end
-          relevant_cr.save!
-=end          
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 
