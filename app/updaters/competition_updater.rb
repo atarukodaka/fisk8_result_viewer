@@ -40,6 +40,7 @@ class CompetitionUpdater
           update_category_result(competition, category, cat_item[:result_url])
 
           parsed[:segments][category].each do |segment, seg_item|
+            next if seg_item[:result_url].blank?
             ###
             competition.performed_segments.create do |ps|
               ps.category = category
@@ -47,6 +48,7 @@ class CompetitionUpdater
               ps.starting_time = seg_item[:time]
             end
             ###
+
             update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
@@ -57,6 +59,7 @@ class CompetitionUpdater
   ################
   def update_category_result(competition, category, result_url)
     return if result_url.blank?
+
     @parser.parse_category_result(result_url).each do |result_parsed|
       competition.category_results.create!(category: category) do |result|
         ActiveRecord::Base.transaction {

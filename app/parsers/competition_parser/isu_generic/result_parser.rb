@@ -23,6 +23,7 @@ module CompetitionParser
       ################
       def parse(url)
         puts "   --  parsing #{url}"
+
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page)
         headers = get_headers(rows[0])
@@ -34,7 +35,6 @@ module CompetitionParser
           data = {}
           columns.each do |key, params|
             relevant_headers = [params[:header],].flatten
-
             
             col_number = headers.index {|d| relevant_headers.index(d)} ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")

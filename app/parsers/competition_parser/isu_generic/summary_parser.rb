@@ -90,9 +90,9 @@ module CompetitionParser
           summary << {
             category: category,
             segment: segment,
-            panel_url: (panel_url.present?) ? URI.join(url, panel_url).to_s: "",
-            result_url: (result_url.present?) ? URI.join(url, result_url).to_s: "",
-            score_url: (score_url.present?) ? URI.join(url, score_url).to_s : "",
+            panel_url: (panel_url.present?) ? URI.join(url + "/" , panel_url).to_s: "",
+            result_url: (result_url.present?) ? URI.join(url + "/", result_url).to_s: "",
+            score_url: (score_url.present?) ? URI.join(url + "/", score_url).to_s : "",
           }
         end
         summary
