@@ -85,21 +85,20 @@ class CompetitionUpdater
     @parser.parse_score(score_url).each do |sc_parsed|
       competition.scores.create!(category: category, segment: segment) do |score|
         ActiveRecord::Base.transaction {
-          ## find skater
-          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {} 
-
-          skater = Skater.find_or_create_by_isu_number_or_name(h[:isu_number], h[:skater_name]) do |s|
-            s.update(nation: h[:nation], category: category)
-            score.update(skater: s)
-          end
-
+          
           segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
 
-          #relevant_cr.update(segment_type => score)
+          ## find relevant cr
+          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
 
+          ## find skater
+          h = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
+          skater_name = h[:skater_name] || sc_parsed[:skater_name]
+          skater = Skater.find_by_isu_number_or_name(h[:isu_number], skater_name) ||
+                   (relevant_cr.present?) ? relevant_cr.skater : Skater.create(name: skater_name, isu_number: h[:isu_number])
+          
           ## set attributes
           score.attributes = {
-            #category_result: relevant_cr,  # TODO
             skater: skater,
             segment_type: segment_type,
           }.merge(additionals)
@@ -108,18 +107,7 @@ class CompetitionUpdater
 
           score.save!  ## need to save here to create children
 
-          if (relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first)
-            relevant_cr.update(segment_type => score)
-          end
-=begin
-          case segment_type
-          when :short
-            relevant_cr.short = score
-          when :free
-            relevant_cr.free = score
-          end
-          relevant_cr.save!
-=end          
+          relevant_cr.update(segment_type => score) if relevant_cr
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 
