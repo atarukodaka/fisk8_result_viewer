@@ -102,7 +102,6 @@ class CompetitionUpdater
               skater: skater,
               segment_type: segment_type,
             })
-            
           score.save!  ## need to save here to create children
 
           relevant_cr.update(segment_type => score) if relevant_cr
