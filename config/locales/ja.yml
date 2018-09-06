@@ -16,21 +16,36 @@ ja:
     components: コンポーネント
     scorecalc: スコア計算
     
-  view:
-    competition:
-      competition_info: 競技会情報
+  competitions:
+    show:
+      competition_summary: 競技会情報
       performed_segment: 実施セグメント
-    skater:
+      category_results: カテゴリー結果
+      segment_results: セグメント結果
+
+  home:
+    index:
+      about: このサイトについて
+    
+  skaters:
+    show:
       skater_summary: 選手情報
       competition_results: 競技会結果
-    score:
+  scores:
+    show:
       score_summary: スコア情報
+      results: 結果
       relevant_video: 関連映像
       elements: 実施要素
       components: コンポーネント
       deductions: 減点
       see_other_relevant_videos: 他の映像をご参照ください
-      
+  statics:
+    index:
+      highest_score: 最高得点
+      short: ショート
+      free: フリー
+
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット

@@ -6,12 +6,12 @@
 - delete country-city mapping?
 - panels: panel db entries
 - youtube register
-- i18n
 - components controller is necessary ??
 - codecov: icedance elements
-- competition feature: adding :short_name column brings us error somehow
-- skater: age ??
-- elements/components: date or starting_time of score ?
+- spec
+  - feature
+  - team 
+  - cr doesnt have free: check nil
 
 ### new feature
 
@@ -19,6 +19,10 @@
 - app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.5
+- category result has short and free
+- icedance Rhythm Dance as short
 
 ## 1.0.4-pre2
 - competition.date as Date
