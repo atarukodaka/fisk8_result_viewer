@@ -27,7 +27,7 @@ class CategoryResultDecorator < EntryDecorator
   ## short
   def short_ranking
     #h.link_to_score(model.short.try(:ranking).as_ranking, model.short)
-    h.link_to_competition(model.short_ranking, model.competition, category: model.category, segment: :short, ranking: model.short_ranking)
+    h.link_to_competition(model.short_ranking.as_ranking, model.competition, category: model.category, segment: :short, ranking: model.short_ranking)
   end
   #decorate_as_ranking(:short_ranking)
   decorate_as_score(:short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value)
@@ -52,7 +52,7 @@ class CategoryResultDecorator < EntryDecorator
   ## free
   def free_ranking
     #h.link_to_score(model.free.try(:ranking).as_ranking, model.free)
-    h.link_to_competition(model.free_ranking, model.competition, category: model.category, segment: :free, ranking: model.free_ranking)
+    h.link_to_competition(model.free_ranking.as_ranking, model.competition, category: model.category, segment: :free, ranking: model.free_ranking)
   end
 =begin
   def free_tss

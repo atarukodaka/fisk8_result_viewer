@@ -6,14 +6,12 @@
 - delete country-city mapping?
 - panels: panel db entries
 - youtube register
-- i18n
 - components controller is necessary ??
 - codecov: icedance elements
-- competition feature: adding :short_name column brings us error somehow
-- skater: age ??
-- elements/components: date or starting_time of score ?
-- spec: team 
-- spec: cr doesnt have free: check nil
+- spec
+  - feature
+  - team 
+  - cr doesnt have free: check nil
 
 ### new feature
 

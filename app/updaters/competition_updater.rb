@@ -1,6 +1,7 @@
 class CompetitionUpdater
-  def initialize(parser_type: CompetitionParser::DEFAULT_PARSER, verbose: false)
-    @parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
+  def initialize(parser_type: , verbose: false)
+    #@parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
+    @parser = CompetitionParser.create_parser(parser_type)
     @verbose = verbose
   end
 
