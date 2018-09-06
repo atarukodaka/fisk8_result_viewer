@@ -110,15 +110,14 @@ ja:
 
       score:
         name: スコア名
-        segment_starting_time: セグメント開始時刻
         result_pdf: リザルトPDF
         skater_name: 選手名
         deductions: 減点
         base_value: 基礎点
         elements_summary: 要素一覧
         components_summary: コンポーネント一覧
-        segment_starting_time: 開始時刻
         starting_number: 開始番号
+        date: 日付
 
       element:
         score_name: スコア名
