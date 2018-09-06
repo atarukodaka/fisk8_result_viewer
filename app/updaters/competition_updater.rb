@@ -8,7 +8,7 @@ class CompetitionUpdater
     ActiveRecord::Base.transaction do
       if (competitions = Competition.where(site_url: site_url).presence)
         if force
-        competitions.map(&:destroy)
+          competitions.map(&:destroy)
         else
           puts "skip: '#{site_url}' already exists"
           return nil
@@ -39,13 +39,13 @@ class CompetitionUpdater
 
           parsed[:segments][category].each do |segment, seg_item|
             next if seg_item[:result_url].blank?
-            ###
+
             competition.performed_segments.create do |ps|
               ps.category = category
               ps.segment = segment
               ps.starting_time = seg_item[:time]
             end
-            ###
+
             update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
