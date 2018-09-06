@@ -35,13 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :analysis  # for temtative panel analysis
-
   resources :statics, only: :index
-
-  resources :scorecalc, only: :index do
-    post :load_score, on: :collection
-  end
   
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number

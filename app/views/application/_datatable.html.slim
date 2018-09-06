@@ -5,7 +5,7 @@
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 script
   | jQuery(function($){
-  | attrs = $('#attrs-#{table_id}').data('json');
+  |  attrs = $('#attrs-#{table_id}').data('json');
   - if attrs[:ajax]
     |  attrs["ajax"]["data"] = function(d){ 
     |    d.name_operator = $('#name_operator').val(),
@@ -14,9 +14,9 @@ script
     |    d.season_from = $('#season_from').val(),
     |    d.season_to = $('#season_to').val()
     |  };
-  |   $("##{table_id}").DataTable( attrs );
+  |   t = $("##{table_id}").DataTable( attrs );
   // numbering
-  /- if numbering_column_name = datatable.columns.find(&:numbering).try(:name)
+  - if numbering_column_name = datatable.columns.find(&:numbering).try(:name)
     | t.on('order.dt search.dt', function(){
     |     t.column("#{numbering_column_name}:name", {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
     |         cell.innerHTML = i+1;
