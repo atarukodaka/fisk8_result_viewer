@@ -14,7 +14,7 @@ ja:
     scores: スコア
     elements: 技術要素
     components: コンポーネント
-    scorecalc: スコア計算
+    statics: スコア計算
     
   competitions:
     show:
@@ -43,6 +43,7 @@ ja:
   statics:
     index:
       highest_score: 最高得点
+      total_score: 総得点
       short: ショート
       free: フリー
 

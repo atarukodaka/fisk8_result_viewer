@@ -6,11 +6,8 @@ module CompetitionParser
       SCORE_DELIMITER = /Score Score/
       
       def parse(score_url)
-        begin
-          text = convert_pdf(score_url, dir: "tmp/pdf")
-        rescue OpenURI::HTTPError
-          return []
-        end
+        text = convert_pdf(score_url) || (return [])
+
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
         text.split(/\f/).map.with_index do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|

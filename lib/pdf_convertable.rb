@@ -1,6 +1,26 @@
 require 'pdftotext'
+require 'tempfile'
 
 module PdfConvertable
+  def convert_pdf(url)
+    return nil if url.blank?
+
+    begin
+      open(url, allow_redirections: :safe) do |f|
+        tmp_filename = "tmp.pdf"
+        Tempfile.create(tmp_filename) do |out|
+          out.binmode
+          out.write f.read
+
+          Pdftotext.text(out.path)
+        end
+      end
+    rescue OpenURI::HTTPError
+      logger.warn("HTTP Error: #{url}")
+      return nil
+    end
+  end
+=begin
   def convert_pdf(url, dir: "./")
     return "" if url.blank?
 
@@ -16,4 +36,5 @@ module PdfConvertable
     end
     Pdftotext.text(filename)
   end
+=end
 end

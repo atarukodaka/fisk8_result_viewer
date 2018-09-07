@@ -1,5 +1,5 @@
 - category = params[:category] ||= "MEN"
-- season = params[:season] ||= Competition.recent.first.try(:season) || "2017-18"
+- season = params[:season] ||= Competition.recent.first.try(:season)
 
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :statics_form do |f|
   = form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, onchange:"$('#statics_form').submit()"))
@@ -8,6 +8,13 @@
 
 ////////////////////////////////////////////////////////////////
 h3= t(".highest_score", default: "Highest  Score")
+
+h4= t(".total_score", default: "Total Score")
+.row
+  .col-sm-12
+    - cols = [:no, :skater_name, :nation, :competition_name, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
+    - records = CategoryResult.includes(:competition, :skater, :short, :free).order(points: :desc).where("competitions.season" => season, category: category)
+    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
 
 .row
   - cols = [:no, :skater_name, :nation, :name, :tss, :tes, :pcs]
@@ -43,22 +50,23 @@ h3 Most Valuable Elements
 .row
   .col-sm-6
     h4 Lift
-    = StaticsDatatable.new(self).records(records.where(element_type: :lift)).columns(cols).decorate.render
+    = render partial: "element_datatable", locals: {element_type: "lift", cols: cols, records: records}
 
   .col-sm-6
     h4 Death Spiral
-    = StaticsDatatable.new(self).records(records.where(element_type: :death_spiral)).columns(cols).decorate.render
+    = render partial: "element_datatable", locals: {element_type: "death_spiral", cols: cols, records: records}
+
 
 - if category =~ /ICE DANCE/
   .row
     .col-sm-6
       h4 Twizzle
-      = StaticsDatatable.new(self).records(records.where(element_type: :twizzle)).columns(cols).decorate.render
+      = render partial: "element_datatable", locals: {element_type: "twizzle", cols: cols, records: records}
+
 
     .col-sm-6
       h4 Pattern Dance
-      = StaticsDatatable.new(self).records(records.where(element_type: :pattern_dance)).columns(cols).decorate.render
-
+      = render partial: "element_datatable", locals: {element_type: "pattern_dance", cols: cols, records: records}
 
 h3 PCS
 
