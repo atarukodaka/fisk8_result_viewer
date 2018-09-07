@@ -100,16 +100,14 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     shared_context :skater_having_different_name do |url, category, ranking|
       subject(:result) {
         Category.accept!(category)
-        #Competition.create(site_url: url).update.results.find_by(category: category, ranking: ranking)
-        CompetitionUpdater.new.update_competition(url).results.find_by(category: category, ranking: ranking)
+        CompetitionUpdater.new.update_competition(url).category_results.find_by(category: category, ranking: ranking)
       }
     end
     shared_examples :same_name_between_segments do
       its(:skater) { is_expected.to eq(result.short.skater) }
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
-=begin
-## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
+
     context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
       include_context :skater_having_different_name, url, "LADIES", 15
@@ -120,7 +118,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       include_context :skater_having_different_name, url, "JUNIOR LADIES", 17
       it_behaves_like :same_name_between_segments
     end
-=end
+
 =begin
     it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
       ## TODO: name correction for Ho Jung LEE

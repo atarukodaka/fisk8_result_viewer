@@ -1,3 +1,6 @@
+require 'pdftotext'
+require 'tempfile'
+
 module CompetitionParser
   class IsuGeneric
     class ScoreParser
@@ -6,11 +9,8 @@ module CompetitionParser
       SCORE_DELIMITER = /Score Score/
       
       def parse(score_url)
-        begin
-          text = convert_pdf(score_url, dir: "tmp/pdf")
-        rescue OpenURI::HTTPError
-          return []
-        end
+        text = convert_pdf(score_url) || (return [])
+
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
         text.split(/\f/).map.with_index do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
@@ -20,8 +20,6 @@ module CompetitionParser
           end
         end.flatten
       end
-      ################################################################
-      protected
       def parse_score(text)
         @mode = :skater
         @score = {elements: [], components: []}
@@ -109,6 +107,27 @@ module CompetitionParser
       def parse_deductions(line)
         if line =~ /Deductions:? (.*) [0-9\.\-]+$/
           @score[:deduction_reasons] = $1
+        end
+      end
+
+      ################
+      protected
+      def convert_pdf(url)
+        return nil if url.blank?
+        
+        begin
+          open(url, allow_redirections: :safe) do |f|
+            tmp_filename = "score-#{rand(1000)}-tmp.pdf"
+            Tempfile.create(tmp_filename) do |out|
+              out.binmode
+              out.write f.read
+              
+              Pdftotext.text(out.path)
+            end
+          end
+        rescue OpenURI::HTTPError
+          logger.warn("HTTP Error: #{url}")
+      return nil
         end
       end
     end # module

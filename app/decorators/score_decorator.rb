@@ -24,26 +24,5 @@ class ScoreDecorator < EntryDecorator
   def segment
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
-=begin
-  def tss
-    h.link_to_score(model.tss.as_score, model)
-  end
-=end
-=begin
-  def scorecalc
-    h.link_to(model.name, controller: :scorecalc, score_name: model.name)
-  end
-=end
-=begin
-  def segment_starting_time
-    #l(model.performed_segment.starting_time.in_time_zone(competition.timezone))
-    l(model.segment_starting_time)
-  end
-=end
-=begin
-  def youtube_search
-    h.link_to("Youtube", "http://www.youtube.com/results?q=" + [score.skater.name, score.competition.name, score.segment].join('+'), target: "_blank")
-  end
-=end
   decorate_as_score(:tss, :tes, :pcs, :deductions, :base_value, :max_tss)
 end

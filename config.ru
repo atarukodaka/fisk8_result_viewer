@@ -5,6 +5,8 @@ require_relative 'config/environment'
 ################
 # stackprof
 
+
+if false
   require ::File.expand_path('../config/environment',  __FILE__)
 
   is_stackprof         =  ENV['ENABLE_STACKPROF'].to_i.nonzero?
@@ -18,5 +20,5 @@ require_relative 'config/environment'
 			     interval:   stackprof_interval,
 			     save_every: stackprof_save_every,
 			     path:       stackprof_path
-
+end
 run Rails.application
