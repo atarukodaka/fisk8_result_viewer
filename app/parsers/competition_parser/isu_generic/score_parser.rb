@@ -4,8 +4,6 @@ require 'tempfile'
 module CompetitionParser
   class IsuGeneric
     class ScoreParser
-      include PdfConvertable
-      
       SCORE_DELIMITER = /Score Score/
       
       def parse(score_url)
