@@ -14,7 +14,7 @@ ja:
     scores: スコア
     elements: 技術要素
     components: コンポーネント
-    scorecalc: スコア計算
+    statics: 統計情報
     
   competitions:
     show:
@@ -43,8 +43,18 @@ ja:
   statics:
     index:
       highest_score: 最高得点
+      total_score: 総得点
       short: ショート
       free: フリー
+      most_valuable_elements: 最高評価要素
+      jump: ジャンプ
+      spin: スピン
+      step: ステップ
+      choreo: コレオ
+      lift: リフト
+      death_spiral: デススパイラル
+      twizzle: ツイズル
+      pattern_dance: パターンダンス
 
   filter:
     toggle_filter: 検索フィルターを表示/非表示
