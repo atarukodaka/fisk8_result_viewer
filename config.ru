@@ -4,9 +4,7 @@ require_relative 'config/environment'
 
 ################
 # stackprof
-
-
-if false
+if true
   require ::File.expand_path('../config/environment',  __FILE__)
 
   is_stackprof         =  ENV['ENABLE_STACKPROF'].to_i.nonzero?

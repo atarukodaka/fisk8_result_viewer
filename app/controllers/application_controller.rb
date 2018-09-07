@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  include ErrorHandlers
+  include ControllerConcerns::ErrorHandlers
 
   ## i18n
   before_action :set_locale

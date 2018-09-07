@@ -1,5 +1,5 @@
 class SkatersController < ApplicationController
-  include IndexActions
+  include ControllerConcerns::Index
   
   def get_skater
     Skater.find_by(isu_number: params[:isu_number]) ||
