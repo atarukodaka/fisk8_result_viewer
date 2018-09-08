@@ -12,6 +12,7 @@
   - feature
   - team 
   - cr doesnt have free: check nil
+- filter: segment_type
 
 ### new feature
 

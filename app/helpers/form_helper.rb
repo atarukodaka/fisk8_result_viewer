@@ -22,6 +22,8 @@ module FormHelper
       Category.all.map(&:name) & Score.uniq_list(:category)
       when :segment
         Score.uniq_list(:segment).sort
+      when :segment_type
+        Score.uniq_list(:segment_type).sort
       when :nation
         Skater.uniq_list(:nation).sort
       when :competition_class

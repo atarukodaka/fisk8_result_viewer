@@ -40,6 +40,7 @@ ja:
       components: コンポーネント
       deductions: 減点
       see_other_relevant_videos: 他の映像をご参照ください
+
   statics:
     index:
       highest_score: 最高得点
@@ -120,6 +121,7 @@ ja:
 
       score:
         name: スコア名
+        segment_type: セグメントタイプ
         result_pdf: リザルトPDF
         skater_name: 選手名
         deductions: 減点

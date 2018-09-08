@@ -4,10 +4,14 @@
 /- category_text = t("field.category", default: "Category")
 - category_text = Score.human_attribute_name(:category)
 - segment_text = Score.human_attribute_name(:segment)
+- segment_type_text = Score.human_attribute_name(:segment_type)
+
 = form_group([category_text, segment_text].join(' / ')) do
   = select_tag_with_options(:category, onchange: ajax_search(:category, table))
   label -
   = select_tag_with_options(:segment, onchange: ajax_search(:segment, table))
+  label= segment_type_text
+  = select_tag_with_options(:segment_type, onchange: ajax_search(:segment_type, table))
     
 /= form_group("Nation", select_tag_with_options(:nation, onchange: ajax_search(:nation, table)))
 
