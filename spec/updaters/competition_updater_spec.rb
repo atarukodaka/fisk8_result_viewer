@@ -6,11 +6,10 @@ end
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
   before {
-    Category.accept!('MEN')
+    Category.accept!(['MEN', 'TEAM MEN'])
   }
   describe 'parser types:' do
     shared_examples :having_competition_with_url do
-      its(:class) { is_expected.to eq Competition}
       its(:site_url) { is_expected.to eq(url) }
     end
     
@@ -28,17 +27,24 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       subject {  updater.update_competition(url, date_format: date_format) }
       it_behaves_like :having_competition_with_url
     end
-=begin
+
     describe 'wtt2017' do
       let(:url) { 'http://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { Competition.create(site_url: url, parser_type: :wtt2017).update   }
+      subject { CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
 
-    describe 'aci' do
+    describe 'owgteam' do
+      let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
+      subject(:competition) { CompetitionUpdater.new.update_competition(url) }
+      it_behaves_like :having_competition_with_url
+      it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+    end
+
+=begin
+    describe 'aci' do   ## its nightmare
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
-      let(:updater) { CompetitionUpdater.new(:autumn_classic) }
-      subject { Competition.create(site_url: url, parser_type: :autumn_classic).update   }
+      subject { CompetitionUpdater.new(parser_type: :autumn_classic).update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
 =end
