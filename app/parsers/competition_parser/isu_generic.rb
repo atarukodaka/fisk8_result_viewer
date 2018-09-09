@@ -1,5 +1,6 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
+=begin
     def initialize
       @parser = {
         summary: "#{self.class}::SummaryParser".constantize.new,
@@ -26,11 +27,6 @@ module CompetitionParser
     def parse_score(url)
       @parser[:score].parse(url)
     end
-
-=begin
-    def parse_panel(url)
-      @parser[:panel].parse(url)
-    end
 =end
   end
 end
@@ -39,4 +35,3 @@ CompetitionParser::IsuGeneric::SummaryParser
 CompetitionParser::IsuGeneric::CategoryResultParser
 CompetitionParser::IsuGeneric::SegmentResultParser
 CompetitionParser::IsuGeneric::ScoreParser
-#CompetitionParser::IsuGeneric::PanelParser

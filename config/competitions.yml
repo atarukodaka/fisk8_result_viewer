@@ -131,11 +131,6 @@
 - http://www.isuresults.com/results/season1718/owg2018/
   
 ## for debug
-#-
-#  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
-#  parser_type: :wtt2017
-#  comment: "no category results provided"
-
 #- http://www.isuresults.com/results/season1718/gpfra2017/
 
 #- http://www.isuresults.com/results/fc2012/
@@ -155,3 +150,8 @@
 
 #- http://www.isuresults.com/results/season1617/gpchn2016/
 - http://www.isuresults.com/results/season1718/owg2018/
+-
+  site_url: http://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
+  comment: "no category results provided"
+

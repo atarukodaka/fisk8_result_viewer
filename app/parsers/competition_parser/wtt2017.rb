@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class Wtt2017 < IsuGeneric
     class SummaryParser < IsuGeneric::SummaryParser
       def parse_name(_page)

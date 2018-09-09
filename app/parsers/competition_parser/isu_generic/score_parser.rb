@@ -1,7 +1,7 @@
 require 'pdftotext'
 require 'tempfile'
 
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
     class ScoreParser
       SCORE_DELIMITER = /Score Score/
