@@ -5,7 +5,7 @@ class CompetitionUpdater
     @verbose = verbose
   end
 
-  def update_competition(site_url, date_format: nil, force: false, params: {})
+  def update_competition(site_url, date_format: nil, force: false, categories: {}, params: {})
     ActiveRecord::Base.transaction do
       if (competitions = Competition.where(site_url: site_url).presence)
         if force
@@ -15,7 +15,6 @@ class CompetitionUpdater
           return nil
         end
       end
-      
       parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
@@ -35,7 +34,8 @@ class CompetitionUpdater
         end
         ## for each categories, segments(scores)
         parsed[:categories].each do |category, cat_item|
-          next unless Category.accept?(category)
+          next if (! categories.include?(category) && (categories.count > 0))
+          #next unless Category.accept?(category)
           update_category_result(competition, category, cat_item[:result_url])
 
           parsed[:segments][category].each do |segment, seg_item|
