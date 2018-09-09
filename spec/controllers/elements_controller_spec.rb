@@ -49,8 +49,8 @@ RSpec.describe ElementsController, type: :controller do
       end
     end
     describe 'sort:' do
-      #datatable.column_names.each do |key|
-      [:level].each do |key|
+      datatable.column_names.each do |key|
+      #[:level].each do |key|
         it key do
           expect_order(elem4T, elemLSp, key)
         end

@@ -1,8 +1,8 @@
 language: ruby
 
 rvm:
-  - 2.2.8
-  - 2.4.2
+  - 2.2.10
+  - 2.4.4
 
 install: bundle install --deployment
 cache:
@@ -13,23 +13,23 @@ script:
   - bundle exec rspec -fd
   - bundle exec rspec --tag updater -fd
   - bundle exec rspec --tag error_handler -fd
-  - bundle exec rspec --tag feature -fd
-#  - bundle exec rspec --tag rake
-#  - bundle exec rspec --tag parser
+  #- bundle exec rspec --tag feature -fd
+  - bundle exec rspec --tag rake -fd
+  - bundle exec rspec --tag parser -fd
 
 env: TEST=true
 
-#branches:
-#  only:
-#    - master
-#    - develop
-#    - /^release/
+branches:
+  only:
+    - master
+    - develop
+    - /^release/
 
 addons:
   apt:
     packages:
       - poppler-utils
-      - gnuplot
+#      - gnuplot
 
 after_success:
   - codecov        

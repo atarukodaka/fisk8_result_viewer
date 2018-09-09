@@ -5,22 +5,36 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.0'
-gem 'sqlite3'
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', platforms: :ruby
 
 gem 'coffee-rails', '~> 4.2'
-#gem 'turbolinks', '~> 5'
-#gem 'jbuilder', '~> 2.5'
 
+gem 'slim-rails'
+gem 'pdftotext'
+gem 'bootstrap-sass'
+gem 'kaminari'
+gem 'draper'   ## decoration
+gem 'config'
+gem 'open_uri_redirections'    # for http: -> https: redirect
+gem 'sitemap_generator'
+gem 'active_hash', '~> 1.5'   # 2.x doenst support Ruby < 2.4 and Rails < 5
+gem 'gretel'       ## breadcriumb
+gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'google-analytics-rails'
+gem 'rspec'   ## for heroku
+gem 'stackprof'  # profiling
+
+
+## for each environments
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry-rails'
-  gem 'pry-byebug' #, platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-byebug'
 end
 
 group :test do
@@ -31,12 +45,9 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-its'
   
-  #gem 'guard-rspec', require: false
-  #gem 'factory_girl_rails'
-
   gem 'coveralls', require: false
-  gem 'codecov', :require => false
-  gem 'factory_girl_rails'
+  gem 'codecov', require: false
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -45,40 +56,10 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'
-  gem 'bullet'
+  gem 'rack-dev-mark'
 end
 
 group :production do
   gem 'passenger'
   gem 'pg'
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-#gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-################
-gem 'slim-rails'
-gem 'stackprof'
-#gem 'stackprof', github: "tmm1/stackprof", branch: "master"
-
-gem 'pdftotext'
-#gem 'mechanize'
-gem 'bootstrap-sass'
-gem 'kaminari'
-gem 'google-analytics-rails'
-gem 'draper'
-gem 'config'
-
-gem 'gnuplot'
-gem 'open_uri_redirections'    # for http: -> https: redirect
-gem 'contracts'
-gem 'to_bool'
-#gem 'csv_builder'
-gem 'sitemap_generator'
-
-gem 'jquery-datatables-rails'
-gem 'hashie'
-gem 'active_hash'
-gem 'gretel'
-gem 'rack-dev-mark'
-gem 'dotenv-rails', require: 'dotenv/rails-now'

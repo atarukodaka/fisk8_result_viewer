@@ -13,23 +13,34 @@ Result and Score viewer of figureskating competitions. you can see below details
 ## Install
 
 ```sh
-% sudo yum -y install poppler-utils gnuplot
+% sudo yum -y install poppler-utils 
+or 
+% sudo apt-get install poppler-utils
 % bundle install
+```
+
+on development,
+
+```sh
 % bundle exec rake db:migrate
+```
+
+on production,
+```sh
+% bundle exec rake assets:precompile
+% bundle exec rake secret
+% export SECRET_KEY_BASE=.....
+% bundle exec rake db:migrate
+```
+
+### Usage
+```sh
 % bundle exec rake update:skaters
 % bundle exec rake update:competitions
 % bundle exec rails server
 ```
 
-#### on production
-
-```sh
-% bundle exec rake assets:precompile
-% bundle exec rake secret
-% export SECRET_KEY_BASE=.....
-```
-
-and run migrate, update and server upon RACK_ENV=production.
+If you want to add new competition(s), edit 'config/competitions.yml' and run update:competitions as above.
 
 ## Maintain competitions list
 
@@ -37,4 +48,4 @@ Add site url of competitions that you want to add into 'config/competitions.yml'
 
 
 ## Demonstration
-this package is running here: [Fisk8 Result Viewer](http://tk2-201-10287.vs.sakura.ne.jp/fisk8viewer).
+this package is running here: [Fisk8 Result Viewer](https://fisk8-result-viewer.herokuapp.com).

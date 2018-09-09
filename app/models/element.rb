@@ -2,6 +2,7 @@ class Element < ApplicationRecord
   include ScoreVirtualAttributes
   
   ## relations
+  #has_many :element_judge_details, dependent: :destroy
   belongs_to :score
 
   ## scopes
@@ -9,7 +10,7 @@ class Element < ApplicationRecord
 
   ## callbacks
   before_save :set_element_type, :set_level
-  
+
   private
   def set_element_type
     self[:element_type] = 
@@ -18,7 +19,8 @@ class Element < ApplicationRecord
         when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/, /BL/, /QS/, /CC/, /VW/
           :pattern_dance
         when /[12]SS/, /1PD/, /PSt/, /R[12]Sq/
-          :pattern_dance_element
+          :pattern_dance
+          #:pattern_dance_element
 
         when /MiSt/, /DiSt/, /CiSt/, /SeSt/
           :step
@@ -38,11 +40,14 @@ class Element < ApplicationRecord
         when /ChSq/
           :choreo
         when /Tw/ # /[1-4]A?Tw/, /[1-4]LzTw/
-          :twist_lift
+          :lift
+          #:twist_lift
+
         when /Li/  # /[1-5][ABTSR]?Li/, /StaLi/, /SlLi/, /CuLi/, /RoLi/   # pair
           :lift
         when /Th/
-          :throw_jump
+          :jump
+          #:throw_jump
         when /Ds/, /PiF/
           :death_spiral
 
@@ -70,7 +75,7 @@ class Element < ApplicationRecord
         name =~ /([B1-4])*$/
         $1.to_i
       when :choreo
-        1  # TODO for icedance ??
+        1  # TODO: choreo for icedance ??
       else
         0
       end

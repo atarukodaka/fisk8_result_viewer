@@ -15,6 +15,7 @@ class ElementsDatatable < IndexDatatable
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",
+      #date: "scores.performed_starting_time.starting_time",
       date: "scores.date",
       skater_name: "skaters.name",
       nation: "skaters.nation",
@@ -22,7 +23,7 @@ class ElementsDatatable < IndexDatatable
       base_value: "elements.base_value",
     }
     ## searchable
-    [:credit, :info, :date].each {|key| columns[key].searchable = false }    
+    [:date, :credit, :info].each {|key| columns[key].searchable = false }    
 
     ## visible
     [:competition_class, :competition_type].each {|key|
@@ -36,7 +37,6 @@ class ElementsDatatable < IndexDatatable
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
     
-
     default_orders([[:value, :desc]])
   end
 

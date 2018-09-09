@@ -1,17 +1,14 @@
+require 'pdftotext'
+require 'tempfile'
+
 module CompetitionParser
   class IsuGeneric
     class ScoreParser
-      include Contracts
-      include PdfConvertable
-      
       SCORE_DELIMITER = /Score Score/
       
       def parse(score_url)
-        begin
-          text = convert_pdf(score_url, dir: "tmp/pdf")
-        rescue OpenURI::HTTPError
-          return []
-        end
+        text = convert_pdf(score_url) || (return [])
+
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
         text.split(/\f/).map.with_index do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
@@ -21,8 +18,6 @@ module CompetitionParser
           end
         end.flatten
       end
-      ################################################################
-      protected
       def parse_score(text)
         @mode = :skater
         @score = {elements: [], components: []}
@@ -65,12 +60,22 @@ module CompetitionParser
           number = $1.to_i; rest = $2
           element_re = '[\w\+\!<\*]+'
           if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
-            @score[:elements] << {
+            #@score[:elements] << {
+            element = {
               #@score.elements.new.tap do |elem|
               #elem.attributes = {
               number: number, name: $1, info: $2, base_value: $3.to_f,
               credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
             }
+            element[:edgeerror] = true if element[:name] =~ /\!/
+            if element[:name] =~ /</
+              if element[:name] =~ /<</
+                element[:downgraded] = true
+              else
+                element[:underrotated] = true
+              end
+            end
+            @score[:elements] << element
           else
             raise "parseing error on TES"
           end
@@ -100,6 +105,27 @@ module CompetitionParser
       def parse_deductions(line)
         if line =~ /Deductions:? (.*) [0-9\.\-]+$/
           @score[:deduction_reasons] = $1
+        end
+      end
+
+      ################
+      protected
+      def convert_pdf(url)
+        return nil if url.blank?
+        
+        begin
+          open(url, allow_redirections: :safe) do |f|
+            tmp_filename = "score-#{rand(1000)}-tmp.pdf"
+            Tempfile.create(tmp_filename) do |out|
+              out.binmode
+              out.write f.read
+              
+              Pdftotext.text(out.path)
+            end
+          end
+        rescue OpenURI::HTTPError
+          logger.warn("HTTP Error: #{url}")
+      return nil
         end
       end
     end # module

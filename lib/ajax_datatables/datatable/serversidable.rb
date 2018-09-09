@@ -1,16 +1,16 @@
-module Datatable::Serversidable
+module AjaxDatatables::Datatable::Serversidable
   def serverside
-    self.extend Datatable::Serverside
+    self.extend AjaxDatatables::Datatable::Serverside
   end
 end
 
-module Datatable::Serverside
-  include Datatable::Searchable
+module AjaxDatatables::Datatable::Serverside
+  include AjaxDatatables::Datatable::ConditionBuilder
   
   ################
   ## for server-side ajax
   def manipulate(r)
-    super(r).where(searching_sql(columns_searching_nodes)).order(order_sql).page(page).per(per)
+    super(r).where(build_conditions(columns_searching_nodes)).order(sorting_sql).page(page).per(per)
   end
   
   ################
@@ -26,7 +26,7 @@ module Datatable::Serverside
   end
   ################
   ## sorting
-  def order_sql
+  def sorting_sql
     return "" if params[:order].blank?
 
     params.require(:order).values.map do |item|

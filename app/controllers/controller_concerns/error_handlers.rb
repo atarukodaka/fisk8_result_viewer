@@ -1,9 +1,9 @@
-module ErrorHandlers
+module ControllerConcerns::ErrorHandlers
   extend ActiveSupport::Concern
   
   included do
     unless Rails.env.development?
-    #f Rails.env.production?
+    #if false
       rescue_from Exception, with: :handler_500
       rescue_from ActiveRecord::RecordNotFound, with: :handler_404
       rescue_from ActionController::RoutingError, with: :handler_404
@@ -19,7 +19,7 @@ module ErrorHandlers
   
   def handler_500(e = nil)
     respond_to do |format|
-      format.html { render 'errors/500', status: :internal_server_error }
+      format.html { render 'errors/500', status: :internal_server_error, locals: {message: e.try(:message)} }
       format.json { render json: { error: '500 error'}, status: :internal_server_error, locals: {message: e.try(:message)}}
     end
   end

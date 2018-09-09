@@ -30,7 +30,7 @@
 - http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/index.htm
 - http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+#- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/index.htm
 
 ## warsaw cup
@@ -44,9 +44,9 @@
 #-
 #  site_url: https://skatecanada.ca/2017-autumn-classic-international/
 #  parser_type: autumn_classic
--
-  site_url: https://skatecanada.ca/event/2016-autumn-classic-international/
-  parser_type: :autumn_classic
+#-
+#  site_url: https://skatecanada.ca/event/2016-autumn-classic-international/
+#  parser_type: :autumn_classic
 
 ## debug
 #- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
