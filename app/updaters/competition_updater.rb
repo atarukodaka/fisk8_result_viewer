@@ -2,7 +2,9 @@ class CompetitionUpdater
   def initialize(parser_type: nil, verbose: false)
     #@parser = "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
     #@parser = CompetitionParser.create_parser(parser_type)
-    @parser = CompetitionParser.new(parser_type, verbose: verbose)
+    #@parser = CompetitionParser.new(parser_type, verbose: verbose)
+
+    @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
     @verbose = verbose
   end
 
@@ -17,7 +19,8 @@ class CompetitionUpdater
         end
       end
       #parsed = @parser.parse_summary(site_url, date_format: date_format).presence || (return nil)
-      parsed = @parser.parse(:summary, site_url, date_format: date_format).presence || (return nil)
+      #parsed = @parser.parse(:summary, site_url, date_format: date_format).presence || (return nil)
+      parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)
@@ -62,7 +65,7 @@ class CompetitionUpdater
     
     ActiveRecord::Base.transaction {
       #@parser.parse_category_result(result_url).each do |result_parsed|
-      @parser.parse(:category_result, result_url).each do |result_parsed|
+      @parsers[:category_result].parse(result_url).each do |result_parsed|
         competition.category_results.create!(category: category) do |result|
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
           result.update(result_parsed.slice(*attrs))
@@ -80,10 +83,10 @@ class CompetitionUpdater
   end
   ################
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
-    segment_results = @parser.parse(:segment_result, result_url)
+    segment_results = @parsers[:segment_result].parse(result_url)
     segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
 
-    @parser.parse(:score, score_url).each do |sc_parsed|
+    @parsers[:score].parse(score_url).each do |sc_parsed|
       ActiveRecord::Base.transaction {
         competition.scores.create!(category: category, segment: segment) do |score|
           ## find relevant cr

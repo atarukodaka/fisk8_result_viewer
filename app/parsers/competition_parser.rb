@@ -1,5 +1,6 @@
 class CompetitionParser
   DEFAULT_PARSER = :isu_generic
+=begin
   ################
   def initialize(parser_type = nil, verbose: false)
     parser_type ||= DEFAULT_PARSER
@@ -20,5 +21,6 @@ class CompetitionParser
 
     @parsers[subject].parse(*[url, args].flatten)
   end
+=end
 end
 
