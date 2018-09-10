@@ -3,11 +3,13 @@ require 'tempfile'
 
 class CompetitionParser
   class IsuGeneric
-    class ScoreParser
+    class ScoreParser < ::Parser
       SCORE_DELIMITER = /Score Score/
       
       def parse(score_url)
         text = convert_pdf(score_url) || (return [])
+
+        puts "   -- parsing score: #{score_url}" if @verbose
 
         text = text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
         text.split(/\f/).map.with_index do |page_text, i|

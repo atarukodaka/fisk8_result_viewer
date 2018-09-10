@@ -1,6 +1,6 @@
-class SkaterParser
-  include Utils
-  include LinkToHelper
+class SkaterParser < Parser
+  #include Utils
+  #include LinkToHelper
   
   def parse_skaters(category, url)
     page = get_url(url)

@@ -1,37 +1,24 @@
 class CompetitionParser
   DEFAULT_PARSER = :isu_generic
-=begin
-  class << self
-    def create_parser(parser_type = nil)
-      parser_type ||= DEFAULT_PARSER
+  ################
+  def initialize(parser_type = nil, verbose: false)
+    parser_type ||= DEFAULT_PARSER
+    parser_type_classname = parser_type.to_s.camelize
+    @parsers = {}
+    [:summary, :category_result, :segment_result, :score].each do |subject|
       begin
-        "CompetitionParser::#{parser_type.to_s.camelize}".constantize.new
+        @parsers[subject] =
+          "CompetitionParser::#{parser_type_classname}::#{subject.to_s.camelize}Parser".constantize.new(verbose: verbose)
       rescue NameError => e
         raise "NameError: parser_type '#{parser_type}' not registered"
       end
     end
   end
-=end
   ################
-  def initialize(type = nil)
-    type ||= DEFAULT_PARSER
-    type_classname = type.to_s.camelize
-    @parser = {
-      summary: "CompetitionParser::#{type_classname}::SummaryParser".constantize.new,
-      category_result: "CompetitionParser::#{type_classname}::CategoryResultParser".constantize.new,
-      segment_result: "CompetitionParser::#{type_classname}::SegmentResultParser".constantize.new,
-      score: "CompetitionParser::#{type_classname}::ScoreParser".constantize.new,
-    }
-  end
-  ################
-  def parse(type, url, *args)
-    raise "no such parser type: #{type}" if @parser.has_key?(type.to_s)
-    
-    if args.blank?
-      @parser[type].parse(url)
-    else
-      @parser[type].parse(url, *args)
-    end
+  def parse(subject, url, *args)
+    raise "no such parser subject: #{subject}" if @parsers.has_key?(subject.to_s)
+
+    @parsers[subject].parse(*[url, args].flatten)
   end
 end
 
