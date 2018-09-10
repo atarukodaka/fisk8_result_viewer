@@ -1,7 +1,7 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
-    class ResultParser
-      include Utils
+    class ResultParser < Parser
+      #include Utils
 
       def callbacks
         {}
@@ -22,7 +22,7 @@ module CompetitionParser
       end
       ################
       def parse(url)
-        puts "   --  parsing #{url}"
+        puts "   --  parsing result: #{url}" if @verbose
 
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page) || (return [])

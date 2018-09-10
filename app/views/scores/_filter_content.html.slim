@@ -1,15 +1,15 @@
 = form_group(Score.human_attribute_name(:skater_name), text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name, table)))
 
 = render partial: "competition_filter", locals: {table: table, competition_name_key: :competition_name}
-/- category_text = t("field.category", default: "Category")
 - category_text = Score.human_attribute_name(:category)
 - segment_text = Score.human_attribute_name(:segment)
+- segment_type_text = Score.human_attribute_name(:segment_type)
+
 = form_group([category_text, segment_text].join(' / ')) do
   = select_tag_with_options(:category, onchange: ajax_search(:category, table))
   label -
   = select_tag_with_options(:segment, onchange: ajax_search(:segment, table))
-    
-/= form_group("Nation", select_tag_with_options(:nation, onchange: ajax_search(:nation, table)))
-
+  label= segment_type_text
+  = select_tag_with_options(:segment_type, onchange: ajax_search(:segment_type, table))
 
 

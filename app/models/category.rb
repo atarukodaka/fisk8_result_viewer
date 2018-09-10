@@ -61,6 +61,7 @@ class Category < ActiveHash::Base
     ]
 
   ################
+=begin
   class << self
     ## class methods
     def accept!(categories)
@@ -75,4 +76,5 @@ class Category < ActiveHash::Base
       where(accept_to_update: true, name: category.to_s).present?
     end
   end ## self
+=end
 end
