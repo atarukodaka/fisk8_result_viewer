@@ -83,7 +83,7 @@ class CompetitionUpdater
   end
   ################
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
-    segment_results = @parsers[:segment_result].parse(result_url)
+    segment_results = nil
     segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
 
     @parsers[:score].parse(score_url).each do |sc_parsed|
@@ -95,6 +95,7 @@ class CompetitionUpdater
           ## find skater
           skater = relevant_cr.try(:skater) ||
                    begin
+                     segment_results ||= @parsers[:segment_result].parse(result_url)
                      elem = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
                      skater_name = elem[:skater_name] || sc_parsed[:skater_name]
                      Skater.find_or_create_by_isu_number_or_name(elem[:isu_number], skater_name) do |sk|
