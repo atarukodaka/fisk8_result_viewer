@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'open_uri_redirections'
 
-module Utils
+module HttpGet
   def get_url(url, read_option: nil)
     begin
       html = (read_option) ? open(url, read_option).read : open(url).read
@@ -13,6 +13,12 @@ module Utils
       Nokogiri::HTML(html)
     end
   end
-end  ## module
+end
 
+class Parser
+  include HttpGet
 
+  def initialize(verbose: false)
+    @verbose = verbose
+  end
+end

@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
     class SegmentResultParser < CategoryResultParser
       def callbacks
