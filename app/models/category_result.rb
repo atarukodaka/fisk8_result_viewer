@@ -34,56 +34,11 @@ class CategoryResult < ApplicationRecord
     competition.start_date
   end
 
-=begin
-  def short
-    scores.first || Score.new  ## segment =~ /SHORT/
-    #scores.where("scores.segment like ?", 'SHORT%').first
-  end
-  def free
-    #scores.where("scores.segment like ?", 'FREE%').first
-    scores.second || Score.new
-  end
-=end
-  ################
-=begin
-  def short_tss
-    short.try(:tss)
-  end
-  def short_tes
-    short.try(:tes)
-  end
-  def short_pcs
-    short.try(:pcs)
-  end
-  def short_deductions
-    short.try(:deductions)
-  end
-  def short_bv
-    short.try(:base_value)
-  end
-  def free_tss
-    free.try(:tss)
-  end
-  def free_tes
-    free.try(:tes)
-  end
-  def free_pcs
-    free.try(:pcs)
-  end
-  def free_deductions
-    free.try(:deductions)
-  end
-  def free_bv
-    free.try(:base_value)
-  end
-=end
   [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
     define_method("short_#{key}".to_sym) do
-      #(short.present?) ? short.send(key) : nil
       short.try(:send, key)
     end
     define_method("free_#{key}".to_sym) do
-      #(free.present?) ? free.send(key) : nil
       free.try(:send, key)
     end
   end

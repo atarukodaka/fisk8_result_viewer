@@ -1,8 +1,4 @@
-module IndexActions
-  ## routed actions
-  def list
-    render json: create_datatable.serverside
-  end
+module ControllerConcerns::Index
   def index
     table = create_datatable
     respond_to do |format|
@@ -25,9 +21,12 @@ module IndexActions
         send_data csv, filename: "#{controller_name}.csv" }
     end
   end
-
+  ## json index access
+  def list
+    render json: create_datatable.serverside
+  end
   ################
-  # unrouted methods
+
   def create_datatable
     [controller_name.camelize, "Datatable"].join.constantize.new(view_context)
   end

@@ -10,8 +10,8 @@
 - codecov: icedance elements
 - spec
   - feature
-  - team 
   - cr doesnt have free: check nil
+- help for rake:update
 
 ### new feature
 
@@ -23,6 +23,7 @@
 ## 1.0.5
 - category result has short and free
 - icedance Rhythm Dance as short
+- filter: segment_type
 
 ## 1.0.4-pre2
 - competition.date as Date

@@ -1,4 +1,4 @@
-module ErrorHandlers
+module ControllerConcerns::ErrorHandlers
   extend ActiveSupport::Concern
   
   included do
