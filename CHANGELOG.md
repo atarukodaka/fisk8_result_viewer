@@ -13,6 +13,8 @@
   - cr doesnt have free: check nil
 - help for rake:update
 
+- skater updater spec: detail
+
 ### new feature
 
 ### check before release
