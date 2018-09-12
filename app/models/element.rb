@@ -62,6 +62,10 @@
             [:spin, :upright]
           when /LSp/
             [:spin, :layback]
+          when /ChSp/
+            [:spin, :choreo]
+          else
+            [:spin, nil]
           end
         when /^\d[AFST]/, /^\dL[oz]/, /^[AFST]/, /^L[oz]/
           if name =~ /\+/ || name =~ /COMB/ || name =~ /REP/
@@ -76,6 +80,7 @@
     self
   end
   def set_level
+    binding.pry if element_type.nil?
     self.level =
       case element_type.to_sym
       when :spin
