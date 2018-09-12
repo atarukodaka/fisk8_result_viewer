@@ -1,4 +1,4 @@
-class Element < ApplicationRecord
+ class Element < ApplicationRecord
   include ScoreVirtualAttributes
   
   ## relations
@@ -13,50 +13,64 @@ class Element < ApplicationRecord
 
   private
   def set_element_type
-    self[:element_type] = 
+    self[:element_type], self[:element_subtype] = 
       if score.category == "ICE DANCE"
         case name
         when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/, /BL/, /QS/, /CC/, /VW/
-          :pattern_dance
+          [:pattern_dance, nil]
         when /[12]SS/, /1PD/, /PSt/, /R[12]Sq/
-          :pattern_dance
-          #:pattern_dance_element
+          [:pattern_dance, :element]
 
         when /MiSt/, /DiSt/, /CiSt/, /SeSt/
-          :step
+          [:step, nil]
         when /StaLi/, /SlLi/, /CuLi/, /RoLi/, /SeLi/, /ChLi/, /^Li/
-          :lift
+          [:lift, nil]
         when /STw/, /ChTw/
-          :twizzle
+          [:twizzle, nil]
         when /Sp/
-          :spin
+          [:spin, nil]
         else
-          :unknown
+          [:unknown, nil]
         end
       else
         case name
         when /St/
-          :step
+          [:step, nil]
         when /ChSq/
-          :choreo
+          [:choreo, nil]
         when /Tw/ # /[1-4]A?Tw/, /[1-4]LzTw/
-          :lift
+          [:lift, :twist]
           #:twist_lift
 
         when /Li/  # /[1-5][ABTSR]?Li/, /StaLi/, /SlLi/, /CuLi/, /RoLi/   # pair
-          :lift
+          [:lift, :pair]
         when /Th/
-          :jump
+          [:jump, :throw]
           #:throw_jump
         when /Ds/, /PiF/
-          :death_spiral
+          [:death_spiral, nil]
 
         when /Sp/
-          :spin
+          case name
+          when /CoSp/
+            [:spin, :comb]
+          when /SSp/
+            [:spin, :sit]
+          when /CSp/
+            [:spin, :camel]
+          when /USp/
+            [:spin, :upright]
+          when /LSp/
+            [:spin, :layback]
+          end
         when /^\d[AFST]/, /^\dL[oz]/, /^[AFST]/, /^L[oz]/
-          :jump
+          if name =~ /\+/ || name =~ /COMB/ || name =~ /REP/
+            [:jump, :comb]
+          else
+            [:jump, :solo]
+          end
         else
-          :unknown
+          [:unknown, nil]
         end
       end
     self

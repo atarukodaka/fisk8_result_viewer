@@ -3,7 +3,7 @@ class ComponentsDatatable < IndexDatatable
     super
 
     columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :segment, :date, :season,
+             :category, :segment, :segment_type, :date, :season,
              :ranking, :skater_name, :nation,
              :number, :name, :factor, :judges, :value,])
 
@@ -15,7 +15,7 @@ class ComponentsDatatable < IndexDatatable
       season: "competitions.season",
       category: "scores.category",
       segment: "scores.segment",
-      #date: "scores.performed_segment.starting_time",
+      segment_type: "scores.segment_type",
       date: "scores.date",
       ranking: "scores.ranking",
       skater_name: "skaters.name",

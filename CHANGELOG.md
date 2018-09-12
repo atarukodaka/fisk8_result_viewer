@@ -22,6 +22,9 @@
 - config/application: Version
 - config/competitions.yml: debug
 
+## 1.0.6
+- element subtype
+
 ## 1.0.5
 - category result has short and free
 - icedance Rhythm Dance as short

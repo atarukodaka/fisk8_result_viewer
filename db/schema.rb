@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "number"
     t.string "name"
     t.string "element_type"
+    t.string "element_subtype"
     t.boolean "edgeerror"
     t.boolean "underrotated"
     t.boolean "downgraded"
