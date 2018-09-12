@@ -34,6 +34,8 @@ module FormHelper
         Competition.uniq_list(:season).sort.reverse
       when :element_type
         Element.uniq_list(:element_type).sort
+      when :element_subtype
+        Element.uniq_list(:element_subtype).sort
       else
         []
       end

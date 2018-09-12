@@ -140,6 +140,7 @@ ja:
         number: 番号
         name: 要素名
         element_type: 要素の型
+        element_subtype: 要素の副型
         level: レベル
         info: 付加情報
         credit: クレジット
