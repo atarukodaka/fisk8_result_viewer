@@ -36,7 +36,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
       subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
       it_behaves_like :having_competition_with_url
-      it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      #it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      it { expect(competition.scores.includes(:category).references(:category).where("categories.name like ? ", "TEAM%").blank?).to be false }
     end
 
 =begin

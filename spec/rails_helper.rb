@@ -190,8 +190,10 @@ RSpec.configure do |config|
   ## database cleaner
   require 'database_cleaner'
   config.before(:suite) do
+    load Rails.root.join('db', 'seeds.rb')
     DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean_with(:truncation)
+    #DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.clean_with :truncation, { except: %w(categories segments) }
   end
   
   config.before(:each) do

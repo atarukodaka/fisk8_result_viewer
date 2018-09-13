@@ -17,7 +17,6 @@ class CompetitionUpdater
           (cat.class == String) ? Category.where(name: cat).first : cat
         end.compact
       end
-
     ActiveRecord::Base.transaction do
       if (competitions = Competition.where(site_url: site_url).presence)
         if force
