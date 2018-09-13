@@ -8,7 +8,8 @@ class CompetitionUpdater
     @verbose = verbose
   end
 
-  def update_competition(site_url, date_format: nil, force: false, categories: {}, params: {})
+  def update_competition(site_url, date_format: nil, force: false, categories: nil, params: {})
+    categories ||= Category.all.map(&:name)
     ActiveRecord::Base.transaction do
       if (competitions = Competition.where(site_url: site_url).presence)
         if force
@@ -39,7 +40,8 @@ class CompetitionUpdater
         end
         ## for each categories, segments(scores)
         parsed[:categories].each do |category, cat_item|
-          next if (! categories.include?(category) && (categories.count > 0))
+          #next if (! categories.include?(category) && (categories.count > 0))
+          next unless categories.include?(category)
           #next unless Category.accept?(category)
           update_category_result(competition, category, cat_item[:result_url])
 
