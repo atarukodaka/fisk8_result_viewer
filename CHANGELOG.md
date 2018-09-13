@@ -14,6 +14,7 @@
 - help for rake:update
 
 - skater updater spec: detail
+- uniq list: include
 
 ### new feature
 

@@ -14,8 +14,9 @@ class ComponentsDatatable < IndexDatatable
       competition_type: "competitions.competition_type",
       season: "competitions.season",
       category: "scores.category",
-      segment: "scores.segment",
-      segment_type: "scores.segment_type",
+      category: "categories.name",
+      segment: "segments.name",
+      segment_type: "segments.segment_type",
       date: "scores.date",
       ranking: "scores.ranking",
       skater_name: "skaters.name",
@@ -36,6 +37,6 @@ class ComponentsDatatable < IndexDatatable
     default_orders([[:value, :desc]])
   end
   def fetch_records
-    Component.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+    Component.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
   end
 end

@@ -13,9 +13,9 @@ class ElementsDatatable < IndexDatatable
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       season: "competitions.season",
-      category: "scores.category",
-      segment: "scores.segment",
-      segment_type: "scores.segment_type",
+      category: "categories.name",
+      segment: "segments.name",
+      segment_type: "segments.segment_type",
       #date: "scores.performed_starting_time.starting_time",
       date: "scores.date",
       skater_name: "skaters.name",
@@ -42,6 +42,6 @@ class ElementsDatatable < IndexDatatable
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater]).all
+    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
   end
 end

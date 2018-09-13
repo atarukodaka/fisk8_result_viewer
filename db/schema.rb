@@ -97,7 +97,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "starting_number"
     t.integer "category_id"
     t.integer "segment_id"
-    t.string "segment_type"
     t.date "date", default: "1970-01-01"
     t.string "result_pdf"
     t.float "tss", default: 0.0

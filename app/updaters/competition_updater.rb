@@ -94,7 +94,8 @@ class CompetitionUpdater
   ################
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = nil
-    segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
+    #segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
+    segment_type = segment.segment_type
 
     @parsers[:score].parse(score_url).each do |sc_parsed|
       ActiveRecord::Base.transaction {
@@ -119,7 +120,7 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs).merge(additionals).merge(
             {
               skater: skater,
-              segment_type: segment_type,
+              #segment_type: segment_type,
             })
           score.save!  ## need to save here to create children
 

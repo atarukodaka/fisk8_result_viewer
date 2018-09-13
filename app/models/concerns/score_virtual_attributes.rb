@@ -19,7 +19,7 @@ module ScoreVirtualAttributes
     score.segment
   end
   def segment_type
-    score.segment_type
+    score.segment.segment_type
   end
   def date
     score.competition.start_date
