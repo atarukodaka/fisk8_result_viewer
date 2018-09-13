@@ -34,6 +34,9 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
+  def segment_type
+    segment.segment_type
+  end
 
   ## for statics
   def component_SS
@@ -54,8 +57,8 @@ class Score < ApplicationRecord
 
   ## scopes
   scope :recent, ->{ order("date desc") }
-  scope :short, -> { where(segment_type: :short) }
-  scope :free, -> { where(segment_type:  :free) }
+  scope :short, -> { where(segment: {segment_type: :short}) }
+  scope :free, -> { where(segment: { segment_type:  :free}) }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(s){ where(segment: s) }
 

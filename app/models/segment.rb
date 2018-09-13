@@ -1,4 +1,4 @@
-class Segment < ActiveRecord::Base
+class Segment < ApplicationRecord
   has_many :segment_results
   has_many :scores
 end

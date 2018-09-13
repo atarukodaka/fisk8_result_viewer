@@ -10,72 +10,72 @@
 # category
 
 [
-  ### senior
+  ### SENIOR
   {
     name: "MEN",
     isu_bio_url: "http://www.isuresults.com/bios/fsbiosmen.htm",
     abbr: "SM",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "LADIES",
     isu_bio_url: "http://www.isuresults.com/bios/fsbiosladies.htm",
     abbr: "SL",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "PAIRS",
     isu_bio_url: "http://www.isuresults.com/bios/fsbiospairs.htm",
     abbr: "SP",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "ICE DANCE",
     isu_bio_url: "http://www.isuresults.com/bios/fsbiosicedancing.htm",
     abbr: "SD",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
-  #### junior
+  #### JUNIOR
   {
     name: "JUNIOR MEN",
     abbr: "JM",
-    seniority: "junior",
+    seniority: "JUNIOR",
   },
   {
     name: "JUNIOR LADIES",
       abbr: "JL",
-      seniority: "junior",
+      seniority: "JUNIOR",
   },
   {
     name: "JUNIOR PAIRS",
     abbr: "JP",
-    seniority: "junior",
+    seniority: "JUNIOR",
   },
   {
     name: "JUNIOR ICE DANCE",
     abbr: "JD",
-    seniority: "junior",
+    seniority: "JUNIOR",
   },
   #### TEAM
   {
     name: "TEAM MEN",
     abbr: "TM",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "TEAM LADIES",
     abbr: "TL",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "TEAM PAIRS",
     abbr: "TP",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   {
     name: "TEAM ICE DANCE",
     abbr: "TD",
-    seniority: "senior",
+    seniority: "SENIOR",
   },
   #### UNKNOWN
   {
