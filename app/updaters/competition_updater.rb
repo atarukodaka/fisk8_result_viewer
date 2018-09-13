@@ -46,14 +46,15 @@ class CompetitionUpdater
         end
         ## for each categories, segments(scores)
         parsed[:categories].each do |category_str, cat_item|
-          category = Category.find_by(name: category_str)
+          category = Category.find_by(name: category_str)  ## TODO: nil
           next unless accept_categories.include?(category)
 
           update_category_result(competition, category, cat_item[:result_url])
 
-          parsed[:segments][category_str].each do |segment, seg_item|
+          parsed[:segments][category_str].each do |segment_str, seg_item|
             next if seg_item[:result_url].blank?
 
+            segment = Segment.find_by(name: segment_str)
             competition.performed_segments.create do |ps|
               ps.category = category
               ps.segment = segment

@@ -6,6 +6,7 @@ class Score < ApplicationRecord
   has_many :components, dependent: :destroy, autosave: true
 
   belongs_to :category
+  belongs_to :segment
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, optional: true
@@ -64,7 +65,7 @@ class Score < ApplicationRecord
     nation = self.skater.try(:nation) || self.nation
     isu_number = self.skater.try(:isu_number) || 0
 
-    "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category.name, self.segment, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+    "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category.name, self.segment.name, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
 
   private
@@ -72,9 +73,9 @@ class Score < ApplicationRecord
     #segment_type = (segment =~ /SHORT/) ? :short : :free
     if name.blank?
       #category_abbr = Category.find_by(name: category).try(:abbr)
-      segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
+      #segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
 
-      self.name = [competition.try(:short_name), category.abbr, segment_abbr, ranking].join('-')
+      self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
     end
     self
   end

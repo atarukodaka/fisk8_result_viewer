@@ -42,6 +42,6 @@ class ElementsDatatable < IndexDatatable
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater]).all
   end
 end

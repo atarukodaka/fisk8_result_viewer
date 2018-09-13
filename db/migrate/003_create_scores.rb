@@ -7,7 +7,8 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       #t.string :category
       t.belongs_to :category
-      t.string :segment
+      #t.string :segment
+      t.belongs_to :segment
       t.string :segment_type
       t.date :date, default: Date.new(1970, 1, 1)
       t.string :result_pdf
@@ -27,12 +28,20 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.references :category_result  ## TODO
     end
 
+    ################
     create_table :categories do |t|
       t.string :name
       t.string :abbr
       t.string :seniority
+      t.string :isu_bio_url
+    end
+    create_table :segments do |t|
+      t.string :name
+      t.string :abbr
+      t.string :segment_type
     end
 
+    ################
     create_table :elements do |t|
       t.integer :number
       t.string :name

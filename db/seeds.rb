@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+####
+# category
+
 [
   ### senior
   {
@@ -81,5 +84,39 @@
     seniority: "unknown",
   }
 ].each do |elem|
-  Category.create(name: elem[:name], abbr: elem[:abbr], seniority: elem[:seniority])
+  Category.create(elem)
 end
+
+####
+# segment
+[
+  {
+    name: "SHORT PROGRAM",
+    abbr: "SP",
+    segment_type: "short",
+  },
+  {
+    name: "FREE SKATING",
+    abbr: "FS",
+    segment_type: "free",
+  },
+  ## for ice dance
+  {
+    name: "SHORT DANCE",
+    abbr: "SD",
+    segment_type: "short",
+  },
+  {
+    name: "RHYTHM DANCE",
+    abbr: "RD",
+    segment_type: "short",
+  },
+  {
+    name: "FREE DANCE",
+    abbr: "FD",
+    segment_type: "free",
+  },
+].each do |elem|
+  Segment.create(elem)
+end
+  

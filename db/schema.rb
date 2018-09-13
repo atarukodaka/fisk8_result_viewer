@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "name"
     t.string "abbr"
     t.string "seniority"
+    t.string "isu_bio_url"
   end
 
   create_table "category_results", force: :cascade do |t|
@@ -82,11 +83,12 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "performed_segments", force: :cascade do |t|
     t.integer "category_id"
-    t.string "segment"
+    t.integer "segment_id"
     t.datetime "starting_time", default: "1969-12-31 15:00:00"
     t.integer "competition_id"
     t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
+    t.index ["segment_id"], name: "index_performed_segments_on_segment_id"
   end
 
   create_table "scores", force: :cascade do |t|
@@ -94,7 +96,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "ranking"
     t.integer "starting_number"
     t.integer "category_id"
-    t.string "segment"
+    t.integer "segment_id"
     t.string "segment_type"
     t.date "date", default: "1970-01-01"
     t.string "result_pdf"
@@ -112,7 +114,14 @@ ActiveRecord::Schema.define(version: 3) do
     t.index ["category_id"], name: "index_scores_on_category_id"
     t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
+    t.index ["segment_id"], name: "index_scores_on_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
+  end
+
+  create_table "segments", force: :cascade do |t|
+    t.string "name"
+    t.string "abbr"
+    t.string "segment_type"
   end
 
   create_table "skaters", force: :cascade do |t|
