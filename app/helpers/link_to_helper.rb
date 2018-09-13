@@ -14,7 +14,6 @@ module LinkToHelper
   def link_to_competition(text = nil, competition, category: nil, segment: nil, ranking: nil)
     #text ||= segment || category || competition.name
     text ||= segment || category.try(:name) || competition.name
-
     link_to(text, competition_path(competition.short_name, category.try(:name), segment, ranking))
   end
   

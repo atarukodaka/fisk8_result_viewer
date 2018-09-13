@@ -81,10 +81,11 @@ ActiveRecord::Schema.define(version: 3) do
   end
 
   create_table "performed_segments", force: :cascade do |t|
-    t.string "category"
+    t.integer "category_id"
     t.string "segment"
     t.datetime "starting_time", default: "1969-12-31 15:00:00"
     t.integer "competition_id"
+    t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
   end
 
