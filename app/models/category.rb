@@ -1,5 +1,19 @@
+class Category < ActiveRecord::Base
+  has_many :category_results
+  has_many :segment_results
+  has_many :scores
+end
+
+__END__
+=begin
 class Category < ActiveHash::Base
-  field :accept_to_update, default: true
+  include ActiveHash::Associations
+
+  has_many :category_results
+  has_many :segment_results
+  has_many :scores
+
+  #field :accept_to_update, default: true
 
   self.data =
     [
@@ -8,57 +22,83 @@ class Category < ActiveHash::Base
        name: "MEN",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosmen.htm",
        abbr: "SM",
+       seniority: "senior",
      },
      {
        name: "LADIES",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosladies.htm",
        abbr: "SL",
+       seniority: "senior",
      },
      {
        name: "PAIRS",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiospairs.htm",
        abbr: "SP",
+       seniority: "senior",
      },
      {
        name: "ICE DANCE",
        isu_bio_url: "http://www.isuresults.com/bios/fsbiosicedancing.htm",
        abbr: "SD",
+       seniority: "senior",
      },
      #### junior
      {
        name: "JUNIOR MEN",
        abbr: "JM",
+       seniority: "junior",
      },
      {
        name: "JUNIOR LADIES",
        abbr: "JL",
+       seniority: "junior",
      },
      {
        name: "JUNIOR PAIRS",
        abbr: "JP",
+       seniority: "junior",
      },
      {
        name: "JUNIOR ICE DANCE",
        abbr: "JD",
+       seniority: "junior",
      },
      #### TEAM
      {
        name: "TEAM MEN",
        abbr: "TM",
+       seniority: "senior",
      },
      {
        name: "TEAM LADIES",
        abbr: "TL",
+       seniority: "senior",
      },
      {
        name: "TEAM PAIRS",
        abbr: "TP",
+       seniority: "senior",
      },
      {
        name: "TEAM ICE DANCE",
        abbr: "TD",
+       seniority: "senior",
      },
+     #### UNKNOWN
+     {
+       name: "UNKNOWN",
+       abbr: "UK",
+       seniority: "unknown",
+     }
     ]
+=end
+  def men?
+    self.name =~ /MEN/
+  end
+
+  def senior?
+    self.seniority == "seinor"
+  end
 
   ################
 =begin
@@ -77,4 +117,6 @@ class Category < ActiveHash::Base
     end
   end ## self
 =end
+
 end
+

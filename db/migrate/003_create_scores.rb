@@ -5,7 +5,8 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.integer :ranking
       t.integer :starting_number
 
-      t.string :category
+      #t.string :category
+      t.belongs_to :category
       t.string :segment
       t.string :segment_type
       t.date :date, default: Date.new(1970, 1, 1)
@@ -24,6 +25,12 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.belongs_to :competition
       t.references :skater
       t.references :category_result  ## TODO
+    end
+
+    create_table :categories do |t|
+      t.string :name
+      t.string :abbr
+      t.string :seniority
     end
 
     create_table :elements do |t|
