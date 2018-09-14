@@ -16,6 +16,8 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "name"
     t.string "abbr"
     t.string "seniority"
+    t.boolean "indivisual"
+    t.string "category_type"
     t.string "isu_bio_url"
   end
 
@@ -126,7 +128,7 @@ ActiveRecord::Schema.define(version: 3) do
   create_table "skaters", force: :cascade do |t|
     t.string "name"
     t.string "nation"
-    t.string "category"
+    t.integer "category_id"
     t.integer "isu_number"
     t.string "coach"
     t.string "choreographer"
@@ -136,6 +138,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "height"
     t.string "club"
     t.datetime "bio_updated_at"
+    t.index ["category_id"], name: "index_skaters_on_category_id"
   end
 
 end

@@ -25,6 +25,7 @@
 
 ## 1.0.6
 - element subtype
+- category, segment as active record
 
 ## 1.0.5
 - category result has short and free

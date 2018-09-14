@@ -25,7 +25,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       t.belongs_to :competition
       t.references :skater
-      t.references :category_result  ## TODO
+      t.references :category_result  ## TODO: reference to category_result required ??
     end
 
     ################
@@ -33,6 +33,8 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :abbr
       t.string :seniority
+      t.boolean :indivisual
+      t.string :category_type
       t.string :isu_bio_url
     end
     create_table :segments do |t|

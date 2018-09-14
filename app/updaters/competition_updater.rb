@@ -45,7 +45,7 @@ class CompetitionUpdater
         end
         ## for each categories, segments(scores)
         parsed[:categories].each do |category_str, cat_item|
-          category = Category.find_by(name: category_str)  ## TODO: nil
+          category = Category.find_by(name: category_str) || next
           next unless accept_categories.include?(category)
 
           update_category_result(competition, category, cat_item[:result_url])
@@ -68,22 +68,25 @@ class CompetitionUpdater
     end  ## transaction
   end
   ################
+  def find_or_create_skater(isu_number, skater_name, nation, category)
+    Skater.find_or_create_by_isu_number_or_name(isu_number, skater_name) do |sk|
+      indivisual_senior_category = Category.where(indivisual: true, category_type: category.category_type).first || raise("indivisual senior category not found for #{category.name}")
+      sk.attributes = {
+        category: indivisual_senior_category,
+        nation: nation,
+      }
+    end
+  end
+  ################
   def update_category_result(competition, category, result_url)
     return if result_url.blank?
     
     ActiveRecord::Base.transaction {
-      #@parser.parse_category_result(result_url).each do |result_parsed|
       @parsers[:category_result].parse(result_url).each do |result_parsed|
         competition.category_results.create!(category: category) do |result|
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
           result.update(result_parsed.slice(*attrs))
-          result.skater = Skater.find_or_create_by_isu_number_or_name(result_parsed[:isu_number], result_parsed[:skater_name]) do |sk|
-            sk.attributes = {
-              #category: category.sub(/^JUNIOR */, ''),
-              category: category.name.sub(/^JUNIOR */, '').sub(/^TEAM */, ''),  ## TODO: skater model shld belong to category model ??
-              nation: result_parsed[:nation],
-            }
-          end
+          result.skater = find_or_create_skater(result_parsed[:isu_number], result_parsed[:skater_name], result_parsed[:nation], category)
           result.save!
           puts result.summary if @verbose
         end
@@ -93,7 +96,6 @@ class CompetitionUpdater
   ################
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = nil
-    #segment_type = (segment =~ /SHORT/ || segment =~ /RHYTHM/) ? :short : :free
     segment_type = segment.segment_type
 
     @parsers[:score].parse(score_url).each do |sc_parsed|
@@ -101,26 +103,20 @@ class CompetitionUpdater
         competition.scores.create!(category: category, segment: segment) do |score|
           ## find relevant cr
           relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
-          #relevant_cr = competition.category_results.where(category_id: category.id, "#{segment_type}_ranking": sc_parsed[:ranking]).first
 
           ## find skater
           skater = relevant_cr.try(:skater) ||
                    begin
                      segment_results ||= @parsers[:segment_result].parse(result_url)
-                     elem = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
-                     skater_name = elem[:skater_name] || sc_parsed[:skater_name]
-                     Skater.find_or_create_by_isu_number_or_name(elem[:isu_number], skater_name) do |sk|
-                       sk.nation = sc_parsed[:nation]
-                     end
+                     seg_result = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
+                     skater_name = seg_result[:skater_name] || sc_parsed[:skater_name]
+                     find_or_create_skater(seg_result[:isu_number], skater_name, sc_parsed[:nation], category)
                    end
           
           ## set attributes
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
-          score.attributes = sc_parsed.slice(*attrs).merge(additionals).merge(
-            {
-              skater: skater,
-              #segment_type: segment_type,
-            })
+          score.attributes = sc_parsed.slice(*attrs).merge(additionals)
+          score.skater = skater
           score.save!  ## need to save here to create children
 
           relevant_cr.update(segment_type => score) if relevant_cr

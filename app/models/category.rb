@@ -2,6 +2,10 @@ class Category < ApplicationRecord
   has_many :category_results
   has_many :segment_results
   has_many :scores
+  has_many :skaters
+
+  def  to_senior
+  end
 end
 
 __END__
