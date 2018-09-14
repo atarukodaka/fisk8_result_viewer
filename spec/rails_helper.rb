@@ -130,30 +130,34 @@ module Helper
     end
   end
 
+  def obj_sendkey(obj, key)
+    r = obj.send(key)
+    (r.respond_to?(:name)) ? r.name : r
+  end
   ## filter
   def expect_filter(obj1, obj2, key, column: :name)
-    ## only obj1
-    get :list, xhr: true, params: {key => obj1.send(key) }
+    get :list, xhr: true, params: {key => obj_sendkey(obj1, key) }
     expect(response.body).to have_content(obj1.send(column))
     expect(response.body).not_to have_content(obj2.send(column))
 
-    get :list, xhr: true, params: filter_params(key, obj1.send(key))
+    get :list, xhr: true, params: filter_params(key, obj_sendkey(obj1, key))
     expect(response.body).to have_content(obj1.send(column))
     expect(response.body).not_to have_content(obj2.send(column))
 
     ## only obj2
-    get :list, xhr: true, params: {key => obj2.send(key) }
+    get :list, xhr: true, params: {key => obj_sendkey(obj2, key) }
     expect(response.body).not_to have_content(obj1.send(column))
     expect(response.body).to have_content(obj2.send(column))
 
-    get :list, xhr: true, params: filter_params(key, obj2.send(key))
+    get :list, xhr: true, params: filter_params(key, obj_sendkey(obj2, key))
     expect(response.body).not_to have_content(obj1.send(column))
     expect(response.body).to have_content(obj2.send(column))
   end 
   ## order
   def expect_order(obj1, obj2, key, column: :name)
-    names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(column)}
-
+    #names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(column)}
+    names = [obj1, obj2].sort {|a, b| obj_sendkey(a, key) <=> obj_sendkey(b, key)}.map {|d| d.send(column)}
+    ## only obj1
     get :list, xhr: true, params: sort_params(key, 'asc')
     expect(names.first).to appear_before(names.last)
     
