@@ -10,7 +10,6 @@ module FormHelper
       else
         concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
       end
-      #concat(yield) if block_given?
     end
   end
   
@@ -21,14 +20,11 @@ module FormHelper
     col =
       case key
       when :category
-      #Category.all.map(&:name) & Score.uniq_list(:category)
-        Category.all.map(&:name)
+        Category.order(:id).map(&:name)
       when :segment
-      #Score.uniq_list(:segment).sort
-        Segment.uniq_list(:name).sort
+        Segment.order(:id).uniq_list(:name)
       when :segment_type
-      #Score.uniq_list(:segment_type).sort
-        Segment.uniq_list(:segment_type).sort
+        Segment.order(:id).uniq_list(:segment_type)
       when :nation
         Skater.uniq_list(:nation).sort
       when :competition_class
@@ -52,7 +48,6 @@ module FormHelper
   end
   def ajax_draw(table)
     "$('##{table.table_id}').DataTable().draw();"
-    #"$('##{table.table_id}').DataTable().columns().search().draw();"
   end
 end
 
