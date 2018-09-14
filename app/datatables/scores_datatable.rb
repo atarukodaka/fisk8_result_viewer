@@ -9,7 +9,6 @@ class ScoresDatatable < IndexDatatable
              ])
     columns.sources = {
       name: "scores.name",
-      category: "scores.category",
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",

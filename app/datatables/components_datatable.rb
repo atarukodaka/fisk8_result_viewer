@@ -13,7 +13,6 @@ class ComponentsDatatable < IndexDatatable
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       season: "competitions.season",
-      category: "scores.category",
       category: "categories.name",
       segment: "segments.name",
       segment_type: "segments.segment_type",
