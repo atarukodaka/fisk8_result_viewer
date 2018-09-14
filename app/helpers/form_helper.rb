@@ -16,6 +16,8 @@ module FormHelper
   
   # using SortWithPreset
   def select_tag_with_options(key, *args)
+    selected = params[key]
+
     col =
       case key
       when :category
@@ -42,7 +44,7 @@ module FormHelper
       else
         []
       end
-    select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), *args)
+    select_tag(key, options_for_select(col.unshift(nil), selected: selected), *args)
   end
   def ajax_search(key, table, search_value: :value)
     col_num = table.column_names.index(key.to_s)
