@@ -15,6 +15,7 @@
 
 - skater updater spec: detail
 - uniq list: include
+- indivisual? team ? for score
 
 ### new feature
 

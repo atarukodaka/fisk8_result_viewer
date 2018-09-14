@@ -5,7 +5,22 @@
 - segment_text = Score.human_attribute_name(:segment)
 - segment_type_text = Score.human_attribute_name(:segment_type)
 
-= form_group([category_text, segment_text, segment_type_text].join(' / ')) do
+= form_group(category_text) do
+  = select_tag_with_options(:category, onchange: ajax_search(:category, table))
+  label - 
+  = select_tag_with_options(:category_type, onchange: ajax_search(:category_type, table))
+  label - 
+  = select_tag_with_options(:seniority, onchange: ajax_search(:seniority, table))
+  label - 
+  = select_tag_with_options(:indivisual, onchange: ajax_search(:indivisual, table))
+
+= form_group(segment_text) do
+  = select_tag_with_options(:segment, onchange: ajax_search(:segment, table))
+  label - 
+  = select_tag_with_options(:segment_type, onchange: ajax_search(:segment_type, table))
+
+  /= select_tag_with_options(:indivisual, onchange: ajax_search(:indivisual, table))
+/= form_group([category_text, segment_text, segment_type_text].join(' / ')) do
   = select_tag_with_options(:category, onchange: ajax_search(:category, table))
   label -
   = select_tag_with_options(:segment, onchange: ajax_search(:segment, table))

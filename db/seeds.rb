@@ -93,12 +93,6 @@
     indivisual: true,
     category_type: "ICE DANCE",
   },
-  #### UNKNOWN
-  {
-    name: "UNKNOWN",
-    abbr: "UK",
-    seniority: "unknown",
-  }
 ].each do |elem|
   Category.create(elem)
 end

@@ -12,6 +12,8 @@ module AjaxDatatables::Datatable::ConditionBuilder
                    case column_type
                    when :integer, :float
                      :eq
+                   when :boolean
+                     :boolean
                    else
                      :matches
                    end
@@ -22,6 +24,8 @@ module AjaxDatatables::Datatable::ConditionBuilder
       case operator.to_sym
       when :eq, :lt, :lteq, :gt, :gteq
         arel.send(operator, sv)
+      when :boolean
+        arel.send(:eq, ActiveRecord::Type::Boolean.new.cast(sv))
       else
         arel.matches("%#{sv}%")
       end

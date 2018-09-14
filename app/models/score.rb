@@ -34,6 +34,16 @@ class Score < ApplicationRecord
   def nation
     skater.nation
   end
+  def category_type
+    category.category_type
+  end
+  def seniority
+    category.seniority
+  end
+  def indivisual
+    category.indivisual
+  end
+
   def segment_type
     segment.segment_type
   end

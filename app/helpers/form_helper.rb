@@ -20,7 +20,13 @@ module FormHelper
     col =
       case key
       when :category
-        Category.order(:id).map(&:name)
+        Category.order(:id).uniq_list(:name)
+      when :category_type
+        Category.order(:id).uniq_list(:category_type)
+      when :seniority
+        Category.order(:id).uniq_list(:seniority)
+      when :indivisual
+        Category.order(:id).uniq_list(:indivisual)
       when :segment
         Segment.order(:id).uniq_list(:name)
       when :segment_type
