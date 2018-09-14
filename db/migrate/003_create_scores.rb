@@ -5,11 +5,8 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.integer :ranking
       t.integer :starting_number
 
-      #t.string :category
       t.belongs_to :category
-      #t.string :segment
       t.belongs_to :segment
-      #t.string :segment_type
       t.date :date, default: Date.new(1970, 1, 1)
       t.string :result_pdf
       
@@ -26,21 +23,6 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.belongs_to :competition
       t.references :skater
       t.references :category_result  ## TODO: reference to category_result required ??
-    end
-
-    ################
-    create_table :categories do |t|
-      t.string :name
-      t.string :abbr
-      t.string :seniority
-      t.boolean :indivisual
-      t.string :category_type
-      t.string :isu_bio_url
-    end
-    create_table :segments do |t|
-      t.string :name
-      t.string :abbr
-      t.string :segment_type
     end
 
     ################
@@ -63,6 +45,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.belongs_to :score
     end
 
+    ################
     create_table :components do |t|
       t.integer :number
       t.string :name
