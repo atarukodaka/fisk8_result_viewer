@@ -33,6 +33,7 @@ class ComponentsDatatable < IndexDatatable
       columns[key].visible = false
       columns[key].orderable = false
     }
+    columns[:category].operator = :eq
 
     default_orders([[:value, :desc]])
   end

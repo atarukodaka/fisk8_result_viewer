@@ -57,8 +57,8 @@ class Score < ApplicationRecord
 
   ## scopes
   scope :recent, ->{ order("date desc") }
-  scope :short, -> { where(segment: {segment_type: :short}) }
-  scope :free, -> { where(segment: { segment_type:  :free}) }
+  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
+  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(s){ where(segment: s) }
 

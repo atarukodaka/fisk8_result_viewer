@@ -1,5 +1,5 @@
-- category = params[:category] ||= "MEN"
-- season = params[:season] ||= Competition.recent.first.try(:season)
+- category = Category.find_by(name: params[:category] || "MEN")
+- season = params[:season] || Competition.recent.first.try(:season)
 
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :statics_form do |f|
   = form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, onchange:"$('#statics_form').submit()"))

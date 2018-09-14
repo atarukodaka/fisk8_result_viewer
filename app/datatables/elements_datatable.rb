@@ -37,7 +37,7 @@ class ElementsDatatable < IndexDatatable
       columns[:name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
-    
+    columns[:category].operator = :eq    
     default_orders([[:value, :desc]])
   end
 

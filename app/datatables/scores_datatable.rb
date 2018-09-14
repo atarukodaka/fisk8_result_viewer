@@ -28,6 +28,7 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
+    columns[:category].operator = :eq
 
     default_orders([[:date, :desc]])
   end
