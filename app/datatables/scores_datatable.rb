@@ -9,10 +9,12 @@ class ScoresDatatable < IndexDatatable
              ])
     columns.sources = {
       name: "scores.name",
-      category: "scores.category",
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
+      category: "categories.name",
+      segment: "segments.name",
+      segment_type: "segments.segment_type",
       season: "competitions.season",
       skater_name: "skaters.name",
       nation: "skaters.nation",
@@ -25,10 +27,11 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
+    columns[:category].operator = :eq
 
     default_orders([[:date, :desc]])
   end
   def fetch_records
-    Score.includes(:competition, :skater).references(:competition, :skater).all
+    Score.includes(:competition, :skater, :category, :segment).references(:competition, :skater, :category, :segment).all
   end
 end

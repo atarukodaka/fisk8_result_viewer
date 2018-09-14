@@ -1,5 +1,5 @@
 module ScoreVirtualAttributes
-  ## virtual attributes
+  ## virtual attributes for elements/components
   def score_name
     score.name
   end
@@ -19,7 +19,7 @@ module ScoreVirtualAttributes
     score.segment
   end
   def segment_type
-    score.segment_type
+    score.segment.segment_type
   end
   def date
     score.competition.start_date

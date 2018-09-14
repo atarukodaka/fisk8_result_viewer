@@ -19,11 +19,14 @@ module FormHelper
     col =
       case key
       when :category
-      Category.all.map(&:name) & Score.uniq_list(:category)
+      #Category.all.map(&:name) & Score.uniq_list(:category)
+        Category.all.map(&:name)
       when :segment
-        Score.uniq_list(:segment).sort
+      #Score.uniq_list(:segment).sort
+        Segment.uniq_list(:name).sort
       when :segment_type
-        Score.uniq_list(:segment_type).sort
+      #Score.uniq_list(:segment_type).sort
+        Segment.uniq_list(:segment_type).sort
       when :nation
         Skater.uniq_list(:nation).sort
       when :competition_class

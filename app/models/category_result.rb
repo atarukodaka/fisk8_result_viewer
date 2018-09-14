@@ -1,10 +1,13 @@
 class CategoryResult < ApplicationRecord
+  extend ActiveHash::Associations::ActiveRecordExtensions
+
   ## relations
   #has_many :scores
   
   belongs_to :competition
   belongs_to :skater
-
+  belongs_to_active_hash :category
+  
   belongs_to :short, class_name: "Score", optional: true  # required: true on default. see https://github.com/rails/rails/issues/18233
   belongs_to :free, class_name: "Score", optional: true
   
@@ -49,6 +52,6 @@ class CategoryResult < ApplicationRecord
 
   def summary
     "  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d" %
-      [self.category, self.ranking.to_i, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
+      [self.category.name, self.ranking.to_i, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
   end
 end

@@ -10,6 +10,12 @@ class ElementDecorator < EntryDecorator
   def competition_name
     h.link_to_competition(model.score.competition)
   end
+  def category
+    model.category.name
+  end
+  def segment
+    model.segment.name
+  end
   def skater_name
     h.link_to_skater(model.score.skater)
   end
