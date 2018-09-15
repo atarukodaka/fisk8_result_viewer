@@ -1,5 +1,5 @@
 module ScoreVirtualAttributes
-  ## virtual attributes for elements/components
+  ## shared virtual attributes for elements/components
   def score_name
     score.name
   end

@@ -119,7 +119,10 @@ class CompetitionUpdater
           score.skater = skater
           score.save!  ## need to save here to create children
 
-          relevant_cr.update(segment_type => score) if relevant_cr
+          if relevant_cr
+            relevant_cr.update(segment_type => score)
+            score.update(category_result: relevant_cr)
+          end
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
 
