@@ -3,7 +3,7 @@ class ComponentsDatatable < IndexDatatable
     super
 
     columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :segment, :segment_type, :date, :season,
+             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
              :ranking, :skater_name, :nation,
              :number, :name, :factor, :judges, :value,])
 
@@ -14,6 +14,9 @@ class ComponentsDatatable < IndexDatatable
       competition_type: "competitions.competition_type",
       season: "competitions.season",
       category: "categories.name",
+      category_type: "categories.category_type",
+      team: "categories.team",
+      seniority: "categories.seniority",
       segment: "segments.name",
       segment_type: "segments.segment_type",
       date: "scores.date",
@@ -28,11 +31,12 @@ class ComponentsDatatable < IndexDatatable
     columns[:value].operator = params[:value_operator].presence || :eq      if view_context
 
     ## visible
-    [:competition_class, :competition_type].each {|key|
+    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
       columns[key].visible = false
       columns[key].orderable = false
     }
     columns[:category].operator = :eq
+    columns[:team].operator = :boolean
 
     default_orders([[:value, :desc]])
   end

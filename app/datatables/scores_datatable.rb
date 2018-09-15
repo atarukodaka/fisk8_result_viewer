@@ -3,7 +3,6 @@ class ScoresDatatable < IndexDatatable
     super
     
     columns([:name, :competition_name, :competition_class, :competition_type,
-             #:category, :category_type, :seniority, :segment, :segment_type, :season, :date,
              :category, :category_type, :team, :seniority, :segment, :segment_type, :season, :date,
              :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value

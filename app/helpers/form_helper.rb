@@ -1,4 +1,10 @@
 module FormHelper
+
+  def uniq_list(relation, key)
+    @_uniq_list_cache ||= {}
+    @_uniq_list_cache[key] ||= relation.distinct.pluck(key).compact
+  end
+
   def form_group(label = nil, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
@@ -20,29 +26,29 @@ module FormHelper
     col =
       case key
       when :category
-        Category.order(:id).uniq_list(:name)
+        uniq_list(Category.order(:id), :name)
       when :category_type
-        Category.order(:id).uniq_list(:category_type)
+        uniq_list(Category.order(:id), :category_type)
       when :seniority
-        Category.order(:id).uniq_list(:seniority)
+        uniq_list(Category.order(:id), :seniority)
       when :team
-        Category.order(:id).uniq_list(:team)
+        uniq_list(Category.order(:id), :team)
       when :segment
-        Segment.order(:id).uniq_list(:name)
+        uniq_list(Segment.order(:id), :name)
       when :segment_type
-        Segment.order(:id).uniq_list(:segment_type)
+        uniq_list(Segment.order(:id), :segment_type)
       when :nation
-        Skater.uniq_list(:nation).sort
+        uniq_list(Skater, :nation).sort
       when :competition_class
-        Competition.uniq_list(:competition_class).sort
+        uniq_list(Competition.all, :competition_class).sort
       when :competition_type
-        Competition.uniq_list(:competition_type).sort
+        uniq_list(Competition.all, :competition_type).sort
       when :season
-        Competition.uniq_list(:season).sort.reverse
+        uniq_list(Competition.all, :season).sort.reverse
       when :element_type
-        Element.uniq_list(:element_type).sort
+        uniq_list(Element.all, :element_type).sort
       when :element_subtype
-        Element.uniq_list(:element_subtype).sort
+        uniq_list(Element.all, :element_subtype).sort
       else
         []
       end

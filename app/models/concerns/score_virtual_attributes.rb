@@ -15,6 +15,15 @@ module ScoreVirtualAttributes
   def category
     score.category
   end
+  def category_type
+    score.category.category_type
+  end
+  def seniority
+    score.category.seniority
+  end
+  def team
+    score.category.team
+  end
   def segment
     score.segment
   end
