@@ -14,6 +14,9 @@
   label= season_text
   /= select_tag_with_options(:season, onchange: ajax_search(:season, table))
   span from
-  = select_tag(:season_from, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+  /= select_tag(:season_from, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+  = select_tag_with_options(:season_from, onchange: ajax_draw(table))
   span to
-  = select_tag(:season_to, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+  = select_tag_with_options(:season_to, onchange: ajax_draw(table))
+  / = select_tag(:season_to, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+

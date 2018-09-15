@@ -49,6 +49,10 @@ module FormHelper
         uniq_list(Element.all, :element_type).sort
       when :element_subtype
         uniq_list(Element.all, :element_subtype).sort
+      when :season_from
+        uniq_list(Competition.all, :season).sort.reverse
+      when :season_to
+        uniq_list(Competition.all, :season).sort.reverse
       else
         []
       end
