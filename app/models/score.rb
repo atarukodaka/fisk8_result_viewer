@@ -40,8 +40,8 @@ class Score < ApplicationRecord
   def seniority
     category.seniority
   end
-  def indivisual
-    category.indivisual
+  def team
+    category.team
   end
 
   def segment_type

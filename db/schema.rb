@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 4) do
     t.string "name"
     t.string "abbr"
     t.string "seniority"
-    t.boolean "indivisual"
+    t.boolean "team"
     t.string "category_type"
     t.string "isu_bio_url"
   end

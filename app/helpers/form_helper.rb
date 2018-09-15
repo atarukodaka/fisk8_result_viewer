@@ -25,8 +25,8 @@ module FormHelper
         Category.order(:id).uniq_list(:category_type)
       when :seniority
         Category.order(:id).uniq_list(:seniority)
-      when :indivisual
-        Category.order(:id).uniq_list(:indivisual)
+      when :team
+        Category.order(:id).uniq_list(:team)
       when :segment
         Segment.order(:id).uniq_list(:name)
       when :segment_type

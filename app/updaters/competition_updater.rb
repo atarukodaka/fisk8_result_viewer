@@ -70,7 +70,7 @@ class CompetitionUpdater
   ################
   def find_or_create_skater(isu_number, skater_name, nation, category)
     Skater.find_or_create_by_isu_number_or_name(isu_number, skater_name) do |sk|
-      indivisual_senior_category = Category.where(indivisual: true, category_type: category.category_type).first || raise("indivisual senior category not found for #{category.name}")
+      indivisual_senior_category = Category.where(team: false, category_type: category.category_type).first || raise("team senior category not found for #{category.name}")
       sk.attributes = {
         category: indivisual_senior_category,
         nation: nation,

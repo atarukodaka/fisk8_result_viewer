@@ -34,14 +34,14 @@ FactoryBot.define do
     abbr { "SM" }
     seniority { "SENIOR" }
     category_type { "MEN" } 
-    indivisual { true }
+    team { false } 
 
     trait :ladies do
       name { "LADIES" }
       abbr { "SL" }
       category_type { "LADIES" }
       seniority { "JUNIOR" }
-      indivisual { false }
+      team { true }
     end
   end
 end
