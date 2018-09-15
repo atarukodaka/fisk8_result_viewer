@@ -24,7 +24,7 @@ class ScoresDatatable < IndexDatatable
       nation: "skaters.nation",
     }
 
-    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority, :segment_type].each do |key|
+    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority, :segment_type, :indivisual].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
     end

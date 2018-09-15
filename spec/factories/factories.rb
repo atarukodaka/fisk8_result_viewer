@@ -27,19 +27,26 @@ FactoryBot.define do
   end
 end
 
+# categories
 FactoryBot.define do
   factory :category do
     name { "MEN" }
     abbr { "SM" }
     seniority { "SENIOR" }
+    category_type { "MEN" } 
     indivisual { true }
 
     trait :ladies do
       name { "LADIES" }
       abbr { "SL" }
+      category_type { "LADIES" }
+      seniority { "JUNIOR" }
+      indivisual { false }
     end
   end
 end
+
+# segments
 FactoryBot.define do
   factory :segment do
     name { "SHORT PROGRAM" }

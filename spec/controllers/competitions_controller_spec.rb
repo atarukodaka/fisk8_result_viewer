@@ -28,7 +28,7 @@ RSpec.describe CompetitionsController, type: :controller do
       end
     end
     context 'sort: ' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do; expect_order(main, sub, key); end
       end
     end
