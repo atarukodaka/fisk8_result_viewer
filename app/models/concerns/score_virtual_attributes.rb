@@ -1,5 +1,5 @@
 module ScoreVirtualAttributes
-  ## virtual attributes
+  ## shared virtual attributes for elements/components
   def score_name
     score.name
   end
@@ -15,8 +15,20 @@ module ScoreVirtualAttributes
   def category
     score.category
   end
+  def category_type
+    score.category.category_type
+  end
+  def seniority
+    score.category.seniority
+  end
+  def team
+    score.category.team
+  end
   def segment
     score.segment
+  end
+  def segment_type
+    score.segment.segment_type
   end
   def date
     score.competition.start_date

@@ -3,9 +3,9 @@ class ElementsDatatable < IndexDatatable
     super
 
     columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :segment, :date, :season,
+             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
              :skater_name, :nation,
-             :number, :name, :element_type, :level, :credit, :info, :base_value, :goe, :judges, :value,])
+             :number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
       score_name: "scores.name",
@@ -13,9 +13,12 @@ class ElementsDatatable < IndexDatatable
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       season: "competitions.season",
-      category: "scores.category",
-      segment: "scores.segment",
-      #date: "scores.performed_starting_time.starting_time",
+      category: "categories.name",
+      category_type: "categories.category_type",
+      team: "categories.team",
+      seniority: "categories.seniority",
+      segment: "segments.name",
+      segment_type: "segments.segment_type",
       date: "scores.date",
       skater_name: "skaters.name",
       nation: "skaters.nation",
@@ -26,7 +29,7 @@ class ElementsDatatable < IndexDatatable
     [:date, :credit, :info].each {|key| columns[key].searchable = false }    
 
     ## visible
-    [:competition_class, :competition_type].each {|key|
+    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
       columns[key].visible = false
       columns[key].orderable = false
     }
@@ -36,11 +39,13 @@ class ElementsDatatable < IndexDatatable
       columns[:name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
-    
+    columns[:category].operator = :eq    
+    columns[:team].operator = :boolean
+
     default_orders([[:value, :desc]])
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater]).references(:score, score: [:competition, :skater]).all
+    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
   end
 end

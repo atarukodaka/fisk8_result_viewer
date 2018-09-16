@@ -36,7 +36,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
       subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
       it_behaves_like :having_competition_with_url
-      it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      #it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      it { expect(competition.scores.includes(:category).references(:category).where("categories.name like ? ", "TEAM%").blank?).to be false }
     end
 
 =begin
@@ -110,12 +111,12 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
     context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
-      include_context :skater_having_different_name, url, "LADIES", 15
+      include_context :skater_having_different_name, url, Category.find_by(name: "LADIES"), 15
       it_behaves_like :same_name_between_segments
     end
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
-      include_context :skater_having_different_name, url, "JUNIOR LADIES", 17
+      include_context :skater_having_different_name, url, Category.find_by(name: "JUNIOR LADIES"), 17
       it_behaves_like :same_name_between_segments
     end
 

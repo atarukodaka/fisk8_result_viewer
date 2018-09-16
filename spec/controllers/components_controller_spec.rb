@@ -35,7 +35,7 @@ RSpec.describe ComponentsController, type: :controller do
     end
     
     describe 'sort:' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
           expect_order(short_ss, free_tr, key)
         end

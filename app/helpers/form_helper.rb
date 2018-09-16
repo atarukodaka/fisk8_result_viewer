@@ -1,4 +1,10 @@
 module FormHelper
+
+  def uniq_list(relation, key)
+    @_uniq_list_cache ||= {}
+    @_uniq_list_cache[key] ||= relation.distinct.pluck(key).compact
+  end
+
   def form_group(label = nil, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
@@ -10,34 +16,47 @@ module FormHelper
       else
         concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
       end
-      #concat(yield) if block_given?
     end
   end
   
   # using SortWithPreset
   def select_tag_with_options(key, *args)
+    selected = params[key]
+
     col =
       case key
       when :category
-      Category.all.map(&:name) & Score.uniq_list(:category)
+        uniq_list(Category.order(:id), :name)
+      when :category_type
+        uniq_list(Category.order(:id), :category_type)
+      when :seniority
+        uniq_list(Category.order(:id), :seniority)
+      when :team
+        uniq_list(Category.order(:id), :team)
       when :segment
-        Score.uniq_list(:segment).sort
+        uniq_list(Segment.order(:id), :name)
       when :segment_type
-        Score.uniq_list(:segment_type).sort
+        uniq_list(Segment.order(:id), :segment_type)
       when :nation
-        Skater.uniq_list(:nation).sort
+        uniq_list(Skater, :nation).sort
       when :competition_class
-        Competition.uniq_list(:competition_class).sort
+        uniq_list(Competition.all, :competition_class).sort
       when :competition_type
-        Competition.uniq_list(:competition_type).sort
+        uniq_list(Competition.all, :competition_type).sort
       when :season
-        Competition.uniq_list(:season).sort.reverse
+        uniq_list(Competition.all, :season).sort.reverse
       when :element_type
-        Element.uniq_list(:element_type).sort
+        uniq_list(Element.all, :element_type).sort
+      when :element_subtype
+        uniq_list(Element.all, :element_subtype).sort
+      when :season_from
+        uniq_list(Competition.all, :season).sort.reverse
+      when :season_to
+        uniq_list(Competition.all, :season).sort.reverse
       else
         []
       end
-    select_tag(key, options_for_select(col.unshift(nil), selected: params[key]), *args)
+    select_tag(key, options_for_select(col.unshift(nil), selected: selected), *args)
   end
   def ajax_search(key, table, search_value: :value)
     col_num = table.column_names.index(key.to_s)
@@ -45,7 +64,6 @@ module FormHelper
   end
   def ajax_draw(table)
     "$('##{table.table_id}').DataTable().draw();"
-    #"$('##{table.table_id}').DataTable().columns().search().draw();"
   end
 end
 

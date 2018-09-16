@@ -121,6 +121,9 @@ ja:
 
       score:
         name: スコア名
+        category_type: カテゴリータイプ
+        seniority: シニア・ジュニア
+        team: チーム戦
         segment_type: セグメントタイプ
         result_pdf: リザルトPDF
         skater_name: 選手名
@@ -140,6 +143,7 @@ ja:
         number: 番号
         name: 要素名
         element_type: 要素の型
+        element_subtype: 要素の副型
         level: レベル
         info: 付加情報
         credit: クレジット

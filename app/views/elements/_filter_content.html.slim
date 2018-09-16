@@ -4,7 +4,10 @@
 = form_group(Element.human_attribute_name(:name)) do
   = select_tag(:name_operator, options_for_select({'=': :eq, "&sube;".html_safe => :matches}, params[:name_operator]), onchange: ajax_draw(table))
   = text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table))
-= form_group(Element.human_attribute_name(:element_type), select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table)))
+= form_group([Element.human_attribute_name(:element_type), "subtype"].join(' / ')) do
+  = select_tag_with_options(:element_type, onchange: ajax_search(:element_type, table))
+  label - 
+  = select_tag_with_options(:element_subtype, onchange: ajax_search(:element_subtype, table))
 
 = form_group(Element.human_attribute_name(:goe)) do
   = select_tag(:goe_operator, options_for_select({'=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq}, params[:goe_operator]), onchange: ajax_draw(table))

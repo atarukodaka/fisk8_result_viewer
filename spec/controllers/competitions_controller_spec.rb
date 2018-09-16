@@ -28,7 +28,7 @@ RSpec.describe CompetitionsController, type: :controller do
       end
     end
     context 'sort: ' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do; expect_order(main, sub, key); end
       end
     end
@@ -54,26 +54,26 @@ RSpec.describe CompetitionsController, type: :controller do
 
     context 'short_name/category' do
       subject {
-        get :show, params: { short_name: main.short_name, category: score.category }
+        get :show, params: { short_name: main.short_name, category: score.category.name }
       }
       its(:body) {
         is_expected.to include(main.name)
-        is_expected.to include(score.category)
+        is_expected.to include(score.category.name)
       }
     end
     context 'short_name/category/segment' do
       subject {
-        get :show, params: { short_name: main.short_name, category: score.category, segment: score.segment}
+        get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name}
       }
       its(:body) {
         is_expected.to include(main.name)
-        is_expected.to include(score.category)
-        is_expected.to include(score.segment)        
+        is_expected.to include(score.category.name)
+        is_expected.to include(score.segment.name)
       }
     end
     context 'format: json' do
       subject {
-        get :show, params: { short_name: main.short_name, category: score.category, segment: score.segment, format: "json" }
+        get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name, format: "json" }
       }
       its(:content_type) { is_expected.to eq('application/json')}
       its(:body) { is_expected.to include(main.name) }

@@ -1,20 +1,24 @@
 # skaters
 FactoryBot.define do
   factory :skater do
+    association :category, factory: :category
+
     name { "Taro YAMADA" }
     nation { "JPN" }
     isu_number { 1 }
-    category { "MEN" }
+    #category { "MEN" }
+    
     birthday { "1.1.1980" } 
     coach { "Jiro YAMADA" }
     hometown { "TOKYO" }
     club { "Jingu" } 
 
     trait :ladies do
+      association :category, factory: [:category, :ladies]
       name { "Leia ORGANA" }
       nation { "USA" }
       isu_number { 2 }
-      category { "LADIES" }
+      #category { "LADIES" }
       birthday { "1.1.1990" }
       coach { "Rola ORGANA" }
       hometown { "L.A." }
@@ -22,6 +26,41 @@ FactoryBot.define do
     end
   end
 end
+
+# categories
+FactoryBot.define do
+  factory :category do
+    name { "MEN" }
+    abbr { "SM" }
+    seniority { "SENIOR" }
+    category_type { "MEN" } 
+    team { false } 
+
+    trait :ladies do
+      name { "LADIES" }
+      abbr { "SL" }
+      category_type { "LADIES" }
+      seniority { "JUNIOR" }
+      team { true }
+    end
+  end
+end
+
+# segments
+FactoryBot.define do
+  factory :segment do
+    name { "SHORT PROGRAM" }
+    abbr { "SP" }
+    segment_type { "short" }
+
+    trait :free do
+      name { "FREE SKATING" }
+      abbr { "FS" }
+      segment_type { "free" }
+    end
+  end
+end
+
 
 # competitions
 FactoryBot.define do
@@ -59,7 +98,8 @@ FactoryBot.define do
     association :competition, factory: :competition
     association :short, factory: :score
     association :free, factory: :score
-    category { "MEN" }
+    association :category, factory: :category
+    #category { "MEN" }
     ranking { 1 }
     points { 300 }
     short_ranking { 1 }
@@ -70,7 +110,8 @@ FactoryBot.define do
       association :competition, factory: [:competition, :finlandia]
       association :short, factory: [:score, :finlandia]
       association :free, factory: [:score, :finlandia]
-      category { "LADIES" }
+      association :category, factory: [:category, :ladies]
+      #category { "LADIES" }
       ranking { 2 }
       points { 240 }
       free_ranking { 2 }
@@ -82,15 +123,18 @@ end
 FactoryBot.define do
   factory :performed_segment do
     association :competition, factory: :competition
-
-    category { "MEN" }
-    segment { "SHORT" }
+    association :category, factory: :category
+    association :segment, factory: :segment
+    #category { "MEN" }
+    #segment { "SHORT" }
     starting_time { Time.new(2017, 2, 1, 15, 0, 0) }
   
     trait :finlandia do
       association :competition, factory: [:competition, :finlandia]
-      category { "LADIES" }
-      segment { "FREE" }
+      association :category, factory: [:category, :ladies]
+      association :segment, factory: [:segment, :free ]
+      #category { "LADIES" }
+      #segment { "FREE" }
       starting_time { Time.new(2015, 9, 2, 17, 0, 0) }
     end
   end
@@ -102,10 +146,13 @@ FactoryBot.define do
     association :skater, factory: :skater
     association :competition, factory: :competition
     
-    name { "WORLD2017-M-S-1" }
-    category { "MEN" }
-    segment { "SHORT" }
-    segment_type { "short" } 
+    name { "WORLD2017-SM-SP-1" }
+    #category { "MEN" }
+    #segment { "SHORT" }
+    #segment_type { "short" }
+    association :category, factory: :category
+    association :segment, factory: :segment
+
     ranking { 1 }
     tss { 100 }
     tes { 50 }
@@ -116,17 +163,21 @@ FactoryBot.define do
     result_pdf { 'http://world2017.isu.org/results/men/short.pdf' }
 
     trait :world_free do
-      segment { "FREE" }
-      segment_type { "free" } 
+      association :segment, factory: [:segment, :free]
+      #segment { "FREE" }
+      #segment_type { "free" } 
     end
 
     trait :finlandia do
       association :skater, factory: [:skater, :ladies]
       association :competition, factory: [:competition, :finlandia]
-      name { 'FIN2015-L-F-2' }
-      category { 'LADIES' }
-      segment { 'FREE' }
-      segment_type { "free" } 
+      name { 'FIN2015-SL-FS-2' }
+      #category { 'LADIES' }
+      #segment { 'FREE' }
+      #segment_type { "free" }
+      association :category, factory: [:category, :ladies]
+      association :segment, factory: [:segment, :free ]
+
       ranking { 2 }
       tss { 160 }
       tes { 80 }
@@ -138,8 +189,9 @@ FactoryBot.define do
     end
 
     trait :finlandia_short do
-      segment { 'SHORT' }
-      segment_type { "short" }
+      association :segment, factory: :segment
+      #segment { 'SHORT' }
+      #segment_type { "short" }
     end
   end
 end
