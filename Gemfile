@@ -32,6 +32,7 @@ gem 'stackprof'  # profiling
 
 ## for each environments
 group :development, :test do
+  gem 'bullet'
   gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-byebug'

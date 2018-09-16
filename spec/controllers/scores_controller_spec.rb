@@ -33,7 +33,7 @@ RSpec.describe ScoresController, type: :controller do
       end
     end
     describe 'sort: ' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
           expect_order(world_score, finlandia_score, key)
         end

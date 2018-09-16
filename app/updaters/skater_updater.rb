@@ -11,6 +11,7 @@ class SkaterUpdater
     
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
+          hash[:category] = Category.find_by(name: hash[:category])
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
             skater.update(hash)
           end

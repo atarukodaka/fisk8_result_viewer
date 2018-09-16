@@ -4,6 +4,7 @@ class Skater < ApplicationRecord
   has_many :scores
   has_many :elements, through: :scores
   has_many :components, through: :scores
+  belongs_to :category
 
   ## validations
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}

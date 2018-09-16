@@ -60,7 +60,6 @@ Rails.application.configure do
   
   ################################################################
   # bullet
-=begin
   config.after_initialize do
     Bullet.enable = true
     Bullet.alert = true
@@ -68,7 +67,7 @@ Rails.application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
   end
-=end
+
   # development badge
   config.rack_dev_mark.enable = true
 end

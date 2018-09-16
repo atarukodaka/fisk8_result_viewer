@@ -12,8 +12,8 @@
   - feature
   - cr doesnt have free: check nil
 - help for rake:update
-
 - skater updater spec: detail
+
 
 ### new feature
 
@@ -21,6 +21,10 @@
 - app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.6
+- element subtype
+- category, segment as active record
 
 ## 1.0.5
 - category result has short and free

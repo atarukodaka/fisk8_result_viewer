@@ -17,8 +17,15 @@ namespace :update do
       Category.accept!(categories.split(/,/))
     end
 =end
-    categories = ENV['categories'].to_s.split(/,/)
-
+    #categories = (c = ENV['categories']) ? c.to_s.split(/ *, */) : nil
+    categories = 
+      if (c = ENV['categories'])
+        c.to_s.split(/\s*,\s*/).map do |cat|
+          Category.where(name: cat).first
+        end.compact
+      else
+        Category.all
+      end
     if (f = ENV['filename'])
       CompetitionList.filename = f
     end

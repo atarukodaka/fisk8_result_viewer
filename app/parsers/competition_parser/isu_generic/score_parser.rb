@@ -84,7 +84,7 @@ class CompetitionParser
           name, factor, judges, value = $1, $2, $3, $4
           @score[:components] << {
             name: name, factor: factor.to_f,
-            judges: judges.tr(',', '.'),   ## memo: gpjpn10 ice dance using ',' i/o '.'
+            judges: judges.tr(',', '.'),   ## memo: gpjpn10 ice dance using ',' i/o '.' for decimal point
             value: value.tr(',', '.').to_f,
             number: (@score[:components].count+1).to_i,
           }
@@ -115,7 +115,7 @@ class CompetitionParser
             end
           end
         rescue OpenURI::HTTPError
-          logger.warn("HTTP Error: #{url}")
+          Rails.logger.warn("HTTP Error: #{url}")
           return nil
         end
       end
