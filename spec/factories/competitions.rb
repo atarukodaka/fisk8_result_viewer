@@ -1,17 +1,20 @@
 # competitions
 FactoryBot.define do
   factory :competition do
-    name { "World FS 2017" }
-    short_name { "WORLD2017" }
-    competition_type { "world" }
-    competition_class { "isu" }
-    city { "Tokyo" }
-    country { "JPN" }
-    site_url { "http://world2017.isu.org/results/" }
-    season { "2016-17" }
-    start_date { "2017-2-1" }
-    end_date { "2017-2-3" }
 
+    trait :world do 
+      name { "World FS 2017" }
+      short_name { "WORLD2017" }
+      competition_type { "world" }
+      competition_class { "isu" }
+      city { "Tokyo" }
+      country { "JPN" }
+      site_url { "http://world2017.isu.org/results/" }
+      season { "2016-17" }
+      start_date { "2017-2-1" }
+      end_date { "2017-2-3" }
+    end
+    
     trait :finlandia do
       short_name { "FIN2015" }
       name { "Finlandia 2015" }

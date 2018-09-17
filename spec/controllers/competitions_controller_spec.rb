@@ -4,7 +4,7 @@ RSpec.describe CompetitionsController, type: :controller do
   render_views
   
   let!(:main) {
-    create(:competition) do |competition|
+    create(:competition, :world) do |competition|
       skater = create(:skater, :men)
       create(:performed_segment, competition: competition)
       create(:category_result, competition: competition, skater: skater)

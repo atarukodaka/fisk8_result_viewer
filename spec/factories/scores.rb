@@ -2,7 +2,7 @@
 FactoryBot.define do
   factory :score do
     association :skater, factory: [:skater, :men]
-    association :competition, factory: :competition
+    association :competition, factory: [:competition, :world]
     
     name { "WORLD2017-SM-SP-1" }
     category { Category.find_by(name: "TEAM MEN") }
