@@ -1,7 +1,7 @@
 # scores
 FactoryBot.define do
   factory :score do
-    association :skater, factory: :skater
+    association :skater, factory: [:skater, :men]
     association :competition, factory: :competition
     
     name { "WORLD2017-SM-SP-1" }

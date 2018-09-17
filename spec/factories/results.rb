@@ -1,7 +1,7 @@
 # category results
 FactoryBot.define do
   factory :category_result do
-    #association :skater, factory: :skater
+    association :skater, factory: [:skater, :men]
     #association :competition, factory: :competition
     association :short, factory: :score
     association :free, factory: :score
@@ -14,7 +14,7 @@ FactoryBot.define do
     free_ranking { 1 }
 
     trait :finlandia do
-      #association :skater, factory: [:skater, :ladies]
+      association :skater, factory: [:skater, :ladies]
       #association :competition, factory: [:competition, :finlandia]
       association :short, factory: [:score, :finlandia]
       association :free, factory: [:score, :finlandia]

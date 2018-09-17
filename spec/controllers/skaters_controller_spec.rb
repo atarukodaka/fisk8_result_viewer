@@ -4,7 +4,7 @@ RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater){
-    create(:skater) do |skater|
+    create(:skater, :men) do |skater|
       competition = create(:competition)
       create(:performed_segment, competition: competition)
       create(:category_result, competition: competition, skater: skater)
@@ -18,7 +18,7 @@ RSpec.describe SkatersController, type: :controller do
       create(:score, competition: create(:competition), skater: skater)
     end
   }
-  let!(:no_scores_skater){ create(:skater) {|sk| sk.name = "Bench WARMER" } }
+  let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = "Bench WARMER" } }
 
   ################################################################
   describe '#index' do

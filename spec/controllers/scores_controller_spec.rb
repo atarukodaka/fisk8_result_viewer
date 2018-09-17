@@ -5,7 +5,7 @@ RSpec.describe ScoresController, type: :controller do
   render_views
 
   let!(:world_score) {
-    create(:score, skater: create(:skater), competition: create(:competition))
+    create(:score, skater: create(:skater, :men), competition: create(:competition))
   }
 
   let!(:finlandia_score){
