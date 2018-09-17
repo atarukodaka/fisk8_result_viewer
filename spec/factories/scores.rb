@@ -5,8 +5,10 @@ FactoryBot.define do
     association :competition, factory: :competition
     
     name { "WORLD2017-SM-SP-1" }
-    association :category, factory: :category
-    association :segment, factory: :segment
+    category { Category.find_by(name: "TEAM MEN") }
+    segment { Segment.find_by(name: "SHORT PROGRAM") }
+    #association :category, factory: :category
+    #association :segment, factory: :segment
 
     ranking { 1 }
     tss { 100 }
@@ -25,8 +27,10 @@ FactoryBot.define do
       association :skater, factory: [:skater, :ladies]
       association :competition, factory: [:competition, :finlandia]
       name { 'FIN2015-SL-FS-2' }
-      association :category, factory: [:category, :ladies]
-      association :segment, factory: [:segment, :free ]
+      #association :category, factory: [:category, :ladies]
+      #association :segment, factory: [:segment, :free ]
+      category { Category.find_by(name: "JUNIOR LADIES") }
+      segment { Segment.find_by(name: "FREE SKATING") }
 
       ranking { 2 }
       tss { 160 }

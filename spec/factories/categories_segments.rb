@@ -1,3 +1,4 @@
+__END__
 # categories
 FactoryBot.define do
   factory :category do
