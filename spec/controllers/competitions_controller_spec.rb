@@ -71,6 +71,12 @@ RSpec.describe CompetitionsController, type: :controller do
         is_expected.to include(score.segment.name)
       }
     end
+    context 'redirection to score' do
+      subject {
+        get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name, ranking: 1}
+      }
+      it {is_expected.to redirect_to score_path(score.name) }
+    end
     context 'format: json' do
       subject {
         get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name, format: "json" }

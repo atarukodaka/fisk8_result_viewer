@@ -26,7 +26,7 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category, segment, ranking = params[:category], params[:segment], params[:ranking]
+    category, segment, ranking = Category.find_by(name: params[:category]), Segment.find_by(name: params[:segment]), params[:ranking]
 
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
