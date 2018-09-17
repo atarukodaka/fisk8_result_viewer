@@ -15,9 +15,11 @@ class Competition < ApplicationRecord
   #scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
 
   ## entries
+=begin
   def categories
     scores.pluck(:category).uniq
   end
+=end
   ## updater
   def normalize
     year = self.start_date.year

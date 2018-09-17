@@ -15,24 +15,6 @@ class CategoryResult < ApplicationRecord
   def competition_name
     competition.name
   end
-  def competition_short_name
-    competition.short_name
-  end
-  def competition_class
-    competition.competition_class
-  end
-  def competition_type
-    competition.competition_type
-  end
-  def season
-    competition.season
-  end
-  def skater_name
-    skater.name
-  end
-  def nation
-    skater.nation
-  end
   def date
     competition.start_date
   end
