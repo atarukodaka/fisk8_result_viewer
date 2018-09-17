@@ -32,6 +32,13 @@ class AjaxDatatables::Columns
       @data.find {|c| c.name == key.to_s}
     end
   end
+  def []=(key, value)
+    col = create_column(value.merge({"name" => key}))
+    @data.push(col)
+  end
+  def add(cols)
+    [cols].flatten.map {|col| @data << create_column(col) }
+  end
   ################
   # set sources of each columns
   def sources=(hash)
@@ -40,7 +47,6 @@ class AjaxDatatables::Columns
     end
   end
   
-  protected
   def default_table_name
     @datatable.try(:records).try(:table_name)
   end
