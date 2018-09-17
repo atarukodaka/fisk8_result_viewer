@@ -4,12 +4,10 @@ RSpec.describe ElementsController, type: :controller do
   render_views
 
   let!(:score_world)  {
-    competition = create(:competition, :world)
-    competition.scores.first
+    create(:competition, :world).scores.first
   }
   let!(:score_finlandia)  {
-    competition = create(:competition, :finlandia)
-    competition.scores.first
+    create(:competition, :finlandia).scores.first
   }
   let!(:elem4T){ create(:element, score: score_world) }
   let!(:elem4T3T){ create(:element, :combination, score: score_world) }
