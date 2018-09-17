@@ -5,13 +5,14 @@ RSpec.describe ScoresController, type: :controller do
   render_views
 
   let!(:world_score) {
-    create(:score, skater: create(:skater), competition: create(:competition))
+    create(:competition, :world).scores.first
   }
 
   let!(:finlandia_score){
-    create(:score, :finlandia, skater: create(:skater, :ladies), competition: create(:competition, :finlandia))
+    create(:competition, :finlandia).scores.first
   }
 
+  ################
   describe '#index' do
     subject { get :index }
     it { is_expected.to be_success }
