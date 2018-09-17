@@ -5,9 +5,9 @@ RSpec.describe CompetitionsController, type: :controller do
   
   let!(:main) {
     create(:competition) do |competition|
-      result = create(:category_result, competition: competition)
       skater = create(:skater)
-      #create(:score, competition: competition, category_result: result, skater: result.skater)
+      create(:performed_segment, competition: competition)
+      create(:category_result, competition: competition, skater: skater)
       create(:score, competition: competition, skater: skater)
     end
   }
