@@ -40,11 +40,23 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # performed segments
     create_table :performed_segments do |t|
-      #t.string :category
       t.belongs_to :category
-      #t.string :segment
       t.belongs_to :segment
       t.datetime :starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
+
+      ## panels
+      t.string :judge01
+      t.string :judge02
+      t.string :judge03
+      t.string :judge04
+      t.string :judge05
+      t.string :judge06
+      t.string :judge07
+      t.string :judge08
+      t.string :judge09
+      t.string :judge10
+      t.string :judge11
+      t.string :judge12
       
       ## relations
       t.belongs_to :competition

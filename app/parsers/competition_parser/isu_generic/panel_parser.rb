@@ -1,8 +1,6 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
-    class PanelParser
-      include Utils
-
+    class PanelParser < Parser
       def parse(url)
         page = get_url(url).presence || (return [])
         elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
@@ -13,7 +11,7 @@ module CompetitionParser
           if row.xpath("td[1]").text =~ /^Judge No\.(\d)/
             hash[:judges][$1.to_i] = 
               {
-                name: row.xpath("td[2]").text,
+                name: row.xpath("td[2]").text.sub(/^Mr. */, '').sub(/^Ms. */, ''),
                 nation: row.xpath("td[3]").text,
               }
           end

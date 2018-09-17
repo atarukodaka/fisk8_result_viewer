@@ -6,6 +6,7 @@ class CompetitionUpdater
 
     @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
     @verbose = verbose
+    @enable_judge_details = true
   end
 
   def update_competition(site_url, date_format: nil, force: false, categories: nil, params: {})
@@ -54,12 +55,21 @@ class CompetitionUpdater
             next if seg_item[:result_url].blank?
 
             segment = Segment.find_by(name: segment_str)
+            parsed_panels = @parsers[:panel].parse(seg_item[:panel_url]) if @enable_judge_details
             competition.performed_segments.create do |ps|
               ps.category = category
               ps.segment = segment
               ps.starting_time = seg_item[:time]
+
+              if @enable_judge_details
+                num_panels = parsed_panels[:judges].size - 1
+                1.upto(num_panels).each do |i|
+                  ps["judge%02d" % [i]] = parsed_panels[:judges][i][:name]
+                end
+              end
             end
 
+            ## scores
             update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
@@ -81,7 +91,7 @@ class CompetitionUpdater
   def update_category_result(competition, category, result_url)
     return if result_url.blank?
     
-    ActiveRecord::Base.transaction {
+    ActiveRecord::Base.transaction do
       @parsers[:category_result].parse(result_url).each do |result_parsed|
         competition.category_results.create!(category: category) do |result|
           attrs = result.class.column_names.map(&:to_sym) & result_parsed.keys
@@ -91,7 +101,7 @@ class CompetitionUpdater
           puts result.summary if @verbose
         end
       end
-    }
+    end
   end
   ################
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
@@ -99,11 +109,11 @@ class CompetitionUpdater
     segment_type = segment.segment_type
 
     @parsers[:score].parse(score_url).each do |sc_parsed|
-      ActiveRecord::Base.transaction {
+      ActiveRecord::Base.transaction do
         competition.scores.create!(category: category, segment: segment) do |score|
           ## find relevant cr
           relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
-
+          
           ## find skater
           skater = relevant_cr.try(:skater) ||
                    begin
@@ -118,41 +128,40 @@ class CompetitionUpdater
           score.attributes = sc_parsed.slice(*attrs).merge(additionals)
           score.skater = skater
           score.save!  ## need to save here to create children
-
+          
           if relevant_cr
             relevant_cr.update(segment_type => score)
             score.update(category_result: relevant_cr)
           end
           sc_parsed[:elements].map {|e| score.elements.create(e)}
           sc_parsed[:components].map {|e| score.components.create(e)}
-
+          
           score.update(elements_summary: score.elements.map(&:name).join('/'))
           score.update(components_summary: score.components.map(&:value).join('/'))
           puts score.summary if @verbose
-
+          
           ## judge details
-          if competition.start_date > Time.zone.parse("2016-7-1") # was random order in the past
-            ### elements
-            score.elements.each do |element|
-              element.judges.split(/\s/).each_with_index do |value, i|
-                #next if panels[:judges].count <= i+1
-                element.element_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                     panel_nation: panels[:judges][i+1][:nation],
-                                                     number: i, value: value)
+          if @enable_judge_details
+            if competition.start_date > Time.zone.parse("2016-7-1") # was random order in the past
+              ### elements
+              score.elements.each do |element|
+                element.judges.split(/\s/).each_with_index do |value, i|
+                  #next if panels[:judges].count <= i+1
+                  element.element_judge_details.create(number: i+1, value: value)
+                end
               end
-            end
-            
-            ### component
-            score.components.each do |component|
-              component.judges.split(/\s/).each_with_index do |value, i|
-                #next if panels[:judges].count <= i+1
-                component.component_judge_details.create(panel_name: panels[:judges][i+1][:name],
-                                                         panel_nation: panels[:judges][i+1][:nation],
-                                                         number: i, value: value)
+
+              ### component
+              score.components.each do |component|
+                component.judges.split(/\s/).each_with_index do |value, i|
+                  #next if panels[:judges].count <= i+1
+                  component.component_judge_details.create(number: i+1, value: value)
+                end
               end
             end
           end
-      }
+        end
+      end
     end
   end
 end

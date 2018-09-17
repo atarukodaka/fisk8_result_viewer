@@ -101,10 +101,27 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
+  create_table "panels", force: :cascade do |t|
+    t.string "name"
+    t.string "nation"
+  end
+
   create_table "performed_segments", force: :cascade do |t|
     t.integer "category_id"
     t.integer "segment_id"
     t.datetime "starting_time", default: "1969-12-31 15:00:00"
+    t.string "judge01"
+    t.string "judge02"
+    t.string "judge03"
+    t.string "judge04"
+    t.string "judge05"
+    t.string "judge06"
+    t.string "judge07"
+    t.string "judge08"
+    t.string "judge09"
+    t.string "judge10"
+    t.string "judge11"
+    t.string "judge12"
     t.integer "competition_id"
     t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
