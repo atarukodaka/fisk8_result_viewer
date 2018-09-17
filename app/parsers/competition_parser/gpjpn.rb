@@ -39,7 +39,7 @@ class CompetitionParser
               segment: segment,
               result_url: segment_result_url,
               score_url: score_url,
-#              panel_url: panel_url,
+              panel_url: panel_url,
             }
           end
         end

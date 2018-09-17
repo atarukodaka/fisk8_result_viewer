@@ -91,3 +91,9 @@ crumb :statics do
   link "Statics", statics_path
   parent :root
 end
+
+################
+crumb :panels do
+  link "Panels", panels_path
+  parent :root
+end

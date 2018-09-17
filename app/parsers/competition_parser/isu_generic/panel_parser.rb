@@ -3,6 +3,8 @@ class CompetitionParser
     class PanelParser < Parser
       def parse(url)
         page = get_url(url).presence || (return [])
+        puts "   -- parse panel: #{url}" if @verbose
+
         elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
                page.xpath("//td[contains(text(), 'Function')]").presence ||  []
         rows = elem.xpath('ancestor::table[1]//tr')
@@ -11,7 +13,7 @@ class CompetitionParser
           if row.xpath("td[1]").text =~ /^Judge No\.(\d)/
             hash[:judges][$1.to_i] = 
               {
-                name: row.xpath("td[2]").text.sub(/^Mr. */, '').sub(/^Ms. */, ''),
+                name: row.xpath("td[2]").text.scrub('?').sub(/^ *M[sr]\. */, '').strip,
                 nation: row.xpath("td[3]").text,
               }
           end

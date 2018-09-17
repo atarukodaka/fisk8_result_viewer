@@ -36,6 +36,10 @@ Rails.application.routes.draw do
   end
 
   resources :statics, only: :index
+
+  resources :panels, only: [:index, :show], param: :name do
+    get :list, on: :collection
+  end
   
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number

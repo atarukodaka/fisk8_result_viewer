@@ -1,0 +1,9 @@
+/ - breadcrumb :panel, panel
+
+h2= panel.name
+
+div= panel.nation
+
+- dt = AjaxDatatables::Datatable.new(self).columns([:value]).records(ElementJudgeDetail.where(panel: panel))
+= render partial: "datatable", locals: { datatable: dt }
+
