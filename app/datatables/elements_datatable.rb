@@ -1,48 +1,22 @@
-class ElementsDatatable < IndexDatatable
+class ElementsDatatable < ScoreDetailsDatatable
   def initialize(*)
     super
 
-    columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
-             :skater_name, :nation,
-             :number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    add_columns([:number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      competition_class: "competitions.competition_class",
-      competition_type: "competitions.competition_type",
-      season: "competitions.season",
-      category: "categories.name",
-      category_type: "categories.category_type",
-      team: "categories.team",
-      seniority: "categories.seniority",
-      segment: "segments.name",
-      segment_type: "segments.segment_type",
-      date: "scores.date",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
       name: "elements.name",
       base_value: "elements.base_value",
     }
-    ## searchable
-    [:date, :credit, :info].each {|key| columns[key].searchable = false }    
 
-    ## visible
-    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
-      columns[key].visible = false
-      columns[key].orderable = false
-    }
+    ## searchbale
+    [:credit, :info].each {|key| columns[key].searchable = false }    
 
     ## operartor
     if view_context
       columns[:name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
-    columns[:category].operator = :eq    
-    columns[:team].operator = :boolean
-
-    default_orders([[:value, :desc]])
   end
 
   def fetch_records
