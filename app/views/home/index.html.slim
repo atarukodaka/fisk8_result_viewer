@@ -3,10 +3,10 @@ h2 Fisk8 Result Viewer
 - breadcrumb :root
 
 ul
-  - [:skaters, :competitions, :scores, :elements, :components, :scorecalc].each do |controller|
-    li= link_to(controller.to_s.camelize, controller: controller)
+  - [:skaters, :competitions, :scores, :elements, :components].each do |controller|
+    li= link_to(t("controller.#{controller.to_s}", default: controller.to_s.humanize), controller: controller)
 
-h2 About
+h2= t(".about", default: "About")
 p 
   | This site is maintained by #{Settings['about']['name']}, 
   | powered by #{link_to("Fisk8ResultViewer #{Fisk8ResultViewer::VERSION}", "http://github.com/atarukodaka/fisk8_result_viewer/")}

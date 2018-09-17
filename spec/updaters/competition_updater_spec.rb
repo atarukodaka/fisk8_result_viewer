@@ -5,48 +5,51 @@ RSpec.configure do |c|
 end
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
-  before {
-    Category.accept!('MEN')
-  }
   describe 'parser types:' do
+    before {
+      @updater = CompetitionUpdater.new(verbose: true)
+    }
+    
     shared_examples :having_competition_with_url do
-      its(:class) { is_expected.to eq Competition}
       its(:site_url) { is_expected.to eq(url) }
     end
     
     describe 'wc2017 with isu_generic' do
-      Category.accept_all
       let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
-      let(:updater) { CompetitionUpdater.new }
-      subject {  updater.update_competition(url) }
+      subject {  @updater.update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
     describe 'jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
       let(:date_format) { "%m/%d/%Y" }
-      let(:updater) { CompetitionUpdater.new }
-      subject {  updater.update_competition(url, date_format: date_format) }
-      it_behaves_like :having_competition_with_url
-    end
-=begin
-    describe 'wtt2017' do
-      let(:url) { 'http://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { Competition.create(site_url: url, parser_type: :wtt2017).update   }
+      subject {  @updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
       it_behaves_like :having_competition_with_url
     end
 
-    describe 'aci' do
+    describe 'wtt2017' do
+      let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
+      subject { CompetitionUpdater.new(parser_type: :wtt2017, verbose: true).update_competition(url, categories: ['MEN']) }
+      it_behaves_like :having_competition_with_url
+    end
+
+    describe 'owgteam' do
+      let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
+      subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
+      it_behaves_like :having_competition_with_url
+      #it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      it { expect(competition.scores.includes(:category).references(:category).where("categories.name like ? ", "TEAM%").blank?).to be false }
+    end
+
+=begin
+    describe 'aci' do   ## its nightmare
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
-      let(:updater) { CompetitionUpdater.new(:autumn_classic) }
-      subject { Competition.create(site_url: url, parser_type: :autumn_classic).update   }
+      subject { CompetitionUpdater.new(parser_type: :autumn_classic).update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
 =end
   end
 
   describe 'competition_type / short_name' do
-    before { Category.accept!([]) }
-
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
       :isu, :gp, 'GPJPN2016'],
      ['http://www.isuresults.com/results/season1617/gpf1617/',
@@ -74,9 +77,9 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
         let(:competition_class) { ary[1].to_s }
         let(:competition_type) { ary[2].to_s }
         let(:short_name) { ary[3] }
-        let(:updater) { CompetitionUpdater.new }
+        let(:updater) { CompetitionUpdater.new(verbose: true) }
 
-        subject(:competition) { updater.update_competition(url) }
+        subject(:competition) { updater.update_competition(url, categories: ['DUMMY']) }
         it {
           expect(competition.site_url).to eq(url)
           expect(competition.competition_class).to eq(competition_class)
@@ -90,37 +93,33 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
   describe 'skater name correction' do    
     def expect_same_skater(url, category, ranking)  # TODO
-      Category.accept!(category)
-      updater = CompetitionUpdater.new
-      competition = updater.update_competition(url)
+      updater = CompetitionUpdater.new(verbose: true)
+      competition = updater.update_competition(url, categories: [category])
       cr = competition.results.find_by(category: category, ranking: ranking)
       expect(cr.skater).to eq(cr.short.skater)
       expect(cr.skater).to eq(cr.free.skater)      
     end
     shared_context :skater_having_different_name do |url, category, ranking|
       subject(:result) {
-        Category.accept!(category)
-        #Competition.create(site_url: url).update.results.find_by(category: category, ranking: ranking)
-        CompetitionUpdater.new.update_competition(url).results.find_by(category: category, ranking: ranking)
+        CompetitionUpdater.new(verbose: true).update_competition(url, categories: [category]).category_results.find_by(category: category, ranking: ranking)
       }
     end
     shared_examples :same_name_between_segments do
       its(:skater) { is_expected.to eq(result.short.skater) }
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
-=begin
-## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
+
     context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
-      include_context :skater_having_different_name, url, "LADIES", 15
+      include_context :skater_having_different_name, url, Category.find_by(name: "LADIES"), 15
       it_behaves_like :same_name_between_segments
     end
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
-      include_context :skater_having_different_name, url, "JUNIOR LADIES", 17
+      include_context :skater_having_different_name, url, Category.find_by(name: "JUNIOR LADIES"), 17
       it_behaves_like :same_name_between_segments
     end
-=end
+
 =begin
     it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
       ## TODO: name correction for Ho Jung LEE
@@ -131,16 +130,12 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   describe 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
-      Category.accept!("JUNIOR LADIES")
-      #Competition.create(site_url: url).update
-      CompetitionUpdater.new.update_competition(url)
+      CompetitionUpdater.new(verbose: true).update_competition(url, categories: ['JUNIOR LADIES'])
       expect(Competition.find_by(site_url: url).category_results.where(category: "JUNIOR LADIES").count).to be >= 0
     end
     it 'parses unicode (fin2014)' do
       url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
-      Category.accept!("MEN")
-      #Competition.create(site_url: url).update
-      CompetitionUpdater.new.update_competition(url)
+      CompetitionUpdater.new(verbose: true).update_competition(url, categories: ['MEN'])
       
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
@@ -152,9 +147,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'rescue not found on nepela2014/pairs and count' do
       let(:competition){
         url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
-        Category.accept!("PAIRS")
-        #Competition.create(site_url: url).update
-        CompetitionUpdater.new.update_competition(url)
+        CompetitionUpdater.new(verbose: true).update_competition(url, categories: ['PAIRS'])
       }
       it { expect(competition.results.where(category: "PAIRS").count).to be_zero }
       #expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
@@ -163,9 +156,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'rescue socket error and return value' do
       subject {
         url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
-        Category.accept!("MEN")
-        #Competition.create(site_url: url).update
-        CompetitionUpdater.new.update_competition(url)
+        CompetitionUpdater.new(verbose: true).update_competition(url, categories: ['MEN'])
       }
       it { is_expected.to be_nil }
     end
@@ -173,8 +164,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'rescue http error and return value' do
       subject {
         url = 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf'
-        #Competition.create(site_url: url).update
-        CompetitionUpdater.new.update_competition(url)
+        CompetitionUpdater.new(verbose: true).update_competition(url)
       }
       it { is_expected.to be_nil }
     end

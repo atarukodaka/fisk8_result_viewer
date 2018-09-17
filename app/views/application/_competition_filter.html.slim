@@ -1,14 +1,19 @@
 - competition_name_key ||= :name
 
-= form_group(competition_name_key, text_field_tag(competition_name_key, params[competition_name_key], size: 70, onchange: ajax_search(competition_name_key, table)))
-= form_group("Class / Type / Season") do
-  label Class
+= form_group(Competition.human_attribute_name(:name), text_field_tag(competition_name_key, params[competition_name_key], size: 70, onchange: ajax_search(competition_name_key, table)))
+
+- class_text = Competition.human_attribute_name(:competition_class)
+- type_text = Competition.human_attribute_name(:competition_type)
+- season_text = Competition.human_attribute_name(:season)
+
+= form_group([class_text, type_text, season_text].join(" / ")) do
+  label= class_text
   = select_tag_with_options(:competition_class, onchange: ajax_search(:competition_class, table))
-  label Type
+  label= type_text
   = select_tag_with_options(:competition_type, onchange: ajax_search(:competition_type, table))
-  label Season
-  /= select_tag_with_options(:season, onchange: ajax_search(:season, table))
+  label= season_text
   span from
-  = select_tag(:season_from, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+  = select_tag_with_options(:season_from, onchange: ajax_draw(table))
   span to
-  = select_tag(:season_to, options_for_select(Competition.uniq_list(:season).sort.reverse.unshift(nil), selected: params[:season_from]), onchange: ajax_draw(table))
+  = select_tag_with_options(:season_to, onchange: ajax_draw(table))
+

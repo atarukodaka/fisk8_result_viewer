@@ -2,10 +2,16 @@ require 'rails_helper'
 
 RSpec.describe ElementsController, type: :controller do
   render_views
-  
-  let!(:elem4T){ create(:element) }
-  let!(:elem4T3T){ create(:element, :combination) }
-  let!(:elemLSp){ create(:element, :spin) }
+
+  let!(:score_world)  {
+    create(:competition, :world).scores.first
+  }
+  let!(:score_finlandia)  {
+    create(:competition, :finlandia).scores.first
+  }
+  let!(:elem4T){ create(:element, score: score_world) }
+  let!(:elem4T3T){ create(:element, :combination, score: score_world) }
+  let!(:elemLSp){ create(:element, :spin, score: score_finlandia) }
   
   describe '#index' do
     describe 'all' do
@@ -49,8 +55,7 @@ RSpec.describe ElementsController, type: :controller do
       end
     end
     describe 'sort:' do
-      datatable.column_names.each do |key|
-      #[:level].each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
           expect_order(elem4T, elemLSp, key)
         end

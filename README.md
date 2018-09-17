@@ -35,6 +35,7 @@ on production,
 
 ### Usage
 ```sh
+% bundle exec rake seed
 % bundle exec rake update:skaters
 % bundle exec rake update:competitions
 % bundle exec rails server

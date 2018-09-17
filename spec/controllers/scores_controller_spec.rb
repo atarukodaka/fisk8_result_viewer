@@ -5,13 +5,14 @@ RSpec.describe ScoresController, type: :controller do
   render_views
 
   let!(:world_score) {
-    create(:score, skater: create(:skater), competition: create(:competition))
+    create(:competition, :world).scores.first
   }
 
   let!(:finlandia_score){
-    create(:score, :finlandia, skater: create(:skater, :ladies), competition: create(:competition, :finlandia))
+    create(:competition, :finlandia).scores.first
   }
 
+  ################
   describe '#index' do
     subject { get :index }
     it { is_expected.to be_success }
@@ -28,13 +29,12 @@ RSpec.describe ScoresController, type: :controller do
     describe 'filter: ' do
       datatable.columns.select(&:searchable).map(&:name).each do |key|
         it key do
-          binding.pry if key == "segment_starting_time"
           expect_filter(world_score, finlandia_score, key)
         end
       end
     end
     describe 'sort: ' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
           expect_order(world_score, finlandia_score, key)
         end

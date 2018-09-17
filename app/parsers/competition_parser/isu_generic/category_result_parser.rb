@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
     class CategoryResultParser < ResultParser
 
@@ -21,7 +21,7 @@ module CompetitionParser
           
           ranking: { header: ['FPl.', 'PL', 'PL.'] , callback: callbacks[:to_i]},
           points: { header: 'Points', callback: callbacks[:to_f]},
-          short_ranking: { header: ['SP', 'SD', 'OD'], callback: callbacks[:to_i] },
+          short_ranking: { header: ['SP', 'SD', 'OD', 'RD'], callback: callbacks[:to_i] },
           free_ranking: { header: ['FS', 'FD'], callback: callbacks[:to_i] },
         }
       end
@@ -31,7 +31,6 @@ module CompetitionParser
           page.xpath("//th[text()='FPl']").first ||
           page.xpath("//th[text()='FPl.']").first ||
           page.xpath("//td[text()='PL']").first     ## gpjpn
-        
         raise "No Placement Cell found (#{self.class})" if place_elem.nil?
         return place_elem.xpath("../../tr")
       end

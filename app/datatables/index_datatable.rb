@@ -1,15 +1,17 @@
 class IndexDatatable < AjaxDatatables::Datatable
-  include AjaxDatatables::Datatable::Searchable
+  include AjaxDatatables::Datatable::ConditionBuilder
   
   def manipulate(r)
-    super(r).where(searching_sql(filter_search_nodes))
+    super(r).where(build_conditions(filter_search_nodes))
   end
+  
   def filter_search_nodes
     nodes = columns.select(&:searchable).map do |column|
       sv = params[column.name].presence
       (sv) ? {column_name: column.name, search_value: sv} : nil
     end.compact
 
+    ## season
     if (season_from = params[:season_from].presence)
       nodes << {column_name: "season", search_value: season_from, operator: :gteq}
     end
@@ -21,6 +23,6 @@ class IndexDatatable < AjaxDatatables::Datatable
   end
 
   def default_settings
-    super.merge( pageLength: 20 )
+    super.merge( pageLength: 25 )
   end
 end

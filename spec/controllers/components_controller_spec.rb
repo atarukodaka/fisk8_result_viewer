@@ -2,15 +2,25 @@ require 'rails_helper'
 
 RSpec.describe ComponentsController, type: :controller do
   render_views
+
+  let!(:score_world)  {
+    competition = create(:competition, :world)
+    competition.scores.first
+  }
+  let!(:score_finlandia)  {
+    competition = create(:competition, :finlandia)
+    competition.scores.first
+  }
   
   let!(:short_ss){
-    create(:score).components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0, judges: '10 10 10')
+    create(:competition, :world).scores.first.components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0, judges: '10 10 10')
   }
   let!(:free_tr){
     
-    create(:score, :finlandia).components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0, judges: '9 9 9')
+    create(:competition, :finlandia).scores.first.components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0, judges: '9 9 9')
   }
 
+  ################
   describe '#index' do
     describe 'all' do
       subject { get :index }
@@ -35,7 +45,7 @@ RSpec.describe ComponentsController, type: :controller do
     end
     
     describe 'sort:' do
-      datatable.column_names.each do |key|
+      datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
           expect_order(short_ss, free_tr, key)
         end

@@ -5,10 +5,9 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.integer :ranking
       t.integer :starting_number
 
-      t.string :category
-      t.string :segment
-      #t.date :date, default: Date.new(1970, 1, 1)
-      t.datetime :segment_starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
+      t.belongs_to :category
+      t.belongs_to :segment
+      t.date :date, default: Date.new(1970, 1, 1)
       t.string :result_pdf
       
       t.float :tss, default: 0.0
@@ -23,13 +22,18 @@ class CreateScores < ActiveRecord::Migration[5.1]
 
       t.belongs_to :competition
       t.references :skater
-      t.references :category_result
+      t.references :category_result  ## TODO: reference to category_result required ??
     end
 
+    ################
     create_table :elements do |t|
       t.integer :number
       t.string :name
       t.string :element_type
+      t.string :element_subtype
+      t.boolean :edgeerror
+      t.boolean :underrotated
+      t.boolean :downgraded
       t.integer :level
       t.string :info
       t.float :base_value
@@ -41,6 +45,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.belongs_to :score
     end
 
+    ################
     create_table :components do |t|
       t.integer :number
       t.string :name

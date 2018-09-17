@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class Gpjpn < IsuGeneric
     class SummaryParser  < IsuGeneric::SummaryParser
       def parse_city_country(_page)

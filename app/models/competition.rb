@@ -4,6 +4,7 @@ class Competition < ApplicationRecord
   ## relations
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
+  has_many :performed_segments, dependent: :destroy
 
   ## validations
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
@@ -14,9 +15,11 @@ class Competition < ApplicationRecord
   #scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
 
   ## entries
+=begin
   def categories
     scores.pluck(:category).uniq
   end
+=end
   ## updater
   def normalize
     year = self.start_date.year

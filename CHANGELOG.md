@@ -6,24 +6,41 @@
 - delete country-city mapping?
 - panels: panel db entries
 - youtube register
-- owg team
-- i18n
 - components controller is necessary ??
-- elements: UR, DG, EE
 - codecov: icedance elements
+- spec
+  - feature
+  - cr doesnt have free: check nil
+  - season from/to
+- help for rake:update
+- skater updater spec: detail
+
 
 ### new feature
-- embed youtube in score (or just link to search page ?)
 
 ### check before release
-- app/controller/application_controller: unless Rails.env.develop
+- app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.6
+- element subtype
+- category, segment as active record
+
+## 1.0.5
+- category result has short and free
+- icedance Rhythm Dance as short
+- filter: segment_type
 
 ## 1.0.4-pre2
 - competition.date as Date
 - delete result controller
 - owg team
+- ajax-databases into lib/
+- embed youtube in score (or just link to search page ?)
+- i18n
+- elements: UR, DG, EE
+- score has date column
 
 ## 1.0.4-pre1
 - delete graphs on skater

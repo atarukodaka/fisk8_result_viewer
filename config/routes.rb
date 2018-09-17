@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   
   resources :competitions, only: [:index], param: :short_name do
     get :list, on: :collection
-    get '(/:category(/:segment))', action: :show, on: :member, as: ''
+    #get '(/:category(/:segment))', action: :show, on: :member, as: ''
+    get '(/:category(/:segment(/:ranking)))', action: :show, on: :member, as: ''
   end
 
   resources :results, only: [:index], param: :name do
@@ -34,13 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :analysis  # for temtative panel analysis
-
   resources :statics, only: :index
-
-  resources :scorecalc, only: :index do
-    post :load_score, on: :collection
-  end
   
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number

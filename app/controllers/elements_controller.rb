@@ -1,3 +1,3 @@
 class ElementsController < ApplicationController
-  include IndexActions
+  include ControllerConcerns::Index
 end

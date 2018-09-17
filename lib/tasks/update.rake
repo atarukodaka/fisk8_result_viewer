@@ -1,7 +1,9 @@
 namespace :update do
   desc "update skater"
   task :skaters  => :environment do
-    SkaterUpdater.new.update_skaters
+    details = ENV['details'].to_i.nonzero?
+    
+    SkaterUpdater.new(verbose: true).update_skaters(details: details)
   end
 
   ################
@@ -10,11 +12,20 @@ namespace :update do
     ## options
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
-
+=begin
     if (categories = ENV['accept_categories'])
       Category.accept!(categories.split(/,/))
     end
-
+=end
+    #categories = (c = ENV['categories']) ? c.to_s.split(/ *, */) : nil
+    categories = 
+      if (c = ENV['categories'])
+        c.to_s.split(/\s*,\s*/).map do |cat|
+          Category.where(name: cat).first
+        end.compact
+      else
+        Category.all
+      end
     if (f = ENV['filename'])
       CompetitionList.filename = f
     end
@@ -29,7 +40,7 @@ namespace :update do
           city: item[:city], name: item[:name], comment: item[:comment]
         }
         CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true).
-          update_competition(item[:site_url], date_format: item[:date_format], force: force, params: params).tap do |competition|
+          update_competition(item[:site_url], date_format: item[:date_format], force: force, categories: categories, params: params).tap do |competition|
         end
       end
     end  ## each

@@ -1,10 +1,12 @@
-module CompetitionParser
+class CompetitionParser
   class IsuGeneric
-    class SummaryParser
-      include Utils
+    class SummaryParser < Parser
+      #include Utils
 
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
+
+        puts " -- parse summary: #{site_url}" if @verbose
         city, country = parse_city_country(page)
 
         competition = {
@@ -36,17 +38,20 @@ module CompetitionParser
             }
           end
         end
-        competition[:start_date] = time_schedule.map {|d| d[:time]}.min || Time.new(1970, 1, 1)
-        competition[:end_date] = time_schedule.map {|d| d[:time]}.max || Time.new(1970, 1, 1)
+        competition[:start_date] = time_schedule.map {|d| d[:time]}.min.to_date || Date.new(1970, 1, 1)
+        competition[:end_date] = time_schedule.map {|d| d[:time]}.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] = (time_schedule.present? ) ? time_schedule.first[:time].time_zone.name : "UTC"
-
-        year, month = competition[:start_date].year, competition[:start_date].month
-        year -= 1 if month <= 6
-        competition[:season] = "%04d-%02d" % [year, (year+1) % 100]
+        competition[:season] = skate_season(competition[:start_date])
         competition
       end
       ################################################################
       protected
+      def skate_season(date)
+        year = date.year
+        year -= 1 if date.month <= 6
+        "%04d-%02d" % [year, (year+1) % 100]
+      end
+
       def parse_city_country(page)
         node = page.search("td.caption3").presence || page.xpath("//h3") || raise
         str = (node.present?) ? node.first.text.strip : ""
@@ -87,9 +92,9 @@ module CompetitionParser
           summary << {
             category: category,
             segment: segment,
-            panel_url: (panel_url.present?) ? URI.join(url, panel_url).to_s: "",
-            result_url: (result_url.present?) ? URI.join(url, result_url).to_s: "",
-            score_url: (score_url.present?) ? URI.join(url, score_url).to_s : "",
+            panel_url: (panel_url.present?) ? URI.join(url + "/" , panel_url).to_s: "",
+            result_url: (result_url.present?) ? URI.join(url + "/", result_url).to_s: "",
+            score_url: (score_url.present?) ? URI.join(url + "/", score_url).to_s : "",
           }
         end
         summary
@@ -130,11 +135,10 @@ module CompetitionParser
 
           tm = 
             unless date_format.blank?
-              Time.strptime("#{dt_tm_str}", "#{date_format} %H:%M:%S")
+              Time.strptime(dt_tm_str, "#{date_format} %H:%M:%S")
             else
               dt_tm_str
             end.in_time_zone(ActiveSupport::TimeZone[timezone])
-          
           #next if tm.nil?
           tm = tm + 2000.years if tm.year < 100  ## for ondrei nepela
 
