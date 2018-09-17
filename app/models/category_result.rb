@@ -15,6 +15,12 @@ class CategoryResult < ApplicationRecord
   def competition_name
     competition.name
   end
+  def skater_name
+    skater.name
+  end
+  def nation
+    skater.nation
+  end
   def date
     competition.start_date
   end

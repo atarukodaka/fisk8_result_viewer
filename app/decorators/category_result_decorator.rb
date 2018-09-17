@@ -10,6 +10,9 @@ class CategoryResultDecorator < EntryDecorator
     h.link_to_competition(model.competition.short_name, model.competition)
   end
 =end
+  def skater_name
+    h.link_to_skater(model.skater)
+  end
   def category
     h.link_to_competition(model.category.name, model.competition, category: model.category)
   end
