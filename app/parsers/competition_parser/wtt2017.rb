@@ -15,6 +15,7 @@ class CompetitionParser
         segment = ""
         summary = []
         entry_url = ""
+        panel_url = ""
         segment_result_url = ""
 
         rows[1..-1].each do |row|
@@ -32,6 +33,7 @@ class CompetitionParser
             }
           elsif row.xpath("td").count == 2
             segment = row.xpath("td[1]").text.upcase
+            panel_url = URI.join(url, row.xpath("td[2]/a/@href").text).to_s            
           elsif row.xpath("td[1]").text == "Starting Order/Detailed Classification"
             segment_result_url = URI.join(url, row.xpath("td[1]/a/@href").text).to_s            
           elsif row.xpath("td[1]").text == "Judges Score (pdf)"
@@ -41,6 +43,7 @@ class CompetitionParser
               segment: segment,
               result_url: segment_result_url,
               score_url: score_url,
+              panel_url: panel_url,
             }
           end
         end

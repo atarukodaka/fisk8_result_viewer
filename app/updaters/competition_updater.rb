@@ -64,7 +64,10 @@ class CompetitionUpdater
               if @enable_judge_details
                 num_panels = parsed_panels[:judges].size - 1
                 1.upto(num_panels).each do |i|
-                  ps["judge%02d" % [i]] = parsed_panels[:judges][i][:name]
+                  panel = Panel.find_or_create_by(name: parsed_panels[:judges][i][:name]) do |panel|
+                    panel.nation = parsed_panels[:judges][i][:nation]
+                  end
+                  ps["judge%02d_id" % [i]] = panel.id
                 end
               end
             end
@@ -147,7 +150,8 @@ class CompetitionUpdater
               score.elements.each do |element|
                 element.judges.split(/\s/).each_with_index do |value, i|
                   #next if panels[:judges].count <= i+1
-                  element.element_judge_details.create(number: i+1, value: value)
+                  panel = competition.performed_segments.where(category: category, segment: segment).first.send("judge%02d" % [i+1])
+                  element.element_judge_details.create(number: i+1, value: value, panel: panel)
                 end
               end
 

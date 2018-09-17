@@ -55,12 +55,12 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "component_judge_details", force: :cascade do |t|
-    t.string "panel_name"
-    t.string "panel_nation"
     t.integer "number"
     t.float "value"
     t.integer "component_id"
+    t.integer "panel_id"
     t.index ["component_id"], name: "index_component_judge_details_on_component_id"
+    t.index ["panel_id"], name: "index_component_judge_details_on_panel_id"
   end
 
   create_table "components", force: :cascade do |t|
@@ -74,12 +74,12 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "element_judge_details", force: :cascade do |t|
-    t.string "panel_name"
-    t.string "panel_nation"
     t.integer "number"
     t.float "value"
     t.integer "element_id"
+    t.integer "panel_id"
     t.index ["element_id"], name: "index_element_judge_details_on_element_id"
+    t.index ["panel_id"], name: "index_element_judge_details_on_panel_id"
   end
 
   create_table "elements", force: :cascade do |t|
@@ -110,21 +110,33 @@ ActiveRecord::Schema.define(version: 5) do
     t.integer "category_id"
     t.integer "segment_id"
     t.datetime "starting_time", default: "1969-12-31 15:00:00"
-    t.string "judge01"
-    t.string "judge02"
-    t.string "judge03"
-    t.string "judge04"
-    t.string "judge05"
-    t.string "judge06"
-    t.string "judge07"
-    t.string "judge08"
-    t.string "judge09"
-    t.string "judge10"
-    t.string "judge11"
-    t.string "judge12"
+    t.integer "judge01_id"
+    t.integer "judge02_id"
+    t.integer "judge03_id"
+    t.integer "judge04_id"
+    t.integer "judge05_id"
+    t.integer "judge06_id"
+    t.integer "judge07_id"
+    t.integer "judge08_id"
+    t.integer "judge09_id"
+    t.integer "judge10_id"
+    t.integer "judge11_id"
+    t.integer "judge12_id"
     t.integer "competition_id"
     t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
+    t.index ["judge01_id"], name: "index_performed_segments_on_judge01_id"
+    t.index ["judge02_id"], name: "index_performed_segments_on_judge02_id"
+    t.index ["judge03_id"], name: "index_performed_segments_on_judge03_id"
+    t.index ["judge04_id"], name: "index_performed_segments_on_judge04_id"
+    t.index ["judge05_id"], name: "index_performed_segments_on_judge05_id"
+    t.index ["judge06_id"], name: "index_performed_segments_on_judge06_id"
+    t.index ["judge07_id"], name: "index_performed_segments_on_judge07_id"
+    t.index ["judge08_id"], name: "index_performed_segments_on_judge08_id"
+    t.index ["judge09_id"], name: "index_performed_segments_on_judge09_id"
+    t.index ["judge10_id"], name: "index_performed_segments_on_judge10_id"
+    t.index ["judge11_id"], name: "index_performed_segments_on_judge11_id"
+    t.index ["judge12_id"], name: "index_performed_segments_on_judge12_id"
     t.index ["segment_id"], name: "index_performed_segments_on_segment_id"
   end
 
