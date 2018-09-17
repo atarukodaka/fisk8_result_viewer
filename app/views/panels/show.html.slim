@@ -4,6 +4,14 @@ h2= panel.name
 
 div= panel.nation
 
-- dt = AjaxDatatables::Datatable.new(self).columns([:value]).records(ElementJudgeDetail.where(panel: panel))
-= render partial: "datatable", locals: { datatable: dt }
+h3 Attended Segments
 
+h3 Elements
+- element_records = ElementJudgeDetail.includes(:panel, element: [:score, score: [:skater]]).references(:panel, element: [:score, score: [:skater]]).where("panels.id": panel)
+- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(element_records)
+/= render partial: "datatable", locals: { datatable: dt }
+
+h3 Components
+- component_records = ElementJudgeDetail.includes(:panel, element: [:score, score: [:skater]]).references(:panel, element: [:score, score: [:skater]]).where("panels.id": panel)
+- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(component_records)
+/= render partial: "datatable", locals: { datatable: dt }

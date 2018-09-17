@@ -14,7 +14,7 @@
   - season from/to
 - help for rake:update
 - skater updater spec: detail
-
+- score name: "%02d"
 
 ### new feature
 
