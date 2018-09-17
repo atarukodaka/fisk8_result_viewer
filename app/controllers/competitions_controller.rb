@@ -26,12 +26,14 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category, segment, ranking = Category.find_by(name: params[:category]), Segment.find_by(name: params[:segment]), params[:ranking]
-
+    category_str, segment_str, ranking = params[:category], params[:segment], params[:ranking]
+    category = Category.find_by(name: category_str)
+    segment = Segment.find_by(name: segment_str)
+    
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category, segment, ranking].join('/')))
+              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category_str, segment_str, ranking].join('/')))
       
       respond_to do |format|
         format.html {
@@ -44,16 +46,15 @@ class CompetitionsController < ApplicationController
     else
       respond_to do |format|
         results = {
-          category_results: category_results_datatable(competition, Category.find_by(name: category)),
-          segment_results: segment_results_datatable(competition, Category.find_by(name: category),
-                                                     Segment.find_by(name: segment)),
+          category_results: category_results_datatable(competition, category),
+          segment_results: segment_results_datatable(competition, category, segment),
         }
         format.html {
           data = {
             competition: competition,
-            category: category,
-            segment: segment,
-            result_type: result_type(category, segment),
+            category: category_str,
+            segment: segment_str,
+            result_type: result_type(category_str, segment_str),
           }.merge(results)
           render :show, locals: data
         }
