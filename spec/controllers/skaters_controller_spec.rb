@@ -75,7 +75,6 @@ RSpec.describe SkatersController, type: :controller do
     context 'isu' do
       it {
         get :show, params: { isu_number: men_skater.isu_number }
-        binding.pry
         expect(response.body).to include(men_skater.name)
       }
     end
