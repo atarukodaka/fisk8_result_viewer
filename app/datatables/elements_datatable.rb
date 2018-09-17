@@ -2,7 +2,7 @@ class ElementsDatatable < ScoreDetailsDatatable
   def initialize(*)
     super
 
-    add_columns([:number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    columns.add([:number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
       name: "elements.name",

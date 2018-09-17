@@ -38,9 +38,9 @@ module AjaxDatatables
 
     attr_reader :view_context
 
-    def initialize(view_context = nil)
+    def initialize(view_context = nil, columns: [])
       @view_context = view_context
-      @columns = nil
+      @columns = columns(columns)
       yield(self) if block_given?
     end
     def table_id
