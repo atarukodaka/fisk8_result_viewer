@@ -2,10 +2,18 @@ require 'rails_helper'
 
 RSpec.describe ElementsController, type: :controller do
   render_views
-  
-  let!(:elem4T){ create(:element) }
-  let!(:elem4T3T){ create(:element, :combination) }
-  let!(:elemLSp){ create(:element, :spin) }
+
+  let!(:score_world)  {
+    competition = create(:competition, :world)
+    competition.scores.first
+  }
+  let!(:score_finlandia)  {
+    competition = create(:competition, :finlandia)
+    competition.scores.first
+  }
+  let!(:elem4T){ create(:element, score: score_world) }
+  let!(:elem4T3T){ create(:element, :combination, score: score_world) }
+  let!(:elemLSp){ create(:element, :spin, score: score_finlandia) }
   
   describe '#index' do
     describe 'all' do

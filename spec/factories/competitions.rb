@@ -13,6 +13,13 @@ FactoryBot.define do
       season { "2016-17" }
       start_date { "2017-2-1" }
       end_date { "2017-2-3" }
+
+      after (:build) do |competition|
+        skater = create(:skater, :men)
+        create(:performed_segment, competition: competition)
+        create(:category_result, competition: competition, skater: skater)
+        create(:score, competition: competition, skater: skater)
+      end
     end
     
     trait :finlandia do
@@ -26,6 +33,14 @@ FactoryBot.define do
       site_url { "http://finlandia-2015/" }
       start_date { "2015-9-1" }
       end_date { "2015-9-3" }
+      
+      after (:build) do |competition|
+        skater = create(:skater, :ladies)
+        create(:performed_segment, :finlandia, competition: competition)
+        create(:category_result, :finlandia, competition: competition, skater: skater)
+        create(:score, :finlandia, competition: competition, skater: skater)
+      end
+
     end
   end
 end

@@ -1,14 +1,12 @@
 # scores
 FactoryBot.define do
   factory :score do
-    association :skater, factory: [:skater, :men]
-    association :competition, factory: [:competition, :world]
+    #association :skater, factory: [:skater, :men]
+    #association :competition, factory: [:competition, :world]
     
     name { "WORLD2017-SM-SP-1" }
     category { Category.find_by(name: "TEAM MEN") }
     segment { Segment.find_by(name: "SHORT PROGRAM") }
-    #association :category, factory: :category
-    #association :segment, factory: :segment
 
     ranking { 1 }
     tss { 100 }
@@ -24,11 +22,9 @@ FactoryBot.define do
     end
 
     trait :finlandia do
-      association :skater, factory: [:skater, :ladies]
-      association :competition, factory: [:competition, :finlandia]
+      #association :skater, factory: [:skater, :ladies]
+      #association :competition, factory: [:competition, :finlandia]
       name { 'FIN2015-SL-FS-2' }
-      #association :category, factory: [:category, :ladies]
-      #association :segment, factory: [:segment, :free ]
       category { Category.find_by(name: "JUNIOR LADIES") }
       segment { Segment.find_by(name: "FREE SKATING") }
 

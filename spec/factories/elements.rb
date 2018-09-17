@@ -1,7 +1,7 @@
 # elements
 FactoryBot.define do
   factory :element do
-    association :score, factory: :score
+    #association :score, factory: :score
     name { "4T" }
     element_type { "jump" }
     value { 10 }
@@ -22,7 +22,7 @@ FactoryBot.define do
     end
 
     trait :spin do
-      association :score, factory: [:score, :finlandia]
+      #association :score, factory: [:score, :finlandia]
       name { "LSp4" }
       value { 2 }
       goe { -1 }

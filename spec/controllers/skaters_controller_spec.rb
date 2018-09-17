@@ -4,19 +4,23 @@ RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater){
-    create(:skater, :men) do |skater|
+    competition = create(:competition, :world)
+    competition.scores.where(category: Category.find_by(name: "TEAM MEN")).first.skater
+    #create(:skater, :men) do |skater|
+=begin
       competition = create(:competition, :world)
       create(:performed_segment, competition: competition)
       create(:category_result, competition: competition, skater: skater)
       score = create(:score, competition: competition, skater: skater)
-      score.elements.create(number: 1, name: "3T", goe: 3, base_value: 10, value: 13)
-      score.components.create(number: 1, name: "Skating Skills", value: 9)
-    end
+=end
+    #end
   }
   let!(:ladies_skater){
-    create(:skater, :ladies) do |skater| 
-      create(:score, competition: create(:competition), skater: skater)
-    end
+    competition = create(:competition, :finlandia)
+    competition.scores.where(category: Category.find_by(name: "JUNIOR LADIES")).first.skater
+#    create(:skater, :ladies) do |skater| 
+#      create(:score, competition: create(:competition), skater: skater)
+#    end
   }
   let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = "Bench WARMER" } }
 
