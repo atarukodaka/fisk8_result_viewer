@@ -12,5 +12,10 @@ class ElementJudgeDetail < ApplicationRecord
   def element_name
     element.name
   end
-  
+  def panel_name
+    panel.name
+  end
+  def goe
+    element.goe
+  end
 end

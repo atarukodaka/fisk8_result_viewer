@@ -97,3 +97,8 @@ crumb :panels do
   link "Panels", panels_path
   parent :root
 end
+
+crumb :element_judge_details do
+  link "Element Judge Details", element_judge_details_path
+  parent :root
+end

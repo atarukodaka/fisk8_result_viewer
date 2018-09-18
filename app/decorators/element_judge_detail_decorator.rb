@@ -1,0 +1,2 @@
+class ElementJudgeDetailDecorator < EntryDecorator
+end

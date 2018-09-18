@@ -5,6 +5,12 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.string :nation
     end
 
+    create_table :officials do |t|
+      t.integer :number
+      t.belongs_to :panel
+      t.belongs_to :performed_segment
+    end
+
     create_table :element_judge_details do |t|
       t.integer :number
       t.float :value
@@ -21,7 +27,6 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.belongs_to :component
       t.belongs_to :panel
     end
-
   end
 end
 

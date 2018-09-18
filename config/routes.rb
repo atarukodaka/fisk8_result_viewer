@@ -40,6 +40,10 @@ Rails.application.routes.draw do
   resources :panels, only: [:index, :show], param: :name do
     get :list, on: :collection
   end
+
+  resources :element_judge_details, only: [:index, :show], param: :name do
+    get :list, on: :collection
+  end
   
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number

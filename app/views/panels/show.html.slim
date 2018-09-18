@@ -5,11 +5,15 @@ h2= panel.name
 div= panel.nation
 
 h3 Attended Segments
+- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)
+- dt = AjaxDatatables::Datatable.new(self).columns([:id, :competition_name, :category, :segment]).records(ps_records).decorate
+= render partial: "datatable", locals: { datatable: dt }
 
 h3 Elements
 - element_records = ElementJudgeDetail.includes(:panel, element: [:score, score: [:skater]]).references(:panel, element: [:score, score: [:skater]]).where("panels.id": panel)
 - dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(element_records)
-/= render partial: "datatable", locals: { datatable: dt }
+= render partial: "scores/filter_content", locals: { table: dt }
+= render partial: "datatable", locals: { datatable: dt }
 
 h3 Components
 - component_records = ElementJudgeDetail.includes(:panel, element: [:score, score: [:skater]]).references(:panel, element: [:score, score: [:skater]]).where("panels.id": panel)

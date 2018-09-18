@@ -15,6 +15,7 @@
 - help for rake:update
 - skater updater spec: detail
 - score name: "%02d"
+- eager load: competition/show for category
 
 ### new feature
 

@@ -101,6 +101,14 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
+  create_table "officials", force: :cascade do |t|
+    t.integer "number"
+    t.integer "panel_id"
+    t.integer "performed_segment_id"
+    t.index ["panel_id"], name: "index_officials_on_panel_id"
+    t.index ["performed_segment_id"], name: "index_officials_on_performed_segment_id"
+  end
+
   create_table "panels", force: :cascade do |t|
     t.string "name"
     t.string "nation"
