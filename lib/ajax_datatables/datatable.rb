@@ -38,8 +38,9 @@ module AjaxDatatables
 
     attr_reader :view_context
 
-    def initialize(view_context = nil)
+    def initialize(view_context = nil, columns: [])
       @view_context = view_context
+      @columns = columns(columns)
       yield(self) if block_given?
     end
     def table_id
@@ -60,7 +61,13 @@ module AjaxDatatables
     def columns=(cols) # setter
       @columns = AjaxDatatables::Columns.new(cols, datatable: self)
     end
-    
+    def add_columns(cols)
+      if @columns.nil?
+        columns = cols
+      else
+        @columns.add(cols)
+      end
+    end
     ## data fetching/manipulation
     def fetch_records
       []

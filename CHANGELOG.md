@@ -10,10 +10,9 @@
 - codecov: icedance elements
 - spec
   - feature
-  - cr doesnt have free: check nil
+	- season from/to
 - help for rake:update
 - skater updater spec: detail
-
 
 ### new feature
 

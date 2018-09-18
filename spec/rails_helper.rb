@@ -1,3 +1,5 @@
+
+
 require 'spec_helper'
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -12,16 +14,6 @@ ActiveRecord::Migration.maintain_test_schema!
 
 ################################################################
 module AjaxFeatureHelper
-=begin
-  ## matcher
-  RSpec::Matchers.define :appear_before_on_page do |later_content|
-    match do |earlier_content|
-      body = (respond_to? :page) ? page.body : response.body
-      body.index(earlier_content.to_s) < body.index(later_content.to_s)
-    end
-  end
-=end
-  
   ## examples  
   shared_examples :only_main do
     it {

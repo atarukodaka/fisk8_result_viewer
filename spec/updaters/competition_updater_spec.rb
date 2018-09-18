@@ -40,6 +40,12 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it { expect(competition.scores.includes(:category).references(:category).where("categories.name like ? ", "TEAM%").blank?).to be false }
     end
 
+    describe 'gpfra2015 - no free skating' do
+      let(:url) { "http://www.isuresults.com/results/season1516/gpfra2015/" }
+      subject(:competition) { @updater.update_competition(url, categories: ['MEN']) }
+      it_behaves_like :having_competition_with_url
+    end
+    
 =begin
     describe 'aci' do   ## its nightmare
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
@@ -126,7 +132,10 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
 =end
   end
-  ################################################################
+  ################
+=begin
+=end
+  ################
   describe 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
@@ -140,7 +149,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
   end
-  ################################################################
+  ################
   describe 'network errors' do
 =begin
 ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION

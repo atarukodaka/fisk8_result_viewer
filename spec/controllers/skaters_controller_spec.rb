@@ -4,21 +4,25 @@ RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater){
-    create(:skater) do |skater|
-      competition = create(:competition)
-      cr = create(:category_result, competition: competition, skater: skater)
-      ps = create(:performed_segment, competition: competition)
+    competition = create(:competition, :world)
+    competition.scores.where(category: Category.find_by(name: "TEAM MEN")).first.skater
+    #create(:skater, :men) do |skater|
+=begin
+      competition = create(:competition, :world)
+      create(:performed_segment, competition: competition)
+      create(:category_result, competition: competition, skater: skater)
       score = create(:score, competition: competition, skater: skater)
-      score.elements.create(number: 1, name: "3T", goe: 3, base_value: 10, value: 13)
-      score.components.create(number: 1, name: "Skating Skills", value: 9)
-    end
+=end
+    #end
   }
   let!(:ladies_skater){
-    create(:skater, :ladies) do |skater| 
-      create(:score, competition: create(:competition), skater: skater)
-    end
+    competition = create(:competition, :finlandia)
+    competition.scores.where(category: Category.find_by(name: "JUNIOR LADIES")).first.skater
+#    create(:skater, :ladies) do |skater| 
+#      create(:score, competition: create(:competition), skater: skater)
+#    end
   }
-  let!(:no_scores_skater){ create(:skater) {|sk| sk.name = "Bench WARMER" } }
+  let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = "Bench WARMER" } }
 
   ################################################################
   describe '#index' do
@@ -64,15 +68,20 @@ RSpec.describe SkatersController, type: :controller do
   end
   ################################################################
   describe '#show' do
-    subject { get :show, params: { isu_number: men_skater.isu_number } }
     shared_examples :men_skater do
       its(:body) { is_expected.to include(men_skater.name) }
+    end
+
+    context 'isu' do
+      it {
+        get :show, params: { isu_number: men_skater.isu_number }
+        expect(response.body).to include(men_skater.name)
+      }
     end
 
     context 'isu_number' do
       subject { get :show, params: { isu_number: men_skater.isu_number } }
       it_behaves_like :men_skater
-#      its(:body) { is_expected.to include("_plot.png") }  ## score graphs
     end
     context 'name' do
       subject { get :show, params: { isu_number: men_skater.name } }
