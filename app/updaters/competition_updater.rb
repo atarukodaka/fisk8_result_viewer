@@ -1,8 +1,8 @@
 class CompetitionUpdater
-  def initialize(parser_type: nil, verbose: false)
+  def initialize(parser_type: nil, verbose: false, enable_judge_details: false)
     @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
     @verbose = verbose
-    @enable_judge_details = true
+    @enable_judge_details = enable_judge_details
   end
 
   def update_competition(site_url, date_format: nil, force: false, categories: nil, params: {})
@@ -60,7 +60,7 @@ class CompetitionUpdater
     end  ## transaction
   end
   def to_first_last_name(str)  ## naming of this function ?? and move to lib/util ??
-    if str =~ /^([A-Z]+) ([A-Z][A-Za-z].*)$/
+    if str =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
       [$2, $1].join(' ')
     else
       str
@@ -94,6 +94,7 @@ class CompetitionUpdater
             panel.update(nation: nation)
           end
           #ps["judge%02d_id" % [i]] = panel.id
+          puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
           ps.officials.create(number: i, panel: panel)
         end
       end
@@ -116,6 +117,26 @@ class CompetitionUpdater
     end
   end
   ################
+  def update_judge_details(competition, category, segment, score)
+    return if competition.start_date <= Time.zone.parse("2016-7-1") # was random order in the past
+    ### elements
+    score.elements.each do |element|
+      details = element.judges.split(/\s/).map(&:to_f)
+      avg = details.sum/details.count
+      #element.judges.split(/\s/).each_with_index do |value, i|
+      details.each_with_index do |value, i|
+        panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
+        element.element_judge_details.create(number: i+1, value: value, panel: panel, average: avg)
+      end
+    end
+    ### component
+    score.components.each do |component|
+      component.judges.split(/\s/).each_with_index do |value, i|
+        panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
+        component.component_judge_details.create(number: i+1, value: value, panel: panel)
+      end
+    end
+  end
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = nil
     segment_type = segment.segment_type
@@ -153,28 +174,7 @@ class CompetitionUpdater
           puts score.summary if @verbose
           
           ## judge details
-          if @enable_judge_details
-            if competition.start_date > Time.zone.parse("2016-7-1") # was random order in the past
-              ### elements
-              score.elements.each do |element|
-                element.judges.split(/\s/).each_with_index do |value, i|
-                  #next if panels[:judges].count <= i+1
-                  #panel = competition.performed_segments.where(category: category, segment: segment).first.send("judge%02d" % [i+1])
-                  panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
-                  element.element_judge_details.create(number: i+1, value: value, panel: panel)
-                end
-              end
-
-              ### component
-              score.components.each do |component|
-                component.judges.split(/\s/).each_with_index do |value, i|
-                  #next if panels[:judges].count <= i+1
-                  #panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
-                  #component.component_judge_details.create(number: i+1, value: value, panel: panel)
-                end
-              end
-            end
-          end
+          update_judge_details(competition, category, segment, score) if @enable_judge_details
         end
       end
     end

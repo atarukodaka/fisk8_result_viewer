@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "component_judge_details", force: :cascade do |t|
     t.integer "number"
     t.float "value"
+    t.float "average"
     t.integer "component_id"
     t.integer "panel_id"
     t.index ["component_id"], name: "index_component_judge_details_on_component_id"
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "element_judge_details", force: :cascade do |t|
     t.integer "number"
     t.float "value"
+    t.float "average"
     t.integer "element_id"
     t.integer "panel_id"
     t.index ["element_id"], name: "index_element_judge_details_on_element_id"

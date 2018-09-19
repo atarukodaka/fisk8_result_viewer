@@ -14,15 +14,16 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
     create_table :element_judge_details do |t|
       t.integer :number
       t.float :value
-
+      t.float :average
+      
       t.belongs_to :element
       t.belongs_to :panel
     end
 
     create_table :component_judge_details do |t|
       t.integer :number
-
       t.float :value
+      t.float :average
 
       t.belongs_to :component
       t.belongs_to :panel

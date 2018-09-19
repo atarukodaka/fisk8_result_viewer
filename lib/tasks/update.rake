@@ -12,12 +12,7 @@ namespace :update do
     ## options
     last =  ENV['last'].to_i if ENV['last']
     force =  ENV['force'].to_i.nonzero?
-=begin
-    if (categories = ENV['accept_categories'])
-      Category.accept!(categories.split(/,/))
-    end
-=end
-    #categories = (c = ENV['categories']) ? c.to_s.split(/ *, */) : nil
+
     categories = 
       if (c = ENV['categories'])
         c.to_s.split(/\s*,\s*/).map do |cat|
@@ -29,7 +24,7 @@ namespace :update do
     if (f = ENV['filename'])
       CompetitionList.filename = f
     end
-
+    enable_judge_details = (ENV['enable_judge_details']) ? true : false
     ################
     list = CompetitionList.all
     list = list.last(last).reverse if last
@@ -39,7 +34,7 @@ namespace :update do
         params = {
           city: item[:city], name: item[:name], comment: item[:comment]
         }
-        CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true).
+        CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true, enable_judge_details: enable_judge_details).
           update_competition(item[:site_url], date_format: item[:date_format], force: force, categories: categories, params: params).tap do |competition|
         end
       end

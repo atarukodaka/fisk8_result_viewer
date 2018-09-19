@@ -13,8 +13,8 @@ class CompetitionParser
           if row.xpath("td[1]").text =~ /^Judge No\.(\d)/
             hash[:judges][$1.to_i] = 
               {
-                name: row.xpath("td[2]").text.scrub('?').sub(/^ *M[sr]\. */, '').strip,
-                nation: row.xpath("td[3]").text,
+                name: row.xpath("td[2]").text.scrub('?').gsub(/[[:space:]]/, ' ').sub(/^ *M[sr]\. */, '').strip,
+                nation: row.xpath("td[3]").text.gsub(/[[:space:]]/, ' ').strip,
               }
           end
         end
