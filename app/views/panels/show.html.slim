@@ -4,7 +4,7 @@ h2= panel.name
 
 h2 analysis
 
-- ElementJudgeDetail.all.pluck(:value, :average).each do |value, average|
+/- ElementJudgeDetail.all.pluck(:value, :average).each do |value, average|
   = value - average
   br
 
@@ -48,10 +48,9 @@ h3 Attended Segments
 h3 Elements
 - element_records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel)
 - dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(element_records)
-= render partial: "scores/filter_content", locals: { table: dt }
 = render partial: "datatable", locals: { datatable: dt }
 
 h3 Components
-/- component_records = ElementJudgeDetail.includes(:panel, element: [score: [:skater]]).references(:panel, element: [:score, score: [:skater]]).where("panels.id": panel)
-/- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(component_records)
-/= render partial: "datatable", locals: { datatable: dt }
+- component_records = ComponentJudgeDetail.includes(:official, component: [score: [:skater]]).references(:officials, component: [:score, score: [:skater]]).where("officials.panel": panel)
+- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :component_name, :value]).records(component_records)
+= render partial: "datatable", locals: { datatable: dt }
