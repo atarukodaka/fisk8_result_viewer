@@ -24,7 +24,8 @@ namespace :update do
     if (f = ENV['filename'])
       CompetitionList.filename = f
     end
-    enable_judge_details = (ENV['enable_judge_details']) ? true : false
+    enable_judge_details = ENV['enable_judge_details'].to_i.nonzero?
+
     ################
     list = CompetitionList.all
     list = list.last(last).reverse if last

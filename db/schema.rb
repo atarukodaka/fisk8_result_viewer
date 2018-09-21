@@ -59,9 +59,9 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "value"
     t.float "average"
     t.integer "component_id"
-    t.integer "panel_id"
+    t.integer "official_id"
     t.index ["component_id"], name: "index_component_judge_details_on_component_id"
-    t.index ["panel_id"], name: "index_component_judge_details_on_panel_id"
+    t.index ["official_id"], name: "index_component_judge_details_on_official_id"
   end
 
   create_table "components", force: :cascade do |t|
@@ -79,9 +79,9 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "value"
     t.float "average"
     t.integer "element_id"
-    t.integer "panel_id"
+    t.integer "official_id"
     t.index ["element_id"], name: "index_element_judge_details_on_element_id"
-    t.index ["panel_id"], name: "index_element_judge_details_on_panel_id"
+    t.index ["official_id"], name: "index_element_judge_details_on_official_id"
   end
 
   create_table "elements", force: :cascade do |t|
@@ -169,9 +169,11 @@ ActiveRecord::Schema.define(version: 5) do
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "category_result_id"
+    t.integer "performed_segment_id"
     t.index ["category_id"], name: "index_scores_on_category_id"
     t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
+    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
     t.index ["segment_id"], name: "index_scores_on_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end

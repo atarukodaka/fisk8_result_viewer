@@ -1,5 +1,5 @@
 class ComponentJudgeDetail < ApplicationRecord
-  belongs_to :panel
+  belongs_to :official
   belongs_to :component
 
   ## virtual attributes
@@ -13,7 +13,7 @@ class ComponentJudgeDetail < ApplicationRecord
     element.name
   end
   def panel_name
-    panel.name
+    official.panel.name
   end
   def goe
     element.goe
