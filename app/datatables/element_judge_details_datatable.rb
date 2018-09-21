@@ -1,7 +1,7 @@
 class ElementJudgeDetailsDatatable < IndexDatatable
   def initialize(*)
     super
-    columns([:score_name, :skater_name, :element_name, :value, :average, :panel_name])
+    columns([:score_name, :skater_name, :element_name, :value, :average, :number, :panel_name])
 
     columns.sources = {
       score_name: "scores.name",

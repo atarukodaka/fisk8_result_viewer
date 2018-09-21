@@ -64,3 +64,6 @@ group :production do
   gem 'passenger'
   gem 'pg'
 end
+
+gem 'daru'
+gem 'statsample'

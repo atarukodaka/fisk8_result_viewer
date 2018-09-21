@@ -17,7 +17,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.float :average
       
       t.belongs_to :element
-      t.belongs_to :panel
+      t.belongs_to :official
     end
 
     create_table :component_judge_details do |t|
@@ -26,7 +26,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.float :average
 
       t.belongs_to :component
-      t.belongs_to :panel
+      t.belongs_to :official
     end
   end
 end

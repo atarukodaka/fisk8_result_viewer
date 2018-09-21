@@ -90,7 +90,8 @@ class CompetitionUpdater
           name = to_first_last_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]
           panel = Panel.find_or_create_by(name: name)
-          if nation != "ISU" && panel.nation.blank?
+          if (nation != "ISU") && (panel.nation.blank?)
+            puts "       ... nation updated: #{nation} for #{name}" if @verbose
             panel.update(nation: nation)
           end
           #ps["judge%02d_id" % [i]] = panel.id
@@ -125,15 +126,17 @@ class CompetitionUpdater
       avg = details.sum/details.count
       #element.judges.split(/\s/).each_with_index do |value, i|
       details.each_with_index do |value, i|
-        panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
-        element.element_judge_details.create(number: i+1, value: value, panel: panel, average: avg)
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first
+        element.element_judge_details.create(number: i+1, value: value, official: official, average: avg)
       end
     end
     ### component
     score.components.each do |component|
-      component.judges.split(/\s/).each_with_index do |value, i|
-        panel = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first.panel
-        component.component_judge_details.create(number: i+1, value: value, panel: panel)
+      details = component.judges.split(/\s/).map(&:to_f)
+      avg = details.sum/details.count
+      details.each_with_index do |value, i|
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first
+        component.component_judge_details.create(number: i+1, value: value, official: official, average: avg)
       end
     end
   end
@@ -160,6 +163,7 @@ class CompetitionUpdater
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs).merge(additionals)
           score.skater = skater
+          score.performed_segment = competition.performed_segments.where(category: category, segment: segment).first
           score.save!  ## need to save here to create children
           
           if relevant_cr

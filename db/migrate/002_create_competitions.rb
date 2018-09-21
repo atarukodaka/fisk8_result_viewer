@@ -44,20 +44,6 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.belongs_to :segment
       t.datetime :starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
 
-      ## panels
-      t.references :judge01
-      t.references :judge02
-      t.references :judge03
-      t.references :judge04
-      t.references :judge05
-      t.references :judge06
-      t.references :judge07
-      t.references :judge08
-      t.references :judge09
-      t.references :judge10
-      t.references :judge11
-      t.references :judge12
-      
       ## relations
       t.belongs_to :competition
     end

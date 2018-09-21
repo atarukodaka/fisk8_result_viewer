@@ -1,21 +1,18 @@
 class ComponentJudgeDetail < ApplicationRecord
-  belongs_to :panel
+  belongs_to :official
   belongs_to :component
 
   ## virtual attributes
   def score_name
-    element.score.name
+    component.score.name
   end
   def skater_name
-    element.score.skater.name
+    component.score.skater.name
   end
-  def element_name
-    element.name
+  def component_name
+    component.name
   end
   def panel_name
-    panel.name
-  end
-  def goe
-    element.goe
+    official.panel.name
   end
 end
