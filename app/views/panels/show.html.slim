@@ -7,16 +7,16 @@ div= panel.nation
 h3 Participated Segments
 /- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)
 /- dt = AjaxDatatables::Datatable.new(self).columns([:competition_name,  :category, :segment]).records(records).decorate
-- dt = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number])
+- dt = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number]).decorate
 = render partial: "datatable", locals: { datatable: dt }
 
-h3 Judged Scores
+/h3 Judged Scores
 
 /- dt = AjaxDatatables::Datatable.new(self).records(Score.includes(:competition, :category, :segment).joins(performed_segment: [ :officials]).where("officials.panel_id": panel.id)).columns([:competition_name, :category, :segment]).decorate
 /- records = Score.where("officials.panel_id": panel.id).includes(:skater, elements: [ element_judge_details: [:official]])
-- records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel).distinct("elements.score_id")
-- dt = AjaxDatatables::Datatable.new(self).records(records).columns([:id, :skater_name])
-= render partial: "datatable", locals: { datatable: dt}
+/- records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel).distinct("elements.score_id")
+/- dt = AjaxDatatables::Datatable.new(self).records(records).columns([:id, :skater_name, :element_name])
+/= render partial: "datatable", locals: { datatable: dt}
 
 /h3 Elements
 /- element_records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel)

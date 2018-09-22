@@ -1,5 +1,5 @@
 class CompetitionUpdater
-  def initialize(parser_type: nil, verbose: false, enable_judge_details: false)
+  def initialize(parser_type: nil, verbose: false, enable_judge_details: nil)
     @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
     @verbose = verbose
     @enable_judge_details = enable_judge_details

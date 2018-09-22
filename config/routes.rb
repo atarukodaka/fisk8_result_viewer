@@ -45,6 +45,10 @@ Rails.application.routes.draw do
     get :list, on: :collection
   end
   
+  resources :component_judge_details, only: [:index, :show], param: :name do
+    get :list, on: :collection
+  end
+  
   namespace :api, format: "json" do
     resources :skaters, only: [:index, :show], param: :isu_number
     resources :competitions, only: [:index, :show], param: :short_name

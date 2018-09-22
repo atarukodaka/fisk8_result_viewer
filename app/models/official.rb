@@ -13,9 +13,4 @@ class Official < ApplicationRecord
     performed_segment.segment.name
   end
 
-  def panel_name
-  end
-
-  def panel_nation
-  end
 end
