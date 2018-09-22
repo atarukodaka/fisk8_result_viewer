@@ -23,17 +23,19 @@
     - if result_type == :segment
       h3 Officials
       /= OfficialsDatatable.new(self).records(Official.joins(:performed_segment).where(performed_segment: { category: category})).render
-      table.table.table-striped.table-hover.table-condensed.dataTable.no-footer
-        tr
-          th Number
-          th Name
-          th Nation
-        - competition.performed_segments.includes(officials: [:panel]).where(category: Category.find_by(name: category), segment: Segment.find_by(name: segment)).first.officials.each do |official|
+      - officials = competition.performed_segments.includes(officials: [:panel]).where(category: Category.find_by(name: category), segment: Segment.find_by(name: segment)).first.try(:officials) || []
+      - officials.each do |official|
+        table.table.table-striped.table-hover.table-condensed.dataTable.no-footer
           tr
-            td= official.number
-            td= official.panel.name
-            td= official.panel.nation
-    
+            th Number
+            th Name
+            th Nation
+
+            tr
+              td= official.number
+              td= official.panel.name
+              td= official.panel.nation
+
   .col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")
     = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category, :segment, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
