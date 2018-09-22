@@ -11,6 +11,6 @@ class ElementJudgeDetailsDatatable < IndexDatatable
     }
   end
   def fetch_records
-    ElementJudgeDetail.includes(:element, :panel, element: [:score, score: [:skater]]).references(:element, :panel, element: [:score, score: [:skater]])
+    ElementJudgeDetail.includes(:element, official: [:panel], element: [:score, score: [:skater]]).references(:element, :panel, element: [:score, score: [:skater]])
   end
 end

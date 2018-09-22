@@ -13,7 +13,7 @@ class CompetitionsController < ApplicationController
   def category_results_datatable(competition, category)
     return nil if category.blank?
 
-    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.includes(:category).category(category).includes(:skater, :short, :free)).
+    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :short, :free)).
       columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,]).
       tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
   end

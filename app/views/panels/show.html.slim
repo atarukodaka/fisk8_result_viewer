@@ -2,55 +2,28 @@
 
 h2= panel.name
 
-h2 analysis
-
-/- ElementJudgeDetail.all.pluck(:value, :average).each do |value, average|
-  = value - average
-  br
-
-
-/- skaters = ["Yuzuru HANYU", "Shoma UNO", "Patrick CHAN", "Nathan CHEN"].map {|n| Skater.where(name: n).first}
-
-/- skaters = Competition.find_by(site_url: 
-/- comp = Competition.find_by(site_url: "http://www.isuresults.com/results/season1718/owg2018/")
-/- skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map {|score| score.skater}.uniq
-
-/- skaters.each do |skater|
-  /- ary = [element_judge_details: [ element: [ :score ] ] ]
-  - ary = [:officials, [officials: [:performed_segment, performed_segment: [:scores, scores: [:skater]]]]]
-  - panels = Panel.where("scores.skater_id": skater.id).includes(ary).references(ary)
-
-  /- panels.each do |panel|
-    - a = Daru::Vector.new(ElementJudgeDetail.includes(:official, element: [score: [:skater]]).where("officials.panel_id": panel.id, "scores.skater_id": skater.id).references(:official, element: [ score: [:skater] ]).pluck(:value, :average).map {|a| a[0]-a[1]})
-    - b = Daru::Vector.new(ElementJudgeDetail.includes(:official, element: [score: [:skater]]).where.not("officials.panel": panel).where("scores.skater_Id": skater.id).references(:official, element: [ score: [:skater] ]).pluck(:value, :average).map {|a| a[0]-a[1]})
-    - t2 =  Statsample::Test::T::TwoSamplesIndependent.new(a, b)
-    li= [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count,b.count].join(', ')
-    /pre
-      = t2.summary
-
-  - panels.each do |panel|
-    - a = Daru::Vector.new(ComponentJudgeDetail.includes(:official, component: [score: [:skater]]).where("officials.panel_id": panel.id, "scores.skater_id": skater.id).references(:official, component: [ score: [:skater] ]).pluck(:value, :average).map {|a| a[0]-a[1]})
-    - b = Daru::Vector.new(ComponentJudgeDetail.includes(:official, component: [score: [:skater]]).where.not("officials.panel": panel).where("scores.skater_Id": skater.id).references(:official, component: [ score: [:skater] ]).pluck(:value, :average).map {|a| a[0]-a[1]})
-    - t2 =  Statsample::Test::T::TwoSamplesIndependent.new(a, b)
-    li= [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count,b.count].join(', ')
-    /pre
-      = t2.summary
-
-
-////////////////
 div= panel.nation
 
-h3 Attended Segments
-- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)
-- dt = AjaxDatatables::Datatable.new(self).columns([:id, :competition_name, :category, :segment]).records(ps_records).decorate
+h3 Participated Segments
+/- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)
+/- dt = AjaxDatatables::Datatable.new(self).columns([:competition_name,  :category, :segment]).records(records).decorate
+- dt = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number])
 = render partial: "datatable", locals: { datatable: dt }
 
-h3 Elements
-- element_records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel)
-- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(element_records)
-= render partial: "datatable", locals: { datatable: dt }
+h3 Judged Scores
 
-h3 Components
-- component_records = ComponentJudgeDetail.includes(:official, component: [score: [:skater]]).references(:officials, component: [:score, score: [:skater]]).where("officials.panel": panel)
-- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :component_name, :value]).records(component_records)
-= render partial: "datatable", locals: { datatable: dt }
+/- dt = AjaxDatatables::Datatable.new(self).records(Score.includes(:competition, :category, :segment).joins(performed_segment: [ :officials]).where("officials.panel_id": panel.id)).columns([:competition_name, :category, :segment]).decorate
+/- records = Score.where("officials.panel_id": panel.id).includes(:skater, elements: [ element_judge_details: [:official]])
+- records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel).distinct("elements.score_id")
+- dt = AjaxDatatables::Datatable.new(self).records(records).columns([:id, :skater_name])
+= render partial: "datatable", locals: { datatable: dt}
+
+/h3 Elements
+/- element_records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel)
+/- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :element_name, :value]).records(element_records)
+/= render partial: "datatable", locals: { datatable: dt }
+
+/h3 Components
+/- component_records = ComponentJudgeDetail.includes(:official, component: [score: [:skater]]).references(:officials, component: [:score, score: [:skater]]).where("officials.panel": panel)
+/- dt = AjaxDatatables::Datatable.new(self).columns([:score_name, :skater_name, :component_name, :value]).records(component_records)
+/= render partial: "datatable", locals: { datatable: dt }

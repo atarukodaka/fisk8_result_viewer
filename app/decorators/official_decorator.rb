@@ -1,0 +1,2 @@
+class OfficialDecorator < EntryDecorator
+end

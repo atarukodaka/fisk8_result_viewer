@@ -19,6 +19,20 @@
   .col-sm-6
     h2= t(".competition_summary", default: "Competition Summary")
     = Listtable.new(self).records(competition.decorate).columns([:name_info, :location, :site_url, :period, :comment]).render
+
+    - if result_type == :segment
+      h3 Officials
+      /= OfficialsDatatable.new(self).records(Official.joins(:performed_segment).where(performed_segment: { category: category})).render
+      table.table.table-striped.table-hover.table-condensed.dataTable.no-footer
+        tr
+          th Number
+          th Name
+          th Nation
+        - competition.performed_segments.includes(officials: [:panel]).where(category: Category.find_by(name: category), segment: Segment.find_by(name: segment)).first.officials.each do |official|
+          tr
+            td= official.number
+            td= official.panel.name
+            td= official.panel.nation
     
   .col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")

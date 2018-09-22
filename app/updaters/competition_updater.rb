@@ -84,7 +84,8 @@ class CompetitionUpdater
       ps.segment = segment
       ps.starting_time = starting_time
       ps.save!
-      if @enable_judge_details
+
+      if true
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
           name = to_first_last_name(parsed_panels[:judges][i][:name])
