@@ -1,12 +1,5 @@
 module FormHelper
 
-  def uniq_list(relation, key)
-    #@_uniq_list_cache ||= {}
-    #@_uniq_list_cache["#{relation.klass.name}-#{key.to_s}"] ||= relation.distinct.pluck(key).compact
-    relation.distinct.pluck(key).compact     ## TODO: cache
-    
-  end
-
   def form_group(label = nil, input_tag = nil)
     content_tag(:div, :class => "form-group row") do
       label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
@@ -21,44 +14,51 @@ module FormHelper
     end
   end
   
-  # using SortWithPreset
+  def cache_uniq_list(cache_name, relation, key)
+    Rails.cache.fetch(cache_name){
+      relation.distinct.pluck(key).compact
+    }
+  end
+
   def select_tag_with_options(key, *args)
     selected = params[key]
 
     col =
       case key
       when :category
-        uniq_list(Category.order(:id), :name)
+        cache_uniq_list("category_name", Category.order(:id), :category_name)
       when :category_type
-        uniq_list(Category.order(:id), :category_type)
+        cache_uniq_list("category_type", Category.order(:id), :category_type)
       when :seniority
-        uniq_list(Category.order(:id), :seniority)
+        cache_uniq_list("category_seniority", Category.order(:id), :seniority)
       when :team
-        uniq_list(Category.order(:id), :team)
+        cache_uniq_list("category_team", Category.order(:id), :team)
+
        when :segment
-        uniq_list(Segment.order(:id), :name)
+         cache_uniq_list("segment_name", Segment.order(:id), :segment_name)
       when :segment_type
-        uniq_list(Segment.order(:id), :segment_type)
+        cache_uniq_list("segment_type", Segment.order(:id), :segment_type)
+
       when :nation
-        uniq_list(Skater, :nation).sort
+        cache_uniq_list("skater_nation", Skater.order(:nation), :nation)
+
       when :competition_class
-        uniq_list(Competition.all, :competition_class).sort
+        cache_uniq_list("competition_class", Competition.all, :competition_class).sort
       when :competition_type
-        uniq_list(Competition.all, :competition_type).sort
-      when :season
-        uniq_list(Competition.all, :season).sort.reverse
-      when :element_type
-        uniq_list(Element.all, :element_type).sort
-      when :element_subtype
-        uniq_list(Element.all, :element_subtype).sort
+        cache_uniq_list("competition_type", Competition.all, :competition_type).sort
       when :season_from
-        uniq_list(Competition.all, :season).sort.reverse
+        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
       when :season_to
-        uniq_list(Competition.all, :season).sort.reverse
+        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
+
+      when :element_type
+        cache_uniq_list("element_type", Element.all, :element_type).sort
+      when :element_subtype
+        cache_uniq_list("element_subtype", Element.all, :element_subtype).sort
       else
         []
       end
-    select_tag(key, options_for_select(col.unshift(nil), selected: selected), *args)
+    select_tag(key, options_for_select([nil, col].flatten, selected: selected), *args)
   end
   def ajax_search(key, table, search_value: :value)
     col_num = table.column_names.index(key.to_s)
