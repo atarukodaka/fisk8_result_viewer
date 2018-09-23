@@ -22,7 +22,7 @@
     
   .col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")
-    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category, :segment, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
+    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
 
 ////////////////////////////////////////////////////////////////
 h2

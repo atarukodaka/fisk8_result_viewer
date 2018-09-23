@@ -1,4 +1,6 @@
 class Skater < ApplicationRecord
+  alias_attribute :skater_name, :name
+  
   ## relations
   has_many :category_results
   has_many :scores

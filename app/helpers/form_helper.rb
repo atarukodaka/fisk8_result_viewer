@@ -2,7 +2,7 @@ module FormHelper
 
   def uniq_list(relation, key)
     @_uniq_list_cache ||= {}
-    @_uniq_list_cache[key] ||= relation.distinct.pluck(key).compact
+    @_uniq_list_cache["#{relation.klass.name}-#{key.to_s}"] ||= relation.distinct.pluck(key).compact
   end
 
   def form_group(label = nil, input_tag = nil)
@@ -33,7 +33,7 @@ module FormHelper
         uniq_list(Category.order(:id), :seniority)
       when :team
         uniq_list(Category.order(:id), :team)
-      when :segment
+       when :segment
         uniq_list(Segment.order(:id), :name)
       when :segment_type
         uniq_list(Segment.order(:id), :segment_type)
