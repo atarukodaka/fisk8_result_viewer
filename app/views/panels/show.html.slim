@@ -1,8 +1,9 @@
 / - breadcrumb :panel, panel
 
 h2= panel.name
-
-div= panel.nation
+.row
+  .col-sm-4
+    = Listtable.new(self).records(panel).columns([:nation]).render
 
 h3 Participated Segments
 /- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)

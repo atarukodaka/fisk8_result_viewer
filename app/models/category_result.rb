@@ -6,7 +6,8 @@ class CategoryResult < ApplicationRecord
   
   belongs_to :competition
   belongs_to :skater
-  belongs_to_active_hash :category
+  belongs_to :category
+  #belongs_to_active_hash :category
   
   belongs_to :short, class_name: "Score", optional: true  # required: true on default. see https://github.com/rails/rails/issues/18233
   belongs_to :free, class_name: "Score", optional: true
