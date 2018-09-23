@@ -13,17 +13,17 @@ class Score < ApplicationRecord
   #belongs_to :performed_segment, required: false
 
   ## virtual attributes
-  [:competition_name, :short_name, :competition_class, :competition_type, :season].each do |key|
-    delegate key, to: :competition
+  {
+    competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
+    skater: [:skater_name, :nation],
+    category: [:category_name, :category_type, :seniority, :team],
+    segment: [:segment_name, :segment_type],
+  }.each do |model, ary|
+    ary.each do |key|
+      delegate key, to: model
+    end
   end
-  [:skater_name, :nation].each do |key|
-    delegate key, to: :skater
-  end
-  [:category_name, :category_type, :seniority, :team].each do |key|
-    delegate key, to: :category
-  end
-  delegate :segment_type, to: :segment
-
+  
   ## for statics
   def component_SS
     components.try(:[], 0).try(:value)

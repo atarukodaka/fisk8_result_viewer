@@ -14,12 +14,12 @@ class CategoryResult < ApplicationRecord
   delegate :competition_name, to: :competition
   delegate :skater_name, to: :skater
   delegate :nation, to: :skater
-  delegate :start, to: :competition, prefix: :start
-=begin
+  #delegate :date, to: :competition, prefix: :start
+
   def date
     competition.start_date
   end
-=end
+
   [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
     define_method("short_#{key}".to_sym) do
       short.try(:send, key)

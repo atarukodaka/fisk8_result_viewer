@@ -1,8 +1,10 @@
 module FormHelper
 
   def uniq_list(relation, key)
-    @_uniq_list_cache ||= {}
-    @_uniq_list_cache["#{relation.klass.name}-#{key.to_s}"] ||= relation.distinct.pluck(key).compact
+    #@_uniq_list_cache ||= {}
+    #@_uniq_list_cache["#{relation.klass.name}-#{key.to_s}"] ||= relation.distinct.pluck(key).compact
+    relation.distinct.pluck(key).compact     ## TODO: cache
+    
   end
 
   def form_group(label = nil, input_tag = nil)
