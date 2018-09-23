@@ -98,6 +98,11 @@ crumb :panels do
   parent :root
 end
 
+crumb :panel do |panel|
+  link panel.name
+  parent :panels
+end
+
 crumb :element_judge_details do
   link "Element Judge Details", element_judge_details_path
   parent :root

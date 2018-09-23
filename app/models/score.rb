@@ -12,41 +12,32 @@ class Score < ApplicationRecord
   belongs_to :category_result, optional: true
   belongs_to :performed_segment, required: false
 
+  ## scopes
+  scope :recent, ->{ order("date desc") }
+  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
+  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
+  scope :category,->(c){ where(category: c) }
+  scope :segment, ->(s){ where(segment: s) }
+
   ## virtual attributes
   def competition_name
     competition.name
   end
-  def competition_short_name
-    competition.short_name
+
+  [:short_name, :class, :type].each do |key|
+    delegate "competition_#{key}".to_sym, to: :competition
   end
-  def competition_class
-    competition.competition_class
-  end
-  def competition_type
-    competition.competition_type
-  end
-  def season
-    competition.season
-  end
+  delegate :season, to: :competition
+  
   def skater_name
     skater.name
   end
-  def nation
-    skater.nation
+  delegate :nation, to: :skater
+  
+  [:category_type, :seniority, :team].each do |key|
+    delegate key, to: :category
   end
-  def category_type
-    category.category_type
-  end
-  def seniority
-    category.seniority
-  end
-  def team
-    category.team
-  end
-
-  def segment_type
-    segment.segment_type
-  end
+  delegate :segment_type, to: :segment
 
   ## for statics
   def component_SS
@@ -64,13 +55,6 @@ class Score < ApplicationRecord
   def component_IN
     components.try(:[], 4).try(:value)
   end
-
-  ## scopes
-  scope :recent, ->{ order("date desc") }
-  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
-  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
-  scope :category,->(c){ where(category: c) }
-  scope :segment, ->(s){ where(segment: s) }
 
   ##
   def summary

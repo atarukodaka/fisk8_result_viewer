@@ -1,13 +1,10 @@
 class CategoryResult < ApplicationRecord
-  extend ActiveHash::Associations::ActiveRecordExtensions
-
   ## relations
   #has_many :scores
   
   belongs_to :competition
   belongs_to :skater
   belongs_to :category
-  #belongs_to_active_hash :category
   
   belongs_to :short, class_name: "Score", optional: true  # required: true on default. see https://github.com/rails/rails/issues/18233
   belongs_to :free, class_name: "Score", optional: true
@@ -19,12 +16,8 @@ class CategoryResult < ApplicationRecord
   def skater_name
     skater.name
   end
-  def nation
-    skater.nation
-  end
-  def date
-    competition.start_date
-  end
+  delegate :nation, to: :skater
+  delegate :start_date, to: :competition
 
   [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
     define_method("short_#{key}".to_sym) do
