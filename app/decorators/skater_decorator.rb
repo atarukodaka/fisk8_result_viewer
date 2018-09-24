@@ -14,9 +14,6 @@ class SkaterDecorator < EntryDecorator
       h.concat(h.span_link_icon())
     end
   end
-  def category
-    model.category.name
-  end
   def bio_updated_at
     (model.bio_updated_at.present?) ? l(model.bio_updated_at) : ""
   end

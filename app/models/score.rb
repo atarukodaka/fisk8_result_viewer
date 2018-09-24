@@ -10,61 +10,27 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, optional: true
-  #belongs_to :performed_segment, required: false
+  #belongs_to :performed_segment, optional: true
 
   ## virtual attributes
-  def competition_name
-    competition.name
-  end
-  def competition_short_name
-    competition.short_name
-  end
-  def competition_class
-    competition.competition_class
-  end
-  def competition_type
-    competition.competition_type
-  end
-  def season
-    competition.season
-  end
-  def skater_name
-    skater.name
-  end
-  def nation
-    skater.nation
-  end
-  def category_type
-    category.category_type
-  end
-  def seniority
-    category.seniority
-  end
-  def team
-    category.team
-  end
-
-  def segment_type
-    segment.segment_type
+  {
+    competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
+    skater: [:skater_name, :nation],
+    category: [:category_name, :category_type, :seniority, :team],
+    segment: [:segment_name, :segment_type],
+  }.each do |model, ary|
+    ary.each do |key|
+      delegate key, to: model
+    end
   end
 
   ## for statics
-  def component_SS
-    components.try(:[], 0).try(:value)
+  [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
+    define_method("component_#{key.to_s}") do
+      components.try(:[], i).try(:value)
+    end
   end
-  def component_TR
-    components.try(:[], 1).try(:value)
-  end
-  def component_PE
-    components.try(:[], 2).try(:value)
-  end
-  def component_CO
-    components.try(:[], 3).try(:value)
-  end
-  def component_IN
-    components.try(:[], 4).try(:value)
-  end
-
+  
   ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }

@@ -26,6 +26,7 @@ class CompetitionUpdater
           return nil
         end
       end
+
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys

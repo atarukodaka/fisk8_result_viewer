@@ -4,7 +4,7 @@
 
 - content_for :title do
   | competition: 
-  = [competition.name, category, segment].reject(&:blank?).join(' / ')
+  = [competition.name, category.try(:name), segment.try(:name)].reject(&:blank?).join(' / ')
 
 - case result_type
 - when :category
@@ -22,7 +22,7 @@
     
   .col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")
-    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category, :segment, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
+    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
 
 ////////////////////////////////////////////////////////////////
 h2
@@ -30,9 +30,9 @@ h2
   /- when :none
   /  ="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
   - when :category
-    | #{t(".category_results", default: "Category Results")} : #{category}
+    | #{t(".category_results", default: "Category Results")} : #{category.name}
   - when :segment
-    | #{t(".segment_results", default: "Segment Results")} : #{category}/#{segment}
+    | #{t(".segment_results", default: "Segment Results")} : #{category.name} / #{segment.name}
 
 ////////////////
 // nav bar for category/segment

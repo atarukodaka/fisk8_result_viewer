@@ -1,4 +1,6 @@
 class Skater < ApplicationRecord
+  alias_attribute :skater_name, :name
+  
   ## relations
   has_many :category_results
   has_many :scores
@@ -16,6 +18,9 @@ class Skater < ApplicationRecord
   }
   scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
 
+  ## virtual methods
+  delegate :name, to: :category, prefix: :category, allow_nil: true
+  
   ## class methods
   class << self
     def find_by_isu_number_or_name(isu_number, name)

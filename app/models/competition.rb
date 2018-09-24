@@ -1,5 +1,7 @@
 class Competition < ApplicationRecord
   #before_save :normalize
+
+  alias_attribute :competition_name, :name
   
   ## relations
   has_many :category_results, dependent: :destroy

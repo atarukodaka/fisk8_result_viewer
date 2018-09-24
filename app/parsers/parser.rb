@@ -7,7 +7,9 @@ module HttpGet
       html = (read_option) ? open(url, read_option).read : open(url).read
     rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError
       ##http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
-      Rails.logger.warn("http error on #{url}")
+      msg = "http error on #{url}"
+      Rails.logger.warn(msg)
+      puts msg
       return nil
     else
       Nokogiri::HTML(html)

@@ -2,7 +2,7 @@ class ScoreDetailsDatatable < IndexDatatable
   def initialize(*)
     super
     columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
+             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :date, :season,
              :skater_name, :nation,])
 
     columns.sources = {
@@ -11,11 +11,11 @@ class ScoreDetailsDatatable < IndexDatatable
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
       season: "competitions.season",
-      category: "categories.name",
+      category_name: "categories.name",
       category_type: "categories.category_type",
       team: "categories.team",
       seniority: "categories.seniority",
-      segment: "segments.name",
+      segment_name: "segments.name",
       segment_type: "segments.segment_type",
       date: "scores.date",
       skater_name: "skaters.name",
@@ -30,7 +30,7 @@ class ScoreDetailsDatatable < IndexDatatable
       columns[key].orderable = false
     }
     ## operatoer
-    columns[:category].operator = :eq    
+    columns[:category_name].operator = :eq    
     columns[:team].operator = :boolean
 
     default_orders([[:value, :desc]])
