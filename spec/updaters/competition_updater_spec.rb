@@ -28,7 +28,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { CompetitionUpdater.new(parser_type: :wtt2017, verbose: true).update_competition(url, categories: ['MEN']) }
+      subject { CompetitionUpdater.new(parser_type: :wtt2017, verbose: true).update_competition(url, categories: ['ICE DANCE']) }
       it_behaves_like :having_competition_with_url
     end
 
@@ -40,6 +40,12 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it { expect(competition.scores.includes(:category).references(:category).where("categories.name like ? ", "TEAM%").blank?).to be false }
     end
 
+    describe 'gpfra2015 - no free skating' do
+      let(:url) { "http://www.isuresults.com/results/season1516/gpfra2015/" }
+      subject(:competition) { @updater.update_competition(url, categories: ['MEN']) }
+      it_behaves_like :having_competition_with_url
+    end
+    
 =begin
     describe 'aci' do   ## its nightmare
       let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
@@ -114,19 +120,24 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       include_context :skater_having_different_name, url, Category.find_by(name: "LADIES"), 15
       it_behaves_like :same_name_between_segments
     end
+=begin
+    ## this site causes HTTP error
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
       include_context :skater_having_different_name, url, Category.find_by(name: "JUNIOR LADIES"), 17
       it_behaves_like :same_name_between_segments
     end
-
+=end
 =begin
     it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
       ## TODO: name correction for Ho Jung LEE
     end
 =end
   end
-  ################################################################
+  ################
+=begin
+=end
+  ################
   describe 'encoding' do
     it 'parses iso-8859-1' do
       url = 'http://www.isuresults.com/results/season1516/wjc2016/'
@@ -140,7 +151,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
   end
-  ################################################################
+  ################
   describe 'network errors' do
 =begin
 ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION

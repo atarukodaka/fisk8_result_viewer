@@ -3,18 +3,9 @@ require 'rails_helper'
 RSpec.describe CompetitionsController, type: :controller do
   render_views
   
-  let!(:main) {
-    create(:competition, :world) do |competition|
-#      skater = create(:skater, :men)
-#      create(:performed_segment, competition: competition)
-#      create(:category_result, competition: competition, skater: skater)
-#      create(:score, competition: competition, skater: skater)
-    end
-  }
-  let!(:sub) {
-    create(:competition, :finlandia)
-  }
-  ################################################################
+  let!(:main) {    create(:competition, :world)  }
+  let!(:sub)   {    create(:competition, :finlandia) }
+  ################
   describe '#list' do
     context 'all' do
       subject { get :list, xhr: true ; response.body }

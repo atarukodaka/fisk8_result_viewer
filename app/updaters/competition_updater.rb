@@ -23,6 +23,7 @@ class CompetitionUpdater
           return nil
         end
       end
+
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
@@ -78,7 +79,7 @@ class CompetitionUpdater
   end
   ################
   def update_performed_segment(competition, category, segment, panel_url, starting_time)
-    parsed_panels = @parsers[:panel].parse(panel_url) if @enable_judge_details
+    parsed_panels = @parsers[:panel].parse(panel_url)  # if @enable_judge_details
     competition.performed_segments.create do |ps|
       ps.category = category
       ps.segment = segment

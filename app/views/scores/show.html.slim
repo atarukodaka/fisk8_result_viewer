@@ -7,8 +7,7 @@
 .row
   .col-sm-6
     h2= t(".score_summary", default: "Score Summary")
-    = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category, :segment, :date, :tss, :tes, :pcs, :deductions, :result_pdf]).render
-
+    = Listtable.new(self).records(score.decorate).columns([:skater_name, :competition_name, :category_name, :segment_name, :date, :tss, :tes, :pcs, :deductions, :result_pdf]).render
   .col-sm-6
 
     h2= t(".relevant_video", default: "Relevant Video")

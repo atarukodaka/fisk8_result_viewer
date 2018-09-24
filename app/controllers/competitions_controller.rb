@@ -26,14 +26,14 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category_str, segment_str, ranking = params[:category], params[:segment], params[:ranking]
-    category = Category.find_by(name: category_str)
-    segment = Segment.find_by(name: segment_str)
+    category_name, segment_name, ranking = params[:category], params[:segment], params[:ranking]
+    category = Category.find_by(name: category_name)
+    segment = Segment.find_by(name: segment_name)
     
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category_str, segment_str, ranking].join('/')))
+              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category_name, segment_name, ranking].join('/')))
       
       respond_to do |format|
         format.html {
@@ -52,9 +52,9 @@ class CompetitionsController < ApplicationController
         format.html {
           data = {
             competition: competition,
-            category: category_str,
-            segment: segment_str,
-            result_type: result_type(category_str, segment_str),
+            category: category,
+            segment: segment,
+            result_type: result_type(category_name, segment_name),
           }.merge(results)
           render :show, locals: data
         }

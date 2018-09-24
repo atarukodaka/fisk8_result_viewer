@@ -3,7 +3,7 @@ class ScoresDatatable < IndexDatatable
     super
     
     columns([:name, :competition_name, :competition_class, :competition_type,
-             :category, :category_type, :team, :seniority, :segment, :segment_type, :season, :date,
+             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :season, :date,
              :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value
              ])
@@ -12,11 +12,11 @@ class ScoresDatatable < IndexDatatable
       competition_name: "competitions.name",
       competition_class: "competitions.competition_class",
       competition_type: "competitions.competition_type",
-      category: "categories.name",
+      category_name: "categories.name",
       category_type: "categories.category_type",
       team: "categories.team",
       seniority: "categories.seniority",
-      segment: "segments.name",
+      segment_name: "segments.name",
       segment_type: "segments.segment_type",
       season: "competitions.season",
       skater_name: "skaters.name",
@@ -30,7 +30,7 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
-    columns[:category].operator = :eq
+    columns[:category_name].operator = :eq
     columns[:team].operator = :boolean
 
     default_orders([[:date, :desc]])
