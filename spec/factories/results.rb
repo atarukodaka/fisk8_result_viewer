@@ -28,7 +28,7 @@ FactoryBot.define do
     end
 
     trait :world do 
-      category { Category.find_by(name: "MEN") }
+      category { Category.find_by(name: "TEAM MEN") }
       segment { Segment.find_by(name: "SHORT PROGRAM") }
       starting_time { Time.new(2017, 2, 1, 15, 0, 0) }
 

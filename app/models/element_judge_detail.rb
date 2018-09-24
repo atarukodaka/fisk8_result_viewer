@@ -9,13 +9,10 @@ class ElementJudgeDetail < ApplicationRecord
   def skater_name
     element.score.skater.name
   end
-  def element_name
-    element.name
-  end
   def panel_name
     official.panel.name
   end
-  def goe
-    element.goe
-  end
+  delegate :number, to: :element, prefix: :element
+  delegate :name, to: :element, prefix: :element
+  delegate :goe, to: :element
 end
