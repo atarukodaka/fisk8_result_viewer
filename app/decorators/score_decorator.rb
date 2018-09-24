@@ -24,8 +24,5 @@ class ScoreDecorator < EntryDecorator
   def segment_name
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
-  def segment_type
-    model.segment.segment_type
-  end
   decorate_as_score(:tss, :tes, :pcs, :deductions, :base_value, :max_tss)
 end

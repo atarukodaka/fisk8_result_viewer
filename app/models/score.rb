@@ -10,7 +10,7 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, optional: true
-  #belongs_to :performed_segment, required: false
+  #belongs_to :performed_segment, optional: true
 
   ## virtual attributes
   {
@@ -23,24 +23,14 @@ class Score < ApplicationRecord
       delegate key, to: model
     end
   end
-  
-  ## for statics
-  def component_SS
-    components.try(:[], 0).try(:value)
-  end
-  def component_TR
-    components.try(:[], 1).try(:value)
-  end
-  def component_PE
-    components.try(:[], 2).try(:value)
-  end
-  def component_CO
-    components.try(:[], 3).try(:value)
-  end
-  def component_IN
-    components.try(:[], 4).try(:value)
-  end
 
+  ## for statics
+  [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
+    define_method("component_#{key.to_s}") do
+      components.try(:[], i).try(:value)
+    end
+  end
+  
   ## scopes
   scope :recent, ->{ order("date desc") }
   scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
