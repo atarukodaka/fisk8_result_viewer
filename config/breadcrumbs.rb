@@ -28,12 +28,12 @@ crumb :competition_category do |competion, category|
 end
 
 crumb :competition_category do |competition, category|
-  link category, competition_path(competition.short_name, category: category)
+  link category.name, competition_path(competition.short_name, category: category)
   parent :competition, competition
 end
 
 crumb :competition_segment do |competition, category, segment|
-  link segment, competition_path(competition.short_name, category: category, segment: segment)
+  link segment.name, competition_path(competition.short_name, category: category, segment: segment)
   parent :competition_category, competition, category
 end
 

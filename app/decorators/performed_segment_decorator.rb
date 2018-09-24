@@ -2,10 +2,10 @@ class PerformedSegmentDecorator < EntryDecorator
   def competition_name
     h.link_to_competition(model.competition)
   end
-  def category
+  def category_name
     h.link_to_competition(model.competition, category: model.category)
   end
-  def segment
+  def segment_name
     h.link_to_competition(model.competition, category: model.category, segment: model.segment)
   end
 

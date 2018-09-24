@@ -64,7 +64,9 @@ ja:
   attributes:
     skater_name: スケーター名
     category: カテゴリー
+    category_name: カテゴリー
     segment: セグメント
+    segment_name: セグメント
     nation: 国名
     ranking: 順位
     date: 日付

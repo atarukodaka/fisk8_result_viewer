@@ -7,7 +7,6 @@ class PerformedSegment < ApplicationRecord
   belongs_to :category
   belongs_to :segment
 
-  def competition_name
-    competition.name
-  end
+  delegate :category_name, to: :category
+  delegate :segment_name, to: :segment
 end
