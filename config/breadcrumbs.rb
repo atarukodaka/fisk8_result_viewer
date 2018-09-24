@@ -107,3 +107,8 @@ crumb :element_judge_details do
   link "Element Judge Details", element_judge_details_path
   parent :root
 end
+
+crumb :component_judge_details do
+  link "Component Judge Details", component_judge_details_path
+  parent :root
+end
