@@ -12,8 +12,8 @@ module ScoreVirtualAttributes
   def competition_type
     score.competition.competition_type
   end
-  def category
-    score.category
+  def category_name
+    score.category.name
   end
   def category_type
     score.category.category_type
@@ -24,8 +24,8 @@ module ScoreVirtualAttributes
   def team
     score.category.team
   end
-  def segment
-    score.segment
+  def segment_name
+    score.segment.name
   end
   def segment_type
     score.segment.segment_type
