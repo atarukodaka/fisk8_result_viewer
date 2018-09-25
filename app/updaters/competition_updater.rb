@@ -128,8 +128,9 @@ class CompetitionUpdater
       avg = details.sum/details.count
       #element.judges.split(/\s/).each_with_index do |value, i|
       details.each_with_index do |value, i|
+        diff =  value - avg
         official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first
-        element.element_judge_details.create(number: i+1, value: value, official: official, average: avg)
+        element.element_judge_details.create(number: i+1, value: value, official: official, average: avg, diff: diff)
       end
     end
     ### component
@@ -137,8 +138,9 @@ class CompetitionUpdater
       details = component.judges.split(/\s/).map(&:to_f)
       avg = details.sum/details.count
       details.each_with_index do |value, i|
+        diff =  value - avg
         official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first
-        component.component_judge_details.create(number: i+1, value: value, official: official, average: avg)
+        component.component_judge_details.create(number: i+1, value: value, official: official, average: avg, diff: diff)
       end
     end
   end

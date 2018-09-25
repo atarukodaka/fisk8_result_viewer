@@ -15,6 +15,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       t.float :average
+      t.float :diff
       
       t.belongs_to :element
       t.belongs_to :official
@@ -24,6 +25,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       t.float :average
+      t.float :diff
 
       t.belongs_to :component
       t.belongs_to :official

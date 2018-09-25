@@ -1,3 +1,13 @@
+## max diff
+
+ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :asc).limit(100).each do |detail|
+  puts "#{detail.element.score.name},#{detail.element.score.skater.name},#{detail.element.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.element.name},#{detail.value},#{detail.average}"
+end
+ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :desc).limit(100).each do |detail|
+  puts "#{detail.element.score.name},#{detail.element.score.skater.name},#{detail.element.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.element.name},#{detail.value},#{detail.average}"
+end
+
+
 ## stddev by skater
 if false
   comp = Competition.find_by(site_url: "http://www.isuresults.com/results/season1718/owg2018/")
@@ -12,7 +22,7 @@ if false
 end
 
 ## stddev by judges
-if true
+if false
   comp = Competition.find_by(site_url: "http://www.isuresults.com/results/season1718/owg2018/")
 
   ary = [:officials, [officials: [:performed_segment, performed_segment: [:scores, scores: [:skater, :competition]]]]]
