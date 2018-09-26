@@ -65,5 +65,5 @@ group :production do
   gem 'pg'
 end
 
-gem 'daru'
-gem 'statsample'
+gem 'daru'   # , '~> 0.2'
+gem 'statsample'   #, '~> 2.1.0'

@@ -3,17 +3,46 @@
 h2= panel.name
 .row
   .col-sm-4
-    = Listtable.new(self).records(panel).columns([:nation]).render
+    table.table.table-striped.table-hover.table-condensed
+      tr
+        th Nation
+        td= panel.nation
+      tr
+        th Number of Participated
+        td= PerformedSegment.joins(:officials).where("officials.panel": panel).count
+      tr
+        th Number of Scores Judged
+        td= Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count
+      tr
+        th Average of Diff
+        td= "%.4f" % [ElementJudgeDetail.joins(:official).where("officials.panel_id": panel.id).average(:diff)]
 
 h3 Participated Segments
-/- ps_records = PerformedSegment.includes(:competition, :category, :segment, :officials).where("officials.panel": panel)
-/- dt = AjaxDatatables::Datatable.new(self).columns([:competition_name,  :category, :segment]).records(records).decorate
 - dt = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number]).decorate
 = render partial: "datatable", locals: { datatable: dt }
 
-/h3 Judged Scores
+h3 By Skater
+- hash = ElementJudgeDetail.includes(element: [score: [:skater]]).where("officials.panel": panel).joins(:official, element: [score: [:skater]]).group("scores.skater_id").average(:diff)
+- skaters = Skater.where(id: hash.keys).index_by(&:id)
 
-/- dt = AjaxDatatables::Datatable.new(self).records(Score.includes(:competition, :category, :segment).joins(performed_segment: [ :officials]).where("officials.panel_id": panel.id)).columns([:competition_name, :category, :segment]).decorate
+.row
+  .col-sm-4
+    table.table.table-striped.table-hover.table-condensed
+      tr
+        th #
+        th Skater
+        th Nation
+        th Diff to average
+      - hash.sort {|(k1, v1), (k2, v2)|  v1 <=> v2}.each.with_index(1) do |(skater_id, avg_diff), i|
+        - skater = skaters[skater_id]
+        tr
+          td= i
+          td= link_to_skater(skater)
+          td= skater.nation
+          td= sprintf("%.4f", avg_diff)
+
+/h3 Judged Scores
+/- dt = AjaxDatatables::Datatable.new(self).records(Score.includes(:competition, :category, :segment).joins(performed_segment: [ :officials]).where("officials.panel_id": panel.id)).columns([:competition_name, :category_name, :segment_name]).decorate
 /- records = Score.where("officials.panel_id": panel.id).includes(:skater, elements: [ element_judge_details: [:official]])
 /- records = ElementJudgeDetail.includes(:official, element: [score: [:skater]]).references(:officials, element: [:score, score: [:skater]]).where("officials.panel": panel).distinct("elements.score_id")
 /- dt = AjaxDatatables::Datatable.new(self).records(records).columns([:id, :skater_name, :element_name])
