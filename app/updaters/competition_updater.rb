@@ -6,6 +6,7 @@ class CompetitionUpdater
 
     @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
     @verbose = verbose
+    @skater_name_correction = YAML::load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
   end
 
   def update_competition(site_url, date_format: nil, force: false, categories: nil, params: {})
@@ -70,6 +71,7 @@ class CompetitionUpdater
   end
   ################
   def find_or_create_skater(isu_number, skater_name, nation, category)
+    corrected_skater_name = @skater_name_correction[skater_name] || skater_name
     Skater.find_or_create_by_isu_number_or_name(isu_number, skater_name) do |sk|
       indivisual_senior_category = Category.where(team: false, category_type: category.category_type).first || raise("team senior category not found for #{category.name}")
       sk.attributes = {

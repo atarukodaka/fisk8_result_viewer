@@ -3,7 +3,6 @@
 - property: readonly, writeonly
 
 - date search
-- delete country-city mapping?
 - panels: panel db entries
 - youtube register
 - components controller is necessary ??
