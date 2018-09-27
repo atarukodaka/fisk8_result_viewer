@@ -24,7 +24,8 @@ end
 FactoryBot.define do
   factory :performed_segment do
     after(:build) do |ps|
-      create(:official, performed_segment: ps)
+      create(:official, :first, performed_segment: ps)
+      create(:official, :second, performed_segment: ps)
     end
 
     trait :world do 

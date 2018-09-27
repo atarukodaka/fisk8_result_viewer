@@ -112,3 +112,8 @@ crumb :component_judge_details do
   link "Component Judge Details", component_judge_details_path
   parent :root
 end
+
+crumb :deviations do |deviation|
+  link "Deviations", deviations_path
+  parent :root
+end

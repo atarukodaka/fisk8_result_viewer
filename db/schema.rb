@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.integer "number"
     t.float "value"
     t.float "average"
-    t.float "diff"
+    t.float "deviation"
     t.integer "component_id"
     t.integer "official_id"
     t.index ["component_id"], name: "index_component_judge_details_on_component_id"
@@ -75,11 +75,26 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["score_id"], name: "index_components_on_score_id"
   end
 
+  create_table "deviations", force: :cascade do |t|
+    t.integer "score_id"
+    t.integer "panel_id"
+    t.integer "official_id"
+    t.float "tes_deviation"
+    t.float "pcs_deviation"
+    t.float "tes_ratio"
+    t.float "pcs_ratio"
+    t.integer "num_elements"
+    t.index ["official_id"], name: "index_deviations_on_official_id"
+    t.index ["panel_id"], name: "index_deviations_on_panel_id"
+    t.index ["score_id"], name: "index_deviations_on_score_id"
+  end
+
   create_table "element_judge_details", force: :cascade do |t|
     t.integer "number"
     t.float "value"
     t.float "average"
-    t.float "diff"
+    t.float "deviation"
+    t.float "abs_deviation"
     t.integer "element_id"
     t.integer "official_id"
     t.index ["element_id"], name: "index_element_judge_details_on_element_id"

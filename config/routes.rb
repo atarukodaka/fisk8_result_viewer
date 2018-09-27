@@ -41,6 +41,10 @@ Rails.application.routes.draw do
     get :list, on: :collection
   end
 
+  resources :deviations, only: [:index, :show], param: :name do
+    get :list, on: :collection
+  end
+
   resources :element_judge_details, only: [:index, :show], param: :score_name do
     get :list, on: :collection
     get '(/:element_number)', action: :show, on: :member, as: ''

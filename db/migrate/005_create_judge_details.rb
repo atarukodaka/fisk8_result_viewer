@@ -15,7 +15,8 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       t.float :average
-      t.float :diff
+      t.float :deviation
+      t.float :abs_deviation      
       
       t.belongs_to :element
       t.belongs_to :official
@@ -25,12 +26,25 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       t.float :average
-      t.float :diff
+      t.float :deviation
 
       t.belongs_to :component
       t.belongs_to :official
     end
-  end
+
+    ################
+    create_table :deviations do |t|
+      t.belongs_to :score
+      t.belongs_to :panel
+      t.belongs_to :official
+      
+      t.float :tes_deviation
+      t.float :pcs_deviation
+      t.float :tes_ratio
+      t.float :pcs_ratio
+      t.integer :num_elements  ## TODO: necessary ?
+    end
+  end  ## change
 end
 
 

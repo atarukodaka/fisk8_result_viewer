@@ -40,5 +40,39 @@ namespace :update do
         end
       end
     end  ## each
+  end ## task
+
+  ################
+  desc 'update deviation'
+  task :deviations => :environment do
+    data = {}
+    ElementJudgeDetail.joins(:element, :official).group("elements.score_id").group("officials.panel_id").sum(:abs_deviation).each do |key, value|
+      data[key] ||= {}
+      data[key][:tes] = value
+    end
+    ComponentJudgeDetail.joins(:component, :official).group("components.score_id").group("officials.panel_id").sum(:deviation).each do |key, value|
+      data[key] ||= {}
+      data[key][:pcs] = value
+    end
+    scores = Score.all.index_by(&:id)  ## TODO: use memory too much ??
+    
+    ActiveRecord::Base.transaction do
+      data.each do |(score_id, panel_id), hash|
+        #puts [score_id, panel_id, hash[:tes], hash[:pcs]].join(', ')
+        Deviation.find_or_create_by(score_id: score_id, panel_id: panel_id).tap do |deviation|
+          n_elements = scores[score_id].elements.count
+
+          deviation.attributes = {
+            tes_deviation: hash[:tes],
+            pcs_deviation: hash[:pcs],
+            tes_ratio: hash[:tes] / n_elements,
+            pcs_ratio: hash[:pcs] / 7.5,
+            official: Official.where(performed_segment: scores[score_id].performed_segment, panel_id: panel_id).first,
+            num_elements: n_elements,  ## TODO: necessary ?
+          }
+          deviation.save!
+        end
+      end
+    end
   end
 end  # namespace

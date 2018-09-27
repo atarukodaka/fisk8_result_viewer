@@ -2,6 +2,10 @@ class ElementJudgeDetail < ApplicationRecord
   belongs_to :official
   belongs_to :element
 
+  def self.enabled?
+      (self.count > 0) ? true : false
+  end
+
   ## virtual attributes
   def score_name
     element.score.name

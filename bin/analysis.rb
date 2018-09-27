@@ -1,12 +1,12 @@
 require 'daru'
 # components
 
-## max diff
+## max deviation
 if true
-  ComponentJudgeDetail.includes(:component, component: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :asc).limit(100).each do |detail|
+  ComponentJudgeDetail.includes(:component, component: [:score, score: [ :skater]],  official: [ :panel] ).order(deviation: :asc).limit(100).each do |detail|
     puts "#{detail.component.score.name},#{detail.component.score.skater.name},#{detail.component.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.component.name},#{detail.value},#{detail.average}"
   end
-  ComponentJudgeDetail.includes(:component, component: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :desc).limit(100).each do |detail|
+  ComponentJudgeDetail.includes(:component, component: [:score, score: [ :skater]],  official: [ :panel] ).order(deviation: :desc).limit(100).each do |detail|
     puts "#{detail.component.score.name},#{detail.component.score.skater.name},#{detail.component.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.component.name},#{detail.value},#{detail.average}"
   end
 end
@@ -46,12 +46,12 @@ end
 
 ################
 # elements
-## max diff
+## max deviation
 if false
-  ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :asc).limit(100).each do |detail|
+  ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(deviation: :asc).limit(100).each do |detail|
     puts "#{detail.element.score.name},#{detail.element.score.skater.name},#{detail.element.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.element.name},#{detail.value},#{detail.average}"
   end
-  ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(diff: :desc).limit(100).each do |detail|
+  ElementJudgeDetail.includes(:element, element: [:score, score: [ :skater]],  official: [ :panel] ).order(deviation: :desc).limit(100).each do |detail|
     puts "#{detail.element.score.name},#{detail.element.score.skater.name},#{detail.element.score.skater.nation},#{detail.official.panel.name},#{detail.official.panel.nation},#{detail.element.name},#{detail.value},#{detail.average}"
   end
 end
