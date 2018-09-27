@@ -3,8 +3,6 @@
 - property: readonly, writeonly
 
 - date search
-- delete country-city mapping?
-- panels: panel db entries
 - youtube register
 - components controller is necessary ??
 - codecov: icedance elements
@@ -13,8 +11,6 @@
 	- season from/to
 - help for rake:update
 - skater updater spec: detail
-- name correction ?
-- diff -> deviation
 
 ### new feature
 
