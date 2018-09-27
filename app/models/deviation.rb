@@ -1,6 +1,6 @@
 class Deviation < ApplicationRecord
   belongs_to :score
-  belongs_to :panel
+  #belongs_to :panel
   belongs_to :official
 
   def self.enabled?
@@ -8,18 +8,10 @@ class Deviation < ApplicationRecord
   end
   
   delegate :name, to: :score, prefix: :score
-  delegate :name, to: :panel, prefix: :panel
-  delegate :nation, to: :panel, prefix: :panel
+  delegate :panel_name, to: :official
+  delegate :panel_nation, to: :official
   delegate :skater_name, to: :score
   delegate :nation, to: :score, prefix: :skater
 
   delegate :number, to: :official, prefix: :official
-
-  def tes_ratio
-    tes_deviation / num_elements
-  end
-
-  def pcs_ratio
-    (pcs_deviation / 7.5).abs
-  end
 end

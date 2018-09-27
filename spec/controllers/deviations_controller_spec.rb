@@ -7,15 +7,13 @@ describe DeviationsController, type: :controller do
     competition = create(:competition, :world)
     score = competition.scores.first
     official = score.performed_segment.officials.first
-    panel = official.panel
-    create(:deviation, :first, score: score, panel: panel, official: official)
+    create(:deviation, :first, score: score, official: official)
   }
   let!(:second) {
     competition = create(:competition, :finlandia)
     score = competition.scores.first
     official = score.performed_segment.officials.first
-    panel = official.panel
-    create(:deviation, :second, score: score, panel: panel, official: official)
+    create(:deviation, :second, score: score, official: official)
   }
   
   describe '#index' do
@@ -29,21 +27,23 @@ describe DeviationsController, type: :controller do
       its(:body) { is_expected.to include(second.score.name) }
     end
 
+=begin
     datatable = DeviationsDatatable.new
     describe 'filter: ' do
-      datatable.columns.select(&:searchable).map(&:name).each do |key|
-        #it key do
-          #expect_filter(john, mike, key)
-        #end
-      end
-    end
-    describe 'sort: ' do
-      datatable.columns.select(&:orderable).map(&:name).each do |key|
+      datatable.columns.select(&:searchable).map(&:score_name).each do |key|
         it key do
-          #expect_order(john, mike, key)
+          expect_filter(first, second, key)
         end
       end
     end
+    describe 'sort: ' do
+      datatable.columns.select(&:orderable).map(&:score_name).each do |key|
+        it key do
+          expect_order(first, second, key)
+        end
+      end
+    end
+=end
   end
 end
 

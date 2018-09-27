@@ -6,7 +6,7 @@ class DeviationDecorator < EntryDecorator
     h.link_to_skater(model.score.skater)
   end
   def panel_name
-    h.link_to_panel(model.panel)
+    h.link_to_panel(model.official.panel)
   end
 
   def tes_deviation
