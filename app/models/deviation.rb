@@ -9,7 +9,10 @@ class Deviation < ApplicationRecord
   
   delegate :name, to: :score, prefix: :score
   delegate :name, to: :panel, prefix: :panel
+  delegate :nation, to: :panel, prefix: :panel
   delegate :skater_name, to: :score
+  delegate :nation, to: :score, prefix: :skater
+
   delegate :number, to: :official, prefix: :official
 
   def tes_ratio

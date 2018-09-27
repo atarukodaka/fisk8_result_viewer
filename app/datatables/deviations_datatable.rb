@@ -2,7 +2,7 @@ class DeviationsDatatable < IndexDatatable
   def initialize(*)
     super
 
-    columns([:score_name, :skater_name, :panel_name, :tes_deviation, :tes_ratio, :pcs_deviation, :pcs_ratio])
+    columns([:score_name, :skater_name, :skater_nation, :panel_name, :panel_nation, :official_number, :tes_deviation, :tes_ratio, :pcs_deviation, :pcs_ratio])
     columns.sources ={
       score_name: "scores.name",
       skater_name: "skaters.name",
@@ -15,6 +15,6 @@ class DeviationsDatatable < IndexDatatable
   end
 
   def fetch_records
-    Deviation.all.includes(:panel, score: [:skater])
+    Deviation.all.includes(:official, :panel, score: [:skater])
   end
 end

@@ -15,8 +15,7 @@ h3 Participated Segments
 
 h3 Deviation
 - columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_ratio, :pcs_deviation, :pcs_ratio]
-- dt = AjaxDatatables::Datatable.new(self).columns(columns).records(Deviation.where(panel: panel).includes(:official, score: [:skater]))
-
+- dt = DeviationsDatatable.new(self).records(Deviation.where(panel: panel).includes(:panel, :official, score: [:skater]))
 = dt.decorate.render
 
 /- tes_devs = ElementJudgeDetail.where("officials.panel_id": panel.id).includes(:official, [element: [ score: [ :skater ]]]).group("elements.score_id").sum(:abs_deviation)  
