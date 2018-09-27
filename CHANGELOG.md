@@ -11,6 +11,7 @@
 	- season from/to
 - help for rake:update
 - skater updater spec: detail
+- default_order: [[name: :asc]]
 
 ### new feature
 
