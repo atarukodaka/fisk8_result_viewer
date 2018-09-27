@@ -5,30 +5,30 @@ class PanelsController < ApplicationController
     panel = Panel.find_by(name: params[:name]) ||
             raise(ActiveRecord::RecordNotFound.new("no such panel name: '#{params[:name]}'"))
 
+    deviations_relation = Deviation.joins(:official).where("officials.panel_id": panel.id)
+    
     summary = {
       name: panel.name,
       nation: panel.nation,
       number_of_participated_segment: PerformedSegment.joins(:officials).where("officials.panel": panel).count,
       number_of_scores_judged: Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count,
-      tes_average_deviation: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:tes_deviation) || 0.0,
-      tes_average_deviation_raio: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:tes_ratio) || 0.0,
-      pcs_average_deviation: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:pcs_deviation) || 0.0,
-      pcs_average_deviation_raio: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:pcs_ratio) || 0.0,
+      tes_average_deviation: "%.2f" % [ deviations_relation.average(:tes_deviation) || 0.0 ],
+      tes_average_deviation_raio: "%02.2f%" % [ (deviations_relation.average(:tes_ratio) || 0.0) * 100],
+      pcs_average_deviation: "%.2f" % [ deviations_relation.average(:pcs_deviation) || 0.0],
+      pcs_average_deviation_raio: "%02.2f%" % [ (deviations_relation.average(:pcs_ratio) || 0.0) * 100 ],
     }
-    participated_segments_datatable = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number])
+    participated_segments_datatable = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category_name, :segment_name, :number])
+    
+    columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_ratio, :pcs_deviation, :pcs_ratio]
+    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
 
-    tes_devs = ElementJudgeDetail.where("officials.panel_id": panel.id).includes(:official, [element: [ score: [ :skater ]]]).group("elements.score_id").sum(:abs_deviation)  
-    pcs_devs = ComponentJudgeDetail.where("officials.panel_id": panel.id).includes(:official, [component: [ score: [ :skater ]]]).group("components.score_id").sum(:deviation)  
-    scores = Score.where(id: tes_devs.keys).includes(:skater).index_by(&:id)
-    columns = [:score, :skater, :tes_deviation, :pcs_deviation]
-    data = scores.map {|score_id, score|  [score.name, score.skater.name, "%.4f" % [tes_devs[score_id]], "%.4f" % [pcs_devs[score_id]] ]}
-    table ={ columns: columns, data: data}
     respond_to do |format|
+      data = { panel: panel, summary: summary, participated_segments_datatable: participated_segments_datatable, deviations_datatable: deviations_datatable }
       format.html {
-        render locals: { panel: panel, summary: summary, participated_segments_datatable: participated_segments_datatable, deviation_table: table }
+        render locals: data
       }
       format.json {
-        render json: { summary: summary, }
+        render json: data
       }
     end
   end

@@ -50,11 +50,7 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
-    #segment_type = (segment =~ /SHORT/) ? :short : :free
     if name.blank?
-      #category_abbr = Category.find_by(name: category).try(:abbr)
-      #segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-
       self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
     end
     self

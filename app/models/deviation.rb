@@ -1,6 +1,5 @@
 class Deviation < ApplicationRecord
   belongs_to :score
-  #belongs_to :panel
   belongs_to :official
 
   def self.enabled?
