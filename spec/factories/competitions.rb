@@ -36,9 +36,9 @@ FactoryBot.define do
       
       after (:build) do |competition|
         skater = create(:skater, :ladies)
-        create(:performed_segment, :finlandia, competition: competition)
+        ps = create(:performed_segment, :finlandia, competition: competition)
         create(:category_result, :finlandia, competition: competition, skater: skater)
-        create(:score, :finlandia, competition: competition, skater: skater)
+        create(:score, :finlandia, competition: competition, skater: skater, performed_segment: ps)
       end
 
     end

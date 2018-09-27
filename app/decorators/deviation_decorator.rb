@@ -10,11 +10,11 @@ class DeviationDecorator < EntryDecorator
   end
 
   def tes_deviation
-    "%.02f" % [ model.tes_deviation ]
+    "%.02f" % [ model.tes_deviation || 0]
   end
 
   def pcs_deviation
-    "%.02f" % [ model.pcs_deviation ]
+    "%.02f" % [ model.pcs_deviation || 0]
   end
   
   def tes_ratio

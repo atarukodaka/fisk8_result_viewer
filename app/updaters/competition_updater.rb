@@ -26,6 +26,7 @@ class CompetitionUpdater
 
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
 
+      ## check season from/to
       if season_from && parsed[:season] < season_from
         puts "...skip: #{parsed[:season]} is before #{season_from}"
         return nil
