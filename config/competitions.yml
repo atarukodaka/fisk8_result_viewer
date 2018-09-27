@@ -147,9 +147,9 @@
   parser_type: :wtt2017
   comment: "no category results provided"
 - http://www.isuresults.com/results/season1718/gpfra2017/
-- http://www.isuresults.com/results/season1718/owg2018/
 -
   name: ISU Grand Prix of Figure Skating Final 2017
   site_url: http://www.isuresults.com/results/season1718/gpf1718/
   parser_type: gpjpn
   city: Nagoya
+- http://www.isuresults.com/results/season1718/owg2018/

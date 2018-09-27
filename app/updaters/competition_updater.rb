@@ -70,23 +70,6 @@ class CompetitionUpdater
       ## ensure to return competition object
     end  ## transaction
   end
-  def to_first_last_name(str)  ## naming of this function ?? and move to lib/util ??
-    if str =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
-      [$2, $1].join(' ')
-    else
-      str
-    end
-  end
-  ################
-  def find_or_create_skater(isu_number, skater_name, nation, category)
-    Skater.find_or_create_by_isu_number_or_name(isu_number, skater_name) do |sk|
-      indivisual_senior_category = Category.where(team: false, category_type: category.category_type).first || raise("team senior category not found for #{category.name}")
-      sk.attributes = {
-        category: indivisual_senior_category,
-        nation: nation,
-      }
-    end
-  end
   ################
   def update_performed_segment(competition, category, segment, panel_url, starting_time)
     parsed_panels = @parsers[:panel].parse(panel_url)  # if @enable_judge_details
@@ -96,20 +79,19 @@ class CompetitionUpdater
       ps.starting_time = starting_time
       ps.save!
 
-      if true
-        num_panels = parsed_panels[:judges].size - 1
-        1.upto(num_panels).each do |i|
-          name = to_first_last_name(parsed_panels[:judges][i][:name])
-          nation = parsed_panels[:judges][i][:nation]
-          panel = Panel.find_or_create_by(name: name)
-          if (nation != "ISU") && (panel.nation.blank?)
-            puts "       ... nation updated: #{nation} for #{name}" if @verbose
-            panel.update(nation: nation)
-          end
-          #ps["judge%02d_id" % [i]] = panel.id
+      ## panels
+      num_panels = parsed_panels[:judges].size - 1
+      1.upto(num_panels).each do |i|
+        name = normalize_persons_name(parsed_panels[:judges][i][:name])
+        nation = parsed_panels[:judges][i][:nation]
+        panel = Panel.find_or_create_by(name: name)
+        if (nation != "ISU") && (panel.nation.blank?)
+          puts "       ... nation updated: #{nation} for #{name}" if @verbose
+          panel.update(nation: nation)
+        end
+        #ps["judge%02d_id" % [i]] = panel.id
           puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
           ps.officials.create(number: i, panel: panel)
-        end
       end
     end
   end    
@@ -195,6 +177,25 @@ class CompetitionUpdater
           update_judge_details(competition, category, segment, score) if @enable_judge_details
         end
       end
+    end
+  end ## def
+  ################
+  ## utils
+  def find_or_create_skater(isu_number, skater_name, nation, category)
+    Skater.find_or_create_by_isu_number_or_name(isu_number, normalize_persons_name(skater_name)) do |sk|
+      indivisual_senior_category = Category.where(team: false, category_type: category.category_type).first || raise("team senior category not found for #{category.name}")
+      sk.attributes = {
+        category: indivisual_senior_category,
+        nation: nation,
+      }
+    end
+  end
+
+  def normalize_persons_name(str)
+    if str =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
+      [$2, $1].join(' ')
+    else
+      str
     end
   end
 end

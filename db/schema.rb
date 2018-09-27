@@ -77,15 +77,12 @@ ActiveRecord::Schema.define(version: 5) do
 
   create_table "deviations", force: :cascade do |t|
     t.integer "score_id"
-    t.integer "panel_id"
     t.integer "official_id"
     t.float "tes_deviation"
     t.float "pcs_deviation"
     t.float "tes_ratio"
     t.float "pcs_ratio"
-    t.integer "num_elements"
     t.index ["official_id"], name: "index_deviations_on_official_id"
-    t.index ["panel_id"], name: "index_deviations_on_panel_id"
     t.index ["score_id"], name: "index_deviations_on_score_id"
   end
 
