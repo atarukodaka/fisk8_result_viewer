@@ -115,7 +115,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
 
-    context 'Sandra KOHPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
+    context 'Sandra KHOPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
       include_context :skater_having_different_name, url, Category.find_by(name: "LADIES"), 15
       it_behaves_like :same_name_between_segments
