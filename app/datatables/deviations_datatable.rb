@@ -6,7 +6,10 @@ class DeviationsDatatable < IndexDatatable
     columns.sources ={
       score_name: "scores.name",
       skater_name: "skaters.name",
+      skater_nation: "skaters.nation",
       panel_name: "panels.name",
+      panel_nation: "panels.nation",
+      official_number: "officials.number",
     }
     #columns["no"].numbering = true if columns["no"].present?
     #columns[:no].numbering = true
