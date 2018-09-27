@@ -24,6 +24,8 @@ namespace :update do
     if (f = ENV['filename'])
       CompetitionList.filename = f
     end
+    season_from = ENV['season_from']
+    season_to = ENV['season_to']
     enable_judge_details = ENV['enable_judge_details'].to_i.nonzero?
 
     ################
@@ -36,7 +38,7 @@ namespace :update do
           city: item[:city], name: item[:name], comment: item[:comment]
         }
         CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true, enable_judge_details: enable_judge_details).
-          update_competition(item[:site_url], date_format: item[:date_format], force: force, categories: categories, params: params).tap do |competition|
+          update_competition(item[:site_url], date_format: item[:date_format], force: force, categories: categories, season_from: season_from, season_to: season_to, params: params).tap do |competition|
         end
       end
     end  ## each

@@ -5,7 +5,7 @@ class CompetitionUpdater
     @enable_judge_details = enable_judge_details
   end
 
-  def update_competition(site_url, date_format: nil, force: false, categories: nil, params: {})
+  def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
     accept_categories =
       if categories.nil?
         Category.all
@@ -25,6 +25,15 @@ class CompetitionUpdater
       end
 
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
+
+      if season_from && parsed[:season] < season_from
+        puts "...skip: #{parsed[:season]} is before #{season_from}"
+        return nil
+      elsif season_to && pased[:season] > season_to
+        puts "...skip: #{parsed[:season]} is after #{season_to}"
+        return nil
+      end
+        
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
         competition.attributes = parsed.slice(*attrs)

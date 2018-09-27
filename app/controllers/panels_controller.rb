@@ -10,8 +10,10 @@ class PanelsController < ApplicationController
       nation: panel.nation,
       number_of_participated_segment: PerformedSegment.joins(:officials).where("officials.panel": panel).count,
       number_of_scores_judged: Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count,
-      tes_average_deviation: "%.4f" % [ElementJudgeDetail.joins(:official).where("officials.panel_id": panel.id).average(:deviation) || 0.0],
-      pcs_average_deviation: "%.4f" % [ComponentJudgeDetail.joins(:official).where("officials.panel_id": panel.id).average(:deviation) || 0.0],
+      tes_average_deviation: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:tes_deviation) || 0.0,
+      tes_average_deviation_raio: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:tes_ratio) || 0.0,
+      pcs_average_deviation: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:pcs_deviation) || 0.0,
+      pcs_average_deviation_raio: Deviation.joins(:official).where("officials.panel_id": panel.id).average(:pcs_ratio) || 0.0,
     }
     participated_segments_datatable = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [ :competition, :category, :segment ])).columns([:competition_name, :category, :segment, :number])
 
