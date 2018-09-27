@@ -7,16 +7,13 @@ class ElementJudgeDetail < ApplicationRecord
   end
 
   ## virtual attributes
-  def score_name
-    element.score.name
-  end
-  def skater_name
-    element.score.skater.name
-  end
-  def panel_name
-    official.panel.name
-  end
+  delegate :score_name, to: :element
+  delegate :panel_name, to: :official
   delegate :number, to: :element, prefix: :element
   delegate :name, to: :element, prefix: :element
   delegate :goe, to: :element
+
+  def skater_name
+    element.score.skater_name
+  end
 end
