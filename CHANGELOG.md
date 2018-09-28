@@ -3,7 +3,6 @@
 - property: readonly, writeonly
 
 - date search
-- panels: panel db entries
 - youtube register
 - components controller is necessary ??
 - codecov: icedance elements
@@ -12,6 +11,9 @@
 	- season from/to
 - help for rake:update
 - skater updater spec: detail
+- default_order: [[name: :asc]]
+- to_first_last_name
+- update skaters: correct and normalize name ?
 
 ### new feature
 

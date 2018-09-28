@@ -3,10 +3,10 @@ class SkatersDatatable < IndexDatatable
     super
 
     columns([:name, :category_name, :nation, :isu_number, :birthday, :club, :coach])
-    #default_orders([[:category, :asc], [:name, :asc]])
     columns.sources = {
       category_name: "categories.name",
     }
+    default_orders([[:category_name, :asc], [:name, :asc]])
   end
 
   def fetch_records

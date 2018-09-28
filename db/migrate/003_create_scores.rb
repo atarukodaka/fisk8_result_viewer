@@ -23,6 +23,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.belongs_to :competition
       t.references :skater
       t.references :category_result  ## TODO: reference to category_result required ??
+      t.references :performed_segment
     end
 
     ################

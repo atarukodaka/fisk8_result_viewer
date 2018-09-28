@@ -1,0 +1,17 @@
+- breadcrumb :panel, panel
+
+h2= panel.name
+.row
+  .col-sm-4
+    table.table.table-striped.table-hover.table-condensed
+      - summary.each do |key, value|
+        tr
+          th= Panel.human_attribute_name(key)
+          td= value
+
+
+h3= t(".participated_segments", default: "Participated Segments")
+= participated_segments_datatable.decorate.render
+
+h3= t(".deviation", default: "Deviation")
+= deviations_datatable.decorate.render

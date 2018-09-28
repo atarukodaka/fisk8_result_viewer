@@ -13,15 +13,7 @@ class Competition < ApplicationRecord
 
   ## scopes
   scope :recent, ->(){ order("start_date desc")  }
-  #scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
-  #scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
 
-  ## entries
-=begin
-  def categories
-    scores.pluck(:category).uniq
-  end
-=end
   ## updater
   def normalize
     year = self.start_date.year

@@ -31,6 +31,9 @@ module LinkToHelper
     (name.nil?) ? text : link_to(text || name, score_path(name: name))
     #(name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
+  def link_to_panel(text = nil, panel)
+    link_to(text || panel.name, panel_path(name: panel.name))
+  end
   def isu_bio_url(isu_number)
     "http://www.isuresults.com/bios/isufs%08d.htm" % [isu_number.to_i]
   end

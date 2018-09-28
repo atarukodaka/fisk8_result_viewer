@@ -10,7 +10,14 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, optional: true
-  #belongs_to :performed_segment, optional: true
+  belongs_to :performed_segment, optional: true
+
+  ## scopes
+  scope :recent, ->{ order("date desc") }
+  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
+  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
+  scope :category,->(c){ where(category: c) }
+  scope :segment, ->(s){ where(segment: s) }
 
   ## virtual attributes
   {
@@ -23,6 +30,7 @@ class Score < ApplicationRecord
       delegate key, to: model
     end
   end
+  delegate :segment_type, to: :segment
 
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
@@ -30,13 +38,6 @@ class Score < ApplicationRecord
       components.try(:[], i).try(:value)
     end
   end
-  
-  ## scopes
-  scope :recent, ->{ order("date desc") }
-  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
-  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
-  scope :category,->(c){ where(category: c) }
-  scope :segment, ->(s){ where(segment: s) }
 
   ##
   def summary
@@ -49,11 +50,7 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
-    #segment_type = (segment =~ /SHORT/) ? :short : :free
     if name.blank?
-      #category_abbr = Category.find_by(name: category).try(:abbr)
-      #segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-
       self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
     end
     self

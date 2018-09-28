@@ -8,3 +8,4 @@ CompetitionParser::IsuGeneric::SummaryParser
 CompetitionParser::IsuGeneric::CategoryResultParser
 CompetitionParser::IsuGeneric::SegmentResultParser
 CompetitionParser::IsuGeneric::ScoreParser
+CompetitionParser::IsuGeneric::PanelParser

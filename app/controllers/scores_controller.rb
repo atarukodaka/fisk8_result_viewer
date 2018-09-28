@@ -24,8 +24,9 @@ class ScoresController < ApplicationController
         render locals: data.merge(score: score)
       }
       format.json {
-        render json: score.slice(*[:name, :competition_name, :category, :segment, :date,
-                                   :tss, :tes, :pcs, :deductions, :result_pdf]).merge(data)
+        render json: score.slice(*[:name, :competition_name, :date,
+                                   :tss, :tes, :pcs, :deductions, :result_pdf]).merge(data).
+                merge(category: score.category.name, segment: score.segment.name)
       }
     end
   end

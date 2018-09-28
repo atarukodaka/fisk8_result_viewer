@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 4) do
+ActiveRecord::Schema.define(version: 5) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 4) do
     t.string "comment"
   end
 
+  create_table "component_judge_details", force: :cascade do |t|
+    t.integer "number"
+    t.float "value"
+    t.float "average"
+    t.float "deviation"
+    t.integer "component_id"
+    t.integer "official_id"
+    t.index ["component_id"], name: "index_component_judge_details_on_component_id"
+    t.index ["official_id"], name: "index_component_judge_details_on_official_id"
+  end
+
   create_table "components", force: :cascade do |t|
     t.integer "number"
     t.string "name"
@@ -62,6 +73,29 @@ ActiveRecord::Schema.define(version: 4) do
     t.float "value"
     t.integer "score_id"
     t.index ["score_id"], name: "index_components_on_score_id"
+  end
+
+  create_table "deviations", force: :cascade do |t|
+    t.integer "score_id"
+    t.integer "official_id"
+    t.float "tes_deviation"
+    t.float "tes_deviation_ratio"
+    t.float "pcs_deviation"
+    t.float "pcs_deviation_ratio"
+    t.index ["official_id"], name: "index_deviations_on_official_id"
+    t.index ["score_id"], name: "index_deviations_on_score_id"
+  end
+
+  create_table "element_judge_details", force: :cascade do |t|
+    t.integer "number"
+    t.float "value"
+    t.float "average"
+    t.float "deviation"
+    t.float "abs_deviation"
+    t.integer "element_id"
+    t.integer "official_id"
+    t.index ["element_id"], name: "index_element_judge_details_on_element_id"
+    t.index ["official_id"], name: "index_element_judge_details_on_official_id"
   end
 
   create_table "elements", force: :cascade do |t|
@@ -81,6 +115,19 @@ ActiveRecord::Schema.define(version: 4) do
     t.float "value"
     t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
+  end
+
+  create_table "officials", force: :cascade do |t|
+    t.integer "number"
+    t.integer "panel_id"
+    t.integer "performed_segment_id"
+    t.index ["panel_id"], name: "index_officials_on_panel_id"
+    t.index ["performed_segment_id"], name: "index_officials_on_performed_segment_id"
+  end
+
+  create_table "panels", force: :cascade do |t|
+    t.string "name"
+    t.string "nation"
   end
 
   create_table "performed_segments", force: :cascade do |t|
@@ -112,9 +159,11 @@ ActiveRecord::Schema.define(version: 4) do
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "category_result_id"
+    t.integer "performed_segment_id"
     t.index ["category_id"], name: "index_scores_on_category_id"
     t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
+    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
     t.index ["segment_id"], name: "index_scores_on_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end

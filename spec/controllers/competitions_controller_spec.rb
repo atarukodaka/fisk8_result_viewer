@@ -35,11 +35,10 @@ RSpec.describe CompetitionsController, type: :controller do
   end # list
 
   ################
-  ## show
-  let(:score){
-    main.scores.first
-  }
   describe '#show' do
+    let(:score){
+      main.scores.first
+    }
     context 'short_name' do
       subject { get :show, params: { short_name: main.short_name } }
       its(:body) { is_expected.to include(main.name) }
@@ -55,6 +54,7 @@ RSpec.describe CompetitionsController, type: :controller do
       }
     end
     context 'short_name/category/segment' do
+
       subject {
         get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name}
       }
@@ -62,6 +62,7 @@ RSpec.describe CompetitionsController, type: :controller do
         is_expected.to include(main.name)
         is_expected.to include(score.category.name)
         is_expected.to include(score.segment.name)
+        is_expected.to include(score.performed_segment.officials.first.panel.name)
       }
     end
     context 'redirection to score' do

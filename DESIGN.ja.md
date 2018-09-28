@@ -6,10 +6,42 @@
 
 
 
-
 ## AjaxDatabales
 
+### 基本的な使い方
 レコードのテーブル表示。ajax-datatables-rails という module もあるが、使いやすいよう自分で作った。
+app/views/application/_datatable.html.slim を予め置いておいて、　
+
+```ruby
+AjaxDatatables::Datatable.new(view_context).columns([:name, :value]).records(User.all).render
+```
+
+のように使う。UserDecorater を作っていれば、
+
+```ruby
+AjaxDatatables::Datatable.new(view_context).columns([:name, :value]).records(User.all).decorator.render
+```
+とすると呼び出してくれる。
+
+### クラス継承
+AjaxDatatables::Datatable から派生すれば専用のを作れる：
+
+```ruby
+% cat app/datatables/users_datatable.rb
+class UsersDatatable < AjaxDatatables::Datatable
+  def initialize(*)
+	super
+	columns([:name, :value])
+  end
+  def fetch_records
+	User.all
+  end
+end
+
+% cat app/views/index.html.slim
+= UsersDatatable.new(self).render
+```
+
 
 
 ## ISUさんしっかりしてくれ

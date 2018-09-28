@@ -91,3 +91,29 @@ crumb :statics do
   link "Statics", statics_path
   parent :root
 end
+
+################
+crumb :panels do
+  link "Panels", panels_path
+  parent :root
+end
+
+crumb :panel do |panel|
+  link panel.name
+  parent :panels
+end
+
+crumb :element_judge_details do
+  link "Element Judge Details", element_judge_details_path
+  parent :root
+end
+
+crumb :component_judge_details do
+  link "Component Judge Details", component_judge_details_path
+  parent :root
+end
+
+crumb :deviations do |deviation|
+  link "Deviations", deviations_path
+  parent :root
+end

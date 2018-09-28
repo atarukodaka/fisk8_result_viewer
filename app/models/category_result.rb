@@ -4,7 +4,6 @@ class CategoryResult < ApplicationRecord
   
   belongs_to :competition
   belongs_to :skater
-  
   belongs_to :short, class_name: "Score", optional: true 
   belongs_to :free, class_name: "Score", optional: true
   belongs_to :category

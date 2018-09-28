@@ -16,7 +16,7 @@ FactoryBot.define do
       result_pdf { 'http://world2017.isu.org/results/men/short.pdf' }
 
       trait :world_free do
-        association :segment, factory: [:segment, :free]
+        segment { Segment.find_by(name: "FREE SKATING") }
       end
     end
 
@@ -36,7 +36,7 @@ FactoryBot.define do
     end
 
     trait :finlandia_short do
-      association :segment, factory: :segment
+      segment { Segment.find_by(name: "SHORT PROGRAM") }
     end
   end
 end
