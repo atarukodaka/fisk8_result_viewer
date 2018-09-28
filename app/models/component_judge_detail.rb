@@ -7,11 +7,18 @@ class ComponentJudgeDetail < ApplicationRecord
   end
 
   ## virtual attributes
+  delegate :score_name, to: :element
+  delegate :panel_name, to: :official
+  delegate :number, to: :component, prefix: :component
+  delegate :name, to: :component, prefix: :component
+
+  def skater_name
+    component.score.skater_name
+  end
+
+=begin
   def score_name
     component.score.name
-  end
-  def skater_name
-    component.score.skater.name
   end
   def component_name
     component.name
@@ -19,4 +26,5 @@ class ComponentJudgeDetail < ApplicationRecord
   def panel_name
     official.panel.name
   end
+=end
 end

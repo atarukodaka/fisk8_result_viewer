@@ -55,3 +55,8 @@
 #-
 #  site_url: https://lamp.skatecanada.ca/results/2018ACI/index.htm
 #  parser_type: autumn_classic
+
+- http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
+- http://www.fisg.it/upload/result/4802/index.html  ## Lombardia
+- http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
+# - http://www.deu-event.de/results/Nebelhorn_2018/index.htm

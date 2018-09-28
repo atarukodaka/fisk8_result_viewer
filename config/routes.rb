@@ -41,9 +41,12 @@ Rails.application.routes.draw do
     get :list, on: :collection
   end
 
-  resources :deviations, only: [:index, :show], param: :name do
+  #resources :deviations, only: [:index, :show], param: :panel_name do
+  resources :deviations, only: [:index] do
     get :list, on: :collection
   end
+  get '/deviations/panel/:panel_name', controller: :deviations, action: :show_panel, as: :deviations_panel
+  get '/deviations/skater/:skater_name', controller: :deviations, action: :show_skater, as: :deviations_skater
 
   resources :element_judge_details, only: [:index, :show], param: :score_name do
     get :list, on: :collection

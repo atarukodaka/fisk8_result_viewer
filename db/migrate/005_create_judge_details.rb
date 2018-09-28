@@ -7,6 +7,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
 
     create_table :officials do |t|
       t.integer :number
+      t.boolean :absence, default: false
       t.belongs_to :panel
       t.belongs_to :performed_segment
     end
@@ -16,7 +17,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.float :value
       t.float :average
       t.float :deviation
-      t.float :abs_deviation      
+      t.float :abs_deviation
       
       t.belongs_to :element
       t.belongs_to :official

@@ -117,3 +117,8 @@ crumb :deviations do |deviation|
   link "Deviations", deviations_path
   parent :root
 end
+
+crumb :deviation_panel do |panel_name|
+  link "Panels  / #{panel_name}", deviations_path
+  parent :deviations
+end

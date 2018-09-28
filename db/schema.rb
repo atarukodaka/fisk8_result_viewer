@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 5) do
 
   create_table "officials", force: :cascade do |t|
     t.integer "number"
+    t.boolean "absence", default: false
     t.integer "panel_id"
     t.integer "performed_segment_id"
     t.index ["panel_id"], name: "index_officials_on_panel_id"

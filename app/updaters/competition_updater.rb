@@ -55,7 +55,7 @@ class CompetitionUpdater
         competition.normalize
         competition.save!  ## need to save here to create children
 
-        puts "*" * 100 + "%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys if @verbose
+        puts "*" * 100 + "\n%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys if @verbose
 
         ## for each categories, segments(scores)
         parsed[:categories].each do |category_str, cat_item|
@@ -93,7 +93,13 @@ class CompetitionUpdater
           panel.update(nation: nation)
         end
         puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
-        ps.officials.create(number: i, panel: panel)
+        absence = if panel.name == "-"
+                    puts "  this panel is absent." if @verbose
+                    true
+                  else
+                    false
+                  end
+        ps.officials.create(number: i, panel: panel, absence: absence)
       end
     end
   end    
