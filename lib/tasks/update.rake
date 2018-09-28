@@ -47,32 +47,6 @@ namespace :update do
   ################
   desc 'update deviation'
   task :deviations => :environment do
-    data = {}
-    ElementJudgeDetail.where("officials.absence": false).joins(:element, :official).group("elements.score_id").group(:official_id).sum(:abs_deviation).each do |key, value|
-      data[key] ||= {}
-      data[key][:tes] = value
-    end
-    ComponentJudgeDetail.where("officials.absence": false).joins(:component, :official).group("components.score_id").group(:official_id).sum(:deviation).each do |key, value|
-      data[key] ||= {}
-      data[key][:pcs] = value
-    end
-    scores = Score.all.index_by(&:id)  ## TODO: use memory too much ??
-    
-    ActiveRecord::Base.transaction do
-      puts "start"
-      Deviation.delete_all    ## clear all data first
-      data.each do |(score_id, official_id), hash|
-        Deviation.create(
-          score_id: score_id, official_id: official_id,
-          tes_deviation: hash[:tes],
-          pcs_deviation: hash[:pcs],
-          tes_deviation_ratio: hash[:tes] / scores[score_id].elements.count,
-          pcs_deviation_ratio: hash[:pcs].abs / 7.5,
-        )
-      end
-      ## delete invalid panel's data
-      #puts "delete invaid panel's data"
-      #Deviation.where("panels.name": "-").joins(official: [ :panel]).map(&:delete)
-    end  ## transaction
+    DeviationsUpdater.new(verbose: true).update_deviations
   end
 end  # namespace

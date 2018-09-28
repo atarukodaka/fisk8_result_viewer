@@ -12,8 +12,8 @@
 - help for rake:update
 - skater updater spec: detail
 - default_order: [[name: :asc]]
-- to_first_last_name
 - update skaters: correct and normalize name ?
+- bin/analysis -> rake
 
 ### new feature
 
