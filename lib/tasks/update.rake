@@ -62,17 +62,12 @@ namespace :update do
       data.each do |(score_id, official_id), hash|
         #puts [score_id, official_id, hash[:tes], hash[:pcs]].join(', ')
         Deviation.find_or_create_by(score_id: score_id, official_id: official_id).tap do |deviation|
-          n_elements = scores[score_id].elements.count
-
-          deviation.attributes = {
+          deviation.update(
             tes_deviation: hash[:tes],
             pcs_deviation: hash[:pcs],
-            tes_ratio: hash[:tes] / n_elements,
-            pcs_ratio: hash[:pcs] / 7.5,
-            #official: Official.where(performed_segment: scores[score_id].performed_segment, panel_id: panel_id).first,
-            #num_elements: n_elements,  ## TODO: necessary ?
-          }
-          deviation.save!
+            tes_deviation_ratio: hash[:tes] / scores[score_id].elements.count,
+            pcs_deviation_ratio: hash[:pcs] / 7.5,
+          )
         end
       end
     end

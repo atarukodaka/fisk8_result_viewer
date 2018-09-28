@@ -39,9 +39,9 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.belongs_to :official
       
       t.float :tes_deviation
+      t.float :tes_deviation_ratio
       t.float :pcs_deviation
-      t.float :tes_ratio
-      t.float :pcs_ratio
+      t.float :pcs_deviation_ratio
       #t.integer :num_elements  ## TODO: necessary ?
     end
   end  ## change

@@ -6,7 +6,7 @@ class ElementJudgeDetailsDatatable < IndexDatatable
     columns.sources = {
       score_name: "scores.name",
       skater_name: "skaters.name",
-      element_number: "element.number",
+      element_number: "elements.number",
       element_name: "elements.name",
       panel_name: "panels.name",
     }
