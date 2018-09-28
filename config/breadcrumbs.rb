@@ -118,7 +118,12 @@ crumb :deviations do |deviation|
   parent :root
 end
 
-crumb :deviation_panel do |panel_name|
-  link "Panels  / #{panel_name}", deviations_path
+crumb :panel_deviation do |panel_name|
+  link "Panel  / #{panel_name}", deviations_path
+  parent :deviations
+end
+
+crumb :skater_deviation do |skater_name|
+  link "Skater  / #{skater_name}", deviations_path
   parent :deviations
 end
