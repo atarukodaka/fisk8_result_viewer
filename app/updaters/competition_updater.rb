@@ -7,10 +7,10 @@ class CompetitionUpdater
 
   def within_season?(season, from: nil, to: nil)
     if from && (season < from)
-      puts "...skip: #{season} is before #{from}"
+      puts "...skip: #{season} is before #{from}" if @verbose
       false
     elsif to && (season > to)
-      puts "...skip: #{season} is after #{to}"
+      puts "...skip: #{season} is after #{to}" if @verbose
       false
     else
       true
