@@ -142,3 +142,18 @@
 #- http://www.isuresults.com/results/season1718/gpusa2017/
 #- http://www.isuresults.com/results/season1617/gpfra2016  ## /SEG007.HTM  ## live results somehow
 #- http://www.isuresults.com/results/season1617/gpchn2016/
+-
+  site_url: https://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
+  comment: "no category results provided"
+- http://www.isuresults.com/results/season1718/gpfra2017/
+-
+  name: ISU Grand Prix of Figure Skating Final 2017
+  site_url: http://www.isuresults.com/results/season1718/gpf1718/
+  parser_type: gpjpn
+  city: Nagoya
+- http://www.isuresults.com/results/season1718/owg2018/
+
+- http://www.isuresults.com/results/season1617/gpusa2016/
+- http://www.isuresults.com/results/ec2015/
+

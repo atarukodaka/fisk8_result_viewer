@@ -1,8 +1,8 @@
  class Element < ApplicationRecord
-  include ScoreVirtualAttributes
-  
+   include ScoreVirtualAttributes
+
   ## relations
-  #has_many :element_judge_details, dependent: :destroy
+  has_many :element_judge_details, dependent: :destroy
   belongs_to :score
 
   ## scopes
@@ -10,6 +10,8 @@
 
   ## callbacks
   before_save :set_element_type, :set_level
+
+  alias_attribute :element_number, :number
 
   private
   def set_element_type

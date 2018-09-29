@@ -10,60 +10,7 @@ class Score < ApplicationRecord
   belongs_to :competition
   belongs_to :skater
   belongs_to :category_result, optional: true
-  #belongs_to :performed_segment, required: false
-
-  ## virtual attributes
-  def competition_name
-    competition.name
-  end
-  def competition_short_name
-    competition.short_name
-  end
-  def competition_class
-    competition.competition_class
-  end
-  def competition_type
-    competition.competition_type
-  end
-  def season
-    competition.season
-  end
-  def skater_name
-    skater.name
-  end
-  def nation
-    skater.nation
-  end
-  def category_type
-    category.category_type
-  end
-  def seniority
-    category.seniority
-  end
-  def team
-    category.team
-  end
-
-  def segment_type
-    segment.segment_type
-  end
-
-  ## for statics
-  def component_SS
-    components.try(:[], 0).try(:value)
-  end
-  def component_TR
-    components.try(:[], 1).try(:value)
-  end
-  def component_PE
-    components.try(:[], 2).try(:value)
-  end
-  def component_CO
-    components.try(:[], 3).try(:value)
-  end
-  def component_IN
-    components.try(:[], 4).try(:value)
-  end
+  belongs_to :performed_segment, optional: true
 
   ## scopes
   scope :recent, ->{ order("date desc") }
@@ -71,6 +18,26 @@ class Score < ApplicationRecord
   scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(s){ where(segment: s) }
+
+  ## virtual attributes
+  {
+    competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
+    skater: [:skater_name, :nation],
+    category: [:category_name, :category_type, :seniority, :team],
+    segment: [:segment_name, :segment_type],
+  }.each do |model, ary|
+    ary.each do |key|
+      delegate key, to: model
+    end
+  end
+  delegate :segment_type, to: :segment
+
+  ## for statics
+  [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
+    define_method("component_#{key.to_s}") do
+      components.try(:[], i).try(:value)
+    end
+  end
 
   ##
   def summary
@@ -83,11 +50,7 @@ class Score < ApplicationRecord
 
   private
   def set_score_name
-    #segment_type = (segment =~ /SHORT/) ? :short : :free
     if name.blank?
-      #category_abbr = Category.find_by(name: category).try(:abbr)
-      #segment_abbr = segment.to_s.split(/ +/).map {|d| d[0]}.join # e.g. 'SHORT PROGRAM' => 'SP'
-
       self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
     end
     self

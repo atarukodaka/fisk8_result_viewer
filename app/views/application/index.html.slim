@@ -10,7 +10,7 @@ h2= title
 
 style
   | label { margin-left: 10px; margin-right: 10px; }
-  | .dataTables_filter { visibility: hidden; }
+  / | .dataTables_filter { visibility: hidden; }
 
 // filter form
 = button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")

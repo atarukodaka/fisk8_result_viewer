@@ -6,6 +6,7 @@ RSpec.describe CompetitionsController, type: :controller do
   let!(:main) {    create(:competition, :world)  }
   let!(:sub)   {    create(:competition, :finlandia) }
   ################
+  ## index
   describe '#list' do
     context 'all' do
       subject { get :list, xhr: true ; response.body }
@@ -23,7 +24,7 @@ RSpec.describe CompetitionsController, type: :controller do
         it key do; expect_order(main, sub, key); end
       end
     end
-    describe 'format: ' do
+    context 'format: ' do
       [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, content_type|
         context ".#{format}" do
           subject { get :index, { format: format }; response.body }
@@ -31,13 +32,13 @@ RSpec.describe CompetitionsController, type: :controller do
         end
       end
     end
-  end
+  end # list
 
   ################
-  let(:score){
-    main.scores.first
-  }
   describe '#show' do
+    let(:score){
+      main.scores.first
+    }
     context 'short_name' do
       subject { get :show, params: { short_name: main.short_name } }
       its(:body) { is_expected.to include(main.name) }
@@ -53,6 +54,7 @@ RSpec.describe CompetitionsController, type: :controller do
       }
     end
     context 'short_name/category/segment' do
+
       subject {
         get :show, params: { short_name: main.short_name, category: score.category.name, segment: score.segment.name}
       }
@@ -60,6 +62,7 @@ RSpec.describe CompetitionsController, type: :controller do
         is_expected.to include(main.name)
         is_expected.to include(score.category.name)
         is_expected.to include(score.segment.name)
+        is_expected.to include(score.performed_segment.officials.first.panel.name)
       }
     end
     context 'redirection to score' do

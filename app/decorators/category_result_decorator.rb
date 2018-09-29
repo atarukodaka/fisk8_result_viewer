@@ -14,7 +14,7 @@ class CategoryResultDecorator < EntryDecorator
     h.link_to_skater(model.skater)
   end
   def category
-    h.link_to_competition(model.category.name, model.competition, category: model.category)
+    h.link_to_competition(nil, model.competition, category: model.category)
   end
 
   decorate_as_ranking(:ranking)

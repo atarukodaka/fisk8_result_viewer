@@ -28,12 +28,12 @@ crumb :competition_category do |competion, category|
 end
 
 crumb :competition_category do |competition, category|
-  link category, competition_path(competition.short_name, category: category)
+  link category.name, competition_path(competition.short_name, category: category)
   parent :competition, competition
 end
 
 crumb :competition_segment do |competition, category, segment|
-  link segment, competition_path(competition.short_name, category: category, segment: segment)
+  link segment.name, competition_path(competition.short_name, category: category, segment: segment)
   parent :competition_category, competition, category
 end
 
@@ -90,4 +90,40 @@ end
 crumb :statics do
   link "Statics", statics_path
   parent :root
+end
+
+################
+crumb :panels do
+  link "Panels", panels_path
+  parent :root
+end
+
+crumb :panel do |panel|
+  link panel.name
+  parent :panels
+end
+
+crumb :element_judge_details do
+  link "Element Judge Details", element_judge_details_path
+  parent :root
+end
+
+crumb :component_judge_details do
+  link "Component Judge Details", component_judge_details_path
+  parent :root
+end
+
+crumb :deviations do |deviation|
+  link "Deviations", deviations_path
+  parent :root
+end
+
+crumb :panel_deviation do |panel_name|
+  link "Panel  / #{panel_name}", deviations_path
+  parent :deviations
+end
+
+crumb :skater_deviation do |skater_name|
+  link "Skater  / #{skater_name}", deviations_path
+  parent :deviations
 end

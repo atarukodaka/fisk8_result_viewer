@@ -96,5 +96,11 @@
 -
   site_url: http://www.isuresults.com/results/season1819/jgpaut2018/
   date_format: "%d/%m/%y"    
+- http://www.isuresults.com/results/season1819/jgpsvk2018/
+- http://www.isuresults.com/results/season1819/jgpaut2018/
+- http://www.isuresults.com/results/season1819/jgpltu2018/
+- http://www.isuresults.com/results/season1819/jgpcan2018/
+# - http://www.isuresults.com/results/season1819/jgpcze2018/
 
 ## debug
+#- http://www.isuresults.com/results/jgpmex2013/     # ladies short judges no3 absence

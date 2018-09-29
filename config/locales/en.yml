@@ -6,3 +6,10 @@ en:
   time:
     formats:
       default: "%-d %b, %Y %H:%M:%S %z"
+
+  attributes:
+    category_name: Category
+    segment_name: Segment
+    competition_name: Competition
+    skater_name: Skater
+    score_name: Score
