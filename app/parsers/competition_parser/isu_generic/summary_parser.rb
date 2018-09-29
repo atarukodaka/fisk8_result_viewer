@@ -88,13 +88,12 @@ class CompetitionParser
           panel_url = row.xpath("td[3]//a/@href").text
           result_url = row.xpath("td[4]//a/@href").text
           score_url = row.xpath("td[5]//a/@href").text
-
           summary << {
             category: category,
             segment: segment,
-            panel_url: (panel_url.present?) ? URI.join(url + "/" , panel_url).to_s: "",
-            result_url: (result_url.present?) ? URI.join(url + "/", result_url).to_s: "",
-            score_url: (score_url.present?) ? URI.join(url + "/", score_url).to_s : "",
+            panel_url: (panel_url.present?) ? File.join(url , panel_url).to_s: "",
+            result_url: (result_url.present?) ? File.join(url, result_url).to_s: "",
+            score_url: (score_url.present?) ? File.join(url, score_url).to_s : "",
           }
         end
         summary

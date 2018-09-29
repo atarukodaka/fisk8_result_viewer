@@ -42,6 +42,7 @@ namespace :update do
         end
       end
     end  ## each
+    DeviationsUpdater.new(verbose: true).update_deviations if enable_judge_details
   end ## task
 
   ################

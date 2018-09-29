@@ -42,7 +42,9 @@ class CompetitionUpdater
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
 
       ## check season from/to
-      return nil unless within_season?(parsed[:season], from: season_from, to: season_to)
+      unless within_season?(parsed[:season], from: season_from, to: season_to)
+        puts "  skip: not within specific season"
+      end
         
       Competition.create do |competition|
         attrs = competition.class.column_names.map(&:to_sym) & parsed.keys
@@ -83,23 +85,25 @@ class CompetitionUpdater
       ps.update(category: category, segment: segment, starting_time: starting_time)
       
       ## panels
-      num_panels = parsed_panels[:judges].size - 1
-      1.upto(num_panels).each do |i|
-        name = normalize_persons_name(parsed_panels[:judges][i][:name])
-        nation = parsed_panels[:judges][i][:nation]
-        panel = Panel.find_or_create_by(name: name)
-        if (nation != "ISU") && (panel.nation.blank?)
-          puts "       ... nation updated: #{nation} for #{name}" if @verbose
-          panel.update(nation: nation)
+      if parsed_panels[:judges].present?
+        num_panels = parsed_panels[:judges].size - 1
+        1.upto(num_panels).each do |i|
+          name = normalize_persons_name(parsed_panels[:judges][i][:name])
+          nation = parsed_panels[:judges][i][:nation]
+          panel = Panel.find_or_create_by(name: name)
+          if (nation != "ISU") && (panel.nation.blank?)
+            puts "       ... nation updated: #{nation} for #{name}" if @verbose
+            panel.update(nation: nation)
+          end
+          puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
+          absence = if panel.name == "-"
+                      puts "  this panel is absent." if @verbose
+                      true
+                    else
+                      false
+                    end
+          ps.officials.create(number: i, panel: panel, absence: absence)
         end
-        puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
-        absence = if panel.name == "-"
-                    puts "  this panel is absent." if @verbose
-                    true
-                  else
-                    false
-                  end
-        ps.officials.create(number: i, panel: panel, absence: absence)
       end
     end
   end    
@@ -193,9 +197,9 @@ class CompetitionUpdater
     @skater_name_correction ||= YAML::load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
     corrected_skater_name = @skater_name_correction[normalized_skater_name] || normalized_skater_name
     Skater.find_or_create_by_isu_number_or_name(isu_number, normalize_persons_name(skater_name)) do |sk|
-      indivisual_senior_category = Category.where(team: false, category_type: category.category_type).first || raise("team senior category not found for #{category.name}")
+      
       sk.attributes = {
-        category: indivisual_senior_category,
+        category: Category.where(team: false, category_type: category.category_type).first,
         nation: nation,
       }
     end
