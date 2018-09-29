@@ -83,11 +83,11 @@ class CompetitionUpdater
     parsed_panels = @parsers[:panel].parse(panel_url)  # if @enable_judge_details
     competition.performed_segments.create do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
-      
       ## panels
       if parsed_panels[:judges].present?
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
+          next if parsed_panels[i].nil?
           name = normalize_persons_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]
           panel = Panel.find_or_create_by(name: name)
@@ -96,12 +96,7 @@ class CompetitionUpdater
             panel.update(nation: nation)
           end
           puts "  Judge No #{i}: #{panel.name} (#{panel.nation})" if @verbose
-          absence = if panel.name == "-"
-                      puts "  this panel is absent." if @verbose
-                      true
-                    else
-                      false
-                    end
+          absence = (panel.name == '-') ? true : false
           ps.officials.create(number: i, panel: panel, absence: absence)
         end
       end

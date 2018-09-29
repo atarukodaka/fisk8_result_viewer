@@ -4,7 +4,7 @@ require 'timeout'
 require 'resolv-replace'
 
 module HttpGet
-  TIMEOUT = 5
+  TIMEOUT = 10
   def get_url(url, read_option: nil)
     begin
       html = Timeout.timeout(TIMEOUT) do
