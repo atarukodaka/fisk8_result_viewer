@@ -1,11 +1,18 @@
 namespace :update do
-  desc "update skater"
+  desc "update skaters"
   task :skaters  => :environment do
-    details = ENV['details'].to_i.nonzero?
-    
-    SkaterUpdater.new(verbose: true).update_skaters(details: details)
+    SkaterUpdater.new(verbose: true).update_skaters   #(details: details)
   end
 
+  task :skater_detail => :environment do
+    #details = ENV['details'].to_i.nonzero?
+    isu_number = ENV['isu_number'] || raise("no isu_number given")
+    SkaterUpdater.new(verbose: true)..update_skater_detail(isu_number)
+  end
+
+  task :skaters_detail => :environment do
+    SkaterUpdater.new(verbose: true).update_skaters_detail
+  end
   ################
   desc "update competitions listed in config/competitions.yml"
   task :competitions => :environment do
