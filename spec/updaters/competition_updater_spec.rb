@@ -26,7 +26,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { CompetitionUpdater.new(parser_type: :wtt2017, verbose: true).update_competition(url, categories: ['ICE DANCE']) }
+      subject { CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['ICE DANCE']) }
       it_behaves_like :having_competition_with_url
     end
 
@@ -122,7 +122,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
         let(:competition_class) { ary[1].to_s }
         let(:competition_type) { ary[2].to_s }
         let(:short_name) { ary[3] }
-        let(:updater) { CompetitionUpdater.new(verbose: true) }
+        let(:updater) { CompetitionUpdater.new }
 
         subject(:competition) { updater.update_competition(url, categories: ['DUMMY']) }
         it {

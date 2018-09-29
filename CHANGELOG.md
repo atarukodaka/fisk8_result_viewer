@@ -10,8 +10,7 @@
   - feature
 	- season from/to
 - help for rake:update
-- skater updater spec: detail
-- competition udpater spec: enable_judge_details
+- competition type normalize
 
 ### new feature
 
