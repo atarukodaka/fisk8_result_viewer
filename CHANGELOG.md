@@ -11,6 +11,7 @@
 	- season from/to
 - help for rake:update
 - skater updater spec: detail
+- competition udpater spec: enable_judge_details
 
 ### new feature
 

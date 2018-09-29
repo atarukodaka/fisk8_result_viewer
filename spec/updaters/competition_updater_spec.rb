@@ -5,11 +5,9 @@ RSpec.configure do |c|
 end
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
+  before {      @updater = CompetitionUpdater.new(verbose: false)    }
+
   describe 'parser types:' do
-    before {
-      @updater = CompetitionUpdater.new(verbose: true)
-    }
-    
     shared_examples :having_competition_with_url do
       its(:site_url) { is_expected.to eq(url) }
     end
@@ -55,6 +53,48 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 =end
   end
 
+  describe 'enable_judge_details' do
+    it {
+      url = 'http://www.isuresults.com/results/season1617/wc2017/'
+      updater = CompetitionUpdater.new(enable_judge_details: true, verbose: false)
+      
+      updater.update_competition(url, categories: ['MEN'])
+      expect( ElementJudgeDetail.count ).to be > 0
+      expect( ComponentJudgeDetail.count ).to be > 0      
+    }
+  end
+
+  describe 'season from/to' do
+    it {
+      wc2014 = 'http://www.isuresults.com/results/wc2014/'
+      wc2017 = 'http://www.isuresults.com/results/season1617/wc2017/'
+
+      @updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15')
+      @updater.update_competition(wc2014, season_from: '2012-13', season_to: '2014-15', categories: ['DUMMY'])
+
+      expect(Competition.find_by(site_url: wc2014)).not_to be nil
+      expect(Competition.find_by(site_url: wc2017)).to be nil
+    }
+  end
+
+=begin
+## TODO: force option spec
+  describe 'force' do
+    it {
+      url = 'http://www.isuresults.com/results/season1617/wc2017/'
+      @updater.update_competition(url)
+
+      original_competition = Competition.find_by(site_url: url)
+      @updater.update_competition(url)
+      new_competition = Competition.find_by(site_url: url)
+      expect(original_competition).to eq(new_competition)
+
+      ## force
+      @updater.update_competition(url, force: true)
+      expect(original_competition).to be nil
+    }
+=end
+  end
   describe 'competition_type / short_name' do
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
       :isu, :gp, 'GPJPN2016'],
