@@ -48,7 +48,8 @@ RSpec.configure do |config|
   end
 
   ## include ajax helpers
-  config.include AjaxHelper, AjaxFeatureHelper
+  config.include AjaxHelper
+  config.include AjaxFeatureHelper
 end
 
 

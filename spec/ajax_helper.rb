@@ -7,46 +7,6 @@ module AjaxHelper
     end
   end
 
-  ## examples  
-  shared_examples :only_main do
-    it {
-      is_expected.to have_content(main.name)
-      is_expected.not_to have_content(sub.name)
-    }
-  end
-  shared_examples :only_sub do
-    it {
-      is_expected.not_to have_content(main.name)
-      is_expected.to have_content(sub.name)
-    }
-  end
-  shared_examples :both_main_sub do
-    it {
-      is_expected.to have_content(main.name)
-      is_expected.to have_content(sub.name)
-    }
-  end
-  shared_examples :only_earlier do
-    it {
-      is_expected.to have_content(earlier.name)
-      is_expected.not_to have_content(later.name)
-    }
-  end
-  shared_examples :only_later do
-    it {
-      is_expected.not_to have_content(earlier.name)
-      is_expected.to have_content(later.name)
-    }
-  end
-  shared_examples :order_main_sub do |key, identifer_key: :name|
-    it {
-      dir = find("#column_#{key}")['class']
-      identifers = [main, sub].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
-      identifers.reverse! if dir =~ /sorting_desc/
-      expect(identifers.first).to appear_before identifers.second
-    }
-  end
-
   ####
   def obj_sendkey(obj, key)
     r = obj.send(key)

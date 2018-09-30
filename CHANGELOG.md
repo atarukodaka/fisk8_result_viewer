@@ -6,11 +6,10 @@
 - youtube register
 - components controller is necessary ??
 - codecov: icedance elements
-- spec
-  - feature
-	- season from/to
+- spec/feature
+  - season from/to
+  - column_#{table_id}_name ??
 - help for rake:update
-- competition type normalize
 
 ### new feature
 
@@ -18,6 +17,9 @@
 - app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.7
+- judge details
 
 ## 1.0.6
 - element subtype
