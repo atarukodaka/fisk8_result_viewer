@@ -50,14 +50,14 @@ Rails.application.routes.draw do
   #get '/deviations/panel/:name', controller: :deviations, action: :show_panel, as: :deviations_panel
   #get '/deviations/skater/:name', controller: :deviations, action: :show_skater, as: :deviations_skater
 
-  resources :element_judge_details, only: [:index, :show], param: :score_name do
+  resources :element_judge_details, only: :index do # [:index, :show] do # , param: :score_name do
     get :list, on: :collection
-    get '(/:element_number)', action: :show, on: :member, as: ''
+    #get '(/:element_number)', action: :show, on: :member, as: ''
   end
   
-  resources :component_judge_details, only: [:index, :show], param: :name do
+  resources :component_judge_details, only: :index do # [:index, :show], param: :name do
     get :list, on: :collection
-    get '(/:number)', action: :show, on: :member, as: ''
+    #get '(/:number)', action: :show, on: :member, as: ''
   end
 
   ################

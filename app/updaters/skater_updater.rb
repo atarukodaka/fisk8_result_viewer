@@ -8,14 +8,15 @@ class SkaterUpdater
   end
     
   def update_skaters
-    Category.all.select(&:isu_bio_url).each do |category|
+    Category.having_isu_bio.each do |category|
       puts "#{category.name}: #{category.isu_bio_url}" if @verbose
     
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
           hash[:category] = Category.find_by(name: hash[:category])
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-            skater.update(hash)
+            attrs = [:name, :category, :nation, :isu_number]
+            skater.update(hash.slice(*attrs))
           end
         end
       end  # transaction             
