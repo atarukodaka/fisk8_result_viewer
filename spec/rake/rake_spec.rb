@@ -18,19 +18,20 @@ RSpec.describe 'rake', rake: true do
     #@rake[task].reenable
   end
 =end
-  
-  it 'updates skaters' do
-    ENV['accept_categories'] = 'LADIES'
-    @rake['update:skaters'].invoke
 
-    expect(Skater.count).to be > 0
+  describe 'update skaters' do
+    it do
+      #ENV['categories'] = 'LADIES'
+      @rake['update:skaters'].invoke
+      expect(Skater.count).to be > 0
+    end
   end
 
   context 'update competition' do
     def expect_url_match(num=nil)
       num ||= 2
       ENV['last'] = num.to_s
-      ENV['accept_categories'] = ''
+      ENV['categories'] = ''
       @rake['update:competitions'].execute
 
       CompetitionList.all.last(num).each do |item|
