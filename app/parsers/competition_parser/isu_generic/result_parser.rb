@@ -38,7 +38,7 @@ class CompetitionParser
             
             col_number = headers.index {|d| relevant_headers.index(d)} ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")
-            elem = elems[col_number]
+            elem = elems[col_number] || next
             data[key] =
               if (callback = params[:callback])
                 callback.call(elem)

@@ -11,6 +11,8 @@
   - column_#{table_id}_name ??
 - help for rake:update
 - table_id consistence
+- ice cance set elementtype/elements
+- update:skaters categories
 
 ### new feature
 

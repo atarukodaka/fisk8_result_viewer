@@ -7,7 +7,7 @@ namespace :update do
   desc "update skater detail"
   task :skater_detail => :environment do
     isu_number = ENV['isu_number'] || raise("no isu_number given")
-    SkaterUpdater.new(verbose: true)..update_skater_detail(isu_number)
+    SkaterUpdater.new(verbose: true).update_skater_detail(isu_number)
   end
 
   desc "update all skaters detail"

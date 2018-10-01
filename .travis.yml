@@ -2,8 +2,9 @@ language: ruby
 
 rvm:
   # - 2.2.10   ## capybara 3.8 requires >= 2.3.0
-  - 2.3
   - 2.4.4
+  - 2.5.1
+  - 2.6.0-preview2
 
 install: bundle install --deployment
 cache:
