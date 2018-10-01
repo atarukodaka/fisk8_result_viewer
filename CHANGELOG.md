@@ -10,6 +10,7 @@
   - season from/to
   - column_#{table_id}_name ??
 - help for rake:update
+- table_id consistence
 
 ### new feature
 
@@ -20,6 +21,7 @@
 
 ## 1.0.7
 - judge details
+- ruby2.2 support droped: capybara3.8 requires >=2.3
 
 ## 1.0.6
 - element subtype
