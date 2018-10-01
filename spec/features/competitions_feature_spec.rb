@@ -16,8 +16,8 @@ feature CompetitionsController, type: :feature, feature: true do
       it_behaves_like :both_main_sub
     end
     context 'filter' do
-      #{ name: :fill_in, site_url: :fill_in, competition_class: :select, competition_type: :select }.each do |key, value|
-      { name: :fill_in }.each do |key, value|
+      { name: :fill_in, site_url: :fill_in, competition_class: :select, competition_type: :select }.each do |key, value|
+      #{ name: :fill_in }.each do |key, value|
         context key do
           subject { ajax_action_filter(key: key, value: main.send(key), input_type: value, path: index_path) }
           it_behaves_like :only_main
@@ -31,6 +31,7 @@ feature CompetitionsController, type: :feature, feature: true do
         include_context :ajax_order, key
       end
     end
+=begin
     context 'paging' do
       it {
         page_length = CompetitionsDatatable.new.settings[:pageLength]
@@ -44,5 +45,6 @@ feature CompetitionsController, type: :feature, feature: true do
         expect(page.body).to have_content("Showing #{page_length+1} to #{page_length * 2}")
       }
     end
+=end
   end
 end

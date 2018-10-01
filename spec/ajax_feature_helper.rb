@@ -71,7 +71,6 @@ module AjaxFeatureHelper
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
     sleep 1
-    binding.pry
   end
   def ajax_action_order(column_name, path: )
     visit path

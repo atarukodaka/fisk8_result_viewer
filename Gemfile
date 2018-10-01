@@ -39,7 +39,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '~> 2.13.0'
+  gem 'capybara', '~> 3.8.0'
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'selenium-webdriver'
