@@ -13,10 +13,10 @@ script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rspec -fd
   - bundle exec rspec --tag updater -fd
-  - bundle exec rspec --tag error_handler -fd
   - bundle exec rspec --tag feature -fd
   - bundle exec rspec --tag rake -fd
   - bundle exec rspec --tag parser -fd
+  - bundle exec rspec --tag error_handler -fd
 
 env: TEST=true
 
@@ -26,11 +26,17 @@ branches:
     - develop
     - /^release/
 
+sudo: required
+
 addons:
   apt:
     packages:
       - poppler-utils
-  chrome: beta
+  chrome: stable
+
+  before_install:
+  - # start your web application and listen on `localhost`
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 after_success:
   - codecov        

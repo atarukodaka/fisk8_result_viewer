@@ -70,28 +70,32 @@ module AjaxFeatureHelper
   ## functions
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
-    sleep 1
+    sleep 2
   end
   def ajax_action_order(column_name, path: )
     visit path
     table_id = find(".dataTable")[:id]
     column_id = "column_#{table_id}_#{column_name}"
     find("##{column_id}").click
-    ajax_trigger
+    #ajax_trigger
+    sleep 1
     page
   end
   def ajax_action_filter(path:, input_type: , key:, value: nil)
     visit path
+    
     case input_type
     when :fill_in
       fill_in key, with: value
+      find("input##{key}").send_keys :tab
     when :select
       select value, from: key
     when :click
       find(key).click
     end
+    sleep 1
     # trigger
-    ajax_trigger
+    #ajax_trigger
     page
   end
 =begin  

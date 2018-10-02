@@ -40,7 +40,7 @@ end
 
 group :test do
   gem 'capybara', '~> 3.8.0'
-  gem 'poltergeist'
+  #gem 'poltergeist'
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
