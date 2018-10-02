@@ -14,7 +14,7 @@ class AjaxDatatables::Columns
   #      if you give datatable which has any records, each sources will be added automatically, e.g.:
   #             columns[:address].source => "users.address"
   #
- 
+
   def initialize(cols=[], datatable: nil)
     @datatable = datatable
     @data = cols.map do |col|
@@ -33,7 +33,7 @@ class AjaxDatatables::Columns
     end
   end
   def []=(key, value)
-    col = create_column(value.merge({"name" => key}))
+    col = create_column(value.merge({ 'name' => key }))
     @data.push(col)
   end
   def add(cols)
@@ -46,7 +46,7 @@ class AjaxDatatables::Columns
       self[column.to_sym].source = source
     end
   end
-  
+
   def default_table_name
     @datatable.try(:records).try(:table_name)
   end
@@ -73,7 +73,7 @@ end
 ################################################################
 class AjaxDatatables::Column
   extend Property
-  
+
   properties :name, :source, default: nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
@@ -88,7 +88,7 @@ class AjaxDatatables::Column
   #  "users.address" => "users" as table_name, "address" as table_field, User as model
   #  "address" => "" as table_name, "address" as table_field, nil as model
   def table_name
-    (source =~ /\./) ? source.split(/\./).first : ""
+    (source =~ /\./) ? source.split(/\./).first : ''
   end
   def table_field
     source.split(/\./).last
@@ -97,4 +97,3 @@ class AjaxDatatables::Column
     (table_name.present?) ? table_name.classify.constantize : nil
   end
 end
-

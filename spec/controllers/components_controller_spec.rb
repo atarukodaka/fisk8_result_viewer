@@ -11,13 +11,12 @@ RSpec.describe ComponentsController, type: :controller do
     competition = create(:competition, :finlandia)
     competition.scores.first
   }
-  
+
   let!(:short_ss){
-    create(:competition, :world).scores.first.components.create(number: 1, name: "Skating Skill", factor: 1.0, value: 10.0, judges: '10 10 10')
+    create(:competition, :world).scores.first.components.create(number: 1, name: 'Skating Skill', factor: 1.0, value: 10.0, judges: '10 10 10')
   }
   let!(:free_tr){
-    
-    create(:competition, :finlandia).scores.first.components.create(number: 2, name: "Transitions", factor: 1.8, value: 9.0, judges: '9 9 9')
+    create(:competition, :finlandia).scores.first.components.create(number: 2, name: 'Transitions', factor: 1.8, value: 9.0, judges: '9 9 9')
   }
 
   ################
@@ -39,11 +38,11 @@ RSpec.describe ComponentsController, type: :controller do
       datatable.columns.select(&:searchable).map(&:name).each do |key|
         next if key.to_sym == :value  # TODO
         it key do
-          expect_filter(short_ss, free_tr, key)          
+          expect_filter(short_ss, free_tr, key)
         end
       end
     end
-    
+
     describe 'sort:' do
       datatable.columns.select(&:orderable).map(&:name).each do |key|
         it key do
@@ -63,23 +62,23 @@ RSpec.describe ComponentsController, type: :controller do
       end
 
       context 'compares by >' do
-        subject { get :list, xhr: true, params: { value: "9.5", value_operator: 'gt'} }
+        subject { get :list, xhr: true, params: { value: '9.5', value_operator: 'gt' } }
         it_behaves_like :short_ss_only
       end
       context 'compares by <' do
-        subject { get :list, xhr: true, params: { value: "9.5", value_operator: 'lt'} }
+        subject { get :list, xhr: true, params: { value: '9.5', value_operator: 'lt' } }
         it_behaves_like :free_tr_only
       end
       context 'compares by <=' do
-        subject { get :list, xhr: true, params: { value: "9", value_operator: 'lteq'} }
+        subject { get :list, xhr: true, params: { value: '9', value_operator: 'lteq' } }
         it_behaves_like :free_tr_only
       end
       context 'compares by >=' do
-        subject { get :list, xhr: true, params: { value: "10", value_operator: 'gteq'} }
+        subject { get :list, xhr: true, params: { value: '10', value_operator: 'gteq' } }
         it_behaves_like :short_ss_only
       end
       context 'compares by =' do
-        subject { get :list, xhr: true, params: { value: "9", value_operator: 'eq'} }
+        subject { get :list, xhr: true, params: { value: '9', value_operator: 'eq' } }
         it_behaves_like :free_tr_only
       end
     end

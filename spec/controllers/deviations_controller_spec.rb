@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe DeviationsController, type: :controller do
   render_views
-  
+
   let!(:first) {
     competition = create(:competition, :world)
     score = competition.scores.first
@@ -15,7 +15,7 @@ describe DeviationsController, type: :controller do
     official = score.performed_segment.officials.first
     create(:deviation, :second, score: score, official: official)
   }
-  
+
   describe '#index' do
     subject { get :index }
     it { is_expected.to be_success}
@@ -53,7 +53,7 @@ describe DeviationsController, type: :controller do
       subject { get :panel, params: { name: panel.name } }
       its(:body) { is_expected.to include(panel.name) }
     end
-    
+
     context 'format: .json' do
       subject { get :panel, params: { name: panel.name, format: :json } }
       its(:body) { is_expected.to include(panel.name) }
@@ -67,7 +67,7 @@ describe DeviationsController, type: :controller do
       subject { get :skater, params: { name: skater.name } }
       its(:body) { is_expected.to include(skater.name) }
     end
-    
+
     context 'format: .json' do
       subject { get :skater, params: { name: skater.name, format: :json } }
       its(:body) { is_expected.to include(skater.name) }
@@ -75,6 +75,3 @@ describe DeviationsController, type: :controller do
   end
 
 end
-
-
-

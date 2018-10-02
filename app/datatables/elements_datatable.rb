@@ -5,12 +5,12 @@ class ElementsDatatable < ScoreDetailsDatatable
     columns.add([:number, :element_name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
-      element_name: "elements.name",
-      base_value: "elements.base_value",
+      element_name: 'elements.name',
+      base_value:   'elements.base_value',
     }
 
     ## searchbale
-    [:credit, :info].each {|key| columns[key].searchable = false }    
+    [:credit, :info].each {|key| columns[key].searchable = false }
 
     ## operartor
     if view_context

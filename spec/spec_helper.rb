@@ -26,4 +26,3 @@ SimpleCov.start do
   add_filter 'config'
   #add_filter 'config/initializers/direction.rb'
 end
-

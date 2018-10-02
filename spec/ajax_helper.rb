@@ -14,7 +14,7 @@ module AjaxHelper
   end
   ## filter
   def expect_filter(obj1, obj2, key, column: :name)
-    get :list, xhr: true, params: {key => obj_sendkey(obj1, key) }
+    get :list, xhr: true, params: { key => obj_sendkey(obj1, key) }
     expect(response.body).to have_content(obj1.send(column))
     expect(response.body).not_to have_content(obj2.send(column))
 
@@ -23,14 +23,14 @@ module AjaxHelper
     expect(response.body).not_to have_content(obj2.send(column))
 
     ## only obj2
-    get :list, xhr: true, params: {key => obj_sendkey(obj2, key) }
+    get :list, xhr: true, params: { key => obj_sendkey(obj2, key) }
     expect(response.body).not_to have_content(obj1.send(column))
     expect(response.body).to have_content(obj2.send(column))
 
     get :list, xhr: true, params: filter_params(key, obj_sendkey(obj2, key))
     expect(response.body).not_to have_content(obj1.send(column))
     expect(response.body).to have_content(obj2.send(column))
-  end 
+  end
   ## order
   def expect_order(obj1, obj2, key, column: :name)
     #names = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(column)}
@@ -38,7 +38,7 @@ module AjaxHelper
     ## only obj1
     get :list, xhr: true, params: sort_params(key, 'asc')
     expect(names.first).to appear_before(names.last)
-    
+
     get :list, xhr: true, params: sort_params(key, 'desc')
     expect(names.last).to appear_before(names.first)
   end
@@ -49,12 +49,9 @@ module AjaxHelper
   end
 
   def filter_params(column_name, value)
-    {columns: {column_number(column_name).to_s => { data: column_name, "search": {"value": value}}}}
-    
+    { columns: { column_number(column_name).to_s => { data: column_name, "search": { "value": value } } } }
   end
   def sort_params(column_name, direction = 'asc')
-    {order: {"0": { "column": column_number(column_name), "dir": direction}}}
+    { order: { "0": { "column": column_number(column_name), "dir": direction } } }
   end
 end
-
-

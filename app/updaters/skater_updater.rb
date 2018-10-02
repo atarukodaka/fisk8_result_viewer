@@ -6,11 +6,11 @@ class SkaterUpdater
   def parser
     @parser ||= SkaterParser.new
   end
-    
+
   def update_skaters
     Category.having_isu_bio.each do |category|
       puts "#{category.name}: #{category.isu_bio_url}" if @verbose
-    
+
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
           hash[:category] = Category.find_by(name: hash[:category])
@@ -19,7 +19,7 @@ class SkaterUpdater
             skater.update(hash.slice(*attrs))
           end
         end
-      end  # transaction             
+      end  # transaction
     end
   end
 
@@ -36,7 +36,7 @@ class SkaterUpdater
 
     details_hash = parser.parse_skater_details(skater.isu_number)
     puts "#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}" if @verbose
-        
+
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies, :coach, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))

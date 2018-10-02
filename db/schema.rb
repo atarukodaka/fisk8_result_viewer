@@ -12,183 +12,183 @@
 
 ActiveRecord::Schema.define(version: 5) do
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.string "abbr"
-    t.string "seniority"
-    t.boolean "team"
-    t.string "category_type"
-    t.string "isu_bio_url"
+  create_table 'categories', force: :cascade do |t|
+    t.string 'name'
+    t.string 'abbr'
+    t.string 'seniority'
+    t.boolean 'team'
+    t.string 'category_type'
+    t.string 'isu_bio_url'
   end
 
-  create_table "category_results", force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "ranking"
-    t.float "points"
-    t.integer "short_ranking"
-    t.integer "free_ranking"
-    t.integer "competition_id"
-    t.integer "skater_id"
-    t.integer "short_id"
-    t.integer "free_id"
-    t.index ["category_id"], name: "index_category_results_on_category_id"
-    t.index ["competition_id"], name: "index_category_results_on_competition_id"
-    t.index ["free_id"], name: "index_category_results_on_free_id"
-    t.index ["short_id"], name: "index_category_results_on_short_id"
-    t.index ["skater_id"], name: "index_category_results_on_skater_id"
+  create_table 'category_results', force: :cascade do |t|
+    t.integer 'category_id'
+    t.integer 'ranking'
+    t.float 'points'
+    t.integer 'short_ranking'
+    t.integer 'free_ranking'
+    t.integer 'competition_id'
+    t.integer 'skater_id'
+    t.integer 'short_id'
+    t.integer 'free_id'
+    t.index ['category_id'], name: 'index_category_results_on_category_id'
+    t.index ['competition_id'], name: 'index_category_results_on_competition_id'
+    t.index ['free_id'], name: 'index_category_results_on_free_id'
+    t.index ['short_id'], name: 'index_category_results_on_short_id'
+    t.index ['skater_id'], name: 'index_category_results_on_skater_id'
   end
 
-  create_table "competitions", force: :cascade do |t|
-    t.string "short_name"
-    t.string "name"
-    t.string "city"
-    t.string "country"
-    t.string "timezone", default: "UTC"
-    t.date "start_date", default: "1970-01-01"
-    t.date "end_date", default: "1970-01-01"
-    t.string "season"
-    t.string "site_url"
-    t.string "competition_type"
-    t.string "competition_class"
-    t.string "parser_type", default: "isu_generic"
-    t.string "comment"
+  create_table 'competitions', force: :cascade do |t|
+    t.string 'short_name'
+    t.string 'name'
+    t.string 'city'
+    t.string 'country'
+    t.string 'timezone', default: 'UTC'
+    t.date 'start_date', default: '1970-01-01'
+    t.date 'end_date', default: '1970-01-01'
+    t.string 'season'
+    t.string 'site_url'
+    t.string 'competition_type'
+    t.string 'competition_class'
+    t.string 'parser_type', default: 'isu_generic'
+    t.string 'comment'
   end
 
-  create_table "component_judge_details", force: :cascade do |t|
-    t.integer "number"
-    t.float "value"
-    t.float "average"
-    t.float "deviation"
-    t.integer "component_id"
-    t.integer "official_id"
-    t.index ["component_id"], name: "index_component_judge_details_on_component_id"
-    t.index ["official_id"], name: "index_component_judge_details_on_official_id"
+  create_table 'component_judge_details', force: :cascade do |t|
+    t.integer 'number'
+    t.float 'value'
+    t.float 'average'
+    t.float 'deviation'
+    t.integer 'component_id'
+    t.integer 'official_id'
+    t.index ['component_id'], name: 'index_component_judge_details_on_component_id'
+    t.index ['official_id'], name: 'index_component_judge_details_on_official_id'
   end
 
-  create_table "components", force: :cascade do |t|
-    t.integer "number"
-    t.string "name"
-    t.float "factor"
-    t.string "judges"
-    t.float "value"
-    t.integer "score_id"
-    t.index ["score_id"], name: "index_components_on_score_id"
+  create_table 'components', force: :cascade do |t|
+    t.integer 'number'
+    t.string 'name'
+    t.float 'factor'
+    t.string 'judges'
+    t.float 'value'
+    t.integer 'score_id'
+    t.index ['score_id'], name: 'index_components_on_score_id'
   end
 
-  create_table "deviations", force: :cascade do |t|
-    t.integer "score_id"
-    t.integer "official_id"
-    t.float "tes_deviation"
-    t.float "tes_deviation_ratio"
-    t.float "pcs_deviation"
-    t.float "pcs_deviation_ratio"
-    t.index ["official_id"], name: "index_deviations_on_official_id"
-    t.index ["score_id"], name: "index_deviations_on_score_id"
+  create_table 'deviations', force: :cascade do |t|
+    t.integer 'score_id'
+    t.integer 'official_id'
+    t.float 'tes_deviation'
+    t.float 'tes_deviation_ratio'
+    t.float 'pcs_deviation'
+    t.float 'pcs_deviation_ratio'
+    t.index ['official_id'], name: 'index_deviations_on_official_id'
+    t.index ['score_id'], name: 'index_deviations_on_score_id'
   end
 
-  create_table "element_judge_details", force: :cascade do |t|
-    t.integer "number"
-    t.float "value"
-    t.float "average"
-    t.float "deviation"
-    t.float "abs_deviation"
-    t.integer "element_id"
-    t.integer "official_id"
-    t.index ["element_id"], name: "index_element_judge_details_on_element_id"
-    t.index ["official_id"], name: "index_element_judge_details_on_official_id"
+  create_table 'element_judge_details', force: :cascade do |t|
+    t.integer 'number'
+    t.float 'value'
+    t.float 'average'
+    t.float 'deviation'
+    t.float 'abs_deviation'
+    t.integer 'element_id'
+    t.integer 'official_id'
+    t.index ['element_id'], name: 'index_element_judge_details_on_element_id'
+    t.index ['official_id'], name: 'index_element_judge_details_on_official_id'
   end
 
-  create_table "elements", force: :cascade do |t|
-    t.integer "number"
-    t.string "name"
-    t.string "element_type"
-    t.string "element_subtype"
-    t.boolean "edgeerror"
-    t.boolean "underrotated"
-    t.boolean "downgraded"
-    t.integer "level"
-    t.string "info"
-    t.float "base_value"
-    t.string "credit"
-    t.float "goe"
-    t.string "judges"
-    t.float "value"
-    t.integer "score_id"
-    t.index ["score_id"], name: "index_elements_on_score_id"
+  create_table 'elements', force: :cascade do |t|
+    t.integer 'number'
+    t.string 'name'
+    t.string 'element_type'
+    t.string 'element_subtype'
+    t.boolean 'edgeerror'
+    t.boolean 'underrotated'
+    t.boolean 'downgraded'
+    t.integer 'level'
+    t.string 'info'
+    t.float 'base_value'
+    t.string 'credit'
+    t.float 'goe'
+    t.string 'judges'
+    t.float 'value'
+    t.integer 'score_id'
+    t.index ['score_id'], name: 'index_elements_on_score_id'
   end
 
-  create_table "officials", force: :cascade do |t|
-    t.integer "number"
-    t.boolean "absence", default: false
-    t.integer "panel_id"
-    t.integer "performed_segment_id"
-    t.index ["panel_id"], name: "index_officials_on_panel_id"
-    t.index ["performed_segment_id"], name: "index_officials_on_performed_segment_id"
+  create_table 'officials', force: :cascade do |t|
+    t.integer 'number'
+    t.boolean 'absence', default: false
+    t.integer 'panel_id'
+    t.integer 'performed_segment_id'
+    t.index ['panel_id'], name: 'index_officials_on_panel_id'
+    t.index ['performed_segment_id'], name: 'index_officials_on_performed_segment_id'
   end
 
-  create_table "panels", force: :cascade do |t|
-    t.string "name"
-    t.string "nation"
+  create_table 'panels', force: :cascade do |t|
+    t.string 'name'
+    t.string 'nation'
   end
 
-  create_table "performed_segments", force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "segment_id"
-    t.datetime "starting_time", default: "1969-12-31 15:00:00"
-    t.integer "competition_id"
-    t.index ["category_id"], name: "index_performed_segments_on_category_id"
-    t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
-    t.index ["segment_id"], name: "index_performed_segments_on_segment_id"
+  create_table 'performed_segments', force: :cascade do |t|
+    t.integer 'category_id'
+    t.integer 'segment_id'
+    t.datetime 'starting_time', default: '1969-12-31 15:00:00'
+    t.integer 'competition_id'
+    t.index ['category_id'], name: 'index_performed_segments_on_category_id'
+    t.index ['competition_id'], name: 'index_performed_segments_on_competition_id'
+    t.index ['segment_id'], name: 'index_performed_segments_on_segment_id'
   end
 
-  create_table "scores", force: :cascade do |t|
-    t.string "name"
-    t.integer "ranking"
-    t.integer "starting_number"
-    t.integer "category_id"
-    t.integer "segment_id"
-    t.date "date", default: "1970-01-01"
-    t.string "result_pdf"
-    t.float "tss", default: 0.0
-    t.float "tes", default: 0.0
-    t.float "pcs", default: 0.0
-    t.float "deductions", default: 0.0
-    t.string "deduction_reasons"
-    t.float "base_value", default: 0.0
-    t.string "elements_summary"
-    t.string "components_summary"
-    t.integer "competition_id"
-    t.integer "skater_id"
-    t.integer "category_result_id"
-    t.integer "performed_segment_id"
-    t.index ["category_id"], name: "index_scores_on_category_id"
-    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
-    t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
-    t.index ["segment_id"], name: "index_scores_on_segment_id"
-    t.index ["skater_id"], name: "index_scores_on_skater_id"
+  create_table 'scores', force: :cascade do |t|
+    t.string 'name'
+    t.integer 'ranking'
+    t.integer 'starting_number'
+    t.integer 'category_id'
+    t.integer 'segment_id'
+    t.date 'date', default: '1970-01-01'
+    t.string 'result_pdf'
+    t.float 'tss', default: 0.0
+    t.float 'tes', default: 0.0
+    t.float 'pcs', default: 0.0
+    t.float 'deductions', default: 0.0
+    t.string 'deduction_reasons'
+    t.float 'base_value', default: 0.0
+    t.string 'elements_summary'
+    t.string 'components_summary'
+    t.integer 'competition_id'
+    t.integer 'skater_id'
+    t.integer 'category_result_id'
+    t.integer 'performed_segment_id'
+    t.index ['category_id'], name: 'index_scores_on_category_id'
+    t.index ['category_result_id'], name: 'index_scores_on_category_result_id'
+    t.index ['competition_id'], name: 'index_scores_on_competition_id'
+    t.index ['performed_segment_id'], name: 'index_scores_on_performed_segment_id'
+    t.index ['segment_id'], name: 'index_scores_on_segment_id'
+    t.index ['skater_id'], name: 'index_scores_on_skater_id'
   end
 
-  create_table "segments", force: :cascade do |t|
-    t.string "name"
-    t.string "abbr"
-    t.string "segment_type"
+  create_table 'segments', force: :cascade do |t|
+    t.string 'name'
+    t.string 'abbr'
+    t.string 'segment_type'
   end
 
-  create_table "skaters", force: :cascade do |t|
-    t.string "name"
-    t.string "nation"
-    t.integer "category_id"
-    t.integer "isu_number"
-    t.string "coach"
-    t.string "choreographer"
-    t.date "birthday"
-    t.string "hobbies"
-    t.string "hometown"
-    t.string "height"
-    t.string "club"
-    t.datetime "bio_updated_at"
-    t.index ["category_id"], name: "index_skaters_on_category_id"
+  create_table 'skaters', force: :cascade do |t|
+    t.string 'name'
+    t.string 'nation'
+    t.integer 'category_id'
+    t.integer 'isu_number'
+    t.string 'coach'
+    t.string 'choreographer'
+    t.date 'birthday'
+    t.string 'hobbies'
+    t.string 'hometown'
+    t.string 'height'
+    t.string 'club'
+    t.datetime 'bio_updated_at'
+    t.index ['category_id'], name: 'index_skaters_on_category_id'
   end
 
 end

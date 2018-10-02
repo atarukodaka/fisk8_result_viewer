@@ -18,7 +18,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.float :average
       t.float :deviation
       t.float :abs_deviation
-      
+
       t.belongs_to :element
       t.belongs_to :official
     end
@@ -38,7 +38,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.belongs_to :score
       #t.belongs_to :panel
       t.belongs_to :official
-      
+
       t.float :tes_deviation
       t.float :tes_deviation_ratio
       t.float :pcs_deviation
@@ -47,5 +47,3 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
     end
   end  ## change
 end
-
-

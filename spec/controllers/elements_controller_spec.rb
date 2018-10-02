@@ -12,7 +12,7 @@ RSpec.describe ElementsController, type: :controller do
   let!(:elem4T){ create(:element, score: score_world) }
   let!(:elem4T3T){ create(:element, :combination, score: score_world) }
   let!(:elemLSp){ create(:element, :spin, score: score_finlandia) }
-  
+
   describe '#index' do
     describe 'all' do
       subject { get :index }
@@ -28,8 +28,8 @@ RSpec.describe ElementsController, type: :controller do
       its(:body) { is_expected.to include(elemLSp.name) }
     end
     datatable = ElementsDatatable.new
-    
-    describe "filters:" do
+
+    describe 'filters:' do
       datatable.columns.select(&:searchable).map(&:name).each do |key|
         next if key.to_sym == :goe  # TODO
         it key do
@@ -37,18 +37,18 @@ RSpec.describe ElementsController, type: :controller do
         end
       end
       context 'element name with perfect match' do
-        subject { get :list, xhr: true, params: {element_name: '4T', name_operator: 'eq'} }
+        subject { get :list, xhr: true, params: { element_name: '4T', name_operator: 'eq' } }
         its(:body) { is_expected.to include(elem4T.name) }
         its(:body) { is_expected.not_to include(elem4T3T.name) }
       end
       context 'comparison goe by' do
         context '>' do
-          subject { get :list, xhr: true, params: {goe: '1', goe_operator: 'gt'} }
+          subject { get :list, xhr: true, params: { goe: '1', goe_operator: 'gt' } }
           its(:body) { is_expected.to include(elem4T.name) }
           its(:body) { is_expected.not_to include(elemLSp.name) }
         end
         context '<' do
-          subject { get :list, xhr: true, params: {goe: '1', goe_operator: 'lt'} }
+          subject { get :list, xhr: true, params: { goe: '1', goe_operator: 'lt' } }
           its(:body) { is_expected.not_to include(elem4T.name) }
           its(:body) { is_expected.to include(elemLSp.name) }
         end

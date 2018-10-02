@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding feature: true
-end
-
 feature ElementsController, type: :feature, feature: true do
   let!(:score_world)  {    create(:competition, :world).scores.first }
   let!(:score_finlandia)  { create(:competition, :finlandia).scores.first }
@@ -12,7 +8,7 @@ feature ElementsController, type: :feature, feature: true do
   let(:index_path) { elements_path }
 
   ################
-  feature "#index", js: true do
+  feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
       it_behaves_like :both_main_sub
@@ -23,9 +19,9 @@ feature ElementsController, type: :feature, feature: true do
       context 'element_name' do
         subject {
           visit index_path
-          select "=", from: :name_operator
+          select '=', from: :name_operator
           fill_in :element_name, with: main.element_name
-          find("input#element_name").send_keys :tab
+          find('input#element_name').send_keys :tab
           sleep 1
           page
         }
@@ -55,9 +51,9 @@ feature ElementsController, type: :feature, feature: true do
       context 'goe' do
         subject {
           visit index_path
-          select "=", from: :goe_operator
+          select '=', from: :goe_operator
           fill_in :goe, with: main.goe
-          find("input#goe").send_keys :tab
+          find('input#goe').send_keys :tab
           sleep 1
           page
         }

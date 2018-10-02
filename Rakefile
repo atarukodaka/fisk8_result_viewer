@@ -5,8 +5,8 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 require 'rake/clean'
-require "rspec/core/rake_task"
+require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new("spec")
-  
+RSpec::Core::RakeTask.new('spec')
+
 task :test => :spec
