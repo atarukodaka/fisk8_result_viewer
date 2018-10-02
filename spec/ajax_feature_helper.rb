@@ -57,6 +57,15 @@ module AjaxFeatureHelper
     end
   end
 
+  shared_context :ajax_filter do |key, input_type, value_function|
+    context key do
+      subject {
+        value = (value_function.present?) ? value_function.call(main) : main.send(key)
+        ajax_action_filter(key: key, value: value, input_type: input_type, path: index_path)
+      }
+      it_behaves_like :only_main
+    end
+  end
   shared_context :ajax_order do |key, identifer_key: :name|
     #let!(:table_id) { visit index_path; find(".dataTable")[:id] } 
     context key do
@@ -83,7 +92,6 @@ module AjaxFeatureHelper
   end
   def ajax_action_filter(path:, input_type: , key:, value: nil)
     visit path
-    
     case input_type
     when :fill_in
       fill_in key, with: value

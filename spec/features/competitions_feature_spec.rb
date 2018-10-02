@@ -16,14 +16,14 @@ feature CompetitionsController, type: :feature, feature: true do
       it_behaves_like :both_main_sub
     end
     context 'filter' do
-      { name: :fill_in, site_url: :fill_in, competition_class: :select, competition_type: :select }.each do |key, value|
-      #{ name: :fill_in }.each do |key, value|
-        context key do
-          subject { ajax_action_filter(key: key, value: main.send(key), input_type: value, path: index_path) }
-          it_behaves_like :only_main
-        end
+      [{ name: :name, input_type: :fill_in, },
+       {name: :site_url, input_type: :fill_in,},
+       {name: :competition_class, input_type: :select,},
+       {name: :competition_type, input_type: :select,},
+      ].each do |hash|
+        include_context :ajax_filter, hash[:name], hash[:input_type]
       end
-
+      
       include_context :filter_season
     end
     context 'order' do
@@ -31,20 +31,5 @@ feature CompetitionsController, type: :feature, feature: true do
         include_context :ajax_order, key
       end
     end
-=begin
-    context 'paging' do
-      it {
-        page_length = CompetitionsDatatable.new.settings[:pageLength]
-        100.times do |i|
-          create(:competition)
-        end
-        visit index_path
-        expect(page.body).to have_content("Showing 1 to #{page_length}")
-        find(:xpath, '//ul[@class="pagination"]/li/a[@data-dt-idx="2"]').click
-        ajax_trigger
-        expect(page.body).to have_content("Showing #{page_length+1} to #{page_length * 2}")
-      }
-    end
-=end
   end
 end

@@ -8,7 +8,8 @@
 - codecov: icedance elements
 - spec/feature
   - season from/to
-  - column_#{table_id}_name ??
+  - elements, components, statics, panels
+  - paging
 - help for rake:update
 - table_id consistence
 - ice cance set elementtype/elements

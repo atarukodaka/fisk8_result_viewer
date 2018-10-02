@@ -17,23 +17,38 @@ feature SkatersController, type: :feature, feature: true do
     end
     
     context 'filter' do
-      {name: :fill_in, nation: :select}.each do |column_name, input_type|   ## TODO: category
-        context column_name do
-          subject { ajax_action_filter(key: column_name, value: main.send(column_name), input_type: input_type, path: index_path) }
-          it_behaves_like :only_main
-        end
+      filters = [
+        { name: :name, input_type: :fill_in,  },
+        {
+          name: :category,
+          input_type: :select,
+          value_function: lambda {|elem| elem.category_name},
+        },
+        { name: :nation, input_type: :select, }
+      ]
+      filters.each do |hash|
+        include_context :ajax_filter, hash[:name], hash[:input_type], hash[:value_function]
       end
-=begin
-      context :category do
-        subject { binding.pry; ajax_action_filter(key: :category, value: main.category.name, input_type: :select, path: index_path) }
-        it_behaves_like :only_main
-      end
-=end
     end
     context 'order' do
       SkatersDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
         include_context :ajax_order, key        
       end
     end
+=begin
+    context 'paging' do
+      it {
+        page_length = SkatersDatatable.new.settings[:pageLength]
+        100.times do |i|
+          create(:skater, :men)
+        end
+        visit index_path
+        expect(page.body).to have_content("Showing 1 to #{page_length}")
+        find(:xpath, '//ul[@class="pagination"]/li/a[@data-dt-idx="2"]').click
+        sleep 1
+        expect(page.body).to have_content("Showing #{page_length+1} to #{page_length * 2}")
+      }
+    end
+=end
   end
 end

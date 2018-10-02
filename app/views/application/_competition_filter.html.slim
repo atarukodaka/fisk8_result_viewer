@@ -1,6 +1,6 @@
 - competition_name_key ||= :name
 
-= form_group(Competition.human_attribute_name(:name), text_field_tag(competition_name_key, params[competition_name_key], size: 70, onchange: ajax_search(competition_name_key, table)))
+= form_group(Competition.human_attribute_name(:competition_name), text_field_tag(competition_name_key, params[competition_name_key], size: 70, onchange: ajax_search(competition_name_key, table)))
 
 - class_text = Competition.human_attribute_name(:competition_class)
 - type_text = Competition.human_attribute_name(:competition_type)

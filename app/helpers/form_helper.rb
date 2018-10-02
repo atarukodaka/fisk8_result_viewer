@@ -25,7 +25,7 @@ module FormHelper
 
     col =
       case key
-      when :category
+      when :category_name
         cache_uniq_list("category_name", Category.order(:id), :category_name)
       when :category_type
         cache_uniq_list("category_type", Category.order(:id), :category_type)
@@ -34,7 +34,7 @@ module FormHelper
       when :team
         cache_uniq_list("category_team", Category.order(:id), :team)
 
-       when :segment
+       when :segment_name
          cache_uniq_list("segment_name", Segment.order(:id), :segment_name)
       when :segment_type
         cache_uniq_list("segment_type", Segment.order(:id), :segment_type)
