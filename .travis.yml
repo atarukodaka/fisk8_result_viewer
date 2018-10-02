@@ -19,7 +19,9 @@ script:
   - bundle exec rspec --tag parser -fd
   - bundle exec rspec --tag error_handler -fd
 
-env: TEST=true
+env:
+  - TEST=true
+  - DISPLAY=:99.0
 
 branches:
   only:
@@ -27,9 +29,14 @@ branches:
     - develop
     - /^release/
 
+
+################
+## addon packages
+
 sudo: required
 
 dist: trusty
+
 addons:
   apt:
     packages:
@@ -45,10 +52,8 @@ before_install:
   - sudo chmod +x /usr/local/share/chromedriver
   - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver  
 
-env: DISPLAY=:99.0
-
 before_script:
-  - sh -e /etc/init.d/xvfb start
+  #- sh -e /etc/init.d/xvfb start
   #- wget http://chromedriver.storage.googleapis.com/2.9/chromedriver_linux64.zip
   #- unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
   #- export CHROME_BIN=chromium-browse
