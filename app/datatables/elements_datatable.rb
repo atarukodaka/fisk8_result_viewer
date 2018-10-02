@@ -2,10 +2,10 @@ class ElementsDatatable < ScoreDetailsDatatable
   def initialize(*)
     super
 
-    columns.add([:number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    columns.add([:number, :element_name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
-      name: "elements.name",
+      element_name: "elements.name",
       base_value: "elements.base_value",
     }
 
@@ -14,7 +14,7 @@ class ElementsDatatable < ScoreDetailsDatatable
 
     ## operartor
     if view_context
-      columns[:name].operator = params[:name_operator].presence || :matches
+      columns[:element_name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
   end

@@ -3,10 +3,10 @@ class ComponentsDatatable < ScoreDetailsDatatable
     super
 
     #add_columns([:number, :name, :factor, :judges, :value,])
-    columns.add([:number, :name, :factor, :judges, :value,])
+    columns.add([:number, :component_name, :factor, :judges, :value,])
 
     columns.sources = {
-      name: "components.name",
+      component_name: "components.name",
     }
     
     ## searchble

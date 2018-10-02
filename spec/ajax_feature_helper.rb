@@ -42,6 +42,23 @@ module AjaxFeatureHelper
   end
 
   ## context
+  shared_context :scores_filter do
+    [{ name: :skater_name, input_type: :fill_in, },
+     {name: :competition_name, input_type: :fill_in,},
+     {name: :competition_class, input_type: :select,},
+     {name: :competition_type, input_type: :select,},
+     {name: :category_name, input_type: :select, value_function: lambda {|score| score.category_name }},
+     {name: :category_type, input_type: :select, },
+     {name: :seniority, input_type: :select, },
+     {name: :team, input_type: :select, },
+     {name: :segment_name, input_type: :select, value_function: lambda {|score| score.segment_name }},
+     {name: :segment_type, input_type: :select, },    
+    ].each do |hash|
+      include_context :ajax_filter, hash[:name], hash[:input_type], hash[:value_function]
+    end
+    
+    include_context :filter_season
+  end
   shared_context :filter_season do
     ## main, sub, index_path requried to declair
     let(:later) { (main.season > sub.season) ? main : sub }
@@ -77,6 +94,9 @@ module AjaxFeatureHelper
   end
 
   ## functions
+  def score_filters
+  end
+  ### ajax
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
     sleep 2

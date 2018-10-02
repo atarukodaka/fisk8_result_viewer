@@ -20,9 +20,9 @@ feature SkatersController, type: :feature, feature: true do
       filters = [
         { name: :name, input_type: :fill_in,  },
         {
-          name: :category,
+          name: :category_type,
           input_type: :select,
-          value_function: lambda {|elem| elem.category_name},
+          value_function: lambda {|elem| elem.category_type},
         },
         { name: :nation, input_type: :select, }
       ]

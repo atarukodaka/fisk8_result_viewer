@@ -50,6 +50,8 @@ module FormHelper
         cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
       when :season_to
         cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
+      when :season  ## for statics
+        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
 
       when :element_type
         cache_uniq_list("element_type", Element.all, :element_type).sort

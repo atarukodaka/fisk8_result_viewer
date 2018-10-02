@@ -38,5 +38,21 @@ addons:
 before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
+install: # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
+  - wget -N http://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - rm ~/chromedriver_linux64.zip
+  - sudo mv -f ~/chromedriver /usr/local/share/
+  - sudo chmod +x /usr/local/share/chromedriver
+  - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver  
+
+env: DISPLAY=:99.0
+
+before_script:
+  - sh -e /etc/init.d/xvfb start
+  #- wget http://chromedriver.storage.googleapis.com/2.9/chromedriver_linux64.zip
+  #- unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+  #- export CHROME_BIN=chromium-browse
+  
 after_success:
   - codecov        

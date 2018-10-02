@@ -2,11 +2,11 @@ class SkatersDatatable < IndexDatatable
   def initialize(*)
     super
 
-    columns([:name, :category_name, :nation, :isu_number, :birthday, :club, :coach])
+    columns([:name, :category_type, :nation, :isu_number, :birthday, :club, :coach])
     columns.sources = {
-      category_name: "categories.name",
+      category_type: "categories.category_type",
     }
-    default_orders([[:category_name, :asc], [:name, :asc]])
+    default_orders([[:category_type, :asc], [:name, :asc]])
   end
 
   def fetch_records

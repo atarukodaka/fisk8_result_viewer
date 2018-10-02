@@ -1,6 +1,8 @@
- class Element < ApplicationRecord
-   include ScoreVirtualAttributes
-
+class Element < ApplicationRecord
+  include ScoreVirtualAttributes
+  
+  alias_attribute :element_name, :name   
+  
   ## relations
   has_many :element_judge_details, dependent: :destroy
   belongs_to :score
