@@ -1,6 +1,6 @@
 class SkaterParser < Parser
   #include Utils
-  #include LinkToHelper
+  include LinkToHelper    ## for isu_bio_url
   
   def parse_skaters(category, url)
     page = get_url(url)
@@ -21,10 +21,12 @@ class SkaterParser < Parser
     }
   end
   def parse_skater_details(isu_number)
-    page = get_url(isu_bio_url(isu_number))
-
-    data = {}
+    page = get_url(isu_bio_url(isu_number)) || raise("invalid isu number: #{isu_number}")
+    data = {isu_number: isu_number}
     {
+      nation: "person_nationLabel",
+      name: "person_cnameLabel",
+      category: "CategoryLabel",
       birthday: "person_dobLabel",
       height: "person_heightLabel",
       hometown: "person_htometownLabel",

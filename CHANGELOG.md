@@ -6,11 +6,14 @@
 - youtube register
 - components controller is necessary ??
 - codecov: icedance elements
-- spec
-  - feature
-	- season from/to
+- spec/feature
+  - season from/to
+  - elements, components, statics, panels
+  - paging
 - help for rake:update
-- skater updater spec: detail
+- table_id consistence
+- ice cance set elementtype/elements
+- update:skaters categories
 
 ### new feature
 
@@ -18,6 +21,11 @@
 - app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.7
+- judge details
+- ruby2.2 support droped: capybara3.8 requires >=2.3
+- api drop: never used
 
 ## 1.0.6
 - element subtype

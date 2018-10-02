@@ -94,7 +94,9 @@
     category_type: "ICE DANCE",
   },
 ].each do |elem|
-  Category.create(elem)
+  Category.find_or_create_by(name: elem[:name]) do |category|
+    category.update(elem)
+  end
 end
 
 ####
@@ -127,6 +129,9 @@ end
     segment_type: "free",
   },
 ].each do |elem|
-  Segment.create(elem)
+  #Segment.create(elem)
+  Segment.find_or_create_by(name: elem[:name]) do |segment|
+    segment.update(elem)
+  end
 end
   

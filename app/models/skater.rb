@@ -19,7 +19,8 @@ class Skater < ApplicationRecord
   scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
-  delegate :name, to: :category, prefix: :category, allow_nil: true
+  #delegate :type, to: :category, prefix: :category, allow_nil: true
+  delegate :category_type, to: :category, allow_nil: true
   
   ## class methods
   class << self

@@ -37,7 +37,7 @@ RSpec.describe ElementsController, type: :controller do
         end
       end
       context 'element name with perfect match' do
-        subject { get :list, xhr: true, params: {name: '4T', name_operator: 'eq'} }
+        subject { get :list, xhr: true, params: {element_name: '4T', name_operator: 'eq'} }
         its(:body) { is_expected.to include(elem4T.name) }
         its(:body) { is_expected.not_to include(elem4T3T.name) }
       end

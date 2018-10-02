@@ -14,13 +14,16 @@ RSpec.configure do |config|
   #config.include Helper
 end
 
+
 ################
 ## Codecov
 require 'simplecov'
 require 'codecov'
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
 SimpleCov.start do
-  add_filter 'spec/updaters/consistency_spec.rb'
-  add_filter 'config/initializers/direction.rb'
+  #add_filter 'spec/updaters/consistency_spec.rb'
+  add_filter 'spec'
+  add_filter 'config'
+  #add_filter 'config/initializers/direction.rb'
 end
 

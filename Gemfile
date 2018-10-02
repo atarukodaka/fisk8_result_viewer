@@ -39,16 +39,17 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '~> 2.13.0'
-  gem 'poltergeist'
-  gem 'database_cleaner'
+  gem 'capybara', '~> 3.8.0'
   gem 'selenium-webdriver'
+  gem 'poltergeist'
   gem 'rspec-rails'
   gem 'rspec-its'
   
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+
   gem 'coveralls', require: false
   gem 'codecov', require: false
-  gem 'factory_bot_rails'
 end
 
 group :development do

@@ -78,7 +78,8 @@ ja:
     competition_name: 大会名
     score_name: スコア名
     category: カテゴリー
-    category_name: カテゴリー
+    category_name: カテゴリー名
+    category_type: カテゴリータイプ
     segment: セグメント
     segment_name: セグメント
     nation: 国名
@@ -113,6 +114,7 @@ ja:
 
       competition:
         name: 競技会名
+        name_info: 開催名
         city: 開催都市
         country: 開催国
         location: 開催場所
@@ -127,6 +129,9 @@ ja:
         site_url: サイトURL
         short_name: 略称
 
+      performed_segment:
+        starting_time: 開始日時
+
       category_result:
         competition_name: 競技会名
         short_ranking: ショート順位
@@ -134,13 +139,13 @@ ja:
         short_tes: ショートTES
         short_pcs: ショートPCS
         short_deductions: ショート減点
-        short_bv: ショート基礎点
+        short_base_value: ショート基礎点
         free_ranking: フリー順位
         free_tss: フリーTSS
         free_tes: フリーTES
         free_pcs: フリーPCS
         free_deductions: フリー減点
-        free_bv: フリー基礎点
+        free_base_value: フリー基礎点
 
       score:
         name: スコア名

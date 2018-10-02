@@ -28,6 +28,7 @@ class CompetitionUpdater
   def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
     categories_to_update = get_categories_to_update(categories)
 
+    
     ActiveRecord::Base.transaction do
       ## existing check
       if (competitions = Competition.where(site_url: site_url).presence)
@@ -39,11 +40,13 @@ class CompetitionUpdater
         end
       end
 
+
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
 
       ## check season from/to
       unless within_season?(parsed[:season], from: season_from, to: season_to)
         puts "  skip: not within specific season"
+        return
       end
         
       Competition.create do |competition|
@@ -87,7 +90,7 @@ class CompetitionUpdater
       if parsed_panels[:judges].present?
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
-          next if parsed_panels[i].nil?
+          next if parsed_panels[:judges][i].nil?
           name = normalize_persons_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]
           panel = Panel.find_or_create_by(name: name)
@@ -180,6 +183,7 @@ class CompetitionUpdater
           puts score.summary if @verbose
           
           ## judge details
+
           update_judge_details(competition, category, segment, score) if @enable_judge_details
         end
       end
