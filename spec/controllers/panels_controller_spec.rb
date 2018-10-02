@@ -12,7 +12,7 @@ describe PanelsController, type: :controller do
   let!(:mike){
     world.performed_segments.first.officials.second.panel
   }
-  
+
   describe '#index' do
     subject { get :index }
     it { is_expected.to be_success}
@@ -40,7 +40,7 @@ describe PanelsController, type: :controller do
       end
     end
   end
-  
+
   ################
   describe '#show' do
     context 'name' do

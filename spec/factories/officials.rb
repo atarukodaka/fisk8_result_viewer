@@ -13,13 +13,13 @@ FactoryBot.define do
 
   factory :panel do
     trait :john do
-      name { "John FOO" }
-      nation { "USA" }
+      name { 'John FOO' }
+      nation { 'USA' }
     end
 
     trait :mike do
-      name { "Mike BAR" }
-      nation { "CAN" }
+      name { 'Mike BAR' }
+      nation { 'CAN' }
     end
   end
 end

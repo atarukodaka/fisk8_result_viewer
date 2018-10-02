@@ -10,7 +10,7 @@ feature ScoresController, type: :feature, feature: true do
   let(:index_path) { scores_path }
 
   ################
-  feature "#index", js: true do
+  feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
       it_behaves_like :both_main_sub

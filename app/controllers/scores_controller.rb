@@ -1,6 +1,6 @@
 class ScoresController < ApplicationController
   include ControllerConcerns::Index
-  
+
   def elements_datatable(score)
     AjaxDatatables::Datatable.new(view_context).records(score.elements).
       columns([:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])
@@ -17,7 +17,7 @@ class ScoresController < ApplicationController
 
     respond_to do |format|
       data = {
-        elements: elements_datatable(score),
+        elements:   elements_datatable(score),
         components: components_datatable(score),
       }
       format.html {

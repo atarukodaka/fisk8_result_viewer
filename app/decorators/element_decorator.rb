@@ -1,6 +1,6 @@
 class ElementDecorator < EntryDecorator
   using AsScore
-  
+
   def score_name
     h.link_to_score(nil, model.score)
   end
@@ -27,5 +27,5 @@ class ElementDecorator < EntryDecorator
   end
 =end
   decorate_as_score(:base_value, :goe, :value, :level)
-  decorate_as_score(:avg_value, :avg_base_value, :avg_goe, :avg_level)  
+  decorate_as_score(:avg_value, :avg_base_value, :avg_goe, :avg_level)
 end

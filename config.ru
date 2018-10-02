@@ -13,10 +13,10 @@ if true
   stackprof_save_every = (ENV['STACKPROF_SAVE_EVERY'] || 1 ).to_i
   stackprof_path       =  ENV['STACKPROF_PATH']       || 'tmp/stackprof/'
   use StackProf::Middleware, enabled:    is_stackprof,
-			     mode:       stackprof_mode,
-			     raw:        true,
-			     interval:   stackprof_interval,
-			     save_every: stackprof_save_every,
-			     path:       stackprof_path
+			                          mode:       stackprof_mode,
+			                          raw:        true,
+			                          interval:   stackprof_interval,
+			                          save_every: stackprof_save_every,
+			                          path:       stackprof_path
 end
 run Rails.application

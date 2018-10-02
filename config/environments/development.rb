@@ -57,7 +57,6 @@ Rails.application.configure do
 
   #config.logger = ActiveSupport::Logger.new(STDOUT)   ##
 
-  
   ################################################################
   # bullet
   config.after_initialize do
@@ -71,5 +70,3 @@ Rails.application.configure do
   # development badge
   config.rack_dev_mark.enable = true
 end
-
-

@@ -17,7 +17,6 @@ module ControllerConcerns::Index
             c << row
           end
         end
-        
         send_data csv, filename: "#{controller_name}.csv" }
     end
   end
@@ -28,6 +27,6 @@ module ControllerConcerns::Index
   ################
 
   def create_datatable
-    [controller_name.camelize, "Datatable"].join.constantize.new(view_context)
+    [controller_name.camelize, 'Datatable'].join.constantize.new(view_context)
   end
 end
