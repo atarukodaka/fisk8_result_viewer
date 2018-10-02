@@ -24,6 +24,8 @@
 
 ## 1.0.7
 - judge details
+- ruby2.2 support droped: capybara3.8 requires >=2.3
+- api drop: never used
 
 ## 1.0.6
 - element subtype
