@@ -2,10 +2,11 @@ language: ruby
 
 rvm:
   # - 2.2.10   ## capybara 3.8 requires >= 2.3.0
-  - 2.4
+  - 2.4.1
   - 2.5
 
 install: bundle install --deployment
+
 cache:
   directories: vendor/bundle
   
@@ -37,8 +38,6 @@ addons:
 
 before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-
-install: # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
   - wget -N http://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip -P ~/
   - unzip ~/chromedriver_linux64.zip -d ~/
   - rm ~/chromedriver_linux64.zip
