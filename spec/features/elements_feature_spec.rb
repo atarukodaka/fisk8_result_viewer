@@ -18,7 +18,7 @@ feature ElementsController, type: :feature, feature: true do
       it_behaves_like :both_main_sub
     end
     context 'filter' do
-      #include_context :scores_filter
+      include_context :scores_filter
 
       context 'element_name' do
         subject {
