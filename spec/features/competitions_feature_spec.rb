@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding feature: true
-end
-
 feature CompetitionsController, type: :feature, feature: true do
   let!(:main) { create(:competition, :world) }
   let!(:sub) { create(:competition, :finlandia) }

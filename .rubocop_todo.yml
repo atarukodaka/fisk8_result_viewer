@@ -12,7 +12,7 @@
 # Include: **/*.gemfile, **/Gemfile, **/gems.rb
 Bundler/OrderedGems:
   Exclude:
-    - 'Gemfile'
+    #- 'Gemfile'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -977,13 +977,13 @@ Style/TrailingCommaInHashLiteral:
 # Cop supports --auto-correct.
 Style/UnlessElse:
   Exclude:
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
+    #- 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/UnneededPercentQ:
   Exclude:
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
+    #- 'app/parsers/competition_parser/isu_generic/score_parser.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -991,5 +991,5 @@ Style/UnneededPercentQ:
 # SupportedStyles: percent, brackets
 Style/WordArray:
   Exclude:
-    - 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
-    - 'app/parsers/competition_parser/wtt2017.rb'
+    #- 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
+    #- 'app/parsers/competition_parser/wtt2017.rb'

@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding feature: true
-end
-
 feature ElementsController, type: :feature, feature: true do
   let!(:score_world)  {    create(:competition, :world).scores.first }
   let!(:score_finlandia)  { create(:competition, :finlandia).scores.first }
