@@ -20,7 +20,7 @@ script:
   - bundle exec rspec --tag error_handler -fd
 
 env:
-  - TEST=true
+  #- TEST=true
   - DISPLAY=:99.0
 
 branches:
@@ -52,7 +52,7 @@ before_install:
   - sudo chmod +x /usr/local/share/chromedriver
   - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver  
 
-before_script:
+#before_script:
   #- sh -e /etc/init.d/xvfb start
   #- wget http://chromedriver.storage.googleapis.com/2.9/chromedriver_linux64.zip
   #- unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/

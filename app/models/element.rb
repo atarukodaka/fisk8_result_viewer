@@ -84,7 +84,6 @@ class Element < ApplicationRecord
     self
   end
   def set_level
-    binding.pry if element_type.nil?
     self.level =
       case element_type.to_sym
       when :spin
