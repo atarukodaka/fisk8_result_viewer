@@ -9,23 +9,19 @@ feature CompetitionsController, type: :feature, feature: true do
   feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
-      it_behaves_like :both_main_sub
+      it_behaves_like :contains, true, true
     end
     context 'filter' do
-      [{ name: :name, input_type: :fill_in, },
+      filters = [{ name: :name, input_type: :fill_in, },
        { name: :site_url, input_type: :fill_in, },
        { name: :competition_class, input_type: :select, },
        { name: :competition_type, input_type: :select, },
-      ].each do |hash|
-        include_context :ajax_filter, hash[:name], hash[:input_type]
-      end
-
+      ]
+      include_context :filter, filters
       include_context :filter_season
     end
     context 'order' do
-      CompetitionsDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
-        include_context :ajax_order, key
-      end
+      include_context :order, CompetitionsDatatable
     end
   end
 end

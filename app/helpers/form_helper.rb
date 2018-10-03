@@ -15,9 +15,12 @@ module FormHelper
   end
 
   def cache_uniq_list(cache_name, relation, key)
+    relation.distinct.pluck(key).compact
+=begin
     Rails.cache.fetch(cache_name){
       relation.distinct.pluck(key).compact
     }
+=end
   end
 
   def select_tag_with_options(key, *args)

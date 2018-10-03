@@ -3,19 +3,19 @@ require 'rails_helper'
 feature ElementsController, type: :feature, feature: true do
   let!(:score_world)  {    create(:competition, :world).scores.first }
   let!(:score_finlandia)  { create(:competition, :finlandia).scores.first }
-  let!(:main){ create(:element, :combination, score: score_world) }
-  let!(:sub){ create(:element, :spin, score: score_finlandia) }
+  let!(:main){ score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
+  let!(:sub){ score_finlandia.elements.where(element_type: :spin).first }
   let(:index_path) { elements_path }
 
   ################
   feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
-      it_behaves_like :both_main_sub
+      it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :scores_filter
-
+      include_context :score_filter
+      
       context 'element_name' do
         subject {
           visit index_path
@@ -25,7 +25,7 @@ feature ElementsController, type: :feature, feature: true do
           sleep 1
           page
         }
-        it_behaves_like :only_main
+        it_behaves_like :contains, true, false
       end
 
       context 'element_type' do
@@ -35,7 +35,7 @@ feature ElementsController, type: :feature, feature: true do
           sleep 1
           page
         }
-        it_behaves_like :only_main
+        it_behaves_like :contains, true, false
       end
 
       context 'element_subtype' do
@@ -45,7 +45,7 @@ feature ElementsController, type: :feature, feature: true do
           sleep 1
           page
         }
-        it_behaves_like :only_main
+        it_behaves_like :contains, true, false
       end
 
       context 'goe' do
@@ -57,13 +57,11 @@ feature ElementsController, type: :feature, feature: true do
           sleep 1
           page
         }
-        it_behaves_like :only_main
+        it_behaves_like :contains, true, false
       end
     end
     context 'order' do
-      ElementsDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
-        include_context :ajax_order, key
-      end
+      include_context :order, ElementsDatatable, excludings: [:date ]
     end
   end
 end

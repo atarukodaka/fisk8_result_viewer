@@ -4,59 +4,29 @@ RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater){
-    competition = create(:competition, :world)
-    competition.scores.where(category: Category.find_by(name: 'TEAM MEN')).first.skater
-#create(:skater, :men) do |skater|
-=begin
-      competition = create(:competition, :world)
-      create(:performed_segment, competition: competition)
-      create(:category_result, competition: competition, skater: skater)
-      score = create(:score, competition: competition, skater: skater)
-=end
-    #end
+    create(:competition, :world).
+      scores.joins(:category).where("categories.category_type": "MEN").first.skater
   }
   let!(:ladies_skater){
-    competition = create(:competition, :finlandia)
-    competition.scores.where(category: Category.find_by(name: 'JUNIOR LADIES')).first.skater
-    #    create(:skater, :ladies) do |skater|
-    #      create(:score, competition: create(:competition), skater: skater)
-    #    end
+    create(:competition, :finlandia).
+      scores.joins(:category).where("categories.category_type": "LADIES").first.skater
   }
   let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = 'Bench WARMER' } }
 
-  ################################################################
+  ################
   describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-  end
-
-  describe '#list' do
     shared_examples :skaters_who_have_scores do
       its(:body) { is_expected.to include(men_skater.name) }
       its(:body) { is_expected.to include(ladies_skater.name) }
       its(:body) { is_expected.not_to include(no_scores_skater.name) }
     end
 
-    describe 'having scores' do
-      subject { get :list, xhr: true }
+    describe "all" do
+      subject { get :index }
+      it { is_expected.to be_success }
       it_behaves_like :skaters_who_have_scores
     end
 
-    datatable = SkatersDatatable.new
-    describe 'filters: ' do
-      datatable.columns.select(&:searchable).map(&:name).each do |key|
-        it key do
-          expect_filter(men_skater, ladies_skater, key)
-        end
-      end
-    end
-    describe 'sort: ' do
-      datatable.columns.select(&:orderable).map(&:name).each do |key|
-        it key do
-          expect_order(men_skater, ladies_skater, key)
-        end
-      end
-    end
     describe 'format: ' do
       [:json, :csv].each do |format|
         context ".#{format}" do
@@ -66,7 +36,7 @@ RSpec.describe SkatersController, type: :controller do
       end
     end
   end
-  ################################################################
+  ################
   describe '#show' do
     shared_examples :men_skater do
       its(:body) { is_expected.to include(men_skater.name) }

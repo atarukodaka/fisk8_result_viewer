@@ -9,7 +9,27 @@ class SkatersDatatable < IndexDatatable
     default_orders([[:category_type, :asc], [:name, :asc]])
   end
 
+  def filters
+    @_filters ||= [
+      {
+        label: "name",
+        fields: [ { key: :name, input_type: :text_field, } ],
+      },
+      {
+        label: "category_type",
+        fields: [{ key: :category_type, input_type: :select, }],
+      },
+      {
+        label: "nation",
+        fields: [{ key: :nation, input_type: :select, }],
+      },
+    ]
+  end
+
+  def manipulate(r)
+    r.having_scores
+  end
   def fetch_records
-    Skater.having_scores.includes(:category).references(:category)
+    Skater.includes(:category).references(:category)
   end
 end

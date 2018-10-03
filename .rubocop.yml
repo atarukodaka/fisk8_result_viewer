@@ -5,3 +5,4 @@ AllCops:
   Exclude:
     - '**/*.gemspec'
     - '**/vendor/**/*'
+    - 'db/schema.rb'
