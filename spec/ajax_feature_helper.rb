@@ -13,21 +13,46 @@ module AjaxFeatureHelper
       it { is_expected.not_to have_content(sub.name) }
     end
   end
-
+  def ajax_actions(actions, path: )
+    visit path
+    actions.each do |hash|
+      key, value, input_type = hash.values_at(:key, :value, :input_type)
+      case input_type
+      when :fill_in, :text_field
+        fill_in key, with: value
+        find("input##{key}").send_keys :tab
+      when :select
+        select value, from: key
+      when :click
+        find(key).click
+      end
+      sleep 1
+    end
+    page
+  end
   ################
   module Filter
     ## context
-    shared_context :filter do |filter_class, excludings: []|
+    shared_context :filter do |filter_or_class, excludings: []|
 
       ## TODO: filter class or hash to accept
-      #filters = filter_class.new.filters.map {|elem| elem[:fields] }.flatten.reject {|filter| excludings.include?(filter[:key])}
-      filters = filter_class.new.filters.map do |elem|
-        elem[:fields].map do |field|
-          next if excludings.include?(field[:key])
-          field.slice(*[:key, :input_type])
-        end
-      end.flatten.compact
 
+      filters =
+        if filter_or_class.ancestors.include?(IndexFilter)
+          filter_or_class.new.filters.
+            map {|elem| elem[:fields].map {|field| field.slice(*[:key, :input_type])}}.flatten.
+            reject {|filter| excludings.include?(filter[:key])}.compact
+=begin
+          filter_or_class.new.filters.map do |elem|
+            elem[:fields].map do |field|
+              next if excludings.include?(field[:key])
+              field.slice(*[:key, :input_type])
+            end
+          end.flatten.compact
+=end
+        else
+          filter_or_class
+        end
       filters.each do |hash|
         include_context :ajax_filter, hash[:key], hash[:input_type]
       end
@@ -57,6 +82,8 @@ module AjaxFeatureHelper
 
     ## functions
     def ajax_action_filter(path:, input_type: , key:, value: nil)
+      ajax_actions([key: key, value: value, input_type: input_type], path: path)
+=begin
       visit path
       case input_type
       when :fill_in, :text_field
@@ -69,6 +96,7 @@ module AjaxFeatureHelper
       end
       sleep 1
       page
+=end
     end
 
     ################

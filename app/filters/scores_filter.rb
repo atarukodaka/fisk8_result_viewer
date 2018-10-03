@@ -5,7 +5,7 @@ class ScoresFilter < IndexFilter
         label: hname(:skater_name),
         fields: [{ key: :skater_name, input_type: :text_field }],
       },
-      CompetitionsFilter.new.filters,
+      CompetitionsFilter.new.filters.reject {|elem| elem[:key] == :competition_site_url},
       {
         label: hname(:category),
         fields: [:category_name, :category_type, :seniority, :team].map {|key| { key: key, input_type: :select, label: hname(key) }},

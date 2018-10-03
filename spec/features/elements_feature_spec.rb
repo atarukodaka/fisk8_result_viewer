@@ -14,48 +14,35 @@ feature ElementsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :filter, ScoresFilter, excludings: [:season_to, :season_from, :site_url]
+      include_context :filter, ScoresFilter, excludings: [:season_to, :season_from]
+      include_context :filter_season
 
       context 'element_name' do
         subject {
-          visit index_path
-          select '=', from: :name_operator
-          fill_in :element_name, with: main.element_name
-          find('input#element_name').send_keys :tab
-          sleep 1
-          page
+          ajax_actions([{ key: :name_operator, value: '=', input_type: :select },
+                        { key: :element_name, value: main.element_name, input_type: :fill_in }], path: index_path)
         }
         it_behaves_like :contains, true, false
       end
 
       context 'element_type' do
         subject {
-          visit index_path
-          select main.element_type, from: :element_type
-          sleep 1
-          page
+          ajax_action_filter(key: :element_type, value: main.element_type, input_type: :select, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
 
       context 'element_subtype' do
         subject {
-          visit index_path
-          select main.element_subtype, from: :element_subtype
-          sleep 1
-          page
+          ajax_action_filter(key: :element_subtype, value: main.element_subtype, input_type: :select, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
 
       context 'goe' do
         subject {
-          visit index_path
-          select '=', from: :goe_operator
-          fill_in :goe, with: main.goe
-          find('input#goe').send_keys :tab
-          sleep 1
-          page
+          ajax_actions([{ key: :goe_operator, value: '=', input_type: :select },
+                        { key: :goe, value: main.goe, input_type: :fill_in }], path: index_path)
         }
         it_behaves_like :contains, true, false
       end
