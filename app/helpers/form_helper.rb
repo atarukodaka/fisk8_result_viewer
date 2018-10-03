@@ -25,38 +25,23 @@ module FormHelper
 
     col =
       case key
-      when :category_name
-        cache_uniq_list('category_name', Category.order(:id), :category_name)
-      when :category_type
-        cache_uniq_list('category_type', Category.order(:id), :category_type)
-      when :seniority
-        cache_uniq_list('category_seniority', Category.order(:id), :seniority)
-      when :team
-        cache_uniq_list('category_team', Category.order(:id), :team)
+      when :category_name, :category_type, :seniority, :team
+        cache_uniq_list(key, Category.order(:id), key)
 
-       when :segment_name
-         cache_uniq_list('segment_name', Segment.order(:id), :segment_name)
-      when :segment_type
-        cache_uniq_list('segment_type', Segment.order(:id), :segment_type)
+       when :segment_name, :segment_type
+         cache_uniq_list(key, Segment.order(:id), key)
 
       when :nation
-        cache_uniq_list('skater_nation', Skater.order(:nation), :nation)
+        cache_uniq_list(:skater_nation, Skater.order(:nation), :nation)
 
-      when :competition_class
-        cache_uniq_list('competition_class', Competition.all, :competition_class).sort
-      when :competition_type
-        cache_uniq_list('competition_type', Competition.all, :competition_type).sort
-      when :season_from
-        cache_uniq_list('competition_season', Competition.all, :season).sort.reverse
-      when :season_to
-        cache_uniq_list('competition_season', Competition.all, :season).sort.reverse
-      when :season  ## for statics
-        cache_uniq_list('competition_season', Competition.all, :season).sort.reverse
+      when :competition_class, :competition_type
+        cache_uniq_list(key, Competition.all, key).sort
 
-      when :element_type
-        cache_uniq_list('element_type', Element.all, :element_type).sort
-      when :element_subtype
-        cache_uniq_list('element_subtype', Element.all, :element_subtype).sort
+      when :season_from, :season_to, :season
+        cache_uniq_list(:competition_season, Competition.all, :season).sort.reverse
+
+      when :element_type, :element_subtype
+        cache_uniq_list(key, Element.all, key).sort
       else
         []
       end

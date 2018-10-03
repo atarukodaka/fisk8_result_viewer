@@ -49,6 +49,7 @@ class Score < ApplicationRecord
   end
 
   private
+
   def set_score_name
     if name.blank?
       self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')

@@ -19,6 +19,7 @@ class CompetitionsController < ApplicationController
   end
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
+
     AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
       columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
   end

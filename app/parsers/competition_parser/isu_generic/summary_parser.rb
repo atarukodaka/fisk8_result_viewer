@@ -45,7 +45,9 @@ class CompetitionParser
         competition
       end
       ################################################################
+
       protected
+
       def skate_season(date)
         year = date.year
         year -= 1 if date.month <= 6
@@ -156,6 +158,7 @@ class CompetitionParser
 
       ###
       private
+
       def normalize_category(category)
         category.squish.upcase.gsub(/^PAIR SKATING$/, 'PAIRS').gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, '').gsub(/ SKATING/, '')
       end

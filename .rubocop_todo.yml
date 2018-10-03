@@ -30,7 +30,7 @@ Layout/BlockAlignment:
 # Cop supports --auto-correct.
 Layout/BlockEndNewline:
   Exclude:
-    - 'app/controllers/controller_concerns/index.rb'
+    #- 'app/controllers/controller_concerns/index.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -44,9 +44,9 @@ Layout/CaseIndentation:
 # Cop supports --auto-correct.
 Layout/CommentIndentation:
   Exclude:
-    - 'app/controllers/controller_concerns/error_handlers.rb'
-    - 'spec/controllers/skaters_controller_spec.rb'
-    - 'spec/updaters/competition_updater_spec.rb'
+    #- 'app/controllers/controller_concerns/error_handlers.rb'
+    #- 'spec/controllers/skaters_controller_spec.rb'
+    #- 'spec/updaters/competition_updater_spec.rb'
 
 # Offense count: 8
 # Cop supports --auto-correct.
@@ -63,14 +63,6 @@ Layout/DotPosition:
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterGuardClause:
   Exclude:
-    - 'app/controllers/competitions_controller.rb'
-    - 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/updaters/competition_updater.rb'
-    - 'app/updaters/skater_updater.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
-    - 'spec/controllers/components_controller_spec.rb'
-    - 'spec/controllers/elements_controller_spec.rb'
 
 # Offense count: 117
 # Cop supports --auto-correct.
@@ -82,28 +74,17 @@ Layout/EmptyLineBetweenDefs:
 # Cop supports --auto-correct.
 Layout/EmptyLines:
   Exclude:
-    - 'Gemfile'
-    - 'app/controllers/deviations_controller.rb'
-    - 'app/updaters/competition_updater.rb'
-    - 'bin/setup'
-    - 'config/breadcrumbs.rb'
-    - 'spec/spec_helper.rb'
 
 # Offense count: 6
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundAccessModifier:
   Exclude:
-    - 'app/controllers/controller_concerns/error_handlers.rb'
-    - 'app/models/element.rb'
-    - 'app/models/score.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundArguments:
   Exclude:
-    - 'lib/tasks/parse.rake'
+
 
 # Offense count: 16
 # Cop supports --auto-correct.

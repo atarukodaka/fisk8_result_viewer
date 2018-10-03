@@ -14,7 +14,6 @@ RSpec.configure do |config|
   #config.include Helper
 end
 
-
 ################
 ## Codecov
 require 'simplecov'
