@@ -99,7 +99,7 @@ module AjaxFeatureHelper
   ### ajax
   def ajax_trigger
     page.evaluate_script("$('table.display').trigger('change')")
-    sleep 2
+    sleep 1
   end
   def ajax_action_order(column_name, path: )
     visit path
@@ -112,7 +112,7 @@ module AjaxFeatureHelper
   end
   def ajax_action_filter(path:, input_type: , key:, value: nil)
     visit path
-    case input_type
+    binding.pry    case input_type
     when :fill_in
       fill_in key, with: value
       find("input##{key}").send_keys :tab
