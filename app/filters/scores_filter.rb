@@ -3,8 +3,8 @@ class ScoresFilter < IndexFilter
     @_filters ||= [
       {
         label: hname(:skater_name),
-        field: { key: :skater_name, input_type: :text_field }
-      },  ## TODO: competition filters to insert
+        fields: [{ key: :skater_name, input_type: :text_field }],
+      },
       CompetitionsFilter.new.filters,
       {
         label: hname(:category),
@@ -13,7 +13,7 @@ class ScoresFilter < IndexFilter
       {
         label: hname(:segment),
         fields: [:segment_name, :segment_type].map {|key| { key: key, input_type: :select, label: hname(key) }},
-      },
+      }
     ].flatten
   end
-end  
+end

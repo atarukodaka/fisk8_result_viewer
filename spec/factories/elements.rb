@@ -4,7 +4,7 @@ FactoryBot.define do
     trait :solo_jump do
       name { '4T' }
       element_type { 'jump' }
-      element_subtype { 'solo' } 
+      element_subtype { 'solo' }
       value { 10 }
       goe { 2 }
       base_value { 8 }
@@ -16,7 +16,7 @@ FactoryBot.define do
     trait :combination_jump do
       name { '3Lz+3T' }
       element_type { 'jump' }
-      element_subtype { 'combination' } 
+      element_subtype { 'combination' }
       value { 15 }
       goe { 3 }
       base_value { 12 }

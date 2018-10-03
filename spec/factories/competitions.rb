@@ -11,8 +11,8 @@ FactoryBot.define do
       country { 'JPN' }
       site_url { 'http://world2015.isu.org/results/' }
       season { '2014-15' }
-      start_date { Date.new(2015,2,1) }
-      end_date { Date.new(2015,2,3) }
+      start_date { Date.new(2015, 2, 1) }
+      end_date { Date.new(2015, 2, 3) }
 
       after (:build) do |competition|
         skater = create(:skater, :men)
@@ -31,8 +31,8 @@ FactoryBot.define do
       city { 'Finland' }
       country { 'FIN' }
       site_url { 'http://finlandia-2017/' }
-      start_date { Date.new(2017,9,1) }
-      end_date { Date.new(2017,9,3) }
+      start_date { Date.new(2017, 9, 1) }
+      end_date { Date.new(2017, 9, 3) }
 
       after (:build) do |competition|
         skater = create(:skater, :ladies)

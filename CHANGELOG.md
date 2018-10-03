@@ -13,8 +13,8 @@
   - season from/to
   - elements, components, statics, panels
   - elements/date order
+  - context filter to accept hash or class
 - spec/controller/deviation
-
 
 ### new feature
 

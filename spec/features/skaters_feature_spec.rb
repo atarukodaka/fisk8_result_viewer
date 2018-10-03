@@ -13,12 +13,7 @@ feature SkatersController, type: :feature, feature: true do
     end
 
     context :filter do
-      filters = [
-          { name: :name, input_type: :fill_in,  },
-          { name: :category_type, input_type: :select },
-          { name: :nation, input_type: :select, }
-      ]
-      include_context :filter, filters
+      include_context :filter, SkatersFilter
     end
     context :order do
       include_context :order, SkatersDatatable

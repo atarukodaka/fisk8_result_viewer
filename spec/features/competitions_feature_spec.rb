@@ -12,12 +12,9 @@ feature CompetitionsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      filters = [{ name: :competition_name, input_type: :fill_in, },
-       { name: :site_url, input_type: :fill_in, },
-       { name: :competition_class, input_type: :select, },
-       { name: :competition_type, input_type: :select, },
-      ]
-      include_context :filter, filters
+      #filters = CompetitionsFilter.new.filters.map {|elem| elem[:fields] }.flatten.reject{|elem| elem[:key] == :season_from || elem[:key] == :season_to}.compact
+      #binding.pry
+      include_context :filter, CompetitionsFilter, excludings: [:season_to, :season_from]
       include_context :filter_season
     end
     context 'order' do
@@ -33,9 +30,8 @@ feature CompetitionsController, type: :feature, feature: true do
         expect(page.body).to have_content("Showing 1 to #{page_length}")
         find(:xpath, '//ul[@class="pagination"]/li/a[@data-dt-idx="2"]').click
         sleep 1
-        expect(page.body).to have_content("Showing #{page_length+1} to #{page_length * 2}")
+        expect(page.body).to have_content("Showing #{page_length + 1} to #{page_length * 2}")
       }
     end
-
   end
 end

@@ -20,7 +20,7 @@ FactoryBot.define do
         create(:element, :combination_jump, score: score)
         create(:component, :ss, score: score)
       end
-      
+
       trait :world_free do
         segment { Segment.find_by(name: 'FREE SKATING') }
       end

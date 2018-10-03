@@ -4,12 +4,12 @@ RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater){
-    create(:competition, :world).
-      scores.joins(:category).where("categories.category_type": "MEN").first.skater
+    create(:competition, :world)
+      .scores.joins(:category).where("categories.category_type": 'MEN').first.skater
   }
   let!(:ladies_skater){
-    create(:competition, :finlandia).
-      scores.joins(:category).where("categories.category_type": "LADIES").first.skater
+    create(:competition, :finlandia)
+      .scores.joins(:category).where("categories.category_type": 'LADIES').first.skater
   }
   let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = 'Bench WARMER' } }
 
@@ -21,7 +21,7 @@ RSpec.describe SkatersController, type: :controller do
       its(:body) { is_expected.not_to include(no_scores_skater.name) }
     end
 
-    describe "all" do
+    describe 'all' do
       subject { get :index }
       it { is_expected.to be_success }
       it_behaves_like :skaters_who_have_scores

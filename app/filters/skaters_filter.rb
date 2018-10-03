@@ -3,7 +3,7 @@ class Filter
   include ActionView::Helpers::FormTagHelper
 
   attr_reader :fields
-  
+
   def initialize(label: "", fields: [], field: nil)
     @fields = [field, fields].flatten.compact
   end
@@ -19,7 +19,7 @@ class SkatersFilter < IndexFilter
     @_filters ||= [
       {
         label: hname(:name),
-        fields: [ { key: :name, input_type: :text_field, }],
+        fields: [{ key: :name, input_type: :text_field, }],
       },
       {
         label: hname(:category_type),
@@ -28,7 +28,7 @@ class SkatersFilter < IndexFilter
       {
         label: hname(:nation),
         fields: [{ key: :nation, input_type: :select, }],
-      },
+      }
     ]
   end
 end

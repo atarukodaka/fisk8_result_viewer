@@ -82,7 +82,7 @@ module AjaxDatatables
       @data = nil
       data
     end
-      
+
     ################
     ## filters
     def filter
@@ -93,7 +93,7 @@ module AjaxDatatables
       end
       @_filter ||= klass.new
     end
-    
+
     ################
     ## settings, etc
     def default_settings

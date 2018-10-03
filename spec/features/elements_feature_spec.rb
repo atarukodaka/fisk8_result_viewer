@@ -15,7 +15,7 @@ feature ElementsController, type: :feature, feature: true do
     end
     context 'filter' do
       include_context :score_filter
-      
+
       context 'element_name' do
         subject {
           visit index_path

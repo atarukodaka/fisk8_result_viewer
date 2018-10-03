@@ -17,9 +17,19 @@ module AjaxFeatureHelper
   ################
   module Filter
     ## context
-    shared_context :filter do |filters|
+    shared_context :filter do |filter_class, excludings: []|
+
+      ## TODO: filter class or hash to accept
+      #filters = filter_class.new.filters.map {|elem| elem[:fields] }.flatten.reject {|filter| excludings.include?(filter[:key])}
+      filters = filter_class.new.filters.map do |elem|
+        elem[:fields].map do |field|
+          next if excludings.include?(field[:key])
+          field.slice(*[:key, :input_type])
+        end
+      end.flatten.compact
+
       filters.each do |hash|
-        include_context :ajax_filter, hash[:name], hash[:input_type]
+        include_context :ajax_filter, hash[:key], hash[:input_type]
       end
     end
 
@@ -28,7 +38,7 @@ module AjaxFeatureHelper
         subject { ajax_action_filter(key: :season_from, value: sub.season, input_type: :select, path: index_path) }
         it_behaves_like :contains, false, true
       end
-      
+
       context :to_earlier do
         subject { ajax_action_filter(key: :season_to, value: main.season, input_type: :select, path: index_path) }
         it_behaves_like :contains, true, false
@@ -49,7 +59,7 @@ module AjaxFeatureHelper
     def ajax_action_filter(path:, input_type: , key:, value: nil)
       visit path
       case input_type
-      when :fill_in
+      when :fill_in, :text_field
         fill_in key, with: value
         find("input##{key}").send_keys :tab
       when :select
@@ -62,20 +72,22 @@ module AjaxFeatureHelper
     end
 
     ################
+=begin
     shared_context :score_filter do
       include_context :filter, [
-                        { name: :skater_name, input_type: :fill_in, },
-                        { name: :competition_name, input_type: :fill_in, },
-                        { name: :competition_class, input_type: :select, },
-                        { name: :competition_type, input_type: :select, },
-                        { name: :category_name, input_type: :select },
-                        { name: :category_type, input_type: :select, },
-                        { name: :seniority, input_type: :select, },
-                        { name: :team, input_type: :select, },
-                        { name: :segment_name, input_type: :select },
-                        { name: :segment_type, input_type: :select, },
-                      ]      
+        { key: :skater_name, input_type: :fill_in, },
+        { key: :competition_name, input_type: :fill_in, },
+        { key: :competition_class, input_type: :select, },
+        { key: :competition_type, input_type: :select, },
+        { key: :category_name, input_type: :select },
+        { key: :category_type, input_type: :select, },
+        { key: :seniority, input_type: :select, },
+        { key: :team, input_type: :select, },
+        { key: :segment_name, input_type: :select },
+        { key: :segment_type, input_type: :select, },
+      ]
     end
+=end
   end
 
   ################
@@ -100,6 +112,7 @@ module AjaxFeatureHelper
     shared_context :order do |datatable_class, excludings: []|
       datatable_class.new.columns.select(&:orderable).map(&:name).each do |key|
         next if excludings.include?(key.to_sym)
+
         include_context :ajax_order, key
       end
     end

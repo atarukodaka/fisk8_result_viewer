@@ -9,8 +9,8 @@ RSpec.describe CompetitionsController, type: :controller do
   ################
   ## examples
   shared_examples :having_all do
-      its(:body) { is_expected.to have_content(world.name) }
-      its(:body) { is_expected.to have_content(finlandia.name) }
+    its(:body) { is_expected.to have_content(world.name) }
+    its(:body) { is_expected.to have_content(finlandia.name) }
   end
 
   ################
@@ -20,7 +20,7 @@ RSpec.describe CompetitionsController, type: :controller do
       subject { get :index  }
       it_behaves_like :having_all
     end
-    
+
     context 'format: ' do
       [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, content_type|
         context ".#{format}" do
@@ -29,7 +29,7 @@ RSpec.describe CompetitionsController, type: :controller do
         end
       end
     end
-  end 
+  end
 
   ################
   describe '#show' do
