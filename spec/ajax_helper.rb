@@ -1,4 +1,5 @@
 module AjaxHelper
+=begin
   ## customized matches
   RSpec::Matchers.define :appear_before do |later_content|
     match do |earlier_content|
@@ -54,4 +55,5 @@ module AjaxHelper
   def sort_params(column_name, direction = 'asc')
     { order: { "0": { "column": column_number(column_name), "dir": direction } } }
   end
+=end
 end
