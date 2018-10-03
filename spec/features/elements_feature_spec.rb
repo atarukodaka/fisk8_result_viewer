@@ -14,7 +14,7 @@ feature ElementsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :score_filter
+      include_context :filter, ScoresFilter, excludings: [:season_to, :season_from, :site_url]
 
       context 'element_name' do
         subject {
