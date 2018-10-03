@@ -115,7 +115,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       :isu, :jgp, 'JGPGER2016'],
      ['http://www.figureskatingresults.fi/results/1617/CSFIN2016/',
       :challenger, :finlandia, 'FINLANDIA2016'],
-     # TODO: competition_class, and other examples to add
+      # TODO: competition_class, and other examples to add
     ].each do |ary|
       context ary[0] do
         let(:url) { ary[0] }
@@ -173,7 +173,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
 =end
   end
-  ################
+################
 =begin
 =end
   ################

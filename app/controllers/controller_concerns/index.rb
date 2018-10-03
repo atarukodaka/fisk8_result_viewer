@@ -17,7 +17,8 @@ module ControllerConcerns::Index
             c << row
           end
         end
-        send_data csv, filename: "#{controller_name}.csv" }
+        send_data csv, filename: "#{controller_name}.csv"
+      }
     end
   end
   ## json index access

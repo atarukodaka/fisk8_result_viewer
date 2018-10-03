@@ -29,7 +29,6 @@ gem 'google-analytics-rails'
 gem 'rspec'   ## for heroku
 gem 'stackprof'  # profiling
 
-
 ## for each environments
 group :development, :test do
   gem 'bullet'

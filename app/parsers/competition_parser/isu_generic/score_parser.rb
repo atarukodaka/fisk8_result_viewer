@@ -32,6 +32,7 @@ class CompetitionParser
         end  ## each line
 
         raise 'parsing error' if @mode != :pcs && @mode != :deductions
+
         @score
       end
 
@@ -101,6 +102,7 @@ class CompetitionParser
 
       ################
       protected
+
       def convert_pdf(url)
         return nil if url.blank?
 

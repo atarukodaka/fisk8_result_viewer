@@ -14,6 +14,7 @@
 - table_id consistence
 - ice cance set elementtype/elements
 - update:skaters categories
+- skater: having score or nolimit
 
 ### new feature
 

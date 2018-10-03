@@ -28,7 +28,6 @@ class CompetitionUpdater
   def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
     categories_to_update = get_categories_to_update(categories)
 
-
     ActiveRecord::Base.transaction do
       ## existing check
       if (competitions = Competition.where(site_url: site_url).presence)
@@ -39,7 +38,6 @@ class CompetitionUpdater
           return nil
         end
       end
-
 
       parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
 
@@ -71,6 +69,7 @@ class CompetitionUpdater
 
           parsed[:segments][category_str].each do |segment_str, seg_item|
             next if seg_item[:result_url].blank?
+
             segment = Segment.find_by(name: segment_str)
 
             update_performed_segment(competition, category, segment, seg_item[:panel_url], seg_item[:time])
@@ -91,6 +90,7 @@ class CompetitionUpdater
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
           next if parsed_panels[:judges][i].nil?
+
           name = normalize_persons_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]
           panel = Panel.find_or_create_by(name: name)
@@ -125,6 +125,7 @@ class CompetitionUpdater
   ################
   def update_judge_details(competition, category, segment, score)
     return if competition.start_date <= Time.zone.parse('2016-7-1') # was random order in the past
+
     ### elements
     score.elements.each do |element|
       details = element.judges.split(/\s/).map(&:to_f)

@@ -16,6 +16,7 @@ class Element < ApplicationRecord
   alias_attribute :element_number, :number
 
   private
+
   def set_element_type
     self[:element_type], self[:element_subtype] =
                          if score.category.name == 'ICE DANCE'

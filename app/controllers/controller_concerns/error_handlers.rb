@@ -3,13 +3,15 @@ module ControllerConcerns::ErrorHandlers
 
   included do
     unless Rails.env.development?
-    #if false
+      #if false
       rescue_from Exception, with: :handler_500
       rescue_from ActiveRecord::RecordNotFound, with: :handler_404
       rescue_from ActionController::RoutingError, with: :handler_404
     end
   end
+
   private
+
   def handler_404(e = nil)
     respond_to do |format|
       format.html { render 'errors/404', status: :not_found, locals: { message: e.try(:message) }}

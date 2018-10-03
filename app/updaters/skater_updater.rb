@@ -28,6 +28,7 @@ class SkaterUpdater
   def update_skaters_detail
     Skater.all.each do |skater|
       next if skater.isu_number.blank?
+
       update_skater_detail(skater.isu_number)
     end
   end

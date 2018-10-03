@@ -37,7 +37,6 @@ crumb :competition_segment do |competition, category, segment|
   parent :competition_category, competition, category
 end
 
-
 ################
 # category results
 =begin
@@ -53,7 +52,6 @@ crumb :scores do
   link t('controller.scores', default: 'scores'), scores_path
   parent :root
 end
-
 
 crumb :score do | score|
   link [score.competition_name, score.category.name, score.segment.name, score.ranking, score.skater_name].join(' / '), scores_path

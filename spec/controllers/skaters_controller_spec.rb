@@ -6,7 +6,7 @@ RSpec.describe SkatersController, type: :controller do
   let!(:men_skater){
     competition = create(:competition, :world)
     competition.scores.where(category: Category.find_by(name: 'TEAM MEN')).first.skater
-    #create(:skater, :men) do |skater|
+#create(:skater, :men) do |skater|
 =begin
       competition = create(:competition, :world)
       create(:performed_segment, competition: competition)
@@ -18,9 +18,9 @@ RSpec.describe SkatersController, type: :controller do
   let!(:ladies_skater){
     competition = create(:competition, :finlandia)
     competition.scores.where(category: Category.find_by(name: 'JUNIOR LADIES')).first.skater
-#    create(:skater, :ladies) do |skater|
-#      create(:score, competition: create(:competition), skater: skater)
-#    end
+    #    create(:skater, :ladies) do |skater|
+    #      create(:score, competition: create(:competition), skater: skater)
+    #    end
   }
   let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = 'Bench WARMER' } }
 

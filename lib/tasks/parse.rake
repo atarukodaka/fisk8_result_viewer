@@ -9,7 +9,6 @@ namespace :parse do
       str << "Executed Elements\n"
       str << score[:elements].map do |element|
         '  %<number>2d %<name>-20s %<info>-3s %<base_value>5.2f %<goe>5.2f %<judges>-30s %<value>6.2f' % element.merge(judges: element[:judges].split(/\s/).map {|v| '%4s' % [v]}.join(' '))
-
       end.join("\n")
       str << "\nProgram Components\n"
       str << score[:components].map do |component|
