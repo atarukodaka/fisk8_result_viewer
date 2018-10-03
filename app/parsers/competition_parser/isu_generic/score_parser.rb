@@ -5,7 +5,7 @@ class CompetitionParser
   class IsuGeneric
     class ScoreParser < ::Parser
       SCORE_DELIMITER = /Score Score/
-      
+
       def parse(score_url)
         text = convert_pdf(score_url) || (return [])
         puts "   -- parsing score: #{score_url}" if @verbose
@@ -22,7 +22,7 @@ class CompetitionParser
       def parse_score(text)
         @mode = :skater
         @score = { elements: [], components: [] }
-        
+
         text.split(/\n/).each do |line|
           begin
             send("parse_#{@mode}", line)
@@ -30,11 +30,12 @@ class CompetitionParser
             raise "NameError: no such mode: #{@mode}"
           end
         end  ## each line
-        
-        raise "parsing error" if @mode != :pcs && @mode != :deductions
+
+        raise 'parsing error' if @mode != :pcs && @mode != :deductions
+
         @score
       end
-      
+
       def parse_skater(line)
         name_re = %q[[[:alpha:]1\.\- \/\']+]   ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = %q[[A-Z][A-Z][A-Z]]
@@ -48,7 +49,7 @@ class CompetitionParser
           @mode = :tes
         end
       end
-      
+
       def parse_tes(line)
         case line
         when /^(\d+) +(.*)$/
@@ -69,7 +70,7 @@ class CompetitionParser
             end
             @score[:elements] << element
           else
-            raise "parseing error on TES"
+            raise 'parseing error on TES'
           end
         when /^([\d\.]+) +[\d\.]+$/
           @score[:base_value] = $1.to_f
@@ -77,7 +78,7 @@ class CompetitionParser
           @mode = :pcs
         end
       end
-      
+
       def parse_pcs(line)
         case line
         when /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
@@ -92,7 +93,7 @@ class CompetitionParser
           @mode = :deductions
         end
       end
-      
+
       def parse_deductions(line)
         if line =~ /Deductions:? (.*) [0-9\.\-]+$/
           @score[:deduction_reasons] = $1
@@ -101,16 +102,17 @@ class CompetitionParser
 
       ################
       protected
+
       def convert_pdf(url)
         return nil if url.blank?
-        
+
         begin
           open(url, allow_redirections: :safe) do |f|
             tmp_filename = "score-#{rand(1000)}-tmp.pdf"
             Tempfile.create(tmp_filename) do |out|
               out.binmode
               out.write f.read
-              
+
               Pdftotext.text(out.path)
             end
           end

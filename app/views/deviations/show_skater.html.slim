@@ -1,0 +1,8 @@
+
+h2 Deviation by Skater: #{skater_name}
+
+- breadcrumb :skater_deviation, skater_name
+
+h3= t(".deviation", default: "Deviation")
+= deviations_datatable.decorate.render
+

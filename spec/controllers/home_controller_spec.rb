@@ -8,5 +8,4 @@ RSpec.describe HomeController, type: :controller do
     expect(response.body).to include('Fisk8 Result Viewer')
     expect(response.body).to include(Settings['about']['name'])
   end
-    
 end

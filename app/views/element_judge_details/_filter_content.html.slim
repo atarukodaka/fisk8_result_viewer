@@ -1,0 +1,6 @@
+/= render partial: "scores/filter_content", locals: { table: table }
+= form_group(Score.human_attribute_name(:skater_name), text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name, table)))
+= form_group(Score.human_attribute_name(:score_name), text_field_tag(:score_name, params[:score_name], size: 70, onchange: ajax_search(:score_name, table)))
+= form_group(Score.human_attribute_name(:panel_name), text_field_tag(:panel_name, params[:panel_name], size: 70, onchange: ajax_search(:panel_name, table)))
+
+

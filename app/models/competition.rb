@@ -1,27 +1,25 @@
 class Competition < ApplicationRecord
   #before_save :normalize
-  
+
+  alias_attribute :competition_name, :name
+
   ## relations
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
   has_many :performed_segments, dependent: :destroy
 
   ## validations
-  validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/}  
+  validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
 
   ## scopes
-  scope :recent, ->(){ order("start_date desc")  }
-  #scope :name_matches, ->(v){ where("name like ? ", "%#{v}%") }
-  #scope :site_url_matches, ->(v){ where("site_url like ? ", "%#{v}%") }
+  scope :recent, ->(){ order('start_date desc')  }
 
-  ## entries
-  def categories
-    scores.pluck(:category).uniq
-  end
   ## updater
   def normalize
     year = self.start_date.year
-    country_city = country || city.to_s.upcase.gsub(/\s+/, '_')        
+    country_city = country || city.to_s.upcase.gsub(/\s+/, '_')
+
+=begin
     ary = case name
           when /Grand Prix .*Final/, /^ISU GP.*Final/
             [:isu, :gp, "GPF#{year}"]
@@ -41,7 +39,7 @@ class Competition < ApplicationRecord
             [:isu, :jworld, "JWORLD#{year}"]
           when /^ISU JGP/, /^ISU Junior Grand Prix/
             [:isu, :jgp, "JGP#{country_city}#{year}"]
-            
+
           when /^Finlandia Trophy/
             [:challenger, :finlandia, "FINLANDIA#{year}", "Finlandia Trophy #{year}"]
           when /Warsaw Cup/
@@ -57,11 +55,27 @@ class Competition < ApplicationRecord
           else
             [:unknown, :unknown, name.to_s.gsub(/\s+/, '_')]
           end
-    self.competition_class ||= ary[0]
-    self.competition_type ||= ary[1]
-    self.short_name ||= ary[2]
-    self.name = ary[3] if ary[3]
-    
+=end
+
+    ary = nil
+    data = YAML::load_file(File.join(Rails.root.join('config'), 'competition_normalize.yml'))
+    data.each do |key, value|
+      if name =~ Regexp.new(key)
+        ary = value
+        break
+      end
+    end
+
+    if ary.nil?
+      ary = [:unknow, :unknow, name.to_s.gsub(/\s+/, '_')]
+    end
+    hash = { year: year, city: city, country_city: country_city }
+
+    self.competition_class ||= ary[0].to_sym
+    self.competition_type ||= ary[1].to_sym
+    self.short_name ||= ary[2] % hash
+    self.name = ary[3] % hash if ary[3]
+
     self
   end
 end

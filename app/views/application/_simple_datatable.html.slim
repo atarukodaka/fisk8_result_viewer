@@ -1,0 +1,20 @@
+// columns, data 
+- settings ||= {}
+
+- table_id ||= "table_#{'dummy'.object_id}"
+- attrs = settings.merge({ columns: columns.map {|column_name| { name: column_name}} })
+div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
+
+script
+  | jQuery(function($){attrs = $('#attrs-#{table_id}').data('json'); $("##{table_id}").DataTable(attrs);});
+
+table.table.table-striped.table-hover.table-condensed id="#{table_id}"
+  thead
+    tr
+      - columns.each do |column|
+        th id="column_#{table_id}_#{column}" #{column}
+  tbody
+    - data.each do |row|
+      tr
+        - row.each do |item|
+          td= item

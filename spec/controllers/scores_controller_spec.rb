@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ScoresController, type: :controller do
-
   render_views
 
   let!(:world_score) {
@@ -15,7 +14,7 @@ RSpec.describe ScoresController, type: :controller do
   ################
   describe '#index' do
     subject { get :index }
-    it { is_expected.to be_success }
+    it {is_expected.to be_success }
   end
 
   describe '#list' do

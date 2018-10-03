@@ -15,6 +15,11 @@ ja:
     elements: 技術要素
     components: コンポーネント
     statics: 統計情報
+    panels: パネル
+    deviations: 逸脱度
+    element_judge_details: 技術要素ジャッジ詳細
+    component_judge_details: コンポーネントジャッジ詳細
+    
     
   competitions:
     show:
@@ -57,18 +62,37 @@ ja:
       twizzle: ツイズル
       pattern_dance: パターンダンス
 
+  panels:
+    show:
+      participated_segments: 参加セグメント
+      deviation: 逸脱度
+
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
-
+  
+  # models
   attributes:
     skater_name: スケーター名
+    skater_nation: スケーター国名
+    competition_name: 大会名
+    score_name: スコア名
     category: カテゴリー
+    category_name: カテゴリー名
+    category_type: カテゴリータイプ
     segment: セグメント
+    segment_name: セグメント
     nation: 国名
+    panel_name: パネル名
+    panel_nation: パネル国名
     ranking: 順位
     date: 日付
     points: 得点
+    number: 番号
+    season: シーズン
+    element_name: 要素名
+    value: 値
+    average: 平均
   
   activerecord:
     models:
@@ -90,6 +114,7 @@ ja:
 
       competition:
         name: 競技会名
+        name_info: 開催名
         city: 開催都市
         country: 開催国
         location: 開催場所
@@ -104,6 +129,9 @@ ja:
         site_url: サイトURL
         short_name: 略称
 
+      performed_segment:
+        starting_time: 開始日時
+
       category_result:
         competition_name: 競技会名
         short_ranking: ショート順位
@@ -111,13 +139,13 @@ ja:
         short_tes: ショートTES
         short_pcs: ショートPCS
         short_deductions: ショート減点
-        short_bv: ショート基礎点
+        short_base_value: ショート基礎点
         free_ranking: フリー順位
         free_tss: フリーTSS
         free_tes: フリーTES
         free_pcs: フリーPCS
         free_deductions: フリー減点
-        free_bv: フリー基礎点
+        free_base_value: フリー基礎点
 
       score:
         name: スコア名
@@ -126,7 +154,6 @@ ja:
         team: チーム戦
         segment_type: セグメントタイプ
         result_pdf: リザルトPDF
-        skater_name: 選手名
         deductions: 減点
         base_value: 基礎点
         elements_summary: 要素一覧
@@ -135,12 +162,7 @@ ja:
         date: 日付
 
       element:
-        score_name: スコア名
-        competition_name: 競技会名
-        category: カテゴリー
-        segment: セグメント
-        season: シーズン
-        number: 番号
+        number: エレメント番号
         name: 要素名
         element_type: 要素の型
         element_subtype: 要素の副型
@@ -148,14 +170,27 @@ ja:
         info: 付加情報
         credit: クレジット
         judges: ジャッジ
-        value: 得点
         base_value: 基礎点
 
       component:
-        score_name: スコア名
-        competition_name: 競技会名
         number: 番号
         name: コンポーネント名
         factor: ファクター
         judges: ジャッジ
-        value: 得点
+
+      panel:
+        name: パネル名
+        nation: パネル国名
+
+      element_judge_detail:
+        element_number: エレメント番号
+
+      component_judge_detail:
+        component_name: コンポーネント名
+
+      deviation:
+        official_number: オフィシャル番号
+        tes_deviation: TES逸脱度
+        pcs_deviation: PCS逸脱度        
+        tes_deviation_ratio: TES逸脱率
+        pcs_deviation_ratio: PCS逸脱率        

@@ -18,7 +18,7 @@ module AjaxDatatables::Datatable::ConditionBuilder
                      :matches
                    end
                  end
-      
+
       ## create arel table for the searcing query
       arel = model.arel_table[table_field]
       case operator.to_sym

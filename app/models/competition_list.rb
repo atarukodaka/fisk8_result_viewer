@@ -18,11 +18,11 @@ class CompetitionList < ActiveYaml::Base
   set_filename 'competitions'
 
   #DEFAULT_PARSER = :isu_generic
-  
+
   field :url
   field :parser_type, default: CompetitionParser::DEFAULT_PARSER
   field :comment
-  
+
   class << self
     def load_file
       raw_data.map do |item|
@@ -35,7 +35,6 @@ class CompetitionList < ActiveYaml::Base
         end
         hash[:parser_type] ||= CompetitionParser::DEFAULT_PARSER
         hash
-        
       end
     end
   end

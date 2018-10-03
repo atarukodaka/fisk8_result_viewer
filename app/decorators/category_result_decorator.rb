@@ -1,28 +1,20 @@
 class CategoryResultDecorator < EntryDecorator
   using AsScore
   using AsRanking
-  
-  def skater_name
-    h.link_to_skater(nil, model.skater)
-  end
-  def nation
-    model.skater.nation
-  end
+
   def competition_name
     h.link_to_competition(model.competition)
   end
+=begin
   def competition_short_name
     h.link_to_competition(model.competition.short_name, model.competition)
   end
+=end
+  def skater_name
+    h.link_to_skater(model.skater)
+  end
   def category
-    h.link_to_competition(model.category, model.competition, category: model.category)
-  end
-
-  def birthday
-    l(model.birthday)
-  end
-  def bio_updated_at
-    l(model.bio_updated_at)
+    h.link_to_competition(nil, model.competition, category: model.category)
   end
 
   decorate_as_ranking(:ranking)
@@ -40,4 +32,3 @@ class CategoryResultDecorator < EntryDecorator
   end
   decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value)
 end
-

@@ -1,8 +1,0 @@
-= form_group("Skater Name", text_field_tag(:skater_name, params[:skater_name], size: 70, onchange: ajax_search(:skater_name, table)))
-
-= render partial: "competition_filter", locals: {table: table, competition_name_key: :competition_name}
-= form_group("Category") do
-  = select_tag_with_options(:category, onchange: ajax_search(:category, table))
-    
-
-

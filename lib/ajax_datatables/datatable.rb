@@ -38,14 +38,15 @@ module AjaxDatatables
 
     attr_reader :view_context
 
-    def initialize(view_context = nil)
+    def initialize(view_context = nil, columns: [])
       @view_context = view_context
+      @columns = columns(columns)
       yield(self) if block_given?
     end
     def table_id
       "table_#{self.object_id}"
     end
-    
+
     def view    # short cut for view_context
       @view_context
     end
@@ -54,13 +55,19 @@ module AjaxDatatables
       if cols                   # setter for method chain
         self.tap {|d| d.columns = cols }
       else                     # getter
-        @columns   
+        @columns
       end
     end
     def columns=(cols) # setter
       @columns = AjaxDatatables::Columns.new(cols, datatable: self)
     end
-    
+    def add_columns(cols)
+      if @columns.nil?
+        columns = cols
+      else
+        @columns.add(cols)
+      end
+    end
     ## data fetching/manipulation
     def fetch_records
       []
@@ -76,12 +83,12 @@ module AjaxDatatables
     def default_settings
       {
         processing: true,
-        paging: true,
+        paging:     true,
         pageLength: 25,
       }
     end
     def ajax(serverside: false, url: )
-      settings.update(serverSide: serverside, ajax: {url: url})
+      settings.update(serverSide: serverside, ajax: { url: url })
       self
     end
     def column_names
@@ -95,19 +102,19 @@ module AjaxDatatables
       settings.merge(
         {
           retrieve: true,
-          columns: column_names.map {|name|
+          columns:  column_names.map {|name|
             {
-              data: name, 
-              name: name, 
-              visible: columns[name].visible, 
-              orderable: columns[name].orderable,
+              data:       name,
+              name:       name,
+              visible:    columns[name].visible,
+              orderable:  columns[name].orderable,
               searchable: columns[name].searchable
             }
           },
-          order: order,
+          order:    order,
         })
     end
-    def render(partial: "datatable", locals: {})
+    def render(partial: 'datatable', locals: {})
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
     end
     ################

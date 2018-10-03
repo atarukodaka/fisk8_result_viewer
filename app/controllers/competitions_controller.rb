@@ -1,6 +1,6 @@
 class CompetitionsController < ApplicationController
   include ControllerConcerns::Index
-  
+
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none
@@ -13,12 +13,13 @@ class CompetitionsController < ApplicationController
   def category_results_datatable(competition, category)
     return nil if category.blank?
 
-    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.includes(:category).category(category).includes(:skater, :short, :free)).
+    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :short, :free)).
       columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,]).
       tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
   end
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
+
     AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
       columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
   end
@@ -26,13 +27,15 @@ class CompetitionsController < ApplicationController
   def show
     competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
 
-    category, segment, ranking = params[:category], params[:segment], params[:ranking]
+    category_name, segment_name, ranking = params[:category], params[:segment], params[:ranking]
+    category = Category.find_by(name: category_name)
+    segment = Segment.find_by(name: segment_name)
 
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category, segment, ranking].join('/')))
-      
+              raise(ActiveRecord::RecordNotFound.new('no such score: ' + [competition.short_name, category_name, segment_name, ranking].join('/')))
+
       respond_to do |format|
         format.html {
           redirect_to(controller: :scores, action: :show, name: score.name)
@@ -44,16 +47,15 @@ class CompetitionsController < ApplicationController
     else
       respond_to do |format|
         results = {
-          category_results: category_results_datatable(competition, Category.find_by(name: category)),
-          segment_results: segment_results_datatable(competition, Category.find_by(name: category),
-                                                     Segment.find_by(name: segment)),
+          category_results: category_results_datatable(competition, category),
+          segment_results:  segment_results_datatable(competition, category, segment),
         }
         format.html {
           data = {
             competition: competition,
-            category: category,
-            segment: segment,
-            result_type: result_type(category, segment),
+            category:    category,
+            segment:     segment,
+            result_type: result_type(category_name, segment_name),
           }.merge(results)
           render :show, locals: data
         }

@@ -4,7 +4,7 @@
 
 - content_for :title do
   | competition: 
-  = [competition.name, category, segment].reject(&:blank?).join(' / ')
+  = [competition.name, category.try(:name), segment.try(:name)].reject(&:blank?).join(' / ')
 
 - case result_type
 - when :category
@@ -19,10 +19,15 @@
   .col-sm-6
     h2= t(".competition_summary", default: "Competition Summary")
     = Listtable.new(self).records(competition.decorate).columns([:name_info, :location, :site_url, :period, :comment]).render
-    
+
+    - if result_type == :segment
+      h3 Officials
+      - records = Official.where("performed_segments.competition": competition, "performed_segments.category": category, "performed_segments.segment": segment).includes(:performed_segment, :panel)
+      = AjaxDatatables::Datatable.new(self).records(records).columns([:number, :panel_name, :panel_nation]).update_settings(info: false, searching: false, paging: false ).decorate.render
+
   .col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")
-    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category, :segment, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
+    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
 
 ////////////////////////////////////////////////////////////////
 h2
@@ -30,9 +35,9 @@ h2
   /- when :none
   /  ="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
   - when :category
-    | #{t(".category_results", default: "Category Results")} : #{category}
+    | #{t(".category_results", default: "Category Results")} : #{category.name}
   - when :segment
-    | #{t(".segment_results", default: "Segment Results")} : #{category}/#{segment}
+    | #{t(".segment_results", default: "Segment Results")} : #{category.name} / #{segment.name}
 
 ////////////////
 // nav bar for category/segment

@@ -11,11 +11,11 @@ class CompetitionParser
         {}
       end
       def get_rows(page)
-        raise "implemente on derived class"
+        raise 'implemente on derived class'
       end
 
       def get_headers(row)
-        elems = row.xpath("th").presence || row.xpath("td")
+        elems = row.xpath('th').presence || row.xpath('td')
         elems.map do |elem|
           elem.text.squish.gsub(/[[:space:]]/, '')
         end
@@ -35,10 +35,10 @@ class CompetitionParser
           data = {}
           columns.each do |key, params|
             relevant_headers = [params[:header],].flatten
-            
+
             col_number = headers.index {|d| relevant_headers.index(d)} ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")
-            elem = elems[col_number]
+            elem = elems[col_number] || next
             data[key] =
               if (callback = params[:callback])
                 callback.call(elem)

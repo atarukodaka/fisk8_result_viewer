@@ -13,7 +13,7 @@ module Property
 
   def property(sym, default = nil, readonly: false, &initializer)
     initializer ||= -> * { default }
-    
+
     ## define getter and setter with method change
     define_method(sym) do |*args|
       variable_name = "@#{sym.to_sym}"

@@ -23,4 +23,3 @@ class CompetitionParser
   end
 =end
 end
-
