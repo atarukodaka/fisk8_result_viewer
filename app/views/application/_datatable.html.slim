@@ -2,19 +2,7 @@
 - table_id = datatable.table_id
 - attrs = datatable.as_attrs
 
-////////////////////////////////////////////////////////////////
-/- datatable.filters.each do |filter|
-  div.form-group.row
-    div.col-sm-2
-      label= filter[:label].humanize
-    div.col-sm-10
-      - filter[:fields].each do |field|
-        - key = field[:key]
-        - case field[:input_type]
-        - when :text_field
-          = text_field_tag(key, params[key], size: 70, onchange: ajax_search(key, datatable))
-        - when :select
-          = select_tag_with_options(key, onchange: ajax_search(key, datatable))
+= render partial: "filter", locals: { datatable: datatable }
 
 ////////////////////////////////////////////////////////////////
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'

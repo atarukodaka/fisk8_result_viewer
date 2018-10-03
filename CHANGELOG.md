@@ -6,17 +6,14 @@
 - youtube register
 - components controller is necessary ??
 - codecov: icedance elements
+- help for rake:update
+- update:skaters categories
+- skater: having score or nolimit
 - spec/feature
   - season from/to
   - elements, components, statics, panels
-  - paging
   - elements/date order
-- help for rake:update
-- table_id consistence
-- ice cance set elementtype/elements
-- update:skaters categories
-- skater: having score or nolimit
-- cache clear when update
+- spec/controller/deviation
 
 
 ### new feature

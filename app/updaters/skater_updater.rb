@@ -26,9 +26,7 @@ class SkaterUpdater
   ################
   # skater detail
   def update_skaters_detail
-    Skater.all.each do |skater|
-      next if skater.isu_number.blank?
-
+    Skater.reject {|sk| sk.isu_number.blank? }.each do |skater|
       update_skater_detail(skater.isu_number)
     end
   end
