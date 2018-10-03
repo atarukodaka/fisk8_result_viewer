@@ -8,7 +8,6 @@ require 'rspec/rails'
 ActiveRecord::Migration.maintain_test_schema!
 
 require 'spec_helper'
-require 'ajax_helper'
 require 'ajax_feature_helper'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
@@ -46,9 +45,7 @@ RSpec.configure do |config|
   end
 
   ## include ajax helpers
-  #config.include AjaxHelper
   config.include AjaxFeatureHelper
   config.include AjaxFeatureHelper::Filter
   config.include AjaxFeatureHelper::Order
-  
 end
