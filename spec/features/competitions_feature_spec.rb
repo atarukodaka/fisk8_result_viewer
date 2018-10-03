@@ -12,7 +12,7 @@ feature CompetitionsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      filters = [{ name: :name, input_type: :fill_in, },
+      filters = [{ name: :competition_name, input_type: :fill_in, },
        { name: :site_url, input_type: :fill_in, },
        { name: :competition_class, input_type: :select, },
        { name: :competition_type, input_type: :select, },

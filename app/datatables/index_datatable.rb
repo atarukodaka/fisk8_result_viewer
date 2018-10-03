@@ -1,14 +1,6 @@
 class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
 
-  def filter
-    begin
-      klass = "#{self.class.to_s.sub(/Datatable$/, '')}Filter".constantize
-    rescue NameError => err
-      return nil
-    end
-    @_filter ||= klass.new
-  end
   def manipulate(r)
     super(r).where(build_conditions(filter_search_nodes))
   end

@@ -1,3 +1,12 @@
+class Filter
+  def initialize(key, input_type, onchange: onchange)
+    @key = key
+    @input_type = input_type
+  end
+
+  def as_html
+  end
+end
 class SkatersFilter < IndexFilter
   def filters
     @_filters ||= [

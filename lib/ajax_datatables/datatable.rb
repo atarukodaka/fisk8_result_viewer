@@ -84,6 +84,17 @@ module AjaxDatatables
     end
       
     ################
+    ## filters
+    def filter
+      begin
+        klass = "#{self.class.to_s.sub(/Datatable$/, '')}Filter".constantize
+      rescue NameError => err
+        return nil
+      end
+      @_filter ||= klass.new
+    end
+    
+    ################
     ## settings, etc
     def default_settings
       {
