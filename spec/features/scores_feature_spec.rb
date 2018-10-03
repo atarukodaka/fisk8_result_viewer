@@ -9,15 +9,14 @@ feature ScoresController, type: :feature, feature: true do
   feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
-      it_behaves_like :both_main_sub
+      it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :scores_filter
+      include_context :score_filter
+      include_context :filter_season
     end
     context 'order' do
-      ScoresDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
-        include_context :ajax_order, key
-      end
+      include_context :order, ScoresDatatable
     end
   end
 end

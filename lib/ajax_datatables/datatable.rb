@@ -78,6 +78,11 @@ module AjaxDatatables
     def manipulate(r)
       r
     end
+    def refresh
+      @data = nil
+      data
+    end
+      
     ################
     ## settings, etc
     def default_settings

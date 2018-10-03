@@ -1,19 +1,22 @@
 # elements
 FactoryBot.define do
   factory :element do
-    #association :score, factory: :score
-    name { '4T' }
-    element_type { 'jump' }
-    value { 10 }
-    goe { 2 }
-    base_value { 8 }
-    judges { '2 2 2' }
-    info { '<' }
-    credit { '+' }
-    number { 1 }
-
-    trait :combination do
-      name { '4T3T' }
+    trait :solo_jump do
+      name { '4T' }
+      element_type { 'jump' }
+      element_subtype { 'solo' } 
+      value { 10 }
+      goe { 2 }
+      base_value { 8 }
+      judges { '2 2 2' }
+      info { '<' }
+      credit { '+' }
+      number { 1 }
+    end
+    trait :combination_jump do
+      name { '3Lz+3T' }
+      element_type { 'jump' }
+      element_subtype { 'combination' } 
       value { 15 }
       goe { 3 }
       base_value { 12 }
@@ -21,9 +24,10 @@ FactoryBot.define do
       number { 2 }
     end
 
-    trait :spin do
-      #association :score, factory: [:score, :finlandia]
+    trait :layback_spin do
       name { 'LSp4' }
+      element_type { 'spin' }
+      element_subtype { 'layback' }
       value { 2 }
       goe { -1 }
       base_value { 3 }

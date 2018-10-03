@@ -10,11 +10,14 @@
   - season from/to
   - elements, components, statics, panels
   - paging
+  - elements/date order
 - help for rake:update
 - table_id consistence
 - ice cance set elementtype/elements
 - update:skaters categories
 - skater: having score or nolimit
+- cache clear when update
+
 
 ### new feature
 

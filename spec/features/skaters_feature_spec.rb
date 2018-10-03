@@ -9,27 +9,19 @@ feature SkatersController, type: :feature, feature: true do
   feature '#index', js: true do
     context 'all' do
       subject { visit index_path; page }
-      it_behaves_like :both_main_sub
+      it_behaves_like :contains, true, true
     end
 
-    context 'filter' do
+    context :filter do
       filters = [
-        { name: :name, input_type: :fill_in,  },
-        {
-          name:           :category_type,
-          input_type:     :select,
-          value_function: lambda {|elem| elem.category_type},
-        },
-        { name: :nation, input_type: :select, }
+          { name: :name, input_type: :fill_in,  },
+          { name:  :category_type, input_type: :select },
+          { name: :nation, input_type: :select, }
       ]
-      filters.each do |hash|
-        include_context :ajax_filter, hash[:name], hash[:input_type], hash[:value_function]
-      end
+      include_context :filter, filters
     end
-    context 'order' do
-      SkatersDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
-        include_context :ajax_order, key
-      end
+    context :order do
+      include_context :order, SkatersDatatable
     end
 =begin
     context 'paging' do
