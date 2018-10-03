@@ -1,5 +1,0 @@
-/= form_group(Skater.human_attribute_name(:name), text_field_tag(:name, params[:name], size: 70, onchange: ajax_search(:name, table)))
-/= form_group(Skater.human_attribute_name(:category_type),  select_tag_with_options(:category_type, onchange: ajax_search(:category_type, table)))
-/= form_group(Skater.human_attribute_name(:nation), select_tag_with_options(:nation, onchange: ajax_search(:nation, table)))
-/= form_group("Having Scores Only", check_box_tag(:having_score_only, onchange: ajax_draw(table)))
-

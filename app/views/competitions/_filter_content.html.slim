@@ -1,4 +1,0 @@
-
-/= render partial: "competition_filter", locals: {table: table}
-
-/= form_group(Competition.human_attribute_name(:site_url), text_field_tag(:site_url, params[:site_url], size: 70, onchange: ajax_search(:site_url, table)))

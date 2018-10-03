@@ -1,18 +1,25 @@
+=begin
 class Filter
-  def initialize(key, input_type, onchange: onchange)
-    @key = key
-    @input_type = input_type
-  end
+  include ActionView::Helpers::FormTagHelper
 
-  def as_html
+  attr_reader :fields
+  
+  def initialize(label: "", fields: [], field: nil)
+    @fields = [field, fields].flatten.compact
   end
 end
+
+class Field
+  def initialize(label: "", key: , input_type: , onchange: :search)
+  end
+end
+=end
 class SkatersFilter < IndexFilter
   def filters
     @_filters ||= [
       {
         label: hname(:name),
-        field: { key: :name, input_type: :text_field, },
+        fields: [ { key: :name, input_type: :text_field, }],
       },
       {
         label: hname(:category_type),
@@ -20,7 +27,7 @@ class SkatersFilter < IndexFilter
       },
       {
         label: hname(:nation),
-        field: { key: :nation, input_type: :select, },
+        fields: [{ key: :nation, input_type: :select, }],
       },
     ]
   end
