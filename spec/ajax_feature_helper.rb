@@ -115,6 +115,7 @@ module AjaxFeatureHelper
       visit path
       table_id = find('.dataTable')[:id]
       column_id = "column_#{table_id}_#{column_name}"
+
       find("##{column_id}").click
       sleep 1
       page

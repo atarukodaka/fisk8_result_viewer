@@ -61,7 +61,7 @@ feature ElementsController, type: :feature, feature: true do
       end
     end
     context 'order' do
-      include_context :order, ElementsDatatable, excludings: [:date ]
+      include_context :order, ElementsDatatable
     end
   end
 end
