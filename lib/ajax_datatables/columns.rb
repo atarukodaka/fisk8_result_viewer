@@ -15,7 +15,7 @@ class AjaxDatatables::Columns
   #             columns[:address].source => "users.address"
   #
 
-  def initialize(cols=[], datatable: nil)
+  def initialize(cols = [], datatable: nil)
     @datatable = datatable
     @data = cols.map do |col|
       create_column(col)
@@ -29,7 +29,7 @@ class AjaxDatatables::Columns
     when Integer
       @data[key]
     when Symbol, String
-      @data.find {|c| c.name == key.to_s}
+      @data.find { |c| c.name == key.to_s }
     end
   end
   def []=(key, value)
@@ -37,12 +37,12 @@ class AjaxDatatables::Columns
     @data.push(col)
   end
   def add(cols)
-    [cols].flatten.map {|col| @data << create_column(col) }
+    [cols].flatten.map { |col| @data << create_column(col) }
   end
   ################
   # set sources of each columns
   def sources=(hash)
-    hash.each do|column, source|
+    hash.each do |column, source|
       self[column.to_sym].source = source
     end
   end

@@ -12,7 +12,7 @@ module Property
   #   foo.bar = 3  #{ => 3 }
 
   def property(sym, default = nil, readonly: false, &initializer)
-    initializer ||= -> * { default }
+    initializer ||= ->* { default }
 
     ## define getter and setter with method change
     define_method(sym) do |*args|
@@ -58,6 +58,6 @@ module Property
     end
   end
   def properties(*syms, default: nil, &initializer)
-    [*syms].flatten.each {|sym| property sym, default, &initializer }
+    [*syms].flatten.each { |sym| property sym, default, &initializer }
   end
 end

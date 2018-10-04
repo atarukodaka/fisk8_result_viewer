@@ -13,11 +13,11 @@ class Score < ApplicationRecord
   belongs_to :performed_segment, optional: true
 
   ## scopes
-  scope :recent, ->{ order('date desc') }
+  scope :recent, -> { order('date desc') }
   scope :short, -> { joins(:segment).where(segments: { segment_type: :short }) }
   scope :free, -> { joins(:segment).where(segments: { segment_type:  :free }) }
-  scope :category,->(c){ where(category: c) }
-  scope :segment, ->(s){ where(segment: s) }
+  scope :category, ->(c) { where(category: c) }
+  scope :segment, ->(s) { where(segment: s) }
 
   ## virtual attributes
   {

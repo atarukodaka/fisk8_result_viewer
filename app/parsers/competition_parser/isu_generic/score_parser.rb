@@ -14,7 +14,7 @@ class CompetitionParser
           split(/\f/).map.with_index do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
             parse_score(t).tap do |score|
-              score[:result_pdf] = "#{score_url}\#page=#{i+1}";
+              score[:result_pdf] = "#{score_url}\#page=#{i + 1}";
             end
           end
         end.flatten
@@ -43,7 +43,7 @@ class CompetitionParser
           @score.update(
             {
               ranking: $1.to_i, skater_name: $2.strip, nation: $3,
-              starting_number: $4.to_i,tss: $5.to_f, tes: $6.to_f,
+              starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
               pcs: $7.to_f, deductions: $8.to_f.abs * (-1),
             })
           @mode = :tes
@@ -87,7 +87,7 @@ class CompetitionParser
             name: name, factor: factor.to_f,
             judges: judges.tr(',', '.'),   ## memo: gpjpn10 ice dance using ',' i/o '.' for decimal point
             value: value.tr(',', '.').to_f,
-            number: (@score[:components].count+1).to_i,
+            number: (@score[:components].count + 1).to_i,
           }
         when /Judges Total Program Component Score/
           @mode = :deductions

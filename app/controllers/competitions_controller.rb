@@ -15,13 +15,13 @@ class CompetitionsController < ApplicationController
 
     AjaxDatatables::Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :short, :free)).
       columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,]).
-      tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
+      tap { |d| d.default_orders([[:points, :desc], [:ranking, :asc]]) }
   end
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
 
     AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
-      columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
+      columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap { |d| d.default_orders([[:tss, :desc], [:ranking, :asc]]) }
   end
 
   def show

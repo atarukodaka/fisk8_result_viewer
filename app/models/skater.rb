@@ -13,10 +13,10 @@ class Skater < ApplicationRecord
   validates :isu_number, allow_nil: true, numericality:  { only_integer: true }
 
   ## scopes
-  scope :having_scores, ->{
+  scope :having_scores, -> {
     where(id: Score.select(:skater_id).group(:skater_id).having('count(skater_id)> ? ', 0))
   }
-  scope :name_matches, ->(v){ where('skaters.name like ? ', "%#{v}%") }
+  scope :name_matches, ->(v) { where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
   #delegate :type, to: :category, prefix: :category, allow_nil: true

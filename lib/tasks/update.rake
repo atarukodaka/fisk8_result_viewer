@@ -1,6 +1,6 @@
 namespace :update do
   desc 'update skaters'
-  task :skaters  => :environment do
+  task :skaters => :environment do
     SkaterUpdater.new(verbose: true).update_skaters   #(details: details)
   end
 
@@ -18,8 +18,8 @@ namespace :update do
   desc 'update competitions listed in config/competitions.yml'
   task :competitions => :environment do
     ## options
-    last =  ENV['last'].to_i if ENV['last']
-    force =  ENV['force'].to_i.nonzero?
+    last = ENV['last'].to_i if ENV['last']
+    force = ENV['force'].to_i.nonzero?
 
     categories =
       if (c = ENV['categories'])

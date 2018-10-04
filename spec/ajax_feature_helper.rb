@@ -13,7 +13,7 @@ module AjaxFeatureHelper
       it { is_expected.not_to have_content(sub.name) }
     end
   end
-  def ajax_actions(actions, path: )
+  def ajax_actions(actions, path:)
     visit path
     actions.each do |hash|
       key, value, input_type = hash.values_at(:key, :value, :input_type)
@@ -39,8 +39,8 @@ module AjaxFeatureHelper
       filters =
         if filter_or_class.ancestors.include?(IndexFilter)
           filter_or_class.new.filters
-            .map {|elem| elem[:fields].map {|field| field.slice(:key, :input_type)}}.flatten
-            .reject {|filter| excludings.include?(filter[:key])}.compact
+            .map { |elem| elem[:fields].map { |field| field.slice(:key, :input_type) } }.flatten
+            .reject { |filter| excludings.include?(filter[:key]) }.compact
 =begin
           filter_or_class.new.filters.map do |elem|
             elem[:fields].map do |field|
@@ -80,7 +80,7 @@ module AjaxFeatureHelper
     end
 
     ## functions
-    def ajax_action_filter(path:, input_type: , key:, value: nil)
+    def ajax_action_filter(path:, input_type:, key:, value: nil)
       ajax_actions([key: key, value: value, input_type: input_type], path: path)
 =begin
       visit path
@@ -130,7 +130,7 @@ module AjaxFeatureHelper
       it {
         table_id = find('.dataTable')[:id]
         dir = find("#column_#{table_id}_#{key}")['class']
-        identifers = [main, sub].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
+        identifers = [main, sub].sort { |a, b| a.send(key) <=> b.send(key) }.map { |d| d.send(identifer_key) }
         identifers.reverse! if dir =~ /sorting_desc/
         expect(identifers.first).to appear_before identifers.second
       }
@@ -151,7 +151,7 @@ module AjaxFeatureHelper
       end
     end
     ### ajax
-    def ajax_action_order(column_name, path: )
+    def ajax_action_order(column_name, path:)
       visit path
       table_id = find('.dataTable')[:id]
       column_id = "column_#{table_id}_#{column_name}"

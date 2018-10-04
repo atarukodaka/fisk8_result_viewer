@@ -3,13 +3,13 @@ require 'rails_helper'
 describe PanelsController, type: :controller do
   render_views
 
-  let!(:world){    create(:competition, :world)  }
-  let!(:john){    world.performed_segments.first.officials.first.panel  }
-  let!(:mike){    world.performed_segments.first.officials.second.panel  }
+  let!(:world) {    create(:competition, :world)  }
+  let!(:john) {    world.performed_segments.first.officials.first.panel  }
+  let!(:mike) {    world.performed_segments.first.officials.second.panel  }
 
   describe '#index' do
     subject { get :index }
-    it { is_expected.to be_success}
+    it { is_expected.to be_success }
     its(:body) { is_expected.to have_content(john.name) }
     its(:body) { is_expected.to have_content(mike.name) }
   end

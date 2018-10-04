@@ -14,7 +14,7 @@ module ControllerConcerns::ErrorHandlers
 
   def handler_404(e = nil)
     respond_to do |format|
-      format.html { render 'errors/404', status: :not_found, locals: { message: e.try(:message) }}
+      format.html { render 'errors/404', status: :not_found, locals: { message: e.try(:message) } }
       format.json { render json: { error: '404 error' }, status: :not_found }
     end
   end
@@ -22,7 +22,7 @@ module ControllerConcerns::ErrorHandlers
   def handler_500(e = nil)
     respond_to do |format|
       format.html { render 'errors/500', status: :internal_server_error, locals: { message: e.try(:message) } }
-      format.json { render json: { error: '500 error' }, status: :internal_server_error, locals: { message: e.try(:message) }}
+      format.json { render json: { error: '500 error' }, status: :internal_server_error, locals: { message: e.try(:message) } }
     end
   end
 end

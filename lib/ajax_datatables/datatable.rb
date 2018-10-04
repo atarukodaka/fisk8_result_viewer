@@ -51,9 +51,9 @@ module AjaxDatatables
       @view_context
     end
     ## columns accessors
-    def columns(cols=nil)     # cols can be array of Hash or Symbol/String
+    def columns(cols = nil)     # cols can be array of Hash or Symbol/String
       if cols                   # setter for method chain
-        self.tap {|d| d.columns = cols }
+        self.tap { |d| d.columns = cols }
       else                     # getter
         @columns
       end
@@ -103,7 +103,7 @@ module AjaxDatatables
         pageLength: 25,
       }
     end
-    def ajax(serverside: false, url: )
+    def ajax(serverside: false, url:)
       settings.update(serverSide: serverside, ajax: { url: url })
       self
     end
@@ -111,14 +111,14 @@ module AjaxDatatables
       columns.map(&:name)
     end
     def as_attrs
-      order = default_orders.map {|column, dir|
+      order = default_orders.map { |column, dir|
         [column_names.index(column.to_s), dir]
       }
 
       settings.merge(
         {
           retrieve: true,
-          columns:  column_names.map {|name|
+          columns:  column_names.map { |name|
             {
               data:       name,
               name:       name,
@@ -138,7 +138,7 @@ module AjaxDatatables
     def as_json(*args)
       data.map do |item|
         column_names.map do |column_name|
-          [column_name, item.try(:send,column_name.to_sym) || item[column_name.to_sym]]
+          [column_name, item.try(:send, column_name.to_sym) || item[column_name.to_sym]]
         end.to_h.as_json(*args)
       end
     end

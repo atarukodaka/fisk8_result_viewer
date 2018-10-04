@@ -10,7 +10,7 @@ class ElementsDatatable < ScoreDetailsDatatable
     }
 
     ## searchbale
-    [:credit, :info].each {|key| columns[key].searchable = false }
+    [:credit, :info].each { |key| columns[key].searchable = false }
 
     ## operartor
     if view_context

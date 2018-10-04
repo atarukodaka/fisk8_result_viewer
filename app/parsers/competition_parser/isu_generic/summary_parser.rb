@@ -19,7 +19,7 @@ class CompetitionParser
         time_schedule =  parse_time_schedule(page, date_format: date_format)
 
         competition[:categories] = {}
-        competition[:segments] = Hash.new { |h,k| h[k] = {} }
+        competition[:segments] = Hash.new { |h, k| h[k] = {} }
 
         result_summary.each do |hash|
           category, segment = hash[:category], hash[:segment]
@@ -32,15 +32,15 @@ class CompetitionParser
               panel_url:  hash[:panel_url],
               result_url: hash[:result_url],
               score_url:  hash[:score_url],
-              time:       time_schedule.select {|item|      ## time ? date ?
+              time:       time_schedule.select { |item|      ## time ? date ?
                 item[:category] == category && item[:segment] == segment
               }.first.try(:[], :time),
             }
           end
         end
-        competition[:start_date] = time_schedule.map {|d| d[:time]}.min.to_date || Date.new(1970, 1, 1)
-        competition[:end_date] = time_schedule.map {|d| d[:time]}.max.to_date || Date.new(1970, 1, 1)
-        competition[:timezone] = (time_schedule.present? ) ? time_schedule.first[:time].time_zone.name : 'UTC'
+        competition[:start_date] = time_schedule.map { |d| d[:time] }.min.to_date || Date.new(1970, 1, 1)
+        competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
+        competition[:timezone] = (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
         competition[:season] = skate_season(competition[:start_date])
         competition
       end
@@ -51,7 +51,7 @@ class CompetitionParser
       def skate_season(date)
         year = date.year
         year -= 1 if date.month <= 6
-        '%04d-%02d' % [year, (year+1) % 100]
+        '%04d-%02d' % [year, (year + 1) % 100]
       end
 
       def parse_city_country(page)
@@ -85,7 +85,7 @@ class CompetitionParser
           segment = row.xpath('td[2]').text.squish.upcase
 
           next if category.blank? && segment.blank?
-          next if (segment.blank?) && ((row.xpath('td[4]').text =~ /result/i ) == nil) # TODO: ??
+          next if (segment.blank?) && ((row.xpath('td[4]').text =~ /result/i) == nil) # TODO: ??
 
           panel_url = row.xpath('td[3]//a/@href').text
           result_url = row.xpath('td[4]//a/@href').text
@@ -93,8 +93,8 @@ class CompetitionParser
           summary << {
             category:   category,
             segment:    segment,
-            panel_url:  (panel_url.present?) ? File.join(url , panel_url).to_s: '',
-            result_url: (result_url.present?) ? File.join(url, result_url).to_s: '',
+            panel_url:  (panel_url.present?) ? File.join(url, panel_url).to_s : '',
+            result_url: (result_url.present?) ? File.join(url, result_url).to_s : '',
             score_url:  (score_url.present?) ? File.join(url, score_url).to_s : '',
           }
         end
@@ -107,7 +107,7 @@ class CompetitionParser
         $1 =~ /([\+\-]\d\d)/
         utc_offset = $1.to_i
 
-        'Etc/GMT%+d' % [ utc_offset * -1]
+        'Etc/GMT%+d' % [utc_offset * -1]
       end
       def get_time_schedule_rows(page)
         #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")

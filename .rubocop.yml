@@ -6,9 +6,19 @@ AllCops:
     - '**/*.gemspec'
     - '**/vendor/**/*'
     - 'db/schema.rb'
+    - 'config.ru'
 
 Style/RaiseArgs:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+
+  

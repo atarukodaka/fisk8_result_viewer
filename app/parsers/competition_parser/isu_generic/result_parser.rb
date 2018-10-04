@@ -36,7 +36,7 @@ class CompetitionParser
           columns.each do |key, params|
             relevant_headers = [params[:header],].flatten
 
-            col_number = headers.index {|d| relevant_headers.index(d)} ||
+            col_number = headers.index { |d| relevant_headers.index(d) } ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")
             elem = elems[col_number] || next
             data[key] =

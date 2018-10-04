@@ -6,7 +6,7 @@ class CompetitionParser
         puts "   -- parse panel: #{url}" if @verbose
 
         elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
-               page.xpath("//td[contains(text(), 'Function')]").presence ||  []
+               page.xpath("//td[contains(text(), 'Function')]").presence || []
         rows = elem.xpath('ancestor::table[1]//tr')
         hash = { judges: [] }
         rows.each do |row|

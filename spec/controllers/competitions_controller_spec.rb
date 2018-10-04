@@ -33,7 +33,7 @@ RSpec.describe CompetitionsController, type: :controller do
 
   ################
   describe '#show' do
-    let(:score){
+    let(:score) {
       world.scores.first
     }
     context 'short_name' do
@@ -66,13 +66,13 @@ RSpec.describe CompetitionsController, type: :controller do
       subject {
         get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name, ranking: 1 }
       }
-      it {is_expected.to redirect_to score_path(score.name) }
+      it { is_expected.to redirect_to score_path(score.name) }
     end
     context 'format: json' do
       subject {
         get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name, format: 'json' }
       }
-      its(:content_type) { is_expected.to eq('application/json')}
+      its(:content_type) { is_expected.to eq('application/json') }
       its(:body) { is_expected.to have_content(world.name) }
     end
 

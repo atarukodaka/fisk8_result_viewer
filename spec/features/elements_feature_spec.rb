@@ -3,8 +3,8 @@ require 'rails_helper'
 feature ElementsController, type: :feature, feature: true do
   let!(:score_world)  {    create(:competition, :world).scores.first }
   let!(:score_finlandia)  { create(:competition, :finlandia).scores.first }
-  let!(:main){ score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
-  let!(:sub){ score_finlandia.elements.where(element_type: :spin).first }
+  let!(:main) { score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
+  let!(:sub) { score_finlandia.elements.where(element_type: :spin).first }
   let(:index_path) { elements_path }
 
   ################

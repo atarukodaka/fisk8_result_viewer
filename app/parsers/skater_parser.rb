@@ -6,7 +6,7 @@ class SkaterParser < Parser
     page = get_url(url)
     nation = ''
     page.xpath('//table[1]/tr').map do |row|
-      parse_skater(row, category: category, default_nation: nation).tap {|s|
+      parse_skater(row, category: category, default_nation: nation).tap { |s|
         nation = s[:nation]
       }
     end
@@ -43,7 +43,7 @@ class SkaterParser < Parser
     if data[:birthday].present?
       begin
         data[:birthday] = Date.parse(data[:birthday])
-      rescue ArgumentError =>e
+      rescue ArgumentError => e
         puts e.message
       end
     end
@@ -51,7 +51,7 @@ class SkaterParser < Parser
     if (elem = page.xpath("//td/span[contains(., 'last update')]").first)
       if elem.text =~ /last update: (.*)/
         begin
-          data[:bio_updated_at] =$1.in_time_zone('UTC')
+          data[:bio_updated_at] = $1.in_time_zone('UTC')
         rescue ArgumentError => e
           puts e.message
         end

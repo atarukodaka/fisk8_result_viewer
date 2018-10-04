@@ -24,7 +24,7 @@ class DeviationsController < ApplicationController
     skater_name = params[:name]
     columns = [:score_name, :panel_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
     skater = Skater.find_by(name: skater_name)
-    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("scores.skater": skater).includes([official: [ :panel]], :score)).columns(columns)
+    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("scores.skater": skater).includes([official: [:panel]], :score)).columns(columns)
 
     respond_to do |format|
       format.html {

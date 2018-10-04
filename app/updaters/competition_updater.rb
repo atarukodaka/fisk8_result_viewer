@@ -130,9 +130,9 @@ class CompetitionUpdater
     ### elements
     score.elements.each do |element|
       details = element.judges.split(/\s/).map(&:to_f)
-      avg = details.sum/details.count
+      avg = details.sum / details.count
       details.each.with_index(1) do |value, i|
-        dev =  value - avg
+        dev = value - avg
         official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
         element.element_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
       end
@@ -141,9 +141,9 @@ class CompetitionUpdater
     puts '       :judge details: components'
     score.components.each do |component|
       details = component.judges.split(/\s/).map(&:to_f)
-      avg = details.sum/details.count
+      avg = details.sum / details.count
       details.each.with_index(1) do |value, i|
-        dev =  value - avg
+        dev = value - avg
         official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
         component.component_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev)
       end
@@ -164,7 +164,7 @@ class CompetitionUpdater
           skater = relevant_cr.try(:skater) ||
                    begin
                      segment_results ||= @parsers[:segment_result].parse(result_url)
-                     seg_result = segment_results.select {|h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
+                     seg_result = segment_results.select { |h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
                      skater_name = seg_result[:skater_name] || sc_parsed[:skater_name]
                      find_or_create_skater(seg_result[:isu_number], skater_name, sc_parsed[:nation], category)
                    end
@@ -179,8 +179,8 @@ class CompetitionUpdater
             relevant_cr.update(segment_type => score)
             score.update(category_result: relevant_cr)
           end
-          sc_parsed[:elements].map {|e| score.elements.create(e)}
-          sc_parsed[:components].map {|e| score.components.create(e)}
+          sc_parsed[:elements].map { |e| score.elements.create(e) }
+          sc_parsed[:components].map { |e| score.components.create(e) }
 
           score.update(elements_summary: score.elements.map(&:name).join('/'))
           score.update(components_summary: score.components.map(&:value).join('/'))

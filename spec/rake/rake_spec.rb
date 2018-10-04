@@ -44,14 +44,14 @@ RSpec.describe 'rake', rake: true do
       @rake['update:competitions'].execute
 
       CompetitionList.all.last(last).each do |item|
-        expect( Competition.find_by(site_url: item[:site_url]) ).not_to be_nil
+        expect(Competition.find_by(site_url: item[:site_url])).not_to be_nil
       end
     end
     it 'by competitions.yml' do
       expect_url_match
     end
     it 'by filename' do
-      ENV['filename'] ='competitions_junior'
+      ENV['filename'] = 'competitions_junior'
       expect_url_match
     end
     it 'by filenames' do

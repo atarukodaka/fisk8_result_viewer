@@ -23,7 +23,7 @@ class CategoryResult < ApplicationRecord
   end
 
   ## scopes
-  scope :recent, ->{ joins(:competition).order('competitions.start_date desc') }
+  scope :recent, -> { joins(:competition).order('competitions.start_date desc') }
   scope :category, ->(cat) { where(category: cat) }
 
   def summary

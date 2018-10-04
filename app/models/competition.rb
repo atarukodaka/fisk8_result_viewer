@@ -12,7 +12,7 @@ class Competition < ApplicationRecord
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
 
   ## scopes
-  scope :recent, ->(){ order('start_date desc')  }
+  scope :recent, ->() { order('start_date desc')  }
 
   ## updater
   def normalize

@@ -8,7 +8,7 @@ class Element < ApplicationRecord
   belongs_to :score
 
   ## scopes
-  scope :recent, ->{ joins(:score).order('scores.date desc') }
+  scope :recent, -> { joins(:score).order('scores.date desc') }
 
   ## callbacks
   before_save :set_element_type, :set_level

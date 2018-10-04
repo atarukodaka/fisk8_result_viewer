@@ -59,8 +59,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       updater = CompetitionUpdater.new(enable_judge_details: true, verbose: false)
 
       updater.update_competition(url, categories: ['MEN'])
-      expect( ElementJudgeDetail.count ).to be > 0
-      expect( ComponentJudgeDetail.count ).to be > 0
+      expect(ElementJudgeDetail.count).to be > 0
+      expect(ComponentJudgeDetail.count).to be > 0
     }
   end
 
@@ -98,7 +98,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
       :isu, :gp, 'GPJPN2016'],
      ['http://www.isuresults.com/results/season1617/gpf1617/',
-      :isu, :gp,'GPF2016'],
+      :isu, :gp, 'GPF2016'],
      ['http://www.isuresults.com/results/owg2014/',
       :isu, :olympic, 'OWG2014'],
      ['http://www.isuresults.com/results/season1617/wc2017/',

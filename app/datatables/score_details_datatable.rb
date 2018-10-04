@@ -25,7 +25,7 @@ class ScoreDetailsDatatable < IndexDatatable
     columns[:date].searchable = false
 
     ## visible
-    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
+    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each { |key|
       columns[key].visible = false
       columns[key].orderable = false
     }

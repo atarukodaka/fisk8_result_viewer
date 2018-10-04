@@ -1,6 +1,6 @@
 class CompetitionParser
   class Gpjpn < IsuGeneric
-    class SummaryParser  < IsuGeneric::SummaryParser
+    class SummaryParser < IsuGeneric::SummaryParser
       def parse_city_country(_page)
         ['', 'JPN']
       end
@@ -20,7 +20,7 @@ class CompetitionParser
 
           if row.xpath('td[2]').text == 'Entries'
             category = row.xpath('td[1]').text.upcase
-            result_url = URI.join(url,row.xpath('td[3]/a/@href').text).to_s
+            result_url = URI.join(url, row.xpath('td[3]/a/@href').text).to_s
             summary << {
               category:   category,
               segment:    '',

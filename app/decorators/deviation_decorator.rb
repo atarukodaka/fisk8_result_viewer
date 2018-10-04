@@ -17,18 +17,18 @@ class DeviationDecorator < EntryDecorator
   end
 
   def tes_deviation
-    '%.02f' % [ model.tes_deviation || 0]
+    '%.02f' % [model.tes_deviation || 0]
   end
 
   def pcs_deviation
-    '%.02f' % [ model.pcs_deviation || 0]
+    '%.02f' % [model.pcs_deviation || 0]
   end
 
   def tes_deviation_ratio
-    h.number_to_percentage(model.tes_deviation_ratio*100, precision: 2)
+    h.number_to_percentage(model.tes_deviation_ratio * 100, precision: 2)
   end
 
   def pcs_deviation_ratio
-    h.number_to_percentage(model.pcs_deviation_ratio*100, precision: 2)
+    h.number_to_percentage(model.pcs_deviation_ratio * 100, precision: 2)
   end
 end

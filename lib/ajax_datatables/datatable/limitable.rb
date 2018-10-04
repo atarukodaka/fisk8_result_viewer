@@ -1,5 +1,5 @@
 module AjaxDatatables::Datatable::Limitable
-  def limit(n=5_000)
+  def limit(n = 5_000)
     @limit = n
     self.extend AjaxDatatables::Datatable::Limit
   end
