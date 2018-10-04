@@ -2,7 +2,8 @@ module FormHelper
   def self.cache_uniq_list(cache_name, relation, key)
     @cache ||= {}
 
-    @cache[cache_name] ||= relation.distinct.pluck(key).compact
+    #@cache[cache_name] ||= relation.distinct.pluck(key).compact
+    @cache[cache_name] ||= relation.pluck(key).uniq.compact
   end
 
   def form_group(label = nil, input_tag = nil)
@@ -21,7 +22,6 @@ module FormHelper
 
   def select_tag_with_options(key, *args)
     selected = params[key]
-
     col =
       case key
       when :category_name, :category_type, :seniority, :team

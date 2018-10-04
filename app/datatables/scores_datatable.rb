@@ -36,6 +36,6 @@ class ScoresDatatable < IndexDatatable
     default_orders([[:date, :desc]])
   end
   def fetch_records
-    Score.includes(:competition, :skater, :category, :segment).references(:competition, :skater, :category, :segment).all
+    Score.includes(:competition, :skater, :category, :segment).joins(:competition, :skater, :category, :segment).all
   end
 end

@@ -20,6 +20,6 @@ class ElementsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
+    Element.includes(:score, score: [:competition, :skater, :category, :segment]).joins(:score, score: [:competition, :skater, :category, :segment]).all
   end
 end
