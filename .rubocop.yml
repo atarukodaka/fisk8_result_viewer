@@ -144,7 +144,3 @@ Style/Lambda:
    - 'app/models/skater.rb'
 
   
-Security/Open:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/parser.rb'
