@@ -5,8 +5,8 @@ class ScoresDatatable < IndexDatatable
     columns([:name, :competition_name, :competition_class, :competition_type,
              :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :season, :date,
              :result_pdf, :ranking, :skater_name, :nation,
-             :tss, :tes, :pcs, :deductions, :base_value
-             ])
+             :tss, :tes, :pcs, :deductions, :base_value])
+
     columns.sources = {
       name:              'scores.name',
       competition_name:  'competitions.name',

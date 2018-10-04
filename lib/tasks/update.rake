@@ -45,8 +45,11 @@ namespace :update do
         params = {
           city: item[:city], name: item[:name], comment: item[:comment]
         }
-        CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true, enable_judge_details: enable_judge_details)
-          .update_competition(item[:site_url], date_format: item[:date_format], force: force, categories: categories, season_from: season_from, season_to: season_to, params: params).tap do |competition|
+        CompetitionUpdater.new(parser_type: item[:parser_type], verbose: true,
+                               enable_judge_details: enable_judge_details)
+          .update_competition(item[:site_url], date_format: item[:date_format], force: force,
+                                               categories: categories, season_from: season_from, season_to: season_to,
+                                               params: params).tap do |competition|
         end
       end
     end ## each

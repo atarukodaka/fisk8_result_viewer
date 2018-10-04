@@ -26,6 +26,7 @@ class CompetitionParser
 
         text.split(/\n/).each do |line|
           raise "no such mode: #{@mode}" unless respond_to?("parse_#{@mode}".to_sym)
+
           send("parse_#{@mode}", line)
         end ## each line
 
@@ -104,7 +105,7 @@ class CompetitionParser
         return nil if url.blank?
 
         begin
-          open(url, allow_redirections: :safe) do |f|   # rubocop:disable Security/Open
+          open(url, allow_redirections: :safe) do |f|            # rubocop:disable Security/Open
             tmp_filename = "score-#{rand(1000)}-tmp.pdf"
             Tempfile.create(tmp_filename) do |out|
               out.binmode

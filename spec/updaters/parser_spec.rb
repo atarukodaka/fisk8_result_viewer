@@ -4,8 +4,7 @@ RSpec.configure do |c|
   c.filter_run_excluding parser: true
 end
 
-=begin
-
+__END__
 describe 'parser', parser: true do
   describe 'score' do
     subject (:score){
@@ -95,4 +94,4 @@ describe 'parser', parser: true do
 
   end
 end
-=end
+

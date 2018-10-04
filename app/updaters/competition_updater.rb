@@ -137,8 +137,11 @@ class CompetitionUpdater
       avg = details.sum / details.count
       details.each.with_index(1) do |value, i|
         dev = value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
-        element.element_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
+        official = competition.performed_segments
+                   .where(category: category, segment: segment).first.officials
+                   .where(number: i).first || raise("no relevant officail: #{i}")
+        element.element_judge_details
+          .create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
       end
     end
     ### component
@@ -161,13 +164,16 @@ class CompetitionUpdater
       ActiveRecord::Base.transaction do
         competition.scores.create!(category: category, segment: segment) do |score|
           ## find relevant cr
-          relevant_cr = competition.category_results.where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
+          relevant_cr = competition.category_results
+                        .where(category: category, "#{segment_type}_ranking": sc_parsed[:ranking]).first
 
           ## find skater
           skater = relevant_cr.try(:skater) ||
                    begin
                      segment_results ||= @parsers[:segment_result].parse(result_url)
-                     seg_result = segment_results.select { |h| h[:starting_number] == sc_parsed[:starting_number] }.first || {}
+                     seg_result = segment_results.select { |h|
+                       h[:starting_number] == sc_parsed[:starting_number]
+                     }                                  .first || {}
                      skater_name = seg_result[:skater_name] || sc_parsed[:skater_name]
                      find_or_create_skater(seg_result[:isu_number], skater_name, sc_parsed[:nation], category)
                    end
@@ -175,8 +181,10 @@ class CompetitionUpdater
           ## set attributes
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs).merge(additionals)
-          score.update(skater:            skater,
-                       performed_segment: competition.performed_segments.where(category: category, segment: segment).first) ## need to save here to create children
+          score.update(skater: skater,
+                       performed_segment: competition.performed_segments
+                         .where(category: category, segment: segment).first)
+          ## need to save here to create children
 
           if relevant_cr
             relevant_cr.update(segment_type => score)

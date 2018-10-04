@@ -46,7 +46,7 @@ class CompetitionParser
         summary
       end
 
-      def parse_time_schedule(page, _date_format: '')
+      def parse_time_schedule(page, date_format: '') ## rubocop:disable Lint/UnusedMethodArgument
         Time.zone ||= 'UTC'
         header_elem = page.xpath("//*[text()='Date']").first
         table = header_elem.xpath('../..')

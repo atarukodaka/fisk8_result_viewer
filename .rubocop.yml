@@ -9,12 +9,14 @@ AllCops:
     - 'config.ru'
     - 'bin/*'
     - 'config/*'
+    - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
 
 Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
-Style/RaiseArgs:
+
+Layout/ExtraSpacing:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
@@ -24,7 +26,7 @@ Layout/MultilineMethodCallIndentation:
 Lint/Void:
   Exclude:
     - 'app/parsers/competition_parser/isu_generic.rb'
-  
+
 Style/BlockComments:
   Enabled: false
 
@@ -34,6 +36,12 @@ Style/BlockDelimiters:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/CommentedKeyword:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
 Style/FormatString:
   EnforcedStyle: percent
 
@@ -41,17 +49,8 @@ Style/FormatStringToken:
   Enabled: false
 #  EnforcedStyle: template
 
-  
-
 Style/FrozenStringLiteralComment:
   Enabled: false
-
-
-## TODO: auto-correct causes errors  
-Layout/MultilineArrayBraceLayout:
-  Exclude:
-    - 'app/datatables/scores_datatable.rb'
-    - 'spec/updaters/competition_updater_spec.rb'
 
 Style/MixinGrouping:
   Enabled: false
@@ -59,6 +58,9 @@ Style/MixinGrouping:
 Style/PerlBackrefs:
   Enabled: false
   
+Style/RaiseArgs:
+  Enabled: false
+
 Style/RegexpLiteral:   # %r{} or //
   Enabled: false
 
@@ -68,10 +70,6 @@ Style/Semicolon:
 
 Style/SymbolArray:
   EnforcedStyle: brackets
-
-
-
-
 
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses
@@ -146,3 +144,7 @@ Style/Lambda:
    - 'app/models/skater.rb'
 
   
+Security/Open:
+  Exclude:
+    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
+    - 'app/parsers/parser.rb'

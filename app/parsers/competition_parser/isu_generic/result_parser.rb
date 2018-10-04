@@ -46,13 +46,8 @@ class CompetitionParser
                 elem.text.squish
               end
           end
-
-#          if data[:short_ranking].nil?
-#            puts "invalid record: #{data.inspect}" 
-#            next
-#          else
-          data         ## TODO: wc2018 has 'Final not Reached' record
-#          end
+          next if data[:skater_name] == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
+          data
         end.compact ## rows
       end
     end
