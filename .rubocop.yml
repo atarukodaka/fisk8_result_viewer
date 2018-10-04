@@ -6,3 +6,9 @@ AllCops:
     - '**/*.gemspec'
     - '**/vendor/**/*'
     - 'db/schema.rb'
+
+Style/RaiseArgs:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false

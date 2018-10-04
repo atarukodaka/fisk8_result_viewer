@@ -34,14 +34,13 @@ module AjaxFeatureHelper
   module Filter
     ## context
     shared_context :filter do |filter_or_class, excludings: []|
-
       ## TODO: filter class or hash to accept
 
       filters =
         if filter_or_class.ancestors.include?(IndexFilter)
-          filter_or_class.new.filters.
-            map {|elem| elem[:fields].map {|field| field.slice(*[:key, :input_type])}}.flatten.
-            reject {|filter| excludings.include?(filter[:key])}.compact
+          filter_or_class.new.filters
+            .map {|elem| elem[:fields].map {|field| field.slice(:key, :input_type)}}.flatten
+            .reject {|filter| excludings.include?(filter[:key])}.compact
 =begin
           filter_or_class.new.filters.map do |elem|
             elem[:fields].map do |field|
@@ -99,7 +98,7 @@ module AjaxFeatureHelper
 =end
     end
 
-    ################
+################
 =begin
     shared_context :score_filter do
       include_context :filter, [
