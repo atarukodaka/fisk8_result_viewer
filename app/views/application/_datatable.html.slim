@@ -15,7 +15,8 @@ script
     |    d.goe_operator = $('#goe_operator').val(),
     |    d.value_operator = $('#value_operator').val(),
     |    d.season_from = $('#season_from').val(),
-    |    d.season_to = $('#season_to').val()
+    |    d.season_to = $('#season_to').val(),
+    |    d.having_scores = $('#having_scores:checked').val() || "off"
     |  };
   |   t = $("##{table_id}").DataTable( attrs );
   // numbering

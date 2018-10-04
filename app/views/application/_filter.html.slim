@@ -24,6 +24,8 @@
             - case field[:input_type]
             - when :text_field
               = text_field_tag(key, params[key], size: 70, onchange: onchange)
+            - when :checkbox
+              = check_box_tag(key, 'on', !(params[:having_scores] == 'off'), onchange: onchange)
             - when :select
               - if field[:options]
                 = select_tag(key, options_for_select(field[:options], params[key]), onchange: onchange)

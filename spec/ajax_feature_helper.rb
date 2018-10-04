@@ -23,7 +23,7 @@ module AjaxFeatureHelper
         find("input##{key}").send_keys :tab
       when :select
         select value, from: key
-      when :click
+      when :click, :checkbox
         find(key).click
       end
       sleep 1
