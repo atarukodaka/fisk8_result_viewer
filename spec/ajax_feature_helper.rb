@@ -121,8 +121,12 @@ module AjaxFeatureHelper
   module Order
     RSpec::Matchers.define :appear_before do |later_content|
       match do |earlier_content|
-        body = (respond_to? :page) ? page.body : response.body
-        body.index(earlier_content.to_s) < body.index(later_content.to_s)
+        #body = (respond_to? :page) ? page.body : response.body
+        #body.index(earlier_content.to_s) < body.index(later_content.to_s)
+
+        table_id = find('.dataTable')[:id]
+        table_text = find_by_id(table_id).text
+        table_text.index(earlier_content.to_s) < table_text.index(later_content.to_s)
       end
     end
 
