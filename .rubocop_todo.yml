@@ -10,23 +10,11 @@
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineArrayBraceLayout:
-  Exclude:
-    - 'app/datatables/scores_datatable.rb'
-    - 'spec/updaters/competition_updater_spec.rb'
-
 # Offense count: 3
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
     - 'spec/factories/competitions.rb'
     - 'spec/features/skaters_feature_spec.rb'
-
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
-  Exclude:
-    - 'app/models/score.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -36,13 +24,6 @@ Lint/UnneededSplatExpansion:
     - 'app/controllers/scores_controller.rb'
     - 'app/controllers/skaters_controller.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'config/breadcrumbs.rb'
-    - 'spec/controllers/competitions_controller_spec.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -315,40 +296,6 @@ Style/PercentLiteralDelimiters:
     - 'config/spring.rb'
     - 'spec/rails_helper.rb'
     - 'spec/support/capybara.rb'
-
-# Offense count: 37
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Exclude:
-    - 'app/models/element.rb'
-    - 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/panel_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-    - 'app/parsers/skater_parser.rb'
-    - 'app/updaters/competition_updater.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'app/parsers/parser.rb'
-
-# Offense count: 19
-# Cop supports --auto-correct.
-Style/RedundantParentheses:
-  Exclude:
-    - 'app/datatables/index_datatable.rb'
-    - 'app/decorators/skater_decorator.rb'
-    - 'app/helpers/form_helper.rb'
-    - 'app/helpers/link_to_helper.rb'
-    - 'app/models/skater.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-    - 'app/parsers/parser.rb'
-    - 'app/updaters/competition_updater.rb'
-    - 'lib/ajax_datatables/columns.rb'
-    - 'lib/tasks/analysis.rake'
 
 # Offense count: 2
 # Cop supports --auto-correct.

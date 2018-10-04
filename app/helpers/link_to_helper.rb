@@ -28,7 +28,7 @@ module LinkToHelper
   def link_to_score(text = nil, score)
     name = (score.class == Score) ? score.name : score
 
-    (name.nil?) ? text : link_to(text || name, score_path(name: name))
+    name.nil? ? text : link_to(text || name, score_path(name: name))
     # (name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
 

@@ -44,7 +44,7 @@ class CompetitionParser
           @score.update(
             ranking: $1.to_i, skater_name: $2.strip, nation: $3,
             starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
-            pcs: $7.to_f, deductions: $8.to_f.abs * (-1)
+            pcs: $7.to_f, deductions: $8.to_f.abs * -1
           )
           @mode = :tes
         end

@@ -19,7 +19,7 @@ feature ComponentsController, type: :feature, feature: true do
 
       context 'component_name' do
         subject {
-          ajax_action_filter(key: :number, value: "Skating Skills", input_type: :select, path: index_path)
+          ajax_action_filter(key: :number, value: 'Skating Skills', input_type: :select, path: index_path)
         }
         it_behaves_like :contains, true, false
       end

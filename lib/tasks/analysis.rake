@@ -55,7 +55,7 @@ namespace :analysis do
           ary = [:official, element: [score: [:skater, :competition]]]
           a = Daru::Vector.new(ElementJudgeDetail.includes(ary).where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
           b = Daru::Vector.new(ElementJudgeDetail.includes(ary).where.not("officials.panel": panel).where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          next unless (!a.nil?) && (!b.nil?)
+          next unless !a.nil? && !b.nil?
 
           begin
             t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
@@ -100,7 +100,7 @@ namespace :analysis do
           b = Daru::Vector.new(ComponentJudgeDetail.includes(ary)
                                 .where.not("officials.panel": panel)
                                 .where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          next unless (!a.nil?) && (!b.nil?)
+          next unless !a.nil? && !b.nil?
 
           begin
             t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)

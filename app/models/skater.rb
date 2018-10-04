@@ -26,7 +26,7 @@ class Skater < ApplicationRecord
   class << self
     def find_by_isu_number_or_name(isu_number, name)
       (find_by(isu_number: isu_number) if isu_number.present?) ||
-        (find_by(name: name))
+        find_by(name: name)
     end
 
     def find_or_create_by_isu_number_or_name(isu_number, name)

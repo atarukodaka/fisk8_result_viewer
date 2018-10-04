@@ -22,7 +22,7 @@ RSpec.describe CompetitionsController, type: :controller do
     end
 
     context 'format: ' do
-      [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, content_type|
+      [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, _content_type|
         context ".#{format}" do
           subject { get :index, format: format }
           it_behaves_like :having_all

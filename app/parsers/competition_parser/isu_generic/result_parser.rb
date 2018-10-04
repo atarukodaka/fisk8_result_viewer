@@ -48,10 +48,10 @@ class CompetitionParser
           end
 
           if data[:short_ranking].nil?
-            puts "invalid record: #{data.inspect}"     ## wc2018 has 'Final not Reached' record
+            puts "invalid record: #{data.inspect}" ## wc2018 has 'Final not Reached' record
             next
           else
-            data            
+            data
           end
         end.compact ## rows
       end

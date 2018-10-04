@@ -34,7 +34,7 @@ class Score < ApplicationRecord
 
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
-    define_method("component_#{key.to_s}") do
+    define_method("component_#{key}") do
       components.try(:[], i).try(:value)
     end
   end

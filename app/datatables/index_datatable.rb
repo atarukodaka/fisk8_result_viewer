@@ -8,7 +8,7 @@ class IndexDatatable < AjaxDatatables::Datatable
   def filter_search_nodes
     nodes = columns.select(&:searchable).map do |column|
       sv = params[column.name].presence
-      (sv) ? { column_name: column.name, search_value: sv } : nil
+      sv ? { column_name: column.name, search_value: sv } : nil
     end.compact
 
     ## season

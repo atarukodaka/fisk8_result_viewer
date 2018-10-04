@@ -33,6 +33,15 @@ Style/FormatString:
 Style/FormatStringToken:
   EnforcedStyle: template
   
+## TODO: auto-correct causes errors  
+Layout/MultilineArrayBraceLayout:
+  Exclude:
+    - 'app/datatables/scores_datatable.rb'
+    - 'spec/updaters/competition_updater_spec.rb'
+
+Style/PerlBackrefs:
+  Enabled: false
+  
 Style/RegexpLiteral:   # %r{} or //
   Enabled: false
 

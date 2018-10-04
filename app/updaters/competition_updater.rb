@@ -97,7 +97,7 @@ class CompetitionUpdater
           name = normalize_persons_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]
           panel = Panel.find_or_create_by(name: name)
-          if (nation != 'ISU') && (panel.nation.blank?)
+          if (nation != 'ISU') && panel.nation.blank?
             puts "       ... nation updated: #{nation} for #{name}" if @verbose
             panel.update(nation: nation)
           end
