@@ -22,7 +22,7 @@ module Property
         instance_variable_set variable_name, args.first unless readonly
         self
       else # get value
-        if !instance_variable_defined?(variable_name) and !readonly # set default value if undef
+        if !instance_variable_defined?(variable_name) && !readonly # set default value if undef
           instance_variable_set(variable_name, instance_eval(&initializer))
         else
           instance_variable_get(variable_name)

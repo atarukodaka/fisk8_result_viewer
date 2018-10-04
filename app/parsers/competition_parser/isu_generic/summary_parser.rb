@@ -105,7 +105,7 @@ class CompetitionParser
       ################
       def get_timezone(page)
         page.xpath("//*[contains(text(), 'Local Time')]").text =~ / ([\+\-]\d\d:\d\d)/
-        local_tz = $1 || '+00:00'
+        # local_tz = $1 || '+00:00'
         $1 =~ /([\+\-]\d\d)/
         utc_offset = $1.to_i
 

@@ -40,7 +40,7 @@ class CompetitionParser
       def parse_skater(line)
         name_re = %q[[[:alpha:]1\.\- \/\']+] ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = '[A-Z][A-Z][A-Z]'
-        if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+        if line.match?(/^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/)
           @score.update(
             ranking: $1.to_i, skater_name: $2.strip, nation: $3,
             starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
@@ -61,7 +61,7 @@ class CompetitionParser
               credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
             }
             element[:edgeerror] = true if element[:name] =~ /\!/
-            if element[:name] =~ /</
+            if /</.match?(element[:name])
               if element[:name] =~ /<</
                 element[:downgraded] = true
               else

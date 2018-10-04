@@ -83,42 +83,11 @@ Naming/VariableName:
   Exclude:
     - 'app/parsers/competition_parser/gpjpn.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Performance/RegexpMatch:
-  Exclude:
-    - 'app/models/competition.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-
 # Offense count: 3
 Security/Open:
   Exclude:
     - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
     - 'app/parsers/parser.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, conditionals
-Style/AndOr:
-  Exclude:
-    - 'lib/property.rb'
-
-
-# Offense count: 13
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'app/controllers/controller_concerns/error_handlers.rb'
-    - 'app/controllers/controller_concerns/index.rb'
-    - 'lib/ajax_datatables/columns.rb'
-    - 'lib/ajax_datatables/datatable/condition_builder.rb'
-    - 'lib/ajax_datatables/datatable/decoratable.rb'
-    - 'lib/ajax_datatables/datatable/defer_loadable.rb'
-    - 'lib/ajax_datatables/datatable/limitable.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
 
 # Offense count: 31
 Style/CommentedKeyword:
@@ -133,31 +102,15 @@ Style/Documentation:
 # Cop supports --auto-correct.
 Style/Encoding:
   Exclude:
-    - 'config/environments/development.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'Rakefile'
-    - 'spec/rails_helper.rb'
+#    - 'config/environments/development.rb'
 
 # Offense count: 164
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: when_needed, always, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 # Offense count: 6
 # Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'app/datatables/elements_datatable.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'lib/ajax_datatables/columns.rb'
-    - 'lib/property.rb'
-
 # Offense count: 2
 Style/IfInsideElse:
   Exclude:
@@ -177,14 +130,6 @@ Style/IfUnlessModifier:
 Style/IfWithSemicolon:
   Exclude:
     - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/MixinGrouping:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -218,28 +163,9 @@ Style/NumericLiterals:
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
 # SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/models/component_judge_detail.rb'
-    - 'app/models/deviation.rb'
-    - 'app/models/element_judge_detail.rb'
-    - 'config/initializers/refinements/as_ranking.rb'
-    - 'config/initializers/refinements/as_score.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
-
-# Offense count: 6
-Style/OptionalArguments:
-  Exclude:
-    - 'app/helpers/link_to_helper.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
-Style/ParallelAssignment:
-  Exclude:
-    - 'app/controllers/competitions_controller.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
 
 # Offense count: 8
 # Cop supports --auto-correct.
@@ -258,24 +184,11 @@ Style/PercentLiteralDelimiters:
 # Configuration parameters: AllowMultipleReturnValues.
 Style/RedundantReturn:
   Exclude:
-    - 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/segment_result_parser.rb'
+#    - 'app/parsers/competition_parser/isu_generic/category_result_parser.rb'
+#    - 'app/parsers/competition_parser/isu_generic/segment_result_parser.rb'
 
 # Offense count: 29
 # Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'app/models/category_result.rb'
-    - 'app/models/competition.rb'
-    - 'app/models/component_judge_detail.rb'
-    - 'app/models/deviation.rb'
-    - 'app/models/element_judge_detail.rb'
-    - 'app/models/score.rb'
-    - 'lib/ajax_datatables/datatable.rb'
-    - 'lib/ajax_datatables/datatable/decoratable.rb'
-    - 'lib/ajax_datatables/datatable/defer_loadable.rb'
-    - 'lib/ajax_datatables/datatable/limitable.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
 
 
 # Offense count: 354

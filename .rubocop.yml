@@ -8,6 +8,7 @@ AllCops:
     - 'db/schema.rb'
     - 'config.ru'
     - 'bin/*'
+    - 'config/*'
 
 Bundler/OrderedGems:
   Exclude:
@@ -25,7 +26,8 @@ Style/BlockComments:
 Style/BlockDelimiters:
   Enabled: false
 
-#Style/ClassAndModuleChildren:   nested or compact
+Style/ClassAndModuleChildren:
+  Enabled: false
 
 Style/FormatString:
   EnforcedStyle: percent
@@ -33,11 +35,19 @@ Style/FormatString:
 Style/FormatStringToken:
   EnforcedStyle: template
   
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+
 ## TODO: auto-correct causes errors  
 Layout/MultilineArrayBraceLayout:
   Exclude:
     - 'app/datatables/scores_datatable.rb'
     - 'spec/updaters/competition_updater_spec.rb'
+
+Style/MixinGrouping:
+  Enabled: false
 
 Style/PerlBackrefs:
   Enabled: false
@@ -65,12 +75,57 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
   
+
 Style/UnlessElse:
   Enabled: false
 
 Style/WordArray:
   Exclude: false
   
+################
+## further check
+Style/GuardClause:
+  Exclude:
+    - 'app/datatables/elements_datatable.rb'
+    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
+    - 'lib/ajax_datatables/columns.rb'
+    - 'lib/property.rb'
+
+Style/NumericPredicate:
+  Exclude:
+    - 'spec/**/*'
+    - 'app/models/component_judge_detail.rb'
+    - 'app/models/deviation.rb'
+    - 'app/models/element_judge_detail.rb'
+    - 'config/initializers/refinements/as_ranking.rb'
+    - 'config/initializers/refinements/as_score.rb'
+    - 'lib/ajax_datatables/datatable/serversidable.rb'
+
+Style/OptionalArguments:
+  Exclude:
+    - 'app/helpers/link_to_helper.rb'
+
+## a, b, c = 1, 2, 3
+Style/ParallelAssignment:
+  Exclude:
+    - 'app/controllers/competitions_controller.rb'
+    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
+    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
+    
+Style/RedundantSelf:
+  Exclude:
+    - 'app/models/category_result.rb'
+    - 'app/models/competition.rb'
+    - 'app/models/component_judge_detail.rb'
+    - 'app/models/deviation.rb'
+    - 'app/models/element_judge_detail.rb'
+    - 'app/models/score.rb'
+    - 'lib/ajax_datatables/datatable.rb'
+    - 'lib/ajax_datatables/datatable/decoratable.rb'
+    - 'lib/ajax_datatables/datatable/defer_loadable.rb'
+    - 'lib/ajax_datatables/datatable/limitable.rb'
+    - 'lib/ajax_datatables/datatable/serversidable.rb'
+
   
 
   
