@@ -48,7 +48,13 @@ class CompetitionParser
                 elem.text.squish
               end
           end
-          data
+
+          if data[:short_ranking].nil?
+            puts "invalid record: #{data.inspect}"
+            next
+          else
+            data            
+          end
         end.compact ## rows
       end
     end
