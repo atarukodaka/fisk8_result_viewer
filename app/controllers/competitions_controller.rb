@@ -1,6 +1,4 @@
-class CompetitionsController < ApplicationController
-  include ControllerConcerns::Index
-
+class CompetitionsController < IndexController
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none

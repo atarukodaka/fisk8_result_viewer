@@ -1,6 +1,6 @@
 class ScoresFilter < IndexFilter
   def filters
-    @_filters ||= [
+    @filters ||= [
       {
         label: hname(:skater_name),
         fields: [{ key: :skater_name, input_type: :text_field }],

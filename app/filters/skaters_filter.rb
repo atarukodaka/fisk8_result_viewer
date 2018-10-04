@@ -1,6 +1,6 @@
 class SkatersFilter < IndexFilter
   def filters
-    @_filters ||= [
+    @filters ||= [
       {
         key: :name,
         label: hname(:name),

@@ -10,9 +10,7 @@
 - update:skaters categories
 - spec
   - feature
-	- season from/to
-	- elements, components, statics, panels
-	- elements/date order
+	- components, statics, panels
 	- context filter to accept hash or class
   - controller/deviation
 

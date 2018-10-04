@@ -1,5 +1,2 @@
-class ElementJudgeDetailsController < ApplicationController
-  include ControllerConcerns::Index
-
-  def show; end
+class ElementJudgeDetailsController < IndexController
 end

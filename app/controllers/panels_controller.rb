@@ -1,6 +1,4 @@
-class PanelsController < ApplicationController
-  include ControllerConcerns::Index
-
+class PanelsController < IndexController
   def format_deviation(deviation, in_percentage: false)
     if deviation.nil?
       'n/a'

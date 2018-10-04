@@ -1,6 +1,4 @@
-class ScoresController < ApplicationController
-  include ControllerConcerns::Index
-
+class ScoresController < IndexController
   def elements_datatable(score)
     AjaxDatatables::Datatable.new(view_context).records(score.elements)
       .columns([:number, :name, :element_type, :info, :base_value, :credit, :goe, :judges, :value])

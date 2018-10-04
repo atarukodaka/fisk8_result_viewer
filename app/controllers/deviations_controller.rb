@@ -1,7 +1,4 @@
-class DeviationsController < ApplicationController
-  include ControllerConcerns::Index
-
-  # def show_panel  ## params[:name]
+class DeviationsController < IndexController
   def panel
     panel_name = params[:name]
     columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]

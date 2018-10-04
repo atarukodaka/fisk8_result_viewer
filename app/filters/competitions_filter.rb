@@ -1,6 +1,6 @@
 class CompetitionsFilter < IndexFilter
   def filters
-    @_filters ||= [
+    @filters ||= [
       {
         key: :competition_name,
         label: hname(:competition_name),
