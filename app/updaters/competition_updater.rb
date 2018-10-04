@@ -126,26 +126,29 @@ class CompetitionUpdater
   def update_judge_details(competition, category, segment, score)
     return if competition.start_date <= Time.zone.parse('2016-7-1') # was random order in the past
 
+    puts '       :judge details: elements'
     ### elements
     score.elements.each do |element|
       details = element.judges.split(/\s/).map(&:to_f)
       avg = details.sum/details.count
-      details.each_with_index do |value, i|
+      details.each.with_index(1) do |value, i|
         dev =  value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first || raise("no relevant officail: #{i+1}")
-        element.element_judge_details.create(number: i+1, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
+        element.element_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
       end
     end
     ### component
+    puts '       :judge details: components'
     score.components.each do |component|
       details = component.judges.split(/\s/).map(&:to_f)
       avg = details.sum/details.count
-      details.each_with_index do |value, i|
+      details.each.with_index(1) do |value, i|
         dev =  value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first || raise("no relevant officail: #{i+1}")
-        component.component_judge_details.create(number: i+1, value: value, official: official, average: avg, deviation: dev)
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
+        component.component_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev)
       end
     end
+    puts '        done'
   end
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = nil

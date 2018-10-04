@@ -8,7 +8,6 @@
 - codecov: icedance elements
 - help for rake:update
 - update:skaters categories
-- skater: having score or nolimit
 - spec
   - feature
 	- season from/to

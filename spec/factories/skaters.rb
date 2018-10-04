@@ -24,5 +24,12 @@ FactoryBot.define do
       hometown { 'L.A.' }
       club { 'Cri' }
     end
+
+    trait :no_scores do
+      name { 'No SCORES' }
+      nation { 'CAN' }
+      category { Category.find_by(name: 'MEN') }
+      isu_number { 3 }
+    end
   end
 end

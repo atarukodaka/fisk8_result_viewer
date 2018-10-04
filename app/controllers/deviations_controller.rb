@@ -7,7 +7,7 @@ class DeviationsController < ApplicationController
     columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
     panel = Panel.find_by(name: panel_name) || raise(ActiveRecord::RecordNotFound.new("no suck panel: #{panel_name}"))
     #deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
-    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where(officials: { panel: panel} ).includes(:official, score: [:skater])).columns(columns)
+    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where(officials: { panel: panel }).includes(:official, score: [:skater])).columns(columns)
 
     respond_to do |format|
       format.html {

@@ -10,7 +10,7 @@ class SkatersDatatable < IndexDatatable
   end
 
   def manipulate(r)
-    r.having_scores
+    (params[:having_scores] == 'off') ? r : r.having_scores
   end
   def fetch_records
     Skater.includes(:category).joins(:category)
