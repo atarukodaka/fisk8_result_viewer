@@ -14,7 +14,7 @@ class CompetitionParser
           .split(/\f/).map.with_index do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
             parse_score(t).tap do |score|
-              score[:result_pdf] = "#{score_url}\#page=#{i + 1}";
+              score[:result_pdf] = "#{score_url}\#page=#{i + 1}"
             end
           end
         end.flatten
@@ -39,7 +39,7 @@ class CompetitionParser
 
       def parse_skater(line)
         name_re = %q[[[:alpha:]1\.\- \/\']+] ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
-        nation_re = %q[[A-Z][A-Z][A-Z]]
+        nation_re = '[A-Z][A-Z][A-Z]'
         if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
           @score.update(
             ranking: $1.to_i, skater_name: $2.strip, nation: $3,

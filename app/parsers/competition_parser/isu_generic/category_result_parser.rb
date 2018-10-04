@@ -3,8 +3,8 @@ class CompetitionParser
     class CategoryResultParser < ResultParser
       def callbacks
         {
-          to_i:       lambda { |elem| elem.text.squish.to_i },
-          to_f:       lambda { |elem| elem.text.squish.to_f },
+          to_i:       ->(elem) { elem.text.squish.to_i },
+          to_f:       ->(elem) { elem.text.squish.to_f },
           isu_number: lambda { |elem|
                         href = elem.xpath('a/@href').text
                         (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil

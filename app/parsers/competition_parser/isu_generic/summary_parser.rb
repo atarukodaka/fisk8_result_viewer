@@ -57,7 +57,7 @@ class CompetitionParser
       def parse_city_country(page)
         node = page.search('td.caption3').presence || page.xpath('//h3') || raise
         str = (node.present?) ? node.first.text.strip : ''
-        if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$};
+        if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
           city, country = $1, $2
           if city.present?
             city.sub!(/ *$/, '')
@@ -104,7 +104,7 @@ class CompetitionParser
 
       ################
       def get_timezone(page)
-        page.xpath("//*[contains(text(), 'Local Time')]").text() =~ / ([\+\-]\d\d:\d\d)/
+        page.xpath("//*[contains(text(), 'Local Time')]").text =~ / ([\+\-]\d\d:\d\d)/
         local_tz = $1 || '+00:00'
         $1 =~ /([\+\-]\d\d)/
         utc_offset = $1.to_i
@@ -145,7 +145,7 @@ class CompetitionParser
               dt_tm_str
             end.in_time_zone(ActiveSupport::TimeZone[timezone])
           # next if tm.nil?
-          tm = tm + 2000.years if tm.year < 100 ## for ondrei nepela
+          tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
           time_schedule << {
             time:     tm,

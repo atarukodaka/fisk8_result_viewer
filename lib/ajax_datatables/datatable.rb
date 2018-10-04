@@ -32,7 +32,7 @@ module AjaxDatatables
     def_delegators :@view_context, :params, :link_to, :url_for
 
     property(:data, nil)
-    property(:records) {  fetch_records() }
+    property(:records) {  fetch_records }
     property(:settings) { default_settings }
     properties(:default_orders, default: [])
 

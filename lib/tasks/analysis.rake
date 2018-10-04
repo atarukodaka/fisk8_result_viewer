@@ -3,7 +3,7 @@ require 'daru'
 namespace :analysis do
   namespace :tes do
     desc 'simple stddev'
-    task :stddev => :environment do
+    task stddev: :environment do
       ElementJudgeDetail.where("competitions.season": '2015-16'..'2017-18').joins(element: [score: [:competition]]).pluck(:value, :average).each do |value, average|
         puts value - average
       end
@@ -24,7 +24,7 @@ namespace :analysis do
 
     task :stddev_by_skater do
       comp = Competition.find_by(site_url: 'http://www.isuresults.com/results/season1718/owg2018/')
-      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map { |score| score.skater }.uniq
+      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map(&:skater).uniq
 
       skaters.each do |skater|
         ary = [element: [score: [:skater, :competition]]]
@@ -45,7 +45,7 @@ namespace :analysis do
 
     task :student_t do
       comp = Competition.find_by(site_url: 'http://www.isuresults.com/results/season1718/owg2018/')
-      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map { |score| score.skater }.uniq
+      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map(&:skater).uniq
 
       skaters.each do |skater|
         ary = [:officials, [officials: [:performed_segment, performed_segment: [:scores, scores: [:skater]]]]]
@@ -55,13 +55,13 @@ namespace :analysis do
           ary = [:official, element: [score: [:skater, :competition]]]
           a = Daru::Vector.new(ElementJudgeDetail.includes(ary).where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
           b = Daru::Vector.new(ElementJudgeDetail.includes(ary).where.not("officials.panel": panel).where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          if (!a.nil?) && (!b.nil?)
-            begin
-              t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
-              puts [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count, b.count].join(', ')
-            rescue
-              puts 'some errors on test-t'
-            end
+          next unless (!a.nil?) && (!b.nil?)
+
+          begin
+            t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
+            puts [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count, b.count].join(', ')
+          rescue StandardError
+            puts 'some errors on test-t'
           end
         end
       end
@@ -70,7 +70,7 @@ namespace :analysis do
 
   ################
   namespace :pcs do
-    task :stddev => :environment do
+    task stddev: :environment do
       ComponentJudgeDetail.where("competitions.season": '2015-16'..'2017-18').joins(component: [score: [:competition]]).pluck(:value, :average).each do |value, average|
         puts STDOUT value - average
       end
@@ -87,7 +87,7 @@ namespace :analysis do
 
     task :student_t do
       comp = Competition.find_by(site_url: 'http://www.isuresults.com/results/season1718/owg2018/')
-      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map { |score| score.skater }.uniq
+      skaters = Score.where("competitions.site_url": comp.site_url).includes(:skater).joins(:competition).map(&:skater).uniq
 
       skaters.each do |skater|
         ary = [:officials, [officials: [:performed_segment, performed_segment: [:scores, scores: [:skater]]]]]
@@ -100,12 +100,12 @@ namespace :analysis do
           b = Daru::Vector.new(ComponentJudgeDetail.includes(ary)
                                 .where.not("officials.panel": panel)
                                 .where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          if (!a.nil?) && (!b.nil?)
-            begin
-              t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
-              puts [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count, b.count].join(', ')
-            rescue
-            end
+          next unless (!a.nil?) && (!b.nil?)
+
+          begin
+            t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
+            puts [skater.name, skater.nation, panel.name, panel.nation, t2.t_not_equal_variance, t2.probability_not_equal_variance, a.count, b.count].join(', ')
+          rescue StandardError
           end
         end
       end

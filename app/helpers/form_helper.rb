@@ -7,15 +7,15 @@ module FormHelper
   end
 
   def form_group(label = nil, input_tag = nil)
-    content_tag(:div, :class => 'form-group row') do
+    content_tag(:div, class: 'form-group row') do
       label_str = (label.nil?) ? '' : I18n.t("field.#{label}", default: label.to_s)
-      concat(content_tag(:div, label_tag(label_str), :class => 'col-sm-2'))
+      concat(content_tag(:div, label_tag(label_str), class: 'col-sm-2'))
       if block_given?
-        concat(content_tag(:div, :class => 'col-sm-10') do
+        concat(content_tag(:div, class: 'col-sm-10') do
           yield
         end)
       else
-        concat(content_tag(:div, input_tag, :class => 'col-sm-10'))
+        concat(content_tag(:div, input_tag, class: 'col-sm-10'))
       end
     end
   end

@@ -15,21 +15,12 @@ Layout/MultilineArrayBraceLayout:
     - 'app/datatables/scores_datatable.rb'
     - 'spec/updaters/competition_updater_spec.rb'
 
-# Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'lib/tasks/analysis.rake'
-
 # Offense count: 3
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
     - 'spec/factories/competitions.rb'
     - 'spec/features/skaters_feature_spec.rb'
 
-# Offense count: 6
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'lib/tasks/analysis.rake'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -71,7 +62,6 @@ Lint/UselessAssignment:
     - 'app/parsers/competition_parser/wtt2017.rb'
     - 'app/updaters/competition_updater.rb'
     - 'lib/ajax_datatables/datatable.rb'
-    - 'lib/tasks/analysis.rake'
 
 # Offense count: 4
 # Configuration parameters: CheckForMethodsWithNoSideEffects.
@@ -272,7 +262,6 @@ Style/MutableConstant:
 Style/Next:
   Exclude:
     - 'app/parsers/competition_parser/isu_generic/panel_parser.rb'
-    - 'lib/tasks/analysis.rake'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -385,81 +374,6 @@ Style/RedundantSelf:
     - 'lib/ajax_datatables/datatable/limitable.rb'
     - 'lib/ajax_datatables/datatable/serversidable.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'lib/tasks/analysis.rake'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/SelfAssignment:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: require_parentheses, require_no_parentheses
-Style/StabbyLambdaParentheses:
-  Exclude:
-    - 'lib/property.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Exclude:
-    - 'app/parsers/competition_parser/gpjpn.rb'
-
-# Offense count: 85
-# Cop supports --auto-correct.
-# Configuration parameters: MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
-  Exclude:
-    - 'lib/tasks/analysis.rake'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArguments:
-  Exclude:
-    - 'app/updaters/deviations_updater.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/UnneededPercentQ:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
 
 # Offense count: 354
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

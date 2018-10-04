@@ -57,6 +57,6 @@ module LinkToHelper
   end
 
   def span_link_icon
-    content_tag(:span, '', :class => 'glyphicon glyphicon-link')
+    content_tag(:span, '', class: 'glyphicon glyphicon-link')
   end
 end ## module

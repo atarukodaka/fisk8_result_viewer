@@ -1,6 +1,6 @@
 namespace :parse do
   desc 'parse score of given url'
-  task :scores => :environment do
+  task scores: :environment do
     url = ENV['url']
     parser = CompetitionParser::IsuGeneric::ScoreParser.new
     parser.parse(url).each do |score|
