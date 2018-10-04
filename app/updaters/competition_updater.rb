@@ -131,7 +131,6 @@ class CompetitionUpdater
   def update_judge_details(competition, category, segment, score)
     return if competition.start_date <= Time.zone.parse('2016-7-1') # was random order in the past
 
-    puts '       :judge details: elements'
     ### elements
     score.elements.each do |element|
       details = element.judges.split(/\s/).map(&:to_f)
@@ -143,7 +142,6 @@ class CompetitionUpdater
       end
     end
     ### component
-    puts '       :judge details: components'
     score.components.each do |component|
       details = component.judges.split(/\s/).map(&:to_f)
       avg = details.sum / details.count
@@ -153,7 +151,6 @@ class CompetitionUpdater
         component.component_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev)
       end
     end
-    puts '        done'
   end
 
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
