@@ -203,7 +203,7 @@ class CompetitionUpdater
     normalized_skater_name = normalize_persons_name(skater_name)
     @skater_name_correction ||= YAML.load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
     corrected_skater_name = @skater_name_correction[normalized_skater_name] || normalized_skater_name
-    Skater.find_or_create_by_isu_number_or_name(isu_number, normalize_persons_name(skater_name)) do |sk|
+    Skater.find_or_create_by_isu_number_or_name(isu_number, corrected_skater_name) do |sk|
       sk.attributes = {
         category: Category.where(team: false, category_type: category.category_type).first,
         nation:   nation,

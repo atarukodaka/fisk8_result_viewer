@@ -2,12 +2,10 @@ class PanelsController < IndexController
   def format_deviation(deviation, in_percentage: false)
     if deviation.nil?
       'n/a'
+    elsif in_percentage
+      '%02.2f%' % [deviation * 100]
     else
-      if in_percentage
-        '%02.2f%' % [deviation * 100]
-      else
-        '%.2f' % [deviation]
-      end
+      '%.2f' % [deviation]
     end
   end
 

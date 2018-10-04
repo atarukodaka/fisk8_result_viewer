@@ -11,7 +11,7 @@ class CompetitionParser
         category = ''
         segment = ''
         summary = []
-        entry_url = ''
+        # entry_url = ''
         panel_url = ''
         segment_result_url = ''
         # rows[0..-1].each do |row|
@@ -46,13 +46,13 @@ class CompetitionParser
         summary
       end
 
-      def parse_time_schedule(page, date_format: '')
+      def parse_time_schedule(page, _date_format: '')
         Time.zone ||= 'UTC'
         header_elem = page.xpath("//*[text()='Date']").first
         table = header_elem.xpath('../..')
 
         i = 1
-        bHeader = true
+        b_header = true
         summary = []
         date = nil
         time = nil
@@ -86,8 +86,8 @@ class CompetitionParser
               i += 1
             end
           when 'tr'
-            if bHeader # skip if header
-              bHeader = false
+            if b_header # skip if header
+              b_header = false
               next
             end
             summary << {

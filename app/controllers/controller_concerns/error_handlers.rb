@@ -12,16 +12,16 @@ module ControllerConcerns::ErrorHandlers
 
   private
 
-  def handler_404(e = nil)
+  def handler_404(err = nil)
     respond_to do |format|
-      format.html { render 'errors/404', status: :not_found, locals: { message: e.try(:message) } }
+      format.html { render 'errors/404', status: :not_found, locals: { message: err.try(:message) } }
       format.json { render json: { error: '404 error' }, status: :not_found }
     end
   end
 
-  def handler_500(e = nil)
+  def handler_500(err = nil)
     respond_to do |format|
-      format.html { render 'errors/500', status: :internal_server_error, locals: { message: e.try(:message) } }
+      format.html { render 'errors/500', status: :internal_server_error, locals: { message: err.try(:message) } }
       format.json { render json: { error: '500 error' }, status: :internal_server_error, locals: { message: e.try(:message) } }
     end
   end

@@ -9,8 +9,8 @@ module AjaxDatatables::Datatable::DeferLoading
     super.merge(deferLoading: records.count)
   end
 
-  def manipulate(r)
-    super(r)
+  def manipulate(records)
+    super(records)
       .order(default_orders.map { |column, dir| [columns[column].source, dir].join(' ') })
       .limit(settings[:pageLength] || 25).decorate
   end

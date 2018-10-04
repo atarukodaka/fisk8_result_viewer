@@ -86,7 +86,7 @@ class CompetitionParser
           segment = row.xpath('td[2]').text.squish.upcase
 
           next if category.blank? && segment.blank?
-          next if segment.blank? && ((row.xpath('td[4]').text =~ /result/i) == nil) # TODO: ??
+          next if segment.blank? && (row.xpath('td[4]').text =~ /result/i).nil? # TODO: ??
 
           panel_url = row.xpath('td[3]//a/@href').text
           result_url = row.xpath('td[4]//a/@href').text

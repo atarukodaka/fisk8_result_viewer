@@ -1,5 +1,5 @@
 class SkatersController < IndexController
-  def get_skater
+  def specified_skater
     Skater.find_by(isu_number: params[:isu_number]) ||
       Skater.find_by(name: params[:isu_number]) ||
       raise(ActiveRecord::RecordNotFound.new('no such skater'))
@@ -14,7 +14,7 @@ class SkatersController < IndexController
   end
 
   def show
-    skater = get_skater
+    skater = specified_skater
     ## render
     respond_to do |format|
       data = { competition_results: competition_results_datatable(skater) }

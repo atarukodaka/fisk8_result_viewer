@@ -15,7 +15,7 @@ class CompetitionParser
         category = ''
         segment = ''
         summary = []
-        entry_url = ''
+        # entry_url = ''
         panel_url = ''
         segment_result_url = ''
 

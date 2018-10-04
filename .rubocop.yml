@@ -20,6 +20,11 @@ Style/RaiseArgs:
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
+## intentional
+Lint/Void:
+  Exclude:
+    - 'app/parsers/competition_parser/isu_generic.rb'
+  
 Style/BlockComments:
   Enabled: false
 
@@ -33,7 +38,9 @@ Style/FormatString:
   EnforcedStyle: percent
 
 Style/FormatStringToken:
-  EnforcedStyle: template
+  Enabled: false
+#  EnforcedStyle: template
+
   
 
 Style/FrozenStringLiteralComment:
@@ -126,6 +133,16 @@ Style/RedundantSelf:
     - 'lib/ajax_datatables/datatable/limitable.rb'
     - 'lib/ajax_datatables/datatable/serversidable.rb'
 
-  
+Style/IfUnlessModifier:
+  Exclude:
+    - 'app/models/competition.rb'
+    - 'app/models/score.rb'
+    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
+    - 'lib/tasks/parse.rake'
+
+# scope, -> to be replaced with lambda ??
+Style/Lambda:
+  Exclude:
+   - 'app/models/skater.rb'
 
   

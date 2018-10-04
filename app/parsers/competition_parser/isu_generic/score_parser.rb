@@ -25,11 +25,8 @@ class CompetitionParser
         @score = { elements: [], components: [] }
 
         text.split(/\n/).each do |line|
-          begin
-            send("parse_#{@mode}", line)
-          rescue NameError
-            raise "NameError: no such mode: #{@mode}"
-          end
+          raise "no such mode: #{@mode}" unless respond_to?("parse_#{@mode}".to_sym)
+          send("parse_#{@mode}", line)
         end ## each line
 
         raise 'parsing error' if @mode != :pcs && @mode != :deductions
@@ -38,9 +35,9 @@ class CompetitionParser
       end
 
       def parse_skater(line)
-        name_re = %q[[[:alpha:]1\.\- \/\']+] ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
+        name_re = %q([[:alpha:]1\.\- \/\']+) ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = '[A-Z][A-Z][A-Z]'
-        if line.match?(/^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/)
+        if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
           @score.update(
             ranking: $1.to_i, skater_name: $2.strip, nation: $3,
             starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
@@ -107,7 +104,7 @@ class CompetitionParser
         return nil if url.blank?
 
         begin
-          open(url, allow_redirections: :safe) do |f|
+          open(url, allow_redirections: :safe) do |f|   # rubocop:disable Security/Open
             tmp_filename = "score-#{rand(1000)}-tmp.pdf"
             Tempfile.create(tmp_filename) do |out|
               out.binmode

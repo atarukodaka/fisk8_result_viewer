@@ -9,8 +9,8 @@ module AjaxDatatables::Datatable::Serverside
 
   ################
   ## for server-side ajax
-  def manipulate(r)
-    super(r).where(build_conditions(columns_searching_nodes)).order(sorting_sql).page(page).per(per)
+  def manipulate(records)
+    super(records).where(build_conditions(columns_searching_nodes)).order(sorting_sql).page(page).per(per)
   end
 
   ################

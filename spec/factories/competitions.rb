@@ -13,7 +13,7 @@ FactoryBot.define do
       start_date { Date.new(2015, 2, 1) }
       end_date { Date.new(2015, 2, 3) }
 
-      after (:build) do |competition|
+      after(:build) do |competition|
         skater = create(:skater, :men)
         ps = create(:performed_segment, :world, competition: competition)
         create(:category_result, :world, competition: competition, skater: skater)
@@ -33,7 +33,7 @@ FactoryBot.define do
       start_date { Date.new(2017, 9, 1) }
       end_date { Date.new(2017, 9, 3) }
 
-      after (:build) do |competition|
+      after(:build) do |competition|
         skater = create(:skater, :ladies)
         ps = create(:performed_segment, :finlandia, competition: competition)
         create(:category_result, :finlandia, competition: competition, skater: skater)

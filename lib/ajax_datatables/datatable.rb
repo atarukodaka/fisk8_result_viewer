@@ -67,7 +67,7 @@ module AjaxDatatables
 
     def add_columns(cols)
       if @columns.nil?
-        columns = cols
+        columns = cols # rubocop:disable Lint/UselessAssignment:
       else
         @columns.add(cols)
       end
@@ -82,8 +82,8 @@ module AjaxDatatables
       @data ||= manipulate(records)
     end
 
-    def manipulate(r)
-      r
+    def manipulate(records)
+      records
     end
 
     def refresh
@@ -96,10 +96,10 @@ module AjaxDatatables
     def filter
       begin
         klass = "#{self.class.to_s.sub(/Datatable$/, '')}Filter".constantize
-      rescue NameError => err
+      rescue NameError
         return nil
       end
-      @_filter ||= klass.new
+      @filter ||= klass.new
     end
 
     ################

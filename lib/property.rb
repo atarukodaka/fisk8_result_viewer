@@ -21,12 +21,10 @@ module Property
       if !args.empty? # set value and return self for method chain
         instance_variable_set variable_name, args.first unless readonly
         self
-      else # get value
-        if !instance_variable_defined?(variable_name) && !readonly # set default value if undef
-          instance_variable_set(variable_name, instance_eval(&initializer))
-        else
-          instance_variable_get(variable_name)
-        end
+      elsif !instance_variable_defined?(variable_name) && !readonly # set default value if undef
+        instance_variable_set(variable_name, instance_eval(&initializer))
+      else
+        instance_variable_get(variable_name)
       end
     end
     unless readonly
