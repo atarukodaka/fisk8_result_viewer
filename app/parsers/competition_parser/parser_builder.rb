@@ -9,8 +9,8 @@ class CompetitionParser
           begin
             parsers[subject] =
               "CompetitionParser::#{parser_type_classname}::#{subject.to_s.camelize}Parser".constantize.new(verbose: verbose)
-          rescue NameError => e
-            raise "NameError: parser_type '#{parser_type}' not registered"
+          rescue NameError => err
+            raise "NameError: parser_type '#{parser_type}' not registered: #{err.message}"
           end
         end
         parsers

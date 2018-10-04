@@ -1,6 +1,6 @@
 class ElementsFilter < IndexFilter
   def filters
-    @_filters ||= [
+    @filters ||= [
       { label: hname(:element_name),
         fields: [{ key: :name_operator, input_type: :select,
                    options: { '=': :eq, '&sube;'.html_safe => :matches }, onchange: :draw },

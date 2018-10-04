@@ -32,7 +32,7 @@ class CompetitionParser
           page.xpath("//td[text()='PL']").first ## gpjpn
         raise "No Placement Cell found (#{self.class})" if place_elem.nil?
 
-        return place_elem.xpath('../../tr')
+        place_elem.xpath('../../tr')
       end
     end ## class
   end

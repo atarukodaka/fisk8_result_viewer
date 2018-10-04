@@ -60,8 +60,8 @@ class CompetitionsController < IndexController
           render :show, locals: data
         }
         format.json {
-          render json: competition.slice(*[:name, :short_name, :competition_class, :competition_type,
-                                           :city, :country, :start_date, :end_date, :timezone, :comment]).merge(results)
+          render json: competition.slice(:name, :short_name, :competition_class, :competition_type,
+                                         :city, :country, :start_date, :end_date, :timezone, :comment).merge(results)
         }
       end
     end

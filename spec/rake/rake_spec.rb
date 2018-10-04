@@ -28,7 +28,7 @@ RSpec.describe 'rake', rake: true do
     end
     describe 'skater detail' do
       it {
-        isu_number = 10967
+        isu_number = 10_967
         ENV['isu_number'] = isu_number.to_s
         @rake['update:skater_detail'].invoke
         expect(Skater.find_by(isu_number: isu_number).coach).not_to be_nil

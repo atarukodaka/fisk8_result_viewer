@@ -9,7 +9,7 @@ class CompetitionParser
         {}
       end
 
-      def get_rows(page)
+      def get_rows(_page)
         raise 'implemente on derived class'
       end
 
@@ -47,12 +47,12 @@ class CompetitionParser
               end
           end
 
-          if data[:short_ranking].nil?
-            puts "invalid record: #{data.inspect}"     ## wc2018 has 'Final not Reached' record
-            next
-          else
-            data            
-          end
+#          if data[:short_ranking].nil?
+#            puts "invalid record: #{data.inspect}" 
+#            next
+#          else
+          data         ## TODO: wc2018 has 'Final not Reached' record
+#          end
         end.compact ## rows
       end
     end

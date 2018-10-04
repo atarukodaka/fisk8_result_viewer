@@ -16,7 +16,8 @@ class CompetitionParser
           page.xpath("//td[text()='PL.']").first ||                  # gpjpn
           page.xpath("//td[text()='Pl.']").first ||                  # wtt2017
           raise("No Placement Cell found (#{self.class})")
-        return place_elem.xpath('../../tr')
+
+        place_elem.xpath('../../tr')
       end
 
       def columns

@@ -9,8 +9,8 @@ class SkatersDatatable < IndexDatatable
     default_orders([[:category_type, :asc], [:name, :asc]])
   end
 
-  def manipulate(r)
-    (params[:having_scores] == 'off') ? r : r.having_scores
+  def manipulate(records)
+    (params[:having_scores] == 'off') ? records : records.having_scores
   end
 
   def fetch_records

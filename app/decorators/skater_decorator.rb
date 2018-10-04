@@ -18,6 +18,6 @@ class SkaterDecorator < EntryDecorator
   end
 
   def bio_updated_at
-    (model.bio_updated_at.present?) ? l(model.bio_updated_at) : ''
+    model.bio_updated_at.present? ? l(model.bio_updated_at) : ''
   end
 end

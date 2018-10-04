@@ -1,12 +1,12 @@
 module AjaxDatatables::Datatable::Limitable
-  def limit(n = 5_000)
-    @limit = n
+  def limit(number = 5_000)
+    @limit = number
     self.extend AjaxDatatables::Datatable::Limit
   end
 end
 
 module AjaxDatatables::Datatable::Limit
-  def manipulate(r)
-    super(r).limit(@limit).offset(params[:offset].to_i || 0)
+  def manipulate(records)
+    super(records).limit(@limit).offset(params[:offset].to_i || 0)
   end
 end

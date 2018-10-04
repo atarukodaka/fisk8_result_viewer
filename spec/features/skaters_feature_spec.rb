@@ -3,7 +3,7 @@ require 'rails_helper'
 feature SkatersController, type: :feature, feature: true do
   let!(:main) { create(:competition, :world).scores.first.skater }
   let!(:sub) { create(:competition, :finlandia).scores.first.skater }
-  let (:no_scores_skater) { create(:skater, :no_scores) }
+  let(:no_scores_skater) { create(:skater, :no_scores) }
   let(:index_path) { skaters_path }
 
   ################

@@ -1,5 +1,5 @@
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -25,7 +25,7 @@ RSpec.configure do |config|
     load Rails.root.join('db', 'seeds.rb')
     DatabaseCleaner.strategy = :truncation
     # DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner.clean_with :truncation, except: %w(categories segments)
+    DatabaseCleaner.clean_with :truncation, except: %w[categories segments]
   end
 
   config.before(:each) do

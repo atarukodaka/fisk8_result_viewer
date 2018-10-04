@@ -1,6 +1,6 @@
 class IndexFilter
   def filters
-    @_filters ||= {}
+    @filters ||= {}
   end
 
   def hname(key, model: nil)

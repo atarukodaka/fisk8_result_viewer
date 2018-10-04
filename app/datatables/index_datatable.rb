@@ -1,14 +1,14 @@
 class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
 
-  def manipulate(r)
-    super(r).where(build_conditions(filter_search_nodes))
+  def manipulate(records)
+    super(records).where(build_conditions(filter_search_nodes))
   end
 
   def filter_search_nodes
     nodes = columns.select(&:searchable).map do |column|
       sv = params[column.name].presence
-      (sv) ? { column_name: column.name, search_value: sv } : nil
+      sv ? { column_name: column.name, search_value: sv } : nil
     end.compact
 
     ## season

@@ -10,14 +10,14 @@ namespace :analysis do
     end
 
     task :stddev_by_judges do
-      comp = Competition.find_by(site_url: 'http://www.isuresults.com/results/season1718/owg2018/')
+      Competition.find_by(site_url: 'http://www.isuresults.com/results/season1718/owg2018/')
 
       ary = [:officials, [officials: [:performed_segment, performed_segment: [:scores, scores: [:skater, :competition]]]]]
 
       Panel.all.each do |panel|
         ary = [official: [:panel], element: [score: [:skater, :competition]]]
 
-        a = Daru::Vector.new(ElementJudgeDetail.where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id).includes(ary).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
+        a = Daru::Vector.new(ElementJudgeDetail.where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id).includes(ary).references(ary).pluck(:value, :average).map { |b| b[0] - b[1] })
         puts "#{panel.name},#{panel.nation},#{a.count},#{a.mean},#{a.sd}"
       end
     end
@@ -29,7 +29,7 @@ namespace :analysis do
       skaters.each do |skater|
         ary = [element: [score: [:skater, :competition]]]
 
-        a = Daru::Vector.new(ElementJudgeDetail.where("competitions.season": '2015-16'..'2017-18', "scores.skater_id": skater.id).includes(ary).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
+        a = Daru::Vector.new(ElementJudgeDetail.where("competitions.season": '2015-16'..'2017-18', "scores.skater_id": skater.id).includes(ary).references(ary).pluck(:value, :average).map { |b| b[0] - b[1] })
         puts "#{skater.name},#{a.count},#{a.sd}"
       end
     end
@@ -53,9 +53,9 @@ namespace :analysis do
 
         panels.each do |panel|
           ary = [:official, element: [score: [:skater, :competition]]]
-          a = Daru::Vector.new(ElementJudgeDetail.includes(ary).where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          b = Daru::Vector.new(ElementJudgeDetail.includes(ary).where.not("officials.panel": panel).where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          next unless (!a.nil?) && (!b.nil?)
+          a = Daru::Vector.new(ElementJudgeDetail.includes(ary).where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |b| b[0] - b[1] })
+          b = Daru::Vector.new(ElementJudgeDetail.includes(ary).where.not("officials.panel": panel).where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |c| c[0] - c[1] })
+          next unless !a.nil? && !b.nil?
 
           begin
             t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
@@ -96,11 +96,11 @@ namespace :analysis do
         panels.each do |panel|
           ary = [:official, component: [score: [:skater, :competition]]]
           a = Daru::Vector.new(ComponentJudgeDetail.includes(ary)
-                                .where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
+                                .where("competitions.season": '2015-16'..'2017-18', "officials.panel_id": panel.id, "scores.skater_id": skater.id).references(ary).pluck(:value, :average).map { |b| b[0] - b[1] })
           b = Daru::Vector.new(ComponentJudgeDetail.includes(ary)
                                 .where.not("officials.panel": panel)
-                                .where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |a| a[0] - a[1] })
-          next unless (!a.nil?) && (!b.nil?)
+                                .where("competitions.season": '2015-16'..'2017-18', "scores.skater_Id": skater.id).references(ary).pluck(:value, :average).map { |c| c[0] - c[1] })
+          next unless !a.nil? && !b.nil?
 
           begin
             t2 = Statsample::Test::T::TwoSamplesIndependent.new(a, b)
