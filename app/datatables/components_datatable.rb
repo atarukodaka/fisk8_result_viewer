@@ -14,6 +14,6 @@ class ComponentsDatatable < ScoreDetailsDatatable
     columns[:value].operator = params[:value_operator].presence || :eq  if view_context
   end
   def fetch_records
-    Component.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
+    Component.includes(:score, score: [:competition, :skater, :category, :segment]).joins(:score, score: [:competition, :skater, :category, :segment]).all
   end
 end

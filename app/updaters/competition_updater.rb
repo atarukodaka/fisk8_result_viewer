@@ -132,7 +132,7 @@ class CompetitionUpdater
       avg = details.sum/details.count
       details.each_with_index do |value, i|
         dev =  value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first      ## TODO: treat nil for where result
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first || raise("no relevant officail: #{i+1}")
         element.element_judge_details.create(number: i+1, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
       end
     end
@@ -142,7 +142,7 @@ class CompetitionUpdater
       avg = details.sum/details.count
       details.each_with_index do |value, i|
         dev =  value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first      ## TODO: treat nil for where result
+        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i+1).first || raise("no relevant officail: #{i+1}")
         component.component_judge_details.create(number: i+1, value: value, official: official, average: avg, deviation: dev)
       end
     end

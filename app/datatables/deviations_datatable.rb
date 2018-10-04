@@ -16,6 +16,6 @@ class DeviationsDatatable < IndexDatatable
   end
 
   def fetch_records
-    Deviation.all.includes([official: [:panel]], score: [:skater, :category, :competition]).references([official: [:panel]], score: [:skater])
+    Deviation.all.includes([official: [:panel]], score: [:skater, :category, :competition]).joins([official: [:panel]], score: [:skater])
   end
 end

@@ -11,6 +11,6 @@ class ComponentJudgeDetailsDatatable < IndexDatatable
     }
   end
   def fetch_records
-    ComponentJudgeDetail.includes(:component, official: [:panel], component: [:score, score: [:skater]]).references(:component, :panel, component: [:score, score: [:skater]])
+    ComponentJudgeDetail.includes(:component, official: [:panel], component: [:score, score: [:skater]]).joins(:component, :panel, component: [:score, score: [:skater]])
   end
 end

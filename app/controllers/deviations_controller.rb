@@ -5,8 +5,9 @@ class DeviationsController < ApplicationController
   def panel
     panel_name = params[:name]
     columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
-    panel = Panel.find_by(name: panel_name) || raise  # TODO: raise 404
-    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
+    panel = Panel.find_by(name: panel_name) || raise(ActiveRecord::RecordNotFound.new("no suck panel: #{panel_name}"))
+    #deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
+    deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where(officials: { panel: panel} ).includes(:official, score: [:skater])).columns(columns)
 
     respond_to do |format|
       format.html {
@@ -33,7 +34,5 @@ class DeviationsController < ApplicationController
         render json: { skater: skater, deviations_datatable: deviations_datatable }
       }
     end
-
   end
-
 end

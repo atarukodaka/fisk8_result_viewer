@@ -20,7 +20,6 @@ module AjaxDatatables::Datatable::Serverside
 
     params.require(:columns).values.map {|item|
       next if item[:searchable] == 'false'
-
       sv = item[:search][:value].presence || next
       { column_name: item[:data], search_value: sv }
     }.compact
