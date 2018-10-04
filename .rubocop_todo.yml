@@ -6,50 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-# Offense count: 3
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'spec/factories/competitions.rb'
-    - 'spec/features/skaters_feature_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Lint/UnneededSplatExpansion:
-  Exclude:
-    - 'app/controllers/competitions_controller.rb'
-    - 'app/controllers/scores_controller.rb'
-    - 'app/controllers/skaters_controller.rb'
-
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/parsers/competition_parser/gpjpn.rb'
-    - 'app/parsers/competition_parser/isu_generic/result_parser.rb'
-
-# Offense count: 8
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/parsers/competition_parser/gpjpn.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-    - 'app/parsers/competition_parser/parser_builder.rb'
-    - 'app/parsers/competition_parser/wtt2017.rb'
-    - 'app/updaters/competition_updater.rb'
-    - 'lib/ajax_datatables/datatable.rb'
-
-# Offense count: 4
-# Configuration parameters: CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic.rb'
-
 # Offense count: 43
 Metrics/AbcSize:
   Max: 58

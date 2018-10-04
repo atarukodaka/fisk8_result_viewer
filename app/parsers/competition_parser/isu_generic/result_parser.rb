@@ -9,7 +9,7 @@ class CompetitionParser
         {}
       end
 
-      def get_rows(page)
+      def get_rows(_page)
         raise 'implemente on derived class'
       end
 

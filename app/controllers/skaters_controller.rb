@@ -22,7 +22,7 @@ class SkatersController < IndexController
         render action: :show, locals: { skater: skater }.merge(data)
       }
       format.json {
-        render json: skater.slice(*[:name, :nation, :isu_number, :category]).merge(data)
+        render json: skater.slice(:name, :nation, :isu_number, :category).merge(data)
       }
     end
   end
