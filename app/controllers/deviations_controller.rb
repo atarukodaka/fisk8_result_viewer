@@ -1,6 +1,6 @@
 class DeviationsController < ApplicationController
   include ControllerConcerns::Index
-  
+
   #def show_panel  ## params[:name]
   def panel
     panel_name = params[:name]
@@ -10,14 +10,14 @@ class DeviationsController < ApplicationController
 
     respond_to do |format|
       format.html {
-        render "show_panel", locals: {deviations_datatable: deviations_datatable, panel_name: panel_name}
+        render 'show_panel', locals: { deviations_datatable: deviations_datatable, panel_name: panel_name }
       }
       format.json {
-        render json: {panel: panel, deviations_datatable: deviations_datatable }
+        render json: { panel: panel, deviations_datatable: deviations_datatable }
       }
     end
   end
-  
+
   #def show_skater  ## params[:name]
   def skater
     skater_name = params[:name]
@@ -25,18 +25,15 @@ class DeviationsController < ApplicationController
     skater = Skater.find_by(name: skater_name)
     deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("scores.skater": skater).includes([official: [ :panel]], :score)).columns(columns)
 
-
     respond_to do |format|
       format.html {
-        render "show_skater", locals: {deviations_datatable: deviations_datatable, skater_name: skater_name}
+        render 'show_skater', locals: { deviations_datatable: deviations_datatable, skater_name: skater_name }
       }
       format.json {
-        render json: {skater: skater, deviations_datatable: deviations_datatable }
+        render json: { skater: skater, deviations_datatable: deviations_datatable }
       }
     end
 
-
   end
-
 
 end

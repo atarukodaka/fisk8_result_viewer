@@ -2,13 +2,12 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 
 ActiveRecord::Migration.maintain_test_schema!
 
 require 'spec_helper'
-require 'ajax_helper'
 require 'ajax_feature_helper'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
@@ -28,11 +27,11 @@ RSpec.configure do |config|
     #DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.clean_with :truncation, { except: %w(categories segments) }
   end
-  
+
   config.before(:each) do
     DatabaseCleaner.start
   end
-  
+
   config.after(:each) do
     DatabaseCleaner.clean
   end
@@ -40,14 +39,13 @@ RSpec.configure do |config|
   ## FactoryBot
   require 'factory_bot_rails'
   config.include FactoryBot::Syntax::Methods
-  
+
   config.before(:all) do
     FactoryBot.reload
   end
 
   ## include ajax helpers
-  config.include AjaxHelper
   config.include AjaxFeatureHelper
+  config.include AjaxFeatureHelper::Filter
+  config.include AjaxFeatureHelper::Order
 end
-
-

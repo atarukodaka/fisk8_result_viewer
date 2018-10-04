@@ -1,14 +1,14 @@
 class Element < ApplicationRecord
   include ScoreVirtualAttributes
-  
-  alias_attribute :element_name, :name   
-  
+
+  alias_attribute :element_name, :name
+
   ## relations
   has_many :element_judge_details, dependent: :destroy
   belongs_to :score
 
   ## scopes
-  scope :recent, ->{ joins(:score).order("scores.date desc") }
+  scope :recent, ->{ joins(:score).order('scores.date desc') }
 
   ## callbacks
   before_save :set_element_type, :set_level
@@ -16,15 +16,16 @@ class Element < ApplicationRecord
   alias_attribute :element_number, :number
 
   private
+
   def set_element_type
-    self[:element_type], self[:element_subtype] = 
-                         if score.category.name == "ICE DANCE"
+    self[:element_type], self[:element_subtype] =
+                         if score.category.name == 'ICE DANCE'
                            case name
                            when /FO/, /FT/, /RF/, /EW/, /AW/, /WW/, /VW/, /OW/, /SW/, /RW/, /GW/, /KI/, /YP/, /QS/, /FS/, /PD/, /RH/, /CC/, /SS/, /TA/, /AT/, /TR/, /BL/, /MB/, /BL/, /BL/, /QS/, /CC/, /VW/
                              [:pattern_dance, nil]
                            when /[12]SS/, /1PD/, /PSt/, /R[12]Sq/
                              [:pattern_dance, :element]
-                             
+
                            when /MiSt/, /DiSt/, /CiSt/, /SeSt/
                              [:step, nil]
                            when /StaLi/, /SlLi/, /CuLi/, /RoLi/, /SeLi/, /ChLi/, /^Li/
@@ -45,7 +46,7 @@ class Element < ApplicationRecord
                            when /Tw/ # /[1-4]A?Tw/, /[1-4]LzTw/
                              [:lift, :twist]
                            #:twist_lift
-                             
+
                            when /Li/  # /[1-5][ABTSR]?Li/, /StaLi/, /SlLi/, /CuLi/, /RoLi/   # pair
                              [:lift, :pair]
                            when /Th/
@@ -53,7 +54,7 @@ class Element < ApplicationRecord
                            #:throw_jump
                            when /Ds/, /PiF/
                              [:death_spiral, nil]
-                             
+
                            when /Sp/
                              case name
                              when /CoSp/

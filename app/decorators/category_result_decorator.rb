@@ -1,7 +1,7 @@
 class CategoryResultDecorator < EntryDecorator
   using AsScore
   using AsRanking
-  
+
   def competition_name
     h.link_to_competition(model.competition)
   end
@@ -32,4 +32,3 @@ class CategoryResultDecorator < EntryDecorator
   end
   decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value)
 end
-

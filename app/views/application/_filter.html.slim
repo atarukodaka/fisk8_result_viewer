@@ -1,0 +1,45 @@
+- datatable || raise('no table given')
+
+////////////////////////////////////////////////////////////////
+// filter
+- if datatable.filter.present?
+  = button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
+  = form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|  
+    - datatable.filter.filters.each do |filter|
+      div.form-group.row
+        div.col-sm-2
+          label= filter[:label].humanize
+        div.col-sm-10
+          - [filter[:field], filter[:fields]].flatten.compact.each do |field|
+            - key = field[:key]
+            - if field[:label].present?
+              label= field[:label]
+
+            - onchange = case field[:onchange]
+            - when :draw
+              - ajax_draw(datatable)
+            - else
+              - ajax_search(key, datatable)
+
+            - case field[:input_type]
+            - when :text_field
+              = text_field_tag(key, params[key], size: 70, onchange: onchange)
+            - when :select
+              - if field[:options]
+                = select_tag(key, options_for_select(field[:options], params[key]), onchange: onchange)
+              - else
+                = select_tag_with_options(key, onchange: onchange)
+
+    = form_group do
+      label= t("filter.offset", default: "Offset")
+      =text_field_tag(:offset, params[:offset], label: "AAA")
+      label
+      // = button_tag("html", type: "submit", name: "format", value: "html", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
+      label
+      = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
+      label
+      = button_tag("csv", type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
+    // = form_group(nil) do
+      = submit_tag("Search", id: "submit", name: nil)
+      label with format of
+      = select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format]))

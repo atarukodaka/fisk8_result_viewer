@@ -10,5 +10,4 @@ class ComponentJudgeDetailDecorator < EntryDecorator
     h.link_to_panel(official.panel)
   end
   decorate_as_score(:average)
-  
 end

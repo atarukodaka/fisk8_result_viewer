@@ -10,7 +10,7 @@ class CreateCategoriesSegments < ActiveRecord::Migration[5.1]
       t.string :category_type
       t.string :isu_bio_url
     end
-    
+
     ################
     create_table :segments do |t|
       t.string :name

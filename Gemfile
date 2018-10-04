@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -29,13 +29,13 @@ gem 'google-analytics-rails'
 gem 'rspec'   ## for heroku
 gem 'stackprof'  # profiling
 
-
 ## for each environments
 group :development, :test do
   gem 'bullet'
   gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-byebug'
+  gem 'rubocop', require: false
 end
 
 group :test do
@@ -44,7 +44,7 @@ group :test do
   gem 'poltergeist'
   gem 'rspec-rails'
   gem 'rspec-its'
-  
+
   gem 'database_cleaner'
   gem 'factory_bot_rails'
 

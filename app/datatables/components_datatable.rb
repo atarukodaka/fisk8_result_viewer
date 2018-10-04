@@ -6,9 +6,9 @@ class ComponentsDatatable < ScoreDetailsDatatable
     columns.add([:number, :component_name, :factor, :judges, :value,])
 
     columns.sources = {
-      component_name: "components.name",
+      component_name: 'components.name',
     }
-    
+
     ## searchble
     columns[:date].searchable = false
     columns[:value].operator = params[:value_operator].presence || :eq  if view_context

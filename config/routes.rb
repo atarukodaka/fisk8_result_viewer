@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :skaters, only: [:index, :show], param: :isu_number do
     get :list, on: :collection
   end
-  
+
   resources :competitions, only: [:index], param: :short_name do
     get :list, on: :collection
     get '(/:category(/:segment(/:ranking)))', action: :show, on: :member, as: ''
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :results, only: [:index], param: :name do
     get :list, on: :collection
   end
-  
+
   resources :scores, only: [:index, :show], param: :name do
     get :list, on: :collection
   end
@@ -43,9 +43,9 @@ Rails.application.routes.draw do
   resources :deviations, only: [:index, :show], param: :name do
     get :list, on: :collection
     get :panel, on: :member    # /deviations/:name/panel
-    get :skater, on: :member    # /deviations/:name/panel    
+    get :skater, on: :member    # /deviations/:name/panel
   end
-  
+
   resources :element_judge_details, only: :index do
     get :list, on: :collection
   end

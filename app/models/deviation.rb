@@ -5,7 +5,7 @@ class Deviation < ApplicationRecord
   def self.enabled?
       (self.count > 0) ? true : false
   end
-  
+
   delegate :name, to: :score, prefix: :score
   delegate :category_name, to: :score
   delegate :panel_name, to: :official

@@ -27,4 +27,3 @@ RSpec.describe 'database consistency', consistency: true do
     expect(count).to eq(uniq_name_count)
   end
 end
-

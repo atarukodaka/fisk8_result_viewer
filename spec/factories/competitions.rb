@@ -2,17 +2,17 @@
 FactoryBot.define do
   factory :competition do
 
-    trait :world do 
-      name { "World FS 2017" }
-      short_name { "WORLD2017" }
-      competition_type { "world" }
-      competition_class { "isu" }
-      city { "Tokyo" }
-      country { "JPN" }
-      site_url { "http://world2017.isu.org/results/" }
-      season { "2016-17" }
-      start_date { "2017-2-1" }
-      end_date { "2017-2-3" }
+    trait :world do
+      name { 'World FS 2015' }
+      short_name { 'WORLD2015' }
+      competition_type { 'world' }
+      competition_class { 'isu' }
+      city { 'Tokyo' }
+      country { 'JPN' }
+      site_url { 'http://world2015.isu.org/results/' }
+      season { '2014-15' }
+      start_date { Date.new(2015, 2, 1) }
+      end_date { Date.new(2015, 2, 3) }
 
       after (:build) do |competition|
         skater = create(:skater, :men)
@@ -21,19 +21,19 @@ FactoryBot.define do
         create(:score, :world, competition: competition, skater: skater, performed_segment: ps)
       end
     end
-    
+
     trait :finlandia do
-      short_name { "FIN2015" }
-      name { "Finlandia 2015" }
-      season { "2015-16" }
-      competition_type { "finlandia" }
-      competition_class { "challenger" }
-      city { "Finland" }
-      country { "FIN" }
-      site_url { "http://finlandia-2015/" }
-      start_date { "2015-9-1" }
-      end_date { "2015-9-3" }
-      
+      short_name { 'FIN2017' }
+      name { 'Finlandia 2017' }
+      season { '2017-18' }
+      competition_type { 'finlandia' }
+      competition_class { 'challenger' }
+      city { 'Finland' }
+      country { 'FIN' }
+      site_url { 'http://finlandia-2017/' }
+      start_date { Date.new(2017, 9, 1) }
+      end_date { Date.new(2017, 9, 3) }
+
       after (:build) do |competition|
         skater = create(:skater, :ladies)
         ps = create(:performed_segment, :finlandia, competition: competition)
@@ -44,4 +44,3 @@ FactoryBot.define do
     end
   end
 end
-

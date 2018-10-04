@@ -1,6 +1,6 @@
 class Score < ApplicationRecord
   before_save :set_score_name
-  
+
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
@@ -13,18 +13,18 @@ class Score < ApplicationRecord
   belongs_to :performed_segment, optional: true
 
   ## scopes
-  scope :recent, ->{ order("date desc") }
-  scope :short, -> { joins(:segment).where(segments: {segment_type: :short}) }
-  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free}) }
+  scope :recent, ->{ order('date desc') }
+  scope :short, -> { joins(:segment).where(segments: { segment_type: :short }) }
+  scope :free, -> { joins(:segment).where(segments: { segment_type:  :free }) }
   scope :category,->(c){ where(category: c) }
   scope :segment, ->(s){ where(segment: s) }
 
   ## virtual attributes
   {
     competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
-    skater: [:skater_name, :nation],
-    category: [:category_name, :category_type, :seniority, :team],
-    segment: [:segment_name, :segment_type],
+    skater:      [:skater_name, :nation],
+    category:    [:category_name, :category_type, :seniority, :team],
+    segment:     [:segment_name, :segment_type],
   }.each do |model, ary|
     ary.each do |key|
       delegate key, to: model
@@ -45,10 +45,11 @@ class Score < ApplicationRecord
     nation = self.skater.try(:nation) || self.nation
     isu_number = self.skater.try(:isu_number) || 0
 
-    "    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d" % [self.category.name, self.segment.name, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+    '    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d' % [self.category.name, self.segment.name, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
 
   private
+
   def set_score_name
     if name.blank?
       self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
@@ -56,4 +57,3 @@ class Score < ApplicationRecord
     self
   end
 end
-

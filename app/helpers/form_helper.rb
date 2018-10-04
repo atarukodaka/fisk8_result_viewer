@@ -1,8 +1,14 @@
 module FormHelper
+  def self.cache_uniq_list(cache_name, relation, key)
+    @cache ||= {}
+
+    #@cache[cache_name] ||= relation.distinct.pluck(key).compact
+    @cache[cache_name] ||= relation.pluck(key).uniq.compact
+  end
 
   def form_group(label = nil, input_tag = nil)
-    content_tag(:div, :class => "form-group row") do
-      label_str = (label.nil?) ? "" : I18n.t("field.#{label}", default: label.to_s)
+    content_tag(:div, :class => 'form-group row') do
+      label_str = (label.nil?) ? '' : I18n.t("field.#{label}", default: label.to_s)
       concat(content_tag(:div, label_tag(label_str), :class => 'col-sm-2'))
       if block_given?
         concat(content_tag(:div, :class => 'col-sm-10') do
@@ -13,50 +19,28 @@ module FormHelper
       end
     end
   end
-  
-  def cache_uniq_list(cache_name, relation, key)
-    Rails.cache.fetch(cache_name){
-      relation.distinct.pluck(key).compact
-    }
-  end
 
   def select_tag_with_options(key, *args)
     selected = params[key]
-
     col =
       case key
-      when :category_name
-        cache_uniq_list("category_name", Category.order(:id), :category_name)
-      when :category_type
-        cache_uniq_list("category_type", Category.order(:id), :category_type)
-      when :seniority
-        cache_uniq_list("category_seniority", Category.order(:id), :seniority)
-      when :team
-        cache_uniq_list("category_team", Category.order(:id), :team)
+      when :category_name, :category_type, :seniority, :team
+        FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), key)
 
-       when :segment_name
-         cache_uniq_list("segment_name", Segment.order(:id), :segment_name)
-      when :segment_type
-        cache_uniq_list("segment_type", Segment.order(:id), :segment_type)
+       when :segment_name, :segment_type
+         FormHelper.cache_uniq_list("segment/#{key}", Segment.order(:id), key)
 
       when :nation
-        cache_uniq_list("skater_nation", Skater.order(:nation), :nation)
+        FormHelper.cache_uniq_list('skater/nation', Skater.order(:nation), :nation)
 
-      when :competition_class
-        cache_uniq_list("competition_class", Competition.all, :competition_class).sort
-      when :competition_type
-        cache_uniq_list("competition_type", Competition.all, :competition_type).sort
-      when :season_from
-        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
-      when :season_to
-        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
-      when :season  ## for statics
-        cache_uniq_list("competition_season", Competition.all, :season).sort.reverse
+      when :competition_class, :competition_type
+        FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key).sort
 
-      when :element_type
-        cache_uniq_list("element_type", Element.all, :element_type).sort
-      when :element_subtype
-        cache_uniq_list("element_subtype", Element.all, :element_subtype).sort
+      when :season_from, :season_to, :season
+        FormHelper.cache_uniq_list('competition/competition_season', Competition.all, :season).sort.reverse
+
+      when :element_type, :element_subtype
+        FormHelper.cache_uniq_list("element/#{key}", Element.all, key).sort
       else
         []
       end
@@ -70,4 +54,3 @@ module FormHelper
     "$('##{table.table_id}').DataTable().draw();"
   end
 end
-

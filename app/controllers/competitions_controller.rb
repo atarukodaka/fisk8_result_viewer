@@ -1,6 +1,6 @@
 class CompetitionsController < ApplicationController
   include ControllerConcerns::Index
-  
+
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none
@@ -19,6 +19,7 @@ class CompetitionsController < ApplicationController
   end
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
+
     AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
       columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
   end
@@ -29,12 +30,12 @@ class CompetitionsController < ApplicationController
     category_name, segment_name, ranking = params[:category], params[:segment], params[:ranking]
     category = Category.find_by(name: category_name)
     segment = Segment.find_by(name: segment_name)
-    
+
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category_name, segment_name, ranking].join('/')))
-      
+              raise(ActiveRecord::RecordNotFound.new('no such score: ' + [competition.short_name, category_name, segment_name, ranking].join('/')))
+
       respond_to do |format|
         format.html {
           redirect_to(controller: :scores, action: :show, name: score.name)
@@ -47,13 +48,13 @@ class CompetitionsController < ApplicationController
       respond_to do |format|
         results = {
           category_results: category_results_datatable(competition, category),
-          segment_results: segment_results_datatable(competition, category, segment),
+          segment_results:  segment_results_datatable(competition, category, segment),
         }
         format.html {
           data = {
             competition: competition,
-            category: category,
-            segment: segment,
+            category:    category,
+            segment:     segment,
             result_type: result_type(category_name, segment_name),
           }.merge(results)
           render :show, locals: data

@@ -19,7 +19,7 @@ RSpec.describe 'rake', rake: true do
   end
 =end
 
-  describe "update skater" do
+  describe 'update skater' do
     describe 'skaters' do
       it do
         @rake['update:skaters'].invoke
@@ -51,23 +51,21 @@ RSpec.describe 'rake', rake: true do
       expect_url_match
     end
     it 'by filename' do
-      ENV['filename'] ="competitions_junior"
+      ENV['filename'] ='competitions_junior'
       expect_url_match
     end
     it 'by filenames' do
-      ENV['filenames'] = "competitions_junior,competitions_challenger"
+      ENV['filenames'] = 'competitions_junior,competitions_challenger'
       expect_url_match
     end
     it 'categories' do
-      expect_url_match(categories: "MEN", last: 1)
-      expect(Score.joins(:category).where("categories.name": "MEN").count).to be > 0
-      
+      expect_url_match(categories: 'MEN', last: 1)
+      expect(Score.joins(:category).where("categories.name": 'MEN').count).to be > 0
     end
     it 'by force' do   ## TODo
       ENV['force'] = '1'
       #expect_url_match
     end
-    
   end
   ################
   describe 'deviation' do
@@ -82,4 +80,4 @@ RSpec.describe 'rake', rake: true do
       expect(@rake['parse:scores'].invoke).to be_truthy
     end
   end
-end 
+end
