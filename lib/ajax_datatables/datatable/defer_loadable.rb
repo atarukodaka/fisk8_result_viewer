@@ -8,6 +8,7 @@ module AjaxDatatables::Datatable::DeferLoading
   def settings
     super.merge(deferLoading: records.count)
   end
+
   def manipulate(r)
     super(r)
       .order(default_orders.map { |column, dir| [columns[column].source, dir].join(' ') })

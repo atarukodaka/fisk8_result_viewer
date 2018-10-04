@@ -19,7 +19,7 @@ class SkatersFilter < IndexFilter
       {
         key: :having_scores,
         label: hname(:having_scores),
-        #fields: [{ key: :having_scores, input_type: :select, options: ['on', 'off'], onchange: :draw} ],
+        # fields: [{ key: :having_scores, input_type: :select, options: ['on', 'off'], onchange: :draw} ],
         fields: [{ key: :having_scores, input_type: :checkbox, onchange: :draw }],
       }
     ]

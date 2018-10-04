@@ -1,6 +1,6 @@
 class SkaterParser < Parser
-  #include Utils
-  include LinkToHelper    ## for isu_bio_url
+  # include Utils
+  include LinkToHelper ## for isu_bio_url
 
   def parse_skaters(category, url)
     page = get_url(url)
@@ -11,6 +11,7 @@ class SkaterParser < Parser
       }
     end
   end
+
   def parse_skater(row, category:, default_nation: nil)
     nation = (n = row.xpath('td[1]').text.presence) ? n : default_nation
     name = row.xpath('td[3]').text
@@ -20,6 +21,7 @@ class SkaterParser < Parser
       isu_number: isu_number, nation: nation, name: name, category: category,
     }
   end
+
   def parse_skater_details(isu_number)
     page = get_url(isu_bio_url(isu_number)) || raise("invalid isu number: #{isu_number}")
     data = { isu_number: isu_number }

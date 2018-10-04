@@ -19,7 +19,7 @@ RSpec.describe AjaxDatatables::Columns do
   end
   describe ScoresDatatable do
     context 'giving column as symbol' do
-      subject(:column) {  ScoresDatatable.new.columns([:foo]).columns[:foo] }
+      subject(:column) { ScoresDatatable.new.columns([:foo]).columns[:foo] }
       its(:name) { is_expected.to eq('foo') }
     end
     context 'giving column as hash' do

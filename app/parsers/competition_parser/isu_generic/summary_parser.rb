@@ -1,7 +1,7 @@
 class CompetitionParser
   class IsuGeneric
     class SummaryParser < Parser
-      #include Utils
+      # include Utils
 
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
@@ -32,7 +32,7 @@ class CompetitionParser
               panel_url:  hash[:panel_url],
               result_url: hash[:result_url],
               score_url:  hash[:score_url],
-              time:       time_schedule.select { |item|      ## time ? date ?
+              time:       time_schedule.select { |item| ## time ? date ?
                 item[:category] == category && item[:segment] == segment
               }.first.try(:[], :time),
             }
@@ -67,9 +67,10 @@ class CompetitionParser
           end
           [city, country]
         else
-          [str, nil]  ## to be set in competition.update()
+          [str, nil] ## to be set in competition.update()
         end
       end
+
       def parse_summary_table(page, url: '')
         elem = page.xpath("//*[text()='Category']").first || raise
         rows = elem.xpath('ancestor::table[1]//tr')
@@ -100,6 +101,7 @@ class CompetitionParser
         end
         summary
       end
+
       ################
       def get_timezone(page)
         page.xpath("//*[contains(text(), 'Local Time')]").text() =~ / ([\+\-]\d\d:\d\d)/
@@ -109,11 +111,13 @@ class CompetitionParser
 
         'Etc/GMT%+d' % [utc_offset * -1]
       end
+
       def get_time_schedule_rows(page)
-        #page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
+        # page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
         elem = page.xpath("//table//tr//*[text()='Date']").first || raise
         elem.xpath('ancestor::table[1]//tr')
       end
+
       def parse_time_schedule(page, date_format:)
         ## time schdule
         rows = get_time_schedule_rows(page)
@@ -131,8 +135,8 @@ class CompetitionParser
 
           tm_str = row.xpath('td[2]').text
           dt_tm_str = "#{dt_str} #{tm_str}"
-          #dt_tm_str += " #{local_tz}" if tz == "UTC"
-          #tz = "Etc/GMT#{local_tz_hour.to_i }"
+          # dt_tm_str += " #{local_tz}" if tz == "UTC"
+          # tz = "Etc/GMT#{local_tz_hour.to_i }"
 
           tm =
             unless date_format.blank?
@@ -140,8 +144,8 @@ class CompetitionParser
             else
               dt_tm_str
             end.in_time_zone(ActiveSupport::TimeZone[timezone])
-          #next if tm.nil?
-          tm = tm + 2000.years if tm.year < 100  ## for ondrei nepela
+          # next if tm.nil?
+          tm = tm + 2000.years if tm.year < 100 ## for ondrei nepela
 
           time_schedule << {
             time:     tm,
@@ -149,9 +153,10 @@ class CompetitionParser
             segment:  row.xpath('td[4]').text.squish.upcase,
           }
         end
-        #puts time_schedule.first[:time]
+        # puts time_schedule.first[:time]
         time_schedule
       end
+
       def parse_name(page)
         page.title.strip
       end
@@ -164,4 +169,4 @@ class CompetitionParser
       end
     end
   end
-end  ## module
+end ## module

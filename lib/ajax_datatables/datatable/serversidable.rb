@@ -25,6 +25,7 @@ module AjaxDatatables::Datatable::Serverside
       { column_name: item[:data], search_value: sv }
     }.compact
   end
+
   ################
   ## sorting
   def sorting_sql
@@ -36,14 +37,17 @@ module AjaxDatatables::Datatable::Serverside
       [columns[item[:column].to_i].source, item[:dir]].join(' ')
     end
   end
+
   ################
   ## paging
   def page
     params[:start].to_i / per + 1
   end
+
   def per
     params[:length].to_i > 0 ? params[:length].to_i : 10
   end
+
   ################
   ## json output
   def as_json(*args)

@@ -62,9 +62,9 @@ RSpec.describe 'rake', rake: true do
       expect_url_match(categories: 'MEN', last: 1)
       expect(Score.joins(:category).where("categories.name": 'MEN').count).to be > 0
     end
-    it 'by force' do   ## TODo
+    it 'by force' do ## TODo
       ENV['force'] = '1'
-      #expect_url_match
+      # expect_url_match
     end
   end
   ################

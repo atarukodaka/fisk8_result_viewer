@@ -19,7 +19,7 @@ class SkaterUpdater
             skater.update(hash.slice(*attrs))
           end
         end
-      end  # transaction
+      end # transaction
     end
   end
 
@@ -30,6 +30,7 @@ class SkaterUpdater
       update_skater_detail(skater.isu_number)
     end
   end
+
   def update_skater_detail(isu_number)
     skater = Skater.find_or_create_by(isu_number: isu_number)
 

@@ -3,9 +3,10 @@ class CompetitionParser
     class SegmentResultParser < CategoryResultParser
       def callbacks
         super.merge(starting_number: lambda { |elem|
-                      elem.text.sub(/^#/, '').to_i
-                    })
+                                       elem.text.sub(/^#/, '').to_i
+                                     })
       end
+
       def get_rows(page)
         return(nil) if page.xpath("//*[contains(text(), 'Live Results')]").present?
 
@@ -17,6 +18,7 @@ class CompetitionParser
           raise("No Placement Cell found (#{self.class})")
         return place_elem.xpath('../../tr')
       end
+
       def columns
         {
           ranking:         { header: ['Pl.', 'PL.'] },

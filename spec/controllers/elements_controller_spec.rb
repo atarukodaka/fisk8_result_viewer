@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe ElementsController, type: :controller do
   render_views
 
-  let(:solo_jump) {             Element.where(element_type: 'jump', element_subtype: 'solo').first }
+  let(:solo_jump) { Element.where(element_type: 'jump', element_subtype: 'solo').first }
   let(:combination_jump) { Element.where(element_type: 'jump', element_subtype: 'comb').first }
-  let(:layback_spin) {          Element.where(element_type: 'spin').first }
+  let(:layback_spin) { Element.where(element_type: 'spin').first }
 
   describe '#index' do
     before(:all) {

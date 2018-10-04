@@ -43,5 +43,5 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.float :pcs_deviation
       t.float :pcs_deviation_ratio
     end
-  end  ## change
+  end ## change
 end

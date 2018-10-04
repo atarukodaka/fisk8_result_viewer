@@ -129,7 +129,7 @@ end
     segment_type: 'free',
   },
 ].each do |elem|
-  #Segment.create(elem)
+  # Segment.create(elem)
   Segment.find_or_create_by(name: elem[:name]) do |segment|
     segment.update(elem)
   end

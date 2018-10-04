@@ -1,6 +1,6 @@
 class CompetitionUpdater
   def initialize(parser_type: nil, verbose: false, enable_judge_details: nil)
-    @parsers = CompetitionParser::ParserBuilder::build(parser_type, verbose: verbose)
+    @parsers = CompetitionParser::ParserBuilder.build(parser_type, verbose: verbose)
     @verbose = verbose
     @enable_judge_details = enable_judge_details
   end
@@ -16,7 +16,8 @@ class CompetitionUpdater
       true
     end
   end
-  def get_categories_to_update(categories)   ## array of strings or symbol given
+
+  def get_categories_to_update(categories) ## array of strings or symbol given
     if categories.nil?
       Category.all
     else
@@ -25,6 +26,7 @@ class CompetitionUpdater
       end.compact
     end
   end
+
   def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
     categories_to_update = get_categories_to_update(categories)
 
@@ -56,7 +58,7 @@ class CompetitionUpdater
         end
         competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
         competition.normalize
-        competition.save!  ## need to save here to create children
+        competition.save! ## need to save here to create children
 
         puts '*' * 100 + "\n%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys if @verbose
 
@@ -78,11 +80,12 @@ class CompetitionUpdater
         end
       end
       ## ensure to return competition object
-    end  ## transaction
+    end ## transaction
   end
+
   ################
   def update_performed_segment(competition, category, segment, panel_url, starting_time)
-    parsed_panels = @parsers[:panel].parse(panel_url)  # if @enable_judge_details
+    parsed_panels = @parsers[:panel].parse(panel_url) # if @enable_judge_details
     competition.performed_segments.create do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
       ## panels
@@ -105,6 +108,7 @@ class CompetitionUpdater
       end
     end
   end
+
   ################
   def update_category_result(competition, category, result_url)
     return if result_url.blank?
@@ -122,6 +126,7 @@ class CompetitionUpdater
       end
     end
   end
+
   ################
   def update_judge_details(competition, category, segment, score)
     return if competition.start_date <= Time.zone.parse('2016-7-1') # was random order in the past
@@ -150,6 +155,7 @@ class CompetitionUpdater
     end
     puts '        done'
   end
+
   def update_score(competition, category, segment, score_url, result_url, additionals = {})
     segment_results = nil
     segment_type = segment.segment_type
@@ -173,7 +179,7 @@ class CompetitionUpdater
           attrs = score.class.column_names.map(&:to_sym) & sc_parsed.keys
           score.attributes = sc_parsed.slice(*attrs).merge(additionals)
           score.update(skater:            skater,
-                       performed_segment: competition.performed_segments.where(category: category, segment: segment).first)     ## need to save here to create children
+                       performed_segment: competition.performed_segments.where(category: category, segment: segment).first) ## need to save here to create children
 
           if relevant_cr
             relevant_cr.update(segment_type => score)
@@ -193,11 +199,12 @@ class CompetitionUpdater
       end
     end
   end ## def
+
   ################
   ## utils
   def find_or_create_skater(isu_number, skater_name, nation, category)
     normalized_skater_name = normalize_persons_name(skater_name)
-    @skater_name_correction ||= YAML::load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
+    @skater_name_correction ||= YAML.load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
     corrected_skater_name = @skater_name_correction[normalized_skater_name] || normalized_skater_name
     Skater.find_or_create_by_isu_number_or_name(isu_number, normalize_persons_name(skater_name)) do |sk|
       sk.attributes = {
@@ -206,6 +213,7 @@ class CompetitionUpdater
       }
     end
   end
+
   def normalize_persons_name(name)
     if name.to_s =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
       [$2, $1].join(' ')

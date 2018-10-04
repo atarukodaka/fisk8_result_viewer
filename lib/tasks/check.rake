@@ -10,7 +10,7 @@ namespace 'check' do
     Competition.all.each do |competition|
       puts "#{competition.name} (#{competition.site_url})"
       puts "  result: #{competition.category_results.count}: #{competition.category_results.group(:category).count}"
-        [:short, :free].each do |sf|
+      [:short, :free].each do |sf|
         puts "  #{sf} scores:    #{competition.scores.where('segment like ?', "#{sf.to_s.upcase}%").count}: #{competition.scores.where('segment like ?', "#{sf.to_s.upcase}%").group(:category).count}"
       end
     end

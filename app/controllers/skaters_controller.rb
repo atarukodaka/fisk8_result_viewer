@@ -6,6 +6,7 @@ class SkatersController < ApplicationController
       Skater.find_by(name: params[:isu_number]) ||
       raise(ActiveRecord::RecordNotFound.new('no such skater'))
   end
+
   def competition_results_datatable(skater)
     columns = [:competition_name, :date, :category, :ranking, :points,
                :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions,

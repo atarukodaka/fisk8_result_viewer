@@ -10,7 +10,7 @@ class Skater < ApplicationRecord
 
   ## validations
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
-  validates :isu_number, allow_nil: true, numericality:  { only_integer: true }
+  validates :isu_number, allow_nil: true, numericality: { only_integer: true }
 
   ## scopes
   scope :having_scores, -> {
@@ -19,7 +19,7 @@ class Skater < ApplicationRecord
   scope :name_matches, ->(v) { where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
-  #delegate :type, to: :category, prefix: :category, allow_nil: true
+  # delegate :type, to: :category, prefix: :category, allow_nil: true
   delegate :category_type, to: :category, allow_nil: true
 
   ## class methods
@@ -28,6 +28,7 @@ class Skater < ApplicationRecord
       (find_by(isu_number: isu_number) if isu_number.present?) ||
         (find_by(name: name))
     end
+
     def find_or_create_by_isu_number_or_name(isu_number, name)
       find_by_isu_number_or_name(isu_number, name) || create do |skater|
         skater.isu_number = isu_number
@@ -35,5 +36,5 @@ class Skater < ApplicationRecord
         yield skater if block_given?
       end
     end
-  end  ## class << self
+  end ## class << self
 end ## class Skater

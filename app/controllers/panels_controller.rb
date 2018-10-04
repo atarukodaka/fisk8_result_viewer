@@ -12,6 +12,7 @@ class PanelsController < ApplicationController
       end
     end
   end
+
   ################
   def show
     panel = Panel.find_by(name: params[:name]) ||
@@ -31,11 +32,11 @@ class PanelsController < ApplicationController
     }
     participated_segments_datatable = AjaxDatatables::Datatable.new(self).records(Official.where(panel: panel).includes(performed_segment: [:competition, :category, :segment])).columns([:competition_name, :category_name, :segment_name, :number])
 
-    #columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
-    #deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
+    # columns = [:score_name, :skater_name, :official_number, :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
+    # deviations_datatable = DeviationsDatatable.new(view_context).records(Deviation.where("officials.panel": panel).includes(:official, score: [:skater])).columns(columns)
 
     respond_to do |format|
-      data = { panel: panel, summary: summary, participated_segments_datatable: participated_segments_datatable }   # , deviations_datatable: deviations_datatable }
+      data = { panel: panel, summary: summary, participated_segments_datatable: participated_segments_datatable } # , deviations_datatable: deviations_datatable }
       format.html {
         render locals: data
       }

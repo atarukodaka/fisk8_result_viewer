@@ -13,11 +13,11 @@ class DeviationsUpdater
       data[key] ||= {}
       data[key][:pcs] = value
     end
-    scores = Score.all.index_by(&:id)  ## TODO: use memory too much ??
+    scores = Score.all.index_by(&:id) ## TODO: use memory too much ??
 
     ActiveRecord::Base.transaction do
       puts 'start' if @verbose
-      Deviation.delete_all    ## clear all data first
+      Deviation.delete_all ## clear all data first
       data.each do |(score_id, official_id), hash|
         Deviation.create(
           score_id: score_id, official_id: official_id,
@@ -28,6 +28,6 @@ class DeviationsUpdater
         )
       end
       puts 'done.' if @verbose
-    end  ## transaction
+    end ## transaction
   end
 end

@@ -14,7 +14,7 @@ class CompetitionParser
         entry_url = ''
         panel_url = ''
         segment_result_url = ''
-        #rows[0..-1].each do |row|
+        # rows[0..-1].each do |row|
         rows.each do |row|
           next if row.xpath('td').blank?
 
@@ -45,6 +45,7 @@ class CompetitionParser
         end
         summary
       end
+
       def parse_time_schedule(page, date_format: '')
         Time.zone ||= 'UTC'
         header_elem = page.xpath("//*[text()='Date']").first
@@ -85,7 +86,7 @@ class CompetitionParser
               i += 1
             end
           when 'tr'
-            if bHeader  # skip if header
+            if bHeader # skip if header
               bHeader = false
               next
             end
@@ -98,6 +99,6 @@ class CompetitionParser
         end
         summary
       end
-    end  ## class SummaryParser
+    end ## class SummaryParser
   end ## class Gpjpn
 end

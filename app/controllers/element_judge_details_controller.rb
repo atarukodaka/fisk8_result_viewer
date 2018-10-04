@@ -1,6 +1,5 @@
 class ElementJudgeDetailsController < ApplicationController
   include ControllerConcerns::Index
 
-  def show
-  end
+  def show; end
 end

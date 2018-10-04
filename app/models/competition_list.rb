@@ -17,7 +17,7 @@ class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
 
-  #DEFAULT_PARSER = :isu_generic
+  # DEFAULT_PARSER = :isu_generic
 
   field :url
   field :parser_type, default: CompetitionParser::DEFAULT_PARSER

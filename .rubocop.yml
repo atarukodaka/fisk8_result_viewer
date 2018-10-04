@@ -7,6 +7,11 @@ AllCops:
     - '**/vendor/**/*'
     - 'db/schema.rb'
     - 'config.ru'
+    - 'bin/*'
+
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
 
 Style/RaiseArgs:
   Enabled: false
@@ -20,5 +25,33 @@ Style/BlockComments:
 Style/BlockDelimiters:
   Enabled: false
 
+#Style/ClassAndModuleChildren:   nested or compact
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+  
+Style/Semicolon:
+  AllowAsExpressionSeparator:
+    Enabled: true
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  
+Style/UnlessElse:
+  Enabled: false
+
+Style/WordArray:
+  Exclude: false
+  
+  
 
   

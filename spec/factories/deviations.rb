@@ -1,4 +1,3 @@
-
 FactoryBot.define do
   factory :deviation do
     trait :first do

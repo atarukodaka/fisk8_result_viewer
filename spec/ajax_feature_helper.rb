@@ -71,7 +71,7 @@ module AjaxFeatureHelper
     shared_context :ajax_filter do |key, input_type|
       context key do
         subject {
-          #value = (value_function.present?) ? value_function.call(main) : main.send(key)
+          # value = (value_function.present?) ? value_function.call(main) : main.send(key)
           value = main.send(key)
           ajax_action_filter(key: key, value: value, input_type: input_type, path: index_path)
         }
@@ -121,8 +121,8 @@ module AjaxFeatureHelper
   module Order
     RSpec::Matchers.define :appear_before do |later_content|
       match do |earlier_content|
-      body = (respond_to? :page) ? page.body : response.body
-      body.index(earlier_content.to_s) < body.index(later_content.to_s)
+        body = (respond_to? :page) ? page.body : response.body
+        body.index(earlier_content.to_s) < body.index(later_content.to_s)
       end
     end
 

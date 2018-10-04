@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe ScoresController, type: :controller do
   render_views
 
-  let!(:main) { create(:competition, :world).scores.first     }
-  let!(:sub)  { create(:competition, :finlandia).scores.first  }
+  let!(:main) { create(:competition, :world).scores.first }
+  let!(:sub)  { create(:competition, :finlandia).scores.first }
 
   ################
   describe '#index' do

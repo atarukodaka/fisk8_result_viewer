@@ -43,24 +43,28 @@ module AjaxDatatables
       @columns = columns(columns)
       yield(self) if block_given?
     end
+
     def table_id
       "table_#{self.object_id}"
     end
 
-    def view    # short cut for view_context
+    def view # short cut for view_context
       @view_context
     end
+
     ## columns accessors
     def columns(cols = nil)     # cols can be array of Hash or Symbol/String
       if cols                   # setter for method chain
         self.tap { |d| d.columns = cols }
-      else                     # getter
+      else # getter
         @columns
       end
     end
+
     def columns=(cols) # setter
       @columns = AjaxDatatables::Columns.new(cols, datatable: self)
     end
+
     def add_columns(cols)
       if @columns.nil?
         columns = cols
@@ -68,16 +72,20 @@ module AjaxDatatables
         @columns.add(cols)
       end
     end
+
     ## data fetching/manipulation
     def fetch_records
       []
     end
+
     def data
       @data ||= manipulate(records)
     end
+
     def manipulate(r)
       r
     end
+
     def refresh
       @data = nil
       data
@@ -103,36 +111,40 @@ module AjaxDatatables
         pageLength: 25,
       }
     end
+
     def ajax(serverside: false, url:)
       settings.update(serverSide: serverside, ajax: { url: url })
       self
     end
+
     def column_names
       columns.map(&:name)
     end
+
     def as_attrs
       order = default_orders.map { |column, dir|
         [column_names.index(column.to_s), dir]
       }
 
       settings.merge(
-        {
-          retrieve: true,
-          columns:  column_names.map { |name|
-            {
-              data:       name,
-              name:       name,
-              visible:    columns[name].visible,
-              orderable:  columns[name].orderable,
-              searchable: columns[name].searchable
-            }
-          },
-          order:    order,
-        })
+        retrieve: true,
+        columns:  column_names.map { |name|
+          {
+            data:       name,
+            name:       name,
+            visible:    columns[name].visible,
+            orderable:  columns[name].orderable,
+            searchable: columns[name].searchable
+          }
+        },
+        order:    order
+      )
     end
+
     def render(partial: 'datatable', locals: {})
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
     end
+
     ################
     ## format
     def as_json(*args)

@@ -1,5 +1,5 @@
 class Competition < ApplicationRecord
-  #before_save :normalize
+  # before_save :normalize
 
   alias_attribute :competition_name, :name
 
@@ -12,7 +12,7 @@ class Competition < ApplicationRecord
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
 
   ## scopes
-  scope :recent, ->() { order('start_date desc')  }
+  scope :recent, -> { order('start_date desc') }
 
   ## updater
   def normalize
@@ -58,7 +58,7 @@ class Competition < ApplicationRecord
 =end
 
     ary = nil
-    data = YAML::load_file(File.join(Rails.root.join('config'), 'competition_normalize.yml'))
+    data = YAML.load_file(File.join(Rails.root.join('config'), 'competition_normalize.yml'))
     data.each do |key, value|
       if name =~ Regexp.new(key)
         ary = value

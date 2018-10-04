@@ -17,14 +17,14 @@ RSpec.describe CompetitionsController, type: :controller do
   ## index
   describe '#index' do
     context 'all' do
-      subject { get :index  }
+      subject { get :index }
       it_behaves_like :having_all
     end
 
     context 'format: ' do
       [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, content_type|
         context ".#{format}" do
-          subject { get :index, { format: format } }
+          subject { get :index, format: format }
           it_behaves_like :having_all
         end
       end
@@ -51,7 +51,6 @@ RSpec.describe CompetitionsController, type: :controller do
       }
     end
     context 'short_name/category/segment' do
-
       subject {
         get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name }
       }
@@ -75,6 +74,5 @@ RSpec.describe CompetitionsController, type: :controller do
       its(:content_type) { is_expected.to eq('application/json') }
       its(:body) { is_expected.to have_content(world.name) }
     end
-
   end
 end
