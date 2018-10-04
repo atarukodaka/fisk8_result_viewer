@@ -12,16 +12,16 @@ module Property
   #   foo.bar = 3  #{ => 3 }
 
   def property(sym, default = nil, readonly: false, &initializer)
-    initializer ||= -> * { default }
+    initializer ||= ->(*) { default }
 
     ## define getter and setter with method change
     define_method(sym) do |*args|
       variable_name = "@#{sym.to_sym}"
 
-      if !args.empty?    # set value and return self for method chain
+      if !args.empty? # set value and return self for method chain
         instance_variable_set variable_name, args.first unless readonly
         self
-      else   # get value
+      else # get value
         if !instance_variable_defined?(variable_name) and !readonly # set default value if undef
           instance_variable_set(variable_name, instance_eval(&initializer))
         else
@@ -57,7 +57,8 @@ module Property
       end
     end
   end
+
   def properties(*syms, default: nil, &initializer)
-    [*syms].flatten.each {|sym| property sym, default, &initializer }
+    [*syms].flatten.each { |sym| property sym, default, &initializer }
   end
 end

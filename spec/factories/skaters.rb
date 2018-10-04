@@ -1,7 +1,6 @@
 # skaters
 FactoryBot.define do
   factory :skater do
-
     trait :men do
       name { 'Taro YAMADA' }
       nation { 'JPN' }
@@ -12,7 +11,6 @@ FactoryBot.define do
       coach { 'Jiro YAMADA' }
       hometown { 'TOKYO' }
       club { 'Jingu' }
-
     end
     trait :ladies do
       name { 'Leia ORGANA' }

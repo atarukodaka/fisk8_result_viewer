@@ -1,10 +1,8 @@
-
 class EntryDecorator < Draper::Decorator
   include ApplicationHelper
   delegate_all
 
-  def no  ## for numbering
-  end
+  def no; end
   class << self
     using AsScore
     using AsRanking
@@ -16,6 +14,7 @@ class EntryDecorator < Draper::Decorator
         end
       end
     end
+
     def decorate_as_ranking(*columns)
       [*columns].flatten.each do |column|
         define_method(column.to_sym) do
@@ -23,5 +22,5 @@ class EntryDecorator < Draper::Decorator
         end
       end
     end
-  end  ## class << self
+  end ## class << self
 end

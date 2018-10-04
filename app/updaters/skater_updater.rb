@@ -19,17 +19,18 @@ class SkaterUpdater
             skater.update(hash.slice(*attrs))
           end
         end
-      end  # transaction
+      end # transaction
     end
   end
 
   ################
   # skater detail
   def update_skaters_detail
-    Skater.reject {|sk| sk.isu_number.blank? }.each do |skater|
+    Skater.reject { |sk| sk.isu_number.blank? }.each do |skater|
       update_skater_detail(skater.isu_number)
     end
   end
+
   def update_skater_detail(isu_number)
     skater = Skater.find_or_create_by(isu_number: isu_number)
 

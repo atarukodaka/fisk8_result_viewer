@@ -2,7 +2,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
   def initialize(*args)
     super
 
-    #add_columns([:number, :name, :factor, :judges, :value,])
+    # add_columns([:number, :name, :factor, :judges, :value,])
     columns.add([:number, :component_name, :factor, :judges, :value,])
 
     columns.sources = {
@@ -11,8 +11,9 @@ class ComponentsDatatable < ScoreDetailsDatatable
 
     ## searchble
     columns[:date].searchable = false
-    columns[:value].operator = params[:value_operator].presence || :eq  if view_context
+    columns[:value].operator = params[:value_operator].presence || :eq if view_context
   end
+
   def fetch_records
     Component.includes(:score, score: [:competition, :skater, :category, :segment]).joins(:score, score: [:competition, :skater, :category, :segment]).all
   end

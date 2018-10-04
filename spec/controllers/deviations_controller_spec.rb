@@ -17,8 +17,8 @@ describe DeviationsController, type: :controller do
   }
 
   describe '#index' do
-    subject { get :index  }
-    it { is_expected.to be_success}
+    subject { get :index }
+    it { is_expected.to be_success }
     its(:body) { is_expected.to have_content(first.score.name) }
     its(:body) { is_expected.to have_content(second.score.name) }
   end

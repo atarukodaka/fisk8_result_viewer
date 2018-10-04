@@ -1,6 +1,6 @@
 class CompetitionParser
   class Gpjpn < IsuGeneric
-    class SummaryParser  < IsuGeneric::SummaryParser
+    class SummaryParser < IsuGeneric::SummaryParser
       def parse_city_country(_page)
         ['', 'JPN']
       end
@@ -14,13 +14,13 @@ class CompetitionParser
         entry_url = ''
         panel_url = ''
         segment_result_url = ''
-        #rows[0..-1].each do |row|
+        # rows[0..-1].each do |row|
         rows.each do |row|
           next if row.xpath('td').blank?
 
           if row.xpath('td[2]').text == 'Entries'
             category = row.xpath('td[1]').text.upcase
-            result_url = URI.join(url,row.xpath('td[3]/a/@href').text).to_s
+            result_url = URI.join(url, row.xpath('td[3]/a/@href').text).to_s
             summary << {
               category:   category,
               segment:    '',
@@ -45,6 +45,7 @@ class CompetitionParser
         end
         summary
       end
+
       def parse_time_schedule(page, date_format: '')
         Time.zone ||= 'UTC'
         header_elem = page.xpath("//*[text()='Date']").first
@@ -85,19 +86,19 @@ class CompetitionParser
               i += 1
             end
           when 'tr'
-            if bHeader  # skip if header
+            if bHeader # skip if header
               bHeader = false
               next
             end
             summary << {
               category: elem.xpath('td[2]').text.upcase,
               segment:  elem.xpath('td[3]').text.upcase,
-              time:     "#{date} #{elem.xpath("td[1]").text}".in_time_zone(timezone),
+              time:     "#{date} #{elem.xpath('td[1]').text}".in_time_zone(timezone),
             }
           end
         end
         summary
       end
-    end  ## class SummaryParser
+    end ## class SummaryParser
   end ## class Gpjpn
 end

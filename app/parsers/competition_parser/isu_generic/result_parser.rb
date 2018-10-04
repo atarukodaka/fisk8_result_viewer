@@ -1,7 +1,7 @@
 class CompetitionParser
   class IsuGeneric
     class ResultParser < Parser
-      #include Utils
+      # include Utils
 
       def callbacks
         {}
@@ -10,6 +10,7 @@ class CompetitionParser
       def columns
         {}
       end
+
       def get_rows(page)
         raise 'implemente on derived class'
       end
@@ -20,6 +21,7 @@ class CompetitionParser
           elem.text.squish.gsub(/[[:space:]]/, '')
         end
       end
+
       ################
       def parse(url)
         puts "   --  parsing result: #{url}" if @verbose
@@ -36,7 +38,7 @@ class CompetitionParser
           columns.each do |key, params|
             relevant_headers = [params[:header],].flatten
 
-            col_number = headers.index {|d| relevant_headers.index(d)} ||
+            col_number = headers.index { |d| relevant_headers.index(d) } ||
                          raise("no relevant column found: #{key}: #{relevant_headers}")
             elem = elems[col_number] || next
             data[key] =
@@ -47,7 +49,7 @@ class CompetitionParser
               end
           end
           data
-        end.compact  ## rows
+        end.compact ## rows
       end
     end
   end

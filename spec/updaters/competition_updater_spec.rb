@@ -5,7 +5,7 @@ RSpec.configure do |c|
 end
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
-  before { @updater = CompetitionUpdater.new    }
+  before { @updater = CompetitionUpdater.new }
 
   describe 'parser types:' do
     shared_examples :having_competition_with_url do
@@ -14,13 +14,13 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
     describe 'wc2017 with isu_generic' do
       let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
-      subject {  @updater.update_competition(url) }
+      subject { @updater.update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
     describe 'jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
       let(:date_format) { '%m/%d/%Y' }
-      subject {  @updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
+      subject { @updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
       it_behaves_like :having_competition_with_url
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
       subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
       it_behaves_like :having_competition_with_url
-      #it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
+      # it { expect(competition.scores.where("category like ? ", "TEAM%").blank?).to be false }
       it { expect(competition.scores.includes(:category).references(:category).where('categories.name like ? ', 'TEAM%').blank?).to be false }
     end
 
@@ -59,8 +59,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       updater = CompetitionUpdater.new(enable_judge_details: true, verbose: false)
 
       updater.update_competition(url, categories: ['MEN'])
-      expect( ElementJudgeDetail.count ).to be > 0
-      expect( ComponentJudgeDetail.count ).to be > 0
+      expect(ElementJudgeDetail.count).to be > 0
+      expect(ComponentJudgeDetail.count).to be > 0
     }
   end
 
@@ -98,7 +98,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
       :isu, :gp, 'GPJPN2016'],
      ['http://www.isuresults.com/results/season1617/gpf1617/',
-      :isu, :gp,'GPF2016'],
+      :isu, :gp, 'GPF2016'],
      ['http://www.isuresults.com/results/owg2014/',
       :isu, :olympic, 'OWG2014'],
      ['http://www.isuresults.com/results/season1617/wc2017/',
@@ -137,7 +137,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   ################################################################
 
   describe 'skater name correction' do
-    def expect_same_skater(url, category, ranking)  # TODO
+    def expect_same_skater(url, category, ranking) # TODO
       updater = CompetitionUpdater.new
       competition = updater.update_competition(url, categories: [category])
       cr = competition.results.find_by(category: category, ranking: ranking)
@@ -154,7 +154,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       its(:skater) { is_expected.to eq(result.free.skater) }
     end
 
-    context 'Sandra KHOPON (fc2012)' do  # Sandra KHOPON or KOHPON ??
+    context 'Sandra KHOPON (fc2012)' do # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
       include_context :skater_having_different_name, url, Category.find_by(name: 'LADIES'), 15
       it_behaves_like :same_name_between_segments

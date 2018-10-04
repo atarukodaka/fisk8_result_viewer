@@ -6,9 +6,62 @@ AllCops:
     - '**/*.gemspec'
     - '**/vendor/**/*'
     - 'db/schema.rb'
+    - 'config.ru'
+    - 'bin/*'
+
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
 
 Style/RaiseArgs:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+#Style/ClassAndModuleChildren:   nested or compact
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+  
+Style/RegexpLiteral:   # %r{} or //
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator:
+    Enabled: true
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+
+
+
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  
+Style/UnlessElse:
+  Enabled: false
+
+Style/WordArray:
+  Exclude: false
+  
+  
+
+  

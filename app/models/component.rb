@@ -8,5 +8,5 @@ class Component < ApplicationRecord
   belongs_to :score
 
   ## scopes
-  scope :recent, ->{ joins(:score).order('scores.date desc') }
+  scope :recent, -> { joins(:score).order('scores.date desc') }
 end

@@ -2,6 +2,7 @@ class ComponentJudgeDetailDecorator < EntryDecorator
   def score_name
     h.link_to_score(model.component.score)
   end
+
   def skater_name
     h.link_to_skater(model.component.score.skater)
   end

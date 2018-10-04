@@ -18,7 +18,6 @@ RSpec.describe 'error handlers', error_handler: true do
       get :index
       expect(response).to have_http_status(500)
     end
-
   end
   ## 404
   describe SkatersController, type: :controller do

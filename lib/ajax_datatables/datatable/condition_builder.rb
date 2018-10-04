@@ -8,7 +8,7 @@ module AjaxDatatables::Datatable::ConditionBuilder
       sv = hash[:search_value]
       operator = hash[:operator] || column.operator ||
                  begin
-                   column_type = model.columns.find {|c| c.name == table_field}.type
+                   column_type = model.columns.find { |c| c.name == table_field }.type
                    case column_type
                    when :integer, :float
                      :eq

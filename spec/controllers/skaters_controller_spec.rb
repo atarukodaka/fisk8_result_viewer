@@ -3,15 +3,15 @@ require 'rails_helper'
 RSpec.describe SkatersController, type: :controller do
   render_views
 
-  let!(:men_skater){
+  let!(:men_skater) {
     create(:competition, :world)
       .scores.joins(:category).where("categories.category_type": 'MEN').first.skater
   }
-  let!(:ladies_skater){
+  let!(:ladies_skater) {
     create(:competition, :finlandia)
       .scores.joins(:category).where("categories.category_type": 'LADIES').first.skater
   }
-  let!(:no_scores_skater){ create(:skater, :men) {|sk| sk.name = 'Bench WARMER' } }
+  let!(:no_scores_skater) { create(:skater, :men) { |sk| sk.name = 'Bench WARMER' } }
 
   ################
   describe '#index' do

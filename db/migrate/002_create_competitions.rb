@@ -22,7 +22,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # category results
     create_table :category_results do |t|
-      #t.string :category
+      # t.string :category
       t.belongs_to :category
       t.integer :ranking
       t.float :points

@@ -4,7 +4,7 @@ class CompetitionsFilter < IndexFilter
       {
         key: :competition_name,
         label: hname(:competition_name),
-        fields: [{ key: :competition_name,  input_type: :text_field, }],
+        fields: [{ key: :competition_name, input_type: :text_field, }],
       },
       {
         key: :competition_class_type,

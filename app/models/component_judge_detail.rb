@@ -3,7 +3,7 @@ class ComponentJudgeDetail < ApplicationRecord
   belongs_to :component
 
   def self.enabled?
-      (self.count > 0) ? true : false
+    (self.count > 0) ? true : false
   end
 
   ## virtual attributes

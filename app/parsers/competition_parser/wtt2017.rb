@@ -4,8 +4,9 @@ class CompetitionParser
       def parse_name(_page)
         'ISU World Team Trophy 2017'
       end
+
       def parse_city_country(_page)
-        ['Tokyo', 'JPN']
+        %w[Tokyo JPN]
       end
 
       def parse_summary_table(page, url: '')
@@ -24,7 +25,7 @@ class CompetitionParser
           if row.xpath('td[2]').text == 'Entries'
             category = row.xpath('td[1]').text.upcase
             ## NOTE: WTT2017 doesnt provide category result, so we use entry list as a result (to get isu number for skaters)
-            #entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
+            # entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
             summary << {
               category:   category,
               segment:    '',
@@ -97,6 +98,6 @@ class CompetitionParser
         ]
       end
       # rubocop:enable all
-    end  ##
+    end ##
   end ## class Wtt2017
 end

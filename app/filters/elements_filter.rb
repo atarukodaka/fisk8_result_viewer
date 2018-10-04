@@ -3,8 +3,8 @@ class ElementsFilter < IndexFilter
     @_filters ||= [
       { label: hname(:element_name),
         fields: [{ key: :name_operator, input_type: :select,
-                   options: { '=': :eq,  '&sube;'.html_safe => :matches }, onchange: :draw },
-                 { key: :element_name, input_type: :text_field }],  },
+                   options: { '=': :eq, '&sube;'.html_safe => :matches }, onchange: :draw },
+                 { key: :element_name, input_type: :text_field }], },
       {
         label: hname(:element_type),
         fields: [{ key: :element_type, input_type: :select, label: hname(:element_type) },

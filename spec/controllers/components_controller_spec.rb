@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe ComponentsController, type: :controller do
   render_views
 
-  let(:short_ss){ Component.where(name: 'Skating Skills').first }
-  let(:free_tr)   { Component.where(name: 'Transitions').first }
+  let(:short_ss) { Component.where(name: 'Skating Skills').first }
+  let(:free_tr) { Component.where(name: 'Transitions').first }
 
   before(:all) {
     create(:competition, :world)

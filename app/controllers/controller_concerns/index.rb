@@ -21,6 +21,7 @@ module ControllerConcerns::Index
       }
     end
   end
+
   ## json index access
   def list
     render json: create_datatable.serverside

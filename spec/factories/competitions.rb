@@ -1,7 +1,6 @@
 # competitions
 FactoryBot.define do
   factory :competition do
-
     trait :world do
       name { 'World FS 2015' }
       short_name { 'WORLD2015' }
@@ -40,7 +39,6 @@ FactoryBot.define do
         create(:category_result, :finlandia, competition: competition, skater: skater)
         create(:score, :finlandia, competition: competition, skater: skater, performed_segment: ps)
       end
-
     end
   end
 end
