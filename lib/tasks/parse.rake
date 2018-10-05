@@ -3,7 +3,7 @@ namespace :parse do
   task scores: :environment do
     url = ENV['url']
     quiet = ENV['quiet'].to_i.nonzero?
-    
+
     parser = CompetitionParser::IsuGeneric::ScoreParser.new
     # rubocop:disable Metrics/LineLength
     parser.parse(url).each do |score|

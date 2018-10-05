@@ -23,15 +23,16 @@ class CompetitionList < ActiveYaml::Base
 
   class << self
     def load_file
+      ## ruby2.5, rails5.2.6: hash key needs to be string.
       raw_data.map do |item|
         hash = {}
         case item
         when String
-          hash[:site_url] = item
+          hash['site_url'] = item
         when Hash
           hash = item
         end
-        hash[:parser_type] ||= CompetitionParser::DEFAULT_PARSER
+        hash['parser_type'] ||= CompetitionParser::DEFAULT_PARSER
         hash
       end
     end

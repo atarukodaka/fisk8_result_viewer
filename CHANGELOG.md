@@ -13,7 +13,6 @@
 	- components, statics, panels
 	- context filter to accept hash or class
   - controller/deviation
-- result parser: wc2018 Final Not Reached
 
 ### new feature
 
