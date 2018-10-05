@@ -1,11 +1,11 @@
 class DeviationsController < IndexController
-  def panel
+  def show_panel
     panel_name = params[:name]
+    panel = Panel.find_by(name: panel_name) ||
+            raise(ActiveRecord::RecordNotFound.new("no suck panel: #{panel_name}"))
     records = Deviation.where(officials: { panel: panel }).includes(:official, score: [:skater])
     columns = [:score_name, :skater_name, :official_number,
                :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
-    panel = Panel.find_by(name: panel_name) ||
-            raise(ActiveRecord::RecordNotFound.new("no suck panel: #{panel_name}"))
     deviations_datatable = DeviationsDatatable.new(view_context).records(records).columns(columns)
 
     respond_to do |format|
@@ -19,12 +19,12 @@ class DeviationsController < IndexController
   end
 
   # def show_skater  ## params[:name]
-  def skater
+  def show_skater
     skater_name = params[:name]
+    skater = Skater.find_by(name: skater_name)
     records = Deviation.where("scores.skater": skater).includes([official: [:panel]], :score)
     columns = [:score_name, :panel_name, :official_number,
                :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio]
-    skater = Skater.find_by(name: skater_name)
     deviations_datatable = DeviationsDatatable.new(view_context).records(records).columns(columns)
 
     respond_to do |format|
