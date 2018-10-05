@@ -11,8 +11,8 @@ RSpec.describe 'rake', rake: true do
     Rake.application = @rake
     # Rake.application.rake_require('update', ["#{Rails.root}/lib/tasks"])
     # Rake.application.rake_require('parse', ["#{Rails.root}/lib/tasks"])
-    Rake.application.rake_require('update', [Rails.root.joins('lib/tasks')])
-    Rake.application.rake_require('parse', [Rails.root.joins('lib/tasks')])
+    Rake.application.rake_require('update', [Rails.root.join('lib/tasks')])
+    Rake.application.rake_require('parse', [Rails.root.join('lib/tasks')])
     Rake::Task.define_task(:environment)
   end
 =begin
