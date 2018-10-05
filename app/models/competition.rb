@@ -27,7 +27,7 @@ class Competition < ApplicationRecord
     end
     matched_item ||= CompetitionNormalize.new(short_name: self.name.to_s.gsub(/\s+/, '_'))
 
-    hash = { year: self.start_date.year, city: self.city || 'UNKNOWN' }
+    hash = { year: self.start_date.year, country: self.country, city: self.city }
 
     self.competition_class ||= matched_item.competition_class.to_sym
     self.competition_type ||= matched_item.competition_type.to_sym

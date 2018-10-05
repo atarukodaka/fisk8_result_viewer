@@ -8,6 +8,7 @@
 "^ISU European": ["isu", "euro", "EURO%{year}", "ISU European Championships %{year}"]
 "^ISU World Team": ["isu", "team", "TEAM%{year}", "ISU World Team Trophy %{year}"]
 "^ISU World Junior": ["isu", "jworld", "JWORLD%{year}"]
+"^ISU JGP":  ["isu", "jgp", "JGP%{country}%{year}"]
 "^ISU Junior Grand Prix": ["isu", "jgp", "JGP%{country}%{year}"]
 "^Finlandia Trophy": ["challenger", "finlandia", "FINLANDIA%{year}", "Finlandia Trophy %{year}"]
 "Warsaw Cup": ["challenger", "warshaw", "WARSAW%{year}", "Warsaw Cup %{year}"]
