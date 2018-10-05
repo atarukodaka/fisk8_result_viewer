@@ -13,7 +13,9 @@
 	- components, statics, panels
 	- context filter to accept hash or class
   - controller/deviation
-- season: update in updater i/o parser
+- parser type can be show on builder
+- offical parser force_encoding('UTF-8')
+
 
 ### new feature
 

@@ -166,22 +166,14 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it_behaves_like :same_name_between_segments
     end
 =begin
-    ## this site causes HTTP error
+    ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
       include_context :skater_having_different_name, url, Category.find_by(name: "JUNIOR LADIES"), 17
       it_behaves_like :same_name_between_segments
     end
 =end
-=begin
-    it 'Ho Jung LEE / Kang In KAM' do     # Ho Jung LEE / Richard Kang In KAM
-      ## TODO: name correction for Ho Jung LEE
-    end
-=end
   end
-################
-=begin
-=end
   ################
   describe 'encoding' do
     it 'parses iso-8859-1' do
@@ -190,12 +182,15 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       results = Competition.find_by(site_url: url).category_results.where(category: 'JUNIOR LADIES')
       expect(results.count).to be >= 0
     end
+=begin
+## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     it 'parses unicode (fin2014)' do
       url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
       CompetitionUpdater.new.update_competition(url, categories: ['MEN'])
 
       expect(Competition.find_by(site_url: url).scores.count).to be >= 0
     end
+=end
   end
   ################
   describe 'network errors' do

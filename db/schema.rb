@@ -44,13 +44,12 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "city"
     t.string "country"
     t.string "timezone", default: "UTC"
-    t.date "start_date", default: "1970-01-01"
-    t.date "end_date", default: "1970-01-01"
+    t.date "start_date"
+    t.date "end_date"
     t.string "season"
     t.string "site_url"
     t.string "competition_type"
     t.string "competition_class"
-    t.string "parser_type", default: "isu_generic"
     t.string "comment"
   end
 
@@ -134,7 +133,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "performed_segments", force: :cascade do |t|
     t.integer "category_id"
     t.integer "segment_id"
-    t.datetime "starting_time", default: "1970-01-01 00:00:00"
+    t.datetime "starting_time"
     t.integer "competition_id"
     t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
