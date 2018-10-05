@@ -99,7 +99,7 @@ class CompetitionUpdater
       if parsed_panels[:judges].present?
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
-          next if parsed_panels[:judges][i].nil?
+          next if parsed_panels[:judges][i].nil?    ## || parsed_panels[:judges][i][:name] == '-'
 
           name = normalize_persons_name(parsed_panels[:judges][i][:name])
           nation = parsed_panels[:judges][i][:nation]

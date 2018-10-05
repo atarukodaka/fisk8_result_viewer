@@ -14,8 +14,8 @@
 	- context filter to accept hash or class
   - controller/deviation
 - parser type can be show on builder
-- offical parser force_encoding('UTF-8')
-
+- clean panel with zero scores
+- official absence: gpusa2016/pairs/short
 
 ### new feature
 

@@ -2,9 +2,8 @@ class CompetitionParser
   class IsuGeneric
     class PanelParser < Parser
       def parse(url)
-        page = get_url(url).presence || (return [])
+        page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         debug("   -- parse panel: #{url}")
-
         elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
                page.xpath("//td[contains(text(), 'Function')]").presence || []
         rows = elem.xpath('ancestor::table[1]//tr')
