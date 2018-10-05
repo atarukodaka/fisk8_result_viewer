@@ -19,8 +19,10 @@ module HttpGet
   end
 end
 
+################
 class Parser
   include HttpGet
+  include DebugPrint
 
   def initialize(verbose: false)
     @verbose = verbose

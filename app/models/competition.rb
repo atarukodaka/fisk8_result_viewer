@@ -1,5 +1,5 @@
 class Competition < ApplicationRecord
-  # before_save :normalize
+  before_save :normalize
 
   alias_attribute :competition_name, :name
 
@@ -14,30 +14,28 @@ class Competition < ApplicationRecord
   ## scopes
   scope :recent, -> { order('start_date desc') }
 
-  ## updater
+  ## utils
+  private
+  
   def normalize
     year = self.start_date.year
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')
 
-    ary = nil
-    data = YAML.load_file(Rails.root.join('config', 'competition_normalize.yml'))
-    data.each do |key, value|
-      if name.match?(/#{key}/)
-        ary = value
+    matched_item = nil
+    CompetitionNormalize.all.each do |item|
+      if name.match?(/#{item.regex}/)
+        matched_item = item
         break
       end
     end
+    matched_item ||= CompetitionNormalize.new(competition_class: :unknow, competition_type: :unknow, short_name: name.to_s.gsub(/\s+/, '_'), name: name)
 
-    if ary.nil?
-      ary = [:unknow, :unknow, name.to_s.gsub(/\s+/, '_')]
-    end
     hash = { year: year, city: city, country_city: country_city }
 
-    self.competition_class ||= ary[0].to_sym
-    self.competition_type ||= ary[1].to_sym
-    self.short_name ||= ary[2] % hash
-    self.name = ary[3] % hash if ary[3]
-
+    self.competition_class ||= matched_item.competition_class.to_sym
+    self.competition_type ||= matched_item.competition_type.to_sym
+    self.short_name ||= matched_item.short_name % hash
+    self.name = matched_item.name % hash if matched_item.name.present?
     self
   end
 end

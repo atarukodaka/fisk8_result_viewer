@@ -23,11 +23,15 @@ class CompetitionParser
 
       def columns
         {
-          ranking:         { header: ['Pl.', 'PL.'] },
-          skater_name:     { header: 'Name' },
-          nation:          { header: 'Nation' },
-          starting_number: { header: 'StN.', callback: callbacks[:starting_number] },
-          isu_number:      { header: 'Name', callback: callbacks[:isu_number] },
+          ranking: { header_regex: /P[lL]\./ },
+          skater_name: { header_regex: /Name/ },
+          nation: { header_regex: /^Nation$/ },
+          starting_number: { header_regex: /StN/, callback: callbacks[:starting_number] },
+          isu_number:      { header_regex: /Name/, callback: callbacks[:isu_number] },
+          tss: { header_regex: /TSS/ },
+          tes: { header_regex: /TES/ },
+          pcs: { header_regex: /PCS/ },
+          deductions: { header_regex: /Ded\./ },
         }
       end
     end ## class

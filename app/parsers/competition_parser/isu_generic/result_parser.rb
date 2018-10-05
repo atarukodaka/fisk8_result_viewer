@@ -22,7 +22,7 @@ class CompetitionParser
 
       ################
       def parse(url)
-        puts "   --  parsing result: #{url}" if @verbose
+        debug("   --  parsing result: #{url}")
 
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         rows = get_rows(page) || (return [])
@@ -34,10 +34,8 @@ class CompetitionParser
 
           data = {}
           columns.each do |key, params|
-            relevant_headers = [params[:header],].flatten
-
-            col_number = headers.index { |d| relevant_headers.index(d) } ||
-                         raise("no relevant column found: #{key}: #{relevant_headers}")
+            col_number = headers.index { |d| d =~ params[:header_regex] } ||
+                         raise("no relevant column: #{key}")
             elem = elems[col_number] || next
             data[key] =
               if (callback = params[:callback])

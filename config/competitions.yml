@@ -157,5 +157,13 @@
 
 - http://www.isuresults.com/results/season1617/gpusa2016/
 
-- http://www.isuresults.com/results/season1718/wc2018/
 
+
+- http://www.isuresults.com/results/fc2012/
+
+-
+  site_url: https://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
+  comment: "no category results provided"
+
+- http://www.isuresults.com/results/season1718/wc2018/  

@@ -14,14 +14,14 @@ class CompetitionParser
 
       def columns
         {
-          skater_name:   { header: 'Name' },
-          isu_number:    { header: 'Name', callback: callbacks[:isu_number] },
-          nation:        { header: 'Nation' },
+          skater_name:   { header_regex: /Name/ },
+          isu_number:    { header_regex: /Name/, callback: callbacks[:isu_number] },
+          nation:        { header_regex: /Nation/ },
 
-          ranking:       { header: ['FPl.', 'PL', 'PL.'], callback: callbacks[:to_i] },
-          points:        { header: 'Points', callback: callbacks[:to_f] },
-          short_ranking: { header: %w[SP SD OD RD], callback: callbacks[:to_i] },
-          free_ranking:  { header: %w[FS FD], callback: callbacks[:to_i] },
+          ranking:       { header_regex: /F?P[lL]\.?/, callback: callbacks[:to_i] },
+          points:        { header_regex: /Points/, callback: callbacks[:to_f] },
+          short_ranking: { header_regex: /SP|SD|OD|RD/, callback: callbacks[:to_i] },
+          free_ranking:  { header_regex: /FS|FD/, callback: callbacks[:to_i] },
         }
       end
 

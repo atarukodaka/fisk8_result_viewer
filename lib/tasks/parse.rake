@@ -3,6 +3,7 @@ namespace :parse do
   task scores: :environment do
     url = ENV['url']
     parser = CompetitionParser::IsuGeneric::ScoreParser.new
+    # rubocop:disable Metrics/LineLength
     parser.parse(url).each do |score|
       str = '-' * 100 + "\n"
       str << "%<ranking>d %<skater_name>s [%<nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % score
@@ -19,5 +20,6 @@ namespace :parse do
       end
       puts str
     end
+    # rubocop:enable Metrics/LineLength
   end
 end

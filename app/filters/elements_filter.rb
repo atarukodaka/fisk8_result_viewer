@@ -1,6 +1,7 @@
 class ElementsFilter < IndexFilter
   include ActionView::Helpers::OutputSafetyHelper   ## for raw()
   def filters
+    ## rubocop:disable Rails/OutputSafety
     @filters ||= [
       { label: hname(:element_name),
         fields: [{ key: :name_operator, input_type: :select,
