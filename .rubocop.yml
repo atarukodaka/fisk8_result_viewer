@@ -25,6 +25,9 @@ Layout/MultilineMethodCallIndentation:
 Lint/UnneededCopEnableDirective:
   Enabled: false
 
+Lint/UnneededCopDisableDirective:
+  Enabled: false
+
 ################
 Metrics/BlockLength:
   Exclude:
@@ -49,6 +52,9 @@ Metrics/MethodLength:
     - app/controllers/competitions_controller.rb         ## TODO: to fix cops
     - lib/property.rb     # TODO: to fix cops
   
+Metrics/LineLength:
+  Max: 120
+
 ################
 ## Rails
 Rails/CreateTableWithTimestamps:

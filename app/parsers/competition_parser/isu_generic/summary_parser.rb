@@ -1,12 +1,10 @@
 class CompetitionParser
   class IsuGeneric
     class SummaryParser < Parser
-      # include Utils
-
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
 
-        puts " -- parse summary: #{site_url}" if @verbose
+        debug(" -- parse summary: #{site_url}")
         city, country = parse_city_country(page)
 
         competition = {
@@ -154,7 +152,6 @@ class CompetitionParser
             segment:  row.xpath('td[4]').text.squish.upcase,
           }
         end
-        # puts time_schedule.first[:time]
         time_schedule
       end
 

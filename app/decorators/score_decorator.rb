@@ -1,7 +1,7 @@
 class ScoreDecorator < EntryDecorator
   def ranking
-    # h.link_to_score(model.ranking, model)
-    h.link_to_competition(model.ranking, model.competition, category: model.category, segment: model.segment, ranking: model.ranking)
+    h.link_to_competition(model.ranking, model.competition,
+                          category: model.category, segment: model.segment, ranking: model.ranking)
   end
   # decorate_as_ranking(:ranking)
 

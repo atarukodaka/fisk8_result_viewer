@@ -43,7 +43,10 @@ class CompetitionsController < IndexController
     if ranking.present?
       # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
       score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new('no such score: ' + [competition.short_name, category_name, segment_name, ranking].join('/')))
+              begin
+                score_descr = [competition.short_name, category_name, segment_name, ranking].join('/')
+                raise(ActiveRecord::RecordNotFound.new("no such score: #{score_descr}"))
+              end
 
       respond_to do |format|
         format.html {

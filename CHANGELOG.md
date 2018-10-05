@@ -14,7 +14,6 @@
 	- context filter to accept hash or class
   - controller/deviation
 - result parser: wc2018 Final Not Reached
-- use logger i/o puts
 
 ### new feature
 

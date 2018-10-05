@@ -17,7 +17,7 @@ class Element < ApplicationRecord
 
   private
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/LineLength
   def set_element_type
     self[:element_type], self[:element_subtype] =
       if score.category.name == 'ICE DANCE'
@@ -85,7 +85,7 @@ class Element < ApplicationRecord
       end
     self
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/LineLength
 
   def set_level
     self.level =

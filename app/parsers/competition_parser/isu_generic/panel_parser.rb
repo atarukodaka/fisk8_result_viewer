@@ -3,7 +3,7 @@ class CompetitionParser
     class PanelParser < Parser
       def parse(url)
         page = get_url(url).presence || (return [])
-        puts "   -- parse panel: #{url}" if @verbose
+        debug("   -- parse panel: #{url}")
 
         elem = page.xpath("//th[contains(text(), 'Function')]").presence ||
                page.xpath("//td[contains(text(), 'Function')]").presence || []

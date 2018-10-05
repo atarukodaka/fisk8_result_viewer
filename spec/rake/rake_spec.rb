@@ -9,17 +9,10 @@ RSpec.describe 'rake', rake: true do
   before(:all) do
     @rake = Rake::Application.new
     Rake.application = @rake
-    # Rake.application.rake_require('update', ["#{Rails.root}/lib/tasks"])
-    # Rake.application.rake_require('parse', ["#{Rails.root}/lib/tasks"])
     Rake.application.rake_require('update', [Rails.root.join('lib/tasks')])
     Rake.application.rake_require('parse', [Rails.root.join('lib/tasks')])
     Rake::Task.define_task(:environment)
   end
-=begin
-  before(:each) do
-    #@rake[task].reenable
-  end
-=end
 
   describe 'update skater' do
     describe 'skaters' do

@@ -12,9 +12,6 @@
 
 ActiveRecord::Schema.define(version: 5) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.string "abbr"
@@ -25,15 +22,15 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "category_results", force: :cascade do |t|
-    t.bigint "category_id"
+    t.integer "category_id"
     t.integer "ranking"
     t.float "points"
     t.integer "short_ranking"
     t.integer "free_ranking"
-    t.bigint "competition_id"
-    t.bigint "skater_id"
-    t.bigint "short_id"
-    t.bigint "free_id"
+    t.integer "competition_id"
+    t.integer "skater_id"
+    t.integer "short_id"
+    t.integer "free_id"
     t.index ["category_id"], name: "index_category_results_on_category_id"
     t.index ["competition_id"], name: "index_category_results_on_competition_id"
     t.index ["free_id"], name: "index_category_results_on_free_id"
@@ -62,8 +59,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "value"
     t.float "average"
     t.float "deviation"
-    t.bigint "component_id"
-    t.bigint "official_id"
+    t.integer "component_id"
+    t.integer "official_id"
     t.index ["component_id"], name: "index_component_judge_details_on_component_id"
     t.index ["official_id"], name: "index_component_judge_details_on_official_id"
   end
@@ -74,13 +71,13 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "factor"
     t.string "judges"
     t.float "value"
-    t.bigint "score_id"
+    t.integer "score_id"
     t.index ["score_id"], name: "index_components_on_score_id"
   end
 
   create_table "deviations", force: :cascade do |t|
-    t.bigint "score_id"
-    t.bigint "official_id"
+    t.integer "score_id"
+    t.integer "official_id"
     t.float "tes_deviation"
     t.float "tes_deviation_ratio"
     t.float "pcs_deviation"
@@ -95,8 +92,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "average"
     t.float "deviation"
     t.float "abs_deviation"
-    t.bigint "element_id"
-    t.bigint "official_id"
+    t.integer "element_id"
+    t.integer "official_id"
     t.index ["element_id"], name: "index_element_judge_details_on_element_id"
     t.index ["official_id"], name: "index_element_judge_details_on_official_id"
   end
@@ -116,15 +113,15 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "goe"
     t.string "judges"
     t.float "value"
-    t.bigint "score_id"
+    t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
 
   create_table "officials", force: :cascade do |t|
     t.integer "number"
     t.boolean "absence", default: false
-    t.bigint "panel_id"
-    t.bigint "performed_segment_id"
+    t.integer "panel_id"
+    t.integer "performed_segment_id"
     t.index ["panel_id"], name: "index_officials_on_panel_id"
     t.index ["performed_segment_id"], name: "index_officials_on_performed_segment_id"
   end
@@ -135,10 +132,10 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "performed_segments", force: :cascade do |t|
-    t.bigint "category_id"
-    t.bigint "segment_id"
-    t.datetime "starting_time", default: "1969-12-31 15:00:00"
-    t.bigint "competition_id"
+    t.integer "category_id"
+    t.integer "segment_id"
+    t.datetime "starting_time", default: "1970-01-01 00:00:00"
+    t.integer "competition_id"
     t.index ["category_id"], name: "index_performed_segments_on_category_id"
     t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
     t.index ["segment_id"], name: "index_performed_segments_on_segment_id"
@@ -148,8 +145,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "name"
     t.integer "ranking"
     t.integer "starting_number"
-    t.bigint "category_id"
-    t.bigint "segment_id"
+    t.integer "category_id"
+    t.integer "segment_id"
     t.date "date", default: "1970-01-01"
     t.string "result_pdf"
     t.float "tss", default: 0.0
@@ -160,10 +157,10 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "base_value", default: 0.0
     t.string "elements_summary"
     t.string "components_summary"
-    t.bigint "competition_id"
-    t.bigint "skater_id"
-    t.bigint "category_result_id"
-    t.bigint "performed_segment_id"
+    t.integer "competition_id"
+    t.integer "skater_id"
+    t.integer "category_result_id"
+    t.integer "performed_segment_id"
     t.index ["category_id"], name: "index_scores_on_category_id"
     t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
@@ -181,7 +178,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "skaters", force: :cascade do |t|
     t.string "name"
     t.string "nation"
-    t.bigint "category_id"
+    t.integer "category_id"
     t.integer "isu_number"
     t.string "coach"
     t.string "choreographer"

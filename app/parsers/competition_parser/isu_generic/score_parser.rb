@@ -9,9 +9,10 @@ class CompetitionParser
       def normalize_line(text)
         text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
       end
+
       def parse(score_url)
         text = convert_pdf(score_url) || (return [])
-        puts "   -- parsing score: #{score_url}" if @verbose
+        debug("   -- parsing score: #{score_url}")
         normalize_line(text).split(/\f/).map.with_index(1) do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
             parse_score(t).tap do |score|
@@ -104,7 +105,7 @@ class CompetitionParser
 
         begin
           open(url, allow_redirections: :safe) do |f|            # rubocop:disable Security/Open
-            Tempfile.create("score") do |out|
+            Tempfile.create('score') do |out|
               out.binmode
               out.write f.read
 
