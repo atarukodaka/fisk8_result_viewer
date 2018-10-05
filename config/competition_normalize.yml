@@ -1,5 +1,5 @@
 -
-  regex: "^Grand Prix .*Final"
+  regex: "Grand Prix .*Final"
   competition_class: isu
   competition_type: gp
   short_name: GPF%{year}
