@@ -16,26 +16,25 @@ class Competition < ApplicationRecord
 
   ## utils
   private
-  
-  def normalize
-    year = self.start_date.year
-    country_city = country || city.to_s.upcase.gsub(/\s+/, '_')
 
+  def normalize
     matched_item = nil
     CompetitionNormalize.all.each do |item|
-      if name.match?(/#{item.regex}/)
+      if self.name.match?(/#{item.regex}/)
         matched_item = item
         break
       end
     end
-    matched_item ||= CompetitionNormalize.new(competition_class: :unknow, competition_type: :unknow, short_name: name.to_s.gsub(/\s+/, '_'), name: name)
+    matched_item ||= CompetitionNormalize.new(short_name: self.name.to_s.gsub(/\s+/, '_'))
 
-    hash = { year: year, city: city, country_city: country_city }
+    hash = { year: self.start_date.year, city: self.city || 'UNKNOWN' }
 
     self.competition_class ||= matched_item.competition_class.to_sym
     self.competition_type ||= matched_item.competition_type.to_sym
-    self.short_name ||= matched_item.short_name % hash
-    self.name = matched_item.name % hash if matched_item.name.present?
-    self
+    self.short_name ||= matched_item.short_name.to_s % hash
+    self.name = matched_item.name % hash if matched_item.name.to_s.present?
+
+    ## TODO: season
+    self           ## ensure to return self
   end
 end

@@ -31,7 +31,7 @@ class CompetitionParser
           tss: { header_regex: /TSS/ },
           tes: { header_regex: /TES/ },
           pcs: { header_regex: /PCS/ },
-          deductions: { header_regex: /Ded\./ },
+          deductions: { header_regex: /Ded/ },
         }
       end
     end ## class

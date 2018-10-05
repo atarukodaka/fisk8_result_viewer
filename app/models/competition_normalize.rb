@@ -3,8 +3,8 @@ class CompetitionNormalize < ActiveYaml::Base
   set_filename 'competition_normalize'
 
   field :regex, default: ''
-  field :competition_class, default: :unknow
-  field :competition_type, default: :unknow
+  field :competition_class, default: :unknown
+  field :competition_type, default: :unknown
   field :short_name
   field :name
 
