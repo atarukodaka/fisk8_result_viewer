@@ -6,15 +6,16 @@ class CompetitionParser
     class ScoreParser < ::Parser
       SCORE_DELIMITER = /Score Score/
 
+      def normalize_line(text)
+        text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
+      end
       def parse(score_url)
         text = convert_pdf(score_url) || (return [])
         puts "   -- parsing score: #{score_url}" if @verbose
-
-        text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
-          .split(/\f/).map.with_index do |page_text, i|
+        normalize_line(text).split(/\f/).map.with_index(1) do |page_text, i|
           page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
             parse_score(t).tap do |score|
-              score[:result_pdf] = "#{score_url}\#page=#{i + 1}"
+              score[:result_pdf] = "#{score_url}\#page=#{i}"
             end
           end
         end.flatten
@@ -25,18 +26,17 @@ class CompetitionParser
         @score = { elements: [], components: [] }
 
         text.split(/\n/).each do |line|
-          raise "no such mode: #{@mode}" unless respond_to?("parse_#{@mode}".to_sym)
-
           send("parse_#{@mode}", line)
-        end ## each line
-
+        end
         raise 'parsing error' if @mode != :pcs && @mode != :deductions
 
         @score
       end
 
       def parse_skater(line)
-        name_re = %q([[:alpha:]1\.\- \/\']+) ## adding '1' for Mariya1 BAKUSHEVA (http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
+        name_re = %q([[:alpha:]1\.\- \/\']+)
+        ## adding '1' for Mariya1 BAKUSHEVA
+        ##   (see: http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
         nation_re = '[A-Z][A-Z][A-Z]'
         if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
           @score.update(
@@ -59,12 +59,10 @@ class CompetitionParser
               credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
             }
             element[:edgeerror] = true if element[:name] =~ /\!/
-            if /</.match?(element[:name])
-              if element[:name] =~ /<</
-                element[:downgraded] = true
-              else
-                element[:underrotated] = true
-              end
+            if element[:name].match?(/<</)
+              element[:downgraded] = true
+            elsif element[:name].match?(/</)
+              element[:underrotated] = true
             end
             @score[:elements] << element
           else
@@ -106,8 +104,7 @@ class CompetitionParser
 
         begin
           open(url, allow_redirections: :safe) do |f|            # rubocop:disable Security/Open
-            tmp_filename = "score-#{rand(1000)}-tmp.pdf"
-            Tempfile.create(tmp_filename) do |out|
+            Tempfile.create("score") do |out|
               out.binmode
               out.write f.read
 

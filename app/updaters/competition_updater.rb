@@ -29,7 +29,7 @@ class CompetitionUpdater
 
   # def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
   def update_competition(site_url, *args)
-    default_options = { date_format: nil, force: nil, categories: nil, season_from: nil, season_to: nil, params: {}}
+    default_options = { date_format: nil, force: nil, categories: nil, season_from: nil, season_to: nil, params: {} }
     options = default_options.merge(args.first || {})
     categories_to_update = get_categories_to_update(options[:categories])
 
