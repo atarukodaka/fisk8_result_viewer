@@ -2,6 +2,8 @@ namespace :parse do
   desc 'parse score of given url'
   task scores: :environment do
     url = ENV['url']
+    quiet = ENV['quiet'].to_i.nonzero?
+    
     parser = CompetitionParser::IsuGeneric::ScoreParser.new
     # rubocop:disable Metrics/LineLength
     parser.parse(url).each do |score|
@@ -18,7 +20,7 @@ namespace :parse do
       if score[:deduction_reasons]
         str << "\nDeductions\n  " + score[:deduction_reasons] << "\n"
       end
-      puts str
+      puts str unless quiet
     end
     # rubocop:enable Metrics/LineLength
   end

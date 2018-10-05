@@ -72,6 +72,7 @@ RSpec.describe 'rake', rake: true do
   describe 'parse scores' do
     it do
       ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
+      ENV['quiet'] = '1'
       expect(@rake['parse:scores'].invoke).to be_truthy
     end
   end
