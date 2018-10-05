@@ -11,10 +11,10 @@ AllCops:
     - 'config/*'
     - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
 
+################
 Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
-
 
 Layout/ExtraSpacing:
   Enabled: false
@@ -22,11 +22,49 @@ Layout/ExtraSpacing:
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
-## intentional
-Lint/Void:
-  Exclude:
-    - 'app/parsers/competition_parser/isu_generic.rb'
+Lint/UnneededCopEnableDirective:
+  Enabled: false
 
+################
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
+    - lib/tasks/**/*.rake
+  Max: 50
+
+Metrics/ClassLength:
+  Max: 100
+  Exclude:
+    - app/parsers/competition_parser/isu_generic/summary_parser.rb     ## TODO: to fix cops
+    - app/updaters/competition_updater.rb       ## TODO: to fix cops
+    - lib/ajax_datatables/datatable.rb     ## TODO: to fix cops
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 30
+  Exclude:
+    - app/updaters/**/*.rb
+    - app/parsers/**/*.rb
+    - db/migrate/*.rb
+    - app/controllers/competitions_controller.rb         ## TODO: to fix cops
+    - lib/property.rb     # TODO: to fix cops
+  
+################
+## Rails
+Rails/CreateTableWithTimestamps:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Exclude:
+    - 'app/models/skater.rb'
+
+Rails/Output:
+  Exclude:
+    - 'app/parsers/**/*.rb'
+    - 'app/updaters/**/*.rb'
+    
+################
+## Style
 Style/BlockComments:
   Enabled: false
 
@@ -47,17 +85,34 @@ Style/FormatString:
 
 Style/FormatStringToken:
   Enabled: false
-#  EnforcedStyle: template
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/Lambda:
   Enabled: false
 
 Style/MixinGrouping:
   Enabled: false
 
-Style/PerlBackrefs:
+Style/ParallelAssignment:
   Enabled: false
   
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
 Style/RaiseArgs:
   Enabled: false
 
@@ -80,67 +135,9 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
   
-
 Style/UnlessElse:
   Enabled: false
 
 Style/WordArray:
   Exclude: false
-  
-################
-## further check
-Style/GuardClause:
-  Exclude:
-    - 'app/datatables/elements_datatable.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'lib/ajax_datatables/columns.rb'
-    - 'lib/property.rb'
-
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/models/component_judge_detail.rb'
-    - 'app/models/deviation.rb'
-    - 'app/models/element_judge_detail.rb'
-    - 'config/initializers/refinements/as_ranking.rb'
-    - 'config/initializers/refinements/as_score.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
-
-Style/OptionalArguments:
-  Exclude:
-    - 'app/helpers/link_to_helper.rb'
-
-## a, b, c = 1, 2, 3
-Style/ParallelAssignment:
-  Exclude:
-    - 'app/controllers/competitions_controller.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'app/parsers/competition_parser/isu_generic/summary_parser.rb'
-    
-Style/RedundantSelf:
-  Exclude:
-    - 'app/models/category_result.rb'
-    - 'app/models/competition.rb'
-    - 'app/models/component_judge_detail.rb'
-    - 'app/models/deviation.rb'
-    - 'app/models/element_judge_detail.rb'
-    - 'app/models/score.rb'
-    - 'lib/ajax_datatables/datatable.rb'
-    - 'lib/ajax_datatables/datatable/decoratable.rb'
-    - 'lib/ajax_datatables/datatable/defer_loadable.rb'
-    - 'lib/ajax_datatables/datatable/limitable.rb'
-    - 'lib/ajax_datatables/datatable/serversidable.rb'
-
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/models/competition.rb'
-    - 'app/models/score.rb'
-    - 'app/parsers/competition_parser/isu_generic/score_parser.rb'
-    - 'lib/tasks/parse.rake'
-
-# scope, -> to be replaced with lambda ??
-Style/Lambda:
-  Exclude:
-   - 'app/models/skater.rb'
-
   

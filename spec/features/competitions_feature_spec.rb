@@ -12,8 +12,6 @@ feature CompetitionsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      # filters = CompetitionsFilter.new.filters.map {|elem| elem[:fields] }.flatten.reject{|elem| elem[:key] == :season_from || elem[:key] == :season_to}.compact
-      # binding.pry
       include_context :filter, CompetitionsFilter, excludings: [:season_to, :season_from]
       include_context :filter_season
     end

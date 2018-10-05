@@ -45,7 +45,7 @@ module AjaxDatatables::Datatable::Serverside
   end
 
   def per
-    params[:length].to_i > 0 ? params[:length].to_i : 10
+    (params[:length].to_i.positive?) ? params[:length].to_i : 10
   end
 
   ################

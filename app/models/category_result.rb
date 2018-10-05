@@ -28,6 +28,8 @@ class CategoryResult < ApplicationRecord
 
   def summary
     '  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d' %
-      [self.category.name, self.ranking.to_i, self.skater.name.truncate(35), self.skater.isu_number.to_i, self.skater.nation, self.points.to_f, self.short_ranking.to_i, self.free_ranking.to_i]
+      [self.category.name, self.ranking.to_i, self.skater.name.truncate(35),
+       self.skater.isu_number.to_i, self.skater.nation, self.points.to_f,
+       self.short_ranking.to_i, self.free_ranking.to_i]
   end
 end

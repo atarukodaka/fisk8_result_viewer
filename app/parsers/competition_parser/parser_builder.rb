@@ -7,8 +7,8 @@ class CompetitionParser
         parsers = {}
         [:summary, :category_result, :segment_result, :score, :panel].each do |subject|
           begin
-            parsers[subject] =
-              "CompetitionParser::#{parser_type_classname}::#{subject.to_s.camelize}Parser".constantize.new(verbose: verbose)
+            class_name = "CompetitionParser::#{parser_type_classname}::#{subject.to_s.camelize}Parser"
+            parsers[subject] = class_name.constantize.new(verbose: verbose)
           rescue NameError => err
             raise "NameError: parser_type '#{parser_type}' not registered: #{err.message}"
           end

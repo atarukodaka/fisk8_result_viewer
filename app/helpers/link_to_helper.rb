@@ -1,9 +1,5 @@
 module LinkToHelper
-=begin
-  def link_to_skater_by_isu_number(text = nil, isu_number, params: {})
-    link_to(text || isu_number, skater_path(isu_number), params)
-  end
-=end
+  # rubocop:disable Style/OptionalArguments
   def link_to_skater(text = nil, skater, name: nil, isu_number: nil, params: {})
     isu_number ||= skater[:isu_number]
     name ||= skater[:name]
@@ -28,7 +24,7 @@ module LinkToHelper
   def link_to_score(text = nil, score)
     name = (score.class == Score) ? score.name : score
 
-    name.nil? ? text : link_to(text || name, score_path(name: name))
+    (name.nil?) ? text : link_to(text || name, score_path(name: name))
     # (name.nil?) ? text : link_to(text || name, {controller: :scores, action: :show, name: name})
   end
 
@@ -59,4 +55,5 @@ module LinkToHelper
   def span_link_icon
     content_tag(:span, '', class: 'glyphicon glyphicon-link')
   end
+  # rubocop:enable Style/OptionalArguments
 end ## module

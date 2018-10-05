@@ -3,7 +3,7 @@ class ElementJudgeDetail < ApplicationRecord
   belongs_to :element
 
   def self.enabled?
-    (self.count > 0) ? true : false
+    (self.positive?) ? true : false
   end
 
   ## virtual attributes

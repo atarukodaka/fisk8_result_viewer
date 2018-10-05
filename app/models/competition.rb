@@ -20,9 +20,8 @@ class Competition < ApplicationRecord
     country_city = country || city.to_s.upcase.gsub(/\s+/, '_')
 
     ary = nil
-    data = YAML.load_file(File.join(Rails.root.join('config'), 'competition_normalize.yml'))
+    data = YAML.load_file(Rails.root.join('config', 'competition_normalize.yml'))
     data.each do |key, value|
-      # if name =~ Regexp.new(key) ## TODO: Regexp match to rewrite
       if name.match?(/#{key}/)
         ary = value
         break

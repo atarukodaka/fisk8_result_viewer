@@ -6,11 +6,11 @@ end
 
 RSpec.describe 'error handlers', error_handler: true do
   ## 500
-
   describe ApplicationController, type: :controller do
     controller do
       def index
-        render json: {}, status: 500
+        render status: :internal_server_error,
+               json: { status: :internal_server_error, message: 'Internal Server Error' }
       end
     end
 
@@ -19,6 +19,7 @@ RSpec.describe 'error handlers', error_handler: true do
       expect(response).to have_http_status(500)
     end
   end
+
   ## 404
   describe SkatersController, type: :controller do
     it 'skaters/:isu_number 404' do

@@ -12,20 +12,29 @@ class CompetitionsController < IndexController
   def category_results_datatable(competition, category)
     return nil if category.blank?
 
-    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.category(category).includes(:skater, :short, :free))
-      .columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,])
-      .tap { |d| d.default_orders([[:points, :desc], [:ranking, :asc]]) }
+    columns = [:ranking, :skater_name, :nation, :points,
+               :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value,
+               :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value]
+    AjaxDatatables::Datatable.new(view_context)
+      .records(competition.category_results.category(category).includes(:skater, :short, :free))
+      .columns(columns).tap { |d| d.default_orders([[:points, :desc], [:ranking, :asc]]) }
   end
 
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
 
-    AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)) ## , :elements, :components
-      .columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap { |d| d.default_orders([[:tss, :desc], [:ranking, :asc]]) }
+    records = competition.scores.includes(:category, :segment)
+              .category(category).segment(segment)
+              .order(:ranking).includes(:skater)
+    columns = [:ranking, :name, :skater_name, :nation, :starting_number,
+               :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]
+    AjaxDatatables::Datatable.new(view_context).records(records).columns(columns)
+      .tap { |d| d.default_orders([[:tss, :desc], [:ranking, :asc]]) }
   end
 
   def show
-    competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
+    competition = Competition.find_by(short_name: params[:short_name]) ||
+                  raise(ActiveRecord::RecordNotFound)
 
     category_name, segment_name, ranking = params[:category], params[:segment], params[:ranking]
     category = Category.find_by(name: category_name)

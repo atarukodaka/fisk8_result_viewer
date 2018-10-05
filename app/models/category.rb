@@ -1,8 +1,8 @@
 class Category < ApplicationRecord
-  has_many :category_results
-  has_many :segment_results
-  has_many :scores
-  has_many :skaters
+  has_many :category_results, dependent: :nullify
+  has_many :segment_results, dependent: :nullify
+  has_many :scores, dependent: :nullify
+  has_many :skaters, dependent: :nullify
 
   alias_attribute :category_name, :name
 

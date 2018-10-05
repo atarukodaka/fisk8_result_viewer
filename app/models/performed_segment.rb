@@ -1,5 +1,5 @@
 class PerformedSegment < ApplicationRecord
-  has_many :scores
+  has_many :scores, dependent: :nullify
   has_many :officials, dependent: :destroy
   validates  :starting_time, presence: true
 

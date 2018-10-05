@@ -1,6 +1,8 @@
 class Score < ApplicationRecord
   before_save :set_score_name
 
+  alias_attribute :score_name, :name
+
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
@@ -45,7 +47,10 @@ class Score < ApplicationRecord
     nation = self.skater.try(:nation) || self.nation
     isu_number = self.skater.try(:isu_number) || 0
 
-    '    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d' % [self.category.name, self.segment.name, self.ranking, skater_name.truncate(35), isu_number.to_i, nation, self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+    '    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d' %
+      [self.category.name, self.segment.name, self.ranking,
+       skater_name.truncate(35), isu_number.to_i, nation,
+       self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
   end
 
   private

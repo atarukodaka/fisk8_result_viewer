@@ -16,7 +16,8 @@ class ComponentsFilter < IndexFilter
       {
         label: hname('value'),
         fields: [
-          { key: :value_operator, input_type: :select, options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }, onchange: :draw },
+          { key: :value_operator, input_type: :select,
+            options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }, onchange: :draw },
           { key: :value, input_type: :text_field }
         ],
       },

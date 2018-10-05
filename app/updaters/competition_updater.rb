@@ -27,13 +27,18 @@ class CompetitionUpdater
     end
   end
 
-  def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
-    categories_to_update = get_categories_to_update(categories)
+  # def update_competition(site_url, date_format: nil, force: false, categories: nil, season_from: nil, season_to: nil, params: {})
+  def update_competition(site_url, *args)
+    default_options = { date_format: nil, force: nil, categories: nil, season_from: nil, season_to: nil, params: {}}
+    binding.pry
+    #options = args.first || {}
+    options = default_options.merge(args.first || {})
+    categories_to_update = get_categories_to_update(options[:categories])
 
     ActiveRecord::Base.transaction do
       ## existing check
       if (competitions = Competition.where(site_url: site_url).presence)
-        if force
+        if options[:force]
           competitions.map(&:destroy)
         else
           puts "skip: '#{site_url}' already exists"
@@ -41,10 +46,10 @@ class CompetitionUpdater
         end
       end
 
-      parsed = @parsers[:summary].parse(site_url, date_format: date_format).presence || (return nil)
-
+      parsed = @parsers[:summary].parse(site_url, date_format: options[:date_format]).presence ||
+               (return nil)
       ## check season from/to
-      unless within_season?(parsed[:season], from: season_from, to: season_to)
+      unless within_season?(parsed[:season], from: options[:season_from], to: options[:season_to])
         puts '  skip: not within specific season'
         return
       end
@@ -54,13 +59,17 @@ class CompetitionUpdater
         competition.attributes = parsed.slice(*attrs)
 
         [:name, :city, :comment].each do |key|
-          competition[key] = params[key] if params[key].present?
+          competition[key] = options[:params][key] if options[:params][key].present?
         end
         competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
         competition.normalize
         competition.save! ## need to save here to create children
 
-        puts '*' * 100 + "\n%<name>s [%<short_name>s] (%<site_url>s)" % competition.attributes.symbolize_keys if @verbose
+        if @verbose
+          puts '*' * 100
+          puts "\n%<name>s [%<short_name>s] (%<site_url>s)" %
+               competition.attributes.symbolize_keys
+        end
 
         ## for each categories, segments(scores)
         parsed[:categories].each do |category_str, cat_item|
@@ -73,9 +82,10 @@ class CompetitionUpdater
             next if seg_item[:result_url].blank?
 
             segment = Segment.find_by(name: segment_str)
-
-            update_performed_segment(competition, category, segment, seg_item[:panel_url], seg_item[:time])
-            update_score(competition, category, segment, seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
+            update_performed_segment(competition, category, segment,
+                                     seg_item[:panel_url], seg_item[:time])
+            update_score(competition, category, segment,
+                         seg_item[:score_url], seg_item[:result_url], date: seg_item[:time].to_date)
           end
         end
       end
@@ -150,8 +160,11 @@ class CompetitionUpdater
       avg = details.sum / details.count
       details.each.with_index(1) do |value, i|
         dev = value - avg
-        official = competition.performed_segments.where(category: category, segment: segment).first.officials.where(number: i).first || raise("no relevant officail: #{i}")
-        component.component_judge_details.create(number: i, value: value, official: official, average: avg, deviation: dev)
+        official = competition.performed_segments
+                   .where(category: category, segment: segment).first.officials.where(number: i).first ||
+                   raise("no relevant officail: #{i}")
+        component.component_judge_details
+          .create(number: i, value: value, official: official, average: avg, deviation: dev)
       end
     end
   end
@@ -208,9 +221,9 @@ class CompetitionUpdater
   ################
   ## utils
   def find_or_create_skater(isu_number, skater_name, nation, category)
-    normalized_skater_name = normalize_persons_name(skater_name)
-    @skater_name_correction ||= YAML.load_file(File.join(Rails.root.join('config'), 'skater_name_correction.yml'))
-    corrected_skater_name = @skater_name_correction[normalized_skater_name] || normalized_skater_name
+    normalized = normalize_persons_name(skater_name)
+    @skater_name_correction ||= YAML.load_file(Rails.root.join('config', 'skater_name_correction.yml'))
+    corrected_skater_name = @skater_name_correction[normalized] || normalized
     Skater.find_or_create_by_isu_number_or_name(isu_number, corrected_skater_name) do |sk|
       sk.attributes = {
         category: Category.where(team: false, category_type: category.category_type).first,

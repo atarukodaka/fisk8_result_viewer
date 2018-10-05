@@ -40,11 +40,12 @@ class CompetitionParser
         end
         competition[:start_date] = time_schedule.map { |d| d[:time] }.min.to_date || Date.new(1970, 1, 1)
         competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
-        competition[:timezone] = time_schedule.present? ? time_schedule.first[:time].time_zone.name : 'UTC'
+        competition[:timezone] =
+          (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
         competition[:season] = skate_season(competition[:start_date])
         competition
       end
-      ################################################################
+      ################
 
       protected
 
@@ -56,7 +57,7 @@ class CompetitionParser
 
       def parse_city_country(page)
         node = page.search('td.caption3').presence || page.xpath('//h3') || raise
-        str = node.present? ? node.first.text.strip : ''
+        str = (node.present?) ? node.first.text.strip : ''
         if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
           city, country = $1, $2
           if city.present?
@@ -94,9 +95,9 @@ class CompetitionParser
           summary << {
             category:   category,
             segment:    segment,
-            panel_url:  panel_url.present? ? File.join(url, panel_url).to_s : '',
-            result_url: result_url.present? ? File.join(url, result_url).to_s : '',
-            score_url:  score_url.present? ? File.join(url, score_url).to_s : '',
+            panel_url:  (panel_url.present?) ? File.join(url, panel_url).to_s : '',
+            result_url: (result_url.present?) ? File.join(url, result_url).to_s : '',
+            score_url:  (score_url.present?) ? File.join(url, score_url).to_s : '',
           }
         end
         summary
@@ -139,7 +140,7 @@ class CompetitionParser
           # tz = "Etc/GMT#{local_tz_hour.to_i }"
 
           tm =
-            unless date_format.blank?
+            if date_format.present?
               Time.strptime(dt_tm_str, "#{date_format} %H:%M:%S")
             else
               dt_tm_str
@@ -165,7 +166,8 @@ class CompetitionParser
       private
 
       def normalize_category(category)
-        category.squish.upcase.gsub(/^PAIR SKATING$/, 'PAIRS').gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, '').gsub(/ SKATING/, '')
+        category.squish.upcase.gsub(/^PAIR SKATING$/, 'PAIRS')
+          .gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, '').gsub(/ SKATING/, '')
       end
     end
   end

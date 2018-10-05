@@ -52,7 +52,8 @@ RSpec.describe CompetitionsController, type: :controller do
     end
     context 'short_name/category/segment' do
       subject {
-        get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name }
+        get :show, params: { short_name: world.short_name,
+                             category: score.category.name, segment: score.segment.name }
       }
       its(:body) {
         is_expected.to have_content(world.name)
@@ -63,13 +64,15 @@ RSpec.describe CompetitionsController, type: :controller do
     end
     context 'redirection to score' do
       subject {
-        get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name, ranking: 1 }
+        get :show, params: { short_name: world.short_name,
+                             category: score.category.name, segment: score.segment.name, ranking: 1 }
       }
       it { is_expected.to redirect_to score_path(score.name) }
     end
     context 'format: json' do
       subject {
-        get :show, params: { short_name: world.short_name, category: score.category.name, segment: score.segment.name, format: 'json' }
+        get :show, params: { short_name: world.short_name,
+                             category: score.category.name, segment: score.segment.name, format: 'json' }
       }
       its(:content_type) { is_expected.to eq('application/json') }
       its(:body) { is_expected.to have_content(world.name) }

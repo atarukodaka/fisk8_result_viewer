@@ -13,6 +13,7 @@ class ElementJudgeDetailsDatatable < IndexDatatable
   end
 
   def fetch_records
-    ElementJudgeDetail.includes(:element, official: [:panel], element: [:score, score: [:skater]]).joins(:element, official: [:panel], element: [:score, score: [:skater]])
+    tables = [:element, official: [:panel], element: [:score, score: [:skater]]]
+    ElementJudgeDetail.includes(tables).joins(tables)
   end
 end

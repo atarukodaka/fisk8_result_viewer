@@ -21,8 +21,14 @@ module ControllerConcerns::ErrorHandlers
 
   def handler_500(err = nil)
     respond_to do |format|
-      format.html { render 'errors/500', status: :internal_server_error, locals: { message: err.try(:message) } }
-      format.json { render json: { error: '500 error' }, status: :internal_server_error, locals: { message: e.try(:message) } }
+      format.html {
+        render 'errors/500', status: :internal_server_error,
+                             locals: { message: err.try(:message) }
+      }
+      format.json {
+        render json: { error: '500 error' }, status: :internal_server_error,
+               locals: { message: e.try(:message) }
+      }
     end
   end
 end

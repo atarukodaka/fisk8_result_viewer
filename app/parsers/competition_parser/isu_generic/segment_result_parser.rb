@@ -11,7 +11,8 @@ class CompetitionParser
         return(nil) if page.xpath("//*[contains(text(), 'Live Results')]").present?
 
         place_elem =
-          page.xpath("//th[contains(text(), ' Pl. ')]").first || # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM has spaces
+          page.xpath("//th[contains(text(), ' Pl. ')]").first ||
+          # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM has spaces
           page.xpath("//th[text()='Pl.']").first ||
           page.xpath("//td[text()='PL.']").first ||                  # gpjpn
           page.xpath("//td[text()='Pl.']").first ||                  # wtt2017

@@ -3,8 +3,8 @@ class ScoresDatatable < IndexDatatable
     super
 
     columns([:name, :competition_name, :competition_class, :competition_type,
-             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :season, :date,
-             :result_pdf, :ranking, :skater_name, :nation,
+             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type,
+             :season, :date, :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value])
 
     columns.sources = {
@@ -23,7 +23,8 @@ class ScoresDatatable < IndexDatatable
       nation:            'skaters.nation',
     }
 
-    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority, :segment_type, :team].each do |key|
+    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority,
+     :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
     end
@@ -37,6 +38,7 @@ class ScoresDatatable < IndexDatatable
   end
 
   def fetch_records
-    Score.includes(:competition, :skater, :category, :segment).joins(:competition, :skater, :category, :segment).all
+    tables = [:competition, :skater, :category, :segment]
+    Score.includes(tables).joins(tables)
   end
 end

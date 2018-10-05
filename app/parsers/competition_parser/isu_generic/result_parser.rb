@@ -47,6 +47,7 @@ class CompetitionParser
               end
           end
           next if data[:skater_name] == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
+
           data
         end.compact ## rows
       end

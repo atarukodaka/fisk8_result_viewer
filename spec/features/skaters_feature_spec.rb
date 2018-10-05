@@ -20,7 +20,7 @@ feature SkatersController, type: :feature, feature: true do
         it {
           visit index_path
           expect(page.text).not_to have_content(no_scores_skater.name)
-          find_by_id(:having_scores).click
+          find('#having_scores').click
           sleep 1
           expect(page.text).to have_content(no_scores_skater.name)
         }

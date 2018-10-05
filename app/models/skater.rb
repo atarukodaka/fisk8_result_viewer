@@ -2,10 +2,10 @@ class Skater < ApplicationRecord
   alias_attribute :skater_name, :name
 
   ## relations
-  has_many :category_results
-  has_many :scores
-  has_many :elements, through: :scores
-  has_many :components, through: :scores
+  has_many :category_results, dependent: :nullify
+  has_many :scores, dependent: :nullify
+  has_many :elements, through: :scores, dependent: :nullify
+  has_many :components, through: :scores, dependent: :nullify
   belongs_to :category
 
   ## validations

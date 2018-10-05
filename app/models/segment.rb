@@ -1,6 +1,6 @@
 class Segment < ApplicationRecord
-  has_many :segment_results
-  has_many :scores
+  has_many :segment_results, dependent: :nullify
+  has_many :scores, dependent: :nullify
 
   alias_attribute :segment_name, :name
 end

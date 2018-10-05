@@ -20,6 +20,7 @@ class CompetitionDecorator < EntryDecorator
     [l(model.start_date), l(model.end_date)].join(' - ') + " [#{model.timezone}]"
   end
 
+=begin
   def start_date
     model.start_date
   end
@@ -27,7 +28,6 @@ class CompetitionDecorator < EntryDecorator
   def end_date
     model.end_date
   end
-=begin
   def city_country
     [city, country].join(' / ')
   end

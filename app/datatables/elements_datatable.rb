@@ -2,7 +2,8 @@ class ElementsDatatable < ScoreDetailsDatatable
   def initialize(*)
     super
 
-    columns.add([:number, :element_name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    columns.add([:number, :element_name, :element_type, :element_subtype,
+                 :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
       element_name: 'elements.name',
@@ -20,6 +21,7 @@ class ElementsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater, :category, :segment]).joins(:score, score: [:competition, :skater, :category, :segment]).all
+    tables = [:score, score: [:competition, :skater, :category, :segment]]
+    Element.includes(tables).joins(tables)
   end
 end

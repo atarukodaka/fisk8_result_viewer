@@ -101,6 +101,6 @@ class AjaxDatatables::Column
   end
 
   def model
-    table_name.present? ? table_name.classify.constantize : nil
+    (table_name.present?) ? table_name.classify.constantize : nil
   end
 end

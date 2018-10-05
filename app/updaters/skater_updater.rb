@@ -38,7 +38,8 @@ class SkaterUpdater
     puts "#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}" if @verbose
 
     ActiveRecord::Base.transaction do
-      attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies, :coach, :choreographer, :bio_updated_at]
+      attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
+               :coach, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))
       skater.update(category: Category.find_by(name: details_hash[:category]))
     end

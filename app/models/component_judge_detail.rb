@@ -3,7 +3,7 @@ class ComponentJudgeDetail < ApplicationRecord
   belongs_to :component
 
   def self.enabled?
-    (self.count > 0) ? true : false
+    self.positive?
   end
 
   ## virtual attributes
@@ -15,16 +15,4 @@ class ComponentJudgeDetail < ApplicationRecord
   def skater_name
     component.score.skater_name
   end
-
-=begin
-  def score_name
-    component.score.name
-  end
-  def component_name
-    component.name
-  end
-  def panel_name
-    official.panel.name
-  end
-=end
 end

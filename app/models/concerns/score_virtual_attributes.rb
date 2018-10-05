@@ -1,62 +1,8 @@
 module ScoreVirtualAttributes
   ## shared virtual attributes for elements/components
-  def score_name
-    score.name
-  end
-
-  def competition_name
-    score.competition.name
-  end
-
-  def competition_class
-    score.competition.competition_class
-  end
-
-  def competition_type
-    score.competition.competition_type
-  end
-
-  def category_name
-    score.category.name
-  end
-
-  def category_type
-    score.category.category_type
-  end
-
-  def seniority
-    score.category.seniority
-  end
-
-  def team
-    score.category.team
-  end
-
-  def segment_name
-    score.segment.name
-  end
-
-  def segment_type
-    score.segment.segment_type
-  end
-
-  def date
-    score.competition.start_date
-  end
-
-  def season
-    score.competition.season
-  end
-
-  def ranking
-    score.ranking
-  end
-
-  def skater_name
-    score.skater.name
-  end
-
-  def nation
-    score.skater.nation
+  [:score_name, :competition_name, :competition_class, :competition_type, :team, :season,
+   :category_name, :category_type, :seniority, :segment_name, :segment_type,
+   :ranking, :skater_name, :nation, :date].each do |key|
+    delegate key, to: :score
   end
 end

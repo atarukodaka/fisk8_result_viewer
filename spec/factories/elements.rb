@@ -14,7 +14,10 @@ FactoryBot.define do
       number { 1 }
 
       after(:create) do |element|
-        element.element_judge_details.create(number: 1, value: 0.0, average: 1.0, deviation: -1.0, abs_deviation: 1.0, official: element.score.performed_segment.officials.find_by(number: 1))
+        ## element.element_judge_details.create(number: 1, value: 0.0, average: 1.0, deviation: -1.0, abs_deviation: 1.0, official: element.score.performed_segment.officials.find_by(number: 1))
+        detail = create(:element_judge_detail, element: element)
+        official = element.score.performed_segment.officials.find_by(number: detail.number)
+        detail.update(official: official)
       end
     end
     trait :combination_jump do

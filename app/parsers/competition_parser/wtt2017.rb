@@ -24,7 +24,9 @@ class CompetitionParser
 
           if row.xpath('td[2]').text == 'Entries'
             category = row.xpath('td[1]').text.upcase
-            ## NOTE: WTT2017 doesnt provide category result, so we use entry list as a result (to get isu number for skaters)
+            ## NOTE: WTT2017 doesnt provide category result,
+            ## so we use entry list as a result (to get isu number for skaters)
+
             # entry_url = URI.join(url,row.xpath("td[2]/a/@href").text).to_s
             summary << {
               category:   category,
