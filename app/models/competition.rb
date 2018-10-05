@@ -1,5 +1,5 @@
 class Competition < ApplicationRecord
-  before_save :normalize
+  before_save :_normalize
 
   alias_attribute :competition_name, :name
 
@@ -17,7 +17,7 @@ class Competition < ApplicationRecord
   ## utils
   private
 
-  def normalize
+  def _normalize
     matched_item = nil
     CompetitionNormalize.all.each do |item|
       if self.name.match?(/#{item.regex}/)
@@ -33,7 +33,6 @@ class Competition < ApplicationRecord
     self.short_name ||= matched_item.short_name.to_s % hash
     self.name = matched_item.name % hash if matched_item.name.to_s.present?
 
-    ## TODO: season
     self           ## ensure to return self
   end
 end

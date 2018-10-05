@@ -56,7 +56,7 @@ class CompetitionUpdater
         return
       end
 
-      Competition.create do |competition|
+      Competition.create! do |competition|
         slice_common_attributes(competition, parsed).tap do |hash|
           competition.attributes = hash
           hash.keys.each do |key|
@@ -93,7 +93,7 @@ class CompetitionUpdater
   ################
   def update_performed_segment(competition, category, segment, panel_url, starting_time)
     parsed_panels = parsers[:panel].parse(panel_url)
-    competition.performed_segments.create do |ps|
+    competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
       ## panels
       if parsed_panels[:judges].present?
@@ -110,7 +110,7 @@ class CompetitionUpdater
           end
           debug("Judge No #{i}: #{panel.name} (#{panel.nation})", indent: 5)
           absence = (panel.name == '-') ? true : false
-          ps.officials.create(number: i, panel: panel, absence: absence)
+          ps.officials.create!(number: i, panel: panel, absence: absence)
         end
       end
     end
@@ -139,7 +139,7 @@ class CompetitionUpdater
     ActiveRecord::Base.transaction do
       parsers[:segment_result].parse(result_url).tap do |items|
         items.each do |parsed|
-          competition.scores.create(category: category, segment: segment) do |score|
+          competition.scores.create!(category: category, segment: segment) do |score|
             relevant_cr = competition.category_results
                           .where(category: category, "#{segment.segment_type}_ranking": parsed[:ranking]).first
             skater = relevant_cr.try(:skater) ||
@@ -175,8 +175,8 @@ class CompetitionUpdater
         attrs = score.class.column_names.map(&:to_sym) & parsed.keys
         score.attributes = parsed.slice(*attrs)
 
-        parsed[:elements].map { |item| score.elements.create(item) }
-        parsed[:components].map { |item| score.components.create(item) }
+        parsed[:elements].map { |item| score.elements.create!(item) }
+        parsed[:components].map { |item| score.components.create!(item) }
 
         score.update(elements_summary: score.elements.map(&:name).join('/'))
         score.update(components_summary: score.components.map(&:value).join('/'))
