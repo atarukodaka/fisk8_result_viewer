@@ -13,6 +13,7 @@
 	- components, statics, panels
 	- context filter to accept hash or class
   - controller/deviation
+- season: update in updater i/o parser
 
 ### new feature
 

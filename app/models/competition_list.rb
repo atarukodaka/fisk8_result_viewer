@@ -18,7 +18,7 @@ class CompetitionList < ActiveYaml::Base
   set_filename 'competitions'
 
   field :url
-  field :parser_type, default: CompetitionParser::DEFAULT_PARSER
+  field :parser_type #, default: CompetitionParser::DEFAULT_PARSER
   field :comment
 
   class << self
@@ -32,7 +32,6 @@ class CompetitionList < ActiveYaml::Base
         when Hash
           hash = item
         end
-        hash['parser_type'] ||= CompetitionParser::DEFAULT_PARSER
         hash
       end
     end

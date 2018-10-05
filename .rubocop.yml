@@ -30,10 +30,10 @@ Lint/UnneededCopDisableDirective:
 
 ################
 Metrics/BlockLength:
+  Max: 50
   Exclude:
     - spec/**/*.rb
     - lib/tasks/**/*.rake
-  Max: 50
 
 Metrics/ClassLength:
   Max: 100
