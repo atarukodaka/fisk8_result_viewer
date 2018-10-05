@@ -22,7 +22,7 @@ feature CompetitionsController, type: :feature, feature: true do
       it {
         page_length = CompetitionsDatatable.new.settings[:pageLength]
         100.times do |i|
-          create(:competition, name: i, short_name: i)
+          create(:competition, name: i, short_name: i, start_date: Date.new(2015, 7, 1))
         end
         visit index_path
         expect(page.body).to have_content("Showing 1 to #{page_length}")
