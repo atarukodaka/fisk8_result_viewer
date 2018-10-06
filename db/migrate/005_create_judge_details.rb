@@ -8,7 +8,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
     create_table :officials do |t|
       t.integer :number
       t.boolean :absence, default: false
-      t.belongs_to :panel
+      t.references :panel
       t.belongs_to :performed_segment
     end
 

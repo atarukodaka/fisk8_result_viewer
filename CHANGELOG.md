@@ -16,6 +16,9 @@
 - parser type can be show on builder
 - clean panel with zero scores
 - official absence: gpusa2016/pairs/short
+- refactoring
+  - devation
+  - score belongs to performed_segments ?
 
 ### new feature
 

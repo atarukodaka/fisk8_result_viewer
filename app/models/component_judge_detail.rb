@@ -1,10 +1,8 @@
 class ComponentJudgeDetail < ApplicationRecord
-  belongs_to :official
   belongs_to :component
 
-  def self.enabled?
-    self.positive?
-  end
+  ## references
+  belongs_to :official
 
   ## virtual attributes
   delegate :score_name, to: :element

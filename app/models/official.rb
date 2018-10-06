@@ -1,5 +1,7 @@
 class Official < ApplicationRecord
   belongs_to :panel
+
+  ## references
   belongs_to :performed_segment
 
   delegate :competition_name, to: :performed_segment

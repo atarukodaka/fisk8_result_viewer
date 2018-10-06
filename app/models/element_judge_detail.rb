@@ -1,10 +1,8 @@
 class ElementJudgeDetail < ApplicationRecord
-  belongs_to :official
   belongs_to :element
 
-  def self.enabled?
-    (self.positive?) ? true : false
-  end
+  ## references
+  belongs_to :official
 
   ## virtual attributes
   delegate :score_name, to: :element

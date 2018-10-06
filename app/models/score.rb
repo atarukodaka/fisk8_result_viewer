@@ -7,12 +7,18 @@ class Score < ApplicationRecord
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
 
+  belongs_to :competition
+
+  ## # references
+  belongs_to :skater
   belongs_to :category
   belongs_to :segment
-  belongs_to :competition
-  belongs_to :skater
-  belongs_to :category_result, optional: true
-  belongs_to :performed_segment, optional: true
+  #belongs_to :performed_segment   # , optional: true  
+  #belongs_to :category_result, optional: true
+
+  def performed_segment       ## rspec only
+    competition.performed_segments.where(category: category, segment: segment).first
+  end
 
   ## scopes
   scope :recent, -> { order('date desc') }

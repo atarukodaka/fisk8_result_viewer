@@ -3,10 +3,10 @@ class Skater < ApplicationRecord
 
   ## relations
   has_many :category_results, dependent: :nullify
-  has_many :scores, dependent: :nullify
-  has_many :elements, through: :scores, dependent: :nullify
-  has_many :components, through: :scores, dependent: :nullify
-  belongs_to :category
+#  has_many :scores, dependent: :nullify
+#  has_many :elements, through: :scores, dependent: :nullify
+#  has_many :components, through: :scores, dependent: :nullify
+  belongs_to :category   ## reference
 
   ## validations
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }

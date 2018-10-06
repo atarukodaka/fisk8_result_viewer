@@ -12,7 +12,9 @@ describe DeviationsController, type: :controller do
   let!(:second) {
     competition = create(:competition, :finlandia)
     score = competition.scores.first
+    binding.pry
     official = score.performed_segment.officials.first
+
     create(:deviation, :second, score: score, official: official)
   }
 
