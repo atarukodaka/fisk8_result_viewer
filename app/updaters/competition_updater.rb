@@ -9,14 +9,16 @@ class CompetitionUpdater
   end
 
   def within_season?(season, from: nil, to: nil)
-    if from && (season < from)
-      debug("...skip: #{season} is before #{from}", indent: 5)
-      false
-    elsif to && (season > to)
-      debug("...skip: #{season} is after #{to}", indent: 5)
-      false
-    else
-      true
+    return true if from.nil? || to.nil?
+
+    this_season = SkateSeason.new(season)
+
+    if (!from.nil?) && (!to.nil?)
+      this_season.between?(from, to)
+    elsif (!from.nil?) && to.nil?
+      this_season >= SkateSeason.new(from)
+    elsif (from.nil?) && (!to.nil?)
+      this_season <= SkateSeason.new(to)
     end
   end
 
@@ -52,10 +54,9 @@ class CompetitionUpdater
                (return nil)
       ## check season from/to
       unless within_season?(parsed[:season], from: options[:season_from], to: options[:season_to])
-        debug('skip: not within specific season', indent: 5)
+         debug('skip: not within specific season', indent: 5)
         return
       end
-
       Competition.create! do |competition|
         slice_common_attributes(competition, parsed).tap do |hash|
           competition.attributes = hash

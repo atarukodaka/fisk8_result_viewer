@@ -40,19 +40,21 @@ class CompetitionParser
         competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] =
           (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
-        competition[:season] = skate_season(competition[:start_date])
+        #competition[:season] = skate_season(competition[:start_date])
+        competition[:season] = SkateSeason.new(competition[:start_date]).season
         competition
       end
       ################
 
       protected
 
+=begin
       def skate_season(date)
         year = date.year
         year -= 1 if date.month <= 6
         '%04d-%02d' % [year, (year + 1) % 100]
       end
-
+=end
       def parse_city_country(page)
         node = page.search('td.caption3').presence || page.xpath('//h3') || raise
         str = (node.present?) ? node.first.text.strip : ''
