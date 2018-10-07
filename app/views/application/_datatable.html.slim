@@ -2,7 +2,7 @@
 - table_id = datatable.table_id
 - attrs = datatable.as_attrs
 
-= render partial: "filter", locals: { datatable: datatable }
+= render partial: "filters", locals: { datatable: datatable }
 
 ////////////////////////////////////////////////////////////////
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'

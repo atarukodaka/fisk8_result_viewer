@@ -19,6 +19,8 @@
 - refactoring
   - devation
   - score belongs to performed_segments ?
+- having scores for skater datatable
+- components feature spec
 
 ### new feature
 

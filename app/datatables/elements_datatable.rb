@@ -24,4 +24,30 @@ class ElementsDatatable < ScoreDetailsDatatable
     tables = [:score, score: [:competition, :skater, :category, :segment]]
     Element.includes(tables).joins(tables)
   end
+
+  def filters
+    @filters ||= [
+      ScoresDatatable.new.filters,
+      AjaxDatatables::Filter.new(:element_name_group) do
+        [
+          AjaxDatatables::Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+                                                              options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
+          AjaxDatatables::Filter.new(:element_name, :text_field, label: ''),
+        ]
+      end,
+      AjaxDatatables::Filter.new(:element_type_group) do
+        [
+          AjaxDatatables::Filter.new(:element_type, :select),
+          AjaxDatatables::Filter.new(:element_subtype, :select),
+        ]
+      end,
+      AjaxDatatables::Filter.new(:goe_group) do
+        [
+          AjaxDatatables::Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+                                                             options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+          AjaxDatatables::Filter.new(:goe, :text_field, label: ''),
+        ]
+      end,
+    ].flatten
+  end
 end

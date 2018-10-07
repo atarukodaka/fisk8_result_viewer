@@ -1,3 +1,5 @@
+require 'ajax_datatables/filter'
+
 ###############################################################
 module AjaxDatatables
   class Datatable
@@ -93,6 +95,11 @@ module AjaxDatatables
 
     ################
     ## filters
+    def filters
+      @filters ||= []
+    end
+
+=begin
     def filter
       begin
         klass = "#{self.class.to_s.sub(/Datatable$/, '')}Filter".constantize
@@ -101,7 +108,7 @@ module AjaxDatatables
       end
       @filter ||= klass.new
     end
-
+=end
     ################
     ## settings, etc
     def default_settings

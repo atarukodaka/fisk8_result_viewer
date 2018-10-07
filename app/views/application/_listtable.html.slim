@@ -2,5 +2,6 @@
 
 table.table.table-striped.table-hover.table-condensed
   - datatable.column_names.each do |column_name|
-    /= tr_data(column_name.humanize, datatable.data.send(column_name.to_sym))
-    = tr_data(datatable.records.class.human_attribute_name(column_name), datatable.data.send(column_name.to_sym))
+    tr
+      th= datatable.records.class.human_attribute_name(column_name)
+      td= datatable.data[column_name]
