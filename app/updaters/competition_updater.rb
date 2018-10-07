@@ -36,6 +36,9 @@ class CompetitionUpdater
     Competition.where(site_url: site_url).map(&:destroy)
   end
 
+  def competition_set_attributes(competition, parsed)
+  end
+  
   ################
   def update_competition(site_url, *args)
     default_options = { date_format: nil, force: nil, categories: nil,
@@ -44,7 +47,7 @@ class CompetitionUpdater
     categories_to_update = get_categories_to_update(options[:categories])
 
     ActiveRecord::Base.transaction do
-      return nil if !options[:force] && Competition.find(site_url: site_url)
+      return nil if (!options[:force]) && Competition.find(site_url: site_url)
 
       clean_existing_competitions(site_url)
 
@@ -61,11 +64,6 @@ class CompetitionUpdater
         comp.country ||= CityCountry.find_by(city: comp.city).try(:country)
 
         ## time_schdule, date, tz
-=begin
-        comp.start_date = TimeSchedule.min(:starting_time) || raise
-        comp.end_date = TimeSchedule.max(:starting_time) || raise
-        comp.timezone = TimeSchedule.firs.starting_time.time_zone.name || 'UTC'
-=end
         comp.start_date = parsed[:time_schedule].map { |d| d[:starting_time] }.min.to_date || raise
         comp.end_date = parsed[:time_schedule].map { |d| d[:starting_time] }.max.to_date || raise
         comp.timezone = parsed[:time_schedule].first[:starting_time].time_zone.name || 'UTC'
@@ -88,13 +86,13 @@ class CompetitionUpdater
         segment = Segment.find_by(name: item[:segment]) || next
 
         starting_time = parsed[:time_schedule].find { |ts| ts[:category] == item[:category] && ts[:segment] == item[:segment] }[:starting_time] || raise
-        #starting_time = TimeSchedule.find(category: item[:category], segment: item[:segment]).starting_time || raise
         update_performed_segment(competition, category, segment, item[:panel_url], starting_time: starting_time)
         update_segment_results(competition, category, segment, item[:result_url])
         update_scores(competition, category, segment, item[:score_url])
       end
       competition        ## ensure to return competition object
     end ## transaction
+
   end
 
   ################
@@ -145,8 +143,9 @@ class CompetitionUpdater
   def update_segment_results(competition, category, segment, result_url)
     ActiveRecord::Base.transaction do
       parsers[:segment_result].parse(result_url).tap do |items|
+        relevant_cr = nil
         items.each do |parsed|
-          score = competition.scores.create!(category: category, segment: segment) do |score|
+          competition.scores.create!(category: category, segment: segment) { |score|
             relevant_cr = competition.category_results
                           .where(category: category, "#{segment.segment_type}_ranking": parsed[:ranking]).first
             skater = relevant_cr.try(:skater) ||
@@ -156,13 +155,14 @@ class CompetitionUpdater
 
             score.attributes = slice_common_attributes(score, parsed)
                                .merge(skater: skater, date: ps.starting_time.to_date)
+          }.tap do |score|
+            relevant_cr.present? && relevant_cr.update(segment.segment_type => score)
           end
-          relevant_cr.update(segment.segment_type => score) if relevant_cr
         end
       end
     end
   end
-  
+
   ################
   def update_scores(competition, category, segment, score_url)
     parsers[:score].parse(score_url).each do |parsed|
@@ -203,6 +203,7 @@ class CompetitionUpdater
           .create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
       end
     end
+
     ### component
     score.components.each do |component|
       details = component.judges.split(/\s/).map(&:to_f)

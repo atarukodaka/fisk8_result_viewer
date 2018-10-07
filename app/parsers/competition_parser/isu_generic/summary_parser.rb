@@ -1,16 +1,17 @@
 class CompetitionParser
   class IsuGeneric
     class SummaryParser < Parser
+=begin
       class TimeShedule < ActiveHash::Base
         field :category
         field :segment
         field :starting_time
       end
-      
-      
+=end
+
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
-        
+
         debug(" -- parse summary: #{site_url}")
         city, country = parse_city_country(page)
 
@@ -32,58 +33,20 @@ class CompetitionParser
             competition[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
           end
         end
-
-=begin
-        competition[:categories] = {}
-        competition[:segments] = Hash.new { |h, k| h[k] = {} }
-
-        result_summary.each do |hash|
-          category, segment = hash[:category], hash[:segment]
-          competition[:categories][category] ||= {}
-
-          if hash[:segment].blank?
-            competition[:categories][category][:result_url] = hash[:result_url]
-          else
-            competition[:segments][category][segment] = {
-              panel_url:  hash[:panel_url],
-              result_url: hash[:result_url],
-              score_url:  hash[:score_url],
-              time:       time_schedule.select { |item| ## time ? date ?
-                item[:category] == category && item[:segment] == segment
-              }.first.try(:[], :time),
-            }
-          end
-        end
-=end
-=begin
-        competition[:start_date] = time_schedule.map { |d| d[:time] }.min.to_date || Date.new(1970, 1, 1)
-        competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
-        competition[:timezone] =
-          (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
-        # competition[:season] = skate_season(competition[:start_date])
-        competition[:season] = SkateSeason.new(competition[:start_date]).season
-=end
         competition[:time_schedule] = time_schedule
         competition
       end
       ################
-      
+
       protected
-      
-=begin
-      def skate_season(date)
-        year = date.year
-        year -= 1 if date.month <= 6
-        '%04d-%02d' % [year, (year + 1) % 100]
-      end
-=end
+
       def parse_city_country(page)
         node = page.search('td.caption3').presence || page.xpath('//h3') || raise
         str = (node.present?) ? node.first.text.strip : ''
         if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
           city, country = $1, $2
           if city.present?
-            city.sub!(/ *$/, '')
+            city.sub!(/ *$/, '')      ## TODO: refactor
             city.sub!(/,.*$/, '')
             city.sub!(/ *\(.*\)$/, '')
             city.sub!(/ *\/.*$/, '')
@@ -99,7 +62,7 @@ class CompetitionParser
         rows = elem.xpath('ancestor::table[1]//tr')
         category = ''
         summary = []
-        
+
         rows.each do |row|
           next if row.xpath('td').blank?
 
@@ -191,5 +154,5 @@ class CompetitionParser
           .gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, '').gsub(/ SKATING/, '')
       end
     end
-           end
+  end
 end ## module
