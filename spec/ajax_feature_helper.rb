@@ -26,7 +26,7 @@ module AjaxFeatureHelper
       when :click, :checkbox
         find(key).click
       end
-      sleep 1
+      #sleep 1
     end
     page
   end
@@ -147,7 +147,7 @@ module AjaxFeatureHelper
       column_id = "column_#{table_id}_#{column_name}"
 
       find("##{column_id}").click
-      sleep 1
+      #sleep 1
       page
     end
   end

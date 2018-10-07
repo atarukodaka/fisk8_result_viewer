@@ -7,7 +7,6 @@ module AjaxDatatables
     attr_accessor :key, :input_type, :fields, :onchange, :options, :children
 
     def initialize(key, input_type = :text_field,  label: nil, fields: [], model: nil, onchange: :search, options: [], children: [])           ## TODO: too long args: use *args
-    def initialize(key, input_type, *args)
       @key = key
       @input_type = input_type
 
