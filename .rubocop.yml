@@ -16,6 +16,9 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
+Layout/AlignHash:
+  Enabled: false
+
 Layout/ExtraSpacing:
   Enabled: false
 

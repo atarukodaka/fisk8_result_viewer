@@ -1,21 +1,24 @@
 module AjaxDatatables
   class Filter
-    # include ActionView::Helpers::FormTagHelper
-    # include ActionView::Helpers::FormOptionsHelper
-    # include FormHelper
+    attr_accessor :key, :input_type, :onchange, :options, :children
 
-    attr_accessor :key, :input_type, :fields, :onchange, :options, :children
-
-    def initialize(key, input_type = :text_field,  label: nil, fields: [], model: nil, onchange: :search, options: [], children: [])           ## TODO: too long args: use *args
+    def initialize(key, input_type = :text_field, *args)
       @key = key
       @input_type = input_type
 
+      if args.first.present?
+        [:field, :labe, :model, :onchange, :options, :children].each do |var|
+          instance_variable_set "@#{var}", args.first[var]
+        end
+      end
+=begin
       @fields = fields
       @label = label
       @model = model
       @onchange = onchange
       @options = options
       @children = children       ## TODO
+=end
       if block_given?
         @children = yield
       end
