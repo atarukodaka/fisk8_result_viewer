@@ -19,6 +19,7 @@ class SkateSeason
   def season
     @season ||= '%04d-%02d' % [year, (year + 1) % 100]
   end
+
   def to_s
     season
   end

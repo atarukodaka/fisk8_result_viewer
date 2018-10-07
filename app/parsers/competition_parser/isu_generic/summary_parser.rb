@@ -1,9 +1,16 @@
 class CompetitionParser
   class IsuGeneric
     class SummaryParser < Parser
+      class TimeShedule < ActiveHash::Base
+        field :category
+        field :segment
+        field :starting_time
+      end
+      
+      
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
-
+        
         debug(" -- parse summary: #{site_url}")
         city, country = parse_city_country(page)
 
@@ -22,11 +29,10 @@ class CompetitionParser
           if item[:segment].blank?
             competition[:category_results] << item.slice(:category, :result_url)
           else
-            #item[:time] = time_schedule.select {|ts| ts[:category] == item[:category] && ts[:segment] == item[:segment]}.first.try(:[], :time)
             competition[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
           end
         end
-        
+
 =begin
         competition[:categories] = {}
         competition[:segments] = Hash.new { |h, k| h[k] = {} }
@@ -50,7 +56,6 @@ class CompetitionParser
         end
 =end
 =begin
-
         competition[:start_date] = time_schedule.map { |d| d[:time] }.min.to_date || Date.new(1970, 1, 1)
         competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] =
@@ -62,9 +67,9 @@ class CompetitionParser
         competition
       end
       ################
-
+      
       protected
-
+      
 =begin
       def skate_season(date)
         year = date.year
@@ -94,7 +99,7 @@ class CompetitionParser
         rows = elem.xpath('ancestor::table[1]//tr')
         category = ''
         summary = []
-
+        
         rows.each do |row|
           next if row.xpath('td').blank?
 
@@ -186,5 +191,5 @@ class CompetitionParser
           .gsub(/^SENIOR /, '').gsub(/ SINGLE SKATING/, '').gsub(/ SKATING/, '')
       end
     end
-  end
+           end
 end ## module
