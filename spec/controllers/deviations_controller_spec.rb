@@ -1,3 +1,5 @@
+__END__
+
 require 'rails_helper'
 
 describe DeviationsController, type: :controller do
