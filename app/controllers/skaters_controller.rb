@@ -1,8 +1,8 @@
 class SkatersController < IndexController
   def skater
     @skater ||= Skater.find_by(isu_number: params[:isu_number]) ||
-      Skater.find_by(name: params[:isu_number]) ||
-      raise(ActiveRecord::RecordNotFound.new('no such skater'))
+                Skater.find_by(name: params[:isu_number]) ||
+                raise(ActiveRecord::RecordNotFound.new('no such skater'))
   end
 
   def competition_results_datatable(skater)

@@ -17,10 +17,10 @@ class PanelsController < IndexController
     summary = {
       name:                           panel.name,
       nation:                         panel.nation,
-#      number_of_participated_segment:
-#        PerformedSegment.joins(:officials).where("officials.panel": panel).count,
-#      number_of_scores_judged:
-#        Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count,
+      #      number_of_participated_segment:
+      #        PerformedSegment.joins(:officials).where("officials.panel": panel).count,
+      #      number_of_scores_judged:
+      #        Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count,
     }
 
     columns = [:competition_name, :category_name, :segment_name, :number]

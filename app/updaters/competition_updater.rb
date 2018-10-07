@@ -54,7 +54,7 @@ class CompetitionUpdater
                (return nil)
       ## check season from/to
       unless within_season?(parsed[:season], from: options[:season_from], to: options[:season_to])
-         debug('skip: not within specific season', indent: 5)
+        debug('skip: not within specific season', indent: 5)
         return
       end
       Competition.create! do |competition|
@@ -151,12 +151,12 @@ class CompetitionUpdater
             score.attributes = slice_common_attributes(score, parsed)
                                .merge(
                                  skater: skater,
-                                 #performed_segment: ps,
+                                 # performed_segment: ps,
                                  date: ps.starting_time.to_date
                                )
 
             if relevant_cr
-              #score.update(category_result: relevant_cr)
+              # score.update(category_result: relevant_cr)
               score.save!           ## need to save here
               relevant_cr.update(segment.segment_type => score)
             end

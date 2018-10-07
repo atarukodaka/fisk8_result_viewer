@@ -3,9 +3,9 @@ class Skater < ApplicationRecord
 
   ## relations
   has_many :category_results, dependent: :nullify
-#  has_many :scores, dependent: :nullify
-#  has_many :elements, through: :scores, dependent: :nullify
-#  has_many :components, through: :scores, dependent: :nullify
+  #  has_many :scores, dependent: :nullify
+  #  has_many :elements, through: :scores, dependent: :nullify
+  #  has_many :components, through: :scores, dependent: :nullify
   belongs_to :category   ## reference
 
   ## validations

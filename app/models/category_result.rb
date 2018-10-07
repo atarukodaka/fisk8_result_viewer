@@ -12,7 +12,7 @@ class CategoryResult < ApplicationRecord
   delegate :competition_name, to: :competition
   delegate :skater_name, :nation, to: :skater
   delegate :tss, :tes, :pcs, :deductions, :base_value, to: :short, prefix: :short, allow_nil: true
-  delegate :tss, :tes, :pcs, :deductions, :base_value, to: :free, prefix: :free, allow_nil: true  
+  delegate :tss, :tes, :pcs, :deductions, :base_value, to: :free, prefix: :free, allow_nil: true
 
   def date
     competition.start_date

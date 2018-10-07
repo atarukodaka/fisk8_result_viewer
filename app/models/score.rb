@@ -13,8 +13,8 @@ class Score < ApplicationRecord
   belongs_to :skater
   belongs_to :category
   belongs_to :segment
-  #belongs_to :performed_segment   # , optional: true  
-  #belongs_to :category_result, optional: true
+  # belongs_to :performed_segment   # , optional: true
+  # belongs_to :category_result, optional: true
 
   def performed_segment       ## rspec only
     competition.performed_segments.where(category: category, segment: segment).first

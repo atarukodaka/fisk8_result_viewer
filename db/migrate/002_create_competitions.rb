@@ -14,7 +14,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :site_url
       t.string :competition_type
       t.string :competition_class
-      #t.string :parser_type, default: 'isu_generic'
+      # t.string :parser_type, default: 'isu_generic'
 
       t.string :comment
     end

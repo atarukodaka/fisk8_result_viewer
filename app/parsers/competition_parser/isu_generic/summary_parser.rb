@@ -40,7 +40,7 @@ class CompetitionParser
         competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] =
           (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
-        #competition[:season] = skate_season(competition[:start_date])
+        # competition[:season] = skate_season(competition[:start_date])
         competition[:season] = SkateSeason.new(competition[:start_date]).season
         competition
       end

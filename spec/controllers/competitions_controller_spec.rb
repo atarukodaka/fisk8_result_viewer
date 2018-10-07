@@ -36,7 +36,7 @@ RSpec.describe CompetitionsController, type: :controller do
     let(:score) { world.scores.first }
     let(:category) { score.category }
     let(:segment) { score.segment }
-    
+
     context 'short_name' do
       subject { get :show, params: { short_name: world.short_name } }
       its(:body) { is_expected.to have_content(world.name) }
@@ -61,7 +61,6 @@ RSpec.describe CompetitionsController, type: :controller do
         is_expected.to have_content(category.name)
         is_expected.to have_content(segment.name)
         is_expected.to have_content(score.performed_segment.officials.first.panel.name)
-        #is_expected.to have_content(world.performed_segments.where(category: category, segment: segment).first.officials.first.panel.name ) 
       }
     end
     context 'redirection to score' do

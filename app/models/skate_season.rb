@@ -17,13 +17,15 @@ class SkateSeason
   end
 
   def season
-    @season ||= "%04d-%02d" % [year, (year+1) % 100]
+    @season ||= '%04d-%02d' % [year, (year + 1) % 100]
   end
+
   def year
     y = @date.year
-    y -= 1 if @date.month<= 6
+    y -= 1 if @date.month <= 6
     y
   end
+
   def start_date
     @start_date ||= Date.new(@date.year, 7, 1)
   end

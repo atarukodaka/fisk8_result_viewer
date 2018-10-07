@@ -12,5 +12,5 @@ class PerformedSegment < ApplicationRecord
   delegate :category_name, to: :category
   delegate :segment_name, to: :segment
 
-  validates  :starting_time, presence: true
+  validates :starting_time, presence: true
 end
