@@ -3,6 +3,8 @@ class PerformedSegment < ApplicationRecord
   has_many :officials, dependent: :destroy
 
   belongs_to :competition
+
+  ## references
   belongs_to :category
   belongs_to :segment
 

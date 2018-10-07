@@ -7,10 +7,8 @@ class Deviation < ApplicationRecord
   end
 
   delegate :name, to: :score, prefix: :score
-  delegate :category_name, to: :score
-  delegate :panel_name, to: :official
-  delegate :panel_nation, to: :official
-  delegate :skater_name, to: :score
+  delegate :skater_name, :category_name, to: :score
+  delegate :panel_name, :panel_nation, to: :official
   delegate :nation, to: :score, prefix: :skater
   delegate :number, to: :official, prefix: :official
 end

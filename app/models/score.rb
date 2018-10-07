@@ -28,17 +28,10 @@ class Score < ApplicationRecord
   scope :segment, ->(s) { where(segment: s) }
 
   ## virtual attributes
-  {
-    competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
-    skater:      [:skater_name, :nation],
-    category:    [:category_name, :category_type, :seniority, :team],
-    segment:     [:segment_name, :segment_type],
-  }.each do |model, ary|
-    ary.each do |key|
-      delegate key, to: model
-    end
-  end
-  delegate :segment_type, to: :segment
+  delegate :competition_name, :short_name, :competition_class, :competition_type, :season, to: :competition
+  delegate :skater_name, :nation, to: :skater
+  delegate :category_name, :category_type, :seniority, :team, to: :category
+  delegate :segment_name, :segment_type, to: :segment
 
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
