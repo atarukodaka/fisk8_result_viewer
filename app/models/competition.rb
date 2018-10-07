@@ -32,6 +32,7 @@ class Competition < ApplicationRecord
     self.competition_type ||= matched_item.competition_type.to_sym
     self.short_name ||= matched_item.short_name.to_s % hash
     self.name = matched_item.name % hash if matched_item.name.to_s.present?
+    self.season = SkateSeason.new(self.start_date).season
 
     self           ## ensure to return self
   end

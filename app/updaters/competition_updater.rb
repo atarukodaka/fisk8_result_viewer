@@ -53,10 +53,12 @@ class CompetitionUpdater
       parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]).presence ||
                (return nil)
       ## check season from/to
+=begin
       unless within_season?(parsed[:season], from: options[:season_from], to: options[:season_to])
         debug('skip: not within specific season', indent: 5)
         return
       end
+=end
       Competition.create! do |competition|
         slice_common_attributes(competition, parsed).tap do |hash|
           competition.attributes = hash
@@ -65,26 +67,36 @@ class CompetitionUpdater
           end
         end
         competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
+
+        ## time_schdule, date, tz
+        competition.start_date = parsed[:time_schedule].map {|d| d[:starting_time]}.min.to_date || raise
+        competition.end_date = parsed[:time_schedule].map {|d| d[:starting_time]}.max.to_date || raise
+        competition.timezone = parsed[:time_schedule].first[:starting_time].time_zone.name || 'UTC'
+
+        binding.pry
         competition.save! ## need to save here to create children
 
         debug('*' * 100)
         debug('%<name>s [%<short_name>s] (%<site_url>s)' % competition.attributes.symbolize_keys)
 
         ## for each categories, segments(scores)
-        parsed[:categories].each do |category_str, cat_item|
-          category = Category.find_by(name: category_str) || next
+        parsed[:category_results].each do |item|
+          category = Category.find_by(name: item[:category]) || next   ## TODO: warning
           next unless categories_to_update.include?(category)
+          update_category_results(competition, category, item[:result_url])
+        end
 
-          update_category_results(competition, category, cat_item[:result_url])
+        ## segments
+        parsed[:segment_results].each do |item|
+          next if item[:result_url].blank?
 
-          parsed[:segments][category_str].each do |segment_str, item|
-            next if item[:result_url].blank?
+          category = Category.find_by(name: item[:category]) || next
+          segment = Segment.find_by(name: item[:segment]) || raise
 
-            segment = Segment.find_by(name: segment_str)
-            update_performed_segment(competition, category, segment, item[:panel_url], item[:time])
-            update_segment_results(competition, category, segment, item[:result_url])
-            update_scores(competition, category, segment, item[:score_url])
-          end
+          starting_time = parsed[:time_schedule].find {|ts| ts[:category] == item[:category] && ts[:segment] == item[:segment] }[:starting_time] || raise
+          update_performed_segment(competition, category, segment, item[:panel_url], starting_time: starting_time)
+          update_segment_results(competition, category, segment, item[:result_url])
+          update_scores(competition, category, segment, item[:score_url])
         end
       end
       ## ensure to return competition object
@@ -92,7 +104,7 @@ class CompetitionUpdater
   end
 
   ################
-  def update_performed_segment(competition, category, segment, panel_url, starting_time)
+  def update_performed_segment(competition, category, segment, panel_url, starting_time: starting_time)
     parsed_panels = parsers[:panel].parse(panel_url)
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)

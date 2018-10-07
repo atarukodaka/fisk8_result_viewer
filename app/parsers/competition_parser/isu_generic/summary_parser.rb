@@ -16,6 +16,18 @@ class CompetitionParser
         result_summary = parse_summary_table(page, url: site_url)
         time_schedule =  parse_time_schedule(page, date_format: date_format)
 
+        competition[:category_results] = []
+        competition[:segment_results] = []
+        result_summary.each do |item|
+          if item[:segment].blank?
+            competition[:category_results] << item.slice(:category, :result_url)
+          else
+            #item[:time] = time_schedule.select {|ts| ts[:category] == item[:category] && ts[:segment] == item[:segment]}.first.try(:[], :time)
+            competition[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
+          end
+        end
+        
+=begin
         competition[:categories] = {}
         competition[:segments] = Hash.new { |h, k| h[k] = {} }
 
@@ -36,12 +48,17 @@ class CompetitionParser
             }
           end
         end
+=end
+=begin
+
         competition[:start_date] = time_schedule.map { |d| d[:time] }.min.to_date || Date.new(1970, 1, 1)
         competition[:end_date] = time_schedule.map { |d| d[:time] }.max.to_date || Date.new(1970, 1, 1)
         competition[:timezone] =
           (time_schedule.present?) ? time_schedule.first[:time].time_zone.name : 'UTC'
         # competition[:season] = skate_season(competition[:start_date])
         competition[:season] = SkateSeason.new(competition[:start_date]).season
+=end
+        competition[:time_schedule] = time_schedule
         competition
       end
       ################
@@ -120,7 +137,7 @@ class CompetitionParser
       end
 
       def parse_time_schedule(page, date_format:)
-        ## time schdule
+        ## time schedule
         rows = get_time_schedule_rows(page)
         dt_str = ''
         time_schedule = []
@@ -149,7 +166,7 @@ class CompetitionParser
           tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
           time_schedule << {
-            time:     tm,
+            starting_time:     tm,
             category: normalize_category(row.xpath('td[3]').text),
             segment:  row.xpath('td[4]').text.squish.upcase,
           }
