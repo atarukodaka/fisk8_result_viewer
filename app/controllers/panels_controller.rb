@@ -29,14 +29,12 @@ class PanelsController < IndexController
       AjaxDatatables::Datatable.new(self).records(records).columns(columns)
 
     respond_to do |format|
-      data = { panel: panel, summary: summary,
-               participated_segments_datatable: participated_segments_datatable }
-      format.html {
-        render locals: data
+      data = {
+        panel: panel, summary: summary,
+        participated_segments_datatable: participated_segments_datatable
       }
-      format.json {
-        render json: data
-      }
+      format.html {        render locals: data      }
+      format.json {        render json: data      }
     end
   end
 end

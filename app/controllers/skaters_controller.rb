@@ -14,14 +14,10 @@ class SkatersController < IndexController
   end
 
   def show
+    data = { skater: skater, competition_results: competition_results_datatable(skater) }
     respond_to do |format|
-      data = { competition_results: competition_results_datatable(skater) }
-      format.html {
-        render action: :show, locals: { skater: skater }.merge(data)
-      }
-      format.json {
-        render json: skater.slice(:name, :nation, :isu_number, :category).merge(data)
-      }
+      format.html {  render action: :show, locals: data }
+      format.json {  render json: data }
     end
   end
 end

@@ -7,6 +7,7 @@ class CompetitionUpdater
     @enable_judge_details = enable_judge_details
     @verbose = verbose
   end
+
   def categories_to_update(categories) ## array of strings or symbol given
     @categories_to_update ||=
       if categories.nil?
@@ -48,8 +49,10 @@ class CompetitionUpdater
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
       model_class = CompetitionParser::SummaryParser
-      model_class = model_class.dup
-                    .prepend "#{model_class}::#{@parser_type.to_s.camelize}".constantize if @parser_type
+      if @parser_type
+        prepended_class = "#{model_class}::#{@parser_type.to_s.camelize}".constantize
+        model_class = model_class.dup.prepend(prepended_class)
+      end
       parsed = model_class.new.parse(site_url, date_format: options[:date_format]) || (return nil)
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, parsed, params: {})

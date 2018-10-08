@@ -17,7 +17,7 @@ class CompetitionsController < IndexController
                :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value]
     AjaxDatatables::Datatable.new(view_context)
       .records(competition.category_results.category(category).includes(:skater, :short, :free))
-      .columns(columns).tap { |d| d.default_orders([[:points, :desc], [:ranking, :asc]]) }
+      .columns(columns).default_orders([[:points, :desc], [:ranking, :asc]])
   end
 
   def segment_results_datatable(competition, category, segment)
@@ -29,53 +29,27 @@ class CompetitionsController < IndexController
     columns = [:ranking, :name, :skater_name, :nation, :starting_number,
                :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]
     AjaxDatatables::Datatable.new(view_context).records(records).columns(columns)
-      .tap { |d| d.default_orders([[:tss, :desc], [:ranking, :asc]]) }
+      .default_orders([[:tss, :desc], [:ranking, :asc]])
   end
 
   def show
-    competition = Competition.find_by(short_name: params[:short_name]) ||
-                  raise(ActiveRecord::RecordNotFound)
+    competition = Competition.find_by!(short_name: params[:short_name])
 
-    category_name, segment_name, ranking = params[:category], params[:segment], params[:ranking]
+    category_name, segment_name = params[:category], params[:segment]
     category = Category.find_by(name: category_name)
     segment = Segment.find_by(name: segment_name)
 
-    if ranking.present?
-      # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
-      score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              begin
-                score_descr = [competition.short_name, category_name, segment_name, ranking].join('/')
-                raise(ActiveRecord::RecordNotFound.new("no such score: #{score_descr}"))
-              end
-
-      respond_to do |format|
-        format.html {
-          redirect_to(controller: :scores, action: :show, name: score.name)
-        }
-        format.json {
-          redirect_to(controller: :scores, action: :show, name: score.name, format: :json)
-        }
-      end
-    else
-      respond_to do |format|
-        results = {
-          category_results: category_results_datatable(competition, category),
-          segment_results:  segment_results_datatable(competition, category, segment),
-        }
-        format.html {
-          data = {
-            competition: competition,
-            category:    category,
-            segment:     segment,
-            result_type: result_type(category_name, segment_name),
-          }.merge(results)
-          render :show, locals: data
-        }
-        format.json {
-          render json: competition.slice(:name, :short_name, :competition_class, :competition_type,
-                                         :city, :country, :start_date, :end_date, :timezone, :comment).merge(results)
-        }
-      end
+    data = {
+      competition: competition,
+      category:    category,
+      segment:     segment,
+      result_type: result_type(category_name, segment_name),
+      category_results: category_results_datatable(competition, category),
+        segment_results:  segment_results_datatable(competition, category, segment),
+    }
+    respond_to do |format|
+      format.html {     render :show, locals: data     }
+      format.json {        render json: data      }
     end
   end
 end
