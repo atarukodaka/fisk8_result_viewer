@@ -27,7 +27,6 @@ class ElementsDatatable < ScoreDetailsDatatable
 
   def filters
     @filters ||= [
-      ScoresDatatable.new.filters,
       AjaxDatatables::Filter.new(:element_name_group) do
         [
           AjaxDatatables::Filter.new(:name_operator, :select, label: '',  onchange: :draw,
@@ -48,6 +47,7 @@ class ElementsDatatable < ScoreDetailsDatatable
           AjaxDatatables::Filter.new(:goe, :text_field, label: ''),
         ]
       end,
+      ScoresDatatable.new.filters,
     ].flatten
   end
 end

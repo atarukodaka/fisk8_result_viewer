@@ -11,7 +11,6 @@
 - spec
   - feature
 	- components, statics, panels
-	- context filter to accept hash or class
   - controller/deviation
 - parser type can be show on builder
 - clean panel with zero scores

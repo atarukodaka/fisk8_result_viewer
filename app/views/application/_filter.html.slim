@@ -1,15 +1,17 @@
 
 - filter || raise
 - datatable || raise
-- label ||= false
+- label ||= nil
 
 ////////////////////////////////////////////////////////////////
-- if label
+
+- if label.present?
   label= label
 
 - if filter.children.present?
   - filter.children.each do |child|
-    label= child.label
+    - if child.label.present?
+      label= child.label
     = render partial: "filter", locals: { filter: child, datatable: datatable }
 - else
   - onchange = case filter.onchange

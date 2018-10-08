@@ -7,7 +7,7 @@ module AjaxDatatables
       @input_type = input_type
 
       if args.first.present?
-        [:field, :labe, :model, :onchange, :options, :children].each do |var|
+        [:field, :label, :model, :onchange, :options, :children].each do |var|
           instance_variable_set "@#{var}", args.first[var]
         end
       end
