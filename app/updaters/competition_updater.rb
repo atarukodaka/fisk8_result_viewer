@@ -42,13 +42,13 @@ class CompetitionUpdater
   def update_competition_attributes(competition, parsed, params: {})
     slice_common_attributes(competition, parsed).tap do |hash|
       competition.attributes = hash
-      params.reject {|_k, v| value.blank?}.each do |key, value|
+      params.reject { |_k, _v| value.blank? }.each do |key, value|
         competition[key] = value          ## TODO: check if it works
       end
     end
     competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
   end
-  
+
   ################
   def update_competition(site_url, *args)
     default_options = { date_format: nil, force: nil, categories: nil,
@@ -65,7 +65,7 @@ class CompetitionUpdater
       parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]) || (return nil)
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, parsed, params: {})
-        
+
         ## time_schdule, date, tz
         comp.start_date = parsed[:time_schedule].map { |d| d[:starting_time] }.min.to_date || raise
         comp.end_date = parsed[:time_schedule].map { |d| d[:starting_time] }.max.to_date || raise
@@ -88,41 +88,38 @@ class CompetitionUpdater
         category = Category.find_by(name: item[:category]) || next
         segment = Segment.find_by(name: item[:segment]) || next
 
-        starting_time = parsed[:time_schedule].find { |ts| ts[:category] == item[:category] && ts[:segment] == item[:segment] }[:starting_time] || raise
-        update_performed_segment(competition, category, segment, item[:panel_url], starting_time: starting_time)
+        starting_time = parsed[:time_schedule]
+                        .find { |ts| [:category, :segment].all? { |k| ts[k] == item[k] } }[:starting_time] || raise
+        update_performed_segment(competition, category, segment, item[:panel_url],
+                                 starting_time: starting_time)
         update_segment_results(competition, category, segment, item[:result_url])
         update_scores(competition, category, segment, item[:score_url])
       end
       competition        ## ensure to return competition object
     end ## transaction
-
   end
 
   ################
-  def update_panel_judges
+  def update_panel(name:, nation:)
+    name = normalize_persons_name(name)
+    Panel.find_or_create_by(name: name).tap do |panel|
+      if (nation != 'ISU') && panel.nation.blank?
+        debug("... nation updated: #{nation} for #{name}", indent: 5)
+        panel.update(nation: nation)
+      end
+    end
   end
-  def update_performed_segment(competition, category, segment, panel_url, starting_time: )
+
+  def update_performed_segment(competition, category, segment, panel_url, starting_time:)
     parsed_panels = parsers[:panel].parse(panel_url)
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
-      ## panels
-      binding.pry
-      if parsed_panels[:judges].present?
-        num_panels = parsed_panels[:judges].size - 1
-        1.upto(num_panels).each do |i|
-          next if parsed_panels[:judges][i].nil?    ## || parsed_panels[:judges][i][:name] == '-'
 
-          name = normalize_persons_name(parsed_panels[:judges][i][:name])
-          nation = parsed_panels[:judges][i][:nation]
-          panel = Panel.find_or_create_by(name: name)
-          if (nation != 'ISU') && panel.nation.blank?
-            debug("... nation updated: #{nation} for #{name}", indent: 5)
-            panel.update(nation: nation)
-          end
-          debug("Judge No #{i}: #{panel.name} (#{panel.nation})", indent: 5)
-          absence = (panel.name == '-') ? true : false
-          ps.officials.create!(number: i, panel: panel, absence: absence)
-        end
+      ## officials
+      parsed_panels[:judges].each do |item|
+        panel = update_panel(name: item[:name], nation: item[:nation])
+        debug("Judge No #{item[:number]}: #{panel.name} (#{panel.nation})", indent: 5)
+        ps.officials.create!(number: item[:number], panel: panel, absence: panel.name == '=')
       end
     end
   end
@@ -151,7 +148,7 @@ class CompetitionUpdater
       parsers[:segment_result].parse(result_url).tap do |items|
         relevant_cr = nil
         items.each do |parsed|
-          competition.scores.create!(category: category, segment: segment) { |score|
+          sc = competition.scores.create!(category: category, segment: segment) { |score|
             relevant_cr = competition.category_results
                           .where(category: category, "#{segment.segment_type}_ranking": parsed[:ranking]).first
             skater = relevant_cr.try(:skater) ||
@@ -161,9 +158,8 @@ class CompetitionUpdater
 
             score.attributes = slice_common_attributes(score, parsed)
                                .merge(skater: skater, date: ps.starting_time.to_date)
-          }.tap do |score|
-            relevant_cr.present? && relevant_cr.update(segment.segment_type => score)
-          end
+          }
+          relevant_cr.present? && relevant_cr.update(segment.segment_type => sc)
         end
       end
     end

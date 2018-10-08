@@ -8,7 +8,7 @@
 
 # Offense count: 43
 Metrics/AbcSize:
-  Max: 67
+  Max: 72
 
 # Offense count: 11
 Metrics/CyclomaticComplexity:
