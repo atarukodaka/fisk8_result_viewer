@@ -57,43 +57,43 @@ class CompetitionParser
         Time.zone ||= "UTC"
         [
          {
-           time: Time.zone.parse("2017/04/20 15:15:00"),
+           starting_time: Time.zone.parse("2017/04/20 15:15:00"),
            category: "ICE DANCE",
            segment: "SHORT DANCE",
          },
          {
-           time: Time.zone.parse("2017/04/20 16:35:00"),
+           starting_time: Time.zone.parse("2017/04/20 16:35:00"),
            category: "LADIES",
            segment: "SHORT PROGRAM",
          },
          {
-           time: Time.zone.parse("2017/04/20 18:40:00"),
+           starting_time: Time.zone.parse("2017/04/20 18:40:00"),
            category: "MEN",
            segment: "SHORT PROGRAM",
          },
          {
-           time: Time.zone.parse("2017/04/21 16:00:00"),
+           starting_time: Time.zone.parse("2017/04/21 16:00:00"),
            category: "PAIRS",
            segment: "SHORT PROGRAM",
          },
          {
-           time: Time.zone.parse("2017/04/21 17:25:00"),
+           starting_time: Time.zone.parse("2017/04/21 17:25:00"),
            category: "ICE DANCE",
            segment: "FREE DANCE",
          },
          {
-           time: Time.zone.parse("2017/04/21 19:00:00"),
+           starting_time: Time.zone.parse("2017/04/21 19:00:00"),
            category: "MEN",
            segment: "FREE SKATING",
          },
          {
-           time: Time.zone.parse("2017/04/22 15:15:00"),
+           starting_time: Time.zone.parse("2017/04/22 15:15:00"),
            category: "PAIRS",
            segment: "FREE SKATING",
          },
 
          {
-           time: Time.zone.parse("2017/04/22 16:50:00"),
+           starting_time: Time.zone.parse("2017/04/22 16:50:00"),
            category: "LADIES",
            segment: "FREE SKATING",
          },

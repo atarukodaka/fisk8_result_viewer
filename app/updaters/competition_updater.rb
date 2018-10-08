@@ -43,15 +43,23 @@ class CompetitionUpdater
   def update_competition(site_url, *args)
     default_options = { date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil, params: {} }
-    options = default_options.merge(args.first || {})
+    options = default_options.merge(args.first || {})   ## TODO: args.first ??? wtf
+
+    if (!options[:force]) && Competition.where(site_url: site_url).present?
+      debug("  .. skip: already existing: #{site_url}")
+    end
+
     categories_to_update = get_categories_to_update(options[:categories])
 
     ActiveRecord::Base.transaction do
-      return nil if (!options[:force]) && Competition.find(site_url: site_url)
-
       clean_existing_competitions(site_url)
 
-      parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]).presence || raise
+      parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]).presence ||
+               begin
+                 debug("no summary")
+                 return nil
+               end
+                                                                                                   
       competition = Competition.create! do |comp|
         slice_common_attributes(comp, parsed).tap do |hash|
           comp.attributes = hash
@@ -96,7 +104,7 @@ class CompetitionUpdater
   end
 
   ################
-  def update_performed_segment(competition, category, segment, panel_url, starting_time: starting_time)
+  def update_performed_segment(competition, category, segment, panel_url, starting_time: )
     parsed_panels = parsers[:panel].parse(panel_url)
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)

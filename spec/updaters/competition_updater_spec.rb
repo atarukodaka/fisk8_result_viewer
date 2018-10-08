@@ -68,6 +68,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     }
   end
 
+=begin
   describe 'season from/to' do
     it {
       wc2014 = 'http://www.isuresults.com/results/wc2014/'
@@ -81,6 +82,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       expect(Competition.find_by(site_url: wc2017)).to be nil
     }
   end
+=end
 
 =begin
 ## TODO: force option spec

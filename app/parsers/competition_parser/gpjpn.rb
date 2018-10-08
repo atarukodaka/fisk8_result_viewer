@@ -93,7 +93,7 @@ class CompetitionParser
             summary << {
               category: elem.xpath('td[2]').text.upcase,
               segment:  elem.xpath('td[3]').text.upcase,
-              time:     "#{date} #{elem.xpath('td[1]').text}".in_time_zone(timezone),
+              starting_time:     "#{date} #{elem.xpath('td[1]').text}".in_time_zone(timezone),
             }
           end
         end
