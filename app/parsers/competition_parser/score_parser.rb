@@ -1,7 +1,7 @@
 require 'pdftotext'
 require 'tempfile'
 
-class CompetitionParser
+module CompetitionParser
   class ScoreParser < ::Parser
     SCORE_DELIMITER = /Score Score/
 

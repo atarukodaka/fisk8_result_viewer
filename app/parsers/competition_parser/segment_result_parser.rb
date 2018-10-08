@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class SegmentResultParser < CategoryResultParser
     def callbacks
       super.merge(starting_number: lambda { |elem|

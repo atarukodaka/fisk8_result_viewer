@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class SummaryParser
     class TimeSchedule
       attr_reader :data

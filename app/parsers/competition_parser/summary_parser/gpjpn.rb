@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class SummaryParser
     module Gpjpn
       def parse_city_country(_page)

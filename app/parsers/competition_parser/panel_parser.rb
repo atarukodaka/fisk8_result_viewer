@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class PanelParser < Parser
     def self.parse(url)
       self.new.parse(url)

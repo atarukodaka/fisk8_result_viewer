@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class SummaryParser < Parser
     ################
     def parse(site_url, date_format:)

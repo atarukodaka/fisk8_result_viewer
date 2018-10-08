@@ -1,2 +1,2 @@
-class CompetitionParser
+module CompetitionParser
 end

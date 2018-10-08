@@ -1,4 +1,4 @@
-class CompetitionParser
+module CompetitionParser
   class SummaryParser
     module Wtt2017
       def parse_name(_page)
