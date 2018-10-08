@@ -26,6 +26,7 @@ branches:
     - master
     - develop
     - /^release/
+    - feature-refactoring
 
 ################
 ## addon packages

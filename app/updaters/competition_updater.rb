@@ -42,6 +42,8 @@ class CompetitionUpdater
         if @parser_type
           prepended_class = "#{model_class}::#{@parser_type.to_s.camelize}".constantize
           model_class.dup.prepend(prepended_class)
+        else
+          model_class
         end
       end
   end
@@ -63,10 +65,9 @@ class CompetitionUpdater
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, parsed, params: {})
 
-        ## time_schdule, date, tz
-        comp.start_date = parsed[:time_schedule].map { |d| d[:starting_time] }.min.to_date || raise
-        comp.end_date = parsed[:time_schedule].map { |d| d[:starting_time] }.max.to_date || raise
-        comp.timezone = parsed[:time_schedule].first[:starting_time].time_zone.name || 'UTC'
+        [:start_date, :end_date, :timezone].each do |key|
+          comp[key] = parsed[:time_schedule].send(key)
+        end
       end
 
       debug('*' * 100)
@@ -86,7 +87,7 @@ class CompetitionUpdater
         segment = Segment.find_by(name: item[:segment]) || next
 
         starting_time = parsed[:time_schedule]
-                        .find { |ts| [:category, :segment].all? { |k| ts[k] == item[k] } }[:starting_time] || raise
+                        .find_starting_time_by(category: item[:category], segment: item[:segment]) || raise
         update_performed_segment(competition, category, segment, item[:panel_url],
                                  starting_time: starting_time)
         update_segment_results(competition, category, segment, item[:result_url])

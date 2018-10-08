@@ -1,5 +1,6 @@
 class CompetitionParser
   class SummaryParser < Parser
+    ################
     def parse(site_url, date_format:)
       page = get_url(site_url) || return
 
@@ -85,8 +86,7 @@ class CompetitionParser
       rows = get_time_schedule_rows(page)
       dt_str = ''
       timezone = get_timezone(page)
-
-      rows.map do |row|
+      data = rows.map do |row|
         next if row.xpath('td').blank?
 
         if (t = row.xpath('td[1]').text.presence)
@@ -108,12 +108,13 @@ class CompetitionParser
         # next if tm.nil?
         tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
-        {
+        time_schedule.add(
           starting_time:     tm,
           category: normalize_category(row.xpath('td[3]').text),
-          segment:  row.xpath('td[4]').text.squish.upcase,
-        }
-      end.compact
+          segment:  row.xpath('td[4]').text.squish.upcase
+        )
+      end
+      TimeSchedule.new(data)
     end
 
     def parse_name(page)
