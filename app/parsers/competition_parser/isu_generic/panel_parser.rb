@@ -1,6 +1,9 @@
 class CompetitionParser
   class IsuGeneric
     class PanelParser < Parser
+      def self.parse(url)
+        self.new.parse(url)
+      end
       def parse(url)
         page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
         debug("   -- parse panel: #{url}")

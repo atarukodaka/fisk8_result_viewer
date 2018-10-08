@@ -1,14 +1,6 @@
 class CompetitionParser
   class IsuGeneric
     class SummaryParser < Parser
-=begin
-      class TimeShedule < ActiveHash::Base
-        field :category
-        field :segment
-        field :starting_time
-      end
-=end
-
       def parse(site_url, date_format:)
         page = get_url(site_url) || return
 
