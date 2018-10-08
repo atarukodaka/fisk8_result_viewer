@@ -1,5 +1,5 @@
 class CompetitionParser
-  class SummaryParser < Parser
+  class SummaryParser
     class TimeSchedule
       attr_reader :data
 

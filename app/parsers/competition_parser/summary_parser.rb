@@ -108,13 +108,13 @@ class CompetitionParser
         # next if tm.nil?
         tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
-        time_schedule.add(
+        {
           starting_time:     tm,
           category: normalize_category(row.xpath('td[3]').text),
           segment:  row.xpath('td[4]').text.squish.upcase
-        )
+        }
       end
-      TimeSchedule.new(data)
+      TimeSchedule.new(data.compact)
     end
 
     def parse_name(page)
