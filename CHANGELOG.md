@@ -22,6 +22,7 @@
 - having scores for skater datatable
 - components feature spec
 - update competition: season from/to
+- update competition shd return object ??
 
 ### new feature
 

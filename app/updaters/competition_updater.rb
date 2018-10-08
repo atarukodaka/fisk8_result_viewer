@@ -22,21 +22,31 @@ class CompetitionUpdater
     end
   end
 
-  def get_categories_to_update(categories) ## array of strings or symbol given
-    if categories.nil?
-      Category.all
-    else
-      categories.map do |cat|
-        (cat.class == String) ? Category.where(name: cat).first : cat
-      end.compact
+  def categories_to_update(categories) ## array of strings or symbol given
+    @categories_to_update ||=
+      if categories.nil?
+        Category.all
+      else
+        categories.map do |cat|
+          (cat.class == String) ? Category.where(name: cat).first : cat
+        end.compact
+      end
+  end
+
+  def clear_existing_competitions(site_url)
+    ActiveRecord::Base.transaction do
+      Competition.where(site_url: site_url).map(&:destroy)
     end
   end
 
-  def clean_existing_competitions(site_url)
-    Competition.where(site_url: site_url).map(&:destroy)
-  end
-
-  def competition_set_attributes(competition, parsed)
+  def update_competition_attributes(competition, parsed, params: {})
+    slice_common_attributes(competition, parsed).tap do |hash|
+      competition.attributes = hash
+      params.reject {|_k, v| value.blank?}.each do |key, value|
+        competition[key] = value          ## TODO: check if it works
+      end
+    end
+    competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
   end
   
   ################
@@ -47,30 +57,15 @@ class CompetitionUpdater
 
     if (!options[:force]) && Competition.where(site_url: site_url).present?
       debug("  .. skip: already existing: #{site_url}")
+      return
     end
 
-    categories_to_update = get_categories_to_update(options[:categories])
-
     ActiveRecord::Base.transaction do
-      clean_existing_competitions(site_url)
-
-      parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]).presence ||
-               begin
-                 debug("no summary")
-                 return nil
-               end
-                                                                                                   
+      clear_existing_competitions(site_url)
+      parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]) || (return nil)
       competition = Competition.create! do |comp|
-        slice_common_attributes(comp, parsed).tap do |hash|
-          comp.attributes = hash
-          options[:params].each do |key, value|
-            next if value.blank?
-
-            comp[key] = value          ## TODO: check if it works
-          end
-        end
-        comp.country ||= CityCountry.find_by(city: comp.city).try(:country)
-
+        update_competition_attributes(comp, parsed, params: {})
+        
         ## time_schdule, date, tz
         comp.start_date = parsed[:time_schedule].map { |d| d[:starting_time] }.min.to_date || raise
         comp.end_date = parsed[:time_schedule].map { |d| d[:starting_time] }.max.to_date || raise
@@ -83,7 +78,7 @@ class CompetitionUpdater
       ## categories
       parsed[:category_results].each do |item|
         category = Category.find_by(name: item[:category]) || next   ## TODO: warning
-        next unless categories_to_update.include?(category)
+        next unless categories_to_update(options[:categories]).include?(category)
 
         update_category_results(competition, category, item[:result_url])
       end
@@ -104,6 +99,8 @@ class CompetitionUpdater
   end
 
   ################
+  def update_panel_judges
+  end
   def update_performed_segment(competition, category, segment, panel_url, starting_time: )
     parsed_panels = parsers[:panel].parse(panel_url)
     competition.performed_segments.create! do |ps|
