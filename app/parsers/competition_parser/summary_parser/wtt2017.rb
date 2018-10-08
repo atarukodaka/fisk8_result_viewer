@@ -1,6 +1,6 @@
 class CompetitionParser
-  class Wtt2017 < IsuGeneric
-    class SummaryParser < IsuGeneric::SummaryParser
+  class SummaryParser
+    module Wtt2017
       def parse_name(_page)
         'ISU World Team Trophy 2017'
       end
@@ -101,5 +101,5 @@ class CompetitionParser
       end
       # rubocop:enable all
     end ##
-  end ## class Wtt2017
+  end
 end

@@ -1,6 +1,6 @@
 class CompetitionParser
-  class Gpjpn < IsuGeneric
-    class SummaryParser < IsuGeneric::SummaryParser
+  class SummaryParser
+    module Gpjpn
       def parse_city_country(_page)
         ['', 'JPN']
       end
@@ -98,7 +98,6 @@ class CompetitionParser
           end
         end
         summary
-      end
+      end    ## module
     end ## class SummaryParser
-  end ## class Gpjpn
 end

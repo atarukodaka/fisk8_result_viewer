@@ -3,26 +3,10 @@ class CompetitionUpdater
   attr_reader :parsers, :enable_judge_details
 
   def initialize(parser_type: nil, verbose: false, enable_judge_details: nil)
-    @parsers = CompetitionParser::ParserBuilder.build(parser_type, verbose: verbose)
     @parser_type = parser_type
     @enable_judge_details = enable_judge_details
     @verbose = verbose
   end
-=begin
-  def within_season?(season, from: nil, to: nil)
-    return true if from.nil? || to.nil?
-
-    this_season = SkateSeason.new(season)
-
-    if (!from.nil?) && (!to.nil?)
-      this_season.between?(from, to)
-    elsif (!from.nil?) && to.nil?
-      this_season >= SkateSeason.new(from)
-    elsif (from.nil?) && (!to.nil?)
-      this_season <= SkateSeason.new(to)
-    end
-  end
-=end
   def categories_to_update(categories) ## array of strings or symbol given
     @categories_to_update ||=
       if categories.nil?
@@ -63,15 +47,10 @@ class CompetitionUpdater
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
-      parsed = parsers[:summary].parse(site_url, date_format: options[:date_format]) || (return nil)
-      
-      model_class = if @parser_type
-                "CompetitionParser::#{@parser_type.to_s.camelize}::SummaryParser".constantize
-              else
-                CompetitionParser::IsuGeneric::SummaryParser
-              end
+      model_class = CompetitionParser::SummaryParser
+      model_class = model_class.dup
+                    .prepend "#{model_class}::#{@parser_type.to_s.camelize}".constantize if @parser_type
       parsed = model_class.new.parse(site_url, date_format: options[:date_format]) || (return nil)
-      #parsed = CompetitionParser::IsuGeneric::SummaryParser.new.parse(site_url, date_format: options[:date_format]) || (return nil)
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, parsed, params: {})
 
@@ -120,8 +99,8 @@ class CompetitionUpdater
   end
 
   def update_performed_segment(competition, category, segment, panel_url, starting_time:)
-    #parsed_panels = parsers[:panel].parse(panel_url)
-    parsed = CompetitionParser::IsuGeneric::PanelParser.parse(panel_url)
+    # parsed_panels = parsers[:panel].parse(panel_url)
+    parsed = CompetitionParser::PanelParser.parse(panel_url)
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
 
@@ -138,8 +117,8 @@ class CompetitionUpdater
   def update_category_results(competition, category, result_url)
     return if result_url.blank?
 
-    #parsers[:category_result].parse(result_url).each do |parsed|
-    CompetitionParser::IsuGeneric::CategoryResultParser.new.parse(result_url).each do |parsed|
+    # parsers[:category_result].parse(result_url).each do |parsed|
+    CompetitionParser::CategoryResultParser.new.parse(result_url).each do |parsed|
       ActiveRecord::Base.transaction do
         competition.category_results.create!(category: category) do |result|
           attrs = result.class.column_names.map(&:to_sym) & parsed.keys
@@ -155,9 +134,8 @@ class CompetitionUpdater
 
   ################
   def update_segment_results(competition, category, segment, result_url)
-
-    #parsers[:segment_result].parse(result_url).tap do |items|
-    CompetitionParser::IsuGeneric::SegmentResultParser.new.parse(result_url).each do |parsed|
+    # parsers[:segment_result].parse(result_url).tap do |items|
+    CompetitionParser::SegmentResultParser.new.parse(result_url).each do |parsed|
       ActiveRecord::Base.transaction do
         relevant_cr = nil
         sc = competition.scores.create!(category: category, segment: segment) { |score|
@@ -167,7 +145,7 @@ class CompetitionUpdater
                    find_or_create_skater(parsed[:isu_number], parsed[:skater_name], parsed[:nation], category)
           ps = competition.performed_segments
                .where(category: category, segment: segment).first || raise('no relevant Performed Segment')
-          
+
           score.attributes = slice_common_attributes(score, parsed)
                              .merge(skater: skater, date: ps.starting_time.to_date)
         }
@@ -178,9 +156,8 @@ class CompetitionUpdater
 
   ################
   def update_scores(competition, category, segment, score_url)
-
-    #parsers[:score].parse(score_url).each do |parsed|
-    CompetitionParser::IsuGeneric::ScoreParser.new.parse(score_url).each do |parsed|
+    # parsers[:score].parse(score_url).each do |parsed|
+    CompetitionParser::ScoreParser.new.parse(score_url).each do |parsed|
       ActiveRecord::Base.transaction do
         score = competition.scores
                 .where(category: category, segment: segment, starting_number: parsed[:starting_number]).first ||
