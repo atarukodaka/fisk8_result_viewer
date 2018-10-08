@@ -11,20 +11,17 @@ class CompetitionParser
         site_url: site_url,
         city:     city,
         country:  country,
+        category_results: [],
+        segment_results: [],
       }
-      result_summary = parse_summary_table(page, url: site_url)
-      time_schedule =  parse_time_schedule(page, date_format: date_format)
-
-      competition[:category_results] = []
-      competition[:segment_results] = []
-      result_summary.each do |item|
+      parse_summary_table(page, url: site_url).each do |item|
         if item[:segment].blank?
           competition[:category_results] << item.slice(:category, :result_url)
         else
           competition[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
         end
       end
-      competition[:time_schedule] = time_schedule
+      competition[:time_schedule] = parse_time_schedule(page, date_format: date_format)
       competition
     end
 
@@ -45,9 +42,8 @@ class CompetitionParser
       elem = page.xpath("//*[text()='Category']").first || raise
       rows = elem.xpath('ancestor::table[1]//tr')
       category = ''
-      summary = []
 
-      rows.each do |row|
+      rows.map do |row|
         next if row.xpath('td').blank?
 
         if (c = row.xpath('td[1]').text.presence)
@@ -58,18 +54,14 @@ class CompetitionParser
         next if category.blank? && segment.blank?
         next if segment.blank? && (row.xpath('td[4]').text =~ /result/i).nil? # TODO: ??
 
-        panel_url = row.xpath('td[3]//a/@href').text
-        result_url = row.xpath('td[4]//a/@href').text
-        score_url = row.xpath('td[5]//a/@href').text
-        summary << {
-          category:   category,
-          segment:    segment,
-          panel_url:  (panel_url.present?) ? File.join(url, panel_url).to_s : '',
-          result_url: (result_url.present?) ? File.join(url, result_url).to_s : '',
-          score_url:  (score_url.present?) ? File.join(url, score_url).to_s : '',
-        }
-      end
-      summary
+        data = { category: category, segment: segment }
+
+        [:panel_url, :result_url, :score_url].each.with_index(3) do |key, i|
+          item_url = row.xpath("td[#{i}]//a/@href").text
+          data[key] = (item_url.present?) ? File.join(url, item_url).to_s : ''
+        end
+        data
+      end.compact
     end
 
     ################
@@ -92,10 +84,9 @@ class CompetitionParser
       ## time schedule
       rows = get_time_schedule_rows(page)
       dt_str = ''
-      time_schedule = []
       timezone = get_timezone(page)
 
-      rows.each do |row|
+      rows.map do |row|
         next if row.xpath('td').blank?
 
         if (t = row.xpath('td[1]').text.presence)
@@ -117,13 +108,12 @@ class CompetitionParser
         # next if tm.nil?
         tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
-        time_schedule << {
+        {
           starting_time:     tm,
           category: normalize_category(row.xpath('td[3]').text),
           segment:  row.xpath('td[4]').text.squish.upcase,
         }
-      end
-      time_schedule
+      end.compact
     end
 
     def parse_name(page)

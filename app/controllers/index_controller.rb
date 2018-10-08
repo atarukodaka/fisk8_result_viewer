@@ -26,16 +26,18 @@ class IndexController < ApplicationController
   def list
     render json: create_datatable.serverside
   end
+
   def data_to_show
     {}
   end
+
   def show
     respond_to do |format|
       format.html {     render locals: data_to_show }
       format.json {     render json: data_to_show }
     end
-
   end
+
   ################
   def create_datatable
     [controller_name.camelize, 'Datatable'].join.constantize.new(view_context)

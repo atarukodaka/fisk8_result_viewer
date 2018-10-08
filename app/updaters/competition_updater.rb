@@ -35,6 +35,17 @@ class CompetitionUpdater
     competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
   end
 
+  def summary_parser
+    @summary_parser ||=
+      begin
+        model_class = CompetitionParser::SummaryParser
+        if @parser_type
+          prepended_class = "#{model_class}::#{@parser_type.to_s.camelize}".constantize
+          model_class.dup.prepend(prepended_class)
+        end
+      end
+  end
+
   ################
   def update_competition(site_url, *args)
     default_options = { date_format: nil, force: nil, categories: nil,
@@ -48,12 +59,7 @@ class CompetitionUpdater
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
-      model_class = CompetitionParser::SummaryParser
-      if @parser_type
-        prepended_class = "#{model_class}::#{@parser_type.to_s.camelize}".constantize
-        model_class = model_class.dup.prepend(prepended_class)
-      end
-      parsed = model_class.new.parse(site_url, date_format: options[:date_format]) || (return nil)
+      parsed = summary_parser.parse(site_url, date_format: options[:date_format]) || (return nil)
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, parsed, params: {})
 
@@ -69,7 +75,7 @@ class CompetitionUpdater
       ## categories
       parsed[:category_results].each do |item|
         category = Category.find_by(name: item[:category]) || next   ## TODO: warning
-        next unless categories_to_update(options[:categories]).include?(category)
+        categories_to_update(options[:categories]).include?(category) || next
 
         update_category_results(competition, category, item[:result_url])
       end
@@ -120,7 +126,6 @@ class CompetitionUpdater
   def update_category_results(competition, category, result_url)
     return if result_url.blank?
 
-    # parsers[:category_result].parse(result_url).each do |parsed|
     CompetitionParser::CategoryResultParser.new.parse(result_url).each do |parsed|
       ActiveRecord::Base.transaction do
         competition.category_results.create!(category: category) do |result|
