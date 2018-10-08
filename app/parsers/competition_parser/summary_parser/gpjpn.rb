@@ -100,4 +100,5 @@ class CompetitionParser
         summary
       end    ## module
     end ## class SummaryParser
+  end
 end
