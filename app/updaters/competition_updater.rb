@@ -106,6 +106,7 @@ class CompetitionUpdater
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
       ## panels
+      binding.pry
       if parsed_panels[:judges].present?
         num_panels = parsed_panels[:judges].size - 1
         1.upto(num_panels).each do |i|
