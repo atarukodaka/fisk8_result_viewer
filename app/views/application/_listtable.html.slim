@@ -4,4 +4,4 @@ table.table.table-striped.table-hover.table-condensed
   - datatable.column_names.each do |column_name|
     tr
       th= datatable.records.class.human_attribute_name(column_name)
-      td= datatable.data[column_name]
+      td= datatable.data.send(column_name.to_s)

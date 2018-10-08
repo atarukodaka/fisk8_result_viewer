@@ -18,11 +18,9 @@
 - official absence: gpusa2016/pairs/short
 - refactoring
   - devation
-  - score belongs to performed_segments ?
 - having scores for skater datatable
 - components feature spec
 - update competition: season from/to
-- update competition shd return object ??
 
 ### new feature
 
