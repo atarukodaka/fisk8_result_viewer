@@ -10,7 +10,7 @@ class PanelsController < IndexController
   end
 
   ################
-  def show
+  def data_to_show
     panel = Panel.find_by(name: params[:name]) ||
             raise(ActiveRecord::RecordNotFound.new("no such panel name: '#{params[:name]}'"))
 
@@ -28,13 +28,9 @@ class PanelsController < IndexController
     participated_segments_datatable =
       AjaxDatatables::Datatable.new(self).records(records).columns(columns)
 
-    respond_to do |format|
-      data = {
-        panel: panel, summary: summary,
-        participated_segments_datatable: participated_segments_datatable
-      }
-      format.html {        render locals: data      }
-      format.json {        render json: data      }
-    end
+    {
+      panel: panel, summary: summary,
+      participated_segments_datatable: participated_segments_datatable
+    }
   end
 end

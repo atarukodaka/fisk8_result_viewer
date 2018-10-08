@@ -9,16 +9,12 @@ class ScoresController < IndexController
       .columns([:number, :name, :factor, :judges, :value])
   end
 
-  def show
+  def data_to_show
     score = Score.find_by!(name: params[:name])
-    data = {
+    {
       score: score,
       elements:   elements_datatable(score),
       components: components_datatable(score),
     }
-    respond_to do |format|
-      format.html {     render locals: data }
-      format.json {     render json: score }
-    end
   end
 end

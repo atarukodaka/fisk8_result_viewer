@@ -13,11 +13,7 @@ class SkatersController < IndexController
     AjaxDatatables::Datatable.new(self).records(records).columns(columns).default_orders([[:date, :desc]])
   end
 
-  def show
-    data = { skater: skater, competition_results: competition_results_datatable(skater) }
-    respond_to do |format|
-      format.html {  render action: :show, locals: data }
-      format.json {  render json: data }
-    end
+  def data_to_show
+    { skater: skater, competition_results: competition_results_datatable(skater) }
   end
 end

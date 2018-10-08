@@ -32,14 +32,14 @@ class CompetitionsController < IndexController
       .default_orders([[:tss, :desc], [:ranking, :asc]])
   end
 
-  def show
+  def data_to_show
     competition = Competition.find_by!(short_name: params[:short_name])
 
     category_name, segment_name = params[:category], params[:segment]
     category = Category.find_by(name: category_name)
     segment = Segment.find_by(name: segment_name)
 
-    data = {
+    {
       competition: competition,
       category:    category,
       segment:     segment,
@@ -47,9 +47,5 @@ class CompetitionsController < IndexController
       category_results: category_results_datatable(competition, category),
         segment_results:  segment_results_datatable(competition, category, segment),
     }
-    respond_to do |format|
-      format.html {     render :show, locals: data     }
-      format.json {        render json: data      }
-    end
   end
 end
