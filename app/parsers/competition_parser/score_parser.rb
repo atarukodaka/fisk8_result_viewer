@@ -14,7 +14,7 @@ module CompetitionParser
       debug("   -- parsing score: #{score_url}")
       normalize_line(text).split(/\f/).map.with_index(1) do |page_text, i|
         page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
-          parse_score(t).tap do |score|
+          parse_score(t) do |score|
             score[:result_pdf] = "#{score_url}\#page=#{i}"
           end
         end
@@ -22,33 +22,41 @@ module CompetitionParser
     end
 
     def parse_score(text)
-      @mode = :skater
-      @score = { elements: [], components: [] }
+      #@mode = :skater
+      mode = :skater
+      score = { elements: [], components: [] }
 
       text.split(/\n/).each do |line|
-        send("parse_#{@mode}", line)
+        mode = send("parse_#{mode}", line, score)
+        break if mode == :done
       end
-      raise 'parsing error' if @mode != :pcs && @mode != :deductions
+      raise 'parsing error' if still_in_progress?(mode)
 
-      @score
+      yield(score) if block_given?
+      score
     end
 
-    def parse_skater(line)
+    def still_in_progress?(mode)
+      mode != :pcs && mode != :deductions  && mode != :done      
+    end
+
+    def parse_skater(line, score)
       name_re = %q([[:alpha:]1\.\- \/\']+)
       ## adding '1' for Mariya1 BAKUSHEVA
       ##   (see: http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
       nation_re = '[A-Z][A-Z][A-Z]'
       if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
-        @score.update(
-          ranking: $1.to_i, skater_name: $2.strip, nation: $3,
-          starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
-          pcs: $7.to_f, deductions: $8.to_f.abs * -1
-        )
-        @mode = :tes
+        score.update(ranking: $1.to_i, skater_name: $2.strip, nation: $3,
+                     starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
+                     pcs: $7.to_f, deductions: $8.to_f.abs * -1)
+        :tes
+      else
+        :skater
+        #@mode = :tes
       end
     end
 
-    def parse_tes(line)
+    def parse_tes(line, score)
       case line
       when /^(\d+) +(.*)$/
         number = $1.to_i; rest = $2
@@ -64,38 +72,55 @@ module CompetitionParser
           elsif element[:name].match?(/</)
             element[:underrotated] = true
           end
-          @score[:elements] << element
+          score[:elements] << element
         else
           raise 'parseing error on TES'
         end
+        :tes
       when /^([\d\.]+) +[\d\.]+$/
-        @score[:base_value] = $1.to_f
+        score[:base_value] = $1.to_f
+        :tes
       when /^Program Components/
-        @mode = :pcs
+        #@mode = :pcs
+        :pcs
+      else
+        :tes
       end
     end
 
-    def parse_pcs(line)
+    def parse_pcs(line, score)
       case line
       when /^([A-Za-z\s\/]+) ([\d\.]+) ([\d\.,\- ]+) ([\d\.,]+)$/
         name, factor, judges, value = $1, $2, $3, $4
-        @score[:components] << {
+        score[:components] << {
           name: name, factor: factor.to_f,
           judges: judges.tr(',', '.'), ## memo: gpjpn10 ice dance using ',' i/o '.' for decimal point
           value: value.tr(',', '.').to_f,
-          number: (@score[:components].count + 1).to_i,
+          number: (score[:components].count + 1).to_i,
         }
+        :pcs
       when /Judges Total Program Component Score/
-        @mode = :deductions
+        #@mode = :deductions
+        :deductions
+      else
+        :pcs
       end
     end
 
-    def parse_deductions(line)
+    def parse_deductions(line, score)
       if line =~ /Deductions:? (.*) [0-9\.\-]+$/
-        @score[:deduction_reasons] = $1
+        score[:deduction_reasons] = $1
+        :done
+      else
+        :deductions
       end
     end
-
+=begin
+    def parse_done(line, score)
+      ## do nothing
+      :done
+    end
+=end
     ################
     protected
 

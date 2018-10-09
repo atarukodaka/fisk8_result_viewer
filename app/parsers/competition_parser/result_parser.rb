@@ -32,21 +32,29 @@ module CompetitionParser
         next if elems.size == 1
 
         data = {}
-        columns.each do |key, params|
-          col_number = headers.index { |d| d =~ params[:header_regex] } ||
-                       raise("no relevant column: #{key}")
-          elem = elems[col_number] || next
+        columns.each do |key, hash|
+          elem = find_column(from: elems, headers: headers, to_match: hash[:header_regex]) || next
           data[key] =
-            if (callback = params[:callback])
+            if (callback = hash[:callback])
               callback.call(elem)
             else
               elem.text.squish
             end
         end
-        next if data[:skater_name] == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
+        next if invalid_skater_name?(data[:skater_name])
 
         data
       end.compact ## rows
+    end
+
+    private
+
+    def find_column(from: , headers: , to_match: )
+      col_number = headers.index { |d| d =~ to_match } || raise("no relevant column")
+      from[col_number]
+    end
+    def invalid_skater_name?(skater_name)
+      skater_name == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
     end
   end
 end

@@ -10,7 +10,8 @@ module CompetitionParser
         name:     parse_name(page),
         site_url: site_url,
         city:     city,
-        country:  country
+        country:  country,
+        time_schedule: parse_time_schedule(page, date_format: date_format),
       )
       parse_summary_table(page, url: site_url).each do |item|
         if item[:segment].blank?
@@ -19,7 +20,6 @@ module CompetitionParser
           summary[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
         end
       end
-      summary[:time_schedule] = parse_time_schedule(page, date_format: date_format)
       summary
     end
 
@@ -41,16 +41,14 @@ module CompetitionParser
       rows = elem.xpath('ancestor::table[1]//tr')
       category = ''
 
-      rows.map do |row|
-        next if row.xpath('td').blank?
-
+      rows.reject {|r| r.xpath('td').blank? }.map do |row|
         if (c = row.xpath('td[1]').text.presence)
           category = normalize_category(c)
         end
         segment = row.xpath('td[2]').text.squish.upcase
 
-        next if category.blank? && segment.blank?
-        next if segment.blank? && (row.xpath('td[4]').text =~ /result/i).nil? # TODO: ??
+        next if (category.blank? && segment.blank?) ||
+                (segment.blank? && (row.xpath('td[4]').text =~ /result/i).nil?) # TODO: ??
 
         data = { category: category, segment: segment }
 
