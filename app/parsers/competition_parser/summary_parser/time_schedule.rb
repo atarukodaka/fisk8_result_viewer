@@ -7,10 +7,6 @@ module CompetitionParser
         @data = array
       end
 
-      def add(hash)
-        @data << hash
-      end
-
       def start_date
         data.map { |d| d[:starting_time] }.min.to_date || raise
       end

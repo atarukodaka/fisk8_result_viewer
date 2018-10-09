@@ -34,8 +34,7 @@ module CompetitionParser
         data = {}
         columns.each do |key, hash|
           elem = find_column(from: elems, headers: headers, to_match: hash[:header_regex]) || next
-          data[key] =
-            (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
+          data[key] = (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
         end
         next if invalid_skater_name?(data[:skater_name])
 
