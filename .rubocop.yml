@@ -9,12 +9,16 @@ AllCops:
     - 'config.ru'
     - 'bin/*'
     - 'config/*'
+    - 'db/migrate/*.rb'
     - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
 
 ################
 Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
+
+Layout/AlignHash:
+  Enabled: false
 
 Layout/ExtraSpacing:
   Enabled: false

@@ -9,11 +9,22 @@ class SkatersDatatable < IndexDatatable
     default_orders([[:category_type, :asc], [:name, :asc]])
   end
 
+  def filters
+    @filters ||= [
+      AjaxDatatables::Filter.new(:name, :text_field, model: Skater),
+      AjaxDatatables::Filter.new(:category_type, :select, model: Skater),
+      AjaxDatatables::Filter.new(:nation, :select, model: Skater),
+      # AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater),
+    ]
+  end
+
+  ################
   def manipulate(records)
-    (params[:having_scores] == 'off') ? records : records.having_scores
+    records
+    # records.having_scores
   end
 
   def fetch_records
-    Skater.includes(:category).joins(:category)
+    Skater.includes(:category).references(:category)      ## .having_scores
   end
 end

@@ -7,11 +7,16 @@ end
 RSpec.describe Competition, type: :competition_updater, updater: true do
   before { @updater = CompetitionUpdater.new }
 
-  describe 'parser types:' do
-    shared_examples :having_competition_with_url do
-      its(:site_url) { is_expected.to eq(url) }
-    end
+  shared_examples :having_competition_with_url do
+    its(:site_url) { is_expected.to eq(url) }
+  end
 
+  shared_examples :having_score_with_category_of do |category_name|
+    it { expect(competition.scores.first.category.name).to eq(category_name) }
+  end
+
+  describe 'parser types:' do
+    ################
     describe 'wc2017 with isu_generic' do
       let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
       subject { @updater.update_competition(url) }
@@ -27,34 +32,55 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject {
-        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['ICE DANCE'])
+        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['DUMMY'])
       }
       it_behaves_like :having_competition_with_url
     end
 
+    describe 'gpjpn' do
+      let(:url) { 'http://www.isuresults.com/results/season1718/gpf1718/' }
+      subject {
+        CompetitionUpdater.new(parser_type: :gpjpn).update_competition(url, categories: ['MEN'])
+      }
+      it_behaves_like :having_competition_with_url
+    end
+  end
+
+  describe 'team' do
+    describe 'wtt2017' do
+      let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
+      subject(:competition) {
+        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['TEAM MEN'])
+      }
+      it_behaves_like :having_score_with_category_of, 'TEAM MEN'
+    end
     describe 'owgteam' do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
       subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
-      it_behaves_like :having_competition_with_url
-      it {
-        team_scores = competition.scores.joins(:category).where('categories.name like ? ', 'TEAM%')
-        expect(team_scores.present?).to be true
-      }
+      it_behaves_like :having_score_with_category_of, 'TEAM MEN'
     end
+  end
 
+  describe 'special' do
     describe 'gpfra2015 - no free skating' do
       let(:url) { 'http://www.isuresults.com/results/season1516/gpfra2015/' }
       subject(:competition) { @updater.update_competition(url, categories: ['MEN']) }
       it_behaves_like :having_competition_with_url
     end
-
-=begin
-    describe 'aci' do   ## its nightmare
-      let(:url) {'https://skatecanada.ca/event/2016-autumn-classic-international/' }
-      subject { CompetitionUpdater.new(parser_type: :autumn_classic).update_competition(url) }
-      it_behaves_like :having_competition_with_url
+  end
+  describe 'live results' do
+    describe 'gpfra2016/ICE DANCE' do
+      let(:url) { 'http://www.isuresults.com/results/season1617/gpfra2016' }
+      subject(:competition) { @updater.update_competition(url, categories: ['ICE DANCE']) }
+      # it {    expect(competition.scores.first.category.name).to eq('ICE DANCE')        }
+      it_behaves_like :having_score_with_category_of, 'ICE DANCE'
     end
-=end
+    describe 'gpchn2017/LADIES' do
+      let(:url) { 'http://www.isuresults.com/results/season1718/gpchn2017/' }
+      subject(:competition) { @updater.update_competition(url, categories: ['LADIES']) }
+      # it {    expect(competition.scores.first.category.name).to eq('LADIES')        }
+      it_behaves_like :having_score_with_category_of, 'LADIES'
+    end
   end
 
   describe 'enable_judge_details' do
@@ -68,6 +94,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     }
   end
 
+=begin
   describe 'season from/to' do
     it {
       wc2014 = 'http://www.isuresults.com/results/wc2014/'
@@ -81,6 +108,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       expect(Competition.find_by(site_url: wc2017)).to be nil
     }
   end
+=end
 
 =begin
 ## TODO: force option spec

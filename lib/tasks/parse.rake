@@ -4,7 +4,8 @@ namespace :parse do
     url = ENV['url']
     quiet = ENV['quiet'].to_i.nonzero?
 
-    parser = CompetitionParser::IsuGeneric::ScoreParser.new
+    # parser = CompetitionParser::IsuGeneric::ScoreParser.new
+    parser = CompetitionParser::ScoreParser.new
     # rubocop:disable Metrics/LineLength
     parser.parse(url).each do |score|
       str = '-' * 100 + "\n"

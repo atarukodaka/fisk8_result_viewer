@@ -158,12 +158,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "category_result_id"
-    t.integer "performed_segment_id"
     t.index ["category_id"], name: "index_scores_on_category_id"
-    t.index ["category_result_id"], name: "index_scores_on_category_result_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
     t.index ["segment_id"], name: "index_scores_on_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
@@ -177,7 +173,6 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "skaters", force: :cascade do |t|
     t.string "name"
     t.string "nation"
-    t.integer "category_id"
     t.integer "isu_number"
     t.string "coach"
     t.string "choreographer"
@@ -187,6 +182,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "height"
     t.string "club"
     t.datetime "bio_updated_at"
+    t.integer "category_id"
     t.index ["category_id"], name: "index_skaters_on_category_id"
   end
 

@@ -7,12 +7,16 @@ class Score < ApplicationRecord
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
 
+  belongs_to :competition
+
+  ## # references
+  belongs_to :skater
   belongs_to :category
   belongs_to :segment
-  belongs_to :competition
-  belongs_to :skater
-  belongs_to :category_result, optional: true
-  belongs_to :performed_segment, optional: true
+
+  def performed_segment       ## rspec only
+    competition.performed_segments.find_by(category: category, segment: segment)
+  end
 
   ## scopes
   scope :recent, -> { order('date desc') }
@@ -22,17 +26,10 @@ class Score < ApplicationRecord
   scope :segment, ->(s) { where(segment: s) }
 
   ## virtual attributes
-  {
-    competition: [:competition_name, :short_name, :competition_class, :competition_type, :season],
-    skater:      [:skater_name, :nation],
-    category:    [:category_name, :category_type, :seniority, :team],
-    segment:     [:segment_name, :segment_type],
-  }.each do |model, ary|
-    ary.each do |key|
-      delegate key, to: model
-    end
-  end
-  delegate :segment_type, to: :segment
+  delegate :competition_name, :short_name, :competition_class, :competition_type, :season, to: :competition
+  delegate :skater_name, :nation, to: :skater
+  delegate :category_name, :category_type, :seniority, :team, to: :category
+  delegate :segment_name, :segment_type, to: :segment
 
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|

@@ -26,54 +26,40 @@ module AjaxFeatureHelper
       when :click, :checkbox
         find(key).click
       end
-      sleep 1
+      # sleep 1
     end
     page
   end
   ################
   module Filter
-    ## context
-    shared_context :filter do |filter_or_class, excludings: []|
-      ## TODO: filter class or hash to accept
-
-      filters =
-        if filter_or_class.ancestors.include?(IndexFilter)
-          filter_or_class.new.filters
-            .map { |elem| elem[:fields].map { |field| field.slice(:key, :input_type) } }.flatten
-            .reject { |filter| excludings.include?(filter[:key]) }.compact
-=begin
-          filter_or_class.new.filters.map do |elem|
-            elem[:fields].map do |field|
-              next if excludings.include?(field[:key])
-              field.slice(*[:key, :input_type])
-            end
-          end.flatten.compact
-=end
-        else
-          filter_or_class
-        end
-      filters.each do |hash|
-        include_context :ajax_filter, hash[:key], hash[:input_type]
+    shared_context :filter do |datatable_class, excludings: []|
+      datatable_class.new.filters.map { |filter| filter.children.presence || filter }.flatten
+        .reject { |filter| excludings.include?(filter.key) }.each do |filter|
+        include_context :ajax_filter, filter.key, filter.input_type
       end
     end
 
     shared_context :filter_season do
       context :from_later do
-        subject { ajax_action_filter(key: :season_from, value: sub.season, input_type: :select, path: index_path) }
+        subject {
+          ajax_action_filter(key: :season_from, value: sub.season,
+                             input_type: :select, path: index_path)
+        }
         it_behaves_like :contains, false, true
       end
 
       context :to_earlier do
-        subject { ajax_action_filter(key: :season_to, value: main.season, input_type: :select, path: index_path) }
+        subject {
+          ajax_action_filter(key: :season_to, value: main.season,
+                             input_type: :select, path: index_path)
+        }
         it_behaves_like :contains, true, false
       end
     end
     shared_context :ajax_filter do |key, input_type|
       context key do
         subject {
-          # value = (value_function.present?) ? value_function.call(main) : main.send(key)
-          value = main.send(key)
-          ajax_action_filter(key: key, value: value, input_type: input_type, path: index_path)
+          ajax_action_filter(key: key, value: main.send(key), input_type: input_type, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
@@ -161,7 +147,7 @@ module AjaxFeatureHelper
       column_id = "column_#{table_id}_#{column_name}"
 
       find("##{column_id}").click
-      sleep 1
+      # sleep 1
       page
     end
   end

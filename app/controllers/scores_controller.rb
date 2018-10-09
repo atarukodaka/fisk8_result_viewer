@@ -9,23 +9,12 @@ class ScoresController < IndexController
       .columns([:number, :name, :factor, :judges, :value])
   end
 
-  def show
-    score = Score.find_by(name: params[:name]) ||
-            raise(ActiveRecord::RecordNotFound.new("no such score name: '#{params[:name]}'"))
-
-    respond_to do |format|
-      data = {
-        elements:   elements_datatable(score),
-        components: components_datatable(score),
-      }
-      format.html {
-        render locals: data.merge(score: score)
-      }
-      format.json {
-        render json: score.slice(:name, :competition_name, :date,
-                                 :tss, :tes, :pcs, :deductions, :result_pdf).merge(data)
-                .merge(category: score.category.name, segment: score.segment.name)
-      }
-    end
+  def data_to_show
+    score = Score.find_by!(name: params[:name])
+    {
+      score: score,
+      elements:   elements_datatable(score),
+      components: components_datatable(score),
+    }
   end
 end

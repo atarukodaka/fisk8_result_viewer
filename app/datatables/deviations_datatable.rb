@@ -21,4 +21,12 @@ class DeviationsDatatable < IndexDatatable
     Deviation.all.includes([official: [:panel]], score: [:skater, :category, :competition])
       .joins([official: [:panel]], score: [:skater])
   end
+
+  def filters
+    @filters ||= [
+      AjaxDatatables::Filter.new(:skater_name, :text_field),
+      AjaxDatatables::Filter.new(:score_name, :text_field),
+      AjaxDatatables::Filter.new(:panel_name, :text_field),
+    ]
+  end
 end

@@ -10,16 +10,12 @@ class CategoryResult < ApplicationRecord
 
   ## virtual attributes
   delegate :competition_name, to: :competition
-  delegate :skater_name, to: :skater
-  delegate :nation, to: :skater
+  delegate :skater_name, :nation, to: :skater
+  delegate :tss, :tes, :pcs, :deductions, :base_value, to: :short, prefix: :short, allow_nil: true
+  delegate :tss, :tes, :pcs, :deductions, :base_value, to: :free, prefix: :free, allow_nil: true
 
   def date
     competition.start_date
-  end
-
-  [:tss, :tes, :pcs, :deductions, :base_value].each do |key|
-    delegate key, to: :short, prefix: :short, allow_nil: true
-    delegate key, to: :free, prefix: :free, allow_nil: true
   end
 
   ## scopes

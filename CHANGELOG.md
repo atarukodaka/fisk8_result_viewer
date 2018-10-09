@@ -11,11 +11,15 @@
 - spec
   - feature
 	- components, statics, panels
-	- context filter to accept hash or class
   - controller/deviation
 - parser type can be show on builder
-- offical parser force_encoding('UTF-8')
-
+- clean panel with zero scores
+- official absence: gpusa2016/pairs/short
+- refactoring
+  - devation
+- having scores for skater datatable
+- components feature spec
+- update competition: season from/to
 
 ### new feature
 
@@ -145,7 +149,6 @@
 - spec:
   - all filters to work
 
-
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
 - total base_value in score
@@ -155,7 +158,6 @@
 - competition comment
 - content_for on <title>
 - skater-name correction
-
 
 ## 1.0.0-pre2
 

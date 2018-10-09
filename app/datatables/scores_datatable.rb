@@ -41,4 +41,26 @@ class ScoresDatatable < IndexDatatable
     tables = [:competition, :skater, :category, :segment]
     Score.includes(tables).joins(tables)
   end
+
+  def filters
+    model = Score
+    @filters ||= [
+      CompetitionsDatatable.new.filters.reject { |filter| filter.key == :site_url },
+      AjaxDatatables::Filter.new(:skater_name, :text_field, model: model),
+      AjaxDatatables::Filter.new(:category, model: model) {
+        [
+          AjaxDatatables::Filter.new(:category_name, :select, model: model),
+          AjaxDatatables::Filter.new(:category_type, :select, model: model),
+          AjaxDatatables::Filter.new(:seniority, :select, model: model),
+          AjaxDatatables::Filter.new(:team, :select, model: model),
+        ]
+      },
+      AjaxDatatables::Filter.new(:segment, model: model) {
+        [
+          AjaxDatatables::Filter.new(:segment_name, :select, model: model),
+          AjaxDatatables::Filter.new(:segment_type, :select, model: model),
+        ]
+      },
+    ].flatten
+  end
 end

@@ -1,24 +1,3 @@
-# category results
-FactoryBot.define do
-  factory :category_result do
-    trait :world do
-      category  { Category.find_by(name: 'MEN') }
-
-      ranking { 1 }
-      points { 300 }
-      short_ranking { 1 }
-      free_ranking { 1 }
-    end
-
-    trait :finlandia do
-      category { Category.find_by(name: 'LADIES') }
-      ranking { 2 }
-      points { 240 }
-      free_ranking { 2 }
-    end
-  end
-end
-
 ################
 # performed segments
 FactoryBot.define do
@@ -35,7 +14,7 @@ FactoryBot.define do
       starting_time { '2015-2-1 15:00:00' }
     end
     trait :finlandia do
-      category { Category.find_by(name: 'LADIES') }
+      category { Category.find_by(name: 'JUNIOR LADIES') }
       segment { Segment.find_by(name: 'FREE SKATING') }
       # starting_time { Time.new(2015, 9, 2, 17, 0, 0) }
       starting_time { '2017-9-1 15:00:00' }

@@ -18,7 +18,7 @@ class CompetitionList < ActiveYaml::Base
   set_filename 'competitions'
 
   field :url
-  field :parser_type #, default: CompetitionParser::DEFAULT_PARSER
+  field :parser_type
   field :comment
 
   class << self

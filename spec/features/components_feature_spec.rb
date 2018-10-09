@@ -14,9 +14,10 @@ feature ComponentsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :filter, ScoresFilter, excludings: [:season_to, :season_from]
+      include_context :filter, ComponentsDatatable, excludings: [:season_to, :season_from, :value_operator]
       include_context :filter_season
 
+=begin
       context 'component_name' do
         subject {
           ajax_action_filter(key: :number, value: 'Skating Skills', input_type: :select, path: index_path)
@@ -31,6 +32,7 @@ feature ComponentsController, type: :feature, feature: true do
         }
         it_behaves_like :contains, true, false
       end
+=end
     end
     context 'order' do
       include_context :order, ComponentsDatatable

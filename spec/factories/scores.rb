@@ -27,7 +27,7 @@ FactoryBot.define do
     end
 
     trait :finlandia do
-      name { 'FIN2017-SL-FS-2' }
+      name { 'FIN2017-JL-FS-2' }
       category { Category.find_by(name: 'JUNIOR LADIES') }
       segment { Segment.find_by(name: 'FREE SKATING') }
 

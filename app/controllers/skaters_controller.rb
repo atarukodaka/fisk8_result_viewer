@@ -1,8 +1,8 @@
 class SkatersController < IndexController
-  def specified_skater
-    Skater.find_by(isu_number: params[:isu_number]) ||
-      Skater.find_by(name: params[:isu_number]) ||
-      raise(ActiveRecord::RecordNotFound.new('no such skater'))
+  def skater
+    @skater ||= Skater.find_by(isu_number: params[:isu_number]) ||
+                Skater.find_by(name: params[:isu_number]) ||
+                raise(ActiveRecord::RecordNotFound.new('no such skater'))
   end
 
   def competition_results_datatable(skater)
@@ -13,17 +13,7 @@ class SkatersController < IndexController
     AjaxDatatables::Datatable.new(self).records(records).columns(columns).default_orders([[:date, :desc]])
   end
 
-  def show
-    skater = specified_skater
-    ## render
-    respond_to do |format|
-      data = { competition_results: competition_results_datatable(skater) }
-      format.html {
-        render action: :show, locals: { skater: skater }.merge(data)
-      }
-      format.json {
-        render json: skater.slice(:name, :nation, :isu_number, :category).merge(data)
-      }
-    end
+  def data_to_show
+    { skater: skater, competition_results: competition_results_datatable(skater) }
   end
 end
