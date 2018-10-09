@@ -20,9 +20,6 @@
 - having scores for skater datatable
 - components feature spec
 - update competition: season from/to
-- wtt: shd hv category name of 'TEAM XX'
-- still live results
-  - http://www.isuresults.com/results/season1718/gpchn2017/SEG003.HTM
 
 ### new feature
 

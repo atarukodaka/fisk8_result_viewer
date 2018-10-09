@@ -180,8 +180,8 @@ class CompetitionUpdater
                            .merge(skater: skater, date: ps.starting_time.to_date)
       }
       relevant_cr.present? && relevant_cr.update(segment.segment_type => sc)
+      sc            ## ensure to return score object
     end
-    sc            ## ensure to return score object
   end
 
   ################
