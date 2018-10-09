@@ -21,7 +21,7 @@ module CompetitionParser
 
     ################
     def parse(url)
-      debug("   --  parsing result: #{url}")
+      debug("--  parsing result: #{url}", indent: 3)
 
       page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
       rows = get_rows(page) || (return [])
@@ -35,16 +35,12 @@ module CompetitionParser
         columns.each do |key, hash|
           elem = find_column(from: elems, headers: headers, to_match: hash[:header_regex]) || next
           data[key] =
-            if (callback = hash[:callback])
-              callback.call(elem)
-            else
-              elem.text.squish
-            end
+            (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
         end
         next if invalid_skater_name?(data[:skater_name])
 
         data
-      end.compact ## rows
+      end.compact  ## rows
     end
 
     private
