@@ -26,19 +26,14 @@ module FormHelper
       case key
       when :category_name, :category_type, :seniority, :team
         FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), key)
-
       when :segment_name, :segment_type
         FormHelper.cache_uniq_list("segment/#{key}", Segment.order(:id), key)
-
       when :nation
         FormHelper.cache_uniq_list('skater/nation', Skater.order(:nation), :nation)
-
       when :competition_class, :competition_type
         FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key).sort
-
       when :season_from, :season_to, :season
         FormHelper.cache_uniq_list('competition/competition_season', Competition.all, :season).sort.reverse
-
       when :element_type, :element_subtype
         FormHelper.cache_uniq_list("element/#{key}", Element.all, key).sort
       else

@@ -1,29 +1,26 @@
 module CompetitionParser
   class SummaryParser < Parser
-    ################
     def parse(site_url, date_format:)
       page = get_url(site_url) || return
 
       debug(" -- parse summary: #{site_url}")
       city, country = parse_city_country(page)
 
-      competition = {
+      summary = CompetitionParser::SummaryParser::SummaryTable.new(
         name:     parse_name(page),
         site_url: site_url,
         city:     city,
-        country:  country,
-        category_results: [],
-        segment_results: [],
-      }
+        country:  country
+      )
       parse_summary_table(page, url: site_url).each do |item|
         if item[:segment].blank?
-          competition[:category_results] << item.slice(:category, :result_url)
+          summary[:category_results] << item.slice(:category, :result_url)
         else
-          competition[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
+          summary[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
         end
       end
-      competition[:time_schedule] = parse_time_schedule(page, date_format: date_format)
-      competition
+      summary[:time_schedule] = parse_time_schedule(page, date_format: date_format)
+      summary
     end
 
     ################

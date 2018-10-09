@@ -9,7 +9,7 @@ AllCops:
     - 'config.ru'
     - 'bin/*'
     - 'config/*'
-    - 'db/migration/*.rb'
+    - 'db/migrate/*.rb'
     - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
 
 ################

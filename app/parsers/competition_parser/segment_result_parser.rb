@@ -6,18 +6,27 @@ module CompetitionParser
                                    })
     end
 
+    def live_results?(page)
+      page.xpath("//*[contains(text(), 'Live Results')]").present?
+    end
+
     def get_rows(page)
-      return(nil) if page.xpath("//*[contains(text(), 'Live Results')]").present?
+      # return(nil) if page.xpath("//*[contains(text(), 'Live Results')]").present?
 
-      place_elem =
-        page.xpath("//th[contains(text(), ' Pl. ')]").first ||
-        # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM has spaces
-        page.xpath("//th[text()='Pl.']").first ||
-        page.xpath("//td[text()='PL.']").first ||                  # gpjpn
-        page.xpath("//td[text()='Pl.']").first ||                  # wtt2017
-        raise("No Placement Cell found (#{self.class})")
-
-      place_elem.xpath('../../tr')
+      if live_results?(page)
+        debug('still live results somehow...')
+        nil
+      #          page.xpath("//th[contains(text(), 'Pl.')]")[1] ||  # http://www.isuresults.com/results/season1718/gpchn2017/SEG003.HTM
+      #            page.xpath("//th[contains(text(), 'StN')]").first  # http://www.isuresults.com/results/season1617/gpfra2016/SEG007.HTM
+      else
+        place_elem = page.xpath("//th[contains(text(), ' Pl. ')]").first ||
+                     # http://www.isuresults.com/results/season1718/csger2017/SEG001.HTM has spaces
+                     page.xpath("//th[text()='Pl.']").first ||
+                     page.xpath("//td[text()='PL.']").first ||                  # gpjpn
+                     page.xpath("//td[text()='Pl.']").first ||                  # wtt2017
+                     raise("No Placement Cell found (#{self.class})")
+        place_elem.xpath('../../tr')
+      end
     end
 
     def columns
