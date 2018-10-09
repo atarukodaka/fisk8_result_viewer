@@ -11,7 +11,7 @@ module CompetitionParser
         site_url: site_url,
         city:     city,
         country:  country,
-        time_schedule: parse_time_schedule(page, date_format: date_format),
+        time_schedule: parse_time_schedule(page, date_format: date_format)
       )
       parse_summary_table(page, url: site_url).each do |item|
         if item[:segment].blank?
@@ -41,7 +41,7 @@ module CompetitionParser
       rows = elem.xpath('ancestor::table[1]//tr')
       category = ''
 
-      rows.reject {|r| r.xpath('td').blank? }.map do |row|
+      rows.reject { |r| r.xpath('td').blank? }.map do |row|
         if (c = row.xpath('td[1]').text.presence)
           category = normalize_category(c)
         end

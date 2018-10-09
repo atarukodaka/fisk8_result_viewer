@@ -1,13 +1,10 @@
 require 'pdftotext'
 require 'tempfile'
 
+# rubocop:disable Metrics/ClassLength
 module CompetitionParser
   class ScoreParser < ::Parser
     SCORE_DELIMITER = /Score Score/
-
-    def normalize_line(text)
-      text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
-    end
 
     def parse(score_url)
       text = convert_pdf(score_url) || (return [])
@@ -22,7 +19,7 @@ module CompetitionParser
     end
 
     def parse_score(text)
-      #@mode = :skater
+      # @mode = :skater
       mode = :skater
       score = { elements: [], components: [] }
 
@@ -34,10 +31,6 @@ module CompetitionParser
 
       yield(score) if block_given?
       score
-    end
-
-    def still_in_progress?(mode)
-      mode != :pcs && mode != :deductions  && mode != :done      
     end
 
     def parse_skater(line, score)
@@ -52,7 +45,14 @@ module CompetitionParser
         :tes
       else
         :skater
-        #@mode = :tes
+      end
+    end
+
+    def jump_under(element)
+      if element[:name].match?(/<</)
+        element[:downgraded] = true
+      elsif element[:name].match?(/</)
+        element[:underrotated] = true
       end
     end
 
@@ -67,11 +67,7 @@ module CompetitionParser
             credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,
           }
           element[:edgeerror] = true if element[:name] =~ /\!/
-          if element[:name].match?(/<</)
-            element[:downgraded] = true
-          elsif element[:name].match?(/</)
-            element[:underrotated] = true
-          end
+          jump_under(element)
           score[:elements] << element
         else
           raise 'parseing error on TES'
@@ -81,7 +77,6 @@ module CompetitionParser
         score[:base_value] = $1.to_f
         :tes
       when /^Program Components/
-        #@mode = :pcs
         :pcs
       else
         :tes
@@ -100,7 +95,6 @@ module CompetitionParser
         }
         :pcs
       when /Judges Total Program Component Score/
-        #@mode = :deductions
         :deductions
       else
         :pcs
@@ -115,14 +109,17 @@ module CompetitionParser
         :deductions
       end
     end
-=begin
-    def parse_done(line, score)
-      ## do nothing
-      :done
-    end
-=end
     ################
-    protected
+
+    private
+
+    def normalize_line(text)
+      text.force_encoding('UTF-8').gsub(/  +/, ' ').gsub(/^ */, '').gsub(/\n\n+/, "\n").chomp
+    end
+
+    def still_in_progress?(mode)
+      mode != :pcs && mode != :deductions && mode != :done
+    end
 
     def convert_pdf(url)
       return nil if url.blank?
@@ -143,3 +140,4 @@ module CompetitionParser
     end
   end # module
 end
+# rubocop:enable Metrics/ClassLength

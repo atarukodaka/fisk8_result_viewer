@@ -49,10 +49,11 @@ module CompetitionParser
 
     private
 
-    def find_column(from: , headers: , to_match: )
-      col_number = headers.index { |d| d =~ to_match } || raise("no relevant column")
+    def find_column(from:, headers:, to_match:)
+      col_number = headers.index { |d| d =~ to_match } || raise('no relevant column')
       from[col_number]
     end
+
     def invalid_skater_name?(skater_name)
       skater_name == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
     end

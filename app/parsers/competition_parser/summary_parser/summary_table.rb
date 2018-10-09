@@ -19,11 +19,11 @@ module CompetitionParser
 
       def segment_results_with(category:, validation: false)
         results = @data[:segment_results].select { |d| d[:category] == category }
-        if validation
-          results.reject { |d| d[:result_url].blank? }
-        else
-          results
-        end
+        (validation) ? results.reject { |d| d[:result_url].blank? } : results
+      end
+
+      def category_result_url(category)
+        category_result(category).try(:[], :result_url)
       end
     end
   end

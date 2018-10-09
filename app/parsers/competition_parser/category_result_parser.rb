@@ -26,10 +26,13 @@ module CompetitionParser
 
     def get_rows(page)
       place_elem =
+        page.xpath("//th[text()='FPl' or text()='FPl.'] | //td[text()='PL']").first ||
+=begin
         page.xpath("//th[text()='FPl']").first ||
         page.xpath("//th[text()='FPl.']").first ||
-        page.xpath("//td[text()='PL']").first ## gpjpn
-      raise "No Placement Cell found (#{self.class})" if place_elem.nil?
+        page.xpath("//td[text()='PL']").first || ## gpjpn
+=end
+        raise("No Placement Cell found (#{self.class})")
 
       place_elem.xpath('../../tr')
     end
