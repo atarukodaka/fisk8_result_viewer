@@ -19,11 +19,11 @@ module CompetitionParser
     end
 
     def normalize_name(text)
-      text.str.scrub('?').gsub(/[[:space:]]/, ' ').sub(/^ *M[sr]\. */, '').strip
+      text.scrub('?').gsub(/[[:space:]]/, ' ').sub(/^ *M[sr]\. */, '').strip
     end
 
     def normalize_nation(text)
-      text.gsub(/[[:space:]]/, ' ').strip,
+      text.gsub(/[[:space:]]/, ' ').strip
     end
   end ## PanelParser
 end
