@@ -20,7 +20,11 @@ module CompetitionParser
         item[:starting_time].time_zone.name
       end
 
-      def find_starting_time_by(category:, segment:)
+      def season
+        SkateSeason.new(start_date)
+      end
+
+      def starting_time(category, segment)
         item = data.find { |d| d[:category] == category && d[:segment] == segment } || raise
         item[:starting_time]
       end

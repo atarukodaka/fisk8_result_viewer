@@ -1,4 +1,5 @@
 class PanelsController < IndexController
+=begin
   def format_deviation(deviation, in_percentage: false)
     if deviation.nil?
       'n/a'
@@ -8,11 +9,10 @@ class PanelsController < IndexController
       '%.2f' % [deviation]
     end
   end
-
+=end
   ################
   def data_to_show
-    panel = Panel.find_by(name: params[:name]) ||
-            raise(ActiveRecord::RecordNotFound.new("no such panel name: '#{params[:name]}'"))
+    panel = Panel.find_by!(name: params[:name])
 
     summary = {
       name:                           panel.name,

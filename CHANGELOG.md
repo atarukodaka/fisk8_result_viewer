@@ -20,6 +20,8 @@
 - having scores for skater datatable
 - components feature spec
 - update competition: season from/to
+- spin level: B is 0 ??
+- update spec competition --force
 
 ### new feature
 

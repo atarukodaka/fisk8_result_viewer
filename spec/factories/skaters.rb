@@ -12,6 +12,7 @@ FactoryBot.define do
       hometown { 'TOKYO' }
       club { 'Jingu' }
     end
+
     trait :ladies do
       name { 'Leia ORGANA' }
       nation { 'USA' }
@@ -23,11 +24,19 @@ FactoryBot.define do
       club { 'Cri' }
     end
 
+    trait :ice_dance do
+      name { 'ADAM / EVE' }
+      nation { 'GRC' }
+      category { Category.find_by(name: 'ICE DANCE') }
+      isu_number { 3 }
+    end
+
+    ################
     trait :no_scores do
       name { 'No SCORES' }
       nation { 'CAN' }
       category { Category.find_by(name: 'MEN') }
-      isu_number { 3 }
+      isu_number { 4 }
     end
   end
 end

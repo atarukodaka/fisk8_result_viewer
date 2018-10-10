@@ -9,8 +9,11 @@ RSpec.describe 'error handlers', error_handler: true do
   describe ApplicationController, type: :controller do
     controller do
       def index
+        raise 'error occured'
+=begin
         render status: :internal_server_error,
                json: { status: :internal_server_error, message: 'Internal Server Error' }
+=end
       end
     end
 

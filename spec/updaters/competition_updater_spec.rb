@@ -32,7 +32,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject {
-        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['DUMMY'])
+        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: [])
       }
       it_behaves_like :having_competition_with_url
     end
@@ -94,21 +94,20 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     }
   end
 
-=begin
   describe 'season from/to' do
     it {
       wc2014 = 'http://www.isuresults.com/results/wc2014/'
       wc2017 = 'http://www.isuresults.com/results/season1617/wc2017/'
 
-      @updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15')
+      @updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15',
+                                  categories: [])
       @updater.update_competition(wc2014, season_from: '2012-13', season_to: '2014-15',
-                                          categories: ['DUMMY'])
+                                  categories: [])
 
       expect(Competition.find_by(site_url: wc2014)).not_to be nil
       expect(Competition.find_by(site_url: wc2017)).to be nil
     }
   end
-=end
 
 =begin
 ## TODO: force option spec
@@ -157,7 +156,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
         let(:short_name) { ary[3] }
         let(:updater) { CompetitionUpdater.new }
 
-        subject(:competition) { updater.update_competition(url, categories: ['DUMMY']) }
+        subject(:competition) { updater.update_competition(url, categories: []) }
         it {
           expect(competition.site_url).to eq(url)
           expect(competition.competition_class).to eq(competition_class)
@@ -247,6 +246,40 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
         CompetitionUpdater.new.update_competition(url)
       }
       it { is_expected.to be_nil }
+    end
+  end
+
+  ################
+  describe 'categories to update' do
+    describe 'set by string' do
+      it {
+        expect(@updater.get_categories_to_update('MEN')).to eq([Category.find_by(name: 'MEN')])
+        expect(@updater.get_categories_to_update('MEN,LADIES'))
+          .to eq([Category.find_by(name: 'MEN'), Category.find_by(name: 'LADIES')])
+      }
+    end
+
+    describe 'set with array' do
+      it {
+        expect(@updater.get_categories_to_update(['MEN'])).to eq([Category.find_by(name: 'MEN')])
+      }
+      it {
+        expect(@updater.get_categories_to_update([Category.find_by(name: 'MEN')]))
+          .to eq([Category.find_by(name: 'MEN')])
+      }
+    end
+
+    describe 'empty' do
+      it {
+        expect(@updater.get_categories_to_update([])).to eq([])
+        expect(@updater.get_categories_to_update('')).to eq([])
+      }
+    end
+
+    describe 'raise error' do
+      it {
+        expect { @updater.get_categories_to_update('FOOBAR') }.to raise_error(ActiveRecord::RecordNotFound)
+      }
     end
   end
 end

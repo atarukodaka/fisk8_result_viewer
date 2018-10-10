@@ -16,16 +16,30 @@ RSpec.describe SkateSeason do
   end
 
   describe 'between?' do
-    it {
-      ## withtin
+    it 'within' do
       expect(season.between?('2012-13', '2018-19')).to be true
       expect(season.between?('2012-13', '2017-18')).to be true
       expect(season.between?('2017-18', '2020-21')).to be true
+    end
 
-      ## out of range
+    it 'out of range' do
       expect(season.between?('2012-13', '2014-15')).to be false
       expect(season.between?('2019-20', '2022-23')).to be false
-    }
+    end
+
+    it 'from nil' do
+      expect(season.between?('2015-16', nil)). to be true
+      expect(season.between?('2020-21', nil)). to be false
+    end
+
+    it 'to nil' do
+      expect(season.between?(nil, '2015-16')). to be false
+      expect(season.between?(nil, '2020-21')). to be true
+    end
+
+    it 'from nil to nil' do
+      expect(season.between?(nil, nil)). to be true
+    end
   end
 
   describe 'compare' do

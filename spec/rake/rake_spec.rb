@@ -68,6 +68,10 @@ RSpec.describe 'rake', rake: true do
   ################
   describe 'deviation' do
     it {
+      ENV['last'] = '1'
+      ENV['enable_judge_details'] = '1'
+      ENV['quiet'] = '1'
+      expect(@rake['update:competitions'].invoke).to be_truthy
       expect(@rake['update:deviations'].invoke).to be_truthy
     }
   end

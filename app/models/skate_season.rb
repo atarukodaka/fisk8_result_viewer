@@ -35,9 +35,19 @@ class SkateSeason
   end
 
   def between?(from, to)
-    season_from = SkateSeason.new(from) if from.class != SkateSeason
-    season_to = SkateSeason.new(to) if to.class != SkateSeason
-    (season_from <= self) && (self <= season_to)
+    flag = true
+
+    if from.present?
+      season_from = SkateSeason.new(from)
+      flag = (season_from <= self)
+    end
+
+    if flag && to.present?
+      season_to = SkateSeason.new(to)
+      flag = (self <= season_to)
+    end
+    flag
+    #      (season_from <= self) && (self <= season_to)
   end
 
   def <=>(other)
