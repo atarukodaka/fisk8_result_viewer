@@ -1,6 +1,6 @@
 module CompetitionParser
   class SummaryParser < Parser
-    def parse(site_url, date_format:)
+    def parse(site_url, date_format: nil)
       page = get_url(site_url) || return
 
       debug(" -- parse summary: #{site_url}")

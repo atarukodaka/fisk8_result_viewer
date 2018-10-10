@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
-  before { @updater = CompetitionUpdater.new }
+  let(:updater) { CompetitionUpdater.new }
 
   shared_examples :having_competition_with_url do
     its(:site_url) { is_expected.to eq(url) }
@@ -15,13 +15,13 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     ################
     describe 'wc2017 with isu_generic' do
       let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
-      subject { @updater.update_competition(url) }
+      subject { updater.update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
     describe 'jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
       let(:date_format) { '%m/%d/%Y' }
-      subject { @updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
+      subject { updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
       it_behaves_like :having_competition_with_url
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
     describe 'owgteam' do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
-      subject(:competition) { @updater.update_competition(url, categories: ['TEAM MEN']) }
+      subject(:competition) { updater.update_competition(url, categories: ['TEAM MEN']) }
       it_behaves_like :having_score_with_category_of, 'TEAM MEN'
     end
   end
@@ -60,20 +60,20 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   describe 'special' do
     describe 'gpfra2015 - no free skating' do
       let(:url) { 'http://www.isuresults.com/results/season1516/gpfra2015/' }
-      subject(:competition) { @updater.update_competition(url, categories: ['MEN']) }
+      subject(:competition) { updater.update_competition(url, categories: ['MEN']) }
       it_behaves_like :having_competition_with_url
     end
   end
   describe 'live results' do
     describe 'gpfra2016/ICE DANCE' do
       let(:url) { 'http://www.isuresults.com/results/season1617/gpfra2016' }
-      subject(:competition) { @updater.update_competition(url, categories: ['ICE DANCE']) }
+      subject(:competition) { updater.update_competition(url, categories: ['ICE DANCE']) }
       # it {    expect(competition.scores.first.category.name).to eq('ICE DANCE')        }
       it_behaves_like :having_score_with_category_of, 'ICE DANCE'
     end
     describe 'gpchn2017/LADIES' do
       let(:url) { 'http://www.isuresults.com/results/season1718/gpchn2017/' }
-      subject(:competition) { @updater.update_competition(url, categories: ['LADIES']) }
+      subject(:competition) { updater.update_competition(url, categories: ['LADIES']) }
       # it {    expect(competition.scores.first.category.name).to eq('LADIES')        }
       it_behaves_like :having_score_with_category_of, 'LADIES'
     end
@@ -95,9 +95,9 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       wc2014 = 'http://www.isuresults.com/results/wc2014/'
       wc2017 = 'http://www.isuresults.com/results/season1617/wc2017/'
 
-      @updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15',
+      updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15',
                                   categories: [])
-      @updater.update_competition(wc2014, season_from: '2012-13', season_to: '2014-15',
+      updater.update_competition(wc2014, season_from: '2012-13', season_to: '2014-15',
                                   categories: [])
 
       expect(Competition.find_by(site_url: wc2014)).not_to be nil
@@ -110,15 +110,15 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   describe 'force' do
     it {
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      @updater.update_competition(url)
+      updater.update_competition(url)
 
       original_competition = Competition.find_by(site_url: url)
-      @updater.update_competition(url)
+      updater.update_competition(url)
       new_competition = Competition.find_by(site_url: url)
       expect(original_competition).to eq(new_competition)
 
       ## force
-      @updater.update_competition(url, force: true)
+      updater.update_competition(url, force: true)
       expect(original_competition).to be nil
     }
 =end
@@ -150,7 +150,6 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
         let(:competition_class) { ary[1].to_s }
         let(:competition_type) { ary[2].to_s }
         let(:short_name) { ary[3] }
-        let(:updater) { CompetitionUpdater.new }
 
         subject(:competition) { updater.update_competition(url, categories: []) }
         it {
@@ -166,7 +165,6 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
   describe 'skater name correction' do
     def expect_same_skater(url, category, ranking) # TODO
-      updater = CompetitionUpdater.new
       competition = updater.update_competition(url, categories: [category])
       cr = competition.results.find_by(category: category, ranking: ranking)
       expect(cr.skater).to eq(cr.short.skater)
@@ -249,32 +247,32 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   describe 'categories to update' do
     describe 'set by string' do
       it {
-        expect(@updater.get_categories_to_update('MEN')).to eq([Category.find_by(name: 'MEN')])
-        expect(@updater.get_categories_to_update('MEN,LADIES'))
+        expect(updater.get_categories_to_update('MEN')).to eq([Category.find_by(name: 'MEN')])
+        expect(updater.get_categories_to_update('MEN,LADIES'))
           .to eq([Category.find_by(name: 'MEN'), Category.find_by(name: 'LADIES')])
       }
     end
 
     describe 'set with array' do
       it {
-        expect(@updater.get_categories_to_update(['MEN'])).to eq([Category.find_by(name: 'MEN')])
+        expect(updater.get_categories_to_update(['MEN'])).to eq([Category.find_by(name: 'MEN')])
       }
       it {
-        expect(@updater.get_categories_to_update([Category.find_by(name: 'MEN')]))
+        expect(updater.get_categories_to_update([Category.find_by(name: 'MEN')]))
           .to eq([Category.find_by(name: 'MEN')])
       }
     end
 
     describe 'empty' do
       it {
-        expect(@updater.get_categories_to_update([])).to eq([])
-        expect(@updater.get_categories_to_update('')).to eq([])
+        expect(updater.get_categories_to_update([])).to eq([])
+        expect(updater.get_categories_to_update('')).to eq([])
       }
     end
 
     describe 'raise error' do
       it {
-        expect { @updater.get_categories_to_update('FOOBAR') }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { updater.get_categories_to_update('FOOBAR') }.to raise_error(ActiveRecord::RecordNotFound)
       }
     end
   end
