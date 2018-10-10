@@ -1,10 +1,12 @@
+__END__
+
 require 'rails_helper'
 
 RSpec.configure do |c|
   c.filter_run_excluding parser: true
 end
 
-__END__
+
 describe 'parser', parser: true do
   describe 'score' do
     subject (:score){

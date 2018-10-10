@@ -1,10 +1,6 @@
 require 'rails_helper'
 require 'rake'
 
-RSpec.configure do |c|
-  c.filter_run_excluding rake: true
-end
-
 RSpec.describe 'rake', rake: true do
   before(:all) do
     @rake = Rake::Application.new

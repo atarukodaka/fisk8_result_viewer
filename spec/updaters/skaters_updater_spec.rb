@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding updater: true
-end
-
 RSpec.describe Skater, updater: true do
   describe 'update skaters' do
     before(:all) {

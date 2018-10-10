@@ -12,7 +12,16 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   # config.include Helper
+
+  ## excludings
+  config.filter_run_excluding updater: true, feature: true, rake: true, error_handler: true
 end
+
+RSpec.configure do |c|
+
+end
+
+
 
 ################
 ## Codecov

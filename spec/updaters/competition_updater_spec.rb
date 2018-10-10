@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding updater: true
-end
-
 RSpec.describe Competition, type: :competition_updater, updater: true do
   before { @updater = CompetitionUpdater.new }
 

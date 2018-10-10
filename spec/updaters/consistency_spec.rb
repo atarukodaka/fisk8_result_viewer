@@ -1,3 +1,4 @@
+__END__
 require 'rails_helper'
 
 RSpec.configure do |c|
