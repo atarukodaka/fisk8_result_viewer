@@ -57,9 +57,8 @@ class CompetitionUpdater
   end
 
   ################
-  def category_result_url(summary: , category_name: )
-    
-  end
+  def category_result_url(summary:, category_name:); end
+
   def update_competition(site_url, *args)
     debug(site_url)
     default_options = { date_format: nil, force: nil, categories: nil,

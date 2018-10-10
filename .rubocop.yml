@@ -6,10 +6,7 @@ AllCops:
     - '**/*.gemspec'
     - '**/vendor/**/*'
     - 'db/schema.rb'
-    - 'config.ru'
     - 'bin/*'
-    - 'config/*'
-    - 'db/migrate/*.rb'
     - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
 
 ################
@@ -42,20 +39,15 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Max: 100
   Exclude:
-    - app/parsers/competition_parser/isu_generic/summary_parser.rb     ## TODO: to fix cops
     - app/updaters/competition_updater.rb       ## TODO: to fix cops
-    - lib/ajax_datatables/datatable.rb     ## TODO: to fix cops
 
 Metrics/MethodLength:
   CountComments: false
   Max: 30
   Exclude:
-    - app/updaters/**/*.rb
-    - app/parsers/**/*.rb
     - db/migrate/*.rb
-    - app/controllers/competitions_controller.rb         ## TODO: to fix cops
-    - lib/property.rb     # TODO: to fix cops
-  
+    - app/updaters/competition_updater.rb    ## TODO
+
 Metrics/LineLength:
   Max: 120
 

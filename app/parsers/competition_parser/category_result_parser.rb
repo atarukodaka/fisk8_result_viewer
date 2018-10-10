@@ -12,11 +12,11 @@ module CompetitionParser
         free_ranking:  { header_regex: /FS|FD/, callback: elem_to_f },
       }
     end
-    
+
     def get_rows(page)
       place_elem = page.xpath("//th[text()='FPl' or text()='FPl.'] | //td[text()='PL']").first ||
                    raise("No Placement Cell found (#{self.class})")
-      
+
       place_elem.xpath('../../tr')
     end
 
@@ -24,11 +24,13 @@ module CompetitionParser
     protected
 
     def elem_to_i
-      lambda {|elem| elem.text.squish.to_i }
+      lambda { |elem| elem.text.squish.to_i }
     end
+
     def elem_to_f
-      lambda {|elem| elem.text.squish.to_f }
+      lambda { |elem| elem.text.squish.to_f }
     end
+
     def elem_to_isu_number
       lambda { |elem|
         href = elem.xpath('a/@href').text

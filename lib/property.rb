@@ -11,6 +11,36 @@ module Property
   #
   #   foo.bar = 3  #{ => 3 }
 
+  def define_setter(sym)
+    define_method("#{sym}=") do |*args|
+      variable_name = "@#{sym.to_sym}"
+
+      instance_variable_set(variable_name, args.first)
+    end
+  end
+
+  def define_adder(sym)
+    define_method("add_#{sym}") do |*args|
+      variable_name = "@#{sym.to_sym}"
+      value = instance_variable_get(variable_name) || []
+      value << [*args]
+      instance_variable_set(variable_name, value.flatten)
+      self
+    end
+  end
+
+  def define_updater(sym)
+    define_method("update_#{sym}") do |*args|
+      variable_name = "@#{sym.to_sym}"
+
+      value = instance_variable_get(variable_name) || {}
+      value.update(*args)
+      instance_variable_set(variable_name, value)
+      self
+    end
+  end
+
+  ################
   def property(sym, default = nil, readonly: false, &initializer)
     initializer ||= ->(*) { default }
 
@@ -27,32 +57,11 @@ module Property
         instance_variable_get(variable_name)
       end
     end
+
     unless readonly
-      ## define setter
-      define_method("#{sym}=") do |*args|
-        variable_name = "@#{sym.to_sym}"
-
-        instance_variable_set(variable_name, args.first)
-      end
-
-      ## define updater for hash
-      define_method("update_#{sym}") do |*args|
-        variable_name = "@#{sym.to_sym}"
-
-        value = instance_variable_get(variable_name) || {}
-        value.update(*args)
-        instance_variable_set(variable_name, value)
-        self
-      end
-
-      ## define adder for array
-      define_method("add_#{sym}") do |*args|
-        variable_name = "@#{sym.to_sym}"
-        value = instance_variable_get(variable_name) || []
-        value << [*args]
-        instance_variable_set(variable_name, value.flatten)
-        self
-      end
+      define_setter(sym)
+      define_updater(sym)
+      define_adder(sym)
     end
   end
 

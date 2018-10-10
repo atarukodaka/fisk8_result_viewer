@@ -2,28 +2,27 @@ require 'ajax_datatables/filter'
 
 ###############################################################
 module AjaxDatatables
+  #
+  # class for jquery-datatable. refer 'app/views/application/_datatable.html.slim' as well.
+  #
+  # in view,
+  # = AjaxDatatables::Datatable.new(self).records(User.all).columns([:name, :address]).render
+  #
+  # for server-side ajax,
+  # = AjaxDatatables::Datatable.new(self).ajax(serverside: true, url: users_list_path).render
+  #
+  # of you can implement your derived class corresponding to controller/model.
+  #  class UsersDatatable < AjaxDatatables::Datatable
+  #    def initialize(*)
+  #      super
+  #      columns([:name, :address])
+  #      default_orders([[:name, :asc]])
+  #    end
+  #    def fetch_records
+  #      User.all
+  #    end
+  #  end
   class Datatable
-    #
-    # class for jquery-datatable. refer 'app/views/application/_datatable.html.slim' as well.
-    #
-    # in view,
-    # = AjaxDatatables::Datatable.new(self).records(User.all).columns([:name, :address]).render
-    #
-    # for server-side ajax,
-    # = AjaxDatatables::Datatable.new(self).ajax(serverside: true, url: users_list_path).render
-    #
-    # of you can implement your derived class corresponding to controller/model.
-    #  class UsersDatatable < AjaxDatatables::Datatable
-    #    def initialize(*)
-    #      super
-    #      columns([:name, :address])
-    #      default_orders([[:name, :asc]])
-    #    end
-    #    def fetch_records
-    #      User.all
-    #    end
-    #  end
-
     extend Forwardable
     extend Property
     include AjaxDatatables::Datatable::DeferLoadable
@@ -99,16 +98,6 @@ module AjaxDatatables
       @filters ||= []
     end
 
-=begin
-    def filter
-      begin
-        klass = "#{self.class.to_s.sub(/Datatable$/, '')}Filter".constantize
-      rescue NameError
-        return nil
-      end
-      @filter ||= klass.new
-    end
-=end
     ################
     ## settings, etc
     def default_settings
@@ -152,8 +141,6 @@ module AjaxDatatables
       @view_context.render(partial: partial, locals: { datatable: self }.merge(locals))
     end
 
-    ################
-    ## format
     def as_json(*args)
       data.map do |item|
         column_names.map do |column_name|

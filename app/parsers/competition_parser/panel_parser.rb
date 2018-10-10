@@ -9,6 +9,7 @@ module CompetitionParser
       {
         judges: rows.map do |row|
           next unless row.xpath('td[1]').text =~ /^Judge No\.(\d)/
+
           {
             number: $1,
             name: normalize_name(row.xpath('td[2]').text),

@@ -6,7 +6,7 @@ RSpec.describe SkateSeason do
   describe 'initialize' do
     it { expect(SkateSeason.new('2017-18')).to eq(season)    }
     it { expect(SkateSeason.new('2017-09-01')).to eq(season)    }
-    it { expect(SkateSeason.new(Date.new(2017,9,1))).to eq(season)    }
+    it { expect(SkateSeason.new(Date.new(2017, 9, 1))).to eq(season)    }
   end
 
   describe 'attributes' do
@@ -41,8 +41,5 @@ RSpec.describe SkateSeason do
       same = SkateSeason.new('2017-18')
       expect(season == same).to be true
     }
-    
   end
 end
-
-    

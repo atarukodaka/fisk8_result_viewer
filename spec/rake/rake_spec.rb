@@ -17,6 +17,7 @@ RSpec.describe 'rake', rake: true do
   describe 'update skater' do
     describe 'skaters' do
       it do
+        ENV['quiet'] = '1'
         @rake['update:skaters'].invoke
         expect(Skater.count).to be > 0
       end
@@ -25,6 +26,7 @@ RSpec.describe 'rake', rake: true do
       it {
         isu_number = 10_967
         ENV['isu_number'] = isu_number.to_s
+        ENV['quiet'] = '1'
         @rake['update:skater_detail'].invoke
         expect(Skater.find_by(isu_number: isu_number).coach).not_to be_nil
       }
@@ -36,6 +38,7 @@ RSpec.describe 'rake', rake: true do
     def expect_url_match(last: 2, categories: '')
       ENV['last'] = last.to_s
       ENV['categories'] = categories
+      ENV['quiet'] = '1'
       @rake['update:competitions'].execute
 
       CompetitionList.all.last(last).each do |item|

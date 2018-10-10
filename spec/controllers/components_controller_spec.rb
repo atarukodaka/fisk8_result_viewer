@@ -3,14 +3,11 @@ require 'rails_helper'
 RSpec.describe ComponentsController, type: :controller do
   render_views
 
-  let(:short_ss) { Component.where(name: 'Skating Skills').first }
-  let(:free_tr) { Component.where(name: 'Transitions').first }
+  let!(:world_score) { create(:competition, :world).scores.first }
+  let!(:finlandia_score)  { create(:competition, :finlandia).scores.first }
 
-  before(:all) {
-    create(:competition, :world)
-    create(:competition, :finlandia)
-  }
-
+  let(:short_ss) { world_score.components.where(name: 'Skating Skills').first }
+  let(:free_tr) { finlandia_score.components.where(name: 'Transitions').first }
   ################
   describe '#index' do
     describe 'all' do
