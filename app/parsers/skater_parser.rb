@@ -22,7 +22,7 @@ class SkaterParser < Parser
     }
   end
 
-  def update_last_updated_at(data, elem)
+  def update_bio_last_updated_at(data, page)
     ## bio last updated at
     if (elem = page.xpath("//td/span[contains(., 'last update')]").first)
       if elem.text =~ /last update: (.*)/
@@ -66,7 +66,7 @@ class SkaterParser < Parser
     end
 
     normalize_birthday(data)
-    update_bio_last_updated_at(data, elem)
+    update_bio_last_updated_at(data, page)
     data
   end
 end
