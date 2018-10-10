@@ -12,6 +12,7 @@ cache:
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rspec -fd
+  - bundle exec rspec --tag feature -fd
   - bundle exec rspec --tag updater -fd
   - bundle exec rspec --tag rake -fd
   #- bundle exec rspec --tag parser -fd

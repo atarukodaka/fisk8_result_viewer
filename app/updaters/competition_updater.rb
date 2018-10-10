@@ -42,7 +42,9 @@ class CompetitionUpdater
   def summary_parser
     @summary_parser ||=
       begin
+        #model_class.incorporate(@parser_type)
         model_class = CompetitionParser::SummaryParser
+
         if @parser_type
           prepended_class = "#{model_class}::Extension::#{@parser_type.to_s.camelize}".constantize
           model_class.dup.prepend(prepended_class)

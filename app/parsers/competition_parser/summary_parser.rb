@@ -1,5 +1,14 @@
 module CompetitionParser
   class SummaryParser < Parser
+    class << self
+      def incorporate(parser_type)
+        return self if parser_type.nil?
+        
+        prepended_class = [self.to_s, 'Extension', parser_type.to_s.camelize].join('::').constantize
+        self.dup.prepend(prepended_class)
+      end
+    end
+    ################
     def parse(site_url, date_format: nil)
       page = get_url(site_url) || return
 
