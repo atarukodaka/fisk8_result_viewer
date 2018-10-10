@@ -30,36 +30,14 @@ RSpec.describe 'rake', rake: true do
   end
 
   ################
-  context 'update competition' do
-    def expect_url_match(last: 2, categories: '')
-      ENV['last'] = last.to_s
-      ENV['categories'] = categories
+  context 'update competitions' do
+    it {
+      ENV['last'] = '1'
       ENV['quiet'] = '1'
       @rake['update:competitions'].execute
-
-      CompetitionList.all.last(last).each do |item|
-        expect(Competition.find_by(site_url: item[:site_url])).not_to be_nil
-      end
-    end
-    it 'by competitions.yml' do
-      expect_url_match
-    end
-    it 'by filename' do
-      ENV['filename'] = 'competitions_junior'
-      expect_url_match
-    end
-    it 'by filenames' do
-      ENV['filenames'] = 'competitions_junior,competitions_challenger'
-      expect_url_match
-    end
-    it 'categories' do
-      expect_url_match(categories: 'MEN', last: 1)
-      expect(Score.joins(:category).where("categories.name": 'MEN').count).to be > 0
-    end
-    it 'by force' do ## TODo
-      ENV['force'] = '1'
-      # expect_url_match
-    end
+      site_url = CompetitionList.last.site_url
+      expect(Competition.find_by(site_url: site_url).site_url).to eq(site_url)
+    }
   end
   ################
   describe 'deviation' do
