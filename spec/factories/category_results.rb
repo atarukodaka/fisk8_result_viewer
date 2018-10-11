@@ -1,8 +1,10 @@
+using StringToModel
+
 # category results
 FactoryBot.define do
   factory :category_result do
     trait :world do
-      category { Category.find_by(name: 'MEN') }
+      category { 'MEN'.to_category }
 
       ranking { 1 }
       points { 300 }
@@ -11,7 +13,7 @@ FactoryBot.define do
     end
 
     trait :finlandia do
-      category { Category.find_by(name: 'LADIES') }
+      category { 'LADIES'.to_category }
       ranking { 2 }
       points { 240 }
       free_ranking { 2 }

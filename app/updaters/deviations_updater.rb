@@ -1,4 +1,21 @@
 class DeviationsUpdater < Updater
+  def update_deviations
+    ActiveRecord::Base.transaction do
+      Deviation.delete_all
+
+      Score.find_each do |score|
+        tes = calculate_tes_deviations(score.elements)
+        pcs = calculate_pcs_deviations(score.components)
+
+        score.performed_segment.officials.each do |official|
+          create_deviation(score, official, tes, pcs)
+        end
+      end
+    end
+  end
+
+  protected
+
   def create_deviation(score, official, tes, pcs)
     official_number = official.number
 
@@ -38,18 +55,4 @@ class DeviationsUpdater < Updater
     data
   end
 
-  def update_deviations
-    ActiveRecord::Base.transaction do
-      Deviation.delete_all
-
-      Score.find_each do |score|
-        tes = calculate_tes_deviations(score.elements)
-        pcs = calculate_pcs_deviations(score.components)
-
-        score.performed_segment.officials.each do |official|
-          create_deviation(score, official, tes, pcs)
-        end
-      end
-    end
-  end
 end

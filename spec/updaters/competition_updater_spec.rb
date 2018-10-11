@@ -1,4 +1,5 @@
 require 'rails_helper'
+using StringToModel
 
 RSpec.describe Competition, type: :competition_updater, updater: true do
   let(:updater) { CompetitionUpdater.new }
@@ -240,40 +241,4 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it { is_expected.to be_nil }
     end
   end
-
-################
-=begin
-  describe 'categories to update' do
-    describe 'set by string' do
-      it {
-        expect(updater.get_categories_to_update('MEN')).to eq([Category.find_by(name: 'MEN')])
-        expect(updater.get_categories_to_update('MEN,LADIES'))
-          .to eq([Category.find_by(name: 'MEN'), Category.find_by(name: 'LADIES')])
-      }
-    end
-
-    describe 'set with array' do
-      it {
-        expect(updater.get_categories_to_update(['MEN'])).to eq([Category.find_by(name: 'MEN')])
-      }
-      it {
-        expect(updater.get_categories_to_update([Category.find_by(name: 'MEN')]))
-          .to eq([Category.find_by(name: 'MEN')])
-      }
-    end
-
-    describe 'empty' do
-      it {
-        expect(updater.get_categories_to_update([])).to eq([])
-        expect(updater.get_categories_to_update('')).to eq([])
-      }
-    end
-
-    describe 'raise error' do
-      it {
-        expect { updater.get_categories_to_update('FOOBAR') }.to raise_error(ActiveRecord::RecordNotFound)
-      }
-    end
-  end
-=end
 end

@@ -1,10 +1,11 @@
-# scores
+using StringToModel
+
 FactoryBot.define do
   factory :score do
     trait :world do
       name { 'WORLD2015-SM-SP-1' }
-      category { Category.find_by(name: 'TEAM MEN') }
-      segment { Segment.find_by(name: 'SHORT PROGRAM') }
+      category { 'TEAM MEN'.to_category }
+      segment { 'SHORT PROGRAM'.to_segment }
 
       ranking { 1 }
       tss { 100 }
@@ -23,14 +24,14 @@ FactoryBot.define do
       end
 
       trait :world_free do
-        segment { Segment.find_by(name: 'FREE SKATING') }
+        segment { 'FREE SKATING'.to_segment }
       end
     end
 
     trait :finlandia do
       name { 'FIN2017-JL-FS-2' }
-      category { Category.find_by(name: 'JUNIOR LADIES') }
-      segment { Segment.find_by(name: 'FREE SKATING') }
+      category { 'JUNIOR LADIES'.to_category }
+      segment { 'FREE SKATING'.to_segment }
 
       ranking { 2 }
       tss { 160 }
@@ -48,7 +49,7 @@ FactoryBot.define do
     end
 
     trait :finlandia_short do
-      segment { Segment.find_by(name: 'SHORT PROGRAM') }
+      segment { 'SHORT PROGRAM'.to_segment }
     end
   end
 end

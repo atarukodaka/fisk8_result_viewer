@@ -1,6 +1,4 @@
-################################################################
 module AjaxFeatureHelper
-  ## examples
   shared_examples :contains do |main_flag, sub_flag|
     if main_flag
       it { is_expected.to have_content(main.name) }
@@ -27,6 +25,7 @@ module AjaxFeatureHelper
         find(key).click
       end
       # sleep 1
+      sleep 0.3
     end
     page
   end
@@ -68,48 +67,13 @@ module AjaxFeatureHelper
     ## functions
     def ajax_action_filter(path:, input_type:, key:, value: nil)
       ajax_actions([key: key, value: value, input_type: input_type], path: path)
-=begin
-      visit path
-      case input_type
-      when :fill_in, :text_field
-        fill_in key, with: value
-        find("input##{key}").send_keys :tab
-      when :select
-        select value, from: key
-      when :click
-        find(key).click
-      end
-      sleep 1
-      page
-=end
     end
-
-################
-=begin
-    shared_context :score_filter do
-      include_context :filter, [
-        { key: :skater_name, input_type: :fill_in, },
-        { key: :competition_name, input_type: :fill_in, },
-        { key: :competition_class, input_type: :select, },
-        { key: :competition_type, input_type: :select, },
-        { key: :category_name, input_type: :select },
-        { key: :category_type, input_type: :select, },
-        { key: :seniority, input_type: :select, },
-        { key: :team, input_type: :select, },
-        { key: :segment_name, input_type: :select },
-        { key: :segment_type, input_type: :select, },
-      ]
-    end
-=end
   end
 
   ################
   module Order
     RSpec::Matchers.define :appear_before do |later_content|
       match do |earlier_content|
-        # body = (respond_to? :page) ? page.body : response.body
-        # body.index(earlier_content.to_s) < body.index(later_content.to_s)
-
         table_id = find(:css, '.dataTable')[:id]
         table_text = find("##{table_id}").text
         table_text.index(earlier_content.to_s) < table_text.index(later_content.to_s)
@@ -147,17 +111,9 @@ module AjaxFeatureHelper
       column_id = "column_#{table_id}_#{column_name}"
 
       find("##{column_id}").click
+      sleep 0.3
       # sleep 1
       page
     end
   end
-=begin
-  def ajax_compare_sorting(obj1, obj2, key:, identifer_key: :name)
-    dir = find("#column_#{key}")['class']
-    identifers = [obj1, obj2].sort {|a, b| a.send(key) <=> b.send(key)}.map {|d| d.send(identifer_key)}
-    identifers.reverse! if dir =~ /sorting_desc/
-    #expect(page.body.index(identifers.first)).to be < page.body.index(identifers.second)
-    expect(identifers.first).to appear_before identifers.second
-  end
-=end
 end

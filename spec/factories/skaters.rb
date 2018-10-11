@@ -1,10 +1,12 @@
+using StringToModel
+
 # skaters
 FactoryBot.define do
   factory :skater do
     trait :men do
       name { 'Taro YAMADA' }
       nation { 'JPN' }
-      category { Category.find_by(name: 'MEN') }
+      category { 'MEN'.to_category }
       isu_number { 1 }
 
       birthday { '1.1.1980' }
@@ -16,7 +18,7 @@ FactoryBot.define do
     trait :ladies do
       name { 'Leia ORGANA' }
       nation { 'USA' }
-      category { Category.find_by(name: 'LADIES') }
+      category { 'LADIES'.to_category }
       isu_number { 2 }
       birthday { '1.1.1990' }
       coach { 'Rola ORGANA' }
@@ -27,7 +29,7 @@ FactoryBot.define do
     trait :ice_dance do
       name { 'ADAM / EVE' }
       nation { 'GRC' }
-      category { Category.find_by(name: 'ICE DANCE') }
+      category { 'ICE DANCE'.to_category }
       isu_number { 3 }
     end
 
@@ -35,7 +37,7 @@ FactoryBot.define do
     trait :no_scores do
       name { 'No SCORES' }
       nation { 'CAN' }
-      category { Category.find_by(name: 'MEN') }
+      category { 'MEN'.to_category }
       isu_number { 4 }
     end
   end

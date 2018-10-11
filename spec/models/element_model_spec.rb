@@ -1,4 +1,5 @@
 require 'rails_helper'
+using StringToModel
 
 RSpec.describe Element do
   using StringToModel
@@ -57,8 +58,8 @@ RSpec.describe Element do
   describe 'ice dance' do
     let(:skater) { create(:skater, :ice_dance) }
     let(:score) {
-      competition.scores.create(category: Category.find_by(name: 'ICE DANCE'),
-                                segment: Segment.find_by(name: 'RHYTHM DANCE'),
+      competition.scores.create(category: 'ICE DANCE'.to_category,
+                                segment: 'RHYTHM DANCE'.to_segment,
                                 skater: skater)
     }
     describe 'patten dance' do

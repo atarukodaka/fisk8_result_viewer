@@ -1,5 +1,5 @@
-################
-# performed segments
+using StringToModel
+
 FactoryBot.define do
   factory :performed_segment do
     after(:build) do |ps|
@@ -8,22 +8,22 @@ FactoryBot.define do
     end
 
     trait :world do
-      category { Category.find_by(name: 'TEAM MEN') }
-      segment { Segment.find_by(name: 'SHORT PROGRAM') }
+      category { 'TEAM MEN'.to_category }
+      segment {'SHORT PROGRAM'.to_segment }
       # starting_time { Time.new(2017, 2, 1, 15, 0, 0) }
       starting_time { '2015-2-1 15:00:00' }
     end
 
     trait :finlandia do
-      category { Category.find_by(name: 'JUNIOR LADIES') }
-      segment { Segment.find_by(name: 'FREE SKATING') }
+      category { 'JUNIOR LADIES'.to_category }
+      segment { 'FREE SKATING'.to_segment }
       # starting_time { Time.new(2015, 9, 2, 17, 0, 0) }
       starting_time { '2017-9-1 15:00:00' }
     end
 
     trait :ice_dance do
-      category { Category.find_by(name: 'ICE DANCE') }
-      segment { Segment.find_by(name: 'RYTHM DANCE') }
+      category { 'ICE DANCE'.to_category }
+      segment { 'RYTHM DANCE'.to_segment }
       starting_time { '2015-2-2 15:00:00' }
     end
   end
