@@ -73,8 +73,8 @@ class CompetitionUpdater < Updater
 
       ## judge details
       #        it was random order before 2016-17
-      if options[:enable_judge_details] && competition.start_date > Time.zone.parse('2016-7-1')
-      #if options[:enable_judge_details] && competition.season.between?('2016-17', nil)
+      #if options[:enable_judge_details] && competition.start_date > Time.zone.parse('2016-7-1')
+      if options[:enable_judge_details] && SkateSeason.new(competition.season).between?('2016-17', nil)
         debug('update judge details and deviations', indent: 3)
         competition.scores.each do |score|
           update_judge_details(score)
