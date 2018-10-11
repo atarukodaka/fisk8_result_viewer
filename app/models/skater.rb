@@ -3,9 +3,6 @@ class Skater < ApplicationRecord
 
   ## relations
   has_many :category_results, dependent: :nullify
-  #  has_many :scores, dependent: :nullify
-  #  has_many :elements, through: :scores, dependent: :nullify
-  #  has_many :components, through: :scores, dependent: :nullify
   belongs_to :category   ## reference
 
   ## validations
@@ -19,18 +16,17 @@ class Skater < ApplicationRecord
   scope :name_matches, ->(v) { where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
-  # delegate :type, to: :category, prefix: :category, allow_nil: true
   delegate :category_type, to: :category, allow_nil: true
 
   ## class methods
   class << self
-    def find_by_isu_number_or_name(isu_number, name)
+    def find_skater_by(isu_number: nil, name:)
       (find_by(isu_number: isu_number) if isu_number.present?) ||
         find_by(name: name)
     end
 
     def find_or_create_by_isu_number_or_name(isu_number, name)
-      find_by_isu_number_or_name(isu_number, name) || create do |skater|
+      find_skater_by(isu_number: isu_number, name: name) || create do |skater|
         skater.isu_number = isu_number
         skater.name = name
         yield skater if block_given?

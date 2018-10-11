@@ -19,7 +19,7 @@ class Competition < ApplicationRecord
 
   def _normalize
     matched_item = nil
-    CompetitionNormalize.all.each do |item|
+    CompetitionNormalize.all.each do |item|    ## rubocop:disable Rails/FindEach
       if self.name.match?(item.regex)
         matched_item = item
         break

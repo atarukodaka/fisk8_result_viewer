@@ -11,7 +11,7 @@ class ElementDecorator < EntryDecorator
                           category: model.score.category, segment: model.score.segment)
   end
 =end
-  
+
   def competition_name
     h.link_to_competition(model.score.competition)
   end

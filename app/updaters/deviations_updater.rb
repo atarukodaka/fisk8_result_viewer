@@ -1,4 +1,6 @@
 class DeviationsUpdater
+  include DebugPrint
+
   def initialize(verbose: false)
     @verbose = verbose
   end
@@ -18,7 +20,7 @@ class DeviationsUpdater
     scores = Score.all.index_by(&:id) ## TODO: use memory too much ??
 
     ActiveRecord::Base.transaction do
-      puts 'start' if @verbose
+      debug('deviation start')
       Deviation.delete_all ## clear all data first
       data.each do |(score_id, official_id), hash|
         Deviation.create(
@@ -29,7 +31,7 @@ class DeviationsUpdater
           pcs_deviation_ratio: hash[:pcs].abs / 7.5
         )
       end
-      puts 'done.' if @verbose
+      debug('deviation done')
     end ## transaction
   end
 end

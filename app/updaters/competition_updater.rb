@@ -8,18 +8,6 @@ class CompetitionUpdater
     @verbose = verbose
   end
 
-  def get_categories_to_update(categories)  ## string or array of category model
-    return Category.all if categories.nil?   ## nil means update all / [] means not to update any
-    raise unless [String, Array].include?(categories.class)
-
-    # raise if categories.class != String && categories.class != Array
-
-    array = (categories.class == String) ? categories.split(/\s*,\s*/) : categories
-    array.map do |cat|
-      (cat.class == String) ? Category.find_by!(name: cat) : cat
-    end
-  end
-
   def clear_existing_competitions(site_url)
     ActiveRecord::Base.transaction do
       Competition.where(site_url: site_url).map(&:destroy)
@@ -42,7 +30,7 @@ class CompetitionUpdater
   def summary_parser
     @summary_parser ||=
       begin
-        #model_class.incorporate(@parser_type)
+        # model_class.incorporate(@parser_type)
         model_class = CompetitionParser::SummaryParser
 
         if @parser_type
@@ -63,8 +51,12 @@ class CompetitionUpdater
     end
   end
 
+  def categories_to_update(categories1, categories2)
+    (Array(categories1) & Array(categories2)).map { |d| Category.find_by!(name: d) }
+  end
+
   ################
-  def update_competition(site_url, opts={})
+  def update_competition(site_url, opts = {})
     debug("update competition with site_url of: #{site_url}")
     default_options = { date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil, params: {} }
@@ -75,13 +67,10 @@ class CompetitionUpdater
       return
     end
 
-    categories_to_update = get_categories_to_update(options[:categories])
-
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
-      summary = summary_parser.parse(site_url, date_format: options[:date_format]) || (return nil)
-      return nil unless summary[:time_schedule].season
-                         .between?(options[:season_from], options[:season_to])
+      summary = summary_parser.parse(site_url, date_format: options[:date_format]) || return
+      return unless summary[:time_schedule].season.between?(options[:season_from], options[:season_to])
 
       competition = Competition.create! do |comp|
         update_competition_attributes(comp, summary, params: options[:params])
@@ -89,15 +78,11 @@ class CompetitionUpdater
       debug('*' * 100)
       debug('%<name>s [%<short_name>s] (%<site_url>s)' % competition.attributes.symbolize_keys)
 
-      ## categories
-      summary.categories.each do |category_name|
-        category = Category.find_by(name: category_name) || next   ## TODO: warning
-        categories_to_update.include?(category) || next
-
-        update_category_results(competition, category, summary.category_result_url(category_name))
+      categories_to_update(options[:categories], summary.categories).each do |category|
+        update_category_results(competition, category, summary.category_result_url(category.name))
 
         ## segments
-        summary.segment_results_with(category: category_name, validation: true).each do |seg_item|
+        summary.segment_results_with(category: category.name, validation: true).each do |seg_item|
           segment = Segment.find_by!(name: seg_item[:segment])
 
           starting_time = summary[:time_schedule].starting_time(category.name, segment.name) || raise

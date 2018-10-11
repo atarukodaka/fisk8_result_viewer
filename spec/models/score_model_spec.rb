@@ -12,9 +12,9 @@ RSpec.describe Score do
   describe 'find' do
     it {
       create(:skater, :men)
-      expect(Skater.find_by_isu_number_or_name(1, nil).isu_number).to eq(1)
-      expect(Skater.find_by_isu_number_or_name(nil, 'Taro YAMADA').isu_number).to eq(1)
-      expect(Skater.find_by_isu_number_or_name(999, 'Foo BAR')).to be nil
+      expect(Skater.find_skater_by(isu_number: 1, name: nil).isu_number).to eq(1)
+      expect(Skater.find_skater_by(isu_number: nil, name: 'Taro YAMADA').isu_number).to eq(1)
+      expect(Skater.find_skater_by(isu_number: 999, name: 'Foo BAR')).to be nil
     }
   end
 end

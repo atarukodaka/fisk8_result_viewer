@@ -3,7 +3,7 @@ module CompetitionParser
     class << self
       def incorporate(parser_type)
         return self if parser_type.nil?
-        
+
         prepended_class = [self.to_s, 'Extension', parser_type.to_s.camelize].join('::').constantize
         self.dup.prepend(prepended_class)
       end
@@ -72,7 +72,6 @@ module CompetitionParser
     ################
     def get_timezone(page)
       page.xpath("//*[contains(text(), 'Local Time')]").text =~ / ([\+\-]\d\d:\d\d)/
-      # local_tz = $1 || '+00:00'
       $1 =~ /([\+\-]\d\d)/
       utc_offset = $1.to_i
 
@@ -80,7 +79,6 @@ module CompetitionParser
     end
 
     def get_time_schedule_rows(page)
-      # page.xpath("//table[*[th[text()='Date']]]").xpath(".//tr")
       elem = page.xpath("//table//tr//*[text()='Date']").first || raise
       elem.xpath('ancestor::table[1]//tr')
     end
@@ -100,8 +98,6 @@ module CompetitionParser
 
         tm_str = row.xpath('td[2]').text
         dt_tm_str = "#{dt_str} #{tm_str}"
-        # dt_tm_str += " #{local_tz}" if tz == "UTC"
-        # tz = "Etc/GMT#{local_tz_hour.to_i }"
 
         tm =
           if date_format.present?
@@ -109,7 +105,6 @@ module CompetitionParser
           else
             dt_tm_str
           end.in_time_zone(ActiveSupport::TimeZone[timezone])
-        # next if tm.nil?
         tm += 2000.years if tm.year < 100 ## for ondrei nepela
 
         {
@@ -125,7 +120,6 @@ module CompetitionParser
       page.title.strip
     end
 
-    ###
     private
 
     def normalize_category(category)

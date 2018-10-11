@@ -173,7 +173,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     shared_context :skater_having_different_name do |url, category, ranking|
       subject(:result) {
         CompetitionUpdater.new.update_competition(url, categories: [category])
-          .category_results.find_by(category: category, ranking: ranking)
+          .category_results.where("categories.name": category, ranking: ranking).joins(:category).first
       }
     end
     shared_examples :same_name_between_segments do
@@ -183,14 +183,14 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
 
     context 'Sandra KHOPON (fc2012)' do # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
-      include_context :skater_having_different_name, url, Category.find_by(name: 'LADIES'), 15
+      include_context :skater_having_different_name, url, 'LADIES', 15
       it_behaves_like :same_name_between_segments
     end
 =begin
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
-      include_context :skater_having_different_name, url, Category.find_by(name: "JUNIOR LADIES"), 17
+      include_context :skater_having_different_name, url, 'JUNIOR LADIES', 17
       it_behaves_like :same_name_between_segments
     end
 =end
@@ -243,7 +243,8 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     end
   end
 
-  ################
+################
+=begin
   describe 'categories to update' do
     describe 'set by string' do
       it {
@@ -276,4 +277,5 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       }
     end
   end
+=end
 end

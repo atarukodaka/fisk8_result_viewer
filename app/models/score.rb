@@ -37,7 +37,7 @@ class Score < ApplicationRecord
       components.try(:[], i).try(:value)
     end
   end
-  
+
   ##
   def summary
     '    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d' %

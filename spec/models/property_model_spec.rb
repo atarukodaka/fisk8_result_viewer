@@ -16,14 +16,14 @@ RSpec.describe Property do
     expect(foo.baz).to eq(:BAZ)
     expect(foo.hoge).to eq(:HOGE)
   }
-  it "setter" do
+  it 'setter' do
     ## setter
     foo.bar = :bar
     expect(foo.bar).to eq(:bar)
   end
-  it "updater" do
+  it 'updater' do
     ## update hash
-    foo.bar = {foo: :AAA}
+    foo.bar = { foo: :AAA }
     foo.update_bar(foo: :BBB, bar: :ZZZ)
     expect(foo.bar[:foo]).to eq(:BBB)
     expect(foo.bar[:bar]).to eq(:ZZZ)

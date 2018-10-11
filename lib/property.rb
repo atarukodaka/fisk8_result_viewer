@@ -64,7 +64,7 @@ module Property
 
     define_setter(sym)
     define_updater(sym)
-    #define_adder(sym)
+    # define_adder(sym)
   end
 
   def properties(*syms, default: nil, &initializer)

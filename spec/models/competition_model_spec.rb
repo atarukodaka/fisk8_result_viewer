@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Competition do
   describe 'normalization' do
     it {
-      comp = Competition.create(name: '', start_date: Date.today)
+      comp = Competition.create(name: '', start_date: Time.zone.today)
       expect(comp.competition_class).to eq('unknown')
     }
 
