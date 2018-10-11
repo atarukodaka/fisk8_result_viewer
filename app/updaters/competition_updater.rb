@@ -1,6 +1,5 @@
 class CompetitionUpdater < Updater
   using StringToModel
-  attr_reader :parsers
 
   def initialize(parser_type: nil, verbose: false)
     @parser_type = parser_type
@@ -49,10 +48,10 @@ class CompetitionUpdater < Updater
       "CompetitionParser::#{key.to_s.camelize}Parser".constantize.new(verbose: @verbose)
     end
   end
-  
+
   def categories_to_update(categories1, categories2)
     return categories2.map(&:to_category)  if categories1.nil?
-    
+
     (Array(categories1) & Array(categories2)).map(&:to_category)
   end
 
@@ -67,7 +66,7 @@ class CompetitionUpdater < Updater
       debug("  .. skip: already existing: #{site_url}")
       return comps.first
     end
-    
+
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
       summary = summary_parser.parse(site_url, date_format: options[:date_format]) || return
@@ -90,8 +89,7 @@ class CompetitionUpdater < Updater
           update_performed_segment(competition, category, segment, seg_item[:panel_url],
                                    starting_time: starting_time)
           update_segment_results(competition, category, segment, seg_item[:result_url])
-          update_scores(competition, category, segment, seg_item[:score_url],
-                        enable_judge_details: options[:enable_judge_details])
+          update_scores(competition, category, segment, seg_item[:score_url])
         end
       end
 
@@ -118,8 +116,6 @@ class CompetitionUpdater < Updater
   end
 
   def update_performed_segment(competition, category, segment, panel_url, starting_time:)
-    # parsed_panels = parsers[:panel].parse(panel_url)
-    # parsed = CompetitionParser::PanelParser.parse(panel_url)
     parsed = parser(:panel).parse(panel_url)
     competition.performed_segments.create! do |ps|
       ps.update(category: category, segment: segment, starting_time: starting_time)
@@ -182,7 +178,7 @@ class CompetitionUpdater < Updater
   end
 
   ################
-  def update_scores(competition, category, segment, score_url, enable_judge_details: false)
+  def update_scores(competition, category, segment, score_url)
     parser(:score).parse(score_url).each do |attrs|
       ActiveRecord::Base.transaction do
         score = competition.scores
@@ -201,16 +197,13 @@ class CompetitionUpdater < Updater
         score.update(elements_summary: score.elements.map(&:name).join('/'))
         score.update(components_summary: score.components.map(&:value).join('/'))
         debug(score.summary)
-
-        ## judge details
-        #update_judge_details(competition, category, segment, score) if enable_judge_details
       end
     end
   end ## def
 
   ################
   def update_judge_details(score)
-    officials = score.performed_segment.officials.map{|d| [d.number, d]}.to_h
+    officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
 
     score.elements.each do |element|
       element.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
@@ -222,41 +215,6 @@ class CompetitionUpdater < Updater
         component.component_judge_details.create(number: i, value: value, official: officials[i])
       end
     end
-    
-=begin
-    ### elements
-    score.elements.each do |element|
-      details = element.judges.split(/\s/).map(&:to_f)
-      avg = details.sum / details.count
-      ActiveRecord::Base.transaction do
-        details.each.with_index(1) do |value, i|
-          dev = value - avg
-          official = score.competition.performed_segments
-                     .where(category: score.category, segment: score.segment).first.officials
-                     .where(number: i).first || raise("no relevant officail: #{i}")
-          element.element_judge_details
-            .create(number: i, value: value, official: official, average: avg, deviation: dev, abs_deviation: dev.abs)
-        end
-      end
-    end
-
-    ### component
-    score.components.each do |component|
-      details = component.judges.split(/\s/).map(&:to_f)
-      avg = details.sum / details.count
-      ActiveRecord::Base.transaction do
-        details.each.with_index(1) do |value, i|
-          dev = value - avg
-          official = score.competition.performed_segments
-                     .where(category: score.category, segment: score.segment).first.officials
-                     .where(number: i).first ||
-                     raise("no relevant officail: #{i}")
-          component.component_judge_details
-            .create(number: i, value: value, official: official, average: avg, deviation: dev)
-        end
-      end
-    end
-=end
   end
 
   ################

@@ -19,4 +19,3 @@ module StringToModel
     end
   end
 end
-

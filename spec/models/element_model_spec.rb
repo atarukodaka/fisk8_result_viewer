@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Element do
   using StringToModel
-  
+
   let(:competition) { create(:competition, :world) }
 
   describe 'single' do
