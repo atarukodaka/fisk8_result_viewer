@@ -1,6 +1,0 @@
-- table || raise
-
-= form_group(Panel.human_attribute_name(:name)) do
-  = text_field_tag(:name, params[:name], size: 60, onchange: ajax_search(:name, table))
-= form_group(Panel.human_attribute_name(:nation)) do
-  = text_field_tag(:nation, params[:panel_nation], size: 60, onchange: ajax_search(:nation, table))

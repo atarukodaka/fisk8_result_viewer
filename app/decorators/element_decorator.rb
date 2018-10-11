@@ -4,20 +4,18 @@ class ElementDecorator < EntryDecorator
   def score_name
     h.link_to_score(nil, model.score)
   end
+
+=begin
   def ranking
-    h.link_to_competition(model.score.ranking, model.score.competition, category: model.score.category, segment: model.score.segment)
+    h.link_to_competition(model.score.ranking, model.score.competition,
+                          category: model.score.category, segment: model.score.segment)
   end
+=end
+
   def competition_name
     h.link_to_competition(model.score.competition)
   end
-=begin
-  def category
-    model.category.name
-  end
-  def segment
-    model.segment.name
-  end
-=end
+
   def skater_name
     h.link_to_skater(model.score.skater)
   end

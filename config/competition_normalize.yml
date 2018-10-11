@@ -1,20 +1,92 @@
-"Grand Prix .*Final": ["isu", "gp", "GPF%{year}"]
-"^ISU GP.*Final": ["isu", "gp", "GPF%{year}"]
-"^ISU GP":  ["isu", "gp", "GP%{country_city}%{year}"]
-"Olympic":  ["isu", "olympic", "OWG%{year}", "Olympic Winter Games %{city} %{year}"]
-"^ISU World Figure": ["isu", "world", "WORLD%{year}", "ISU World Championships %{year}"]
-"^ISU World Championships": ["isu", "world", "WORLD%{year}", "ISU World Championships %{year}"]
-"^ISU Four Continents": ["isu", "fcc", "FCC%{year}", "ISU Four Continents Championships %{year}"]
-"^ISU European": ["isu", "euro", "EURO%{year}", "ISU European Championships %{year}"]
-"^ISU World Team": ["isu", "team", "TEAM%{year}", "ISU World Team Trophy %{year}"]
-"^ISU World Junior": ["isu", "jworld", "JWORLD%{year}"]
-"^ISU JGP": ["isu", "jgp", "JGP%{country_city}%{year}"]
-"^ISU Junior Grand Prix": ["isu", "jgp", "JGP%{country_city}%{year}"]
-"^Finlandia Trophy": ["challenger", "finlandia", "FINLANDIA%{year}", "Finlandia Trophy %{year}"]
-"Warsaw Cup": ["challenger", "warshaw", "WARSAW%{year}", "Warsaw Cup %{year}"]
-"Autumn Classic": ["challenger", "aci", "ACI%{year}"]
-"Nebelhorn": [ "challenger", "nebelhorn", "NEBELHORN%{year}", "Nebelhorn Trophy %{year}"]
-"Lombardia":  ["challenger", "lombaridia", "LOMBARDIA%{year}", "Lombardia Trophy %{year}"]
-"Ondrej Nepela": ["challenger", "nepela", "NEPELA%{year}", "Ondrej Nepela Trophy %{year}"]
-
-
+-
+  regex: "Grand Prix .*Final|^ISU GP.*Final"
+  competition_class: isu
+  competition_type: gp
+  short_name: GPF%{year}
+-
+  regex: "^ISU GP"
+  competition_class: isu
+  competition_type: gp
+  short_name: GP%{country}%{year}
+-
+  regex: "Olympic"
+  competition_class: isu
+  competition_type: olympic
+  short_name: OWG%{year}
+  name: Olympic Winter Games %{city} %{year}
+-
+  regex: "^ISU World Figure|^ISU World Championships"
+  competition_class: isu
+  competition_type: world
+  short_name: WORLD%{year}
+  name: ISU World Championships %{year}
+-
+  regex: "^ISU Four Continents"
+  competition_class: isu
+  competition_type: fcc
+  short_name: FCC%{year}
+  name: ISU Four Continents Championships %{year}
+-
+  regex: "^ISU European"
+  competition_class: isu
+  competition_type: euro
+  short_name: EURO%{year}
+  name: ISU European Championships %{year}
+-
+  regex: "^ISU World Team"
+  competition_class: isu
+  competition_type: team
+  short_name: TEAM%{year}
+  name: ISU World Team Trophy %{year}
+-
+  regex: "^ISU World Junior"
+  competition_class: isu
+  competition_type: jworld
+  short_name: JWORLD%{year}
+-
+  regex: "^ISU JGP"
+  competition_class: isu
+  competition_type: jgp
+  short_name: JGP%{country}%{year}
+  name:
+-
+  regex: "^ISU Junior Grand Prix"
+  competition_class: isu
+  competition_type: jgp
+  short_name: JGP%{country}%{year}
+-
+  regex: "^Finlandia Trophy"
+  competition_class: challenger
+  competition_type: finlandia
+  short_name: FINLANDIA%{year}
+  name: Finlandia Trophy %{year}
+-
+  regex: Warsaw Cup
+  competition_class: challenger
+  competition_type: warshaw
+  short_name: WARSAW%{year}
+  name: Warsaw Cup %{year}
+-
+  regex: Autumn Classic
+  competition_class: challenger
+  competition_type: aci
+  short_name: ACI%{year}
+  name:
+-
+  regex: Nebelhorn
+  competition_class: challenger
+  competition_type: nebelhorn
+  short_name: NEBELHORN%{year}
+  name: Nebelhorn Trophy %{year}
+-
+  regex: Lombardia
+  competition_class: challenger
+  competition_type: lombaridia
+  short_name: LOMBARDIA%{year}
+  name: Lombardia Trophy %{year}
+-
+  regex: Ondrej Nepela
+  competition_class: challenger
+  competition_type: nepela
+  short_name: NEPELA%{year}
+  name: Ondrej Nepela Trophy %{year}

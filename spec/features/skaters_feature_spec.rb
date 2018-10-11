@@ -3,6 +3,7 @@ require 'rails_helper'
 feature SkatersController, type: :feature, feature: true do
   let!(:main) { create(:competition, :world).scores.first.skater }
   let!(:sub) { create(:competition, :finlandia).scores.first.skater }
+  let(:no_scores_skater) { create(:skater, :no_scores) }
   let(:index_path) { skaters_path }
 
   ################
@@ -13,8 +14,22 @@ feature SkatersController, type: :feature, feature: true do
     end
 
     context :filter do
-      include_context :filter, SkatersFilter
+      include_context :filter, SkatersDatatable   ## , excludings: [:having_scores]
+
+=begin
+## TODO: implement having scores
+      context :having_no_scores do
+        it {
+          visit index_path
+          expect(page.text).not_to have_content(no_scores_skater.name)
+          find('#having_scores').click
+          sleep 1
+          expect(page.text).to have_content(no_scores_skater.name)
+        }
+      end
+=end
     end
+
     context :order do
       include_context :order, SkatersDatatable
     end

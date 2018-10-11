@@ -6,7 +6,7 @@ module AjaxDatatables::Datatable::Decoratable
 end
 
 module AjaxDatatables::Datatable::Decorate
-  def manipulate(r)
-    super(r).decorate
+  def manipulate(records)
+    super(records).decorate
   end
 end

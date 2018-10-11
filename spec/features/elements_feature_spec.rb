@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 feature ElementsController, type: :feature, feature: true do
-  let!(:score_world)  {    create(:competition, :world).scores.first }
-  let!(:score_finlandia)  { create(:competition, :finlandia).scores.first }
-  let!(:main){ score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
-  let!(:sub){ score_finlandia.elements.where(element_type: :spin).first }
+  let!(:score_world) { create(:competition, :world).scores.first }
+  let!(:score_finlandia) { create(:competition, :finlandia).scores.first }
+  let!(:main) { score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
+  let!(:sub) { score_finlandia.elements.where(element_type: :spin).first }
   let(:index_path) { elements_path }
 
   ################
@@ -14,7 +14,8 @@ feature ElementsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :filter, ScoresFilter, excludings: [:season_to, :season_from]
+      include_context :filter, ElementsDatatable,
+                      excludings: [:season_to, :season_from, :name_operator, :goe_operator]
       include_context :filter_season
 
       context 'element_name' do

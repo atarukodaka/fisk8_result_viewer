@@ -15,12 +15,13 @@ class AjaxDatatables::Columns
   #             columns[:address].source => "users.address"
   #
 
-  def initialize(cols=[], datatable: nil)
+  def initialize(cols = [], datatable: nil)
     @datatable = datatable
     @data = cols.map do |col|
       create_column(col)
     end
   end
+
   ################
   # if key given as integer, it works as array
   # if key given as symbol or string, it works as hash
@@ -29,20 +30,23 @@ class AjaxDatatables::Columns
     when Integer
       @data[key]
     when Symbol, String
-      @data.find {|c| c.name == key.to_s}
+      @data.find { |c| c.name == key.to_s }
     end
   end
+
   def []=(key, value)
-    col = create_column(value.merge({ 'name' => key }))
+    col = create_column(value.merge('name' => key))
     @data.push(col)
   end
+
   def add(cols)
-    [cols].flatten.map {|col| @data << create_column(col) }
+    [cols].flatten.map { |col| @data << create_column(col) }
   end
+
   ################
   # set sources of each columns
   def sources=(hash)
-    hash.each do|column, source|
+    hash.each do |column, source|
       self[column.to_sym].source = source
     end
   end
@@ -50,6 +54,7 @@ class AjaxDatatables::Columns
   def default_table_name
     @datatable.try(:records).try(:table_name)
   end
+
   def create_column(col)
     column = AjaxDatatables::Column.new
     case col
@@ -77,7 +82,7 @@ class AjaxDatatables::Column
   properties :name, :source, default: nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
-  property :operator, nil     # set nil as default so that Searchable module can guess by field type later on
+  property :operator, nil # set nil as default so that Searchable module can guess by field type later on
 
   def initialize(name: nil)
     @name = name.to_s
@@ -90,9 +95,11 @@ class AjaxDatatables::Column
   def table_name
     (source =~ /\./) ? source.split(/\./).first : ''
   end
+
   def table_field
     source.split(/\./).last
   end
+
   def model
     (table_name.present?) ? table_name.classify.constantize : nil
   end

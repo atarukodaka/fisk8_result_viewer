@@ -22,7 +22,7 @@ crumb :competition do |competition|
   parent :competitions
 end
 
-crumb :competition_category do |competion, category|
+crumb :competition_category do |_competion, _category|
   link competition.name, competition_path(competition.short_name)
   parent :competition
 end
@@ -53,8 +53,9 @@ crumb :scores do
   parent :root
 end
 
-crumb :score do | score|
-  link [score.competition_name, score.category.name, score.segment.name, score.ranking, score.skater_name].join(' / '), scores_path
+crumb :score do |score|
+  link [score.competition_name, score.category.name, score.segment.name,
+        score.ranking, score.skater_name].join(' / '), scores_path
   parent :scores
 end
 
@@ -111,7 +112,7 @@ crumb :component_judge_details do
   parent :root
 end
 
-crumb :deviations do |deviation|
+crumb :deviations do |_deviation|
   link 'Deviations', deviations_path
   parent :root
 end

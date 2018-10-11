@@ -1,3 +1,2 @@
-class ComponentsController < ApplicationController
-  include ControllerConcerns::Index
+class ComponentsController < IndexController
 end

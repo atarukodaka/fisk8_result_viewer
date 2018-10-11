@@ -1,3 +1,2 @@
-class ComponentJudgeDetailsController < ApplicationController
-  include ControllerConcerns::Index
+class ComponentJudgeDetailsController < IndexController
 end

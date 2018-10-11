@@ -7,10 +7,12 @@ class OfficialDecorator < EntryDecorator
     ps = model.performed_segment
     h.link_to_competition(ps.competition, category: ps.category)
   end
+
   def segment_name
     ps = model.performed_segment
     h.link_to_competition(ps.competition, category: ps.category, segment: ps.segment)
   end
+
   def panel_name
     h.link_to_panel(model.panel)
   end

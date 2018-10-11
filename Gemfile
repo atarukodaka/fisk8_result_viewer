@@ -18,16 +18,16 @@ gem 'slim-rails'
 gem 'pdftotext'
 gem 'bootstrap-sass'
 gem 'kaminari'
-gem 'draper'   ## decoration
+gem 'draper' ## decoration
 gem 'config'
-gem 'open_uri_redirections'    # for http: -> https: redirect
+gem 'open_uri_redirections' # for http: -> https: redirect
 gem 'sitemap_generator'
-gem 'active_hash', '~> 1.5'   # 2.x doenst support Ruby < 2.4 and Rails < 5
-gem 'gretel'       ## breadcriumb
+gem 'active_hash', '~> 1.5' # 2.x doenst support Ruby < 2.4 and Rails < 5
+gem 'gretel' ## breadcriumb
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'google-analytics-rails'
-gem 'rspec'   ## for heroku
-gem 'stackprof'  # profiling
+gem 'rspec' ## for heroku
+gem 'stackprof' # profiling
 
 ## for each environments
 group :development, :test do
@@ -66,5 +66,5 @@ group :production do
   gem 'pg'
 end
 
-gem 'daru'   # , '~> 0.2'
-gem 'statsample'   #, '~> 2.1.0'
+# gem 'daru'  # , '~> 0.2'
+# gem 'statsample' # , '~> 2.1.0'

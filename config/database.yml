@@ -9,21 +9,22 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development:
+development_sqlite3: &development_sqlite3
   <<: *default
   database: db/development.sqlite3
 
-development_postgresq:
+development_postgresql: &development_postgresql
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   username: fisk8viewer
   database: fisk8viewer
-  password: xxxx
+  password: fisk8viewer
   host: localhost
   port: 5432
   
-
+development:
+  <<: *development_sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -35,7 +36,6 @@ test:
 #production:
 #  <<: *default
 #  database: db/production.sqlite3
-
 
 production:
   adapter: postgresql

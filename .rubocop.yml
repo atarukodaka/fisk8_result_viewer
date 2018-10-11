@@ -6,3 +6,140 @@ AllCops:
     - '**/*.gemspec'
     - '**/vendor/**/*'
     - 'db/schema.rb'
+    - 'bin/*'
+    - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
+
+################
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
+
+Layout/AlignHash:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Lint/UnneededCopEnableDirective:
+  Enabled: false
+
+Lint/UnneededCopDisableDirective:
+  Enabled: false
+
+################
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - spec/**/*.rb
+    - lib/tasks/**/*.rake
+
+Metrics/ClassLength:
+  Max: 100
+  Exclude:
+    - app/updaters/competition_updater.rb       ## TODO: to fix cops
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 30
+  Exclude:
+    - db/migrate/*.rb
+    - app/updaters/competition_updater.rb    ## TODO
+
+Metrics/LineLength:
+  Max: 120
+
+################
+## Rails
+Rails/CreateTableWithTimestamps:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Exclude:
+    - 'app/models/skater.rb'
+
+Rails/Output:
+  Exclude:
+    - 'app/parsers/**/*.rb'
+    - 'app/updaters/**/*.rb'
+    
+################
+## Style
+Style/BlockComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/MixinGrouping:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+  
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/RegexpLiteral:   # %r{} or //
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator:
+    Enabled: true
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  
+Style/UnlessElse:
+  Enabled: false
+
+Style/WordArray:
+  Exclude: false
+  

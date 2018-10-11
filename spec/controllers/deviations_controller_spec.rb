@@ -17,8 +17,8 @@ describe DeviationsController, type: :controller do
   }
 
   describe '#index' do
-    subject { get :index  }
-    it { is_expected.to be_success}
+    subject { get :index }
+    it { is_expected.to be_success }
     its(:body) { is_expected.to have_content(first.score.name) }
     its(:body) { is_expected.to have_content(second.score.name) }
   end
@@ -28,12 +28,12 @@ describe DeviationsController, type: :controller do
     let!(:panel) { Panel.first }
 
     context 'panel_name' do
-      subject { get :panel, params: { name: panel.name } }
+      subject { get :show_panel, params: { name: panel.name } }
       its(:body) { is_expected.to have_content(panel.name) }
     end
 
     context 'format: .json' do
-      subject { get :panel, params: { name: panel.name, format: :json } }
+      subject { get :show_panel, params: { name: panel.name, format: :json } }
       its(:body) { is_expected.to have_content(panel.name) }
     end
   end
@@ -43,12 +43,12 @@ describe DeviationsController, type: :controller do
     let!(:skater) { Skater.first }
 
     context 'skater_name' do
-      subject { get :skater, params: { name: skater.name } }
+      subject { get :show_skater, params: { name: skater.name } }
       its(:body) { is_expected.to have_content(skater.name) }
     end
 
     context 'format: .json' do
-      subject { get :skater, params: { name: skater.name, format: :json } }
+      subject { get :show_skater, params: { name: skater.name, format: :json } }
       its(:body) { is_expected.to have_content(skater.name) }
     end
   end

@@ -8,13 +8,18 @@
 - codecov: icedance elements
 - help for rake:update
 - update:skaters categories
-- skater: having score or nolimit
-- spec/feature
-  - season from/to
-  - elements, components, statics, panels
-  - elements/date order
-  - context filter to accept hash or class
-- spec/controller/deviation
+- spec
+  - feature
+	- components, statics, panels
+  - controller/deviation
+- parser type can be show on builder
+- clean panel with zero scores
+- official absence: gpusa2016/pairs/short
+- refactoring
+  - devation
+- having scores for skater datatable
+- components feature spec
+- spin level: B is 0 ??
 
 ### new feature
 
@@ -144,7 +149,6 @@
 - spec:
   - all filters to work
 
-
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
 - total base_value in score
@@ -154,7 +158,6 @@
 - competition comment
 - content_for on <title>
 - skater-name correction
-
 
 ## 1.0.0-pre2
 

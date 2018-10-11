@@ -3,10 +3,10 @@ class ScoresDatatable < IndexDatatable
     super
 
     columns([:name, :competition_name, :competition_class, :competition_type,
-             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :season, :date,
-             :result_pdf, :ranking, :skater_name, :nation,
-             :tss, :tes, :pcs, :deductions, :base_value
-             ])
+             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type,
+             :season, :date, :result_pdf, :ranking, :skater_name, :nation,
+             :tss, :tes, :pcs, :deductions, :base_value])
+
     columns.sources = {
       name:              'scores.name',
       competition_name:  'competitions.name',
@@ -23,7 +23,8 @@ class ScoresDatatable < IndexDatatable
       nation:            'skaters.nation',
     }
 
-    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority, :segment_type, :team].each do |key|
+    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority,
+     :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
     end
@@ -35,7 +36,31 @@ class ScoresDatatable < IndexDatatable
 
     default_orders([[:date, :desc]])
   end
+
   def fetch_records
-    Score.includes(:competition, :skater, :category, :segment).joins(:competition, :skater, :category, :segment).all
+    tables = [:competition, :skater, :category, :segment]
+    Score.includes(tables).joins(tables)
+  end
+
+  def filters
+    model = Score
+    @filters ||= [
+      CompetitionsDatatable.new.filters.reject { |filter| filter.key == :site_url },
+      AjaxDatatables::Filter.new(:skater_name, :text_field, model: model),
+      AjaxDatatables::Filter.new(:category, model: model) {
+        [
+          AjaxDatatables::Filter.new(:category_name, :select, model: model),
+          AjaxDatatables::Filter.new(:category_type, :select, model: model),
+          AjaxDatatables::Filter.new(:seniority, :select, model: model),
+          AjaxDatatables::Filter.new(:team, :select, model: model),
+        ]
+      },
+      AjaxDatatables::Filter.new(:segment, model: model) {
+        [
+          AjaxDatatables::Filter.new(:segment_name, :select, model: model),
+          AjaxDatatables::Filter.new(:segment_type, :select, model: model),
+        ]
+      },
+    ].flatten
   end
 end

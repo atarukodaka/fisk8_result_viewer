@@ -42,15 +42,15 @@ Rails.application.routes.draw do
 
   resources :deviations, only: [:index, :show], param: :name do
     get :list, on: :collection
-    get :panel, on: :member    # /deviations/:name/panel
-    get :skater, on: :member    # /deviations/:name/panel
+    get :panel, on: :member, action: :show_panel # /deviations/:name/panel
+    get :skater, on: :member, action: :show_skater # /deviations/:name/panel
   end
 
   resources :element_judge_details, only: :index do
     get :list, on: :collection
   end
 
-resources :component_judge_details, only: :index do
+  resources :component_judge_details, only: :index do
     get :list, on: :collection
   end
 end

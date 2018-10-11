@@ -11,7 +11,13 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  #config.include Helper
+  # config.include Helper
+
+  ## excludings
+  config.filter_run_excluding updater: true, feature: true, rake: true, error_handler: true
+end
+
+RSpec.configure do |c|
 end
 
 ################
@@ -20,8 +26,8 @@ require 'simplecov'
 require 'codecov'
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
 SimpleCov.start do
-  #add_filter 'spec/updaters/consistency_spec.rb'
+  # add_filter 'spec/updaters/consistency_spec.rb'
   add_filter 'spec'
   add_filter 'config'
-  #add_filter 'config/initializers/direction.rb'
+  # add_filter 'config/initializers/direction.rb'
 end

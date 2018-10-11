@@ -1,33 +1,58 @@
-class DeviationsUpdater
-  def initialize(verbose: false)
-    @verbose = verbose
-  end
-
+class DeviationsUpdater < Updater
   def update_deviations
-    data = {}
-    ElementJudgeDetail.where("officials.absence": false).joins(:element, :official).group('elements.score_id').group(:official_id).sum(:abs_deviation).each do |key, value|
-      data[key] ||= {}
-      data[key][:tes] = value
-    end
-    ComponentJudgeDetail.where("officials.absence": false).joins(:component, :official).group('components.score_id').group(:official_id).sum(:deviation).each do |key, value|
-      data[key] ||= {}
-      data[key][:pcs] = value
-    end
-    scores = Score.all.index_by(&:id)  ## TODO: use memory too much ??
-
     ActiveRecord::Base.transaction do
-      puts 'start' if @verbose
-      Deviation.delete_all    ## clear all data first
-      data.each do |(score_id, official_id), hash|
-        Deviation.create(
-          score_id: score_id, official_id: official_id,
-          tes_deviation: hash[:tes],
-          pcs_deviation: hash[:pcs],
-          tes_deviation_ratio: hash[:tes] / scores[score_id].elements.count,
-          pcs_deviation_ratio: hash[:pcs].abs / 7.5,
-        )
+      Deviation.delete_all
+
+      Score.find_each do |score|
+        tes = calculate_tes_deviations(score.elements)
+        pcs = calculate_pcs_deviations(score.components)
+
+        score.performed_segment.officials.each do |official|
+          create_deviation(score, official, tes, pcs)
+        end
       end
-      puts 'done.' if @verbose
-    end  ## transaction
+    end
   end
+
+  protected
+
+  def create_deviation(score, official, tes, pcs)
+    official_number = official.number
+
+    Deviation.create(score: score, official: official,
+                     tes_deviation: tes[official_number].sum { |_k, hash| hash[:value].to_f },
+                     tes_deviation_ratio: tes[official_number].sum { |_k, hash| hash[:ratio].to_f },
+                     pcs_deviation: pcs[official_number].sum { |_k, hash| hash[:value].to_f },
+                     pcs_deviation_ratio: pcs[official_number].sum { |_k, hash| hash[:ratio].to_f })
+  end
+
+  def calculate_tes_deviations(elements)
+    num_elements = elements.count
+
+    data = Hash.new { |h, k| h[k] = {} }
+    elements.includes(:element_judge_details).each do |element|
+      details = element.element_judge_details
+      avg = details.sum(:value) / details.count
+      details.each do |detail|
+        dev = (avg - detail.value).abs
+        data[detail.number][element.number] = { value: dev, ratio: dev / num_elements }
+      end
+    end
+    data
+  end
+
+  def calculate_pcs_deviations(components)
+    data = Hash.new { |h, k| h[k] = {} }
+    components.includes(:component_judge_details).each do |component|
+      details = component.component_judge_details
+      avg = details.sum(:value) / details.count
+
+      details.each do |detail|
+        dev = detail.value - avg
+        data[detail.number][component.number] = { value: dev, ratio: dev / 7.5 }
+      end
+    end
+    data
+  end
+
 end
