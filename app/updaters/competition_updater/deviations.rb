@@ -28,8 +28,7 @@ module CompetitionUpdater::Deviations
     data = Hash.new { |h, k| h[k] = {} }
     elements.includes(:element_judge_details).each do |element|
       element_number = element.number
-      #values = element.element_judge_details.where("officials.absence": false).joins(:official).pluck(:value, :number)
-      values = element.element_judge_details.valid.pluck(:value, :number)
+      values = element.element_judge_details.pluck(:value, :number)
       avg = values.sum {|d| d[0]} / values.size
       values.each do |value, i|
         dev = (avg - value).abs
@@ -43,8 +42,7 @@ module CompetitionUpdater::Deviations
     data = Hash.new { |h, k| h[k] = {} }
     components.includes(:component_judge_details).each do |component|
       component_number = component.number
-      #values = component.component_judge_details.where("officials.absence": false).joins(:official).pluck(:value, :number)
-      values = component.component_judge_details.valid.joins(:official).pluck(:value, :number)
+      values = component.component_judge_details.joins(:official).pluck(:value, :number)
       avg = values.sum {|d| d[0]} / values.size
       values.each do |value, i|
         dev = value - avg
