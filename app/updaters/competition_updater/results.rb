@@ -18,7 +18,7 @@ module CompetitionUpdater::Results
       parsed[:judges].each do |item|
         panel = update_panel(name: item[:name], nation: item[:nation])
         debug("Judge No #{item[:number]}: #{panel.name} (#{panel.nation})", indent: 5)
-        ps.officials.create!(number: item[:number], panel: panel, absence: panel.name == '=')
+        ps.officials.create!(number: item[:number], panel: panel, absence: panel.name == '-')
       end
     end
   end

@@ -9,4 +9,7 @@ class ElementJudgeDetail < ApplicationRecord
   delegate :panel_name, to: :official
   delegate :name, :number, to: :element, prefix: :element
   delegate :skater_name, to: :score
+
+  ## scope
+  scope :valid, -> { joins(:official).where("officials.absence": false) }
 end

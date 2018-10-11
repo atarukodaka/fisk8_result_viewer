@@ -20,6 +20,7 @@
 - having scores for skater datatable
 - components feature spec
 - spin level: B is 0 ??
+- official absense: gpusa16/pair/short
 
 ### new feature
 
