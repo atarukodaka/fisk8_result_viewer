@@ -44,7 +44,7 @@ namespace :update do
   task competition: :environment do
     options = options_from_env
     params = ENV.to_hash.slice(:city, :name, :comment)
-    update_competition(ENV[:site_url], parser_type: ENV[:parser_type], options: options, params: params)
+    update_competition(ENV['site_url'], parser_type: ENV['parser_type'], options: options, params: params)
   end
 
   desc 'update competitions listed in config/competitions.yml'

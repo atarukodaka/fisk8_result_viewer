@@ -64,11 +64,11 @@ class CompetitionUpdater
   end
 
   ################
-  def update_competition(site_url, *args)
-    debug(site_url)
+  def update_competition(site_url, opts={})
+    debug("update competition with site_url of: #{site_url}")
     default_options = { date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil, params: {} }
-    options = default_options.merge(args.first || {})   ## TODO: args.first ??? wtf
+    options = default_options.merge(opts)
 
     if (!options[:force]) && Competition.where(site_url: site_url).present?
       debug("  .. skip: already existing: #{site_url}")
