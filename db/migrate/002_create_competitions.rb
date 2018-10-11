@@ -17,6 +17,8 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       # t.string :parser_type, default: 'isu_generic'
 
       t.string :comment
+
+      t.timestamps
     end
 
     ################

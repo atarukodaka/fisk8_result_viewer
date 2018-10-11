@@ -2,7 +2,7 @@
 FactoryBot.define do
   factory :category_result do
     trait :world do
-      category  { Category.find_by(name: 'MEN') }
+      category { Category.find_by(name: 'MEN') }
 
       ranking { 1 }
       points { 300 }

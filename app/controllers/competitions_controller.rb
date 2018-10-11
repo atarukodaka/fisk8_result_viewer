@@ -1,4 +1,6 @@
 class CompetitionsController < IndexController
+  using StringToModel
+
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none
@@ -35,17 +37,16 @@ class CompetitionsController < IndexController
   def data_to_show
     competition = Competition.find_by!(short_name: params[:short_name])
 
-    category_name, segment_name = params[:category], params[:segment]
-    category = Category.find_by(name: category_name)
-    segment = Segment.find_by(name: segment_name)
+    category = params[:category].to_category
+    segment = params[:segment].to_segment
 
     {
       competition: competition,
       category:    category,
       segment:     segment,
-      result_type: result_type(category_name, segment_name),
+      result_type: result_type(category.try(:name), segment.try(:name)),
       category_results: category_results_datatable(competition, category),
-        segment_results:  segment_results_datatable(competition, category, segment),
+      segment_results:  segment_results_datatable(competition, category, segment),
     }
   end
 end

@@ -82,9 +82,9 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
   describe 'enable_judge_details' do
     it {
       url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater = CompetitionUpdater.new(enable_judge_details: true, verbose: false)
+      updater = CompetitionUpdater.new(verbose: false)
 
-      updater.update_competition(url, categories: ['MEN'])
+      updater.update_competition(url, categories: ['MEN'], enable_judge_details: true)
       expect(ElementJudgeDetail.count).to be > 0
       expect(ComponentJudgeDetail.count).to be > 0
     }
@@ -105,23 +105,21 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     }
   end
 
-=begin
-## TODO: force option spec
   describe 'force' do
-    it {
-      url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater.update_competition(url)
+    let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
+    let(:original) { updater.update_competition(url).reload }
 
-      original_competition = Competition.find_by(site_url: url)
-      updater.update_competition(url)
-      new_competition = Competition.find_by(site_url: url)
-      expect(original_competition).to eq(new_competition)
+    describe 'non_forced' do
+      subject(:non_forced) { updater.update_competition(url).reload }
+      its(:updated_at) { is_expected.to eq(original.updated_at) }
+    end
 
-      ## force
-      updater.update_competition(url, force: true)
-      expect(original_competition).to be nil
-    }
-=end
+    describe 'forced' do
+      subject(:forced) { updater.update_competition(url, force: true).reload }
+      its(:updated_at) { is_expected.to eq(original.updated_at) }
+    end
+  end
+
   describe 'competition_type / short_name' do
     [['http://www.isuresults.com/results/season1617/gpjpn2016/',
       :isu, :gp, 'GPJPN2016'],

@@ -25,6 +25,6 @@ class SkatersDatatable < IndexDatatable
   end
 
   def fetch_records
-    Skater.includes(:category).references(:category)      ## .having_scores
+    Skater.includes(:category).references(:category).having_scores      ## .having_scores
   end
 end

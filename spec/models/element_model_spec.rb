@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Element do
+  using StringToModel
+  
   let(:competition) { create(:competition, :world) }
 
   describe 'single' do
@@ -9,9 +11,8 @@ RSpec.describe Element do
                        .where("categories.category_type": 'MEN').first.skater
     }
     let(:score) {
-      competition.scores.create(category: Category.find_by(name: 'TEAM MEN'),
-                                                      segment: Segment.find_by(name: 'SHORT PROGRAM'),
-                                                      skater: skater)
+      competition.scores.create(category: 'TEAM MEN'.to_category, segment: 'SHORT PROGRAM'.to_segment,
+                                skater: skater)
     }
 
     describe 'jump' do

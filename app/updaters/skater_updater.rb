@@ -1,9 +1,5 @@
-class SkaterUpdater
-  include DebugPrint
-
-  def initialize(verbose: false)
-    @verbose = verbose
-  end
+class SkaterUpdater < Updater
+  using StringToModel
 
   def parser
     @parser ||= SkaterParser.new
@@ -15,7 +11,7 @@ class SkaterUpdater
 
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
-          hash[:category] = Category.find_by(name: hash[:category])
+          hash[:category] = hash[:category].to_category
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
             attrs = [:name, :category, :nation, :isu_number]
             skater.update(hash.slice(*attrs))
@@ -43,7 +39,7 @@ class SkaterUpdater
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
                :coach, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))
-      skater.update(category: Category.find_by(name: details_hash[:category]))
+      skater.update(category: details_hash[:category].to_category)
     end
   end
 end ## class

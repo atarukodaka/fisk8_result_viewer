@@ -23,7 +23,7 @@ namespace :update do
       last: (ENV.include?('last')) ? ENV['last'].to_i : nil,
       filename: ENV['filename'],
       force: ENV['force'].to_i.nonzero?,
-      categories: ENV['categories'].to_s.split(/\s*,\s?/),
+      categories: (ENV['categories'].present?) ? ENV['categories'].to_s.split(/\s*,\s?/) : nil,
       enable_judge_details: ENV['enable_judge_details'].to_i.nonzero?,
       quiet: ENV['quiet'].to_i.nonzero?,
       season_from: ENV['season_from'],
@@ -34,12 +34,13 @@ namespace :update do
   end
 
   def update_competition(site_url, parser_type:, options:, params:)
-    CompetitionUpdater.new(parser_type: parser_type, verbose: !options[:quiet],
-                           enable_judge_details: options[:enable_judge_details])
+    CompetitionUpdater.new(parser_type: parser_type, verbose: !options[:quiet])
       .update_competition(site_url, date_format: options[:date_format], force: options[:force],
                           season_from: options[:season_from], season_to: options[:season_to],
-                          categories: options[:categories], params: params)
+                          categories: options[:categories], params: params,
+                          enable_judge_details: options[:enable_judge_details])
   end
+
   desc 'update competition'
   task competition: :environment do
     options = options_from_env

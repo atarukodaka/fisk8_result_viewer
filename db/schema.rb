@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "competition_type"
     t.string "competition_class"
     t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "component_judge_details", force: :cascade do |t|

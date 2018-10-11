@@ -1,4 +1,7 @@
+__END__
+
 require 'daru'
+require 'statsample'
 
 namespace :analysis do
   namespace :tes do

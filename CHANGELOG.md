@@ -20,7 +20,7 @@
 - having scores for skater datatable
 - components feature spec
 - spin level: B is 0 ??
-- update spec competition --force
+- enable_judge_detials shd be set on new or parse ??
 
 ### new feature
 
