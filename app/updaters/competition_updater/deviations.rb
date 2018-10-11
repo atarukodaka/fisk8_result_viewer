@@ -27,11 +27,12 @@ module CompetitionUpdater::Deviations
 
     data = Hash.new { |h, k| h[k] = {} }
     elements.includes(:element_judge_details).each do |element|
-      details = element.element_judge_details
-      avg = details.sum(:value) / details.count
-      details.each do |detail|
-        dev = (avg - detail.value).abs
-        data[detail.number][element.number] = { value: dev, ratio: dev / num_elements }
+      element_number = element.number
+      values = element.element_judge_details.pluck(:value)
+      avg = values.sum / values.size
+      values.each.with_index(1) do |value, i|
+        dev = (avg - value).abs
+        data[i][element_number] = { value: dev, ratio: dev / num_elements }
       end
     end
     data
@@ -40,12 +41,13 @@ module CompetitionUpdater::Deviations
   def calculate_pcs_deviations(components)
     data = Hash.new { |h, k| h[k] = {} }
     components.includes(:component_judge_details).each do |component|
-      details = component.component_judge_details
-      avg = details.sum(:value) / details.count
+      component_number = component.number
+      values = component.component_judge_details.pluck(:value)
+      avg = values.sum / values.size
 
-      details.each do |detail|
-        dev = detail.value - avg
-        data[detail.number][component.number] = { value: dev, ratio: dev / 7.5 }
+      values.each.with_index(1) do |value, i|
+        dev = value - avg
+        data[i][component_number] = { value: dev, ratio: dev / 7.5 }
       end
     end
     data
