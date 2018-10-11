@@ -29,7 +29,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject {
-        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: [])
+        updater.update_competition(url, categories: [], parser_type: :wtt2017)
       }
       it_behaves_like :having_competition_with_url
     end
@@ -37,7 +37,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'gpjpn' do
       let(:url) { 'http://www.isuresults.com/results/season1718/gpf1718/' }
       subject {
-        CompetitionUpdater.new(parser_type: :gpjpn).update_competition(url, categories: ['MEN'])
+        updater.update_competition(url, categories: ['MEN'], parser_type: :gpjpn)
       }
       it_behaves_like :having_competition_with_url
     end
@@ -47,7 +47,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
       subject(:competition) {
-        CompetitionUpdater.new(parser_type: :wtt2017).update_competition(url, categories: ['TEAM MEN'])
+        updater.update_competition(url, categories: ['TEAM MEN'], parser_type: :wtt2017)
       }
       it_behaves_like :having_score_with_category_of, 'TEAM MEN'
     end

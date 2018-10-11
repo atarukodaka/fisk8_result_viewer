@@ -1,17 +1,13 @@
-class DeviationsUpdater < Updater
-  def update_deviations
+module CompetitionUpdater::Deviations
+  def update_deviations(score)
     ActiveRecord::Base.transaction do
-      Deviation.delete_all
-
-      Score.find_each do |score|
-        tes = calculate_tes_deviations(score.elements)
-        pcs = calculate_pcs_deviations(score.components)
-
-        score.performed_segment.officials.each do |official|
-          create_deviation(score, official, tes, pcs)
-        end
+      tes = calculate_tes_deviations(score.elements)
+      pcs = calculate_pcs_deviations(score.components)
+      
+      score.performed_segment.officials.each do |official|
+        create_deviation(score, official, tes, pcs)
       end
-    end
+    end  ## transaction
   end
 
   protected
@@ -19,11 +15,11 @@ class DeviationsUpdater < Updater
   def create_deviation(score, official, tes, pcs)
     official_number = official.number
 
-    Deviation.create(score: score, official: official,
-                     tes_deviation: tes[official_number].sum { |_k, hash| hash[:value].to_f },
-                     tes_deviation_ratio: tes[official_number].sum { |_k, hash| hash[:ratio].to_f },
-                     pcs_deviation: pcs[official_number].sum { |_k, hash| hash[:value].to_f },
-                     pcs_deviation_ratio: pcs[official_number].sum { |_k, hash| hash[:ratio].to_f })
+    score.deviations.create(official: official,
+                            tes_deviation: tes[official_number].sum { |_k, hash| hash[:value].to_f },
+                            tes_deviation_ratio: tes[official_number].sum { |_k, hash| hash[:ratio].to_f },
+                            pcs_deviation: pcs[official_number].sum { |_k, hash| hash[:value].to_f },
+                            pcs_deviation_ratio: pcs[official_number].sum { |_k, hash| hash[:ratio].to_f })
   end
 
   def calculate_tes_deviations(elements)
@@ -54,5 +50,4 @@ class DeviationsUpdater < Updater
     end
     data
   end
-
 end

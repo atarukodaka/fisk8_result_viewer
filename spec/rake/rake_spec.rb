@@ -48,16 +48,6 @@ RSpec.describe 'rake', rake: true do
     }
   end
   ################
-  describe 'deviation' do
-    it {
-      ENV['last'] = '1'
-      ENV['enable_judge_details'] = '1'
-      ENV['quiet'] = '1'
-      expect(@rake['update:competitions'].invoke).to be_truthy
-      expect(@rake['update:deviations'].invoke).to be_truthy
-    }
-  end
-  ################
   describe 'parse scores' do
     it do
       ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'

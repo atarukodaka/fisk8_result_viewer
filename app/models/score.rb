@@ -6,6 +6,7 @@ class Score < ApplicationRecord
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
+  has_many :deviations, dependent: :destroy
 
   belongs_to :competition
 

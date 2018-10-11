@@ -17,7 +17,7 @@ development_postgresql: &development_postgresql
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  username: fisk8viewer
+  username: postgres
   database: fisk8viewer
   password: fisk8viewer
   host: localhost
@@ -41,7 +41,7 @@ production:
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  username: postgres
+  username: fisk8viewer
   database: fisk8viewer
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: <%= ENV['DATABASE_HOST'] %>
