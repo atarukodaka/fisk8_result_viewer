@@ -7,6 +7,6 @@ class Official < ApplicationRecord
   delegate :competition_name, :category_name, :segment_name, to: :performed_segment
   delegate :name, :nation, to: :panel, prefix: :panel
 
-  scope :absent, -> { where(absence: true) }
-  scope :attended, -> { where(absence: false) }
+  #scope :absent, -> { where(absence: true) }
+  #scope :attended, -> { where(absence: false) }
 end
