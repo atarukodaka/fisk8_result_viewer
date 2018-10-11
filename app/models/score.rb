@@ -37,17 +37,13 @@ class Score < ApplicationRecord
       components.try(:[], i).try(:value)
     end
   end
-
+  
   ##
   def summary
-    skater_name = self.skater.try(:name) || self.skater_name
-    nation = self.skater.try(:nation) || self.nation
-    isu_number = self.skater.try(:isu_number) || 0
-
     '    %s-%s [%2d] %-35s (%6d)[%s] | %6.2f = %6.2f + %6.2f + %2d' %
-      [self.category.name, self.segment.name, self.ranking,
-       skater_name.truncate(35), isu_number.to_i, nation,
-       self.tss.to_f, self.tes.to_f, self.pcs.to_f, self.deductions.to_i]
+      [category_name, segment_name, ranking,
+       skater_name.truncate(35), skater.isu_number.to_i, nation,
+       tss.to_f, tes.to_f, pcs.to_f, deductions.to_i]
   end
 
   private

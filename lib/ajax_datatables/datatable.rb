@@ -35,7 +35,8 @@ module AjaxDatatables
     property(:data, nil)
     property(:records) {  fetch_records }
     property(:settings) { default_settings }
-    properties(:default_orders, default: [])
+    #properties(:default_orders, default: [])
+    property(:default_orders, [])
 
     attr_reader :view_context
 
@@ -49,10 +50,11 @@ module AjaxDatatables
       "table_#{self.object_id}"
     end
 
+=begin
     def view # short cut for view_context
       @view_context
     end
-
+=end
     ## columns accessors
     def columns(cols = nil)     # cols can be array of Hash or Symbol/String
       if cols                   # setter for method chain
@@ -66,6 +68,7 @@ module AjaxDatatables
       @columns = AjaxDatatables::Columns.new(cols, datatable: self)
     end
 
+=begin
     def add_columns(cols)
       if @columns.nil?
         columns = cols # rubocop:disable Lint/UselessAssignment:
@@ -73,6 +76,7 @@ module AjaxDatatables
         @columns.add(cols)
       end
     end
+=end
 
     ## data fetching/manipulation
     def fetch_records
@@ -87,10 +91,12 @@ module AjaxDatatables
       records
     end
 
+=begin
     def refresh
       @data = nil
       data
     end
+=end
 
     ################
     ## filters

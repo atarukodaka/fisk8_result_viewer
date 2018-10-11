@@ -30,6 +30,14 @@ RSpec.describe 'rake', rake: true do
   end
 
   ################
+  context 'update competition' do
+    it {
+      site_url = 'http://www.isuresults.com/results/season1718/wc2018/'
+      ENV['site_url'] = site_url
+      @rake['update:competition'].execute
+      expect(Competition.find_by(site_url: site_url).site_url).to eq(site_url)
+    }
+  end
   context 'update competitions' do
     it {
       ENV['last'] = '1'
