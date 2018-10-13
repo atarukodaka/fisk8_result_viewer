@@ -15,19 +15,23 @@ module CompetitionParser
       debug(" -- parse summary: #{site_url}")
       city, country = parse_city_country(page)
 
-      summary = CompetitionParser::SummaryParser::SummaryTable.new(
+      results = parse_summary_table(page, url: site_url)
+      summary = CompetitionParser::SummaryParser::Summary.new(
         name:     parse_name(page),
         site_url: site_url,
         city:     city,
         country:  country,
-        time_schedule: parse_time_schedule(page, date_format: date_format)
+        category_results: results[:category_results],
+        segment_results: results[:segment_results]
       )
-      parse_summary_table(page, url: site_url).each do |item|
-        if item[:segment].blank?
-          summary[:category_results] << item.slice(:category, :result_url)
-        else
-          summary[:segment_results] << item.slice(:category, :segment, :panel_url, :result_url, :score_url)
-        end
+      ## set starting_time for each segments
+      time_schedule = parse_time_schedule(page, date_format: date_format)
+      summary[:segment_results].each do |result|
+        elem = time_schedule.select { |d|
+          d[:category] == result[:category] &&
+            d[:segment] == result[:segment]
+        }.first
+        result[:starting_time] = elem[:starting_time] if elem
       end
       summary
     end
@@ -45,28 +49,52 @@ module CompetitionParser
       end
     end
 
+    def parse_url_by_string(row, search_string, base_url: '')
+      a_elem = nil
+      Array(search_string).each do |string|
+        xpath_normal = "td//a[contains(text(), '#{string}')]"
+        xpath_csfin = "td//a[*[contains(text(), '#{string}')]]"
+        if elem = row.xpath(" #{xpath_normal} | #{xpath_csfin} ").first
+          a_elem = elem
+          break
+        end
+      end
+      (a_elem) ? File.join(base_url, a_elem.attributes['href'].value) : nil
+    end
+    
+    def parse_url_by_column(row, column_number, base_url: '')
+      File.join(base_url, row.xpath("td[#{column_number}]//a/@href").text)
+    end
     def parse_summary_table(page, url: '')
       elem = page.xpath("//*[text()='Category']").first || raise
       rows = elem.xpath('ancestor::table[1]//tr')
       category = ''
+      data = { category_results: [], segment_results: [] }
 
-      rows.reject { |r| r.xpath('td').blank? }.map do |row|
+      rows.reject { |r| r.xpath('td').blank? }.each do |row|
         if (c = row.xpath('td[1]').text.presence)
           category = normalize_category(c)
         end
         segment = row.xpath('td[2]').text.squish.upcase
-
         next if (category.blank? && segment.blank?) ||
-                (segment.blank? && (row.xpath('td[4]').text =~ /result/i).nil?) # TODO: ??
+                row.xpath('td[3]').text.blank?  || row.xpath("td[4]").text =~ /cancelled/
 
-        data = { category: category, segment: segment }
-
-        [:panel_url, :result_url, :score_url].each.with_index(3) do |key, i|
-          item_url = row.xpath("td[#{i}]//a/@href").text
-          data[key] = (item_url.present?) ? File.join(url, item_url).to_s : ''
+        if segment.blank?   ## category section
+          data[:category_results] << {
+            category: category,
+            result_url: parse_url_by_string(row, 'Result', base_url: url)
+          }
+        else    ## segment section
+          data[:segment_results] << {
+            category: category,
+            segment: segment,
+            panel_url: parse_url_by_column(row, 3, base_url: url),
+            result_url: result_url = parse_url_by_column(row, 4, base_url: url),
+            score_url: parse_url_by_column(row, 5, base_url: url)
+          } 
         end
-        data
-      end.compact
+      end
+      data
     end
 
     ################
@@ -113,7 +141,8 @@ module CompetitionParser
           segment:  row.xpath('td[4]').text.squish.upcase
         }
       end
-      TimeSchedule.new(data.compact)
+      # TimeSchedule.new(data.compact)
+      data.compact
     end
 
     def parse_name(page)

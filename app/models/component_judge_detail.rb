@@ -11,5 +11,5 @@ class ComponentJudgeDetail < ApplicationRecord
   delegate :skater_name, to: :score
 
   ## scope
-  #scope :valid, -> { joins(:official).where("officials.absence": false) }
+  # scope :valid, -> { joins(:official).where("officials.absence": false) }
 end

@@ -55,4 +55,4 @@ module CompetitionUpdater::Results
       end
     end
   end
-end  
+end

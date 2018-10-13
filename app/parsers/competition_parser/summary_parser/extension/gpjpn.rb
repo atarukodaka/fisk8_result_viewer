@@ -6,48 +6,41 @@ module CompetitionParser
           ['', 'JPN']
         end
 
-        # rubocop:disable all
-        def parse_summary_table(page, url: '')
-          header_elem = page.xpath("//*[text()='Men']").first
-          rows = header_elem.xpath('../../tr')
-          category = ''
-          segment = ''
-          summary = []
-          # entry_url = ''
-          panel_url = ''
-          segment_result_url = ''
-          # rows[0..-1].each do |row|
-          rows.each do |row|
-            next if row.xpath('td').blank?
+        def header_element(page)
+          page.xpath("//*[text()='Men']").first
+        end
 
-            if row.xpath('td[2]').text == 'Entries'
+        def parse_summary_table(page, url: '')
+          data = { category_results: [], segment_results: [] }
+          category = ''
+          current_segment_results = nil
+
+          header_element(page).xpath('../../tr').each do |row|
+            if row.xpath("td/a[contains(text(), 'Entries')]").present?
               category = row.xpath('td[1]').text.upcase
-              result_url = URI.join(url, row.xpath('td[3]/a/@href').text).to_s
-              summary << {
-                category:   category,
-                segment:    '',
-                result_url: result_url,
-                score_url:  '',
+              data[:category_results] << {
+                category: category,
+                result_url: parse_url_by_string(row, 'Result', base_url: url),
               }
-            elsif row.xpath('td').count == 2
-              segment = row.xpath('td[1]').text.upcase
-              panel_url = URI.join(url, row.xpath('td[2]/a/@href').text).to_s
-            elsif row.xpath('td[1]').text == 'Starting Order/Detailed Classification'
-              segment_result_url = URI.join(url, row.xpath('td[1]/a/@href').text).to_s
-            elsif row.xpath('td[1]').text == 'Judges Score (pdf)'
-              score_url = URI.join(url, row.xpath('td[1]/a/@href').text).to_s
-              summary << {
-                category:   category,
-                segment:    segment,
-                result_url: segment_result_url,
-                score_url:  score_url,
-                panel_url:  panel_url,
+            elsif row.xpath('td').count == 2   ##  new section
+              current_segment_results = {
+                category: category,
+                segment: row.xpath('td[1]').text.upcase,
+                panel_url: parse_url_by_string(row, 'Panel of Judges', base_url: url),
               }
+            elsif (result_url = parse_url_by_string(row, 'Starting Order', base_url: url))
+              current_segment_results[:result_url] = result_url
+            elsif (score_url =  parse_url_by_string(row, 'Judges Score', base_url: url))
+              current_segment_results[:score_url] = score_url
+              data[:segment_results] << current_segment_results
+              current_segment_results = nil
+            else
+              raise 'parse error'
             end
           end
-          summary
+          data   ## ensure to return hash
         end
-        
+
         def parse_time_schedule(page, date_format: '') ## rubocop:disable Lint/UnusedMethodArgument
           Time.zone ||= 'UTC'
           header_elem = page.xpath("//*[text()='Date']").first
@@ -99,10 +92,8 @@ module CompetitionParser
               }
             end
           end
-          # summary
-          TimeSchedule.new(summary)
+          summary
         end
-        # rubocop:enable all
       end
     end
   end

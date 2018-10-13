@@ -3,7 +3,7 @@ module CompetitionUpdater::Deviations
     ActiveRecord::Base.transaction do
       tes = calculate_tes_deviations(score.elements)
       pcs = calculate_pcs_deviations(score.components)
-      
+
       score.performed_segment.officials.each do |official|
         create_deviation(score, official, tes, pcs)
       end
@@ -29,7 +29,7 @@ module CompetitionUpdater::Deviations
     elements.includes(:element_judge_details).each do |element|
       element_number = element.number
       values = element.element_judge_details.pluck(:value, :number)
-      avg = values.sum {|d| d[0]} / values.size
+      avg = values.sum { |d| d[0] } / values.size
       values.each do |value, i|
         dev = (avg - value).abs
         data[i][element_number] = { value: dev, ratio: dev / num_elements }
@@ -43,7 +43,7 @@ module CompetitionUpdater::Deviations
     components.includes(:component_judge_details).each do |component|
       component_number = component.number
       values = component.component_judge_details.joins(:official).pluck(:value, :number)
-      avg = values.sum {|d| d[0]} / values.size
+      avg = values.sum { |d| d[0] } / values.size
       values.each do |value, i|
         dev = value - avg
         data[i][component_number] = { value: dev, ratio: dev / 7.5 }

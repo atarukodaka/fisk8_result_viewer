@@ -57,4 +57,4 @@ module CompetitionUpdater::Scores
       end
     end
   end
-end  
+end

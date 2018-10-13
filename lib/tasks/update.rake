@@ -42,17 +42,16 @@ namespace :update do
 
   desc 'update competitions listed in config/competitions.yml'
   task competitions: :environment do
-    options = options_from_env
-
-    ## options
-    CompetitionList.filename = options[:filename] if options[:filename].present?
+    env_options = options_from_env
+    CompetitionList.filename = env_options[:filename] if env_options[:filename].present?
 
     list = CompetitionList.all
-    list = list.last(options[:last]).reverse if options[:last].present?
+    list = list.last(env_options[:last]).reverse if env_options[:last].present?
 
     list.each do |item|
+      options = env_options.dup
       options[:params] = item.attributes.slice(:city, :name, :comment)
-      options[:parser_type] = item[:parser_type]
+      options.merge!(item.attributes.slice(:date_format, :parser_type))
       CompetitionUpdater.new(verbose: !options[:quiet]).update_competition(item[:site_url], options)
     end ## each
   end ## task

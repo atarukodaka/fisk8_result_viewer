@@ -24,4 +24,4 @@ module CompetitionUpdater::Utils
       name
     end
   end
-end  
+end

@@ -64,6 +64,13 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       subject(:competition) { updater.update_competition(url, categories: ['MEN']) }
       it_behaves_like :having_competition_with_url
     end
+    describe 'csfin' do
+      let(:url) { 'http://www.figureskatingresults.fi/results/1617/CSFIN2016/' }
+      subject {
+        updater.update_competition(url, categories: ['MEN'])
+      }
+      it_behaves_like :having_competition_with_url
+    end
   end
   describe 'live results' do
     describe 'gpfra2016/ICE DANCE' do
@@ -141,8 +148,15 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
      ['http://www.isuresults.com/results/season1617/jgpger2016/',
       :isu, :jgp, 'JGPGER2016'],
      ['http://www.figureskatingresults.fi/results/1617/CSFIN2016/',
-      :challenger, :finlandia, 'FINLANDIA2016']]
-      .each do |ary|
+      :challenger, :finlandia, 'FINLANDIA2016'],
+     ['http://www.isuresults.com/results/season1718/csger2017/',
+      :challenger, :nebelhorn, 'NEBELHORN2017'],
+     ['http://www.fisg.it/upload/result/4468/index.html',
+      :challenger, :lombardia, 'LOMBARDIA2017'],
+     ['http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/',
+      :challenger, :nepela, 'NEPELA2017'],
+     ['http://www.pfsa.com.pl/results/1314/WC2013/',
+      :challenger, :warsaw, 'WARSAW2013'],].each do |ary|
       ## TODO: competition_class, and other examples to add
       context ary[0] do
         let(:url) { ary[0] }

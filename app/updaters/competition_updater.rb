@@ -3,7 +3,7 @@ class CompetitionUpdater < Updater
   include CompetitionUpdater::Deviations
   include CompetitionUpdater::Results
   include CompetitionUpdater::Scores
-  include CompetitionUpdater::Utils  
+  include CompetitionUpdater::Utils
 
   def clear_existing_competitions(site_url)
     ActiveRecord::Base.transaction do
@@ -20,7 +20,8 @@ class CompetitionUpdater < Updater
     end
     competition.country ||= CityCountry.find_by(city: competition.city).try(:country)
     [:start_date, :end_date, :timezone].each do |key|
-      competition[key] =  summary[:time_schedule].send(key)
+      # competition[key] =  summary[:time_schedule].send(key)
+      competition[key] =  summary.send(key)
     end
   end
 
@@ -41,12 +42,13 @@ class CompetitionUpdater < Updater
       return comps.first
     end
 
+
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
       summary = summary_parser(options[:parser_type]).parse(site_url, date_format: options[:date_format]) || return
-      summary[:time_schedule].season.between?(options[:season_from], options[:season_to]) ||
+      summary.season.between?(options[:season_from], options[:season_to]) ||
         begin
-          debug("skip: season out of range ")
+          debug('skip: season out of range ')
           return
         end
 
@@ -63,7 +65,7 @@ class CompetitionUpdater < Updater
         summary.segment_results_with(category: category.name, validation: true).each do |seg_item|
           segment = seg_item[:segment].to_segment
 
-          starting_time = summary[:time_schedule].starting_time(category.name, segment.name) || raise
+          starting_time = summary.starting_time(category.name, segment.name) || raise
           update_performed_segment(competition, category, segment, seg_item[:panel_url],
                                    starting_time: starting_time)
           update_segment_results(competition, category, segment, seg_item[:result_url])
@@ -73,7 +75,7 @@ class CompetitionUpdater < Updater
 
       ## judge details
       #        it was random order before 2016-17
-      #if options[:enable_judge_details] && competition.start_date > Time.zone.parse('2016-7-1')
+      # if options[:enable_judge_details] && competition.start_date > Time.zone.parse('2016-7-1')
       if options[:enable_judge_details] && SkateSeason.new(competition.season).between?('2016-17', nil)
         debug('update judge details and deviations', indent: 3)
         competition.scores.each do |score|
@@ -84,6 +86,7 @@ class CompetitionUpdater < Updater
       competition        ## ensure to return competition object
     end ## transaction
   end
+
   ################
   def summary_parser(parser_type = nil)
     @summary_parser ||=
