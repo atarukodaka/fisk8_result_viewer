@@ -30,11 +30,11 @@ module CompetitionParser
 
       ################
       def start_date
-        @data[:segment_results].reject {|d| d[:starting_time].nil? }.map { |d| d[:starting_time] }.min.to_date || raise
+        @data[:segment_results].reject { |d| d[:starting_time].nil? }.map { |d| d[:starting_time] }.min.to_date || raise
       end
 
       def end_date
-        @data[:segment_results].reject {|d| d[:starting_time].nil? }.map { |d| d[:starting_time] }.max.to_date || raise
+        @data[:segment_results].reject { |d| d[:starting_time].nil? }.map { |d| d[:starting_time] }.max.to_date || raise
       end
 
       def season
@@ -42,7 +42,7 @@ module CompetitionParser
       end
 
       def timezone
-        elem = @data[:segment_results].find {|d| d[:starting_time].present? }
+        elem = @data[:segment_results].find { |d| d[:starting_time].present? }
         (elem) ? elem[:starting_time].time_zone.name : 'UTC'
       end
 

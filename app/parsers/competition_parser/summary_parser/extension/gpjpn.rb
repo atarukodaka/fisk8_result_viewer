@@ -41,18 +41,14 @@ module CompetitionParser
           data   ## ensure to return hash
         end
 
+        ## this site is nightmare again: TD doesnt wraped with TR
         def parse_time_schedule(page, date_format: '') ## rubocop:disable Lint/UnusedMethodArgument
           Time.zone ||= 'UTC'
           header_elem = page.xpath("//*[text()='Date']").first
           table = header_elem.xpath('../..')
 
-          i = 1
-          b_header = true
-          summary = []
-          date = nil
-          time = nil
-          category = ''
-          segment = ''
+          i = 1;  b_header = true; summary = []
+          date = nil; time = nil; category = ''; segment = ''
           timezone = 'Asia/Tokyo'
 
           table.children.each do |elem|
@@ -61,12 +57,9 @@ module CompetitionParser
               next
             when 'td'
               case i
-              when 1
-                date = elem.text
-              when 2
-                time = elem.text
-              when 3
-                category = elem.text.upcase
+              when 1 then date = elem.text
+              when 2 then time = elem.text
+              when 3 then category = elem.text.upcase
               when 4
                 segment = elem.text.upcase
                 summary << {
@@ -75,11 +68,7 @@ module CompetitionParser
                   starting_time:     "#{date} #{time}".in_time_zone(timezone),
                 }
               end
-              if i == 4
-                i = 1
-              else
-                i += 1
-              end
+              (i == 4) ? i = 1 : i += 1
             when 'tr'
               if b_header # skip if header
                 b_header = false

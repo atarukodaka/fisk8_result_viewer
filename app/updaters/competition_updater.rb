@@ -42,10 +42,10 @@ class CompetitionUpdater < Updater
       return comps.first
     end
 
-
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
-      summary = summary_parser(options[:parser_type]).parse(site_url, date_format: options[:date_format]) || return
+      summary = parser(:summary, parser_type: options[:parser_type])
+                .parse(site_url, date_format: options[:date_format]) || return
       summary.season.between?(options[:season_from], options[:season_to]) ||
         begin
           debug('skip: season out of range ')
@@ -74,8 +74,7 @@ class CompetitionUpdater < Updater
       end
 
       ## judge details
-      #        it was random order before 2016-17
-      # if options[:enable_judge_details] && competition.start_date > Time.zone.parse('2016-7-1')
+      ###        it was random order before 2016-17
       if options[:enable_judge_details] && SkateSeason.new(competition.season).between?('2016-17', nil)
         debug('update judge details and deviations', indent: 3)
         competition.scores.each do |score|
@@ -88,22 +87,9 @@ class CompetitionUpdater < Updater
   end
 
   ################
-  def summary_parser(parser_type = nil)
-    @summary_parser ||=
-      begin
-        # model_class.incorporate(@parser_type)
-        model_class = CompetitionParser::SummaryParser
-
-        if parser_type
-          prepended_class = "#{model_class}::Extension::#{parser_type.to_s.camelize}".constantize
-          model_class.dup.prepend(prepended_class)
-        else
-          model_class
-        end
-      end.new(verbose: verbose)
-  end
-
-  def parser(key)
-    "CompetitionParser::#{key.to_s.camelize}Parser".constantize.new(verbose: verbose)
+  def parser(key, parser_type: nil)
+    model = "CompetitionParser::#{key.to_s.camelize}Parser".constantize
+    model = model.incorporate(parser_type) if key == :summary
+    model.new(verbose: verbose)
   end
 end

@@ -61,10 +61,11 @@ module CompetitionParser
       end
       (a_elem) ? File.join(base_url, a_elem.attributes['href'].value) : nil
     end
-    
+
     def parse_url_by_column(row, column_number, base_url: '')
       File.join(base_url, row.xpath("td[#{column_number}]//a/@href").text)
     end
+
     def parse_summary_table(page, url: '')
       elem = page.xpath("//*[text()='Category']").first || raise
       rows = elem.xpath('ancestor::table[1]//tr')
@@ -77,7 +78,7 @@ module CompetitionParser
         end
         segment = row.xpath('td[2]').text.squish.upcase
         next if (category.blank? && segment.blank?) ||
-                row.xpath('td[3]').text.blank?  || row.xpath("td[4]").text =~ /cancelled/
+                row.xpath('td[3]').text.blank? || row.xpath('td[4]').text =~ /cancelled/
 
         if segment.blank?   ## category section
           data[:category_results] << {
@@ -89,9 +90,9 @@ module CompetitionParser
             category: category,
             segment: segment,
             panel_url: parse_url_by_column(row, 3, base_url: url),
-            result_url: result_url = parse_url_by_column(row, 4, base_url: url),
+            result_url: parse_url_by_column(row, 4, base_url: url),
             score_url: parse_url_by_column(row, 5, base_url: url)
-          } 
+          }
         end
       end
       data
