@@ -4,6 +4,10 @@ class PerformedSegment < ApplicationRecord
 
   belongs_to :competition
 
+  ## scope
+  scope :category, ->(cat) { where(category: cat) }
+  scope :segment, ->(seg) { where(segment: seg) }
+
   ## references
   belongs_to :category
   belongs_to :segment

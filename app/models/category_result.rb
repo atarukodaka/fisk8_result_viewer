@@ -21,6 +21,7 @@ class CategoryResult < ApplicationRecord
   ## scopes
   scope :recent, -> { joins(:competition).order('competitions.start_date desc') }
   scope :category, ->(cat) { where(category: cat) }
+  scope :segment_ranking, ->(segment, ranking) { where("#{segment.segment_type}_ranking": ranking) }
 
   def summary
     '  %s %2d %-35s (%6d)[%s] | %6.2f %2d / %2d' %
