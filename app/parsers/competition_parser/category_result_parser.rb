@@ -1,10 +1,15 @@
 class CompetitionParser
   class CategoryResultParser < ResultParser
+    def parse(url, category)
+      debug("-- parsing category result for '%-10s': %s'" % [category, url], indent: 3)
+      super(url).map {|d| d[:category] = category; d}
+    end
+    
     def columns
       {
         skater_name:   { header_regex: /Name/ },
         isu_number:    { header_regex: /Name/, callback: elem_to_isu_number, },
-        nation:        { header_regex: /Nation/ },
+        skater_nation:        { header_regex: /Nation/ },
 
         ranking:       { header_regex: /F?P[lL]\.?/, callback: elem_to_i },
         points:        { header_regex: /Points/, callback: elem_to_f },

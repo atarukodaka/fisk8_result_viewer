@@ -19,7 +19,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       subject { updater.update_competition(url) }
       it_behaves_like :having_competition_with_url
     end
-    describe 'jgpfra2010 with isu_generic for mdy_date type' do
+    describe 'date_format: jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
       let(:date_format) { '%m/%d/%Y' }
       subject { updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
