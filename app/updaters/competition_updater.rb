@@ -28,7 +28,6 @@ class CompetitionUpdater < Updater
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil}
     options = default_options.merge(opts)
-    # if (!options[:force]) && (comps = Competition.where(site_url: site_url).presence)
     if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
       debug("  .. skip: already existing: #{site_url}")
       return competition
@@ -58,7 +57,8 @@ class CompetitionUpdater < Updater
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
             category_result.attributes = {
-              skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
+              #skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
+              skater: find_or_create_skater(item)
               category: item[:category].to_category,
             }
             debug(category_result.summary)
@@ -75,9 +75,7 @@ class CompetitionUpdater < Updater
           data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
             .reject { |d| d[:panel_name] == '-' }.each do |official|
             panel = Panel.find_or_create_by(name: official[:panel_name])
-            if official[:panel_nation] != 'ISU' && panel.nation.blank?
-              panel.update!(nation: official[:panel_nation])
-            end
+            panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
             performed_segment.officials.create!(number: official[:number], panel: panel)
           end
         end
@@ -94,7 +92,8 @@ class CompetitionUpdater < Updater
                  .segment_ranking(score.segment, score.ranking).first
             score.skater =
               cr.try(:skater) ||
-              find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
+              #find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
+              find_or_create_skater(item)
             ## ps
             ps = competition.performed_segments.category(score.category).segment(score.segment).first
             score.date = ps.starting_time.to_date
@@ -136,4 +135,28 @@ class CompetitionUpdater < Updater
       end
     end
   end
+  ################
+  ## utils
+    def normalize_persons_name(name)
+    if name.to_s =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
+      [$2, $1].join(' ')
+    else
+      name
+    end
+  end
+
+  def find_or_create_skater(item)
+    normalized = normalize_persons_name(item[:skater_name])
+    @skater_name_correction ||= YAML.load_file(Rails.root.join('config', 'skater_name_correction.yml'))
+    corrected_skater_name = @skater_name_correction[normalized] || normalized
+    ActiveRecord::Base.transaction do
+      Skater.find_or_create_by_isu_number_or_name(item[:isu_number], corrected_skater_name) do |sk|
+        sk.attributes = {
+          category: Category.where(team: false, category_type: item[:category].to_category.category_type).first,
+          nation:   item[:nation],
+        }
+      end
+    end
+  end
+  
 end
