@@ -1,8 +1,9 @@
 module CompetitionUpdater::Utils
+=begin
   def slice_common_attributes(model, hash)
     hash.slice(*model.class.column_names.map(&:to_sym) & hash.keys)
   end
-
+=end
   def find_or_create_skater(isu_number, skater_name, nation, category)
     normalized = normalize_persons_name(skater_name)
     @skater_name_correction ||= YAML.load_file(Rails.root.join('config', 'skater_name_correction.yml'))

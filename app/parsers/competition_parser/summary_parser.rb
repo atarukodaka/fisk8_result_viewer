@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class SummaryParser < Parser
     class << self
       def incorporate(parser_type)

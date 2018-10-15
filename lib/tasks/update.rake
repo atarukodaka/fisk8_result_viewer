@@ -23,7 +23,7 @@ namespace :update do
       last: (ENV.include?('last')) ? ENV['last'].to_i : nil,
       filename: ENV['filename'],
       force: ENV['force'].to_i.nonzero?,
-      categories: (ENV['categories'].present?) ? ENV['categories'].to_s.split(/\s*,\s?/) : nil,
+      categories: (ENV['categories'].nil?) ? nil : ENV['categories'].to_s.split(/\s*,\s?/),
       enable_judge_details: ENV['enable_judge_details'].to_i.nonzero?,
       quiet: ENV['quiet'].to_i.nonzero?,
       season_from: ENV['season_from'],

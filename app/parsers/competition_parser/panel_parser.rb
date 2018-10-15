@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class PanelParser < Parser
     def parse(url)
       page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])

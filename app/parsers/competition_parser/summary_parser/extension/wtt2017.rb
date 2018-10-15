@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class SummaryParser
     module Extension
       module Wtt2017

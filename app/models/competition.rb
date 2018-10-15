@@ -14,7 +14,7 @@ class Competition < ApplicationRecord
   ## scopes
   scope :recent, -> { order('start_date desc') }
 
-  ## utils
+
   private
 
   def _normalize

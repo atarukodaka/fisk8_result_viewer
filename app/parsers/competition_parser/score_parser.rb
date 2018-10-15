@@ -2,7 +2,7 @@ require 'pdftotext'
 require 'tempfile'
 
 # rubocop:disable Metrics/ClassLength
-module CompetitionParser
+class CompetitionParser
   class ScoreParser < ::Parser
     SCORE_DELIMITER = /Score Score/
 

@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class SummaryParser
     class Summary
       attr_accessor :data

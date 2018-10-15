@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class ResultParser < Parser
     def callbacks
       {}

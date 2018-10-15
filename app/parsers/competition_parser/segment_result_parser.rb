@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class SegmentResultParser < CategoryResultParser
     def live_results?(page)
       page.xpath("//*[contains(text(), 'Live Results')]").present?
