@@ -2,15 +2,16 @@ class CompetitionParser
   module Extension
     class Wtt2017 < Gpjpn
       class SummaryTableParser < CompetitionParser::Extension::Gpjpn::SummaryTableParser
-        def parse(page, base_url: "")
+        def parse(page, base_url: '')
           data = super(page, base_url: base_url)
 
           ## no category results
-          data.reject {|d| d[:type] == :category }.map do |item|
+          data.reject { |d| d[:type] == :category }.map do |item|
             item[:category] = "TEAM #{item[:category]}" if item[:category].present?
             item
           end
         end
+
         def header_element(page)
           page.xpath("//*[text()='Teams']").first
         end

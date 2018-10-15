@@ -2,9 +2,9 @@ class CompetitionParser
   class CategoryResultParser < ResultParser
     def parse(url, category)
       debug("-- parsing category result for '%-10s': %s'" % [category, url], indent: 3)
-      super(url).map {|d| d[:category] = category; d}
+      super(url).map { |d| d[:category] = category; d }
     end
-    
+
     def columns
       {
         skater_name:   { header_regex: /Name/ },

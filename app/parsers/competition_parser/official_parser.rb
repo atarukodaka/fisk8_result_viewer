@@ -8,13 +8,14 @@ class CompetitionParser
       rows = elem.xpath('ancestor::table[1]//tr')
       rows.map do |row|
         next unless row.xpath('td[1]').text =~ /^Judge No\.(\d)/
+
         {
           category: category,
           segment: segment,
           type: :judge,
           number: $1,
-          name: normalize_name(row.xpath('td[2]').text),
-          nation: normalize_nation(row.xpath('td[3]').text),
+          panel_name: normalize_name(row.xpath('td[2]').text),
+          panel_nation: normalize_nation(row.xpath('td[3]').text),
         }
       end.compact
     end
