@@ -1,6 +1,5 @@
 class CompetitionUpdater < Updater
   using StringToModel
-  include CompetitionUpdater::Utils
   include CompetitionUpdater::Deviations
 
   def clear_existing_competitions(site_url)
@@ -58,7 +57,7 @@ class CompetitionUpdater < Updater
             category_result.update_common_attributes(item)
             category_result.attributes = {
               #skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
-              skater: find_or_create_skater(item)
+              skater: find_or_create_skater(item),
               category: item[:category].to_category,
             }
             debug(category_result.summary)
