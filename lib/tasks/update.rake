@@ -34,7 +34,7 @@ namespace :update do
   desc 'update competition'
   task competition: :environment do
     options = options_from_env
-    options[:params] = ENV.to_hash.slice(:city, :name, :comment)
+    # options[:params] = ENV.to_hash.slice(:city, :name, :comment)
     options[:parser_type] = ENV['parser_type']
     options[:date_format] =  ENV['date_format']
     CompetitionUpdater.new(verbose: !options[:quiet]).update_competition(ENV['site_url'], options)
@@ -50,9 +50,12 @@ namespace :update do
 
     list.each do |item|
       options = env_options.dup
-      options[:params] = item.attributes.slice(:city, :name, :comment)
       options.merge!(item.attributes.slice(:date_format, :parser_type))
-      CompetitionUpdater.new(verbose: !options[:quiet]).update_competition(item[:site_url], options)
+      competition = CompetitionUpdater.new(verbose: !options[:quiet])
+                    .update_competition(item[:site_url], options)
+      item.attributes.slice(:city, :name, :comment).each do |key, value|
+        competition.update(key => value) if value.present?
+      end
     end ## each
   end ## task
 end # namespace

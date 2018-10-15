@@ -26,7 +26,7 @@ class CompetitionUpdater < Updater
   def update_competition(site_url, opts = {})
     debug("update competition with site_url of: #{site_url}")
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
-                        season_from: nil, season_to: nil, params: {} }
+                        season_from: nil, season_to: nil}
     options = default_options.merge(opts)
     # if (!options[:force]) && (comps = Competition.where(site_url: site_url).presence)
     if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))

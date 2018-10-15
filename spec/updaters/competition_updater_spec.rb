@@ -72,6 +72,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it_behaves_like :having_competition_with_url
     end
   end
+=begin
   describe 'live results' do
     describe 'gpfra2016/ICE DANCE' do
       let(:url) { 'http://www.isuresults.com/results/season1617/gpfra2016' }
@@ -86,6 +87,7 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       it_behaves_like :having_score_with_category_of, 'LADIES'
     end
   end
+=end
 
   describe 'enable_judge_details' do
     it {

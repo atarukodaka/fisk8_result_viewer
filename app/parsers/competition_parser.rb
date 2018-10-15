@@ -54,7 +54,7 @@ class CompetitionParser < Parser
     str = (node.present?) ? node.first.text.strip : ''
     if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
       city, country = $1, $2
-      city = city.to_s.sub(/ *$/, '').sub(/,.*$/, '').sub(/ *\(.*\)$/, '').sub!(/ *\/.*$/, '')
+      city = city.to_s.sub(/ *$/, '').sub(/,.*$/, '').sub(/ *\(.*\)$/, '').sub(/ *\/.*$/, '')
       [city, country]
     else
       [str, nil] ## to be set in competition.update()
