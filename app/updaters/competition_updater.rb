@@ -28,9 +28,10 @@ class CompetitionUpdater < Updater
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil, params: {} }
     options = default_options.merge(opts)
-    if (!options[:force]) && (comps = Competition.where(site_url: site_url).presence)
+    # if (!options[:force]) && (comps = Competition.where(site_url: site_url).presence)
+    if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
       debug("  .. skip: already existing: #{site_url}")
-      return comps.first
+      return competition
     end
     data = parser(options[:parser_type])
            .parse(site_url, date_format: options[:date_format],
@@ -51,12 +52,15 @@ class CompetitionUpdater < Updater
 
       data[:scores].map { |d| d[:category] }.uniq.map(&:to_category).each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
+
         ## category results
         data[:category_results].select { |d| d[:category] == category.name }.each do |item|
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
-            category_result.skater = find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation), item[:category].to_category)
-            category_result.category = item[:category].to_category
+            category_result.attributes = {
+              skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
+              category: item[:category].to_category,
+            }
             debug(category_result.summary)
           end
         end
@@ -72,7 +76,7 @@ class CompetitionUpdater < Updater
             .reject { |d| d[:panel_name] == '-' }.each do |official|
             panel = Panel.find_or_create_by(name: official[:panel_name])
             if official[:panel_nation] != 'ISU' && panel.nation.blank?
-              panel.update(nation: official[:panel_nation])
+              panel.update!(nation: official[:panel_nation])
             end
             performed_segment.officials.create!(number: official[:number], panel: panel)
           end
@@ -84,13 +88,15 @@ class CompetitionUpdater < Updater
             score.update_common_attributes(item)
             score.category = item[:category].to_category
             score.segment = item[:segment].to_segment
+
             ## relevant category result
-            cr = competition.category_results.where(category: score.category, "#{score.segment.segment_type}_ranking": score.ranking).first
-            score.skater = cr.try(:skater) ||
-                           find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation),
-                                                 item[:category].to_category)
+            cr = competition.category_results.category(score.category)
+                 .segment_ranking(score.segment, score.ranking).first
+            score.skater =
+              cr.try(:skater) ||
+              find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
             ## ps
-            ps = competition.performed_segments.where(category: score.category, segment: score.segment).first
+            ps = competition.performed_segments.category(score.category).segment(score.segment).first
             score.date = ps.starting_time.to_date
             debug(score.summary)
           end

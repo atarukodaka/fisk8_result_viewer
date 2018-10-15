@@ -52,8 +52,9 @@ class CompetitionParser
         ['', 'JPN']
       end
 
+      ## rubocop:disable all
       ## this site is nightmare again: TD doesnt wraped with TR
-      def parse_time_schedule(page, date_format: '') ## rubocop:disable Lint/UnusedMethodArgument
+      def parse_time_schedule(page, date_format: '')
         Time.zone ||= 'UTC'
         header_elem = page.xpath("//*[text()='Date']").first
         table = header_elem.xpath('../..')
@@ -94,6 +95,7 @@ class CompetitionParser
         end
         summary
       end
+      ## rubocop:enable all
     end
   end
 end
