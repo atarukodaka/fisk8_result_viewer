@@ -136,26 +136,19 @@ class CompetitionUpdater < Updater
   end
   ################
   ## utils
-    def normalize_persons_name(name)
-    if name.to_s =~ /^([A-Z\-]+) ([A-Z][A-Za-z].*)$/
-      [$2, $1].join(' ')
-    else
-      name
-    end
-  end
-
   def find_or_create_skater(item)
-    normalized = normalize_persons_name(item[:skater_name])
-    @skater_name_correction ||= YAML.load_file(Rails.root.join('config', 'skater_name_correction.yml'))
-    corrected_skater_name = @skater_name_correction[normalized] || normalized
-    ActiveRecord::Base.transaction do
-      Skater.find_or_create_by_isu_number_or_name(item[:isu_number], corrected_skater_name) do |sk|
-        sk.attributes = {
-          category: Category.where(team: false, category_type: item[:category].to_category.category_type).first,
-          nation:   item[:nation],
-        }
-      end
+    corrected_skater_name = SkaterNameCorrection.correct(item[:skater_name])
+    skater = (Skater.find_by(isu_number: item[:isu_number]) if item[:isu_number].present?) ||
+             Skater.find_by(name: item[:name])
+
+    skater || Skater.create! do |sk|
+      category_type = item[:category].to_category.category_type
+      sk.attributes = {
+        isu_number: item[:isu_number],
+        name: corrected_skater_name,
+        nation: item[:nation],
+        category: Category.where(team: false, category_type: category_type).first,
+      }
     end
   end
-  
 end
