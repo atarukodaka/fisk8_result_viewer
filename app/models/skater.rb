@@ -3,7 +3,8 @@ class Skater < ApplicationRecord
 
   ## relations
   has_many :category_results, dependent: :nullify
-  belongs_to :category   ## reference
+  #belongs_to :category   ## reference
+  belongs_to :category_type
 
   ## validations
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
@@ -16,7 +17,7 @@ class Skater < ApplicationRecord
   scope :name_matches, ->(v) { where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
-  delegate :category_type, to: :category, allow_nil: true
+  #delegate :category_type, to: :category, allow_nil: true
 end
 
   

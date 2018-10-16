@@ -3,6 +3,9 @@ module StringToModel
     def to_category
       Category.find_by(name: self)
     end
+    def to_category_type
+      CategoryType.find_by(name: self)
+    end
 
     def to_segment
       Segment.find_by(name: self)
@@ -11,6 +14,10 @@ module StringToModel
 
   refine NilClass do
     def to_category
+      nil
+    end
+
+    def to_category_type
       nil
     end
 

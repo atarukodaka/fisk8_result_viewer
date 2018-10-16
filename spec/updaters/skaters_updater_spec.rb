@@ -6,9 +6,10 @@ RSpec.describe Skater, updater: true do
       SkaterUpdater.new.update_skaters
     }
     # [:MEN, :LADIES, :PAIRS, :"ICE DANCE"].each do |category_str|
-    Category.having_isu_bio.each do |category|
-      context "\# of skater in '#{category.name}'" do
-        it { expect(Skater.where(category: category).count).to be > 0 }
+    #Category.having_isu_bio.each do |category|
+    CategoryType.all.each do |category_type|
+      context "\# of skater in '#{category_type.name}'" do
+        it { expect(Skater.where(category_type: category_type).count).to be > 0 }
       end
     end
   end

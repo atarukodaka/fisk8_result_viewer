@@ -38,6 +38,11 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["skater_id"], name: "index_category_results_on_skater_id"
   end
 
+  create_table "category_types", force: :cascade do |t|
+    t.string "name"
+    t.string "isu_bio_url"
+  end
+
   create_table "competitions", force: :cascade do |t|
     t.string "short_name"
     t.string "name"
@@ -183,8 +188,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "height"
     t.string "club"
     t.datetime "bio_updated_at"
-    t.integer "category_id"
-    t.index ["category_id"], name: "index_skaters_on_category_id"
+    t.integer "category_type_id"
+    t.index ["category_type_id"], name: "index_skaters_on_category_type_id"
   end
 
 end

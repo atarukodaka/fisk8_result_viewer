@@ -1,6 +1,12 @@
 class CreateCategoriesSegments < ActiveRecord::Migration[5.1]
   def change
     ################
+    create_table :category_types do |t|
+      t.string :name
+      t.string :isu_bio_url
+    end
+
+    ################
     create_table :categories do |t|
       t.string :name
       t.string :abbr

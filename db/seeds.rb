@@ -1,3 +1,28 @@
+################
+# category type
+[
+  {
+    name: 'MEN',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosmen.htm',
+  },
+  {
+    name: 'LADIES',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosladies.htm',
+  },
+  {
+    name: 'PAIRS',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiospairs.htm',
+  },
+  {
+    name: 'ICE DANCE',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosicedancing.htm',
+  },
+].each do |elem|
+  CategoryType.find_or_create_by(name: elem[:name]) do |category_type|
+    category_type.update(elem)
+  end
+end
+
 ####
 # category
 

@@ -4,4 +4,4 @@ class Category < ApplicationRecord
   scope :having_isu_bio, -> { select(&:isu_bio_url) }
 end
 
-## to be created in db/seeds.rb
+## actual data will be created in db/seeds.rb

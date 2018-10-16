@@ -4,9 +4,9 @@ class SkatersDatatable < IndexDatatable
 
     columns([:name, :category_type, :nation, :isu_number, :birthday, :club, :coach])
     columns.sources = {
-      category_type: 'categories.category_type',
+#      category_type: 'categories.category_type',
     }
-    default_orders([[:category_type, :asc], [:name, :asc]])
+    #default_orders([[:category_type, :asc], [:name, :asc]])
   end
 
   def filters
@@ -25,6 +25,8 @@ class SkatersDatatable < IndexDatatable
   end
 
   def fetch_records
-    Skater.includes(:category).references(:category).having_scores      ## .having_scores
+    #Skater.includes(:category).references(:category).having_scores      ## .having_scores
+    #Skater.having_scores
+    Skater.all.includes(:category_type).references(:category_type)
   end
 end

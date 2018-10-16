@@ -142,12 +142,12 @@ class CompetitionUpdater < Updater
              Skater.find_by(name: item[:name])
 
     skater || Skater.create! do |sk|
-      category_type = item[:category].to_category.category_type
+      category_type = item[:category].to_category.category_type.to_category_type
       sk.attributes = {
         isu_number: item[:isu_number],
         name: corrected_skater_name,
         nation: item[:nation],
-        category: Category.where(team: false, category_type: category_type).first,
+        category_type: category_type,
       }
     end
   end
