@@ -7,10 +7,6 @@ class SkaterDecorator < EntryDecorator
     h.link_to_isu_bio(model.isu_number)
   end
 
-  def category_type_name
-    model.category_type.name
-  end
-
   def isu_records
     results_url = 'http://www.isuresults.com/bios/isufs_cr_%08d.htm' % [model.isu_number.to_i]
     pb_url = 'http://www.isuresults.com/bios/isufs_pb_%08d.htm' % [model.isu_number.to_i]

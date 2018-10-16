@@ -58,8 +58,7 @@ module AjaxFeatureHelper
     shared_context :ajax_filter do |filter|
       context filter.key do
         subject {
-          value = (vc = filter.value_function) ? vc.call(main) : main.send(filter.key)
-          ajax_action_filter(key: filter.key, value: value, input_type: filter.input_type, path: index_path)
+          ajax_action_filter(key: filter.key, value: main.send(filter.key), input_type: filter.input_type, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
@@ -81,13 +80,11 @@ module AjaxFeatureHelper
       end
     end
 
-    shared_examples :order_main_sub do |key, identifer_key: :name, value_function: nil|
+    shared_examples :order_main_sub do |key, identifer_key: :name|
       it {
         table_id = find('.dataTable')[:id]
         dir = find("#column_#{table_id}_#{key}")['class']
-        vc = value_function || lambda { |d| d.send(key) }
-        # identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
-        identifers = [main, sub].sort_by { |d| vc.call(d) }.map { |d| d.send(identifer_key) }
+        identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
         identifers.reverse! if dir =~ /sorting_desc/
         expect(identifers.first).to appear_before identifers.second
       }
@@ -101,10 +98,10 @@ module AjaxFeatureHelper
       end
     end
 
-    shared_context :ajax_order do |key, identifer_key: :name, value_function: nil|
+    shared_context :ajax_order do |key, identifer_key: :name |
       context key do
         subject! { ajax_action_order(key, path: index_path) }
-        it_behaves_like :order_main_sub, key, identifer_key: identifer_key, value_function: value_function
+        it_behaves_like :order_main_sub, key, identifer_key: identifer_key
       end
     end
     ### ajax
