@@ -9,6 +9,7 @@ RSpec.describe Score do
       expect(Skater.having_scores.count).to eq(2)
     }
   end
+=begin
   describe 'find' do
     it {
       create(:skater, :men)
@@ -17,4 +18,5 @@ RSpec.describe Score do
       expect(Skater.find_skater_by(isu_number: 999, name: 'Foo BAR')).to be nil
     }
   end
+=end
 end
