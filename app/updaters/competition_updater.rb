@@ -1,4 +1,16 @@
 class CompetitionUpdater < Updater
+  module CategorySegmentSelector
+    refine Array do
+      def select_category(category)
+        select {|d| d[:category] == category }
+      end
+      def select_segment(segment)
+        select {|d| d[:segment] == segment }
+      end
+    end
+  end
+  ################
+  using CategorySegmentSelector
   using StringToModel
   include CompetitionUpdater::Deviations
 
@@ -52,11 +64,11 @@ class CompetitionUpdater < Updater
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
 
         ## category results
-        data[:category_results].select { |d| d[:category] == category.name }.each do |item|
+        #data[:category_results].select { |d| d[:category] == category.name }.each do |item|
+        data[:category_results].select_category(category.name).each do |item|
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
             category_result.attributes = {
-              # skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
               skater: find_or_create_skater(item),
               category: item[:category].to_category,
             }
@@ -64,14 +76,16 @@ class CompetitionUpdater < Updater
           end
         end
         ## performed segments / officials / panels
-        data[:time_schedule].select { |d| d[:category] == category.name }.each do |item|
+        #data[:time_schedule].select { |d| d[:category] == category.name }.each do |item|
+        data[:time_schedule].select_category(category.name).each do |item|
           performed_segment = competition.performed_segments.create! do |ps|
             ps.update_common_attributes(item)
             ps.category = item[:category].to_category
             ps.segment = item[:segment].to_segment
           end
           ## officials
-          data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
+          #data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
+          data[:officials].select_category(item[:category]).select_segment(item[:segment])
             .reject { |d| d[:panel_name] == '-' }.each do |official|
             panel = Panel.find_or_create_by(name: official[:panel_name])
             panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
@@ -79,7 +93,8 @@ class CompetitionUpdater < Updater
           end
         end
         ## scores
-        data[:scores].select { |d| d[:category] == category.name }.each do |item|
+        #data[:scores].select { |d| d[:category] == category.name }.each do |item|
+        data[:scores].select_category(category.name).each do |item|
           cr = nil
           sc = competition.scores.create! do |score|
             score.update_common_attributes(item)
@@ -143,7 +158,7 @@ class CompetitionUpdater < Updater
              Skater.find_by(name: item[:name])
 
     skater || Skater.create! do |sk|
-      category_type = item[:category].to_category.category_type.to_category_type
+      category_type = item[:category].to_category.category_type
       sk.attributes = {
         isu_number: item[:isu_number],
         name: corrected_skater_name,
