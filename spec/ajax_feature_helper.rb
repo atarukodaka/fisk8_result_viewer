@@ -85,8 +85,8 @@ module AjaxFeatureHelper
       it {
         table_id = find('.dataTable')[:id]
         dir = find("#column_#{table_id}_#{key}")['class']
-        vc = value_function || lambda {|d| d.send(key) }
-        #identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
+        vc = value_function || lambda { |d| d.send(key) }
+        # identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
         identifers = [main, sub].sort_by { |d| vc.call(d) }.map { |d| d.send(identifer_key) }
         identifers.reverse! if dir =~ /sorting_desc/
         expect(identifers.first).to appear_before identifers.second
@@ -96,6 +96,7 @@ module AjaxFeatureHelper
     shared_context :order do |datatable_class, excludings: []|
       datatable_class.new.columns.select(&:orderable).map(&:name).each do |key|
         next if excludings.include?(key.to_sym)
+
         include_context :ajax_order, key
       end
     end

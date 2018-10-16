@@ -12,7 +12,7 @@ class CreateCategoriesSegments < ActiveRecord::Migration[5.1]
       t.string :abbr
       t.string :seniority
       t.boolean :team
-      #t.string :category_type
+      # t.string :category_type
       t.references :category_type
       t.string :isu_bio_url
     end

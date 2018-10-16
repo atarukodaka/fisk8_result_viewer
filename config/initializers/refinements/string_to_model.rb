@@ -3,6 +3,7 @@ module StringToModel
     def to_category
       Category.find_by(name: self)
     end
+
     def to_category_type
       CategoryType.find_by(name: self)
     end

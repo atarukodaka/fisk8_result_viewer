@@ -25,7 +25,7 @@ class CompetitionUpdater < Updater
   def update_competition(site_url, opts = {})
     debug("update competition with site_url of: #{site_url}")
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
-                        season_from: nil, season_to: nil}
+                        season_from: nil, season_to: nil }
     options = default_options.merge(opts)
     if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
       debug("  .. skip: already existing: #{site_url}")
@@ -56,7 +56,7 @@ class CompetitionUpdater < Updater
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
             category_result.attributes = {
-              #skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
+              # skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
               skater: find_or_create_skater(item),
               category: item[:category].to_category,
             }
@@ -91,7 +91,7 @@ class CompetitionUpdater < Updater
                  .segment_ranking(score.segment, score.ranking).first
             score.skater =
               cr.try(:skater) ||
-              #find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
+              # find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
               find_or_create_skater(item)
             ## ps
             ps = competition.performed_segments.category(score.category).segment(score.segment).first
@@ -134,6 +134,7 @@ class CompetitionUpdater < Updater
       end
     end
   end
+
   ################
   ## utils
   def find_or_create_skater(item)

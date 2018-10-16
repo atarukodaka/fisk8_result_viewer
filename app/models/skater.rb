@@ -3,7 +3,7 @@ class Skater < ApplicationRecord
 
   ## relations
   has_many :category_results, dependent: :nullify
-  #belongs_to :category   ## reference
+  # belongs_to :category   ## reference
   belongs_to :category_type
 
   ## validations
@@ -17,10 +17,8 @@ class Skater < ApplicationRecord
   scope :name_matches, ->(v) { where('skaters.name like ? ', "%#{v}%") }
 
   ## virtual methods
-  #delegate :category_type, to: :category, allow_nil: true
+  # delegate :category_type, to: :category, allow_nil: true
   def category_type_name
     category_type.name
   end
 end
-
-  

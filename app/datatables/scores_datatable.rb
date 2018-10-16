@@ -51,7 +51,7 @@ class ScoresDatatable < IndexDatatable
         [
           AjaxDatatables::Filter.new(:category_name, :select, model: model),
           AjaxDatatables::Filter.new(:category_type, :select, model: model,
-                                     value_function: lambda {|score| score.category_type.name }),
+                                     value_function: lambda { |score| score.category_type.name }),
           AjaxDatatables::Filter.new(:seniority, :select, model: model),
           AjaxDatatables::Filter.new(:team, :select, model: model),
         ]

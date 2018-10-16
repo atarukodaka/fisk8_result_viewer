@@ -22,11 +22,11 @@ module FormHelper
     selected = params[key]
     col =
       case key
-      #when :category_name, :category_type, :seniority, :team
+      # when :category_name, :category_type, :seniority, :team
       when :category_name, :seniority, :team
         FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), key)
       when :category_type_name, :category_type
-        FormHelper.cache_uniq_list("category/#{key}", CategoryType.order(:id), :name)        
+        FormHelper.cache_uniq_list("category/#{key}", CategoryType.order(:id), :name)
       when :segment_name, :segment_type
         FormHelper.cache_uniq_list("segment/#{key}", Segment.order(:id), key)
       when :nation

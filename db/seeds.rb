@@ -122,8 +122,8 @@ end
   },
 ].each do |elem|
   Category.find_or_create_by(name: elem[:name]) do |category|
-    #category.update(elem.slice(:name, :abbr, :seniority, :team))
-    #category.category_type = elem[:category_type]
+    # category.update(elem.slice(:name, :abbr, :seniority, :team))
+    # category.category_type = elem[:category_type]
     category.update(elem)
   end
 end
