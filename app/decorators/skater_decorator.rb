@@ -7,7 +7,7 @@ class SkaterDecorator < EntryDecorator
     h.link_to_isu_bio(model.isu_number)
   end
 
-  def category_type
+  def category_type_name
     model.category_type.name
   end
 

@@ -2,9 +2,10 @@ class SkatersDatatable < IndexDatatable
   def initialize(*)
     super
 
-    columns([:name, :category_type, :nation, :isu_number, :birthday, :club, :coach])
+    columns([:name, :category_type_name, :nation, :isu_number, :birthday, :club, :coach])
     columns.sources = {
-#      category_type: 'categories.category_type',
+      #category_type: 'categories.category_type',
+      category_type_name: 'category_types.name',
     }
     #default_orders([[:category_type, :asc], [:name, :asc]])
   end
@@ -12,7 +13,8 @@ class SkatersDatatable < IndexDatatable
   def filters
     @filters ||= [
       AjaxDatatables::Filter.new(:name, :text_field, model: Skater),
-      AjaxDatatables::Filter.new(:category_type, :select, model: Skater),
+      AjaxDatatables::Filter.new(:category_type_name, :select, model: Skater),
+      #value_function: lambda {|score| score.category_type.name }),
       AjaxDatatables::Filter.new(:nation, :select, model: Skater),
       # AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater),
     ]

@@ -12,7 +12,7 @@ class ScoreDetailsDatatable < IndexDatatable
       competition_type:  'competitions.competition_type',
       season:            'competitions.season',
       category_name:     'categories.name',
-      category_type:     'categories.category_type',
+      category_type:     'category_type.name',
       team:              'categories.team',
       seniority:         'categories.seniority',
       segment_name:      'segments.name',

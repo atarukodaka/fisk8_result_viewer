@@ -1,13 +1,13 @@
 module AjaxDatatables
   class Filter
-    attr_accessor :key, :input_type, :onchange, :options, :children
+    attr_accessor :key, :input_type, :value_function, :onchange, :options, :children
 
     def initialize(key, input_type = :text_field, *args)
       @key = key
       @input_type = input_type
 
       if args.first.present?
-        [:field, :label, :model, :onchange, :options, :children].each do |var|
+        [:value_function, :field, :label, :model, :onchange, :options, :children].each do |var|
           instance_variable_set "@#{var}", args.first[var]
         end
       end

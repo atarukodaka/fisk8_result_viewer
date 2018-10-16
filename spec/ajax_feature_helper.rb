@@ -34,7 +34,7 @@ module AjaxFeatureHelper
     shared_context :filter do |datatable_class, excludings: []|
       datatable_class.new.filters.map { |filter| filter.children.presence || filter }.flatten
         .reject { |filter| excludings.include?(filter.key) }.each do |filter|
-        include_context :ajax_filter, filter.key, filter.input_type
+        include_context :ajax_filter, filter
       end
     end
 
@@ -55,10 +55,11 @@ module AjaxFeatureHelper
         it_behaves_like :contains, true, false
       end
     end
-    shared_context :ajax_filter do |key, input_type|
-      context key do
+    shared_context :ajax_filter do |filter|
+      context filter.key do
         subject {
-          ajax_action_filter(key: key, value: main.send(key), input_type: input_type, path: index_path)
+          value = (vc = filter.value_function) ? vc.call(main) : main.send(filter.key)
+          ajax_action_filter(key: filter.key, value: value, input_type: filter.input_type, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
@@ -80,11 +81,13 @@ module AjaxFeatureHelper
       end
     end
 
-    shared_examples :order_main_sub do |key, identifer_key: :name|
+    shared_examples :order_main_sub do |key, identifer_key: :name, value_function: nil|
       it {
         table_id = find('.dataTable')[:id]
         dir = find("#column_#{table_id}_#{key}")['class']
-        identifers = [main, sub].sort { |a, b| a.send(key) <=> b.send(key) }.map { |d| d.send(identifer_key) }
+        vc = value_function || lambda {|d| d.send(key) }
+        #identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
+        identifers = [main, sub].sort_by { |d| vc.call(d) }.map { |d| d.send(identifer_key) }
         identifers.reverse! if dir =~ /sorting_desc/
         expect(identifers.first).to appear_before identifers.second
       }
@@ -93,15 +96,14 @@ module AjaxFeatureHelper
     shared_context :order do |datatable_class, excludings: []|
       datatable_class.new.columns.select(&:orderable).map(&:name).each do |key|
         next if excludings.include?(key.to_sym)
-
         include_context :ajax_order, key
       end
     end
 
-    shared_context :ajax_order do |key, identifer_key: :name|
+    shared_context :ajax_order do |key, identifer_key: :name, value_function: nil|
       context key do
         subject! { ajax_action_order(key, path: index_path) }
-        it_behaves_like :order_main_sub, key, identifer_key: identifer_key
+        it_behaves_like :order_main_sub, key, identifer_key: identifer_key, value_function: value_function
       end
     end
     ### ajax

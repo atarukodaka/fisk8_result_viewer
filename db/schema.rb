@@ -17,8 +17,9 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "abbr"
     t.string "seniority"
     t.boolean "team"
-    t.string "category_type"
+    t.integer "category_type_id"
     t.string "isu_bio_url"
+    t.index ["category_type_id"], name: "index_categories_on_category_type_id"
   end
 
   create_table "category_results", force: :cascade do |t|
