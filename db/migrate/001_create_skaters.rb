@@ -17,7 +17,8 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
       t.timestamp :bio_updated_at
 
       ## relations
-      t.references :category
+      # t.references :category
+      t.references :category_type
     end
   end
 end

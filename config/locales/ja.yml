@@ -70,12 +70,14 @@ ja:
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
-  
+
+  ################    
   # models
   attributes:
     skater_name: スケーター名
     skater_nation: スケーター国名
     competition_name: 大会名
+    competition_class_type: 競技クラス/タイプ
     score_name: スコア名
     category: カテゴリー
     category_name: カテゴリー名
@@ -104,6 +106,7 @@ ja:
         name: スケーター名
         isu_number: ISU登録番号
         isu_records: ISU記録
+        category_type_name: カテゴリータイプ
         birthday: 誕生日
         height: 身長
         club: 所属クラブ

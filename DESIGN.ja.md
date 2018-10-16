@@ -42,6 +42,9 @@ end
 = UsersDatatable.new(self).render
 ```
 
+## ActiveHash::Base
+便利なのだが、whereが使えない。
+
 
 
 ## ISUさんしっかりしてくれ

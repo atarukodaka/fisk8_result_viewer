@@ -21,7 +21,7 @@ class ElementsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    tables = [:score, score: [:competition, :skater, :category, :segment]]
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
     Element.includes(tables).joins(tables)
   end
 
@@ -48,6 +48,6 @@ class ElementsDatatable < ScoreDetailsDatatable
         ]
       end,
       ScoresDatatable.new.filters,
-    ].flatten
+    ].compact.flatten
   end
 end

@@ -17,8 +17,9 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "abbr"
     t.string "seniority"
     t.boolean "team"
-    t.string "category_type"
+    t.integer "category_type_id"
     t.string "isu_bio_url"
+    t.index ["category_type_id"], name: "index_categories_on_category_type_id"
   end
 
   create_table "category_results", force: :cascade do |t|
@@ -36,6 +37,11 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["free_id"], name: "index_category_results_on_free_id"
     t.index ["short_id"], name: "index_category_results_on_short_id"
     t.index ["skater_id"], name: "index_category_results_on_skater_id"
+  end
+
+  create_table "category_types", force: :cascade do |t|
+    t.string "name"
+    t.string "isu_bio_url"
   end
 
   create_table "competitions", force: :cascade do |t|
@@ -183,8 +189,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "height"
     t.string "club"
     t.datetime "bio_updated_at"
-    t.integer "category_id"
-    t.index ["category_id"], name: "index_skaters_on_category_id"
+    t.integer "category_type_id"
+    t.index ["category_type_id"], name: "index_skaters_on_category_type_id"
   end
 
 end

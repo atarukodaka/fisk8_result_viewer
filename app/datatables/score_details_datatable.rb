@@ -2,7 +2,7 @@ class ScoreDetailsDatatable < IndexDatatable
   def initialize(*)
     super
     columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type, :date, :season,
+             :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type, :date, :season,
              :skater_name, :nation,])
 
     columns.sources = {
@@ -12,7 +12,7 @@ class ScoreDetailsDatatable < IndexDatatable
       competition_type:  'competitions.competition_type',
       season:            'competitions.season',
       category_name:     'categories.name',
-      category_type:     'categories.category_type',
+      category_type_name:     'category_type.name',
       team:              'categories.team',
       seniority:         'categories.seniority',
       segment_name:      'segments.name',
@@ -25,7 +25,7 @@ class ScoreDetailsDatatable < IndexDatatable
     columns[:date].searchable = false
 
     ## visible
-    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each { |key|
+    [:competition_class, :competition_type, :category_type_name, :seniority, :team, :segment_type].each { |key|
       columns[key].visible = false
       columns[key].orderable = false
     }

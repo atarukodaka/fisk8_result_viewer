@@ -11,8 +11,8 @@ class ComponentsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    Component.includes(:score, score: [:competition, :skater, :category, :segment])
-      .joins(:score, score: [:competition, :skater, :category, :segment]).all
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
+    Component.includes(tables).joins(tables)
   end
 
   def filters

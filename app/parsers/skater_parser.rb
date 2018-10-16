@@ -51,7 +51,7 @@ class SkaterParser < Parser
     {
       nation:        'person_nationLabel',
       name:          'person_cnameLabel',
-      category:      'CategoryLabel',
+      category_type:      'CategoryLabel',
       birthday:      'person_dobLabel',
       height:        'person_heightLabel',
       hometown:      'person_htometownLabel',
