@@ -8,8 +8,7 @@ RSpec.describe Element do
 
   describe 'single' do
     let(:skater) {
-      competition.scores.joins(:category)
-                       .where("categories.category_type": 'MEN').first.skater
+      competition.scores.joins(:category).where("categories.category_type": 'MEN'.to_category_type).first.skater
     }
     let(:score) {
       competition.scores.create(category: 'TEAM MEN'.to_category, segment: 'SHORT PROGRAM'.to_segment,

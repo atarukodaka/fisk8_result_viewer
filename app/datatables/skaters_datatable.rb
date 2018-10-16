@@ -4,7 +4,6 @@ class SkatersDatatable < IndexDatatable
 
     columns([:name, :category_type_name, :nation, :isu_number, :birthday, :club, :coach])
     columns.sources = {
-      # category_type: 'categories.category_type',
       category_type_name: 'category_types.name',
     }
     default_orders([[:category_type_name, :asc], [:name, :asc]])

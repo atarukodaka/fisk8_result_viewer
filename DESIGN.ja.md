@@ -41,11 +41,13 @@ end
 % cat app/views/index.html.slim
 = UsersDatatable.new(self).render
 ```
+### ..
+- ajax 使う場合は DB カラムを作る必要あり
+- 文字列を返すカラムであること
+
 
 ## ActiveHash::Base
 便利なのだが、whereが使えない。
-
-
 
 ## ISUさんしっかりしてくれ
 
