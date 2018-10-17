@@ -27,24 +27,24 @@ class ElementsDatatable < ScoreDetailsDatatable
 
   def filters
     @filters ||= [
-      AjaxDatatables::Filter.new(:element_name_group) do
+      Filter.new(:element_name_group) do
         [
-          AjaxDatatables::Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+          Filter.new(:name_operator, :select, label: '',  onchange: :draw,
                                      options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
-          AjaxDatatables::Filter.new(:element_name, :text_field, label: ''),
+          Filter.new(:element_name, :text_field, label: ''),
         ]
       end,
-      AjaxDatatables::Filter.new(:element_type_group) do
+      Filter.new(:element_type_group) do
         [
-          AjaxDatatables::Filter.new(:element_type, :select),
-          AjaxDatatables::Filter.new(:element_subtype, :select),
+          Filter.new(:element_type, :select),
+          Filter.new(:element_subtype, :select),
         ]
       end,
-      AjaxDatatables::Filter.new(:goe_group) do
+      Filter.new(:goe_group) do
         [
-          AjaxDatatables::Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+          Filter.new(:goe_operator, :select, label: '', onchange: :draw,
                                      options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-          AjaxDatatables::Filter.new(:goe, :text_field, label: ''),
+          Filter.new(:goe, :text_field, label: ''),
         ]
       end,
       ScoresDatatable.new.filters,

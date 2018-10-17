@@ -46,20 +46,20 @@ class ScoresDatatable < IndexDatatable
     model = Score
     @filters ||= [
       CompetitionsDatatable.new.filters.reject { |filter| filter.key == :site_url },
-      AjaxDatatables::Filter.new(:skater_name, :text_field, model: model),
-      AjaxDatatables::Filter.new(:category, model: model) {
+      Filter.new(:skater_name, :text_field, model: model),
+      Filter.new(:category, model: model) {
         [
-          AjaxDatatables::Filter.new(:category_name, :select, model: model),
-          AjaxDatatables::Filter.new(:category_type_name, :select, model: model),
+          Filter.new(:category_name, :select, model: model),
+          Filter.new(:category_type_name, :select, model: model),
           # value_function: lambda { |score| score.category_type.name }),
-          AjaxDatatables::Filter.new(:seniority, :select, model: model),
-          AjaxDatatables::Filter.new(:team, :select, model: model),
+          Filter.new(:seniority, :select, model: model),
+          Filter.new(:team, :select, model: model),
         ]
       },
-      AjaxDatatables::Filter.new(:segment, model: model) {
+      Filter.new(:segment, model: model) {
         [
-          AjaxDatatables::Filter.new(:segment_name, :select, model: model),
-          AjaxDatatables::Filter.new(:segment_type, :select, model: model),
+          Filter.new(:segment_name, :select, model: model),
+          Filter.new(:segment_type, :select, model: model),
         ]
       },
     ].flatten

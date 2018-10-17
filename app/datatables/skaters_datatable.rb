@@ -11,10 +11,10 @@ class SkatersDatatable < IndexDatatable
 
   def filters
     @filters ||= [
-      AjaxDatatables::Filter.new(:name, :text_field, model: Skater),
-      AjaxDatatables::Filter.new(:category_type_name, :select, model: Skater),
-      AjaxDatatables::Filter.new(:nation, :select, model: Skater),
-      #AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
+      Filter.new(:name, :text_field, model: Skater),
+      Filter.new(:category_type_name, :select, model: Skater),
+      Filter.new(:nation, :select, model: Skater),
+      #Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
     ]
   end
 

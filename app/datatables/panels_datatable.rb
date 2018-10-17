@@ -12,8 +12,8 @@ class PanelsDatatable < IndexDatatable
 
   def filters
     @filters ||= [
-      AjaxDatatables::Filter.new(:name, :text_field),
-      AjaxDatatables::Filter.new(:nation, :text_field),
+      Filter.new(:name, :text_field),
+      Filter.new(:nation, :text_field),
     ]
   end
 end

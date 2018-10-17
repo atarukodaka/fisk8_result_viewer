@@ -24,10 +24,10 @@ class DeviationsDatatable < IndexDatatable
 
   def filters
     @filters ||= [
-      AjaxDatatables::Filter.new(:skater_name, :text_field),
-      AjaxDatatables::Filter.new(:score_name, :text_field),
-      AjaxDatatables::Filter.new(:panel_name, :text_field),
-      AjaxDatatables::Filter.new(:category_name, :select),
+      Filter.new(:skater_name, :text_field),
+      Filter.new(:score_name, :text_field),
+      Filter.new(:panel_name, :text_field),
+      Filter.new(:category_name, :select),
     ]
   end
 end

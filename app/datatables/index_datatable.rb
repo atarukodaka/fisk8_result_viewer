@@ -1,5 +1,6 @@
 class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
+  class Filter < AjaxDatatables::Filter; end ## shortcut purpose only
 
   def manipulate(records)
     super(records).where(build_conditions(filter_search_nodes))

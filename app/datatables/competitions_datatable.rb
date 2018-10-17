@@ -10,16 +10,16 @@ class CompetitionsDatatable < IndexDatatable
   def filters
     model = Competition
     @filters ||= [
-      AjaxDatatables::Filter.new(:competition_name, :text_field, model: model),
-      AjaxDatatables::Filter.new(:competition_class_type) {
+      Filter.new(:competition_name, :text_field, model: model),
+      Filter.new(:competition_class_type) {
         [
-          AjaxDatatables::Filter.new(:competition_class, :select, model: model),
-          AjaxDatatables::Filter.new(:competition_type, :select, model: model),
-          AjaxDatatables::Filter.new(:season_from, :select, model: model, onchange: :draw),
-          AjaxDatatables::Filter.new(:season_to, :select, model: model, onchange: :draw),
+          Filter.new(:competition_class, :select, model: model),
+          Filter.new(:competition_type, :select, model: model),
+          Filter.new(:season_from, :select, model: model, onchange: :draw),
+          Filter.new(:season_to, :select, model: model, onchange: :draw),
         ]
       },
-      AjaxDatatables::Filter.new(:site_url, :text_field, model: model)
+      Filter.new(:site_url, :text_field, model: model)
     ]
   end
 
