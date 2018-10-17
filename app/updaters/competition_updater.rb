@@ -2,10 +2,11 @@ class CompetitionUpdater < Updater
   module CategorySegmentSelector
     refine Array do
       def select_category(category)
-        select {|d| d[:category] == category }
+        select { |d| d[:category] == category }
       end
+
       def select_segment(segment)
-        select {|d| d[:segment] == segment }
+        select { |d| d[:segment] == segment }
       end
     end
   end
@@ -64,7 +65,7 @@ class CompetitionUpdater < Updater
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
 
         ## category results
-        #data[:category_results].select { |d| d[:category] == category.name }.each do |item|
+        # data[:category_results].select { |d| d[:category] == category.name }.each do |item|
         data[:category_results].select_category(category.name).each do |item|
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
@@ -76,7 +77,7 @@ class CompetitionUpdater < Updater
           end
         end
         ## performed segments / officials / panels
-        #data[:time_schedule].select { |d| d[:category] == category.name }.each do |item|
+        # data[:time_schedule].select { |d| d[:category] == category.name }.each do |item|
         data[:time_schedule].select_category(category.name).each do |item|
           performed_segment = competition.performed_segments.create! do |ps|
             ps.update_common_attributes(item)
@@ -84,7 +85,7 @@ class CompetitionUpdater < Updater
             ps.segment = item[:segment].to_segment
           end
           ## officials
-          #data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
+          # data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
           data[:officials].select_category(item[:category]).select_segment(item[:segment])
             .reject { |d| d[:panel_name] == '-' }.each do |official|
             panel = Panel.find_or_create_by(name: official[:panel_name])
@@ -93,7 +94,7 @@ class CompetitionUpdater < Updater
           end
         end
         ## scores
-        #data[:scores].select { |d| d[:category] == category.name }.each do |item|
+        # data[:scores].select { |d| d[:category] == category.name }.each do |item|
         data[:scores].select_category(category.name).each do |item|
           cr = nil
           sc = competition.scores.create! do |score|

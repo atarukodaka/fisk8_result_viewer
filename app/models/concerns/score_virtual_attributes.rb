@@ -5,5 +5,4 @@ module ScoreVirtualAttributes
    :ranking, :skater_name, :nation, :date].each do |key|
     delegate key, to: :score
   end
-
 end

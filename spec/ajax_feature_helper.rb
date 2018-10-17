@@ -58,7 +58,8 @@ module AjaxFeatureHelper
     shared_context :ajax_filter do |filter|
       context filter.key do
         subject {
-          ajax_action_filter(key: filter.key, value: main.send(filter.key), input_type: filter.input_type, path: index_path)
+          ajax_action_filter(key: filter.key, value: main.send(filter.key),
+                             input_type: filter.input_type, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
@@ -98,7 +99,7 @@ module AjaxFeatureHelper
       end
     end
 
-    shared_context :ajax_order do |key, identifer_key: :name |
+    shared_context :ajax_order do |key, identifer_key: :name|
       context key do
         subject! { ajax_action_order(key, path: index_path) }
         it_behaves_like :order_main_sub, key, identifer_key: identifer_key

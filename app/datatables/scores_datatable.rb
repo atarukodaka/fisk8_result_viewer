@@ -31,7 +31,7 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
-    #columns[:category_type].operator = :eq
+    # columns[:category_type].operator = :eq
     columns[:team].operator = :boolean
 
     default_orders([[:date, :desc]])
@@ -51,7 +51,7 @@ class ScoresDatatable < IndexDatatable
         [
           AjaxDatatables::Filter.new(:category_name, :select, model: model),
           AjaxDatatables::Filter.new(:category_type_name, :select, model: model),
-                                     #value_function: lambda { |score| score.category_type.name }),
+          # value_function: lambda { |score| score.category_type.name }),
           AjaxDatatables::Filter.new(:seniority, :select, model: model),
           AjaxDatatables::Filter.new(:team, :select, model: model),
         ]
