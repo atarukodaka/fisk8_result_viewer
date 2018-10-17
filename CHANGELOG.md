@@ -12,16 +12,12 @@
   - feature
 	- components, statics, panels
   - controller/deviation
-- parser type can be show on builder
+- parser type can be shown on updater
 - clean panel with zero scores
-- official absence: gpusa2016/pairs/short
-- refactoring
-  - devation
 - having scores for skater datatable
-- components feature spec
+  - somehow errors on params[] in the controller ??
 - spin level: B is 0 ??
-- official absense: gpusa16/pair/short
-
+ 
 ### new feature
 
 ### check before release

@@ -1,12 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe Skater, updater: true do
+RSpec.describe SkaterUpdater, updater: true do
   describe 'update skaters' do
     before(:all) {
       SkaterUpdater.new.update_skaters
     }
-    # [:MEN, :LADIES, :PAIRS, :"ICE DANCE"].each do |category_str|
-    # Category.having_isu_bio.each do |category|
     CategoryType.all.each do |category_type|
       context "\# of skater in '#{category_type.name}'" do
         it { expect(Skater.where(category_type: category_type).count).to be > 0 }

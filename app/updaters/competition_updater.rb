@@ -25,23 +25,21 @@ class CompetitionUpdater < Updater
     (cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
   end
 
-  def parser_model(parser_type)
-    "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
-  end
-
   def parser(parser_type = nil)
-    model = (parser_type) ? parser_model(parser_type) : CompetitionParser
+    model = (parser_type.present?) ? "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize : CompetitionParser
     model.new(verbose: verbose)
   end
 
   ################
   def update_competition(site_url, opts = {})
-    debug("update competition with site_url of: #{site_url}")
+    debug('*' * 100)
+    debug("updating competition '%s' with %s parser" %
+          [ site_url, opts[:parser_type] || 'normal'])
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil }
     options = default_options.merge(opts)
     if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
-      debug("  .. skip: already existing: #{site_url}")
+      debug("  .. skip: already existing")
       return competition
     end
     data = parser(options[:parser_type])
@@ -56,10 +54,10 @@ class CompetitionUpdater < Updater
           start_date: data[:time_schedule].map { |d| d[:starting_time] }.min.to_date,
           end_date: data[:time_schedule].map { |d| d[:starting_time] }.max.to_date,
         }.merge(data.slice(:site_url, :name, :country, :city))
+        yield comp if block_given?
       end
 
-      debug('*' * 100)
-      debug('%<name>s [%<short_name>s] (%<site_url>s)' % competition.attributes.symbolize_keys)
+      debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' % competition.attributes.symbolize_keys)
 
       data[:scores].map { |d| d[:category] }.uniq.map(&:to_category).each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)

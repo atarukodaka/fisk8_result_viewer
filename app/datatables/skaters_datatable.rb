@@ -14,19 +14,18 @@ class SkatersDatatable < IndexDatatable
       AjaxDatatables::Filter.new(:name, :text_field, model: Skater),
       AjaxDatatables::Filter.new(:category_type_name, :select, model: Skater),
       AjaxDatatables::Filter.new(:nation, :select, model: Skater),
-      # AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater),
+      #AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
     ]
   end
 
   ################
   def manipulate(records)
     records
-    # records.having_scores
   end
 
   def fetch_records
-    # Skater.includes(:category).references(:category).having_scores      ## .having_scores
-    # Skater.having_scores
-    Skater.all.includes(:category_type).references(:category_type)
+    records = Skater.all.includes(:category_type).references(:category_type)
+    #(params[:having_scores] == 'on') ? records.having_scores : records
+    #(params[:having_scores] == 'on') ? records.having_scores : records
   end
 end

@@ -22,7 +22,7 @@ class SkaterNameCorrection < ActiveYaml::Base
 
     def correct(name)
       corrected = self.find_by(original_name: name).try(:corrected_name) || name
-      #corrected = (item = self.find_by(original_name: name)) ? item.corrected_name : name
+      # corrected = (item = self.find_by(original_name: name)) ? item.corrected_name : name
       normalize_name(corrected)
     end
   end

@@ -4,7 +4,11 @@ class CompetitionParser < Parser
   def parse(site_url, date_format: nil, categories: nil, season_from: nil, season_to: nil)
     page = get_url(site_url) || return
     time_schedule = parse_time_schedule(page, date_format: date_format)
-    return nil unless SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min).between?(season_from, season_to)
+    season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
+    unless season.between?(season_from, season_to)
+      debug("skipping...season %s out of range [%s, %s]" % [season.season, season_from, season_to], indent: 3)
+      return nil
+    end
 
     city, country = parse_city_country(page)
 

@@ -51,10 +51,11 @@ namespace :update do
     list.each do |item|
       options = env_options.dup
       options.merge!(item.attributes.slice(:date_format, :parser_type))
-      competition = CompetitionUpdater.new(verbose: !options[:quiet])
-                    .update_competition(item[:site_url], options)
-      item.attributes.slice(:city, :name, :comment).each do |key, value|
-        competition.update(key => value) if value.present?
+      CompetitionUpdater.new(verbose: !options[:quiet])
+        .update_competition(item[:site_url], options) do |competition|
+        item.attributes.slice(:city, :name, :comment).each do |key, value|
+          competition.update(key => value) if value.present?
+        end
       end
     end ## each
   end ## task
