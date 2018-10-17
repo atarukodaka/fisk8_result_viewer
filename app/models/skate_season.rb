@@ -1,6 +1,5 @@
 class SkateSeason
   include Comparable
-
   attr_reader :start_date
 
   def initialize(date)
@@ -23,6 +22,7 @@ class SkateSeason
     year = start_date.year
     '%04d-%02d' % [year, (year + 1) % 100]
   end
+  alias_method :to_s, :season
 
   def between?(from, to)
     flag = true
