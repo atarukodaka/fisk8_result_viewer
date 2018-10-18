@@ -5,17 +5,9 @@
 - date search
 - youtube register
 - components controller is necessary ??
-- codecov: icedance elements
 - help for rake:update
 - update:skaters categories
-- spec
-  - feature
-	- components, statics, panels
-  - controller/deviation
-- parser type can be shown on updater
 - clean panel with zero scores
-- having scores for skater datatable
-  - somehow errors on params[] in the controller ??
 - spin level: B is 0 ??
  
 ### new feature

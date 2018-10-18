@@ -109,7 +109,7 @@ RSpec.describe CompetitionUpdater, updater: true do
     shared_context :season_within_range_of do |from, to, flag|
       subject { updater.update_competition(url, season_from: from, season_to: to, categories: []) }
       it {
-        expected =(flag) ? be_truthy : be_nil 
+        expected = (flag) ? be_truthy : be_nil
         is_expected.to expected
       }
     end

@@ -9,7 +9,7 @@ class IndexController < ApplicationController
     respond_to do |format|
       format.html {
         render :index, locals: {
-                 datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load,
+          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load,
                  filters: filters,
         }
       }

@@ -3,26 +3,26 @@ class ScoresDatatable < IndexDatatable
     def initialize
       model = Score
       super([
-              CompetitionsDatatable::Filters.new.reject { |filter| filter.key == :site_url },
-              Filter.new(:skater_name, :text_field, model: model),
-              Filter.new(:category, model: model) {
-                [
-                  Filter.new(:category_name, :select, model: model),
-                  Filter.new(:category_type_name, :select, model: model),
-                  Filter.new(:seniority, :select, model: model),
-                  Filter.new(:team, :select, model: model),
-                ]
-              },
-              Filter.new(:segment, model: model) {
-                [
-                  Filter.new(:segment_name, :select, model: model),
-                  Filter.new(:segment_type, :select, model: model),
-                ]
-              },
-            ].flatten)
+        CompetitionsDatatable::Filters.new.reject { |filter| filter.key == :site_url },
+        Filter.new(:skater_name, :text_field, model: model),
+        Filter.new(:category, model: model) {
+          [
+            Filter.new(:category_name, :select, model: model),
+            Filter.new(:category_type_name, :select, model: model),
+            Filter.new(:seniority, :select, model: model),
+            Filter.new(:team, :select, model: model),
+          ]
+        },
+        Filter.new(:segment, model: model) {
+          [
+            Filter.new(:segment_name, :select, model: model),
+            Filter.new(:segment_type, :select, model: model),
+          ]
+        },
+      ].flatten)
     end
   end
-  ################"
+  # ###############"
   def initialize(*)
     super
 
@@ -65,5 +65,4 @@ class ScoresDatatable < IndexDatatable
     tables = [:competition, :skater, :category, :segment, category: [:category_type]]
     Score.includes(tables).joins(tables)
   end
-
 end

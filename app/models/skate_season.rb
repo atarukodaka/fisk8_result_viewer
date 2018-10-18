@@ -22,7 +22,7 @@ class SkateSeason
     year = start_date.year
     '%04d-%02d' % [year, (year + 1) % 100]
   end
-  alias_method :to_s, :season
+  alias to_s season
 
   def between?(from, to)
     flag = true

@@ -2,15 +2,16 @@ class ComponentsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize
       super([
-              Filter.new(:value_group) do
-                [
-                  Filter.new(:value_operator, :select, label: '', onchange: :draw,
-                             options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-                  Filter.new(:value, :text_field, label: ''),
-                ]
-              end,
-              ScoresDatatable::Filters.new.data,
-            ].flatten)
+        Filter.new(:component_name, :select),
+        Filter.new(:value_group) do
+          [
+            Filter.new(:value_operator, :select, label: '', onchange: :draw,
+                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            Filter.new(:value, :text_field, label: ''),
+          ]
+        end,
+        ScoresDatatable::Filters.new.data,
+      ].flatten)
     end
   end
   ################

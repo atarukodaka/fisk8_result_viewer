@@ -37,6 +37,8 @@ module FormHelper
         FormHelper.cache_uniq_list('competition/competition_season', Competition.all, :season).sort.reverse
       when :element_type, :element_subtype
         FormHelper.cache_uniq_list("element/#{key}", Element.all, key).sort
+      when :component_name
+        FormHelper.cache_uniq_list("component/#{key}", Component.all, :name)
       else
         []
       end

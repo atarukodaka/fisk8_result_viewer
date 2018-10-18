@@ -20,20 +20,21 @@
     h2= t(".competition_summary", default: "Competition Summary")
     = Listtable.new(self).records(competition.decorate).columns([:name_info, :location, :site_url, :period, :comment]).render
 
-    - if result_type == :segment
+    /- if result_type == :segment
       h3 Officials
       - records = Official.where("performed_segments.competition": competition, "performed_segments.category": category, "performed_segments.segment": segment).includes(:performed_segment, :panel)
       = AjaxDatatables::Datatable.new(self).records(records).columns([:number, :panel_name, :panel_nation]).update_settings(info: false, searching: false, paging: false ).decorate.render
 
-  .col-sm-6
+  /.col-sm-6
     h2= t(".performed_segment", default: "Performed Segment")
     = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
 
 ////////////////////////////////////////////////////////////////
 h2
   - case result_type
-  /- when :none
-  /  ="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
+  - when :none
+    = t('field.results', default: 'Results')
+    /="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
   - when :category
     | #{t(".category_results", default: "Category Results")} : #{category.name}
   - when :segment
@@ -41,26 +42,47 @@ h2
 
 ////////////////
 // nav bar for category/segment
-//.nav
+.nav
+  // category tab
   ul.nav.nav-tabs
-    - competition.scores.recent.pluck(:category).uniq.each do |c|
-      - category_active = (category == c) ? "active" : ""
+    /- competition.scores.recent.pluck(:category).uniq.each do |c|
+    - competition.scores.includes(:category).map {|d| d.category}.uniq.each do |cat|
+      - category_active = (category == cat) ? "active" : ""
       li class="#{category_active}"
-        =link_to_competition(competition, category: c)
+        =link_to_competition(competition, category: cat)
 
-  ul.nav.nav-tabs
-    /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-    - competition.scores.where(category: category).recent.reverse.pluck(:segment).uniq.each do |s|
-      - segment_active = (segment == s) ? "active" : ""
-      li class="#{segment_active}"
-        = link_to_competition(competition, category: category, segment: s)
+  // segment tab
+  - if category.present?
+    ul.nav.nav-tabs
+      /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
+      - competition.scores.where(category: category).includes(:segment).map {|d| d.segment}.uniq.each do |seg|
+        - segment_active = (segment == seg) ? "active" : ""
+        li class="#{segment_active}"
+          = link_to_competition(competition, category: category, segment: seg)
 
 ////////////////////////////////////////////////////////////////
 
-/- if result_type != :none
+//- if result_type != :none
   = results.update_settings(paging: false, info: false).decorate.render
 - case result_type
   - when :category
     = category_results.update_settings(paging: false, info: false).decorate.render
   - when :segment
     = segment_results.update_settings(paging: false, info: false).decorate.render
+
+
+.row
+  .col-sm-6
+    h2= t(".time_schedule", default: "Time Schedule")
+
+    - records = competition.performed_segments.includes(:category, :segment).order(:starting_time)
+    = AjaxDatatables::Datatable.new(self).records(records).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
+
+  .col-sm-6
+    - if result_type == :segment
+      h3 Officials
+      - records = Official.where("performed_segments.competition": competition, "performed_segments.category": category, "performed_segments.segment": segment).includes(:performed_segment, :panel)
+      = AjaxDatatables::Datatable.new(self).records(records).columns([:number, :panel_name, :panel_nation]).update_settings(info: false, searching: false, paging: false ).decorate.render
+
+
+

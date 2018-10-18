@@ -1,6 +1,6 @@
 class IndexDatatable < AjaxDatatables::Datatable
   class Filters
-    class Filter < AjaxDatatables::Filter ; end
+    class Filter < AjaxDatatables::Filter; end
     delegate :[], :each, :map, :reject, to: :@data
     attr_reader :data
     def initialize(ary = [])

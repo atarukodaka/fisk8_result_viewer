@@ -46,8 +46,13 @@ end
 - 文字列を返すカラムであること
 
 
-## ActiveHash::Base
+## メモ
+### ActiveHash::Base
 便利なのだが、whereが使えない。
+
+## Capybara
+- js: true にしないと js driver が動いてくれない。
+- JAVASCIRPT_DRIVER=chrome で立ち上げると chrome が表で動く
 
 ## ISUさんしっかりしてくれ
 

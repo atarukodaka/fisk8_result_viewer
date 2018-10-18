@@ -2,11 +2,11 @@ class SkatersDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
     def initialize
       super([
-              Filter.new(:name, :text_field, model: Skater),
-              Filter.new(:category_type_name, :select, model: Skater),
-              Filter.new(:nation, :select, model: Skater),
-              Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
-            ])
+        Filter.new(:name, :text_field, model: Skater),
+        Filter.new(:category_type_name, :select, model: Skater),
+        Filter.new(:nation, :select, model: Skater),
+        Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
+      ])
     end
   end
   ################
@@ -20,7 +20,6 @@ class SkatersDatatable < IndexDatatable
     default_orders([[:category_type_name, :asc], [:name, :asc]])
   end
 
-
   ################
   def manipulate(rec)
     rec
@@ -29,6 +28,6 @@ class SkatersDatatable < IndexDatatable
   def fetch_records
     rec = Skater.all.includes(:category_type).references(:category_type)
     (view_context && params[:having_scores] == 'on') ? rec.having_scores : rec
-    #(params[:having_scores] == 'on') ? records.having_scores : records
+    # (params[:having_scores] == 'on') ? records.having_scores : records
   end
 end
