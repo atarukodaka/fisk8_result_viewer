@@ -44,7 +44,7 @@ class CompetitionUpdater < Updater
 
   def timezone(data)
     schedule = data[:time_schedule].first || (return 'UTC')
-    schedule[:starting_time].time_zone
+    schedule[:starting_time].time_zone.name
   end
   ################
   def update_competition(site_url, opts = {})
@@ -147,7 +147,7 @@ class CompetitionUpdater < Updater
     item[:elements].each { |d| sc.elements.create!(d) }
     item[:components].each { |d| sc.components.create!(d) }
     sc.update(elements_summary: sc.elements.map(&:name).join('/'))
-    sc.update(components_summary: sc.components.map(&:name).join('/'))
+    sc.update(components_summary: sc.components.map(&:value).join('/'))
   end
 
   def update_details(competition)

@@ -48,7 +48,7 @@ h2
     - competition.scores.includes(:category).map(&:category).uniq.each do |cat|
       - category_active = (category == cat) ? "active" : ""
       li class="#{category_active}"
-        =link_to_competition(competition, category: category)
+        =link_to_competition(competition, category: cat)
 
   // segment tab
   - if category.present?
@@ -56,7 +56,7 @@ h2
       - competition.scores.where(category: category).includes(:segment).map(&:segment).uniq.each do |seg|
         - segment_active = (segment == seg) ? "active" : ""
         li class="#{segment_active}"
-          = link_to_competition(competition, category: category, segment: segment)
+          = link_to_competition(competition, category: category, segment: seg)
 
 ////////////////////////////////////////////////////////////////
 

@@ -4,9 +4,7 @@
 
 - date search
 - youtube register
-- components controller is necessary ??
 - help for rake:update
-- update:skaters categories
 - clean panel with zero scores
 - spin level: B is 0 ??
  
