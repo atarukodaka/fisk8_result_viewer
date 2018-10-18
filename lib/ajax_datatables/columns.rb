@@ -99,8 +99,12 @@ class AjaxDatatables::Column
   # retrive table/model info from 'sources'
   #  "users.address" => "users" as table_name, "address" as table_field, User as model
   #  "address" => "" as table_name, "address" as table_field, nil as model
-  def source
-    @source ||= [columns.datatable.try(:records).try(:table_name), @name].join('.')
+  def source(value=nil)
+    if value.nil?
+      @source ||= [columns.datatable.try(:records).try(:table_name), @name].join('.')
+    else
+      @source = value
+    end
   end
 
   attr_writer :source

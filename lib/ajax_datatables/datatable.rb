@@ -39,7 +39,6 @@ module AjaxDatatables
     property(:default_orders, [])
 
     attr_reader :view_context
-    attr_writer :records
 
     def initialize(view_context = nil, columns: [])
       @view_context = view_context
@@ -50,9 +49,13 @@ module AjaxDatatables
     def records(value = nil)
       if value
         @records = value
+        self
       else
         @records ||= fetch_records
       end
+    end
+    def records=(value)
+      @records = value
     end
 
     def table_id
