@@ -17,4 +17,3 @@ feature SkatersDatatable do
     its(:model) { is_expected.to eq(Skater) }
   end
 end
-

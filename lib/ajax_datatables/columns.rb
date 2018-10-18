@@ -3,7 +3,7 @@ class AjaxDatatables::Columns
 
   def_delegators :@data, :[], :each, :map, :find, :select
   attr_reader :datatable
-  
+
   ################
   # initialize
   # you can initialize columns with array of:
@@ -74,7 +74,7 @@ class AjaxDatatables::Columns
       column.name = col.to_s
     end
     # if source not specify, try to get table from records fetching
-    #column.source ||= [default_table_name, column.name].compact.join('.')
+    # column.source ||= [default_table_name, column.name].compact.join('.')
     column
   end
 end
@@ -83,8 +83,8 @@ class AjaxDatatables::Column
   extend Property
 
   attr_reader :columns
-  
-  #properties :name, :source, default: nil
+
+  # properties :name, :source, default: nil
   property :name, nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
@@ -102,9 +102,9 @@ class AjaxDatatables::Column
   def source
     @source ||= [columns.datatable.try(:records).try(:table_name), @name].join('.')
   end
-  def source=(value)
-    @source = value
-  end
+
+  attr_writer :source
+
   def table_name
     (source =~ /\./) ? source.split(/\./).first : ''
   end

@@ -1,3 +1,13 @@
+namespace :analysis do
+  desc 'tes pcs ratio'
+  task tes_pcs_ratio: :environment do
+    Score.all.includes(:skater, category: [:category_type]).where("segments.segment_type": "free").joins(:segment).each do |score|
+      puts "#{score.category.category_type.name},#{score.name},#{score.skater.name},#{score.tes},#{score.pcs}"
+    end
+  end
+end
+
+
 __END__
 
 require 'daru'
