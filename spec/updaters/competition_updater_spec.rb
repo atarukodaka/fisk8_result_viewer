@@ -91,6 +91,19 @@ RSpec.describe CompetitionUpdater, updater: true do
     end
   end
 
+  describe 'skater creation' do
+    let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
+    let(:competition) { updater.update_competition(url, categories: ['MEN']) }
+    let(:score) { competition.scores.where(category: 'MEN'.to_category, segment: 'SHORT PROGRAM'.to_segment, ranking: 1).first }
+    let(:skater) { score.skater }
+    it {
+      expect(skater.name).to eq('Javier FERNANDEZ')
+      expect(skater.nation).to eq('ESP')
+      expect(skater.isu_number).to eq(7684)
+    }
+      
+  end
+
   describe 'enable_judge_details' do
     let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
     let(:competition) { updater.update_competition(url, categories: ['MEN'], enable_judge_details: true) }

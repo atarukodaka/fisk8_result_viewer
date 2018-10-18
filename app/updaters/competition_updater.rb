@@ -42,6 +42,10 @@ class CompetitionUpdater < Updater
     end.new(verbose: verbose)
   end
 
+  def timezone(data)
+    schedule = data[:time_schedule].first || (return 'UTC')
+    schedule[:starting_time].time_zone
+  end
   ################
   def update_competition(site_url, opts = {})
     debug('*' * 100)
@@ -58,7 +62,6 @@ class CompetitionUpdater < Updater
            .parse(site_url, date_format: options[:date_format],
                   categories: categories_to_parse(options[:categories]),
                   season_from: options[:season_from], season_to: options[:season_to]) || return
-
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -66,6 +69,7 @@ class CompetitionUpdater < Updater
         comp.attributes = {
           start_date: data[:time_schedule].map { |d| d[:starting_time] }.min.to_date,
           end_date: data[:time_schedule].map { |d| d[:starting_time] }.max.to_date,
+          timezone: timezone(data),
         }.merge(data.slice(:site_url, :name, :country, :city))
         yield comp if block_given?
       end
@@ -185,7 +189,7 @@ class CompetitionUpdater < Updater
       sk.attributes = {
         isu_number: item[:isu_number],
         name: corrected_skater_name,
-        nation: item[:nation],
+        nation: item[:skater_nation],
         category_type: category_type,
       }
     end
