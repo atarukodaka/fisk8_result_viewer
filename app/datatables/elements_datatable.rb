@@ -1,4 +1,32 @@
 class ElementsDatatable < ScoreDetailsDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize
+      super([
+              Filter.new(:element_name_group) do
+                [
+                  Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+                             options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
+                  Filter.new(:element_name, :text_field, label: ''),
+                ]
+              end,
+              Filter.new(:element_type_group) do
+                [
+                  Filter.new(:element_type, :select),
+                  Filter.new(:element_subtype, :select),
+                ]
+              end,
+              Filter.new(:goe_group) do
+                [
+                  Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+                             options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+                  Filter.new(:goe, :text_field, label: ''),
+                ]
+              end,
+              ScoresDatatable::Filters.new.data,
+            ].compact.flatten)
+    end
+  end
+  ################
   def initialize(*)
     super
 
@@ -25,29 +53,4 @@ class ElementsDatatable < ScoreDetailsDatatable
     Element.includes(tables).joins(tables)
   end
 
-  def filters
-    @filters ||= [
-      Filter.new(:element_name_group) do
-        [
-          Filter.new(:name_operator, :select, label: '',  onchange: :draw,
-                                     options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
-          Filter.new(:element_name, :text_field, label: ''),
-        ]
-      end,
-      Filter.new(:element_type_group) do
-        [
-          Filter.new(:element_type, :select),
-          Filter.new(:element_subtype, :select),
-        ]
-      end,
-      Filter.new(:goe_group) do
-        [
-          Filter.new(:goe_operator, :select, label: '', onchange: :draw,
-                                     options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-          Filter.new(:goe, :text_field, label: ''),
-        ]
-      end,
-      ScoresDatatable.new.filters,
-    ].compact.flatten
-  end
 end

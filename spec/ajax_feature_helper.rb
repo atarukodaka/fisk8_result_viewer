@@ -31,8 +31,8 @@ module AjaxFeatureHelper
   end
   ################
   module Filter
-    shared_context :filter do |datatable_class, excludings: []|
-      datatable_class.new.filters.map { |filter| filter.children.presence || filter }.flatten
+    shared_context :filter do |filters, excludings: []|
+      filters.map { |filter| filter.children.presence || filter }.flatten
         .reject { |filter| excludings.include?(filter.key) }.each do |filter|
         include_context :ajax_filter, filter
       end

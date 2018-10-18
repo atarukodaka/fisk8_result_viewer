@@ -1,4 +1,4 @@
-- table || raise('no table given')
+- datatable || raise('no table given')
 
 - title = t("controller.#{controller_name}", default: controller_name.humanize)
 - content_for :title do
@@ -15,5 +15,6 @@ style
 
 ////////////////////////////////////////////////////////////////
 // show server-side datatable
-= table.render
+
+= datatable.render(locals: {filters: filters})
 

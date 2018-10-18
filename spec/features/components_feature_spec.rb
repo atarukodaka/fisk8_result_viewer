@@ -14,7 +14,8 @@ feature ComponentsController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :filter, ComponentsDatatable, excludings: [:season_to, :season_from, :value_operator]
+      include_context :filter, ComponentsDatatable::Filters.new,
+                      excludings: [:season_to, :season_from, :value_operator]
       include_context :filter_season
 
 =begin

@@ -1,12 +1,15 @@
 - datatable || raise('no table given')
+//- filters = datatable.class.filters
+//- filters = "#{datatable.class}::Filters".try(:constantize).try(:new) || []
 
 ////////////////////////////////////////////////////////////////
 // filter
-- if datatable.filters.present?
+
+- if filters.present?
   = button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
   = form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|  
 
-    - datatable.filters.each do |filter|
+    - filters.each do |filter|
       div.form-group.row
         div.col-sm-2
           label= filter.label

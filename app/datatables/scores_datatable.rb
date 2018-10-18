@@ -1,4 +1,28 @@
 class ScoresDatatable < IndexDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize
+      model = Score
+      super([
+              CompetitionsDatatable::Filters.new.reject { |filter| filter.key == :site_url },
+              Filter.new(:skater_name, :text_field, model: model),
+              Filter.new(:category, model: model) {
+                [
+                  Filter.new(:category_name, :select, model: model),
+                  Filter.new(:category_type_name, :select, model: model),
+                  Filter.new(:seniority, :select, model: model),
+                  Filter.new(:team, :select, model: model),
+                ]
+              },
+              Filter.new(:segment, model: model) {
+                [
+                  Filter.new(:segment_name, :select, model: model),
+                  Filter.new(:segment_type, :select, model: model),
+                ]
+              },
+            ].flatten)
+    end
+  end
+  ################"
   def initialize(*)
     super
 
@@ -42,26 +66,4 @@ class ScoresDatatable < IndexDatatable
     Score.includes(tables).joins(tables)
   end
 
-  def filters
-    model = Score
-    @filters ||= [
-      CompetitionsDatatable.new.filters.reject { |filter| filter.key == :site_url },
-      Filter.new(:skater_name, :text_field, model: model),
-      Filter.new(:category, model: model) {
-        [
-          Filter.new(:category_name, :select, model: model),
-          Filter.new(:category_type_name, :select, model: model),
-          # value_function: lambda { |score| score.category_type.name }),
-          Filter.new(:seniority, :select, model: model),
-          Filter.new(:team, :select, model: model),
-        ]
-      },
-      Filter.new(:segment, model: model) {
-        [
-          Filter.new(:segment_name, :select, model: model),
-          Filter.new(:segment_type, :select, model: model),
-        ]
-      },
-    ].flatten
-  end
 end
