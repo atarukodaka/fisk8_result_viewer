@@ -4,7 +4,7 @@ class CompetitionsDatatable < IndexDatatable
       model = Competition
       super([
         Filter.new(:competition_name, :text_field, model: model),
-        Filter.new(:competition_class_type) {
+        Filter.new(:competition_class, nil, model: model) {
           [
             Filter.new(:competition_class, :select, model: model),
             Filter.new(:competition_type, :select, model: model),

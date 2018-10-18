@@ -1,21 +1,22 @@
 class ElementsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize
+      model = Element
       super([
-        Filter.new(:element_name_group) do
+        Filter.new(:element_name, nil, model: model) do
           [
             Filter.new(:name_operator, :select, label: '',  onchange: :draw,
                        options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
             Filter.new(:element_name, :text_field, label: ''),
           ]
         end,
-        Filter.new(:element_type_group) do
+        Filter.new(:element_type, nil, model: model) do
           [
-            Filter.new(:element_type, :select),
-            Filter.new(:element_subtype, :select),
+            Filter.new(:element_type, :select, model: model),
+            Filter.new(:element_subtype, :select, model: model),
           ]
         end,
-        Filter.new(:goe_group) do
+        Filter.new(:goe, nil, model: model) do
           [
             Filter.new(:goe_operator, :select, label: '', onchange: :draw,
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),

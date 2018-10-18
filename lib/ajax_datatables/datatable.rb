@@ -30,6 +30,7 @@ module AjaxDatatables
     include AjaxDatatables::Datatable::Decoratable
     include AjaxDatatables::Datatable::Limitable
 
+    attr_writer :records
     def_delegators :@view_context, :params, :link_to, :url_for
 
     property(:data, nil)
@@ -53,9 +54,6 @@ module AjaxDatatables
       else
         @records ||= fetch_records
       end
-    end
-    def records=(value)
-      @records = value
     end
 
     def table_id

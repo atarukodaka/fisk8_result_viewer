@@ -5,15 +5,15 @@ class ScoresDatatable < IndexDatatable
       super([
         CompetitionsDatatable::Filters.new.reject { |filter| filter.key == :site_url },
         Filter.new(:skater_name, :text_field, model: model),
-        Filter.new(:category, model: model) {
+        Filter.new(:category, nil, model: model) {
           [
             Filter.new(:category_name, :select, model: model),
-            Filter.new(:category_type_name, :select, model: model),
+            Filter.new(:category_type, :select, model: model),
             Filter.new(:seniority, :select, model: model),
             Filter.new(:team, :select, model: model),
           ]
         },
-        Filter.new(:segment, model: model) {
+        Filter.new(:segment, nil, model: model) {
           [
             Filter.new(:segment_name, :select, model: model),
             Filter.new(:segment_type, :select, model: model),

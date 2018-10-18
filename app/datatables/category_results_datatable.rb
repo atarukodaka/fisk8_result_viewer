@@ -4,7 +4,7 @@ class CategoryResultsDatatable < IndexDatatable
     columns([:ranking, :skater_name, :nation, :points,
              :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value,
              :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value])
-              
+
 =begin
     columns([
               :competition_name, :competition_class, :competition_type, :category, :season,
@@ -32,12 +32,12 @@ class CategoryResultsDatatable < IndexDatatable
     end
 =end
     default_orders([[:points, :desc], [:ranking, :asc]])
-    #default_orders([[:season, :desc]])
+    # default_orders([[:season, :desc]])
   end
 
   def fetch_records
     # CategoryResult.includes(:competition, :skater, :scores).references(:competition, :skater).all
-    #CategoryResult.includes(:competition, :skater, :scores).all
+    # CategoryResult.includes(:competition, :skater, :scores).all
     CategoryResult.all
   end
 end

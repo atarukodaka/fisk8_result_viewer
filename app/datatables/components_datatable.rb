@@ -1,9 +1,10 @@
 class ComponentsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize
+      model = Component
       super([
-        Filter.new(:component_name, :select),
-        Filter.new(:value_group) do
+        Filter.new(:component_name, :select, model: model),
+        Filter.new(:value, nil, model: model) do
           [
             Filter.new(:value_operator, :select, label: '', onchange: :draw,
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),

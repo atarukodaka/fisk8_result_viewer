@@ -46,6 +46,7 @@ class CompetitionUpdater < Updater
     schedule = data[:time_schedule].first || (return 'UTC')
     schedule[:starting_time].time_zone.name
   end
+
   ################
   def update_competition(site_url, opts = {})
     debug('*' * 100)

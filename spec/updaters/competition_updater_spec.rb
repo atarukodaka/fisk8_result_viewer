@@ -85,7 +85,9 @@ RSpec.describe CompetitionUpdater, updater: true do
     describe 'official absence: gpusa2016/pairs/short' do
       let(:url) { 'http://www.isuresults.com/results/season1617/gpusa2016/' }
       let(:competition) { updater.update_competition(url, categories: ['PAIRS'])  }
-      let(:officials) { competition.performed_segments.find_by(segment: 'SHORT PROGRAM'.to_segment).officials }
+      let(:officials) {
+        competition.performed_segments.find_by(segment: 'SHORT PROGRAM'.to_segment).officials
+      }
       subject { officials.find_by(number: 6) }
       it { is_expected.to be nil }
     end
@@ -94,14 +96,16 @@ RSpec.describe CompetitionUpdater, updater: true do
   describe 'skater creation' do
     let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
     let(:competition) { updater.update_competition(url, categories: ['MEN']) }
-    let(:score) { competition.scores.where(category: 'MEN'.to_category, segment: 'SHORT PROGRAM'.to_segment, ranking: 1).first }
+    let(:score) {
+      competition.scores.where(category: 'MEN'.to_category,
+                               segment: 'SHORT PROGRAM'.to_segment, ranking: 1).first
+    }
     let(:skater) { score.skater }
     it {
       expect(skater.name).to eq('Javier FERNANDEZ')
       expect(skater.nation).to eq('ESP')
       expect(skater.isu_number).to eq(7684)
     }
-      
   end
 
   describe 'enable_judge_details' do
