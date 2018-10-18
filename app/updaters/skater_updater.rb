@@ -5,24 +5,23 @@ class SkaterUpdater < Updater
     @parser ||= SkaterParser.new
   end
 
-=begin
   def update_skaters
-    CategoryType.all do |category_type|
+    CategoryType.all.each do |category_type|
       debug("#{category_type.name}: #{category_type.isu_bio_url}")
 
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category_type.name, category_type.isu_bio_url).each do |hash|
-          hash[:category] = hash[:category].to_category
+          # hash[:category] = hash[:category].to_category
+          hash[:category_type] = category_type
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-            attrs = [:name, :category, :nation, :isu_number]
+            attrs = [:name, :category_type, :nation, :isu_number]
             skater.update(hash.slice(*attrs))
           end
         end
       end # transaction
     end
   end
-=end
-
+=begin
   def update_skaters
     Category.having_isu_bio.each do |category|
       debug("#{category.name}: #{category.isu_bio_url}")
@@ -38,6 +37,7 @@ class SkaterUpdater < Updater
       end # transaction
     end
   end
+=end
 
   ################
   # skater detail
@@ -57,7 +57,7 @@ class SkaterUpdater < Updater
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
                :coach, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))
-      skater.update(category: details_hash[:category].to_category)
+      skater.update(category_type: details_hash[:category_type].to_category_type)
     end
   end
 end ## class

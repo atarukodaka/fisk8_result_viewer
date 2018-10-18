@@ -1,4 +1,13 @@
 class PanelsDatatable < IndexDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize
+      super([
+        Filter.new(:name, :text_field),
+        Filter.new(:nation, :text_field),
+      ])
+    end
+  end
+  ################
   def initialize(*)
     super
     columns([:name, :nation])
@@ -8,12 +17,5 @@ class PanelsDatatable < IndexDatatable
 
   def fetch_records
     Panel.all
-  end
-
-  def filters
-    @filters ||= [
-      AjaxDatatables::Filter.new(:name, :text_field),
-      AjaxDatatables::Filter.new(:nation, :text_field),
-    ]
   end
 end

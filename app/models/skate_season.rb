@@ -1,12 +1,11 @@
 class SkateSeason
   include Comparable
-
-  attr_reader :date
+  attr_reader :start_date
 
   def initialize(date)
-    @date =
+    tmp_date =
       if date.class == String
-        if date =~ /^(\d\d\d\d)\-(\d\d)$/
+        if date =~ /^(\d\d\d\d)\-(\d\d)$/   ## 2016-17 format
           Date.new($1.to_i, 7, 1)
         else
           Date.parse(date)                ## TODO: rescue parse error
@@ -14,29 +13,19 @@ class SkateSeason
       else
         date
       end
+    year, month = tmp_date.year, tmp_date.month
+    year -= 1 if month < 7
+    @start_date = Date.new(year, 7, 1)
   end
 
   def season
-    @season ||= '%04d-%02d' % [year, (year + 1) % 100]
+    year = start_date.year
+    '%04d-%02d' % [year, (year + 1) % 100]
   end
-
-  def to_s
-    season
-  end
-
-  def year
-    y = @date.year
-    y -= 1 if @date.month <= 6
-    y
-  end
-
-  def start_date
-    @start_date ||= Date.new(@date.year, 7, 1)
-  end
+  alias to_s season
 
   def between?(from, to)
     flag = true
-
     if from.present?
       season_from = SkateSeason.new(from)
       flag = (season_from <= self)
@@ -47,7 +36,6 @@ class SkateSeason
       flag = (self <= season_to)
     end
     flag
-    #      (season_from <= self) && (self <= season_to)
   end
 
   def <=>(other)

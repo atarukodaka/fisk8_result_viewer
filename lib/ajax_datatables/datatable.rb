@@ -33,7 +33,7 @@ module AjaxDatatables
     def_delegators :@view_context, :params, :link_to, :url_for
 
     property(:data, nil)
-    property(:records) {  fetch_records }
+    # property(:records) {  fetch_records }
     property(:settings) { default_settings }
     # properties(:default_orders, default: [])
     property(:default_orders, [])
@@ -44,6 +44,18 @@ module AjaxDatatables
       @view_context = view_context
       @columns = columns(columns)
       yield(self) if block_given?
+    end
+
+    def records(value = nil)
+      if value
+        @records = value
+        self
+      else
+        @records ||= fetch_records
+      end
+    end
+    def records=(value)
+      @records = value
     end
 
     def table_id

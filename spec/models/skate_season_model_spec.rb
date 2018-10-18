@@ -12,7 +12,6 @@ RSpec.describe SkateSeason do
   describe 'attributes' do
     it { expect(season.to_s).to eq('2017-18')    }
     it { expect(season.start_date).to eq(Date.new(2017, 7, 1))    }
-    it { expect(season.year).to eq(2017)    }
   end
 
   describe 'between?' do

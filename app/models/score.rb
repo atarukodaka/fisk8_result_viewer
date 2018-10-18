@@ -32,6 +32,10 @@ class Score < ApplicationRecord
   delegate :category_name, :category_type, :seniority, :team, to: :category
   delegate :segment_name, :segment_type, to: :segment
 
+  def category_type_name
+    category.category_type.name
+  end
+
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|
     define_method("component_#{key}") do

@@ -5,23 +5,11 @@
 - date search
 - youtube register
 - components controller is necessary ??
-- codecov: icedance elements
 - help for rake:update
 - update:skaters categories
-- spec
-  - feature
-	- components, statics, panels
-  - controller/deviation
-- parser type can be show on builder
 - clean panel with zero scores
-- official absence: gpusa2016/pairs/short
-- refactoring
-  - devation
-- having scores for skater datatable
-- components feature spec
 - spin level: B is 0 ??
-- official absense: gpusa16/pair/short
-
+ 
 ### new feature
 
 ### check before release

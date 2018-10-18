@@ -2,6 +2,7 @@ class AjaxDatatables::Columns
   extend Forwardable
 
   def_delegators :@data, :[], :each, :map, :find, :select
+  attr_reader :datatable
 
   ################
   # initialize
@@ -51,12 +52,14 @@ class AjaxDatatables::Columns
     end
   end
 
+=begin
   def default_table_name
     @datatable.try(:records).try(:table_name)
   end
+=end
 
   def create_column(col)
-    column = AjaxDatatables::Column.new
+    column = AjaxDatatables::Column.new(columns: self)
     case col
     when Hash
       acceptable_keys = [:name, :source, :searchable, :orderable, :numbering]
@@ -71,7 +74,7 @@ class AjaxDatatables::Columns
       column.name = col.to_s
     end
     # if source not specify, try to get table from records fetching
-    column.source ||= [default_table_name, column.name].compact.join('.')
+    # column.source ||= [default_table_name, column.name].compact.join('.')
     column
   end
 end
@@ -79,19 +82,33 @@ end
 class AjaxDatatables::Column
   extend Property
 
-  properties :name, :source, default: nil
+  attr_reader :columns
+
+  # properties :name, :source, default: nil
+  property :name, nil
   properties :visible, :orderable, :searchable, default: true
   property :numbering, false
   property :operator, nil # set nil as default so that Searchable module can guess by field type later on
 
-  def initialize(name: nil)
+  def initialize(name: nil, columns: nil)
     @name = name.to_s
+    @columns = columns
   end
 
   ####
   # retrive table/model info from 'sources'
   #  "users.address" => "users" as table_name, "address" as table_field, User as model
   #  "address" => "" as table_name, "address" as table_field, nil as model
+  def source(value=nil)
+    if value.nil?
+      @source ||= [columns.datatable.try(:records).try(:table_name), @name].join('.')
+    else
+      @source = value
+    end
+  end
+
+  attr_writer :source
+
   def table_name
     (source =~ /\./) ? source.split(/\./).first : ''
   end

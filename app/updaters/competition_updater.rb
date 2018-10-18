@@ -1,4 +1,26 @@
 class CompetitionUpdater < Updater
+  module CategorySegmentSelector
+    refine Array do
+      using StringToModel
+      def categories
+        map { |d| d[:category] }.uniq.map(&:to_category)
+      end
+
+      def segments
+        map { |d| d[:segment] }.uniq.map(&:to_segment)
+      end
+
+      def select_category(category)
+        select { |d| d[:category] == category.name }
+      end
+
+      def select_category_segment(category, segment)
+        select { |d| d[:category] == category.name && d[:segment] == segment.name }
+      end
+    end
+  end
+  ################
+  using CategorySegmentSelector
   using StringToModel
   include CompetitionUpdater::Deviations
 
@@ -12,23 +34,28 @@ class CompetitionUpdater < Updater
     (cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
   end
 
-  def parser_model(parser_type)
-    "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
-  end
-
   def parser(parser_type = nil)
-    model = (parser_type) ? parser_model(parser_type) : CompetitionParser
-    model.new(verbose: verbose)
+    if parser_type.present?
+      "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
+    else
+      CompetitionParser
+    end.new(verbose: verbose)
   end
 
+  def timezone(data)
+    schedule = data[:time_schedule].first || (return 'UTC')
+    schedule[:starting_time].time_zone
+  end
   ################
   def update_competition(site_url, opts = {})
-    debug("update competition with site_url of: #{site_url}")
+    debug('*' * 100)
+    debug("updating competition '%s' with %s parser" %
+          [site_url, opts[:parser_type] || 'normal'])
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
-                        season_from: nil, season_to: nil}
+                        season_from: nil, season_to: nil }
     options = default_options.merge(opts)
     if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
-      debug("  .. skip: already existing: #{site_url}")
+      debug('  .. skip: already existing')
       return competition
     end
     data = parser(options[:parser_type])
@@ -42,81 +69,96 @@ class CompetitionUpdater < Updater
         comp.attributes = {
           start_date: data[:time_schedule].map { |d| d[:starting_time] }.min.to_date,
           end_date: data[:time_schedule].map { |d| d[:starting_time] }.max.to_date,
+          timezone: timezone(data),
         }.merge(data.slice(:site_url, :name, :country, :city))
+        yield comp if block_given?
       end
 
-      debug('*' * 100)
-      debug('%<name>s [%<short_name>s] (%<site_url>s)' % competition.attributes.symbolize_keys)
+      msg = '%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s'
+      debug(msg % competition.attributes.symbolize_keys)
 
-      data[:scores].map { |d| d[:category] }.uniq.map(&:to_category).each do |category|
+      ## each catgories
+      data[:scores].categories.each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
 
         ## category results
-        data[:category_results].select { |d| d[:category] == category.name }.each do |item|
+        data[:category_results].select_category(category).each do |item|
           competition.category_results.create! do |category_result|
             category_result.update_common_attributes(item)
             category_result.attributes = {
-              #skater: find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category)),
               skater: find_or_create_skater(item),
-              category: item[:category].to_category,
+              category: category,
             }
             debug(category_result.summary)
           end
         end
-        ## performed segments / officials / panels
-        data[:time_schedule].select { |d| d[:category] == category.name }.each do |item|
+
+        ## each segments
+        data[:scores].select_category(category).segments.each do |segment|
+          ## performed_segments
           performed_segment = competition.performed_segments.create! do |ps|
+            item = data[:time_schedule].select_category_segment(category, segment).first
             ps.update_common_attributes(item)
-            ps.category = item[:category].to_category
-            ps.segment = item[:segment].to_segment
+            ps.category = category
+            ps.segment = segment
           end
+
           ## officials
-          data[:officials].select { |d| d[:category] == item[:category] && d[:segment] == item[:segment] }
+          data[:officials].select_category_segment(category, segment)
             .reject { |d| d[:panel_name] == '-' }.each do |official|
             panel = Panel.find_or_create_by(name: official[:panel_name])
             panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
             performed_segment.officials.create!(number: official[:number], panel: panel)
           end
-        end
-        ## scores
-        data[:scores].select { |d| d[:category] == category.name }.each do |item|
-          cr = nil
-          sc = competition.scores.create! do |score|
-            score.update_common_attributes(item)
-            score.category = item[:category].to_category
-            score.segment = item[:segment].to_segment
 
-            ## relevant category result
-            cr = competition.category_results.category(score.category)
-                 .segment_ranking(score.segment, score.ranking).first
-            score.skater =
-              cr.try(:skater) ||
-              #find_or_create_skater(*item.values_at(:isu_number, :skater_name, :skater_nation, :category))
-              find_or_create_skater(item)
-            ## ps
-            ps = competition.performed_segments.category(score.category).segment(score.segment).first
-            score.date = ps.starting_time.to_date
-            debug(score.summary)
+          ## scores
+          data[:scores].select_category_segment(category, segment).each do |item|
+            update_score(competition, item)
           end
-          cr&.update(sc.segment.segment_type => sc)
-
-          item[:elements].each { |d| sc.elements.create!(d) }
-          item[:components].each { |d| sc.components.create!(d) }
-          sc.update(elements_summary: sc.elements.map(&:name).join('/'))
-          sc.update(components_summary: sc.components.map(&:name).join('/'))
         end
       end
       ## judge details and deviations
-      ###        it was random order before 2016-17
-      if options[:enable_judge_details] && SkateSeason.new(competition.season).between?('2016-17', nil)
-        debug('update judge details and deviations', indent: 3)
-        competition.scores.each do |score|
-          update_judge_details(score)
-          update_deviations(score)
-        end
-      end
+      update_details(competition) if options[:enable_judge_details]
       competition        ## ensure to return competition object
     end ## transaction
+  end
+
+  def update_score(competition, item)
+    category = item[:category].to_category
+    segment = item[:segment].to_segment
+    cr = nil
+    sc = competition.scores.create! do |score|
+      score.update_common_attributes(item)
+      score.category = category
+      score.segment = segment
+
+      ## relevant category result
+      cr = competition.category_results.category(category)
+           .segment_ranking(segment, score.ranking).first
+      score.skater = cr.try(:skater) || find_or_create_skater(item)
+
+      ## performed segments
+      ps = competition.performed_segments.category(category).segment(segment).first
+      score.date = ps.starting_time.to_date
+      debug(score.summary)
+    end
+    cr&.update(segment.segment_type => sc)
+
+    item[:elements].each { |d| sc.elements.create!(d) }
+    item[:components].each { |d| sc.components.create!(d) }
+    sc.update(elements_summary: sc.elements.map(&:name).join('/'))
+    sc.update(components_summary: sc.components.map(&:name).join('/'))
+  end
+
+  def update_details(competition)
+    ## it was random order before 2016-17
+    return unless SkateSeason.new(competition.season).between?('2016-17', nil)
+
+    debug('update judge details and deviations', indent: 3)
+    competition.scores.each do |score|
+      update_judge_details(score)
+      update_deviations(score)
+    end
   end
 
   ################
@@ -134,6 +176,7 @@ class CompetitionUpdater < Updater
       end
     end
   end
+
   ################
   ## utils
   def find_or_create_skater(item)
@@ -146,8 +189,8 @@ class CompetitionUpdater < Updater
       sk.attributes = {
         isu_number: item[:isu_number],
         name: corrected_skater_name,
-        nation: item[:nation],
-        category: Category.where(team: false, category_type: category_type).first,
+        nation: item[:skater_nation],
+        category_type: category_type,
       }
     end
   end

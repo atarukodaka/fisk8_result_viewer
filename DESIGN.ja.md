@@ -41,8 +41,18 @@ end
 % cat app/views/index.html.slim
 = UsersDatatable.new(self).render
 ```
+### ..
+- ajax 使う場合は DB カラムを作る必要あり
+- 文字列を返すカラムであること
 
 
+## メモ
+### ActiveHash::Base
+便利なのだが、whereが使えない。
+
+## Capybara
+- js: true にしないと js driver が動いてくれない。
+- JAVASCIRPT_DRIVER=chrome で立ち上げると chrome が表で動く
 
 ## ISUさんしっかりしてくれ
 

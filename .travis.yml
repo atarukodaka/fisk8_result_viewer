@@ -27,6 +27,7 @@ branches:
     - master
     - develop
     - /^release/
+    - refactoring
     - feature-refactoring
 
 ################

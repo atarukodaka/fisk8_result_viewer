@@ -1,118 +1,167 @@
 require 'rails_helper'
 using StringToModel
 
-RSpec.describe Competition, type: :competition_updater, updater: true do
+RSpec.describe CompetitionUpdater, updater: true do
   let(:updater) { CompetitionUpdater.new }
 
   shared_examples :having_competition_with_url do
     its(:site_url) { is_expected.to eq(url) }
   end
 
-  shared_examples :having_score_with_category_of do |category_name|
-    it { expect(competition.scores.first.category.name).to eq(category_name) }
+  def having_scores_with_category_of(category_name)
+    expect(subject.scores.where(category: category_name.to_category)).not_to be_empty
+  end
+  shared_examples :having_scores_with_category_of do |category_name|
+    it { having_scores_with_category_of(category_name) }
+  end
+
+  describe 'wc2017' do
+    let(:site_url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
+    subject { updater.update_competition(site_url) }
+    it {
+      expect(subject.site_url).to eq(site_url)
+      expect(subject.category_results.count).to be > 0
+      expect(subject.scores.count).to be > 0
+      ['MEN', 'LADIES', 'PAIRS', 'ICE DANCE'].each do |category|
+        having_scores_with_category_of(category)
+      end
+    }
   end
 
   describe 'parser types:' do
     ################
-    describe 'wc2017 with isu_generic' do
-      let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
-      subject { updater.update_competition(url) }
-      it_behaves_like :having_competition_with_url
-    end
     describe 'date_format: jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
       let(:date_format) { '%m/%d/%Y' }
       subject { updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
-      it_behaves_like :having_competition_with_url
+      its(:site_url) { is_expected.to eq(url) }
     end
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject {
-        updater.update_competition(url, categories: [], parser_type: :wtt2017)
-      }
-      it_behaves_like :having_competition_with_url
+      subject { updater.update_competition(url, categories: [], parser_type: :wtt2017) }
+      its(:site_url) { is_expected.to eq(url) }
     end
 
     describe 'gpjpn' do
       let(:url) { 'http://www.isuresults.com/results/season1718/gpf1718/' }
-      subject {
-        updater.update_competition(url, categories: ['MEN'], parser_type: :gpjpn)
-      }
-      it_behaves_like :having_competition_with_url
+      subject { updater.update_competition(url, categories: ['MEN'], parser_type: :gpjpn) }
+      its(:site_url) { is_expected.to eq(url) }
     end
   end
 
   describe 'team' do
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject(:competition) {
-        updater.update_competition(url, categories: ['TEAM MEN'], parser_type: :wtt2017)
+      subject { updater.update_competition(url, categories: ['TEAM MEN'], parser_type: :wtt2017)  }
+      it {
+        expect(subject.site_url).to eq(url)
+        having_scores_with_category_of('TEAM MEN')
       }
-      it_behaves_like :having_score_with_category_of, 'TEAM MEN'
     end
     describe 'owgteam' do
       let(:url) { 'http://www.isuresults.com/results/season1718/owg2018/' }
-      subject(:competition) { updater.update_competition(url, categories: ['TEAM MEN']) }
-      it_behaves_like :having_score_with_category_of, 'TEAM MEN'
+      subject { updater.update_competition(url, categories: ['TEAM MEN']) }
+      its(:site_url) { is_expected.to eq(url) }
+      it {
+        expect(subject.site_url).to eq(url)
+        having_scores_with_category_of('TEAM MEN')
+      }
     end
   end
 
   describe 'special' do
     describe 'gpfra2015 - no free skating' do
       let(:url) { 'http://www.isuresults.com/results/season1516/gpfra2015/' }
-      subject(:competition) { updater.update_competition(url, categories: ['MEN']) }
-      it_behaves_like :having_competition_with_url
+      subject { updater.update_competition(url, categories: ['MEN']) }
+      its(:site_url) { is_expected.to eq(url) }
     end
     describe 'csfin' do
       let(:url) { 'http://www.figureskatingresults.fi/results/1617/CSFIN2016/' }
-      subject {
-        updater.update_competition(url, categories: ['MEN'])
-      }
-      it_behaves_like :having_competition_with_url
+      subject { updater.update_competition(url, categories: ['MEN'])  }
+      its(:site_url) { is_expected.to eq(url) }
+    end
+
+    describe 'official absence: gpusa2016/pairs/short' do
+      let(:url) { 'http://www.isuresults.com/results/season1617/gpusa2016/' }
+      let(:competition) { updater.update_competition(url, categories: ['PAIRS'])  }
+      let(:officials) { competition.performed_segments.find_by(segment: 'SHORT PROGRAM'.to_segment).officials }
+      subject { officials.find_by(number: 6) }
+      it { is_expected.to be nil }
     end
   end
-=begin
-  describe 'live results' do
-    describe 'gpfra2016/ICE DANCE' do
-      let(:url) { 'http://www.isuresults.com/results/season1617/gpfra2016' }
-      subject(:competition) { updater.update_competition(url, categories: ['ICE DANCE']) }
-      # it {    expect(competition.scores.first.category.name).to eq('ICE DANCE')        }
-      it_behaves_like :having_score_with_category_of, 'ICE DANCE'
-    end
-    describe 'gpchn2017/LADIES' do
-      let(:url) { 'http://www.isuresults.com/results/season1718/gpchn2017/' }
-      subject(:competition) { updater.update_competition(url, categories: ['LADIES']) }
-      # it {    expect(competition.scores.first.category.name).to eq('LADIES')        }
-      it_behaves_like :having_score_with_category_of, 'LADIES'
-    end
+
+  describe 'skater creation' do
+    let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
+    let(:competition) { updater.update_competition(url, categories: ['MEN']) }
+    let(:score) { competition.scores.where(category: 'MEN'.to_category, segment: 'SHORT PROGRAM'.to_segment, ranking: 1).first }
+    let(:skater) { score.skater }
+    it {
+      expect(skater.name).to eq('Javier FERNANDEZ')
+      expect(skater.nation).to eq('ESP')
+      expect(skater.isu_number).to eq(7684)
+    }
+      
   end
-=end
 
   describe 'enable_judge_details' do
+    let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
+    let(:competition) { updater.update_competition(url, categories: ['MEN'], enable_judge_details: true) }
+    let(:score) { competition.scores.first }
+    let(:element) { score.elements.first }
+    let(:component) { score.components.first }
     it {
-      url = 'http://www.isuresults.com/results/season1617/wc2017/'
-      updater = CompetitionUpdater.new(verbose: false)
-
-      updater.update_competition(url, categories: ['MEN'], enable_judge_details: true)
-      expect(ElementJudgeDetail.count).to be > 0
-      expect(ComponentJudgeDetail.count).to be > 0
+      expect(element.element_judge_details.count).to be > 0
+      expect(component.component_judge_details.count).to be > 0
     }
   end
 
   describe 'season from/to' do
-    it {
-      wc2014 = 'http://www.isuresults.com/results/wc2014/'
-      wc2017 = 'http://www.isuresults.com/results/season1617/wc2017/'
+    let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
 
-      updater.update_competition(wc2017, season_from: '2012-13', season_to: '2014-15',
-                                  categories: [])
-      updater.update_competition(wc2014, season_from: '2012-13', season_to: '2014-15',
-                                  categories: [])
+    shared_context :season_within_range_of do |from, to, flag|
+      subject { updater.update_competition(url, season_from: from, season_to: to, categories: []) }
+      it {
+        expected = (flag) ? be_truthy : be_nil
+        is_expected.to expected
+      }
+    end
 
-      expect(Competition.find_by(site_url: wc2014)).not_to be nil
-      expect(Competition.find_by(site_url: wc2017)).to be nil
-    }
+    describe 'past/past: out of range' do
+      include_context :season_within_range_of, '2012-13', '2014-15', false
+    end
+    describe 'past/equal: within range' do
+      include_context :season_within_range_of, '2012-13', '2016-17', true
+    end
+    describe 'past/feature: within range' do
+      include_context :season_within_range_of, '2012-13', '2020-21', true
+    end
+    describe 'equal/feature: within range' do
+      include_context :season_within_range_of, '2016-17', '2020-21', true
+    end
+    describe 'feature/feature: out of range' do
+      include_context :season_within_range_of, '2017-18', '2020-21', false
+    end
+
+    describe 'nil/past: out of range' do
+      include_context :season_within_range_of, nil, '2014-15', false
+    end
+    describe 'nil/equal: within range' do
+      include_context :season_within_range_of, nil, '2016-17', true
+    end
+    describe 'nil/feature: within range' do
+      include_context :season_within_range_of, nil, '2016-17', true
+    end
+
+    describe 'past/nil: within range' do
+      include_context :season_within_range_of, '2014-15', nil, true
+    end
+    describe 'equal/nil: within range' do
+      include_context :season_within_range_of, '2016-17', nil, true
+    end
+    describe 'feature/nil: out of range' do
+      include_context :season_within_range_of, '2020-21', nil, false
+    end
   end
 
   describe 'force' do
@@ -201,59 +250,49 @@ RSpec.describe Competition, type: :competition_updater, updater: true do
       include_context :skater_having_different_name, url, 'LADIES', 15
       it_behaves_like :same_name_between_segments
     end
-=begin
+
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     context 'warsaw13: Mariya1 BAKUSHEVA' do   # 17 = 20, 18 / Mariya BAKUSHEVA
       url = 'http://www.pfsa.com.pl/results/1314/WC2013/'
       include_context :skater_having_different_name, url, 'JUNIOR LADIES', 17
       it_behaves_like :same_name_between_segments
     end
-=end
   end
   ################
   describe 'encoding' do
-    it 'parses iso-8859-1' do
-      url = 'http://www.isuresults.com/results/season1516/wjc2016/'
-      CompetitionUpdater.new.update_competition(url, categories: ['JUNIOR LADIES'])
-      results = Competition.find_by(site_url: url).category_results.where(category: 'JUNIOR LADIES')
-      expect(results.count).to be >= 0
+    describe 'parses iso-8859-1' do
+      let(:url) { 'http://www.isuresults.com/results/season1516/wjc2016/' }
+      let(:competition) { updater.update_competition(url, categories: ['JUNIOR LADIES']) }
+      subject { competition.category_results.where(category: 'JUNIOR LADIES') }
+      its(:count) { is_expected.to be >= 0 }
     end
-=begin
-## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
-    it 'parses unicode (fin2014)' do
-      url = 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/'
-      CompetitionUpdater.new.update_competition(url, categories: ['MEN'])
 
-      expect(Competition.find_by(site_url: url).scores.count).to be >= 0
+    ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
+    describe 'parses unicode (fin2014)' do
+      let(:url) { 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/' }
+      subject { updater.update_competition(url, categories: ['MEN']) }
+      its(:site_url) { is_expected.to eq(url) }
     end
-=end
   end
   ################
   describe 'network errors' do
-=begin
-## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
+    ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'rescue not found on nepela2014/pairs and count' do
-      let(:competition){
-        url = 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/'
-        CompetitionUpdater.new(verbose: true).update_competition(url, categories: ['PAIRS'])
-      }
-      it { expect(competition.results.where(category: "PAIRS").count).to be_zero }
-      #expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
+      let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
+      let(:competition) { updater.update_competition(url, categories: ['PAIRS']) }
+      it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
+      # expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
-=end
+
     describe 'rescue socket error and return value' do
-      subject {
-        url = 'http://xxxxxzzzzxxx.com/qqqq.pdf'
-        CompetitionUpdater.new.update_competition(url, categories: ['MEN'])
-      }
+      let(:url) { 'http://xxxxxzzzzxxx.com/qqqq.pdf' }
+      subject { updater.update_competition(url, categories: ['MEN']) }
       it { is_expected.to be_nil }
     end
 
     describe 'rescue http error and return value' do
-      subject {
-        url = 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf'
-        CompetitionUpdater.new.update_competition(url)
-      }
+      let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/zzzzzzzzzzzzzz.pdf' }
+      subject { updater.update_competition(url) }
       it { is_expected.to be_nil }
     end
   end

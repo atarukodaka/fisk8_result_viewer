@@ -1,9 +1,11 @@
 require 'rails_helper'
 
-feature SkatersController, type: :feature, feature: true do
+RSpec.describe SkatersController, feature: true do
+  # render_views
+
   let!(:main) { create(:competition, :world).scores.first.skater }
   let!(:sub) { create(:competition, :finlandia).scores.first.skater }
-  let(:no_scores_skater) { create(:skater, :no_scores) }
+  let!(:no_scores_skater) { create(:skater, :no_scores) }
   let(:index_path) { skaters_path }
 
   ################
@@ -14,22 +16,19 @@ feature SkatersController, type: :feature, feature: true do
     end
 
     context :filter do
-      include_context :filter, SkatersDatatable   ## , excludings: [:having_scores]
+      include_context :filter, SkatersDatatable::Filters.new, excludings: [:having_scores]
 
-=begin
-## TODO: implement having scores
-      context :having_no_scores do
+      ## TODO: implement having scores
+      context :having_scores do
         it {
           visit index_path
-          expect(page.text).not_to have_content(no_scores_skater.name)
-          find('#having_scores').click
-          sleep 1
           expect(page.text).to have_content(no_scores_skater.name)
+          find('#having_scores').click
+          sleep 0.3
+          expect(page.text).not_to have_content(no_scores_skater.name)
         }
       end
-=end
     end
-
     context :order do
       include_context :order, SkatersDatatable
     end

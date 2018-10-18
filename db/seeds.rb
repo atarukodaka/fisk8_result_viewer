@@ -1,3 +1,30 @@
+using StringToModel
+
+################
+# category type
+[
+  {
+    name: 'MEN',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosmen.htm',
+  },
+  {
+    name: 'LADIES',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosladies.htm',
+  },
+  {
+    name: 'PAIRS',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiospairs.htm',
+  },
+  {
+    name: 'ICE DANCE',
+    isu_bio_url:   'http://www.isuresults.com/bios/fsbiosicedancing.htm',
+  },
+].each do |elem|
+  CategoryType.find_or_create_by(name: elem[:name]) do |category_type|
+    category_type.update(elem)
+  end
+end
+
 ####
 # category
 
@@ -9,7 +36,7 @@
     abbr:          'SM',
     seniority:     'SENIOR',
     team:          false,
-    category_type: 'MEN',
+    category_type: 'MEN'.to_category_type,
   },
   {
     name:          'LADIES',
@@ -17,7 +44,7 @@
     abbr:          'SL',
     seniority:     'SENIOR',
     team:          false,
-    category_type: 'LADIES',
+    category_type: 'LADIES'.to_category_type,
   },
   {
     name:          'PAIRS',
@@ -25,7 +52,7 @@
     abbr:          'SP',
     seniority:     'SENIOR',
     team:          false,
-    category_type: 'PAIRS',
+    category_type: 'PAIRS'.to_category_type,
   },
   {
     name:          'ICE DANCE',
@@ -33,7 +60,7 @@
     abbr:          'SD',
     seniority:     'SENIOR',
     team:          false,
-    category_type: 'ICE DANCE',
+    category_type: 'ICE DANCE'.to_category_type,
   },
   #### JUNIOR
   {
@@ -41,28 +68,28 @@
     abbr:          'JM',
     seniority:     'JUNIOR',
     team:          false,
-    category_type: 'MEN',
+    category_type: 'MEN'.to_category_type,
   },
   {
     name:          'JUNIOR LADIES',
     abbr:          'JL',
     seniority:     'JUNIOR',
     team:          false,
-    category_type: 'LADIES',
+    category_type: 'LADIES'.to_category_type,
   },
   {
     name:          'JUNIOR PAIRS',
     abbr:          'JP',
     seniority:     'JUNIOR',
     team:          false,
-    category_type: 'PAIRS',
+    category_type: 'PAIRS'.to_category_type,
   },
   {
     name:          'JUNIOR ICE DANCE',
     abbr:          'JD',
     seniority:     'JUNIOR',
     team:          false,
-    category_type: 'ICE DANCE',
+    category_type: 'ICE DANCE'.to_category_type,
   },
   #### TEAM
   {
@@ -70,31 +97,33 @@
     abbr:          'TM',
     seniority:     'SENIOR',
     team:          true,
-    category_type: 'MEN',
+    category_type: 'MEN'.to_category_type,
   },
   {
     name:          'TEAM LADIES',
     abbr:          'TL',
     seniority:     'SENIOR',
     team:          true,
-    category_type: 'LADIES',
+    category_type: 'LADIES'.to_category_type,
   },
   {
     name:          'TEAM PAIRS',
     abbr:          'TP',
     seniority:     'SENIOR',
     team:          true,
-    category_type: 'PAIRS',
+    category_type: 'PAIRS'.to_category_type,
   },
   {
     name:          'TEAM ICE DANCE',
     abbr:          'TD',
     seniority:     'SENIOR',
     team:          true,
-    category_type: 'ICE DANCE',
+    category_type: 'ICE DANCE'.to_category_type,
   },
 ].each do |elem|
   Category.find_or_create_by(name: elem[:name]) do |category|
+    # category.update(elem.slice(:name, :abbr, :seniority, :team))
+    # category.category_type = elem[:category_type]
     category.update(elem)
   end
 end

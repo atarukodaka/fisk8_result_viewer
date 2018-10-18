@@ -6,7 +6,7 @@ FactoryBot.define do
     trait :men do
       name { 'Taro YAMADA' }
       nation { 'JPN' }
-      category { 'MEN'.to_category }
+      category_type { 'MEN'.to_category_type }
       isu_number { 1 }
 
       birthday { '1.1.1980' }
@@ -18,7 +18,7 @@ FactoryBot.define do
     trait :ladies do
       name { 'Leia ORGANA' }
       nation { 'USA' }
-      category { 'LADIES'.to_category }
+      category_type { 'LADIES'.to_category_type }
       isu_number { 2 }
       birthday { '1.1.1990' }
       coach { 'Rola ORGANA' }
@@ -29,7 +29,7 @@ FactoryBot.define do
     trait :ice_dance do
       name { 'ADAM / EVE' }
       nation { 'GRC' }
-      category { 'ICE DANCE'.to_category }
+      category_type { 'ICE DANCE'.to_category_type }
       isu_number { 3 }
     end
 
@@ -37,7 +37,7 @@ FactoryBot.define do
     trait :no_scores do
       name { 'No SCORES' }
       nation { 'CAN' }
-      category { 'MEN'.to_category }
+      category_type { 'MEN'.to_category_type }
       isu_number { 4 }
     end
   end
