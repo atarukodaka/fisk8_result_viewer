@@ -15,7 +15,6 @@ class CompetitionParser
       elem.xpath('ancestor::table[1]//tr')
     end
 
-    # def parse_time_schedule(page, date_format: nil) ## TODO: date_format
     def parse(page, date_format: nil) ## TODO: date_format
       ## time schedule
       rows = get_time_schedule_rows(page)

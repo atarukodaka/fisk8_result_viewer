@@ -34,10 +34,4 @@ class CategoryResultsDatatable < IndexDatatable
     default_orders([[:points, :desc], [:ranking, :asc]])
     # default_orders([[:season, :desc]])
   end
-
-  def fetch_records
-    # CategoryResult.includes(:competition, :skater, :scores).references(:competition, :skater).all
-    # CategoryResult.includes(:competition, :skater, :scores).all
-    CategoryResult.all
-  end
 end

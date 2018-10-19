@@ -3,16 +3,23 @@ class SkateSeason
   attr_reader :start_date
 
   def initialize(date)
-    tmp_date =
-      if date.class == String
-        if date =~ /^(\d\d\d\d)\-(\d\d)$/   ## 2016-17 format
+    tmp_date = 
+      case date
+      when String
+        if date =~ /^(\d\d\d\d)\-\d\d$/  ||  ## 2016-17 format
+           date =~ /^(\d\d\d\d)$/               ## 2016 format
           Date.new($1.to_i, 7, 1)
-        else
-          Date.parse(date)                ## TODO: rescue parse error
+        else                                             ## parse as date string
+          Date.parse(date)
         end
-      else
+      when Integer
+        Date.new(date, 7, 1)
+      when Date
         date
+      else
+        raise
       end
+    
     year, month = tmp_date.year, tmp_date.month
     year -= 1 if month < 7
     @start_date = Date.new(year, 7, 1)

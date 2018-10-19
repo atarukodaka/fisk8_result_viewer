@@ -56,7 +56,7 @@ module Property
         instance_variable_set variable_name, args.first  ##  unless readonly
         self
       elsif !instance_variable_defined?(variable_name)  ##  && !readonly # set default value if undef
-        instance_variable_set(variable_name, instance_eval(&initializer)) ## TODO: lazy evaluation for block
+        instance_variable_set(variable_name, instance_eval(&initializer))
       else
         instance_variable_get(variable_name)
       end
