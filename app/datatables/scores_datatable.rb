@@ -8,7 +8,7 @@ class ScoresDatatable < IndexDatatable
         Filter.new(:category, nil, model: model) {
           [
             Filter.new(:category_name, :select, model: model),
-            Filter.new(:category_type, :select, model: model),
+            Filter.new(:category_type_name, :select, model: model),
             Filter.new(:seniority, :select, model: model),
             Filter.new(:team, :select, model: model),
           ]

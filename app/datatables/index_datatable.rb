@@ -1,16 +1,17 @@
 class IndexDatatable < AjaxDatatables::Datatable
   class Filters
     class Filter < AjaxDatatables::Filter; end
-    delegate :[], :each, :map, :reject, to: :@data
+    delegate :[], :each, :map, :reject, :present?, to: :@data
     attr_reader :data
     def initialize(ary = [])
       @data = ary
     end
   end
 
-  include AjaxDatatables::Datatable::ConditionBuilder
   class Filter < AjaxDatatables::Filter; end ## shortcut purpose only
 
+  ################
+  include AjaxDatatables::Datatable::ConditionBuilder
   def manipulate(records)
     super(records).where(build_conditions(filter_search_nodes))
   end

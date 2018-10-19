@@ -11,14 +11,6 @@ module AjaxDatatables
           instance_variable_set "@#{var}", args.first[var]
         end
       end
-=begin
-      @fields = fields
-      @label = label
-      @model = model
-      @onchange = onchange
-      @options = options
-      @children = children       ## TODO
-=end
       if block_given?
         @children = yield
       end
