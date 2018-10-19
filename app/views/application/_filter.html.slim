@@ -3,23 +3,18 @@
 
 ////////////////////////////////////////////////////////////////
 
-- if filter.children.present?
-  - filter.children.each do |child|
-    - if child.label.present?
-      label= datatable.model.human_attribute_name(child.label)
-    = render partial: "filter", locals: { filter: child, datatable: datatable }
-- else
+- if true
   - onchange = (filter.onchange == :draw) ? ajax_draw(datatable) : ajax_search(filter.key, datatable)
 
   - case filter.input_type
   - when :text_field
     = text_field_tag(filter.key, params[filter.key], size: 70, onchange: onchange)
   - when :checkbox
-    = check_box_tag(filter.key, 'on', params[:having_scores] == 'on', onchange: onchange)
+    /= check_box_tag(filter.key, 'on', params[:having_scores] == 'on', onchange: onchange)
+    = check_box_tag(filter.key, 'on', filter.checked, onchange: onchange)
   - when :select
     - if filter.options.present?
       = select_tag(filter.key, options_for_select(filter.options, params[filter.key]), onchange: onchange)
     - else
       = select_tag_with_options(filter.key, onchange: onchange)
-  - else
-    - raise
+

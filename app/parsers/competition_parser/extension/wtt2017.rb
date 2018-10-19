@@ -34,7 +34,7 @@ class CompetitionParser
       # rubocop:disable all
       def parse_time_schedule(_page, date_format:)
         Time.zone ||= 'UTC'
-        data = [
+        [
           {
             starting_time: Time.zone.parse('2017/04/20 15:15:00'),
             category: 'TEAM ICE DANCE',
@@ -77,7 +77,6 @@ class CompetitionParser
             segment: 'FREE SKATING',
           },
         ]
-        data
       end
       # rubocop:enable all
     end

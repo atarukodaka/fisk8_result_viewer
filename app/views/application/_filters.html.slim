@@ -9,7 +9,14 @@
         div.col-sm-2
           label= filters.datatable.model.human_attribute_name(filter.key)
         div.col-sm-10
+          - if filter.children.present?
+            - filter.children.each do |child|
+              - if child.label.present?
+                label= filters.datatable.model.human_attribute_name(child.label)
+              = render partial: "filter", locals: { filter: child, datatable: filters.datatable }
+              /= child.render
           = render partial: "filter", locals: { filter: filter, datatable: filters.datatable }
+          /= filter.render
 
     = form_group do
       label= t("filter.offset", default: "Offset")

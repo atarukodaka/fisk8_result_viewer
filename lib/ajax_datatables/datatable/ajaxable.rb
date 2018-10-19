@@ -35,4 +35,3 @@ module AjaxDatatables::Datatable::Ajaxable
     )
   end
 end
-
