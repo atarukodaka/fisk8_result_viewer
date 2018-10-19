@@ -50,9 +50,31 @@ end
 ### ActiveHash::Base
 便利なのだが、whereが使えない。
 
-## Capybara
+### Capybara
 - js: true にしないと js driver が動いてくれない。
 - JAVASCIRPT_DRIVER=chrome で立ち上げると chrome が表で動く
+
+### postgres
+edit config/database.yml
+
+```
+su
+/etc/init.d/postgresql start
+update-rc.d postgresql defaults
+su postgres
+dropdb fisk8viewer
+createdb fisk8viewer
+^D
+
+```
+### heroku
+
+```
+git push heroku master
+heroku pg:reset --confirm fisk8-result-viewer
+heroku pg:push fisk8viewer HEROKU_POSTGRESQL_BLUE_URL
+heroku restart
+```
 
 ## ISUさんしっかりしてくれ
 

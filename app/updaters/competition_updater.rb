@@ -50,8 +50,7 @@ class CompetitionUpdater < Updater
   ################
   def update_competition(site_url, opts = {})
     debug('*' * 100)
-    debug("updating competition '%s' with %s parser" %
-          [site_url, opts[:parser_type] || 'normal'])
+    debug("updating competition '%s' with %s parser" % [site_url, opts[:parser_type] || 'normal'])
     default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
                         season_from: nil, season_to: nil }
     options = default_options.merge(opts)
@@ -84,37 +83,16 @@ class CompetitionUpdater < Updater
 
         ## category results
         data[:category_results].select_category(category).each do |item|
-          competition.category_results.create! do |category_result|
-            category_result.update_common_attributes(item)
-            category_result.attributes = {
-              skater: find_or_create_skater(item),
-              category: category,
-            }
-            debug(category_result.summary)
-          end
+          update_category_result(competition, category, item)
         end
 
         ## each segments
         data[:scores].select_category(category).segments.each do |segment|
-          ## performed_segments
-          performed_segment = competition.performed_segments.create! do |ps|
-            item = data[:time_schedule].select_category_segment(category, segment).first
-            ps.update_common_attributes(item)
-            ps.category = category
-            ps.segment = segment
-          end
-
-          ## officials
-          data[:officials].select_category_segment(category, segment)
-            .reject { |d| d[:panel_name] == '-' }.each do |official|
-            panel = Panel.find_or_create_by(name: official[:panel_name])
-            panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
-            performed_segment.officials.create!(number: official[:number], panel: panel)
-          end
-
+          update_segment(competition, category, segment, time_schedule: data[:time_schedule],
+                         officials: data[:officials])
           ## scores
           data[:scores].select_category_segment(category, segment).each do |item|
-            update_score(competition, item)
+            update_score(competition, category, segment, item)
           end
         end
       end
@@ -123,10 +101,33 @@ class CompetitionUpdater < Updater
       competition        ## ensure to return competition object
     end ## transaction
   end
+  ################
+  def update_category_result(competition, category, item)
+    competition.category_results.create! do |category_result|
+      category_result.update_common_attributes(item)
+      category_result.skater = find_or_create_skater(item)
+      category_result.category = category
+      debug(category_result.summary)
+    end
+  end
+  def update_segment(competition, category, segment, time_schedule: , officials: )
+    ## performed_segments
+    performed_segment = competition.performed_segments.create! do |ps|
+      item = time_schedule.select_category_segment(category, segment).first
+      ps.update_common_attributes(item)
+      ps.category = category
+      ps.segment = segment
+    end
 
-  def update_score(competition, item)
-    category = item[:category].to_category
-    segment = item[:segment].to_segment
+    ## officials
+    officials.select_category_segment(category, segment)
+      .reject { |d| d[:panel_name] == '-' }.each do |official|
+      panel = Panel.find_or_create_by(name: official[:panel_name])
+      panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
+      performed_segment.officials.create!(number: official[:number], panel: panel)
+    end
+  end
+  def update_score(competition, category, segment, item)
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)

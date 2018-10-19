@@ -5,31 +5,32 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+#ruby '2.4.4'
+
 gem 'rails', '~> 5.1.0'
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', platforms: :ruby
 
+gem 'json', '>= 2.0.0'
 gem 'coffee-rails', '~> 4.2'
 
 gem 'slim-rails'
 gem 'pdftotext'
 gem 'bootstrap-sass'
 gem 'kaminari'
-gem 'draper' ## decoration
+gem 'draper'                              ## decoration
 gem 'config'
-gem 'open_uri_redirections' # for http: -> https: redirect
+gem 'open_uri_redirections'         ## for http: -> https: redirect
 gem 'sitemap_generator'
-gem 'active_hash', '~> 1.5' # 2.x doenst support Ruby < 2.4 and Rails < 5
+gem 'active_hash', '~> 1.5'         ## 2.x doenst support Ruby < 2.4 and Rails < 5
 gem 'gretel' ## breadcriumb
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'google-analytics-rails'
-gem 'rspec' ## for heroku
-gem 'stackprof' # profiling
+gem 'rspec'                                 ## for heroku
+gem 'stackprof'                           # # profiling
 
-## for each environments
 group :development, :test do
   gem 'bullet'
   gem 'sqlite3'
@@ -59,6 +60,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'
   gem 'rack-dev-mark'
+  #gem 'pg'
 end
 
 group :production do
