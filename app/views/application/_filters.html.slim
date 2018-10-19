@@ -1,9 +1,4 @@
-//- datatable || raise('no table given')
-//- filters = datatable.class.filters
-//- filters = "#{datatable.class}::Filters".try(:constantize).try(:new) || []
 - filters.datatable || raise
-////////////////////////////////////////////////////////////////
-// filter
 
 - if filters.present?
   = button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
@@ -19,8 +14,6 @@
     = form_group do
       label= t("filter.offset", default: "Offset")
       =text_field_tag(:offset, params[:offset], label: "AAA")
-      label
-      // = button_tag("html", type: "submit", name: "format", value: "html", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
       label
       = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
       label

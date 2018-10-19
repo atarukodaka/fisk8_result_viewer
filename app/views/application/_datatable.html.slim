@@ -2,8 +2,6 @@
 - table_id = datatable.table_id
 - attrs = datatable.as_attrs
 
-// = render partial: "filters", locals: { datatable: datatable, filters: filters } if defined? filters
-
 ////////////////////////////////////////////////////////////////
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 script
