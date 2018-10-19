@@ -9,7 +9,7 @@ FactoryBot.define do
 
     trait :world do
       category { 'TEAM MEN'.to_category }
-      segment {'SHORT PROGRAM'.to_segment }
+      segment { 'SHORT PROGRAM'.to_segment }
       # starting_time { Time.new(2017, 2, 1, 15, 0, 0) }
       starting_time { '2015-2-1 15:00:00' }
     end

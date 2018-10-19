@@ -1,4 +1,17 @@
 class DeviationsDatatable < IndexDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      model = Deviation
+      @data = [
+        Filter.new(:skater_name, :text_field, model: model),
+        Filter.new(:score_name, :text_field, model: model),
+        Filter.new(:panel_name, :text_field, model: model),
+        Filter.new(:category_name, :select, model: model),
+      ]
+    end
+  end
+  ################
   def initialize(*)
     super
 
@@ -18,15 +31,7 @@ class DeviationsDatatable < IndexDatatable
   end
 
   def fetch_records
-    Deviation.all.includes([official: [:panel]], score: [:skater, :category, :competition])
-      .joins([official: [:panel]], score: [:skater])
-  end
-
-  def filters
-    @filters ||= [
-      AjaxDatatables::Filter.new(:skater_name, :text_field),
-      AjaxDatatables::Filter.new(:score_name, :text_field),
-      AjaxDatatables::Filter.new(:panel_name, :text_field),
-    ]
+    super.all.includes([official: [:panel]], score: [:skater, :category, :competition])
+      .joins([official: [:panel]], score: [:skater, :category])
   end
 end

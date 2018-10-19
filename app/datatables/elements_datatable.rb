@@ -1,4 +1,34 @@
 class ElementsDatatable < ScoreDetailsDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      model = Element
+      @data = [
+        Filter.new(:element_name, nil, model: model) do
+          [
+            Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+                       options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
+            Filter.new(:element_name, :text_field, label: ''),
+          ]
+        end,
+        Filter.new(:element_type, nil, model: model) do
+          [
+            Filter.new(:element_type, :select, model: model),
+            Filter.new(:element_subtype, :select, model: model),
+          ]
+        end,
+        Filter.new(:goe, nil, model: model) do
+          [
+            Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            Filter.new(:goe, :text_field, label: ''),
+          ]
+        end,
+        ScoresDatatable::Filters.new.data,
+      ].compact.flatten
+    end
+  end
+  ################
   def initialize(*)
     super
 
@@ -21,33 +51,7 @@ class ElementsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    tables = [:score, score: [:competition, :skater, :category, :segment]]
-    Element.includes(tables).joins(tables)
-  end
-
-  def filters
-    @filters ||= [
-      AjaxDatatables::Filter.new(:element_name_group) do
-        [
-          AjaxDatatables::Filter.new(:name_operator, :select, label: '',  onchange: :draw,
-                                     options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
-          AjaxDatatables::Filter.new(:element_name, :text_field, label: ''),
-        ]
-      end,
-      AjaxDatatables::Filter.new(:element_type_group) do
-        [
-          AjaxDatatables::Filter.new(:element_type, :select),
-          AjaxDatatables::Filter.new(:element_subtype, :select),
-        ]
-      end,
-      AjaxDatatables::Filter.new(:goe_group) do
-        [
-          AjaxDatatables::Filter.new(:goe_operator, :select, label: '', onchange: :draw,
-                                     options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-          AjaxDatatables::Filter.new(:goe, :text_field, label: ''),
-        ]
-      end,
-      ScoresDatatable.new.filters,
-    ].flatten
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
+    super.includes(tables).joins(tables)
   end
 end

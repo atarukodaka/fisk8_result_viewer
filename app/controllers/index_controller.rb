@@ -1,19 +1,25 @@
 class IndexController < ApplicationController
   def index
-    table = create_datatable
+    datatable = create_datatable
+    filters = begin
+                "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
+              rescue NameError
+                nil
+              end
     respond_to do |format|
       format.html {
         render :index, locals: {
-          table: table.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
+          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load,
+                 filters: filters,
         }
       }
       format.json {
-        render json: table.limit.as_json
+        render json: datatable.limit.as_json
       }
       format.csv {
         require 'csv'
-        csv = CSV.generate(headers: table.column_names, write_headers: true) do |c|
-          table.limit.as_json.each do |row|
+        csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
+          datatable.limit.as_json.each do |row|
             c << row
           end
         end

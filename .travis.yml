@@ -15,7 +15,6 @@ script:
   - bundle exec rspec --tag feature
   - bundle exec rspec --tag updater
   - bundle exec rspec --tag rake
-  #- bundle exec rspec --tag parser
   - bundle exec rspec --tag error_handler
 
 env:
@@ -27,6 +26,7 @@ branches:
     - master
     - develop
     - /^release/
+    - refactoring
     - feature-refactoring
 
 ################

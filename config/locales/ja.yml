@@ -36,6 +36,7 @@ ja:
     show:
       skater_summary: 選手情報
       competition_results: 競技会結果
+
   scores:
     show:
       score_summary: スコア情報
@@ -67,21 +68,31 @@ ja:
       participated_segments: 参加セグメント
       deviation: 逸脱度
 
+  diviations:
+    index:
+      skater_name: スケーター名
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
-  
+
+  ################    
   # models
   attributes:
     skater_name: スケーター名
     skater_nation: スケーター国名
     competition_name: 大会名
+    competition_class: 競技クラス
+    competition_type: 競技タイプ
+    competition_class_type: 競技クラス/タイプ
     score_name: スコア名
     category: カテゴリー
     category_name: カテゴリー名
-    category_type: カテゴリータイプ
+    category_type_name: カテゴリータイプ
     segment: セグメント
     segment_name: セグメント
+    segment_type: セグメントタイプ
+    seniority: シニア/ジュニア
+    team: チーム戦
     nation: 国名
     panel_name: パネル名
     panel_nation: パネル国名
@@ -104,6 +115,7 @@ ja:
         name: スケーター名
         isu_number: ISU登録番号
         isu_records: ISU記録
+        category_type_name: カテゴリータイプ
         birthday: 誕生日
         height: 身長
         club: 所属クラブ
@@ -111,6 +123,7 @@ ja:
         coach: コーチ
         choreographer: 振付師
         bio_updated_at: バイオ更新日時
+        having_scores: スコア存在
 
       competition:
         name: 競技会名
@@ -120,6 +133,7 @@ ja:
         location: 開催場所
         period: 開催期間
         competition_class: 競技クラス
+        competition_class_type: 競技クラス
         competition_type: 競技タイプ
         season: シーズン
         start_date: 開始日
@@ -175,6 +189,7 @@ ja:
       component:
         number: 番号
         name: コンポーネント名
+        component_name: コンポーネント名
         factor: ファクター
         judges: ジャッジ
 

@@ -4,12 +4,14 @@ RSpec.describe Property do
   class Foo
     extend Property
     property :bar, 'default value'
+    property(:aaa) { 'AAA' }
     properties :baz, :hoge
   end
 
   let(:foo) { Foo.new }
   it {
     expect(foo.bar).to eq('default value')
+    expect(foo.aaa).to eq('AAA')
     expect(foo.bar(3).class).to eq(Foo)
     expect(foo.bar).to eq(3)
     foo.baz(:BAZ).hoge(:HOGE)

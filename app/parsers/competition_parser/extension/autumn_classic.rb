@@ -1,5 +1,5 @@
 __END__
-module CompetitionParser
+class CompetitionParser
   class AutumnClassic < IsuGeneric
     class SummaryParser < IsuGeneric::SummaryParser
       def parse_name(page)

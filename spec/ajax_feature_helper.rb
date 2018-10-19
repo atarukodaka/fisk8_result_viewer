@@ -31,10 +31,10 @@ module AjaxFeatureHelper
   end
   ################
   module Filter
-    shared_context :filter do |datatable_class, excludings: []|
-      datatable_class.new.filters.map { |filter| filter.children.presence || filter }.flatten
+    shared_context :filter do |filters, excludings: []|
+      filters.map { |filter| filter.children.presence || filter }.flatten
         .reject { |filter| excludings.include?(filter.key) }.each do |filter|
-        include_context :ajax_filter, filter.key, filter.input_type
+        include_context :ajax_filter, filter
       end
     end
 
@@ -55,10 +55,11 @@ module AjaxFeatureHelper
         it_behaves_like :contains, true, false
       end
     end
-    shared_context :ajax_filter do |key, input_type|
-      context key do
+    shared_context :ajax_filter do |filter|
+      context filter.key do
         subject {
-          ajax_action_filter(key: key, value: main.send(key), input_type: input_type, path: index_path)
+          ajax_action_filter(key: filter.key, value: main.send(filter.key),
+                             input_type: filter.input_type, path: index_path)
         }
         it_behaves_like :contains, true, false
       end
@@ -84,7 +85,7 @@ module AjaxFeatureHelper
       it {
         table_id = find('.dataTable')[:id]
         dir = find("#column_#{table_id}_#{key}")['class']
-        identifers = [main, sub].sort { |a, b| a.send(key) <=> b.send(key) }.map { |d| d.send(identifer_key) }
+        identifers = [main, sub].sort_by { |d| d.send(key) }.map { |d| d.send(identifer_key) }
         identifers.reverse! if dir =~ /sorting_desc/
         expect(identifers.first).to appear_before identifers.second
       }

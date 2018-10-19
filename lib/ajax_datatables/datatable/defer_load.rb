@@ -1,10 +1,11 @@
-module AjaxDatatables::Datatable::DeferLoadable
+module AjaxDatatables::Datatable::DeferLoad
   def defer_load
-    self.extend AjaxDatatables::Datatable::DeferLoading
+    self.extend AjaxDatatables::Datatable::DeferLoadable
     self
   end
 end
-module AjaxDatatables::Datatable::DeferLoading
+
+module AjaxDatatables::Datatable::DeferLoadable
   def settings
     super.merge(deferLoading: records.count)
   end

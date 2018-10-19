@@ -4,6 +4,8 @@ require 'timeout'
 require 'resolv-replace'
 
 module HttpGet
+  include DebugPrint
+
   TIMEOUT = 10
   def get_url(url, read_option: nil)
     html = Timeout.timeout(TIMEOUT) do
@@ -12,7 +14,7 @@ module HttpGet
   rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => err
     # #http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
     Rails.logger.warn(err.message)
-    puts err.message
+    debug(err.message)
     nil
   else
     Nokogiri::HTML(html)

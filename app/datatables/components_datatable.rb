@@ -1,4 +1,22 @@
 class ComponentsDatatable < ScoreDetailsDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      model = Component
+      @data = [
+        Filter.new(:component_name, :select, model: model),
+        Filter.new(:value, nil, model: model) do
+          [
+            Filter.new(:value_operator, :select, label: '', onchange: :draw,
+                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            Filter.new(:value, :text_field, label: ''),
+          ]
+        end,
+        ScoresDatatable::Filters.new.data,
+      ].flatten
+    end
+  end
+  ################
   def initialize(*args)
     super
 
@@ -11,20 +29,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
   end
 
   def fetch_records
-    Component.includes(:score, score: [:competition, :skater, :category, :segment])
-      .joins(:score, score: [:competition, :skater, :category, :segment]).all
-  end
-
-  def filters
-    @filters ||= [
-      AjaxDatatables::Filter.new(:value_group) do
-        [
-          AjaxDatatables::Filter.new(:value_operator, :select, label: '', onchange: :draw,
-                                     options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-          AjaxDatatables::Filter.new(:value, :text_field, label: ''),
-        ]
-      end,
-      ScoresDatatable.new.filters,
-    ].flatten
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
+    super.includes(tables).joins(tables)
   end
 end

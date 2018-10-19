@@ -1,30 +1,36 @@
 class SkatersDatatable < IndexDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      having_scores_checked = (datatable&.view_context) ?
+                                datatable.view_context.params[:having_scores] == 'on' : nil
+
+      @data = [
+        filter(:name, :text_field),
+        filter(:category_type_name, :select),
+        filter(:nation, :select),
+        filter(:having_scores, :checkbox, onchange: :draw, checked: having_scores_checked),
+      ]
+    end
+  end
+  ################
   def initialize(*)
     super
 
-    columns([:name, :category_type, :nation, :isu_number, :birthday, :club, :coach])
+    columns([:name, :category_type_name, :nation, :isu_number, :birthday, :club, :coach])
     columns.sources = {
-      category_type: 'categories.category_type',
+      category_type_name: 'category_types.name',
     }
-    default_orders([[:category_type, :asc], [:name, :asc]])
-  end
-
-  def filters
-    @filters ||= [
-      AjaxDatatables::Filter.new(:name, :text_field, model: Skater),
-      AjaxDatatables::Filter.new(:category_type, :select, model: Skater),
-      AjaxDatatables::Filter.new(:nation, :select, model: Skater),
-      # AjaxDatatables::Filter.new(:having_scores, :checkbox, model: Skater),
-    ]
+    default_orders([[:category_type_name, :asc], [:name, :asc]])
   end
 
   ################
-  def manipulate(records)
-    records
-    # records.having_scores
+  def manipulate(rec)
+    rec
   end
 
   def fetch_records
-    Skater.includes(:category).references(:category).having_scores      ## .having_scores
+    rec = super.includes(:category_type).references(:category_type)
+    (view_context && params[:having_scores] == 'on') ? rec.having_scores : rec
   end
 end

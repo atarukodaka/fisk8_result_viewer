@@ -13,6 +13,6 @@ class ComponentJudgeDetailsDatatable < IndexDatatable
 
   def fetch_records
     tables = [:component, official: [:panel], component: [:score, score: [:skater]]]
-    ComponentJudgeDetail.includes(tables).joins(tables)
+    super.includes(tables).joins(tables)
   end
 end

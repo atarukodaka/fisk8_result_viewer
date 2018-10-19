@@ -1,9 +1,34 @@
 class ScoresDatatable < IndexDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+
+      @data = [
+        CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
+        filter(:skater_name, :text_field),
+        filter(:category, nil) {
+          [
+            filter(:category_name, :select),
+            filter(:category_type_name, :select),
+            filter(:seniority, :select),
+            filter(:team, :select),
+          ]
+        },
+        filter(:segment, nil) {
+          [
+            filter(:segment_name, :select),
+            filter(:segment_type, :select),
+          ]
+        },
+      ].flatten
+    end
+  end
+  # ###############"
   def initialize(*)
     super
 
     columns([:name, :competition_name, :competition_class, :competition_type,
-             :category_name, :category_type, :team, :seniority, :segment_name, :segment_type,
+             :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type,
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value])
 
@@ -13,7 +38,7 @@ class ScoresDatatable < IndexDatatable
       competition_class: 'competitions.competition_class',
       competition_type:  'competitions.competition_type',
       category_name:     'categories.name',
-      category_type:     'categories.category_type',
+      category_type_name:     'category_type.name',
       team:              'categories.team',
       seniority:         'categories.seniority',
       segment_name:      'segments.name',
@@ -23,7 +48,7 @@ class ScoresDatatable < IndexDatatable
       nation:            'skaters.nation',
     }
 
-    [:competition_type, :competition_class, :competition_name, :season, :category_type, :seniority,
+    [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
      :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
@@ -31,36 +56,14 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
-    columns[:category_name].operator = :eq
+    # columns[:category_type].operator = :eq
     columns[:team].operator = :boolean
 
     default_orders([[:date, :desc]])
   end
 
   def fetch_records
-    tables = [:competition, :skater, :category, :segment]
-    Score.includes(tables).joins(tables)
-  end
-
-  def filters
-    model = Score
-    @filters ||= [
-      CompetitionsDatatable.new.filters.reject { |filter| filter.key == :site_url },
-      AjaxDatatables::Filter.new(:skater_name, :text_field, model: model),
-      AjaxDatatables::Filter.new(:category, model: model) {
-        [
-          AjaxDatatables::Filter.new(:category_name, :select, model: model),
-          AjaxDatatables::Filter.new(:category_type, :select, model: model),
-          AjaxDatatables::Filter.new(:seniority, :select, model: model),
-          AjaxDatatables::Filter.new(:team, :select, model: model),
-        ]
-      },
-      AjaxDatatables::Filter.new(:segment, model: model) {
-        [
-          AjaxDatatables::Filter.new(:segment_name, :select, model: model),
-          AjaxDatatables::Filter.new(:segment_type, :select, model: model),
-        ]
-      },
-    ].flatten
+    tables = [:competition, :skater, :category, :segment, category: [:category_type]]
+    super.includes(tables).joins(tables)
   end
 end

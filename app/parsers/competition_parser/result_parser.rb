@@ -1,4 +1,4 @@
-module CompetitionParser
+class CompetitionParser
   class ResultParser < Parser
     def callbacks
       {}
@@ -21,8 +21,6 @@ module CompetitionParser
 
     ################
     def parse(url)
-      debug("-- parsing result: #{url}", indent: 3)
-
       page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
       rows = get_rows(page) || (return [])
       headers = get_headers(rows[0])

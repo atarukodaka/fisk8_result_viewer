@@ -63,7 +63,7 @@
 -
   regex: Warsaw Cup
   competition_class: challenger
-  competition_type: warshaw
+  competition_type: warsaw
   short_name: WARSAW%{year}
   name: Warsaw Cup %{year}
 -
@@ -81,7 +81,7 @@
 -
   regex: Lombardia
   competition_class: challenger
-  competition_type: lombaridia
+  competition_type: lombardia
   short_name: LOMBARDIA%{year}
   name: Lombardia Trophy %{year}
 -

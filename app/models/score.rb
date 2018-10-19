@@ -6,6 +6,7 @@ class Score < ApplicationRecord
   ## relations
   has_many :elements, dependent: :destroy, autosave: true
   has_many :components, dependent: :destroy, autosave: true
+  has_many :deviations, dependent: :destroy
 
   belongs_to :competition
 
@@ -30,6 +31,10 @@ class Score < ApplicationRecord
   delegate :skater_name, :nation, to: :skater
   delegate :category_name, :category_type, :seniority, :team, to: :category
   delegate :segment_name, :segment_type, to: :segment
+
+  def category_type_name
+    category.category_type.name
+  end
 
   ## for statics
   [:SS, :TR, :PE, :CO, :IN].each_with_index do |key, i|

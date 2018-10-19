@@ -1,15 +1,16 @@
 require 'rails_helper'
+using StringToModel
 
 RSpec.describe SkatersController, type: :controller do
   render_views
 
   let!(:men_skater) {
     create(:competition, :world)
-      .scores.joins(:category).where("categories.category_type": 'MEN').first.skater
+      .scores.joins(:category).where("categories.category_type": 'MEN'.to_category_type).first.skater
   }
   let!(:ladies_skater) {
     create(:competition, :finlandia)
-      .scores.joins(:category).where("categories.category_type": 'LADIES').first.skater
+      .scores.joins(:category).where("categories.category_type": 'LADIES'.to_category_type).first.skater
   }
   let!(:no_scores_skater) { create(:skater, :men) { |sk| sk.name = 'Bench WARMER' } }
 

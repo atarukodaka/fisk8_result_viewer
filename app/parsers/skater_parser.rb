@@ -29,7 +29,7 @@ class SkaterParser < Parser
         begin
           data[:bio_updated_at] = $1.in_time_zone('UTC')
         rescue ArgumentError => e
-          puts e.message
+          debug(e.message)
         end
       end
     end
@@ -40,7 +40,7 @@ class SkaterParser < Parser
       begin
         data[:birthday] = Date.parse(data[:birthday])
       rescue ArgumentError => e
-        puts e.message
+        debug(e.message)
       end
     end
   end
@@ -51,7 +51,7 @@ class SkaterParser < Parser
     {
       nation:        'person_nationLabel',
       name:          'person_cnameLabel',
-      category:      'CategoryLabel',
+      category_type:      'CategoryLabel',
       birthday:      'person_dobLabel',
       height:        'person_heightLabel',
       hometown:      'person_htometownLabel',
