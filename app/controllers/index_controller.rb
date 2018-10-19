@@ -2,7 +2,7 @@ class IndexController < ApplicationController
   def index
     datatable = create_datatable
     filters = begin
-                "#{datatable.class}::Filters".constantize.new
+                "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
               rescue NameError
                 nil
               end

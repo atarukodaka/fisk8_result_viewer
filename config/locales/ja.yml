@@ -81,13 +81,18 @@ ja:
     skater_name: スケーター名
     skater_nation: スケーター国名
     competition_name: 大会名
+    competition_class: 競技クラス
+    competition_type: 競技タイプ
     competition_class_type: 競技クラス/タイプ
     score_name: スコア名
     category: カテゴリー
     category_name: カテゴリー名
-    category_type: カテゴリータイプ
+    category_type_name: カテゴリータイプ
     segment: セグメント
     segment_name: セグメント
+    segment_type: セグメントタイプ
+    seniority: シニア/ジュニア
+    team: チーム戦
     nation: 国名
     panel_name: パネル名
     panel_nation: パネル国名

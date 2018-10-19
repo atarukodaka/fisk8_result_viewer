@@ -1,25 +1,26 @@
 class ScoresDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
-      model = Score
-      super([
-        CompetitionsDatatable::Filters.new.reject { |filter| filter.key == :site_url },
-        Filter.new(:skater_name, :text_field, model: model),
-        Filter.new(:category, nil, model: model) {
+    def initialize(*)
+      super
+
+      @data = [
+        CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
+        filter(:skater_name, :text_field),
+        filter(:category, nil) {
           [
-            Filter.new(:category_name, :select, model: model),
-            Filter.new(:category_type_name, :select, model: model),
-            Filter.new(:seniority, :select, model: model),
-            Filter.new(:team, :select, model: model),
+            filter(:category_name, :select),
+            filter(:category_type_name, :select),
+            filter(:seniority, :select),
+            filter(:team, :select),
           ]
         },
-        Filter.new(:segment, nil, model: model) {
+        filter(:segment, nil) {
           [
-            Filter.new(:segment_name, :select, model: model),
-            Filter.new(:segment_type, :select, model: model),
+            filter(:segment_name, :select),
+            filter(:segment_type, :select),
           ]
         },
-      ].flatten)
+      ].flatten
     end
   end
   # ###############"

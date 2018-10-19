@@ -1,17 +1,12 @@
-
 - filter || raise
 - datatable || raise
-- label ||= nil
 
 ////////////////////////////////////////////////////////////////
-
-- if label.present?
-  label= label
 
 - if filter.children.present?
   - filter.children.each do |child|
     - if child.label.present?
-      label= child.label
+      label= datatable.model.human_attribute_name(child.label)
     = render partial: "filter", locals: { filter: child, datatable: datatable }
 - else
   - onchange = case filter.onchange

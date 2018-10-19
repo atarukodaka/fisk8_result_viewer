@@ -1,7 +1,7 @@
-- datatable || raise('no table given')
+//- datatable || raise('no table given')
 //- filters = datatable.class.filters
 //- filters = "#{datatable.class}::Filters".try(:constantize).try(:new) || []
-
+- filters.datatable || raise
 ////////////////////////////////////////////////////////////////
 // filter
 
@@ -12,9 +12,9 @@
     - filters.each do |filter|
       div.form-group.row
         div.col-sm-2
-          label= filter.label
+          label= filters.datatable.model.human_attribute_name(filter.key)
         div.col-sm-10
-          = render partial: "filter", locals: { filter: filter, datatable: datatable }
+          = render partial: "filter", locals: { filter: filter, datatable: filters.datatable }
 
     = form_group do
       label= t("filter.offset", default: "Offset")

@@ -1,8 +1,9 @@
 class ComponentsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
+    def initialize(*)
+      super
       model = Component
-      super([
+      @data = [
         Filter.new(:component_name, :select, model: model),
         Filter.new(:value, nil, model: model) do
           [
@@ -12,7 +13,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
           ]
         end,
         ScoresDatatable::Filters.new.data,
-      ].flatten)
+      ].flatten
     end
   end
   ################

@@ -1,10 +1,11 @@
 class PanelsDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
-      super([
+    def initialize(*)
+      super
+      @data = [
         Filter.new(:name, :text_field, model: Panel),
         Filter.new(:nation, :text_field, model: Panel),
-      ])
+      ]
     end
   end
   ################

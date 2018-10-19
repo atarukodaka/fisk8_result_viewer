@@ -1,12 +1,13 @@
 class SkatersDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
-      super([
-        Filter.new(:name, :text_field, model: Skater),
-        Filter.new(:category_type_name, :select, model: Skater),
-        Filter.new(:nation, :select, model: Skater),
-        Filter.new(:having_scores, :checkbox, model: Skater, onchange: :draw),
-      ])
+    def initialize(*)
+      super
+      @data = [
+        filter(:name, :text_field),
+        filter(:category_type_name, :select),
+        filter(:nation, :select),
+        filter(:having_scores, :checkbox, model: Skater, onchange: :draw),
+      ]
     end
   end
   ################

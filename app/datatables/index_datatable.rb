@@ -1,15 +1,35 @@
 class IndexDatatable < AjaxDatatables::Datatable
   class Filters
-    class Filter < AjaxDatatables::Filter; end
     delegate :[], :each, :map, :reject, :present?, to: :@data
-    attr_reader :data
-    def initialize(ary = [])
+    attr_accessor :data, :datatable
+    
+    def initialize(ary = [], datatable: nil)
       @data = ary
+      @datatable = datatable
+    end
+    def filter(*args, &block)
+      Filter.new(*args, &block)
+    end
+    ################
+    class Filter
+      attr_accessor :key, :input_type, :onchange, :options, :children
+
+      def initialize(key, input_type = :text_field, opts = {})
+        @key = key
+        @input_type = input_type
+        opts.slice(:field, :label, :onchange, :options, :children).each do |key, value|
+          instance_variable_set "@#{key}", value
+        end
+        if block_given?
+          @children = yield
+        end
+      end
+
+      def label
+        @label ||= key
+      end
     end
   end
-
-  class Filter < AjaxDatatables::Filter; end ## shortcut purpose only
-
   ################
   include AjaxDatatables::Datatable::ConditionBuilder
   def manipulate(records)

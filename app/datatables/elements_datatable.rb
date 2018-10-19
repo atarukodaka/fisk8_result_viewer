@@ -1,8 +1,9 @@
 class ElementsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
+    def initialize(*)
+      super
       model = Element
-      super([
+      @data = [
         Filter.new(:element_name, nil, model: model) do
           [
             Filter.new(:name_operator, :select, label: '',  onchange: :draw,
@@ -24,7 +25,7 @@ class ElementsDatatable < ScoreDetailsDatatable
           ]
         end,
         ScoresDatatable::Filters.new.data,
-      ].compact.flatten)
+      ].compact.flatten
     end
   end
   ################

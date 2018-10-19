@@ -1,8 +1,22 @@
 class CompetitionsDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
-    def initialize
+    def initialize(*)
+      super
+      @data = [
+        filter(:competition_name, :text_field),
+        filter(:competition_class, nil) {
+          [
+            filter(:competition_class, :select),
+            filter(:competition_type, :select),
+            filter(:season_from, :select, onchange: :draw),
+            filter(:season_to, :select, onchange: :draw),
+          ]
+        },
+        filter(:site_url, :text_field),
+      ]
+=begin
       model = Competition
-      super([
+      @data = [
         Filter.new(:competition_name, :text_field, model: model),
         Filter.new(:competition_class, nil, model: model) {
           [
@@ -13,7 +27,8 @@ class CompetitionsDatatable < IndexDatatable
           ]
         },
         Filter.new(:site_url, :text_field, model: model)
-      ])
+      ]
+=end
     end
   end
   ################
