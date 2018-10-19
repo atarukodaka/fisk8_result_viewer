@@ -17,6 +17,7 @@ class IndexDatatable < AjaxDatatables::Datatable
       def initialize(key, input_type = :text_field, opts = {})
         @key = key
         @input_type = input_type
+        @onchange = :search
         opts.slice(:field, :label, :onchange, :options, :children).each do |key, value|
           instance_variable_set "@#{key}", value
         end

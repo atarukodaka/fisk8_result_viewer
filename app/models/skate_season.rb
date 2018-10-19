@@ -14,10 +14,10 @@ class SkateSeason
         end
       when Integer
         Date.new(date, 7, 1)
-      when Date
+      when Date, Time, ActiveSupport::TimeWithZone
         date
       else
-        raise
+        raise "#{date.class} not supported"
       end
     
     year, month = tmp_date.year, tmp_date.month

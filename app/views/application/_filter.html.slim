@@ -9,7 +9,6 @@
       label= datatable.model.human_attribute_name(child.label)
     = render partial: "filter", locals: { filter: child, datatable: datatable }
 - else
-  /- onchange = (filter.onchange == :search) ? ajax_search(filter.key, datatable) : ajax_draw(datatable)
   - onchange = (filter.onchange == :draw) ? ajax_draw(datatable) : ajax_search(filter.key, datatable)
 
   - case filter.input_type
