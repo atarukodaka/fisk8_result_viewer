@@ -23,8 +23,4 @@ class CompetitionsDatatable < IndexDatatable
              :competition_class, :competition_type, :season, :start_date, :timezone])
     default_orders([[:start_date, :desc]])
   end
-
-  def fetch_records
-    Competition.all
-  end
 end

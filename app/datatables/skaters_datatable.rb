@@ -26,7 +26,7 @@ class SkatersDatatable < IndexDatatable
   end
 
   def fetch_records
-    rec = Skater.all.includes(:category_type).references(:category_type)
+    rec = super.includes(:category_type).references(:category_type)
     (view_context && params[:having_scores] == 'on') ? rec.having_scores : rec
     # (params[:having_scores] == 'on') ? records.having_scores : records
   end

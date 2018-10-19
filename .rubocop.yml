@@ -41,30 +41,25 @@ Metrics/ClassLength:
   Exclude:
     - app/updaters/competition_updater.rb       ## TODO: to fix cops
 
+Metrics/LineLength:
+  Max: 120
+
 Metrics/MethodLength:
   CountComments: false
-  Max: 30
+  Max: 40
   Exclude:
     - db/migrate/*.rb
     - app/updaters/competition_updater.rb    ## TODO
-
-Metrics/LineLength:
-  Max: 120
 
 ################
 ## Rails
 Rails/CreateTableWithTimestamps:
   Enabled: false
 
-Rails/DynamicFindBy:
+Rails/OutputSafety:
   Exclude:
-    - 'app/models/skater.rb'
+    - app/datatables/elements_datatable.rb   ## html_safe
 
-Rails/Output:
-  Exclude:
-    - 'app/parsers/**/*.rb'
-    - 'app/updaters/**/*.rb'
-    
 ################
 ## Style
 Style/BlockComments:

@@ -51,6 +51,6 @@ class ElementsDatatable < ScoreDetailsDatatable
 
   def fetch_records
     tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
-    Element.includes(tables).joins(tables)
+    super.includes(tables).joins(tables)
   end
 end

@@ -14,6 +14,6 @@ feature SkatersDatatable do
     its(:source) { is_expected.to eq('skaters.name') }
     its(:table_name) { is_expected.to eq('skaters') }
     its(:table_field) { is_expected.to eq('name') }
-    its(:model) { is_expected.to eq(Skater) }
+    its(:table_model) { is_expected.to eq(Skater) }
   end
 end

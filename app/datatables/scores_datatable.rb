@@ -63,6 +63,6 @@ class ScoresDatatable < IndexDatatable
 
   def fetch_records
     tables = [:competition, :skater, :category, :segment, category: [:category_type]]
-    Score.includes(tables).joins(tables)
+    super.includes(tables).joins(tables)
   end
 end

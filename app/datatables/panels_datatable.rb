@@ -14,8 +14,4 @@ class PanelsDatatable < IndexDatatable
 
     default_orders([[:name, :asc]])
   end
-
-  def fetch_records
-    Panel.all
-  end
 end

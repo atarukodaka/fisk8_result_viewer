@@ -16,7 +16,7 @@ class AjaxDatatables::Columns
   #             columns[:address].source => "users.address"
   #
 
-  def initialize(cols = [], datatable: nil)
+  def initialize(cols = [], datatable:)
     @datatable = datatable
     @data = cols.map do |col|
       create_column(col)
@@ -35,11 +35,12 @@ class AjaxDatatables::Columns
     end
   end
 
+=begin
   def []=(key, value)
     col = create_column(value.merge('name' => key))
     @data.push(col)
   end
-
+=end
   def add(cols)
     [cols].flatten.map { |col| @data << create_column(col) }
   end
@@ -52,72 +53,52 @@ class AjaxDatatables::Columns
     end
   end
 
-=begin
-  def default_table_name
-    @datatable.try(:records).try(:table_name)
-  end
-=end
-
   def create_column(col)
-    column = AjaxDatatables::Column.new(columns: self)
     case col
     when Hash
-      acceptable_keys = [:name, :source, :searchable, :orderable, :numbering]
-      col.each do |key, value|
-        if acceptable_keys.include?(key)
-          column.send(key, value)
-        else
-          raise "no such key: #{key}"
+      AjaxDatatables::Column.new(col[:name], columns: self) do |column|
+        col.slice(:source, :searchable, :orderable, :numbering).each do |key, value|
+          column.send("#{key}=", value)
         end
       end
     when Symbol, String
-      column.name = col.to_s
+      AjaxDatatables::Column.new(col.to_s, columns: self)
     end
-    # if source not specify, try to get table from records fetching
-    # column.source ||= [default_table_name, column.name].compact.join('.')
-    column
   end
 end
-################################################################
+################
 class AjaxDatatables::Column
   extend Property
 
   attr_reader :columns
+  attr_writer :source
+  attr_accessor :name, :visible, :orderable, :searchable, :numbering, :operator
 
-  # properties :name, :source, default: nil
-  property :name, nil
-  properties :visible, :orderable, :searchable, default: true
-  property :numbering, false
-  property :operator, nil # set nil as default so that Searchable module can guess by field type later on
-
-  def initialize(name: nil, columns: nil)
+  def initialize(name, columns:)
     @name = name.to_s
     @columns = columns
+    @visible = @orderable = @searchable = true
+    @numbering = @operator = nil
+    yield(self) if block_given?
   end
 
   ####
   # retrive table/model info from 'sources'
   #  "users.address" => "users" as table_name, "address" as table_field, User as model
   #  "address" => "" as table_name, "address" as table_field, nil as model
-  def source(value = nil)
-    if value.nil?
-      @source ||= [columns.datatable.try(:records).try(:table_name), @name].join('.')
-    else
-      @source = value
-    end
+  def source
+    @source ||= self.source = [columns.datatable.default_table, name].join('.')
   end
 
-  attr_writer :source
-
   def table_name
-    (source =~ /\./) ? source.split(/\./).first : ''
+    source.split(/\./).first
   end
 
   def table_field
     source.split(/\./).last
   end
 
-  def model
-    (table_name.present?) ? table_name.classify.constantize : nil
+  def table_model
+    table_name.classify.constantize
   end
 end

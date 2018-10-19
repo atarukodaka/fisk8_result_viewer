@@ -1,8 +1,6 @@
 ## TODO
 - category: type: single/couple ?
-- property: readonly, writeonly
 
-- date search
 - youtube register
 - help for rake:update
 - clean panel with zero scores

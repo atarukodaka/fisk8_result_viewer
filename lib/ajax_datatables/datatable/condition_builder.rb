@@ -4,7 +4,7 @@ module AjaxDatatables::Datatable::ConditionBuilder
     nodes.map do |hash|
       column = columns[hash[:column_name]]
       table_field = column.table_field
-      model = column.model || records.model
+      model = column.table_model || records.model
       sv = hash[:search_value]
       operator = hash[:operator] || column.operator ||
                  begin
