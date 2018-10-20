@@ -9,18 +9,17 @@ class IndexDatatable < AjaxDatatables::Datatable
     end
 
     def filter(key, input_type, opts = {}, &block)
-      opts[:filters] = self
       Filter.new(key, input_type, opts, &block)
     end
     ################
     class Filter
-      attr_accessor :key, :input_type, :onchange, :options, :children, :checked, :filters
+      attr_accessor :key, :input_type, :onchange, :options, :children, :checked
 
       def initialize(key, input_type = :text_field, opts = {})
         @key = key
         @input_type = input_type
         @onchange = :search
-        opts.slice(:field, :label, :onchange, :options, :children, :checked, :filters).each do |key, value|
+        opts.slice(:field, :label, :onchange, :options, :children, :checked).each do |key, value|
           instance_variable_set "@#{key}", value
         end
         if block_given?
@@ -32,9 +31,7 @@ class IndexDatatable < AjaxDatatables::Datatable
         @label ||= key
       end
 
-      def render(vc)
-        datatable = filters.datatable
-        #vc = datatable.view_context
+      def render(vc, datatable:)
         onc = (onchange == :draw) ? vc.ajax_draw(datatable) : vc.ajax_search(key, datatable)
 
         case input_type

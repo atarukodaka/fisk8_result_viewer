@@ -5,6 +5,7 @@
 - help for rake:update
 - clean panel with zero scores
 - spin level: B is 0 ??
+- views/app/_filter.html.slim to delete
  
 ### new feature
 
