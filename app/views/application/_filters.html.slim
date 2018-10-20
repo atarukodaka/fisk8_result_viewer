@@ -13,10 +13,10 @@
             - filter.children.each do |child|
               - if child.label.present?
                 label= filters.datatable.model.human_attribute_name(child.label)
-              = render partial: "filter", locals: { filter: child, datatable: filters.datatable }
-              /= child.render
-          = render partial: "filter", locals: { filter: filter, datatable: filters.datatable }
-          /= filter.render
+              /= render partial: "filter", locals: { filter: child, datatable: filters.datatable }
+              = child.render(self)
+          /= render partial: "filter", locals: { filter: filter, datatable: filters.datatable }
+          = filter.render(self)
 
     = form_group do
       label= t("filter.offset", default: "Offset")

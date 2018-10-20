@@ -2,17 +2,16 @@ class ComponentsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize(*)
       super
-      model = Component
       @data = [
-        Filter.new(:component_name, :select, model: model),
-        Filter.new(:value, nil, model: model) do
+        filter(:component_name, :select),
+        filter(:value, nil) do
           [
-            Filter.new(:value_operator, :select, label: '', onchange: :draw,
+            filter(:value_operator, :select, label: '', onchange: :draw,
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-            Filter.new(:value, :text_field, label: ''),
+            filter(:value, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new.data,
+        ScoresDatatable::Filters.new(datatable: datatable).data,
       ].flatten
     end
   end

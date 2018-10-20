@@ -4,7 +4,18 @@
 - CategoryResults has a Score of short and a Score of free
 - Score has many of Elements and Components
 
+## 使い方
 
+```
+be rake update:skater
+be rake update:competitions last=10 force=1 enable_judge_details=1 season_from=2012-13
+be rake update:competition site_url=http://www..../wc2017
+```
+
+- last: competitions.yaml の下から指定した分だけ
+- force: 真だと存在してもアップデート、偽ならスキップ
+- enable_judge_detials: 個別ジャッジ・逸脱度の集計（時間とDB食う）
+- season_from, season_to: 対象シーズン
 
 ## AjaxDatabales
 

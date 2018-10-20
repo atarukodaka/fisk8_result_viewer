@@ -1,6 +1,6 @@
 class IndexDatatable < AjaxDatatables::Datatable
   class Filters
-    delegate :[], :each, :map, :reject, :present?, to: :@data
+    delegate :[], :each, :map, :reject, :flatten, :present?, to: :@data
     attr_accessor :data, :datatable
 
     def initialize(ary = [], datatable: nil)
@@ -9,17 +9,18 @@ class IndexDatatable < AjaxDatatables::Datatable
     end
 
     def filter(key, input_type, opts = {}, &block)
+      opts[:filters] = self
       Filter.new(key, input_type, opts, &block)
     end
     ################
     class Filter
-      attr_accessor :key, :input_type, :onchange, :options, :children, :checked
+      attr_accessor :key, :input_type, :onchange, :options, :children, :checked, :filters
 
       def initialize(key, input_type = :text_field, opts = {})
         @key = key
         @input_type = input_type
         @onchange = :search
-        opts.slice(:field, :label, :onchange, :options, :children, :checked).each do |key, value|
+        opts.slice(:field, :label, :onchange, :options, :children, :checked, :filters).each do |key, value|
           instance_variable_set "@#{key}", value
         end
         if block_given?
@@ -31,10 +32,9 @@ class IndexDatatable < AjaxDatatables::Datatable
         @label ||= key
       end
 
-=begin
-      def render
+      def render(vc)
         datatable = filters.datatable
-        vc = datatable.view_context
+        #vc = datatable.view_context
         onc = (onchange == :draw) ? vc.ajax_draw(datatable) : vc.ajax_search(key, datatable)
 
         case input_type
@@ -42,7 +42,7 @@ class IndexDatatable < AjaxDatatables::Datatable
           vc.text_field_tag(key, vc.params[key], size: 70, onchange: onc)
         when :select
           if options.present?
-            vc.select_tag(key, options_for_select(options, vc.params[key]), onchange: onc)
+            vc.select_tag(key, vc.options_for_select(options, vc.params[key]), onchange: onc)
           else
             vc.select_tag_with_options(key, onchange: onc)
           end
@@ -50,7 +50,6 @@ class IndexDatatable < AjaxDatatables::Datatable
           vc.check_box_tag(key, 'on', vc.params[:having_scores] == 'on', onchange: onc)  ## TODO: having_score
         end
       end
-=end
     end
   end
   ################

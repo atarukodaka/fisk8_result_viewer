@@ -5,7 +5,7 @@
 
 - if true
   - onchange = (filter.onchange == :draw) ? ajax_draw(datatable) : ajax_search(filter.key, datatable)
-
+  
   - case filter.input_type
   - when :text_field
     = text_field_tag(filter.key, params[filter.key], size: 70, onchange: onchange)

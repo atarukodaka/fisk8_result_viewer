@@ -2,30 +2,29 @@ class ElementsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize(*)
       super
-      model = Element
       @data = [
-        Filter.new(:element_name, nil, model: model) do
+        filter(:element_name, nil) do
           [
-            Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+            filter(:name_operator, :select, label: '',  onchange: :draw,
                        options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
-            Filter.new(:element_name, :text_field, label: ''),
+            filter(:element_name, :text_field, label: ''),
           ]
         end,
-        Filter.new(:element_type, nil, model: model) do
+        filter(:element_type, nil) do
           [
-            Filter.new(:element_type, :select, model: model),
-            Filter.new(:element_subtype, :select, model: model),
+            filter(:element_type, :select),
+            filter(:element_subtype, :select),
           ]
         end,
-        Filter.new(:goe, nil, model: model) do
+        filter(:goe, nil) do
           [
-            Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+            filter(:goe_operator, :select, label: '', onchange: :draw,
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-            Filter.new(:goe, :text_field, label: ''),
+            filter(:goe, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new.data,
-      ].compact.flatten
+        ScoresDatatable::Filters.new(datatable: datatable).data,
+      ].flatten
     end
   end
   ################
