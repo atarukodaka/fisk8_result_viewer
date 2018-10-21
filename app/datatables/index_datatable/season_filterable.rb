@@ -1,5 +1,5 @@
 module IndexDatatable::SeasonFilterable
-  def filter_search_nodes
+  def filter_searching_nodes
     nodes = super
     [{key: :season_from, column_name: 'season', operator: :gteq},
      {key: :season_to, column_name: 'season', operator: :lteq}].each do |item|
