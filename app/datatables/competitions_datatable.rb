@@ -11,9 +11,9 @@ class CompetitionsDatatable < IndexDatatable
             #filter(:season_from, :select, onchange: lambda { |dt| ajax_draw(dt) }),
             #filter(:season_to, :select, onchange: lambda { |dt| ajax_draw(dt) }),
             # filter(:season_to, :select, onchange: ajax_search(:season, datatable)),
-            filter(:season_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },
-                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }, label: "season"),
-            filter(:season, :select, label: "")
+            filter(:season_operator, :select, label: 'season', onchange: lambda { |dt| ajax_draw(dt) },
+                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            filter(:season, :select, label: ""),
           ]
         },
         filter(:site_url, :text_field),

@@ -15,6 +15,7 @@ module AjaxFeatureHelper
     visit path
     actions.each do |hash|
       key, value, input_type = hash.values_at(:key, :value, :input_type)
+    
       case input_type
       when :fill_in, :text_field
         fill_in key, with: value
@@ -39,6 +40,21 @@ module AjaxFeatureHelper
     end
 
     shared_context :filter_season do
+      context 'eq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, false
+      end
+      context 'lt season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '<', input_type: :select },
+                        { key: :season, value: main.season, input_type: :fill_in }], path: index_path)
+        }
+        it_behaves_like :contains, false, false
+      end
+=begin
       context :from_later do
         subject {
           ajax_action_filter(key: :season_from, value: sub.season,
@@ -54,6 +70,7 @@ module AjaxFeatureHelper
         }
         it_behaves_like :contains, true, false
       end
+=end
     end
     shared_context :ajax_filter do |filter|
       context filter.key do

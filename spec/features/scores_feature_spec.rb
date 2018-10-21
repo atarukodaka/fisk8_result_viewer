@@ -13,7 +13,7 @@ feature ScoresController, type: :feature, feature: true do
     end
     context 'filter' do
       include_context :filter, ScoresDatatable::Filters.new, excludings: [:season_operator]
-      #include_context :filter_season
+      include_context :filter_season
     end
     context 'order' do
       include_context :order, ScoresDatatable
