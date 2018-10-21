@@ -18,6 +18,7 @@ class CompetitionsDatatable < IndexDatatable
     end
   end
   ################
+  include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
     columns([:name, :short_name, :site_url, :city, :country,

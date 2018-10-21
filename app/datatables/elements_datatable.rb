@@ -28,6 +28,7 @@ class ElementsDatatable < ScoreDetailsDatatable
     end
   end
   ################
+  include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
 
