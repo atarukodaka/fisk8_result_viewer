@@ -38,7 +38,6 @@ module AjaxDatatables
     property(:settings) { default_settings }
     property(:default_orders, [])
     property(:records) { fetch_records }
-    # property(:model) { (self.class.to_s.split(/::/).last =~ /^([^:]*)Datatable/) ? $1.singularize.constantize : nil }
 
     def initialize(view_context = nil, columns: [])
       @view_context = view_context
@@ -66,7 +65,7 @@ module AjaxDatatables
 
     ## data fetching/manipulation
     def fetch_records
-      default_model&.all || []
+      default_model&.all
     end
 
     def data

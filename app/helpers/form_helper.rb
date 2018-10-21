@@ -53,4 +53,20 @@ module FormHelper
   def ajax_draw(table)
     "$('##{table.table_id}').DataTable().draw();"
   end
+
+  def render_filter(filter, datatable: )
+    onc = filter.onchange.call(datatable)
+    case filter.input_type
+    when :text_field
+      text_field_tag(filter.key, params[filter.key], size: 70, onchange: onc)
+    when :select
+      if filter.options.present?
+        select_tag(filter.key, options_for_select(filter.options, params[filter.key]), onchange: onc)
+      else
+        select_tag_with_options(filter.key, onchange: onc)
+      end
+    when :checkbox
+      check_box_tag(filter.key, 'on', filter.checked, onchange: onc)
+    end
+  end
 end

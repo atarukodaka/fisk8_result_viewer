@@ -21,7 +21,7 @@ class IndexDatatable
     def initialize(key, input_type, opts = {})
       @key = key
       @input_type = input_type
-
+      @children = []
       opts.slice(:field, :label, :onchange, :options, :children, :checked).each do |k, v|
         instance_variable_set "@#{k}", v
       end
@@ -34,6 +34,7 @@ class IndexDatatable
       @label ||= key
     end
 
+=begin
     def render(view, datatable:)
       onc = onchange.call(datatable)
       case input_type
@@ -49,5 +50,6 @@ class IndexDatatable
         view.check_box_tag(key, 'on', checked, onchange: onc)
       end
     end
+=end
   end
 end

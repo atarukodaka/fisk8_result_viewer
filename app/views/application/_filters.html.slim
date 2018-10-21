@@ -5,14 +5,13 @@
   - filters.each do |filter|
     div.form-group.row
       div.col-sm-2
-        label= filters.datatable.model.human_attribute_name(filter.key)
+        label= filters.datatable.default_model.human_attribute_name(filter.key)
       div.col-sm-10
-        - if filter.children.present?
-          - filter.children.each do |child|
-            - if child.label.present?
-              label= filters.datatable.model.human_attribute_name(child.label)
-            = child.render(self, datatable: filters.datatable)
-        = filter.render(self, datatable: filters.datatable)
+        - filter.children.each do |child|
+          - if child.label.present?
+            label= filters.datatable.default_model.human_attribute_name(child.key)
+          = render_filter(child, datatable: filters.datatable)
+        = render_filter(filter, datatable: filters.datatable)
 
   = form_group do
     label= t("filter.offset", default: "Offset")
