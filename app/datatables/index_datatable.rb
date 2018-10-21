@@ -17,7 +17,6 @@ class IndexDatatable < AjaxDatatables::Datatable
   end
 
   def default_model
-    # @model ||= (self.class.to_s.split(/::/).last =~ /^([^:]*)Datatable/) ? $1.singularize.constantize : super
-    @default_model ||= self.class.to_s.sub(/Datatable$/, '').singularize.constantize || super
+    @default_model ||= self.class.to_s.sub(/Datatable$/, '').classify.constantize || super
   end
 end

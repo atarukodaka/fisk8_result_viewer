@@ -33,23 +33,5 @@ class IndexDatatable
     def label
       @label ||= key
     end
-
-=begin
-    def render(view, datatable:)
-      onc = onchange.call(datatable)
-      case input_type
-      when :text_field
-        view.text_field_tag(key, view.params[key], size: 70, onchange: onc)
-      when :select
-        if options.present?
-          view.select_tag(key, view.options_for_select(options, view.params[key]), onchange: onc)
-        else
-          view.select_tag_with_options(key, onchange: onc)
-        end
-      when :checkbox
-        view.check_box_tag(key, 'on', checked, onchange: onc)
-      end
-    end
-=end
   end
 end
