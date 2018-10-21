@@ -1,11 +1,14 @@
 class IndexController < ApplicationController
   def index
     datatable = create_datatable
+=begin
     filters = begin
                 "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
               rescue NameError
                 nil
               end
+=end
+    filters = "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
     respond_to do |format|
       format.html {
         render :index, locals: {

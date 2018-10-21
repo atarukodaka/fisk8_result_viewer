@@ -3,8 +3,8 @@ class PanelsDatatable < IndexDatatable
     def initialize(*)
       super
       @data = [
-        filter(:name, :text_field, model: Panel),
-        filter(:nation, :text_field, model: Panel),
+        filter(:name, :text_field),
+        filter(:nation, :text_field),
       ]
     end
   end

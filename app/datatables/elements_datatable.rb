@@ -5,7 +5,7 @@ class ElementsDatatable < ScoreDetailsDatatable
       @data = [
         filter(:element_name, nil) do
           [
-            filter(:name_operator, :select, label: '',  onchange: :draw,
+            filter(:name_operator, :select, label: '',  onchange: lambda {|dt| ajax_draw(dt)},
                        options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
             filter(:element_name, :text_field, label: ''),
           ]
@@ -18,7 +18,7 @@ class ElementsDatatable < ScoreDetailsDatatable
         end,
         filter(:goe, nil) do
           [
-            filter(:goe_operator, :select, label: '', onchange: :draw,
+            filter(:goe_operator, :select, label: '', onchange: lambda {|dt| ajax_draw(dt)},
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
             filter(:goe, :text_field, label: ''),
           ]

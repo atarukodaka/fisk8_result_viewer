@@ -8,27 +8,13 @@ class CompetitionsDatatable < IndexDatatable
           [
             filter(:competition_class, :select),
             filter(:competition_type, :select),
-            filter(:season_from, :select, onchange: :draw),
-            filter(:season_to, :select, onchange: :draw),
+            filter(:season_from, :select, onchange: lambda {|dt| ajax_draw(dt)}),
+            filter(:season_to, :select, onchange: lambda {|dt| ajax_draw(dt) }),
+            #filter(:season_to, :select, onchange: ajax_search(:season, datatable)),
           ]
         },
         filter(:site_url, :text_field),
       ]
-=begin
-      model = Competition
-      @data = [
-        Filter.new(:competition_name, :text_field, model: model),
-        Filter.new(:competition_class, nil, model: model) {
-          [
-            Filter.new(:competition_class, :select, model: model),
-            Filter.new(:competition_type, :select, model: model),
-            Filter.new(:season_from, :select, model: model, onchange: :draw),
-            Filter.new(:season_to, :select, model: model, onchange: :draw),
-          ]
-        },
-        Filter.new(:site_url, :text_field, model: model)
-      ]
-=end
     end
   end
   ################

@@ -9,7 +9,8 @@ class SkatersDatatable < IndexDatatable
         filter(:name, :text_field),
         filter(:category_type_name, :select),
         filter(:nation, :select),
-        filter(:having_scores, :checkbox, onchange: :draw, checked: having_scores_checked),
+        filter(:having_scores, :checkbox, onchange: lambda {|dt| ajax_draw(dt)},
+               checked: having_scores_checked),
       ]
     end
   end
