@@ -36,6 +36,7 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
           /= key.to_s.humanize
           /= datatable.records.human_attribute_name key
           = datatable.model.human_attribute_name key
+          
   tbody
     /- unless datatable.settings[:ajax] 
     - unless datatable.settings[:ajax] && datatable.settings[:deferLoading].blank?

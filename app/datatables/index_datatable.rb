@@ -15,4 +15,9 @@ class IndexDatatable < AjaxDatatables::Datatable
   def default_settings
     super.merge(pageLength: 25, searching: true)
   end
+
+  def default_model
+    # @model ||= (self.class.to_s.split(/::/).last =~ /^([^:]*)Datatable/) ? $1.singularize.constantize : super
+    @default_model ||= self.class.to_s.sub(/Datatable$/, '').singularize.constantize || super
+  end
 end
