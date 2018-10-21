@@ -44,8 +44,8 @@ module AjaxDatatables::Datatable::Serversidable
     (params[:length].to_i.positive?) ? params[:length].to_i : 10
   end
 
-  ################
-  ## json output
+################
+## json output
 =begin
   def as_json(*args)
     self.decorate

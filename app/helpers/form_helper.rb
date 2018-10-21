@@ -54,7 +54,7 @@ module FormHelper
     "$('##{table.table_id}').DataTable().draw();"
   end
 
-  def render_filter(filter, datatable: )
+  def render_filter(filter, datatable:)
     onc = filter.onchange.call(datatable)
     case filter.input_type
     when :text_field

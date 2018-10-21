@@ -15,7 +15,7 @@ module AjaxFeatureHelper
     visit path
     actions.each do |hash|
       key, value, input_type = hash.values_at(:key, :value, :input_type)
-    
+
       case input_type
       when :fill_in, :text_field
         fill_in key, with: value

@@ -11,7 +11,7 @@ class IndexController < ApplicationController
         }
       }
       format.json {
-        #render json: datatable.limit.as_json
+        # render json: datatable.limit.as_json
         params[:start] ||= 0   ## TODO
         params[:length] = [params[:length].to_i, MAX_LENGTH].min
         render json: datatable.serverside.as_json
@@ -35,11 +35,11 @@ class IndexController < ApplicationController
   def list
     datatable = create_datatable.serverside.decorate
     render json:  {
-             iTotalRecords:        datatable.records.count,
+      iTotalRecords:        datatable.records.count,
              iTotalDisplayRecords: datatable.data.total_count,
              data:                 datatable.as_json,
-           }
-    #render json: create_datatable.serverside
+    }
+    # render json: create_datatable.serverside
   end
 
   def data_to_show
