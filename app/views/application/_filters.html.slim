@@ -5,11 +5,11 @@
   - filters.each do |filter|
     div.form-group.row
       div.col-sm-2
-        label= filters.datatable.default_model.human_attribute_name(filter.key)
+        label= filters.datatable.default_model.human_attribute_name(filter.label)
       div.col-sm-10
         - filter.children.each do |child|
           - if child.label.present?
-            label= filters.datatable.default_model.human_attribute_name(child.key)
+            label= filters.datatable.default_model.human_attribute_name(child.label)
           = render_filter(child, datatable: filters.datatable)
         = render_filter(filter, datatable: filters.datatable)
 

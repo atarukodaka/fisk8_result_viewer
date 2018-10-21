@@ -1,28 +1,28 @@
 class IndexController < ApplicationController
+  MAX_LENGTH = 1_000
   def index
     datatable = create_datatable
-=begin
-    filters = begin
-                "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
-              rescue NameError
-                nil
-              end
-=end
-    filters = "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
     respond_to do |format|
       format.html {
+        filters = "#{datatable.class}::Filters".constantize.new([], datatable: datatable)
         render :index, locals: {
           datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load,
                  filters: filters,
         }
       }
       format.json {
-        render json: datatable.limit.as_json
+        #render json: datatable.limit.as_json
+        params[:start] ||= 0   ## TODO
+        params[:length] ||= MAX_LENGTH
+        render json: datatable.serverside.limit(MAX_LENGTH).as_json
       }
       format.csv {
+        params[:start] ||= 0
+        params[:length] ||= MAX_LENGTH
+
         require 'csv'
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.limit.as_json.each do |row|
+          datatable.serverside.as_json.limit(MAX_LENGTH).each do |row|
             c << row
           end
         end
@@ -33,7 +33,13 @@ class IndexController < ApplicationController
 
   ## json index access
   def list
-    render json: create_datatable.serverside
+    datatable = create_datatable.serverside.decorate
+    render json:  {
+             iTotalRecords:        datatable.records.count,
+             iTotalDisplayRecords: datatable.data.total_count,
+             data:                 datatable.as_json,
+           }
+    #render json: create_datatable.serverside
   end
 
   def data_to_show

@@ -46,6 +46,7 @@ module AjaxDatatables::Datatable::Serversidable
 
   ################
   ## json output
+=begin
   def as_json(*args)
     self.decorate
     {
@@ -54,4 +55,5 @@ module AjaxDatatables::Datatable::Serversidable
       data:                 super.as_json(*args),
     }
   end
+=end
 end

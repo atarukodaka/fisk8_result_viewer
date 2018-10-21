@@ -16,7 +16,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
     end
   end
   ################
-  include IndexDatatable::SeasonFilterable
+  #include IndexDatatable::SeasonFilterable
   def initialize(*args)
     super
 
