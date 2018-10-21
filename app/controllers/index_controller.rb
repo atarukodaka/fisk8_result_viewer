@@ -13,16 +13,16 @@ class IndexController < ApplicationController
       format.json {
         #render json: datatable.limit.as_json
         params[:start] ||= 0   ## TODO
-        params[:length] ||= MAX_LENGTH
-        render json: datatable.serverside.limit(MAX_LENGTH).as_json
+        params[:length] = [params[:length].to_i, MAX_LENGTH].min
+        render json: datatable.serverside.as_json
       }
       format.csv {
         params[:start] ||= 0
-        params[:length] ||= MAX_LENGTH
+        params[:length] = [params[:length].to_i, MAX_LENGTH].min
 
         require 'csv'
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.serverside.as_json.limit(MAX_LENGTH).each do |row|
+          datatable.serverside.limit(MAX_LENGTH).as_json.each do |row|
             c << row
           end
         end

@@ -28,6 +28,6 @@ class CompetitionsDatatable < IndexDatatable
              :competition_class, :competition_type, :season, :start_date, :timezone])
     default_orders([[:start_date, :desc]])
     #columns[:season].operator = lambda {|arel|  binding.pry; arel.eq('2016-17')}
-    columns[:season].operator = params[:season_operator].presence || :eq
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 end

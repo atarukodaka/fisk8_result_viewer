@@ -12,8 +12,8 @@ feature ScoresController, type: :feature, feature: true do
       it_behaves_like :contains, true, true
     end
     context 'filter' do
-      include_context :filter, ScoresDatatable::Filters.new, excludings: [:season_to, :season_from]
-      include_context :filter_season
+      include_context :filter, ScoresDatatable::Filters.new, excludings: [:season_operator]
+      #include_context :filter_season
     end
     context 'order' do
       include_context :order, ScoresDatatable
