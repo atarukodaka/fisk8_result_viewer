@@ -17,6 +17,7 @@ module AjaxDatatables::Datatable::Serversidable
   ## searching
   def columns_searching_nodes
     return [] if params[:columns].blank?
+
     params.require(:columns).values.reject { |d| d[:searchable] == 'false' }.map do |item|
       sv = item[:search][:value].presence || next
       { column_name: item[:data], search_value: sv }

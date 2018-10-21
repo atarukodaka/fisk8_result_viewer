@@ -24,10 +24,10 @@ module AjaxDatatables::Datatable::Ajaxable
       retrieve: true,
       columns:  column_names.map { |name|
         {
-          data:       name,
-          name:       name,
-          visible:    columns[name].visible,
-          orderable:  columns[name].orderable,
+          data: name,
+          name: name,
+          visible: columns[name].visible,
+          orderable: columns[name].orderable,
           searchable: columns[name].searchable
         }
       },

@@ -8,9 +8,9 @@ class CompetitionsDatatable < IndexDatatable
           [
             filter(:competition_class, :select),
             filter(:competition_type, :select),
-            filter(:season_from, :select, onchange: lambda {|dt| ajax_draw(dt)}),
-            filter(:season_to, :select, onchange: lambda {|dt| ajax_draw(dt) }),
-            #filter(:season_to, :select, onchange: ajax_search(:season, datatable)),
+            filter(:season_from, :select, onchange: lambda { |dt| ajax_draw(dt) }),
+            filter(:season_to, :select, onchange: lambda { |dt| ajax_draw(dt) }),
+            # filter(:season_to, :select, onchange: ajax_search(:season, datatable)),
           ]
         },
         filter(:site_url, :text_field),

@@ -4,7 +4,7 @@ class ScoresDatatable < IndexDatatable
       super
 
       @data = [
-        #CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
+        # CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
         CompetitionsDatatable::Filters.new(datatable: datatable).reject { |filter| filter.key == :site_url },
         filter(:skater_name, :text_field),
         filter(:category, nil) {

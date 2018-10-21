@@ -101,6 +101,7 @@ class CompetitionUpdater < Updater
       competition        ## ensure to return competition object
     end ## transaction
   end
+
   ################
   def update_category_result(competition, category, item)
     competition.category_results.create! do |category_result|
@@ -110,7 +111,8 @@ class CompetitionUpdater < Updater
       debug(category_result.summary)
     end
   end
-  def update_segment(competition, category, segment, time_schedule: , officials: )
+
+  def update_segment(competition, category, segment, time_schedule:, officials:)
     ## performed_segments
     performed_segment = competition.performed_segments.create! do |ps|
       item = time_schedule.select_category_segment(category, segment).first
@@ -127,6 +129,7 @@ class CompetitionUpdater < Updater
       performed_segment.officials.create!(number: official[:number], panel: panel)
     end
   end
+
   def update_score(competition, category, segment, item)
     cr = nil
     sc = competition.scores.create! do |score|
