@@ -19,7 +19,7 @@ script:
 
 env:
   TEST: true
-  JAVASCRIPT_DRIVER: poltergeist
+  JS_DRIVER: poltergeist
 
 branches:
   only:

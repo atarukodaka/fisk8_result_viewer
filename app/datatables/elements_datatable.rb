@@ -48,6 +48,7 @@ class ElementsDatatable < ScoreDetailsDatatable
       columns[:element_name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 
   def fetch_records

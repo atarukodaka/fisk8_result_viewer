@@ -26,6 +26,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
     ## searchble
     columns[:date].searchable = false
     columns[:value].operator = params[:value_operator].presence || :eq if view_context
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 
   def fetch_records

@@ -10,7 +10,7 @@ class IndexDatatable
     end
 
     def filter(key, input_type, opts = {}, &block)
-      opts[:onchange] ||= lambda { |dt| ajax_search(key, dt) }
+      #opts[:onchange] ||= lambda { |dt| ajax_search(key, dt) }
       Filter.new(key, input_type, opts, &block)
     end
   end
