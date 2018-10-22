@@ -11,8 +11,7 @@ AllCops:
 
 ################
 Bundler/OrderedGems:
-  Exclude:
-    - 'Gemfile'
+  Enabled: false
 
 Layout/AlignHash:
   Enabled: false
@@ -30,26 +29,27 @@ Lint/UnneededCopDisableDirective:
   Enabled: false
 
 ################
-Metrics/BlockLength:
-  Max: 50
-  Exclude:
-    - spec/**/*.rb
-    - lib/tasks/**/*.rake
+Metrics/LineLength:
+  Max: 120
 
 Metrics/ClassLength:
   Max: 100
   Exclude:
-    - app/updaters/competition_updater.rb       ## TODO: to fix cops
-
-Metrics/LineLength:
-  Max: 120
+    - app/updaters/competition_updater.rb       ## TODO
+      
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - spec/**/*.rb
+    - config/routes.rb
+    - lib/tasks/**/*.rake
 
 Metrics/MethodLength:
-  CountComments: false
-  Max: 40
+  Max: 30
   Exclude:
     - db/migrate/*.rb
-    - app/updaters/competition_updater.rb    ## TODO
+    - app/updaters/competition_updater.rb       ## TODO
+
 
 ################
 ## Rails

@@ -13,6 +13,7 @@ module SelectType
   end
 end
 
+################
 class CompetitionParser < Parser
   using AcceptCategories
   using SelectType
@@ -27,17 +28,14 @@ class CompetitionParser < Parser
             [season.season, season_from, season_to], indent: 3)
       return nil
     end
-    city, country = parse_city_country(page)
     data = {
-      site_url: site_url,
       name: parse_name(page),
-      country: country,
-      city: city,
       time_schedule: time_schedule,
-      officials: [],
-      category_results: [],
-      scores: [],
+      site_url: site_url,
+      officials: [], category_results: [], scores: [],
     }
+    data[:city], data[:country] = parse_city_country(page)
+
     parsers = {
       category_result: CategoryResultParser.new(verbose: verbose),
       official: OfficialParser.new(verbose: verbose),
@@ -45,7 +43,7 @@ class CompetitionParser < Parser
     }
     summary_table = parse_summary_table(page, base_url: site_url).accept(categories)
     summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*parsers[:category_result].parse(item[:result_url], item[:category]))
+      data[:category_results].push(*parsers[:category_result].parse(*item.values_at(:result_url, :category)))
     end
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)

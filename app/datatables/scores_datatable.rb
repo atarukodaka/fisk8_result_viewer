@@ -25,10 +25,8 @@ class ScoresDatatable < IndexDatatable
     end
   end
   # ###############"
-  # include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
-
     columns([:name, :competition_name, :competition_class, :competition_type,
              :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type,
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
@@ -51,7 +49,6 @@ class ScoresDatatable < IndexDatatable
     }
 
     [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
-     # [:competition_type, :competition_class, :competition_name, :category_type_name, :seniority,
      :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
@@ -59,11 +56,10 @@ class ScoresDatatable < IndexDatatable
 
     columns[:ranking].operator = :eq
     columns[:date].searchable = false
-    # columns[:category_type].operator = :eq
     columns[:team].operator = :boolean
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
 
     default_orders([[:date, :desc]])
-    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 
   def fetch_records

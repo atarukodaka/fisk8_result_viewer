@@ -19,15 +19,14 @@ gem 'coffee-rails', '~> 4.2'
 gem 'slim-rails'
 gem 'pdftotext'
 gem 'bootstrap-sass'
-gem 'kaminari'
+gem 'kaminari'                           ## paging
 gem 'draper'                              ## decoration
 gem 'config'
 gem 'open_uri_redirections'         ## for http: -> https: redirect
 gem 'sitemap_generator'
 gem 'active_hash', '~> 1.5'         ## 2.x doenst support Ruby < 2.4 and Rails < 5
-gem 'gretel' ## breadcriumb
+gem 'gretel'                                 ## breadcriumb
 gem 'dotenv-rails', require: 'dotenv/rails-now'
-gem 'google-analytics-rails'
 gem 'rspec'                                 ## for heroku
 gem 'stackprof'                           # # profiling
 
@@ -64,7 +63,7 @@ group :development do
 end
 
 group :production do
-  #gem 'passenger'
+  # gem 'passenger'
   gem 'pg'
 end
 

@@ -21,7 +21,6 @@ html
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     script src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.js"
-    = analytics_init if Rails.env.production? && GA.tracker.present?
     css:
       .form-group { margin-bottom: 10px; }
       body { font-size: 13px; }
