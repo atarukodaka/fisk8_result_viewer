@@ -16,13 +16,13 @@ class IndexDatatable
   end
   ################
   class Filter
-    attr_accessor :key, :input_type, :onchange, :options, :children, :checked
+    attr_accessor :key, :input_type, :onchange, :options, :children, :checked, :size
 
     def initialize(key, input_type, opts = {})
       @key = key
       @input_type = input_type
       @children = []
-      opts.slice(:field, :label, :onchange, :options, :children, :checked).each do |k, v|
+      opts.slice(:field, :label, :onchange, :options, :children, :checked, :size).each do |k, v|
         instance_variable_set "@#{k}", v
       end
       if block_given?

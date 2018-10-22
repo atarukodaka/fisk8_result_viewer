@@ -3,16 +3,18 @@ class CompetitionsDatatable < IndexDatatable
     def initialize(*)
       super
       @data = [
-        filter(:competition_name, :text_field),
+        filter(:competition_name, nil){
+          [
+            filter(:competition_name, :text_field, size: 40),
+            filter(:competition_short_name, :select)
+          ]
+        },
         filter(:competition_class, nil) {
           [
             filter(:competition_class, :select),
             filter(:competition_type, :select),
-            # filter(:season_from, :select, onchange: lambda { |dt| ajax_draw(dt) }),
-            # filter(:season_to, :select, onchange: lambda { |dt| ajax_draw(dt) }),
-            # filter(:season_to, :select, onchange: ajax_search(:season, datatable)),
             filter(:season_operator, :select, label: 'season', onchange: lambda { |dt| ajax_draw(dt) },
-                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+                   options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
             filter(:season, :select, label: ''),
           ]
         },

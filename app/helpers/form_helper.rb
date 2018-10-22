@@ -23,6 +23,8 @@ module FormHelper
     col =
       case key
       # when :category_name, :category_type, :seniority, :team
+      when :competition_short_name
+        FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key)
       when :category_name, :seniority, :team
         FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), key)
       when :category_type_name, :category_type
@@ -57,9 +59,10 @@ module FormHelper
   def render_filter(filter, datatable:)
     func = filter.onchange || lambda { |dt| ajax_search(filter.key, dt) }
     onc = func.call(datatable)
+    size ||= filter.size || 70
     case filter.input_type
     when :text_field
-      text_field_tag(filter.key, params[filter.key], size: 70, onchange: onc)
+      text_field_tag(filter.key, params[filter.key], size: size, onchange: onc)
     when :select
       if filter.options.present?
         select_tag(filter.key, options_for_select(filter.options, params[filter.key]), onchange: onc)
