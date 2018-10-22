@@ -16,4 +16,4 @@ Capybara.register_driver :headless_chrome do |app|
 end
 
 #Capybara.javascript_driver = ENV['JAVASCRIPT_DRIVER'].try(:to_sym) || :poltergeist
-Capybara.javascript_driver = ENV['JS_DRIVER']&.to_sym) || :poltergeist
+Capybara.javascript_driver = ENV['JS_DRIVER']&.to_sym || :poltergeist
