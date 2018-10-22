@@ -13,7 +13,7 @@ module AjaxDatatables::Datatable::ConditionBuilder
                  end
 
       ## create arel table for the searcing query
-      arel = column_table.model.arel_table[column.table_field]
+      arel = column.table_model.arel_table[column.table_field]
       if operator.class == Proc
         operator.call(arel)
       else
