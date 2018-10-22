@@ -11,12 +11,12 @@ class ComponentsDatatable < ScoreDetailsDatatable
             filter(:value, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new(datatable: datatable).data,
+        ScoresDatatable::Filters.new(datatable: datatable).flatten,
       ].flatten
     end
   end
   ################
-  include IndexDatatable::SeasonFilterable
+  # include IndexDatatable::SeasonFilterable
   def initialize(*args)
     super
 
@@ -26,6 +26,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
     ## searchble
     columns[:date].searchable = false
     columns[:value].operator = params[:value_operator].presence || :eq if view_context
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 
   def fetch_records

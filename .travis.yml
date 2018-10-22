@@ -1,9 +1,14 @@
 language: ruby
 
 rvm:
-  - 2.4.1
-  - 2.5.1
-  
+  - 2.4.4
+  - 2.5.2
+  - ruby-head
+
+matrix:
+  allow_failtures:
+    - rvm: ruby-head
+      
 install: bundle install --deployment
 
 cache:
@@ -19,7 +24,7 @@ script:
 
 env:
   TEST: true
-  JAVASCRIPT_DRIVER: poltergeist
+  JS_DRIVER: poltergeist
 
 branches:
   only:

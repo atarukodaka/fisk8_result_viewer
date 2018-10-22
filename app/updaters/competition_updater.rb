@@ -1,51 +1,29 @@
-class CompetitionUpdater < Updater
-  module CategorySegmentSelector
-    refine Array do
-      using StringToModel
-      def categories
-        map { |d| d[:category] }.uniq.map(&:to_category)
-      end
+module CategorySegmentSelector
+  refine Array do
+    using StringToModel
+    def categories
+      map { |d| d[:category] }.uniq.map(&:to_category)
+    end
 
-      def segments
-        map { |d| d[:segment] }.uniq.map(&:to_segment)
-      end
+    def segments
+      map { |d| d[:segment] }.uniq.map(&:to_segment)
+    end
 
-      def select_category(category)
-        select { |d| d[:category] == category.name }
-      end
+    def select_category(category)
+      select { |d| d[:category] == category.name }
+    end
 
-      def select_category_segment(category, segment)
-        select { |d| d[:category] == category.name && d[:segment] == segment.name }
-      end
+    def select_category_segment(category, segment)
+      select { |d| d[:category] == category.name && d[:segment] == segment.name }
     end
   end
-  ################
+end
+
+################
+class CompetitionUpdater < Updater
   using CategorySegmentSelector
   using StringToModel
   include CompetitionUpdater::Deviations
-
-  def clear_existing_competitions(site_url)
-    ActiveRecord::Base.transaction do
-      Competition.where(site_url: site_url).map(&:destroy)
-    end
-  end
-
-  def categories_to_parse(cats)
-    (cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
-  end
-
-  def parser(parser_type = nil)
-    if parser_type.present?
-      "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
-    else
-      CompetitionParser
-    end.new(verbose: verbose)
-  end
-
-  def timezone(data)
-    schedule = data[:time_schedule].first || (return 'UTC')
-    schedule[:starting_time].time_zone.name
-  end
 
   ################
   def update_competition(site_url, opts = {})
@@ -77,17 +55,14 @@ class CompetitionUpdater < Updater
       msg = '%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s'
       debug(msg % competition.attributes.symbolize_keys)
 
-      ## each catgories
-      data[:scores].categories.each do |category|
+      data[:scores].categories.each do |category|          ## each categories
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
 
-        ## category results
         data[:category_results].select_category(category).each do |item|
           update_category_result(competition, category, item)
         end
 
-        ## each segments
-        data[:scores].select_category(category).segments.each do |segment|
+        data[:scores].select_category(category).segments.each do |segment|    ## each segments
           update_segment(competition, category, segment, time_schedule: data[:time_schedule],
                          officials: data[:officials])
           ## scores
@@ -96,7 +71,6 @@ class CompetitionUpdater < Updater
           end
         end
       end
-      ## judge details and deviations
       update_details(competition) if options[:enable_judge_details]
       competition        ## ensure to return competition object
     end ## transaction
@@ -184,6 +158,29 @@ class CompetitionUpdater < Updater
 
   ################
   ## utils
+  def clear_existing_competitions(site_url)
+    ActiveRecord::Base.transaction do
+      Competition.where(site_url: site_url).map(&:destroy)
+    end
+  end
+
+  def categories_to_parse(cats)
+    (cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
+  end
+
+  def parser(parser_type = nil)
+    if parser_type.present?
+      "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
+    else
+      CompetitionParser
+    end.new(verbose: verbose)
+  end
+
+  def timezone(data)
+    schedule = data[:time_schedule].first || (return 'UTC')
+    schedule[:starting_time].time_zone.name
+  end
+
   def find_or_create_skater(item)
     corrected_skater_name = SkaterNameCorrection.correct(item[:skater_name])
     skater = (Skater.find_by(isu_number: item[:isu_number]) if item[:isu_number].present?) ||

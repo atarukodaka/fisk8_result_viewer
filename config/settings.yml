@@ -1,11 +1,8 @@
-google_analytics:
-  tracking_id: <%= ENV['GA_TRACKING_ID'] %>
-
 about:
   name: your name
   site_url: <%= ENV['SITE_URL'] || 'http://your_site.com/' %>
   mail_address: your@mail.address
   twitter_account: your_twitter_account
 
-#youtube:
-#  api_key: <%= ENV['YOUTUBE_API_KEY'] %>
+youtube:
+  api_key: <%= ENV['YOUTUBE_API_KEY'] %>

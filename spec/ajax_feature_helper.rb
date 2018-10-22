@@ -39,6 +39,42 @@ module AjaxFeatureHelper
     end
 
     shared_context :filter_season do
+      context 'eq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, false
+      end
+      context 'lt season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '<', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, false, false
+      end
+      context 'gt season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '>', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, false, true
+      end
+      context 'lteq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '<=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, false
+      end
+      context 'gteq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '>=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, true
+      end
+=begin
       context :from_later do
         subject {
           ajax_action_filter(key: :season_from, value: sub.season,
@@ -54,6 +90,7 @@ module AjaxFeatureHelper
         }
         it_behaves_like :contains, true, false
       end
+=end
     end
     shared_context :ajax_filter do |filter|
       context filter.key do

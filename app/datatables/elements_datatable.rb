@@ -23,12 +23,12 @@ class ElementsDatatable < ScoreDetailsDatatable
             filter(:goe, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new(datatable: datatable).data,
+        ScoresDatatable::Filters.new(datatable: datatable).flatten,
       ].flatten
     end
   end
   ################
-  include IndexDatatable::SeasonFilterable
+  # include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
 
@@ -48,6 +48,7 @@ class ElementsDatatable < ScoreDetailsDatatable
       columns[:element_name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
     end
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 
   def fetch_records

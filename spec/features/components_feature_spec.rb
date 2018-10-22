@@ -15,7 +15,7 @@ feature ComponentsController, type: :feature, feature: true do
     end
     context 'filter' do
       include_context :filter, ComponentsDatatable::Filters.new,
-                      excludings: [:season_to, :season_from, :value_operator, :component_name, :value]
+                      excludings: [:season_operator, :value_operator, :component_name, :value]
       include_context :filter_season
 
       context 'component_name' do

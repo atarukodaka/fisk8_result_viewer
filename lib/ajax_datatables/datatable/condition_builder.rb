@@ -3,31 +3,29 @@ module AjaxDatatables::Datatable::ConditionBuilder
     ## nodes: array of hash {column_name:, search_value:, operator:nil }
     nodes.map do |hash|
       column = columns[hash[:column_name]]
-      table_field = column.table_field
-      model = column.table_model || records.model
-      sv = hash[:search_value]
       operator = hash[:operator] || column.operator ||
                  begin
-                   column_type = model.columns.find { |c| c.name == table_field }.type
-                   case column_type
-                   when :integer, :float
-                     :eq
-                   when :boolean
-                     :boolean
-                   else
-                     :matches
+                   case column.table_model.columns.find { |c| c.name == column.table_field }.type
+                   when :integer, :float then :eq
+                   when :boolean then :boolean
+                   else; :matches
                    end
                  end
 
       ## create arel table for the searcing query
-      arel = model.arel_table[table_field]
-      case operator.to_sym
-      when :eq, :lt, :lteq, :gt, :gteq
-        arel.send(operator, sv)
-      when :boolean
-        arel.send(:eq, ActiveRecord::Type::Boolean.new.cast(sv))
+      arel = column_table.model.arel_table[column.table_field]
+      if operator.class == Proc
+        operator.call(arel)
       else
-        arel.matches("%#{sv}%")
+        sv = hash[:search_value]
+        case operator.to_sym
+        when :eq, :lt, :lteq, :gt, :gteq
+          arel.send(operator, sv)
+        when :boolean
+          arel.send(:eq, ActiveRecord::Type::Boolean.new.cast(sv))
+        else
+          arel.matches("%#{sv}%")
+        end
       end
     end.reduce(&:and)
   end

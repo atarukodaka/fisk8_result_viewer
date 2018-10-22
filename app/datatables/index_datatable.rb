@@ -1,7 +1,9 @@
 class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
 
+=begin
   def manipulate(records)
+    super(records)
     super(records).where(build_conditions(filter_searching_nodes))
   end
 
@@ -11,7 +13,7 @@ class IndexDatatable < AjaxDatatables::Datatable
       { column_name: column.name, search_value: sv }
     end.compact
   end
-
+=end
   def default_settings
     super.merge(pageLength: 25, searching: true)
   end
