@@ -55,7 +55,7 @@ module FormHelper
   end
 
   def render_filter(filter, datatable:)
-    func = filter.onchange || lambda {|dt| ajax_search(filter.key, dt) }
+    func = filter.onchange || lambda { |dt| ajax_search(filter.key, dt) }
     onc = func.call(datatable)
     case filter.input_type
     when :text_field

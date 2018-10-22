@@ -11,7 +11,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
             filter(:value, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new(datatable: datatable).data,
+        ScoresDatatable::Filters.new(datatable: datatable).flatten,
       ].flatten
     end
   end

@@ -15,5 +15,5 @@ Capybara.register_driver :headless_chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: caps)
 end
 
-#Capybara.javascript_driver = ENV['JAVASCRIPT_DRIVER'].try(:to_sym) || :poltergeist
+# Capybara.javascript_driver = ENV['JAVASCRIPT_DRIVER'].try(:to_sym) || :poltergeist
 Capybara.javascript_driver = ENV['JS_DRIVER']&.to_sym || :poltergeist

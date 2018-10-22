@@ -51,7 +51,7 @@ class ScoresDatatable < IndexDatatable
     }
 
     [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
-    #[:competition_type, :competition_class, :competition_name, :category_type_name, :seniority,
+     # [:competition_type, :competition_class, :competition_name, :category_type_name, :seniority,
      :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
