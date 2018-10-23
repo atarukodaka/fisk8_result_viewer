@@ -1,4 +1,6 @@
 module AjaxFeatureHelper
+  SLEEP_COUNT = 0.2
+  
   shared_examples :contains do |main_flag, sub_flag|
     if main_flag
       it { is_expected.to have_content(main.name) }
@@ -25,7 +27,7 @@ module AjaxFeatureHelper
         find(key).click
       end
       # sleep 1
-      sleep 0.3
+      sleep SLEEP_COUNT
     end
     page
   end
@@ -149,8 +151,7 @@ module AjaxFeatureHelper
       column_id = "column_#{table_id}_#{column_name}"
 
       find("##{column_id}").click
-      sleep 0.3
-      # sleep 1
+      sleep SLEEP_COUNT
       page
     end
   end
