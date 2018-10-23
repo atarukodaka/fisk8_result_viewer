@@ -12,8 +12,8 @@ class IndexController < ApplicationController
     respond_to do |format|
       format.html {
         render :index, locals: {
-          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load,
-                 filters: "#{datatable.class}::Filters".constantize.new([], datatable: datatable),
+          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
+          #                 filters: "#{datatable.class}::Filters".constantize.new([], datatable: datatable),
         }
       }
       format.json {
@@ -33,6 +33,7 @@ class IndexController < ApplicationController
   ## json index access
   def list
     datatable = create_datatable.serverside.decorate
+
     render json:  {
       iTotalRecords:        datatable.records.count,
              iTotalDisplayRecords: datatable.data.total_count,

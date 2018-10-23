@@ -1,7 +1,7 @@
-class IndexDatatable
+module AjaxDatatables
   class Filters
     include FormHelper  ## for ajax_draw(), ajax_search()
-    delegate :[], :each, :map, :reject, :flatten, :present?, to: :@data
+    delegate :[], :each, :map, :reject, :flatten, :present?, :to_a, to: :@data
     attr_accessor :datatable
 
     def initialize(ary = [], datatable: nil)

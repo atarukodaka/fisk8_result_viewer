@@ -5,7 +5,7 @@ class ScoresDatatable < IndexDatatable
 
       @data = [
         # CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
-        CompetitionsDatatable::Filters.new(datatable: datatable).reject { |filter| filter.key == :site_url },
+        *CompetitionsDatatable::Filters.new(datatable: datatable).reject { |filter| filter.key == :site_url },
         filter(:score_name, :text_field),
         filter(:skater_name, :text_field),
         filter(:category, nil) {
@@ -22,7 +22,7 @@ class ScoresDatatable < IndexDatatable
             filter(:segment_type, :select),
           ]
         },
-      ].flatten
+      ]
     end
   end
   # ###############"
@@ -58,7 +58,7 @@ class ScoresDatatable < IndexDatatable
     end
 
     columns[:ranking].operator = :eq
-    #columns[:date].searchable = false
+    # columns[:date].searchable = false
     columns[:team].operator = :boolean
     columns[:season].operator = params[:season_operator].presence || :eq if view_context
 
