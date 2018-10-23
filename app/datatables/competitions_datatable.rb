@@ -30,9 +30,12 @@ class CompetitionsDatatable < IndexDatatable
              :competition_class, :competition_type, :season, :start_date, :timezone])
     columns[:competition_name].source = "competitions.name"
     columns[:competition_short_name].source = "competitions.short_name"
-      
+=begin
+    [:competition_short_name, :competition_class, :competition_type].each do |key|
+      columns[key].operator = :eq
+    end
+=end    
     default_orders([[:start_date, :desc]])
-    # columns[:season].operator = lambda {|arel|  binding.pry; arel.eq('2016-17')}
     columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 end

@@ -20,13 +20,19 @@ class ComponentsDatatable < ScoreDetailsDatatable
   def initialize(*args)
     super
 
-    columns.add([:number, :component_name, :factor, :judges, :value,])
-    columns.sources = { component_name: 'components.name', }
+    columns.add([:component_number, :component_name, :factor, :judges, :value,])
 
-    ## searchble
-    columns[:date].searchable = false
-    columns[:value].operator = params[:value_operator].presence || :eq if view_context
-    columns[:season].operator = params[:season_operator].presence || :eq if view_context
+    columns.sources = {
+      component_name: 'components.name',
+      component_number: 'components.number',
+    }
+
+    
+    #columns[:date].searchable = false
+    if view_context
+      columns[:value].operator = params[:value_operator].presence || :eq
+      columns[:season].operator = params[:season_operator].presence || :eq
+    end
   end
 
   def fetch_records
