@@ -170,16 +170,17 @@ RSpec.describe CompetitionUpdater, updater: true do
 
   describe 'force' do
     let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
-    let(:original) { updater.update_competition(url, categories: ['MEN']).reload }
+    let!(:original) { updater.update_competition(url, categories: ['MEN']).reload }
 
     describe 'non_forced' do
-      subject(:non_forced) { updater.update_competition(url, categories: ['MEN']).reload }
-      its(:updated_at) { is_expected.to eq(original.updated_at) }
+      subject { updater.update_competition(url, categories: ['MEN']) }
+      #its(:updated_at) { is_expected.to eq(original.updated_at) }
+      it { is_expected.to be_nil }
     end
 
     describe 'forced' do
       subject(:forced) { updater.update_competition(url, force: true, categories: ['MEN']).reload }
-      its(:updated_at) { is_expected.to eq(original.updated_at) }
+      its(:updated_at) { is_expected.not_to eq(original.updated_at) }
     end
   end
 

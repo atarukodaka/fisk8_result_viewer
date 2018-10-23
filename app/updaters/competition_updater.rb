@@ -18,51 +18,61 @@ module CategorySegmentSelector
     end
   end
 end
+module MapValue
+  refine Array do
+    def map_value(key)
+      map {|d| d[key] }
+    end
+  end
+end
 
 ################
 class CompetitionUpdater < Updater
   using CategorySegmentSelector
   using StringToModel
+  using MapValue
   include CompetitionUpdater::Deviations
 
-  ################
-  def update_competition(site_url, opts = {})
-    debug('*' * 100)
-    debug("updating competition '%s' with %s parser" % [site_url, opts[:parser_type] || 'normal'])
-    default_options = { parser_type: nil, date_format: nil, force: nil, categories: nil,
-                        season_from: nil, season_to: nil }
-    options = default_options.merge(opts)
-    if (!options[:force]) && (competition = Competition.find_by(site_url: site_url))
-      debug('  .. skip: already existing')
-      return competition
+  def competition_exists?(site_url)
+    if Competition.find_by(site_url: site_url)
+      debug('already existing', indent: 3)
+      true
+    else
+      false
     end
+  end
+  ################
+  def update_competition(site_url, options = {})
+    debug(('*' * 100)+"\nupdating competition '%s' with %s parser" % [site_url, opts[:parser_type] || 'normal'])
+    return if !optios[:force] && competition_exists?(site_url)
+
+    options = default_options.merge(options)  ## TODO: overwrite ??
+    options[:categories] = categories_to_parse(opts[:categories])
     data = parser(options[:parser_type])
-           .parse(site_url, date_format: options[:date_format],
-                  categories: categories_to_parse(options[:categories]),
-                  season_from: options[:season_from], season_to: options[:season_to]) || return
+           .parse(site_url, options.slice(:date_format, :categories , :season_from, :season_to)) || return
+    
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         comp.attributes = {
-          start_date: data[:time_schedule].map { |d| d[:starting_time] }.min.to_date,
-          end_date: data[:time_schedule].map { |d| d[:starting_time] }.max.to_date,
+          start_date: data[:time_schedule].map_value(:starting_time).min.to_date,
+          end_date: data[:time_schedule].map_value(:starting_time).max.to_date,
           timezone: timezone(data),
-        }.merge(data.slice(:site_url, :name, :country, :city))
+        }
+        comp.attributes = data.slice(:site_url, :name, :country, :city)
         yield comp if block_given?
       end
 
-      msg = '%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s'
-      debug(msg % competition.attributes.symbolize_keys)
-
-      data[:scores].categories.each do |category|          ## each categories
+      debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' % competition.attributes.symbolize_keys)
+      ## each categories            
+      data[:scores].categories.each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
-
         data[:category_results].select_category(category).each do |item|
           update_category_result(competition, category, item)
         end
-
-        data[:scores].select_category(category).segments.each do |segment|    ## each segments
+        ## each segments
+        data[:scores].select_category(category).segments.each do |segment|
           update_segment(competition, category, segment, time_schedule: data[:time_schedule],
                          officials: data[:officials])
           ## scores
@@ -165,7 +175,9 @@ class CompetitionUpdater < Updater
   end
 
   def categories_to_parse(cats)
-    (cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
+    all_categories = Category.all.map(&:name)
+    (cats.nil?) ? all_categories : all_categories & cats
+    #(cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
   end
 
   def parser(parser_type = nil)
