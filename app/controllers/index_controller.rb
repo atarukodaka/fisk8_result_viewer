@@ -4,7 +4,12 @@ class IndexController < ApplicationController
   MAX_LENGTH = 1_000
 
   def limit_length
-    params[:length] = [params[:length].to_i, MAX_LENGTH].min
+    #
+    if params[:length]
+      params[:length] = [params[:length].to_i, MAX_LENGTH].min
+    else
+      params[:length] = MAX_LENGTH
+    end
   end
 
   def index
@@ -17,11 +22,9 @@ class IndexController < ApplicationController
         }
       }
       format.json {
-        limit_length
-        render json: datatable.serverside.as_json
+        render json: datatable.serverside.limit(MAX_LENGTH).as_json
       }
       format.csv {
-        limit_length
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
           datatable.serverside.limit(MAX_LENGTH).as_json.each { |row|  c << row }
         end
@@ -32,7 +35,7 @@ class IndexController < ApplicationController
 
   ## json index access
   def list
-    datatable = create_datatable.serverside.decorate
+    datatable = create_datatable.serverside.paging.decorate
 
     render json:  {
       iTotalRecords:        datatable.records.count,

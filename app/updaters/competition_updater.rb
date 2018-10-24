@@ -7,7 +7,7 @@ class CompetitionUpdater < Updater
   ################
   def update_competition(site_url, options = {})
     debug('*' * 100)
-    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'normal'])
+    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
     data = parser(options[:parser_type])

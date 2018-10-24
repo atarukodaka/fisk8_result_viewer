@@ -2,7 +2,6 @@ class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
 
   class Filters < AjaxDatatables::Filters; end
-=begin
   def manipulate(records)
     super(records)
     super(records).where(build_conditions(filter_searching_nodes))
@@ -14,7 +13,7 @@ class IndexDatatable < AjaxDatatables::Datatable
       { column_name: column.name, search_value: sv }
     end.compact
   end
-=end
+
   def filters
     @filters ||= "#{default_model.to_s.pluralize}Datatable::Filters".constantize.new(datatable: self)
   rescue NameError

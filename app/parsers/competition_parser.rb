@@ -1,7 +1,9 @@
 module AcceptCategories
   refine Array do
     def accept_categories(categories)
-      select { |d| categories.nil? || categories.include?(d[:category])   }
+      categories ||= Category.all.map(&:name)
+      select { |d| categories.include?(d[:category])   }
+      #select { |d| categories.nil? || categories.include?(d[:category])   }
     end
   end
 end
