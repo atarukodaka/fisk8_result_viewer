@@ -1,5 +1,4 @@
-- season = params[:season] ||= Competition.recent.first.try(:season)
-- category = Category.find_by(name: params[:category_type] ||= "MEN")
+- season || category || datatables || raise
 
 = form_tag statics_path, method: :get, enforce_utf8: false, id: :statics_form do |f|
   = form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, selected: season, onchange:"$('#statics_form').submit()"))
@@ -12,72 +11,38 @@ h3= t(".highest_score", default: "Highest  Score")
 h4= t(".total_score", default: "Total Score")
 .row
   .col-sm-12
-    - cols = [:no, :skater_name, :nation, :competition_name, :points, :short_ranking, :short_tss, :free_ranking, :free_tss]
-    - records = CategoryResult.includes(:competition, :skater, :short, :free).order(points: :desc).where("competitions.season" => season, category: category)
-    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
+    = datatables[:scores][:total].render
 
 .row
-  - cols = [:no, :skater_name, :nation, :name, :tss, :tes, :pcs]
-  - records = Score.includes(:competition, :skater).order(tss: :desc).where("competitions.season" => season, category: category)
-  .col-sm-6
-    h4= t(".short", default: "Short")
-    = StaticsDatatable.new(self).records(records.short).columns(cols).decorate.render
-     
-  .col-sm-6
-    h4= t(".free", default: "Free")
-    = StaticsDatatable.new(self).records(records.free).columns(cols).decorate.render
+  - [:short, :free].each do |key|
+    .col-sm-6
+      h4= t(".#{key}", default: key.to_s.camelize)
+    = datatables[:scores][key].render
 
 ////////////////
 h3= t(".most_valuable_elements", default:  "Most Valuable Elements")
-- records = Element.includes(:score, score: [:competition, :skater]).where("competitions.season" => season, "scores.category" => category).order(value: :desc).references(:score, score: [:competition])
-.row
-  - cols = [:no, :skater_name, :score_name, :name, :base_value, :goe, :value]
-  .col-sm-6
-    h4= t(".jump", default: "Jump")
-    = StaticsDatatable.new(self).records(records.where(element_type: :jump)).columns(cols).decorate.render
-  .col-sm-6
-    h4= t(".spin", default: "Spin")
-    = StaticsDatatable.new(self).records(records.where(element_type: :spin)).columns(cols).decorate.render
-.row
-  .col-sm-6
-    h4= t(".step", default: "Step")
-    = StaticsDatatable.new(self).records(records.where(element_type: :step)).columns(cols).decorate.render
+- records = Element.includes(:score, score: [:competition, :skater]).where("competitions.season" => season, "scores.category" => category).order(value: :desc).joins(:score, score: [:competition])
 
-  .col-sm-6
-    h4= t(".choreo", default: "Choreo")
-    = StaticsDatatable.new(self).records(records.where(element_type: :choreo)).columns(cols).decorate.render
-.row
-  .col-sm-6
-    h4= t(".lift", default: "Lift")
-    = StaticsDatatable.new(self).records(records.where(element_type: :lift)).columns(cols).decorate.render
-
-
-  .col-sm-6
-    h4= t(".death_spiral", default: "Death Spiral")
-    = StaticsDatatable.new(self).records(records.where(element_type: :death_spiral)).columns(cols).decorate.render
-
+- [[:jump, :spin], [:step, :choreo], [:lift, :death_spiral]].each do |item|
+  .row
+  - item.each do |key|
+    .col-sm-6
+      h4= t(".#{key}", default: key.to_s.camelize)
+      = datatables[:valuable_elements][key].render
 
 - if category =~ /ICE DANCE/
   .row
-    .col-sm-6
-      h4= t(".twizzle", default:  "Twizzle")
-      = StaticsDatatable.new(self).records(records.where(element_type: :twizzlel)).columns(cols).decorate.render
+    - [:twizzle, :pattern_dance].each do |key|
+      .col-sm-6
+        h4= t(".#{key}", default: key.to_s.camelize)
+        = StaticsDatatable.new(self).records(records.where(element_type: key)).columns(cols).decorate.render
 
-    .col-sm-6
-      h4= t(".pattern_dance", default: "Pattern Dance")
-      = StaticsDatatable.new(self).records(records.where(element_type: :pattern_dancel)).columns(cols).decorate.render
+.row
 
 h3 PCS
 
 .row
-  - cols = [:no, :skater_name, :pcs, :component_SS, :component_TR, :component_PE, :component_CO, :component_IN]
-  .col-sm-6
-    h4= t(".short", default: "Short")
-    - records = Score.includes(:competition, :skater, :components).order(pcs: :desc).where("competitions.season" => season, category: category).short
-    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
-
-  .col-sm-6
-    h4= t(".free", default: "Free")
-    - records = Score.includes(:competition, :skater, :components).order(pcs: :desc).where("competitions.season" => season, category: category).free
-    = StaticsDatatable.new(self).records(records).columns(cols).decorate.render
-
+  - [:short, :free].each do |key|
+    .col-sm-6
+      h4= t(".#{key}", default: key.to_s.camelize)
+      = datatables[:pcs][key].render

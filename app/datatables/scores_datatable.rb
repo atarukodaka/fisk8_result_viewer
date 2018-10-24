@@ -5,7 +5,8 @@ class ScoresDatatable < IndexDatatable
 
       @data = [
         # CompetitionsDatatable::Filters.new.data.reject { |filter| filter.key == :site_url },
-        CompetitionsDatatable::Filters.new(datatable: datatable).reject { |filter| filter.key == :site_url },
+        *CompetitionsDatatable::Filters.new(datatable: datatable).reject { |filter| filter.key == :site_url },
+        filter(:score_name, :text_field),
         filter(:skater_name, :text_field),
         filter(:category, nil) {
           [
@@ -21,19 +22,20 @@ class ScoresDatatable < IndexDatatable
             filter(:segment_type, :select),
           ]
         },
-      ].flatten
+      ]
     end
   end
   # ###############"
   def initialize(*)
     super
-    columns([:name, :competition_name, :competition_class, :competition_short_name, :competition_type,
+    columns([:score_name, :competition_name, :competition_short_name,
+             :competition_class, :competition_type,
              :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type,
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value])
 
     columns.sources = {
-      name:              'scores.name',
+      score_name:              'scores.name',
       competition_name:  'competitions.name',
       competition_short_name:  'competitions.short_name',
       competition_class: 'competitions.competition_class',
@@ -56,7 +58,7 @@ class ScoresDatatable < IndexDatatable
     end
 
     columns[:ranking].operator = :eq
-    columns[:date].searchable = false
+    # columns[:date].searchable = false
     columns[:team].operator = :boolean
     columns[:season].operator = params[:season_operator].presence || :eq if view_context
 

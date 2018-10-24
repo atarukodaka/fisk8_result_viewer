@@ -14,18 +14,14 @@ module AjaxDatatables::Datatable::ConditionBuilder
 
       ## create arel table for the searcing query
       arel = column.table_model.arel_table[column.table_field]
-      if operator.class == Proc
-        operator.call(arel)
+      sv = hash[:search_value]
+      case operator.to_sym
+      when :eq, :lt, :lteq, :gt, :gteq
+        arel.send(operator, sv)
+      when :boolean
+        arel.send(:eq, ActiveRecord::Type::Boolean.new.cast(sv))
       else
-        sv = hash[:search_value]
-        case operator.to_sym
-        when :eq, :lt, :lteq, :gt, :gteq
-          arel.send(operator, sv)
-        when :boolean
-          arel.send(:eq, ActiveRecord::Type::Boolean.new.cast(sv))
-        else
-          arel.matches("%#{sv}%")
-        end
+        arel.matches("%#{sv}%")
       end
     end.reduce(&:and)
   end

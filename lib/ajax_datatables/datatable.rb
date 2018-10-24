@@ -80,6 +80,10 @@ module AjaxDatatables
       nil
     end
 
+    def filters
+      nil
+    end
+
     def model
       records.model
     end

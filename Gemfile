@@ -58,6 +58,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'
+  gem 'rack-mini-profiler'
+  gem 'activerecord-cause'
   # gem 'rack-dev-mark'
   # gem 'pg'
 end

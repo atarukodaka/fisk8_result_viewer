@@ -1,6 +1,6 @@
 module AjaxFeatureHelper
-  SLEEP_COUNT = 0.2
-  
+  SLEEP_COUNT = 0.3
+
   shared_examples :contains do |main_flag, sub_flag|
     if main_flag
       it { is_expected.to have_content(main.name) }
