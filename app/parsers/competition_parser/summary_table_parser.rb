@@ -35,6 +35,13 @@ class CompetitionParser
       end.compact
     end
 
+    def join_url(base_url, path)
+      if base_url =~ /^(.*)\/.*\.html?$/
+        File.join($1, path)
+      else
+        File.join(base_url, path)
+      end
+    end
     def parse_url_by_string(row, search_string, base_url: '')
       a_elem = nil
       Array(search_string).each do |string|
@@ -45,11 +52,13 @@ class CompetitionParser
           break
         end
       end
-      (a_elem) ? File.join(base_url, a_elem.attributes['href'].value) : nil
+      #(a_elem) ? File.join(base_url, a_elem.attributes['href'].value) : nil
+      (a_elem) ? join_url(base_url, a_elem.attributes['href'].value) : nil
     end
 
     def parse_url_by_column(row, column_number, base_url: '')
-      File.join(base_url, row.xpath("td[#{column_number}]//a/@href").text)
+      #File.join(base_url, row.xpath("td[#{column_number}]//a/@href").text)
+      join_url(base_url, row.xpath("td[#{column_number}]//a/@href").text)
     end
   end
 end

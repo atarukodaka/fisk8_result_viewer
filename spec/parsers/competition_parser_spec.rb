@@ -17,4 +17,16 @@ RSpec.describe CompetitionParser do
       expect(summary_table.accept_categories(['MEN']).map { |d| d[:category] }.uniq).to eq(['MEN'])
     }
   end
+
+  describe 'summary_parser: join_url' do
+    it {
+      st_parser = CompetitionParser::SummaryTableParser.new
+      expected_url = 'http://www.foo.com/wc2017/result.html'
+      expect(st_parser.join_url('http://www.foo.com/wc2017/', 'result.html')).to eq(expected_url)
+      expect(st_parser.join_url('http://www.foo.com/wc2017', 'result.html')).to eq(expected_url)
+      expect(st_parser.join_url('http://www.foo.com/wc2017/index.html', 'result.html')).to eq(expected_url)
+      expect(st_parser.join_url('http://www.foo.com/wc2017/index.htm', 'result.html')).to eq(expected_url)
+    }
+    
+  end
 end
