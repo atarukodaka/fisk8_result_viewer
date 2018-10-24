@@ -26,7 +26,8 @@ class CompetitionUpdater < Updater
         yield comp if block_given?
       end
 
-      debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' % competition.attributes.symbolize_keys)
+      debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' %
+            competition.attributes.symbolize_keys)
       ## each categories
       data[:scores].categories.each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)

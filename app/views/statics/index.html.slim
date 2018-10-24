@@ -22,33 +22,22 @@ h4= t(".total_score", default: "Total Score")
 ////////////////
 h3= t(".most_valuable_elements", default:  "Most Valuable Elements")
 - records = Element.includes(:score, score: [:competition, :skater]).where("competitions.season" => season, "scores.category" => category).order(value: :desc).joins(:score, score: [:competition])
-.row
-  - cols = [:no, :skater_name, :score_name, :name, :base_value, :goe, :value]
-  - [:jump, :spin].each do |key|
-    .col-sm-6
-      h4= t(".#{key}", default: key.to_s.camelize)
-      = datatables[:valuable_elements][key].render
-.row
-  - [:step, :choreo].each do |key|
-    .col-sm-6
-      h4= t(".#{key}", default: key.to_s.camelize)
-      = datatables[:valuable_elements][key].render
 
-.row
-  - [:lift, :death_spiral].each do |key|
+- [[:jump, :spin], [:step, :choreo], [:lift, :death_spiral]].each do |item|
+  .row
+  - item.each do |key|
     .col-sm-6
       h4= t(".#{key}", default: key.to_s.camelize)
       = datatables[:valuable_elements][key].render
 
 - if category =~ /ICE DANCE/
   .row
-    .col-sm-6
-      h4= t(".twizzle", default:  "Twizzle")
-      = StaticsDatatable.new(self).records(records.where(element_type: :twizzlel)).columns(cols).decorate.render
+    - [:twizzle, :pattern_dance].each do |key|
+      .col-sm-6
+        h4= t(".#{key}", default: key.to_s.camelize)
+        = StaticsDatatable.new(self).records(records.where(element_type: key)).columns(cols).decorate.render
 
-    .col-sm-6
-      h4= t(".pattern_dance", default: "Pattern Dance")
-      = StaticsDatatable.new(self).records(records.where(element_type: :pattern_dancel)).columns(cols).decorate.render
+.row
 
 h3 PCS
 
