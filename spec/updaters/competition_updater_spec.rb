@@ -174,7 +174,7 @@ RSpec.describe CompetitionUpdater, updater: true do
 
     describe 'non_forced' do
       subject { updater.update_competition(url, categories: ['MEN']) }
-      #its(:updated_at) { is_expected.to eq(original.updated_at) }
+      # its(:updated_at) { is_expected.to eq(original.updated_at) }
       it { is_expected.to be_nil }
     end
 

@@ -1,7 +1,7 @@
 module AcceptCategories
   refine Array do
-    def accept(categories)
-      select { |d| categories.include?(d[:category])   }
+    def accept_categories(categories)
+      select { |d| categories.nil? || categories.include?(d[:category])   }
     end
   end
 end
@@ -22,12 +22,8 @@ class CompetitionParser < Parser
   def parse(site_url, date_format: nil, categories: nil, season_from: nil, season_to: nil)
     page = get_url(site_url) || return
     time_schedule = parse_time_schedule(page, date_format: date_format)
-    season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
-    unless season.between?(season_from, season_to)
-      debug('skipping...season %s out of range [%s, %s]' %
-            [season.season, season_from, season_to], indent: 3)
-      return nil
-    end
+    return nil unless season_to_parse?(time_schedule, from: season_from, to: season_to)
+
     data = {
       name: parse_name(page),
       time_schedule: time_schedule,
@@ -36,29 +32,36 @@ class CompetitionParser < Parser
     }
     data[:city], data[:country] = parse_city_country(page)
 
-    parsers = {
-      category_result: CategoryResultParser.new(verbose: verbose),
-      official: OfficialParser.new(verbose: verbose),
-      score: ScoreParser.new(verbose: verbose),
-    }
-    summary_table = parse_summary_table(page, base_url: site_url).accept(categories)
+    cr_parser = CategoryResultParser.new(verbose: verbose)
+    official_parser = OfficialParser.new(verbose: verbose)
+    score_parser = ScoreParser.new(verbose: verbose)
+
+    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*parsers[:category_result].parse(*item.values_at(:result_url, :category)))
+      data[:category_results].push(*cr_parser.parse(item[:result_url], item[:category]))
     end
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)
-      data[:officials].push(*parsers[:official].parse(item[:official_url], category, segment))
-      data[:scores].push(*parsers[:score].parse(item[:score_url], category, segment))
+      data[:officials].push(*official_parser.parse(item[:official_url], category, segment))
+      data[:scores].push(*score_parser.parse(item[:score_url], category, segment))
     end
     data
   end
 
   ################
+  def season_to_parse?(time_schedule, from:, to:)
+    season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
+    return true if season.between?(from, to)
+
+    debug('skipping...season %s out of range [%s, %s]' % [season.season, from, to], indent: 3)
+    false
+  end
+
   def parse_time_schedule(page, date_format: nil)
     TimeScheduleParser.new.parse(page, date_format: date_format)
   end
 
-  def parse_summary_table(page, base_url: nil)
+  def parse_summary_table(page, base_url: '')
     SummaryTableParser.new.parse(page, base_url: base_url)
   end
 

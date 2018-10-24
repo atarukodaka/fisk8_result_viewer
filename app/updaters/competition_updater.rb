@@ -1,56 +1,18 @@
-module CategorySegmentSelector
-  refine Array do
-    using StringToModel
-    def categories
-      map { |d| d[:category] }.uniq.map(&:to_category)
-    end
-
-    def segments
-      map { |d| d[:segment] }.uniq.map(&:to_segment)
-    end
-
-    def select_category(category)
-      select { |d| d[:category] == category.name }
-    end
-
-    def select_category_segment(category, segment)
-      select { |d| d[:category] == category.name && d[:segment] == segment.name }
-    end
-  end
-end
-module MapValue
-  refine Array do
-    def map_value(key)
-      map {|d| d[key] }
-    end
-  end
-end
-
-################
 class CompetitionUpdater < Updater
   using CategorySegmentSelector
   using StringToModel
   using MapValue
   include CompetitionUpdater::Deviations
 
-  def competition_exists?(site_url)
-    if Competition.find_by(site_url: site_url)
-      debug('already existing', indent: 3)
-      true
-    else
-      false
-    end
-  end
   ################
   def update_competition(site_url, options = {})
-    debug(('*' * 100)+"\nupdating competition '%s' with %s parser" % [site_url, opts[:parser_type] || 'normal'])
-    return if !optios[:force] && competition_exists?(site_url)
+    debug('*' * 100)
+    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'normal'])
+    return if !options[:force] && competition_exists?(site_url)
 
-    options = default_options.merge(options)  ## TODO: overwrite ??
-    options[:categories] = categories_to_parse(opts[:categories])
     data = parser(options[:parser_type])
-           .parse(site_url, options.slice(:date_format, :categories , :season_from, :season_to)) || return
-    
+           .parse(site_url, options.slice(:date_format, :categories, :season_from, :season_to)) || return
+
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -65,7 +27,7 @@ class CompetitionUpdater < Updater
       end
 
       debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' % competition.attributes.symbolize_keys)
-      ## each categories            
+      ## each categories
       data[:scores].categories.each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
         data[:category_results].select_category(category).each do |item|
@@ -150,7 +112,6 @@ class CompetitionUpdater < Updater
     end
   end
 
-  ################
   def update_judge_details(score)
     officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
 
@@ -168,16 +129,19 @@ class CompetitionUpdater < Updater
 
   ################
   ## utils
+  def competition_exists?(site_url)
+    if Competition.find_by(site_url: site_url)
+      debug('already existing', indent: 3)
+      true
+    else
+      false
+    end
+  end
+
   def clear_existing_competitions(site_url)
     ActiveRecord::Base.transaction do
       Competition.where(site_url: site_url).map(&:destroy)
     end
-  end
-
-  def categories_to_parse(cats)
-    all_categories = Category.all.map(&:name)
-    (cats.nil?) ? all_categories : all_categories & cats
-    #(cats.nil?) ? Category.all.map(&:name) : Category.all.map(&:name) & cats
   end
 
   def parser(parser_type = nil)
