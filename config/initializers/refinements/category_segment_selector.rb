@@ -17,4 +17,3 @@ module CategorySegmentSelector
     end
   end
 end
-
