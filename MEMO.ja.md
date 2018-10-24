@@ -4,7 +4,18 @@
 - CategoryResults has a Score of short and a Score of free
 - Score has many of Elements and Components
 
+## 使い方
 
+```
+be rake update:skater
+be rake update:competitions last=10 force=1 enable_judge_details=1 season_from=2012-13
+be rake update:competition site_url=http://www..../wc2017
+```
+
+- last: competitions.yaml の下から指定した分だけ
+- force: 真だと存在してもアップデート、偽ならスキップ
+- enable_judge_detials: 個別ジャッジ・逸脱度の集計（時間とDB食う）
+- season_from, season_to: 対象シーズン
 
 ## AjaxDatabales
 
@@ -50,9 +61,31 @@ end
 ### ActiveHash::Base
 便利なのだが、whereが使えない。
 
-## Capybara
+### Capybara
 - js: true にしないと js driver が動いてくれない。
 - JAVASCIRPT_DRIVER=chrome で立ち上げると chrome が表で動く
+
+### postgres
+edit config/database.yml
+
+```
+su
+/etc/init.d/postgresql start
+update-rc.d postgresql defaults
+su postgres
+dropdb fisk8viewer
+createdb fisk8viewer
+^D
+
+```
+### heroku
+
+```
+git push heroku master
+heroku pg:reset --confirm fisk8-result-viewer
+heroku pg:push fisk8viewer HEROKU_POSTGRESQL_BLUE_URL
+heroku restart
+```
 
 ## ISUさんしっかりしてくれ
 

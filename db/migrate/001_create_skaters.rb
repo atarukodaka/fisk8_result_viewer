@@ -3,7 +3,7 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
     create_table :skaters do |t|
       t.string :name
       t.string :nation
-      # t.string :category
+      t.references :category_type
       t.integer :isu_number
 
       t.string :coach
@@ -15,10 +15,6 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
       t.string :club
 
       t.timestamp :bio_updated_at
-
-      ## relations
-      # t.references :category
-      t.references :category_type
     end
   end
 end

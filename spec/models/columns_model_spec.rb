@@ -7,7 +7,7 @@ RSpec.describe AjaxDatatables::Columns do
         AjaxDatatables::Datatable.new.columns([:foo]).columns[:foo]
       }
       its(:name) { is_expected.to eq('foo') }
-      its(:source) { is_expected.to eq('ajaxdatatables.foo') }
+      its(:source) { is_expected.to eq('.foo') }
     end
     context 'giving column as hash' do
       subject(:column) {
@@ -18,7 +18,7 @@ RSpec.describe AjaxDatatables::Columns do
     end
     context 'specify model' do
       subject(:column) {
-        AjaxDatatables::Datatable.new.columns([:foo]).model(Skater).columns[:foo]
+        AjaxDatatables::Datatable.new.columns([:foo]).records(Skater.all).columns[:foo]
       }
       its(:name) { is_expected.to eq('foo') }
       its(:source) { is_expected.to eq('skaters.foo') }

@@ -2,12 +2,11 @@ class DeviationsDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
     def initialize(*)
       super
-      model = Deviation
       @data = [
-        Filter.new(:skater_name, :text_field, model: model),
-        Filter.new(:score_name, :text_field, model: model),
-        Filter.new(:panel_name, :text_field, model: model),
-        Filter.new(:category_name, :select, model: model),
+        filter(:skater_name, :text_field),
+        filter(:score_name, :text_field),
+        filter(:panel_name, :text_field),
+        filter(:category_name, :select),
       ]
     end
   end

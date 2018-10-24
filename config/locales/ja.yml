@@ -81,6 +81,7 @@ ja:
     skater_name: スケーター名
     skater_nation: スケーター国名
     competition_name: 大会名
+    competition_short_name: 大会略称
     competition_class: 競技クラス
     competition_type: 競技タイプ
     competition_class_type: 競技クラス/タイプ
@@ -176,7 +177,7 @@ ja:
         date: 日付
 
       element:
-        number: エレメント番号
+        element_number: 番号
         name: 要素名
         element_type: 要素の型
         element_subtype: 要素の副型
@@ -187,7 +188,7 @@ ja:
         base_value: 基礎点
 
       component:
-        number: 番号
+        component_number: 番号
         name: コンポーネント名
         component_name: コンポーネント名
         factor: ファクター

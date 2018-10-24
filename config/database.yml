@@ -1,50 +1,49 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
+## defaults
 default: &default
-  adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development_sqlite3: &development_sqlite3
+sqlite3_default: &sqlite3_default
   <<: *default
+  adapter: sqlite3
+
+postgresql_default: &postgresql_default
+  <<: *default
+  adapter: postgresql
+  username: fisk8viewer
+  database: fisk8viewer
+  port: 5432  
+
+################
+test:
+  <<: *sqlite3_default
+  database: db/test.sqlite3
+
+################
+development_sqlite3: &development_sqlite3
+  <<: *sqlite3_default
   database: db/development.sqlite3
 
 development_postgresql: &development_postgresql
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-  username: fisk8viewer
-  database: fisk8viewer
+  <<: *postgresql_default
   password: fisk8viewer
   host: localhost
-  port: 5432
   
 development:
   <<: *development_sqlite3
+#  <<: *development_postgresql
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: db/test.sqlite3
+################
+production_sqlite3: &production_sqlite3
+  <<: *sqlite3_default
+  database: db/production.sqlite3
 
-#production:
-#  <<: *default
-#  database: db/production.sqlite3
-
-production:
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-  username: fisk8viewer
-  database: fisk8viewer
+production_postgresql: &production_postgresql
+  <<: *postgresql_default
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: <%= ENV['DATABASE_HOST'] %>
-  port: 5432
-    
+
+production:
+  #<<: *production_sqlite3
+  <<: *production_postgresql
   

@@ -14,7 +14,7 @@ RSpec.describe SkaterUpdater, updater: true do
   describe 'skater detail' do
     it {
       isu_number = 10_967 ## Yuzuru HANYU
-      SkaterUpdater.new(verbose: true).update_skater_detail(isu_number)
+      SkaterUpdater.new.update_skater_detail(isu_number)
       skater = Skater.find_by(isu_number: isu_number)
       expect(skater.coach).not_to be_nil
     }

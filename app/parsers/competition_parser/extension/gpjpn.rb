@@ -2,6 +2,7 @@ class CompetitionParser
   module Extension
     class Gpjpn < CompetitionParser
       class SummaryTableParser < CompetitionParser::SummaryTableParser
+        include CompetitionParser::Utils
         def parse(page, base_url: '')
           data = []
           category = ''
@@ -10,7 +11,6 @@ class CompetitionParser
           header_element(page).xpath('../../tr').each do |row|
             if row.xpath("td/a[contains(text(), 'Entries')]").present?
               category = row.xpath('td[1]').text.upcase
-              # data[:category_results] << {
               data << {
                 type: :category,
                 category: category,
@@ -27,7 +27,6 @@ class CompetitionParser
               current_segment_results[:result_url] = result_url
             elsif (score_url =  parse_url_by_string(row, 'Judges Score', base_url: base_url))
               current_segment_results[:score_url] = score_url
-              # data[:segment_results] << current_segment_results
               data << current_segment_results
               current_segment_results = nil
             else
@@ -42,8 +41,6 @@ class CompetitionParser
         end
       end
       ################
-      include CompetitionParser::Utils
-
       def parse_summary_table(page, base_url: nil)
         SummaryTableParser.new.parse(page, base_url: base_url)
       end

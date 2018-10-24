@@ -8,6 +8,7 @@ class ScoreDecorator < EntryDecorator
   def name
     h.link_to_score(model.name, model)
   end
+  alias score_name name
 
   def result_pdf
     h.link_to_pdf(model.result_pdf)

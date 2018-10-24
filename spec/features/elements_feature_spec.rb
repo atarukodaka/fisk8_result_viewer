@@ -15,7 +15,7 @@ feature ElementsController, type: :feature, feature: true do
     end
     context 'filter' do
       include_context :filter, ElementsDatatable::Filters.new,
-                      excludings: [:season_to, :season_from, :name_operator, :goe_operator]
+                      excludings: [:season_operator, :name_operator, :goe_operator]
       include_context :filter_season
 
       context 'element_name' do

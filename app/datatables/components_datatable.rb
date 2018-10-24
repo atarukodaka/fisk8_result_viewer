@@ -2,30 +2,33 @@ class ComponentsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize(*)
       super
-      model = Component
       @data = [
-        Filter.new(:component_name, :select, model: model),
-        Filter.new(:value, nil, model: model) do
+        filter(:component_name, :select),
+        filter(:value, nil) do
           [
-            Filter.new(:value_operator, :select, label: '', onchange: :draw,
+            filter(:value_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-            Filter.new(:value, :text_field, label: ''),
+            filter(:value, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new.data,
-      ].flatten
+        *ScoresDatatable::Filters.new(datatable: datatable).to_a,
+      ]
     end
   end
   ################
   def initialize(*args)
     super
+    columns.add([:component_number, :component_name, :factor, :judges, :value,])
 
-    columns.add([:number, :component_name, :factor, :judges, :value,])
-    columns.sources = { component_name: 'components.name', }
-
-    ## searchble
-    columns[:date].searchable = false
-    columns[:value].operator = params[:value_operator].presence || :eq if view_context
+    columns.sources = {
+      component_name: 'components.name',
+      component_number: 'components.number',
+    }
+    ## operartors
+    if view_context
+      columns[:value].operator = params[:value_operator].presence || :eq
+      columns[:season].operator = params[:season_operator].presence || :eq
+    end
   end
 
   def fetch_records

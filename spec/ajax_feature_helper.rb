@@ -1,4 +1,6 @@
 module AjaxFeatureHelper
+  SLEEP_COUNT = 0.3
+
   shared_examples :contains do |main_flag, sub_flag|
     if main_flag
       it { is_expected.to have_content(main.name) }
@@ -25,7 +27,7 @@ module AjaxFeatureHelper
         find(key).click
       end
       # sleep 1
-      sleep 0.3
+      sleep SLEEP_COUNT
     end
     page
   end
@@ -39,6 +41,42 @@ module AjaxFeatureHelper
     end
 
     shared_context :filter_season do
+      context 'eq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, false
+      end
+      context 'lt season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '<', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, false, false
+      end
+      context 'gt season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '>', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, false, true
+      end
+      context 'lteq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '<=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, false
+      end
+      context 'gteq season' do
+        subject {
+          ajax_actions([{ key: :season_operator, value: '>=', input_type: :select },
+                        { key: :season, value: main.season, input_type: :select }], path: index_path)
+        }
+        it_behaves_like :contains, true, true
+      end
+=begin
       context :from_later do
         subject {
           ajax_action_filter(key: :season_from, value: sub.season,
@@ -54,6 +92,7 @@ module AjaxFeatureHelper
         }
         it_behaves_like :contains, true, false
       end
+=end
     end
     shared_context :ajax_filter do |filter|
       context filter.key do
@@ -112,8 +151,7 @@ module AjaxFeatureHelper
       column_id = "column_#{table_id}_#{column_name}"
 
       find("##{column_id}").click
-      sleep 0.3
-      # sleep 1
+      sleep SLEEP_COUNT
       page
     end
   end

@@ -2,6 +2,7 @@ class Competition < ApplicationRecord
   before_save :_normalize
 
   alias_attribute :competition_name, :name
+  alias_attribute :competition_short_name, :short_name
 
   ## relations
   has_many :performed_segments, dependent: :destroy

@@ -1,7 +1,7 @@
 class Category < ApplicationRecord
   alias_attribute :category_name, :name
 
-  scope :having_isu_bio, -> { select(&:isu_bio_url) }
+  # scope :having_isu_bio, -> { select(&:isu_bio_url) }
 
   belongs_to :category_type
 end

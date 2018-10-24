@@ -1,41 +1,42 @@
 class CompetitionsDatatable < IndexDatatable
   class Filters < IndexDatatable::Filters
-    def initialize(*)
-      super
+    def initialize(ary = [], datatable: nil)
+      super(ary, datatable: datatable)
       @data = [
-        filter(:competition_name, :text_field),
+        filter(:competition_name, nil) {
+          [
+            filter(:competition_name, :text_field, size: 40),
+            filter(:competition_short_name, :select)
+          ]
+        },
         filter(:competition_class, nil) {
           [
             filter(:competition_class, :select),
             filter(:competition_type, :select),
-            filter(:season_from, :select, onchange: :draw),
-            filter(:season_to, :select, onchange: :draw),
+            filter(:season_operator, :select, label: 'season', onchange: lambda { |dt| ajax_draw(dt) },
+                   options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            filter(:season, :select, label: ''),
           ]
         },
         filter(:site_url, :text_field),
       ]
-=begin
-      model = Competition
-      @data = [
-        Filter.new(:competition_name, :text_field, model: model),
-        Filter.new(:competition_class, nil, model: model) {
-          [
-            Filter.new(:competition_class, :select, model: model),
-            Filter.new(:competition_type, :select, model: model),
-            Filter.new(:season_from, :select, model: model, onchange: :draw),
-            Filter.new(:season_to, :select, model: model, onchange: :draw),
-          ]
-        },
-        Filter.new(:site_url, :text_field, model: model)
-      ]
-=end
     end
   end
+
   ################
+  # include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
-    columns([:name, :short_name, :site_url, :city, :country,
+    columns([:competition_name, :competition_short_name, :site_url, :city, :country,
              :competition_class, :competition_type, :season, :start_date, :timezone])
+    columns[:competition_name].source = 'competitions.name'
+    columns[:competition_short_name].source = 'competitions.short_name'
+
+    [:competition_short_name, :competition_class, :competition_type].each do |key|
+      columns[key].operator = :eq
+    end
+
     default_orders([[:start_date, :desc]])
+    columns[:season].operator = params[:season_operator].presence || :eq if view_context
   end
 end

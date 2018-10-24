@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.integer "starting_number"
     t.integer "category_id"
     t.integer "segment_id"
-    t.date "date", default: "1970-01-01"
+    t.date "date"
     t.string "result_pdf"
     t.float "tss", default: 0.0
     t.float "tes", default: 0.0
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "skaters", force: :cascade do |t|
     t.string "name"
     t.string "nation"
+    t.integer "category_type_id"
     t.integer "isu_number"
     t.string "coach"
     t.string "choreographer"
@@ -189,7 +190,6 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "height"
     t.string "club"
     t.datetime "bio_updated_at"
-    t.integer "category_type_id"
     t.index ["category_type_id"], name: "index_skaters_on_category_type_id"
   end
 

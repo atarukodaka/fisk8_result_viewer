@@ -2,51 +2,46 @@ class ElementsDatatable < ScoreDetailsDatatable
   class Filters < IndexDatatable::Filters
     def initialize(*)
       super
-      model = Element
       @data = [
-        Filter.new(:element_name, nil, model: model) do
+        filter(:element_name, nil) do
           [
-            Filter.new(:name_operator, :select, label: '',  onchange: :draw,
+            filter(:name_operator, :select, label: '',  onchange: lambda { |dt| ajax_draw(dt) },
                        options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
-            Filter.new(:element_name, :text_field, label: ''),
+            filter(:element_name, :text_field, label: ''),
           ]
         end,
-        Filter.new(:element_type, nil, model: model) do
+        filter(:element_type, nil) do
           [
-            Filter.new(:element_type, :select, model: model),
-            Filter.new(:element_subtype, :select, model: model),
+            filter(:element_type, :select),
+            filter(:element_subtype, :select),
           ]
         end,
-        Filter.new(:goe, nil, model: model) do
+        filter(:goe, nil) do
           [
-            Filter.new(:goe_operator, :select, label: '', onchange: :draw,
+            filter(:goe_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },
                        options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
-            Filter.new(:goe, :text_field, label: ''),
+            filter(:goe, :text_field, label: ''),
           ]
         end,
-        ScoresDatatable::Filters.new.data,
-      ].compact.flatten
+        *ScoresDatatable::Filters.new(datatable: datatable).to_a,
+      ]
     end
   end
   ################
   def initialize(*)
     super
-
-    columns.add([:number, :element_name, :element_type, :element_subtype,
+    columns.add([:element_number, :element_name, :element_type, :element_subtype,
                  :level, :credit, :info, :base_value, :goe, :judges, :value,])
 
     columns.sources = {
       element_name: 'elements.name',
-      base_value:   'elements.base_value',
+      element_number: 'elements.number',
     }
-
-    ## searchbale
-    [:credit, :info].each { |key| columns[key].searchable = false }
-
-    ## operartor
+    ## operartors
     if view_context
       columns[:element_name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
+      columns[:season].operator = params[:season_operator].presence || :eq
     end
   end
 
