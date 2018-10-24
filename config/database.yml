@@ -1,45 +1,49 @@
+## defaults
 default: &default
-  adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+
+sqlite3_default: &sqlite3_default
+  <<: *default
+  adapter: sqlite3
+
+postgresql_default: &postgresql_default
+  <<: *default
+  adapter: postgresql
+  username: fisk8viewer
+  database: fisk8viewer
+  port: 5432  
+
+################
+test:
+  <<: *sqlite3_default
+  database: db/test.sqlite3
 
 ################
 development_sqlite3: &development_sqlite3
-  <<: *default
+  <<: *sqlite3_default
   database: db/development.sqlite3
 
 development_postgresql: &development_postgresql
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-  username: fisk8viewer
-  database: fisk8viewer
+  <<: *postgresql_default
   password: fisk8viewer
   host: localhost
-  port: 5432
   
 development:
   <<: *development_sqlite3
 #  <<: *development_postgresql
 
 ################
-test:
-  <<: *default
-  database: db/test.sqlite3
+production_sqlite3: &production_sqlite3
+  <<: *sqlite3_default
+  database: db/production.sqlite3
 
-################
-production:
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-  username: fisk8viewer
-  database: fisk8viewer
+production_postgresql: &production_postgresql
+  <<: *postgresql_default
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: <%= ENV['DATABASE_HOST'] %>
-  port: 5432
 
-#production:
-#  <<: *default
-#  database: db/production.sqlite3
-  
+production:
+  #<<: *production_sqlite3
+  <<: *production_postgresql
   
