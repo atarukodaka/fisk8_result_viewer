@@ -27,7 +27,7 @@ module AjaxDatatables::Datatable::Serversidable
   ################
   ## sorting
   def sorting_sql
-    return '' if params[:order].blank?
+    return nil if params[:order].blank?
 
     params.require(:order).values.reject { |d| d[:orderable] == 'false' }.map do |item|
       [columns[item[:column].to_i].source, item[:dir]].join(' ')

@@ -1,17 +1,6 @@
 require 'csv'
 
 class IndexController < ApplicationController
-  MAX_LENGTH = 1_000
-
-  def limit_length
-    #
-    if params[:length]
-      params[:length] = [params[:length].to_i, MAX_LENGTH].min
-    else
-      params[:length] = MAX_LENGTH
-    end
-  end
-
   def index
     datatable = create_datatable
     respond_to do |format|
@@ -22,11 +11,11 @@ class IndexController < ApplicationController
         }
       }
       format.json {
-        render json: datatable.serverside.limit(MAX_LENGTH).as_json
+        render json: datatable.serverside.limit(params[:length], params[:offset]).as_json
       }
       format.csv {
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.serverside.limit(MAX_LENGTH).as_json.each { |row|  c << row }
+          datatable.serverside.limit.as_json.each { |row|  c << row }  ## TODO
         end
         send_data csv, filename: "#{controller_name}.csv"
       }

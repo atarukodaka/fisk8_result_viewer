@@ -25,6 +25,7 @@ module AjaxDatatables
     extend Property
     include AjaxDatatables::Datatable::DeferLoad
     include AjaxDatatables::Datatable::Serverside
+    include AjaxDatatables::Datatable::Paging
     include AjaxDatatables::Datatable::Decorate
     include AjaxDatatables::Datatable::Limit
 

@@ -29,6 +29,7 @@ RSpec.describe CompetitionsController, type: :controller do
         end
       end
     end
+    include_context :json, CompetitionsDatatable.new
   end
 
   ################

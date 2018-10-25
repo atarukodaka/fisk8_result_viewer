@@ -161,7 +161,7 @@ class CompetitionUpdater < Updater
   def find_or_create_skater(item)
     corrected_skater_name = SkaterNameCorrection.correct(item[:skater_name])
     skater = (Skater.find_by(isu_number: item[:isu_number]) if item[:isu_number].present?) ||
-             Skater.find_by(name: item[:name])
+             Skater.find_by(name: corrected_skater_name)
 
     skater || Skater.create! do |sk|
       category_type = item[:category].to_category.category_type

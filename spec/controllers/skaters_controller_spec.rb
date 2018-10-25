@@ -1,7 +1,8 @@
 require 'rails_helper'
-using StringToModel
 
 RSpec.describe SkatersController, type: :controller do
+  using StringToModel
+
   render_views
 
   let!(:men_skater) {
@@ -12,14 +13,14 @@ RSpec.describe SkatersController, type: :controller do
     create(:competition, :finlandia)
       .scores.joins(:category).where("categories.category_type": 'LADIES'.to_category_type).first.skater
   }
-  let!(:no_scores_skater) { create(:skater, :men) { |sk| sk.name = 'Bench WARMER' } }
+  let!(:no_scores_skater) { create(:skater, :no_scores) }
 
   ################
   describe '#index' do
     shared_examples :skaters_who_have_scores do
       its(:body) { is_expected.to include(men_skater.name) }
       its(:body) { is_expected.to include(ladies_skater.name) }
-      its(:body) { is_expected.not_to include(no_scores_skater.name) }
+      #its(:body) { is_expected.not_to include(no_scores_skater.name) }
     end
 
     describe 'all' do
@@ -36,6 +37,8 @@ RSpec.describe SkatersController, type: :controller do
         end
       end
     end
+
+    shared_context :json, SkatersDatatable.new
   end
   ################
   describe '#show' do

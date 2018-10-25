@@ -107,7 +107,15 @@ RSpec.describe CompetitionUpdater, updater: true do
       expect(skater.isu_number).to eq(7684)
     }
   end
-
+=begin
+  describe 'skater name correction' do
+    it {
+      skater_name = "Shoma UNO"
+      owg_name = "UNO Shoma"
+      
+    }
+  end
+=end
   describe 'enable_judge_details' do
     let(:url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
     let(:competition) { updater.update_competition(url, categories: ['MEN'], enable_judge_details: true) }

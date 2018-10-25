@@ -9,7 +9,7 @@ FactoryBot.define do
       category_type { 'MEN'.to_category_type }
       isu_number { 1 }
 
-      birthday { '1.1.1980' }
+      birthday { Date.new(1980, 1, 1) }
       coach { 'Jiro YAMADA' }
       hometown { 'TOKYO' }
       club { 'Jingu' }
@@ -20,7 +20,7 @@ FactoryBot.define do
       nation { 'USA' }
       category_type { 'LADIES'.to_category_type }
       isu_number { 2 }
-      birthday { '1.1.1990' }
+      birthday { Date.new(1999, 2, 2) }
       coach { 'Rola ORGANA' }
       hometown { 'L.A.' }
       club { 'Cri' }
@@ -39,6 +39,11 @@ FactoryBot.define do
       nation { 'CAN' }
       category_type { 'MEN'.to_category_type }
       isu_number { 4 }
+
+      birthday { Date.new(2010, 3, 3) }
+      coach { 'Taro TAKAHASHI' }
+      hometown { 'SAITAMA' }
+      club { 'ageo' }
     end
   end
 end

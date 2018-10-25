@@ -1,21 +1,21 @@
 module AjaxDatatables::Datatable::Paging
-  def serverside
+  def paging
     self.extend AjaxDatatables::Datatable::Pageable
   end
 end
 
 module AjaxDatatables::Datatable::Pageable
-  ################
-  ## paging
+  MAX_LENGTH = 1000
+
   def manipulate(records)
-    records.page(page).per(per)
+    super(records).page(page).per(per)
   end
   def page
     params[:start].to_i / per + 1
   end
 
   def per
-    (params[:length].to_i.positive?) ? params[:length].to_i : 10
+    (params[:length].to_i.positive?) ? [params[:length].to_i, MAX_LENGTH].min : 10
   end
 end
 

@@ -26,10 +26,6 @@ class SkatersDatatable < IndexDatatable
   end
 
   ################
-  def manipulate(rec)
-    rec
-  end
-
   def fetch_records
     rec = super.includes(:category_type).references(:category_type)
     (view_context && params[:having_scores] == 'on') ? rec.having_scores : rec
