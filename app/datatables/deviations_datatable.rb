@@ -17,7 +17,7 @@ class DeviationsDatatable < IndexDatatable
     columns([:score_name, :category_name, :skater_name, :skater_nation,
              :panel_name, :panel_nation, :official_number,
              :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio])
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
+    columns.sources = source_mappings
   end
 
   def fetch_records

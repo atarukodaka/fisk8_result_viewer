@@ -12,7 +12,7 @@ class PanelsDatatable < IndexDatatable
   def initialize(*)
     super
     columns([:panel_name, :panel_nation])
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
+    columns.sources = source_mappings
 
     default_orders([[:panel_name, :asc]])
   end

@@ -19,7 +19,7 @@ class SkatersDatatable < IndexDatatable
     super
 
     columns([:skater_name, :category_type_name, :nation, :isu_number, :birthday, :club, :coach])
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
+    columns.sources = source_mappings
     default_orders([[:category_type_name, :asc], [:skater_name, :asc]])
   end
 

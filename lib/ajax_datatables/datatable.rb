@@ -85,11 +85,6 @@ module AjaxDatatables
       nil
     end
 
-=begin
-    def model
-      records.model
-    end
-=end
     def default_table
       records.model.to_s.pluralize.downcase
     rescue StandardError

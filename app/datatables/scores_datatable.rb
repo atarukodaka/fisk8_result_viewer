@@ -34,7 +34,7 @@ class ScoresDatatable < IndexDatatable
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value])
 
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
+    columns.sources = source_mappings
 
     [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
      :segment_type, :team].each do |key|

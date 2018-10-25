@@ -31,7 +31,7 @@ class ElementsDatatable < ScoreDetailsDatatable
     super
     columns.add([:element_number, :element_name, :element_type, :element_subtype,
                  :level, :credit, :info, :base_value, :goe, :judges, :value,])
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))    
+    columns.sources = source_mappings
 
     ## operartors
     if view_context

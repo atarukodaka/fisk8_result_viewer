@@ -18,7 +18,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
   def initialize(*args)
     super
     columns.add([:component_number, :component_name, :factor, :judges, :value,])
-    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
+    columns.sources = source_mappings
 
     ## operartors
     if view_context
