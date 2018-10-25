@@ -6,7 +6,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
         filter(:component_name, :select),
         filter(:value, nil) do
           [
-            filter(:value_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },options: OPERATORS),
+            filter(:value_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) }, options: OPERATORS),
             filter(:value, :text_field, label: ''),
           ]
         end,
@@ -18,11 +18,8 @@ class ComponentsDatatable < ScoreDetailsDatatable
   def initialize(*args)
     super
     columns.add([:component_number, :component_name, :factor, :judges, :value,])
+    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
 
-    columns.sources = {
-      component_name: 'components.name',
-      component_number: 'components.number',
-    }
     ## operartors
     if view_context
       columns[:value].operator = params[:value_operator].presence || :eq

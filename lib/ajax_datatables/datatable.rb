@@ -84,6 +84,7 @@ module AjaxDatatables
     def filters
       nil
     end
+
 =begin
     def model
       records.model

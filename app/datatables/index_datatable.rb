@@ -19,13 +19,25 @@ class IndexDatatable < AjaxDatatables::Datatable
 
       team:              'categories.team',
       seniority:         'categories.seniority',
+      category_name:   'categories.name',
       segment_name:      'segments.name',
       segment_type:      'segments.segment_type',
       season:            'competitions.season',
 
       score_name:              'scores.name',
+
+      element_name: 'elements.name',
+      element_number: 'elements.number',
+
+      component_name: 'components.name',
+      component_number: 'components.number',
+
+      panel_name: 'panels.name',
+      panel_nation: 'panels.nation',
+      official_number: 'officials.number',
     }
   end
+
   def manipulate(records)
     super(records).where(build_conditions(filter_searching_nodes)).order(ordering_sql)
   end
