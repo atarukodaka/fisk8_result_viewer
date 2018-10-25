@@ -23,6 +23,7 @@ class IndexDatatable < AjaxDatatables::Datatable
 
   def ordering_sql
     return nil if view_context.nil?
+    
     if (column = columns[params[:sort_column]])
       direction = (params[:sort_direction] == 'desc') ? :desc : :asc
       ["#{column.source} #{direction}"]

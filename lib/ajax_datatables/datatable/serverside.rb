@@ -10,7 +10,7 @@ module AjaxDatatables::Datatable::Serversidable
   ################
   ## for server-side ajax
   def manipulate(records)
-    super(records).where(build_conditions(columns_searching_nodes)).order(sorting_sql)
+    super(records).where(build_conditions(columns_searching_nodes)).order(serverside_ordering_sql)
   end
 
   ################
@@ -26,7 +26,7 @@ module AjaxDatatables::Datatable::Serversidable
 
   ################
   ## sorting
-  def sorting_sql
+  def serverside_ordering_sql
     return nil if params[:order].blank?
 
     params.require(:order).values.reject { |d| d[:orderable] == 'false' }.map do |item|
