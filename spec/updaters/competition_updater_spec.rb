@@ -112,7 +112,7 @@ RSpec.describe CompetitionUpdater, updater: true do
     it {
       skater_name = "Shoma UNO"
       owg_name = "UNO Shoma"
-      
+
     }
   end
 =end

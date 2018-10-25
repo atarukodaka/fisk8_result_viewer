@@ -10,6 +10,7 @@ module AjaxDatatables::Datatable::Pageable
   def manipulate(records)
     super(records).page(page).per(per)
   end
+
   def page
     params[:start].to_i / per + 1
   end
@@ -18,4 +19,3 @@ module AjaxDatatables::Datatable::Pageable
     (params[:length].to_i.positive?) ? [params[:length].to_i, MAX_LENGTH].min : 10
   end
 end
-

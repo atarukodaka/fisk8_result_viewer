@@ -20,7 +20,7 @@ RSpec.describe SkatersController, type: :controller do
     shared_examples :skaters_who_have_scores do
       its(:body) { is_expected.to include(men_skater.name) }
       its(:body) { is_expected.to include(ladies_skater.name) }
-      #its(:body) { is_expected.not_to include(no_scores_skater.name) }
+      # its(:body) { is_expected.not_to include(no_scores_skater.name) }
     end
 
     describe 'all' do

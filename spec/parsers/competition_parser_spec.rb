@@ -27,8 +27,8 @@ RSpec.describe CompetitionParser do
       base_url = 'http://www.foo.com/wc2017'
       expected_url = "#{base_url}/result.html"
       path = 'result.html'
-      
-      expect(st_parser.join_url("#{base_url}", path)).to eq(expected_url)
+
+      expect(st_parser.join_url(base_url.to_s, path)).to eq(expected_url)
       expect(st_parser.join_url("#{base_url}/", path)).to eq(expected_url)
       expect(st_parser.join_url("#{base_url}/index.html", path)).to eq(expected_url)
       expect(st_parser.join_url("#{base_url}/index.htm", path)).to eq(expected_url)

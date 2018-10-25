@@ -3,7 +3,7 @@ module AcceptCategories
     def accept_categories(categories)
       categories ||= Category.all.map(&:name)
       select { |d| categories.include?(d[:category])   }
-      #select { |d| categories.nil? || categories.include?(d[:category])   }
+      # select { |d| categories.nil? || categories.include?(d[:category])   }
     end
   end
 end

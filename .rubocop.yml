@@ -1,0 +1,138 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.4
+  Exclude:
+    - '**/*.gemspec'
+    - '**/vendor/**/*'
+    - 'db/schema.rb'
+    - 'bin/*'
+    - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
+
+################
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/AlignHash:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Lint/UnneededCopEnableDirective:
+  Enabled: false
+
+Lint/UnneededCopDisableDirective:
+  Enabled: false
+
+################
+Metrics/LineLength:
+  Max: 120
+
+Metrics/ClassLength:
+  Max: 100
+  Exclude:
+    - app/updaters/competition_updater.rb       ## TODO
+      
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - spec/**/*.rb
+    - config/routes.rb
+    - lib/tasks/**/*.rake
+
+Metrics/MethodLength:
+  Max: 35
+  Exclude:
+    - db/migrate/*.rb
+
+################
+## Rails
+Rails/CreateTableWithTimestamps:
+  Enabled: false
+
+Rails/OutputSafety:
+  Exclude:
+    - app/datatables/elements_datatable.rb   ## html_safe
+
+################
+## Style
+Style/BlockComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/MixinGrouping:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+  
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/RegexpLiteral:   # %r{} or //
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator:
+    Enabled: true
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  
+Style/UnlessElse:
+  Enabled: false
+
+Style/WordArray:
+  Exclude: false
+  
