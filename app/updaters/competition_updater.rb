@@ -7,7 +7,7 @@ class CompetitionUpdater < Updater
   ################
   def update_competition(site_url, options = {})
     debug('*' * 100)
-    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'normal'])
+    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
     data = parser(options[:parser_type])
@@ -161,7 +161,7 @@ class CompetitionUpdater < Updater
   def find_or_create_skater(item)
     corrected_skater_name = SkaterNameCorrection.correct(item[:skater_name])
     skater = (Skater.find_by(isu_number: item[:isu_number]) if item[:isu_number].present?) ||
-             Skater.find_by(name: item[:name])
+             Skater.find_by(name: corrected_skater_name)
 
     skater || Skater.create! do |sk|
       category_type = item[:category].to_category.category_type

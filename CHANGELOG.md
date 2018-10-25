@@ -5,6 +5,11 @@
 - help for rake:update
 - clean panel with zero scores
 - spin level: B is 0 ??
+- accept_categories: parser or updater?
+- json:: depends to serverside ??
+- limit: spec
+- spec: owg name correction
+- sorting_sql: super
  
 ### new feature
 

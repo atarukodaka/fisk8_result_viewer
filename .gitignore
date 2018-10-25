@@ -33,4 +33,4 @@ public/assets
 vendor/
 .env*
 \#*
-.rubocop*.yml
+.rubocop_todo.yml

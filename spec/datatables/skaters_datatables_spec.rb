@@ -9,7 +9,7 @@ feature SkatersDatatable do
     its(:records) { is_expected.not_to be nil }
   end
   describe 'columns/name' do
-    subject { datatable.columns[:name] }
+    subject { datatable.columns[:skater_name] }
     it { is_expected.not_to be nil }
     its(:source) { is_expected.to eq('skaters.name') }
     its(:table_name) { is_expected.to eq('skaters') }

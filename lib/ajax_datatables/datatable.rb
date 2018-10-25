@@ -25,6 +25,7 @@ module AjaxDatatables
     extend Property
     include AjaxDatatables::Datatable::DeferLoad
     include AjaxDatatables::Datatable::Serverside
+    include AjaxDatatables::Datatable::Paging
     include AjaxDatatables::Datatable::Decorate
     include AjaxDatatables::Datatable::Limit
 
@@ -84,12 +85,8 @@ module AjaxDatatables
       nil
     end
 
-    def model
-      records.model
-    end
-
     def default_table
-      model.to_s.pluralize.downcase
+      records.model.to_s.pluralize.downcase
     rescue StandardError
       nil
     end

@@ -18,8 +18,7 @@ class ElementsDatatable < ScoreDetailsDatatable
         end,
         filter(:goe, nil) do
           [
-            filter(:goe_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },
-                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            filter(:goe_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) }, options: OPERATORS),
             filter(:goe, :text_field, label: ''),
           ]
         end,
@@ -32,11 +31,8 @@ class ElementsDatatable < ScoreDetailsDatatable
     super
     columns.add([:element_number, :element_name, :element_type, :element_subtype,
                  :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    columns.sources = source_mappings
 
-    columns.sources = {
-      element_name: 'elements.name',
-      element_number: 'elements.number',
-    }
     ## operartors
     if view_context
       columns[:element_name].operator = params[:name_operator].presence || :matches

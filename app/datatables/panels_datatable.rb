@@ -3,16 +3,17 @@ class PanelsDatatable < IndexDatatable
     def initialize(*)
       super
       @data = [
-        filter(:name, :text_field),
-        filter(:nation, :text_field),
+        filter(:panel_name, :text_field),
+        filter(:panel_nation, :text_field),
       ]
     end
   end
   ################
   def initialize(*)
     super
-    columns([:name, :nation])
+    columns([:panel_name, :panel_nation])
+    columns.sources = source_mappings
 
-    default_orders([[:name, :asc]])
+    default_orders([[:panel_name, :asc]])
   end
 end
