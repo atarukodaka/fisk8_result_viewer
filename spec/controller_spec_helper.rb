@@ -2,7 +2,20 @@ module ControllerSpecHelper
   using MapValue
 
   ################
-  ## json
+  ## filter
+=begin
+  shared_context :json_filter do |key, datatable|
+    it {
+      item = datatable.data.first
+      value = item.send(key)
+      get :index, params: { format: :json, key => value }
+      result = JSON.parse(response.body)
+      expect(result.any? {|d| d[key.to_s] == value}).to be true
+    }
+  end
+=end  
+  ################
+  ## sort
   shared_context :sort_column do |key, direction = :asc, datatable:|
     it {
       get :index, params: { format: :json, sort_column: key, sort_direction: direction }
@@ -24,6 +37,8 @@ module ControllerSpecHelper
     end
   end
 
+  ################
+  ## json
   shared_context :json do |datatable|
     context 'length' do
       subject(:response) { get :index, params: { format: :json, length: 1 } }
@@ -39,4 +54,6 @@ module ControllerSpecHelper
       include_context :sort, datatable
     end
   end
+
+
 end

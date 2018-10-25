@@ -2,6 +2,19 @@ module AjaxFeatureHelper
   SLEEP_COUNT = 0.3
 
   shared_examples :contains do |main_flag, sub_flag|
+    it {
+      if main_flag
+        is_expected.to have_content(main.name)
+      else
+        is_expected.not_to have_content(main.name)
+      end
+      if sub_flag
+        is_expected.to have_content(sub.name)
+      else
+        is_expected.not_to have_content(sub.name)
+      end
+    }
+=begin
     if main_flag
       it { is_expected.to have_content(main.name) }
     else
@@ -12,6 +25,7 @@ module AjaxFeatureHelper
     else
       it { is_expected.not_to have_content(sub.name) }
     end
+=end
   end
   def ajax_actions(actions, path:)
     visit path
@@ -27,6 +41,7 @@ module AjaxFeatureHelper
         find(key).click
       end
       # sleep 1
+      yield if block_given?
       sleep SLEEP_COUNT
     end
     page
@@ -107,6 +122,11 @@ module AjaxFeatureHelper
     ## functions
     def ajax_action_filter(path:, input_type:, key:, value: nil)
       ajax_actions([key: key, value: value, input_type: input_type], path: path)
+=begin
+      ajax_actions([key: key, value: value, input_type: input_type], path: path) do
+        find(:xpath, '//button[@value="json"]').click
+      end
+=end
     end
   end
 

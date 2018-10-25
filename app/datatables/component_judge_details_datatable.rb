@@ -1,7 +1,7 @@
 class ComponentJudgeDetailsDatatable < IndexDatatable
   def initialize(*)
     super
-    columns([:score_name, :skater_name, :value, :average, :number, :panel_name])
+    columns([:score_name, :skater_name, :value, :number, :panel_name])
     columns.sources = source_mappings
   end
 

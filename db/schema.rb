@@ -104,9 +104,6 @@ ActiveRecord::Schema.define(version: 5) do
   create_table "judge_details", force: :cascade do |t|
     t.integer "number"
     t.float "value"
-    t.float "average"
-    t.float "deviation"
-    t.float "abs_deviation"
     t.string "detailable_type"
     t.integer "detailable_id"
     t.integer "official_id"

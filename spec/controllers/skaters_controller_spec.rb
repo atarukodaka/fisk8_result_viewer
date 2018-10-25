@@ -38,7 +38,13 @@ RSpec.describe SkatersController, type: :controller do
       end
     end
 
-    shared_context :json, SkatersDatatable.new
+=begin
+    datatable = SkatersDatatable.new
+    include_context :json, datatable
+    datatable.filters.reject {|d| d.input_type.nil? }.each do |filter|
+      include_context :json_filter, :category_type_name, datatable
+    end
+=end
   end
   ################
   describe '#show' do
