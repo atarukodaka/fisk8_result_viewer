@@ -118,12 +118,14 @@ class CompetitionUpdater < Updater
 
     score.elements.each do |element|
       element.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
-        element.element_judge_details.create(number: i, value: value, official: officials[i])
+        #element.element_judge_details.create(number: i, value: value, official: officials[i])
+        element.judge_details.create(number: i, value: value, official: officials[i])
       end
     end
     score.components.each do |component|
       component.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
-        component.component_judge_details.create(number: i, value: value, official: officials[i])
+        #component.component_judge_details.create(number: i, value: value, official: officials[i])
+        component.judge_details.create(number: i, value: value, official: officials[i])
       end
     end
   end

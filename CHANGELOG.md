@@ -10,7 +10,8 @@
 - limit: spec
 - spec: owg name correction
 - sorting_sql: super
- 
+- spec: update details
+
 ### new feature
 
 ### check before release
