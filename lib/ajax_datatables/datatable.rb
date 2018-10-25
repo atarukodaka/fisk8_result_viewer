@@ -84,13 +84,13 @@ module AjaxDatatables
     def filters
       nil
     end
-
+=begin
     def model
       records.model
     end
-
+=end
     def default_table
-      model.to_s.pluralize.downcase
+      records.model.to_s.pluralize.downcase
     rescue StandardError
       nil
     end

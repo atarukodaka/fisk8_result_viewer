@@ -34,22 +34,7 @@ class ScoresDatatable < IndexDatatable
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
              :tss, :tes, :pcs, :deductions, :base_value])
 
-    columns.sources = {
-      score_name:              'scores.name',
-      competition_name:  'competitions.name',
-      competition_short_name:  'competitions.short_name',
-      competition_class: 'competitions.competition_class',
-      competition_type:  'competitions.competition_type',
-      category_name:     'categories.name',
-      category_type_name:     'category_type.name',
-      team:              'categories.team',
-      seniority:         'categories.seniority',
-      segment_name:      'segments.name',
-      segment_type:      'segments.segment_type',
-      season:            'competitions.season',
-      skater_name:       'skaters.name',
-      nation:            'skaters.nation',
-    }
+    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
 
     [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
      :segment_type, :team].each do |key|

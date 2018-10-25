@@ -29,8 +29,7 @@ class CompetitionsDatatable < IndexDatatable
     super
     columns([:competition_name, :competition_short_name, :site_url, :city, :country,
              :competition_class, :competition_type, :season, :start_date, :timezone])
-    columns[:competition_name].source = 'competitions.name'
-    columns[:competition_short_name].source = 'competitions.short_name'
+    columns.sources = source_mappings.slice(*column_names.map(&:to_sym))
 
     [:competition_short_name, :competition_class, :competition_type].each do |key|
       columns[key].operator = :eq

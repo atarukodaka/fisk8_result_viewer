@@ -18,8 +18,7 @@ class ElementsDatatable < ScoreDetailsDatatable
         end,
         filter(:goe, nil) do
           [
-            filter(:goe_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) },
-                       options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
+            filter(:goe_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) }, options: OPERATORS),
             filter(:goe, :text_field, label: ''),
           ]
         end,

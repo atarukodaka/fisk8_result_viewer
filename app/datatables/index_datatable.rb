@@ -1,7 +1,31 @@
 class IndexDatatable < AjaxDatatables::Datatable
   include AjaxDatatables::Datatable::ConditionBuilder
 
-  class Filters < AjaxDatatables::Filters; end
+  class Filters < AjaxDatatables::Filters
+    OPERATORS = { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }.freeze
+  end
+
+  ################
+  def source_mappings
+    {
+      skater_name: 'skaters.name',
+      nation:            'skaters.nation',
+      category_type_name: 'category_types.name',
+
+      competition_name:  'competitions.name',
+      competition_short_name:  'competitions.short_name',
+      competition_class: 'competitions.competition_class',
+      competition_type:  'competitions.competition_type',
+
+      team:              'categories.team',
+      seniority:         'categories.seniority',
+      segment_name:      'segments.name',
+      segment_type:      'segments.segment_type',
+      season:            'competitions.season',
+
+      score_name:              'scores.name',
+    }
+  end
   def manipulate(records)
     super(records).where(build_conditions(filter_searching_nodes)).order(ordering_sql)
   end
