@@ -36,6 +36,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
 
     ################
     create_table :deviations do |t|
+      t.string :name
       t.belongs_to :score
       t.belongs_to :official
 

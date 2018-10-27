@@ -42,29 +42,28 @@ module ControllerSpecHelper
     end
   end
 
-  ################
-  ## json
+  shared_examples :count_to_be do |n, format:|
+    it {
+      count = 
+        case format
+        when :json
+          JSON.parse(response.body).count
+        when :csv
+          response.body.split(/\n/)[1..-1].count
+        end
+      expect(count).to eq(n)
+    }
+  end
+
   shared_context :format_response do |datatable, format: :json|
-    shared_examples :count_to_be do |n|
-      it {
-        count = 
-          case format
-          when :json
-            JSON.parse(response.body).count
-          when :csv
-            response.body.split(/\n/)[1..-1].count
-          end
-        expect(count).to eq(n)
-      }
-    end
     context 'length' do
       subject(:response) { get :index, params: { format: format, length: 1 } }
-      it_behaves_like :count_to_be, 1
+      it_behaves_like :count_to_be, 1, format: format
     end
 
     context 'offset' do
       subject(:response) { get :index, params: { format: format, offset: datatable.data.count - 1 } }
-      it_behaves_like :count_to_be, 1
+      it_behaves_like :count_to_be, 1, format: format
     end
 
     context 'sort' do

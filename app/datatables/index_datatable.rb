@@ -10,6 +10,7 @@ class IndexDatatable < AjaxDatatables::Datatable
     {
       skater_name: 'skaters.name',
       nation:            'skaters.nation',
+      skater_nation: 'skaters.nation',
       category_type_name: 'category_types.name',
 
       competition_name:  'competitions.name',

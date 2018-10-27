@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "deviations", force: :cascade do |t|
+    t.string "name"
     t.integer "score_id"
     t.integer "official_id"
     t.float "tes_deviation"
