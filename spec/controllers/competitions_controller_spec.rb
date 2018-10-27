@@ -3,7 +3,7 @@ require 'controller_spec_helper'
 
 RSpec.describe CompetitionsController, type: :controller do
   render_views
-  
+
   let!(:world)       { create(:competition, :world)     }
   let!(:finlandia)   { create(:competition, :finlandia) }
 

@@ -18,8 +18,7 @@ class DeviationsDatatable < IndexDatatable
              :panel_name, :panel_nation, :official_number,
              :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio])
     columns.sources = source_mappings
-    columns[:deviation_name].source = "deviations.name"
-    
+    columns[:deviation_name].source = 'deviations.name'
   end
 
   def fetch_records

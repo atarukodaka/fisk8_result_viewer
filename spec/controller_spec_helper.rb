@@ -13,12 +13,12 @@ module ControllerSpecHelper
   end
 
   shared_context :sort do |datatable, format: :json|
-    def parse_csv(text, key: )
+    def parse_csv(_text, key:)
       csv = CSV.parse(response.body, headers: true)
       index = csv.headers.index(key.to_s)
-      csv.map {|d| d[index]}
+      csv.map { |d| d[index] }
     end
-    shared_examples :sort_key do |key, direction=:asc|
+    shared_examples :sort_key do |key, direction = :asc|
       it {
         column = datatable.columns[key]
 
@@ -44,7 +44,7 @@ module ControllerSpecHelper
 
   shared_examples :count_to_be do |n, format:|
     it {
-      count = 
+      count =
         case format
         when :json
           JSON.parse(response.body).count

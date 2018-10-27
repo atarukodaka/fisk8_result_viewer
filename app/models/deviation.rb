@@ -5,8 +5,8 @@ class Deviation < ApplicationRecord
   belongs_to :official
 
   alias_attribute :deviation_name, :name
-  
-  #delegate :name, to: :score, prefix: :score
+
+  # delegate :name, to: :score, prefix: :score
   delegate :score_name, to: :score
   delegate :skater_name, :category_name, to: :score
   delegate :panel_name, :panel_nation, to: :official

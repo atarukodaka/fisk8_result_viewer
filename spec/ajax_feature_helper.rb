@@ -45,8 +45,9 @@ module AjaxFeatureHelper
   end
   ################
   module Filter
-    shared_examples :filter do |filter, additional_actions: nil, value_func: nil, pros_operator: :eq, cons_operator: :not_eq|
+    shared_examples :filter do |filter, additional_actions: nil, value_func: nil, operators: nil|
       it {
+        operators ||= { pros: :eq, cons: :not_eq }
         datatable = filter.filters.datatable
         column = datatable.columns[filter.key] || next
         value_func ||= lambda { |dt, key| dt.data.first.send(key) }
@@ -55,8 +56,8 @@ module AjaxFeatureHelper
 
         ## pros, cons
         arel = column.table_model.arel_table[column.table_field]
-        pros = datatable.data.where(arel.send(pros_operator, value))
-        cons = datatable.data.where(arel.send(cons_operator, value))
+        pros = datatable.data.where(arel.send(operators[:pros], value))
+        cons = datatable.data.where(arel.send(operators[:cons], value))
 
         path = datatable_index_path(datatable)
         actions = [{ key: filter.key, input_type: filter.input_type, value: value }]
@@ -91,18 +92,18 @@ module AjaxFeatureHelper
     end
     shared_context :filter_with_operator do |filter, operator_key, operator_value|
       context "#{operator_key} #{operator_value}" do
-        direction, pros_operator, cons_operator =
+        # direction, pros_operator, cons_operator =
+        direction, operators =
           case operator_value
-          when '>' then [:asc, :gt, :lteq]
-          when '<' then [:desc, :lt, :gteq]
+          when '>' then [:asc, { pros: :gt, cons: :lteq }]
+          when '<' then [:desc, { pros: :lt, cons: :gteq }]
           end
 
         actions = [{ key: operator_key, value: operator_value, input_type: :select }]
         value_func = lambda { |dt, key|
           dt.data.order("#{dt.columns[key].source} #{direction}").first.send(key)
         }
-        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func,
-                        pros_operator: pros_operator, cons_operator: cons_operator
+        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, operators: operators
       end
     end
 
