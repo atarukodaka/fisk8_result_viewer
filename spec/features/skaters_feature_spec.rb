@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ajax_feature_helper'
 
 RSpec.describe SkatersController, feature: true do
   let!(:no_scores_skater) { create(:skater, :no_scores) }

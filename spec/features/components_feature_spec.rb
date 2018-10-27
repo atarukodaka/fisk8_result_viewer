@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ajax_feature_helper'
 
 feature ComponentsController, type: :feature, feature: true do
   before {

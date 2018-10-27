@@ -159,3 +159,9 @@ module AjaxFeatureHelper
     end
   end
 end
+################
+RSpec.configure do |config|
+  config.include AjaxFeatureHelper
+  config.include AjaxFeatureHelper::Filter
+  config.include AjaxFeatureHelper::Order
+end
