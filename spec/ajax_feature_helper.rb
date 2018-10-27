@@ -21,7 +21,6 @@ module AjaxFeatureHelper
   
   def ajax_actions(actions, path:, format: :html)
     visit path
-    #binding.pry
     actions.each do |hash|
       key, value, input_type = hash.values_at(:key, :value, :input_type)
       case input_type
@@ -31,10 +30,8 @@ module AjaxFeatureHelper
       when :select
         select value, from: key
       when :click, :checkbox, :button, :submit
-        #find(key).click
         find_by_id(key).click
       end
-      # sleep 1
       yield if block_given?
     end
     case format
@@ -93,27 +90,25 @@ module AjaxFeatureHelper
         end
       end
     end
+    shared_context :filter_with_operator do |filter, operator_key, operator_value|
+      context "#{operator_key} #{operator_value}" do
+        direction, pros_operator, cons_operator =
+                                  case operator_value
+                                  when '>' then [:asc, :gt, :lteq]
+                                  when '<' then [:desc, :lt, :gteq]
+                                  end
+        
+        actions = [{ key: operator_key, value: operator_value, input_type: :select }]
+        value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} #{direction}").first.send(key) }
+        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, pros_operator: pros_operator, cons_operator: cons_operator
+      end
+    end
 
     shared_context :filter_season do | datatable |
-      #filter = datatable.filters.map { |filter| filter.children.presence || filter }.flatten.find {|d| d.key == :season}
       filter = datatable.filters.flatten.find {|d| d.key == :season}
       context 'filter_season' do
-        context 'eq season' do
-          additional_actions = [{ key: :season_operator, value: '=', input_type: :select }]
-          it_behaves_like :filter, filter, additional_actions: additional_actions
-        end
-
-        context 'gt season' do
-          actions = [{ key: :season_operator, value: '>', input_type: :select }]
-          value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} asc").first.send(key) }
-          it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, pros_operator: :gt, cons_operator: :lteq
-        end
-
-        context 'lt season' do
-          actions = [{ key: :season_operator, value: '<', input_type: :select }]
-          value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} desc").first.send(key) }
-          it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, pros_operator: :lt, cons_operator: :gteq
-        end
+        include_context :filter_with_operator, filter, :season_operator, '>'
+        include_context :filter_with_operator, filter, :season_operator, '<'
       end
     end
 

@@ -30,6 +30,9 @@ feature ElementsController, type: :feature, feature: true do
 
     context 'goe operators' do
       filter = datatable.filters.flatten.find {|d| d.key == :goe }
+      include_context :filter_with_operator, filter, :goe_operator, '>'
+      include_context :filter_with_operator, filter, :goe_operator, '<'
+=begin
       context 'gt goe' do
         additional_actions = [{ key: :goe_operator, value: '>', input_type: :select }]
         value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} asc").first.send(key) }
@@ -40,6 +43,7 @@ feature ElementsController, type: :feature, feature: true do
         value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} desc").first.send(key) }
         it_behaves_like :filter, filter, additional_actions: additional_actions, pros_operator: :lt, cons_operator: :gteq
       end
+=end
     end
     include_context :orders, datatable
   end

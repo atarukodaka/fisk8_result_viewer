@@ -13,7 +13,11 @@ feature ComponentsController, type: :feature, feature: true do
     include_context :contains_all, datatable
     include_context :filters, datatable
     include_context :filter_season, datatable
-    ## TODO: value operator
+    context 'value operators' do
+      filter = datatable.filters.flatten.find {|d| d.key == :value }
+      include_context :filter_with_operator, filter, :value_operator, '>'
+      include_context :filter_with_operator, filter, :value_operator, '<'
+    end
     include_context :orders, datatable
   end    
 end
