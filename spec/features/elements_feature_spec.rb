@@ -1,55 +1,34 @@
 require 'rails_helper'
+require 'ajax_feature_helper'
 
 feature ElementsController, type: :feature, feature: true do
-  let!(:score_world) { create(:competition, :world).scores.first }
-  let!(:score_finlandia) { create(:competition, :finlandia).scores.first }
-  let!(:main) { score_world.elements.where(element_type: :jump, element_subtype: :solo).first }
-  let!(:sub) { score_finlandia.elements.where(element_type: :spin).first }
-  let(:index_path) { elements_path }
-
+  before {
+    create(:competition, :world)
+    create(:competition, :finlandia)
+  }
   ################
   feature '#index', js: true do
-    context 'all' do
-      subject { visit index_path; page }
-      it_behaves_like :contains, true, true
+    datatable = ElementsDatatable.new
+    [:contains_all, :orders, :filters, :filter_season].each do |context|
+      include_context context, datatable
     end
-    context 'filter' do
-      include_context :filter, ElementsDatatable::Filters.new,
-                      excludings: [:season_operator, :name_operator, :goe_operator]
-      include_context :filter_season
 
-      context 'element_name' do
-        subject {
-          ajax_actions([{ key: :name_operator, value: '=', input_type: :select },
-                        { key: :element_name, value: main.element_name, input_type: :fill_in }], path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-
-      context 'element_type' do
-        subject {
-          ajax_action_filter(key: :element_type, value: main.element_type, input_type: :select, path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-
-      context 'element_subtype' do
-        subject {
-          ajax_action_filter(key: :element_subtype, value: main.element_subtype, input_type: :select, path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-
-      context 'goe' do
-        subject {
-          ajax_actions([{ key: :goe_operator, value: '=', input_type: :select },
-                        { key: :goe, value: main.goe, input_type: :fill_in }], path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
+    context 'match element name' do
+      it {
+        pros = datatable.data.where(element_type: :jump, element_subtype: :comb).first
+        value = pros.name.split(/\+/).first   ## '3Lz'
+        actions = [{ key: :name_operator, input_type: :select, value: '⊆' },
+                   { key: :element_name, input_type: :text_field, value: value }]
+        ajax_actions(actions, path: datatable_index_path(datatable))
+        table_text = get_datatable(page).text
+        expect(table_text).to have_content(pros.name)
+      }
     end
-    context 'order' do
-      include_context :order, ElementsDatatable
+
+    context 'goe operators' do
+      filter = datatable.filters.flatten.find { |d| d.key == :goe }
+      include_context :filter_with_operator, filter, :goe_operator, '>'
+      include_context :filter_with_operator, filter, :goe_operator, '<'
     end
   end
 end

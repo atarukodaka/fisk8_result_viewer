@@ -49,7 +49,8 @@ class AjaxDatatables::Columns
   # set sources of each columns
   def sources=(hash)
     hash.each do |col, source|
-      next unless column = self[col.to_sym].presence
+      next unless (column = self[col.to_sym].presence)
+
       column.source = source
     end
   end

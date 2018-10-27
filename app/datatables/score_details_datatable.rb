@@ -2,6 +2,7 @@ class ScoreDetailsDatatable < IndexDatatable
   def initialize(*)
     super
     columns([:score_name, :competition_name, :competition_class, :competition_type,
+             :competition_short_name,
              :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type,
              :date, :season, :skater_name, :nation,])
 

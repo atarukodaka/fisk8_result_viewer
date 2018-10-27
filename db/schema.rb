@@ -61,17 +61,6 @@ ActiveRecord::Schema.define(version: 5) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "component_judge_details", force: :cascade do |t|
-    t.integer "number"
-    t.float "value"
-    t.float "average"
-    t.float "deviation"
-    t.integer "component_id"
-    t.integer "official_id"
-    t.index ["component_id"], name: "index_component_judge_details_on_component_id"
-    t.index ["official_id"], name: "index_component_judge_details_on_official_id"
-  end
-
   create_table "components", force: :cascade do |t|
     t.integer "number"
     t.string "name"
@@ -93,18 +82,6 @@ ActiveRecord::Schema.define(version: 5) do
     t.index ["score_id"], name: "index_deviations_on_score_id"
   end
 
-  create_table "element_judge_details", force: :cascade do |t|
-    t.integer "number"
-    t.float "value"
-    t.float "average"
-    t.float "deviation"
-    t.float "abs_deviation"
-    t.integer "element_id"
-    t.integer "official_id"
-    t.index ["element_id"], name: "index_element_judge_details_on_element_id"
-    t.index ["official_id"], name: "index_element_judge_details_on_official_id"
-  end
-
   create_table "elements", force: :cascade do |t|
     t.integer "number"
     t.string "name"
@@ -122,6 +99,16 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "value"
     t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
+  end
+
+  create_table "judge_details", force: :cascade do |t|
+    t.integer "number"
+    t.float "value"
+    t.string "detailable_type"
+    t.integer "detailable_id"
+    t.integer "official_id"
+    t.index ["detailable_type", "detailable_id"], name: "index_judge_details_on_detailable_type_and_detailable_id"
+    t.index ["official_id"], name: "index_judge_details_on_official_id"
   end
 
   create_table "officials", force: :cascade do |t|

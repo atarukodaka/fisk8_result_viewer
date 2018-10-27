@@ -17,13 +17,13 @@ FactoryBot.define do
         score = element.score
         official = score.competition.performed_segments
                    .where(category: score.category, segment: score.segment).first.officials.find_by(number: 1)
-        create(:element_judge_detail, element: element, official: official)
+        create(:judge_detail, :element, detailable: element, official: official)
       end
     end
     trait :combination_jump do
       name { '3Lz+3T' }
       element_type { 'jump' }
-      element_subtype { 'combination' }
+      element_subtype { 'comb' }
       value { 15 }
       goe { 3 }
       base_value { 12 }
