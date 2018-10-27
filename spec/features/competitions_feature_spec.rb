@@ -27,6 +27,5 @@ feature CompetitionsController, type: :feature, feature: true do
         expect(page.body).to have_content("Showing #{page_length + 1} to #{page_length * 2}")
       }
     end
-
   end
 end

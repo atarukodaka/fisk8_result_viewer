@@ -15,10 +15,11 @@ module AjaxFeatureHelper
     table_id = page.find(:css, '.dataTable')[:id]
     page.find("##{table_id}")
   end
+
   def datatable_index_path(datatable)
     send("#{datatable.default_model.to_s.pluralize.underscore}_path".to_sym)
   end
-  
+
   def ajax_actions(actions, path:, format: :html)
     visit path
     actions.each do |hash|
@@ -48,8 +49,8 @@ module AjaxFeatureHelper
       it {
         datatable = filter.filters.datatable
         column = datatable.columns[filter.key] || next
-        value_func ||= lambda {|dt, key| dt.data.first.send(key) }
-        
+        value_func ||= lambda { |dt, key| dt.data.first.send(key) }
+
         value = value_func.call(datatable, filter.key)
 
         ## pros, cons
@@ -58,13 +59,12 @@ module AjaxFeatureHelper
         cons = datatable.data.where(arel.send(cons_operator, value))
 
         path = datatable_index_path(datatable)
-        actions =  [{key: filter.key, input_type: filter.input_type, value: value}]
+        actions = [{ key: filter.key, input_type: filter.input_type, value: value }]
         actions.push(*additional_actions) if additional_actions
 
         ajax_actions(actions, path: path)
         table_text = get_datatable(page).text
 
-        
         pros.each do |item|
           expect(table_text).to have_content(item.name)
         end
@@ -92,19 +92,22 @@ module AjaxFeatureHelper
     shared_context :filter_with_operator do |filter, operator_key, operator_value|
       context "#{operator_key} #{operator_value}" do
         direction, pros_operator, cons_operator =
-                                  case operator_value
-                                  when '>' then [:asc, :gt, :lteq]
-                                  when '<' then [:desc, :lt, :gteq]
-                                  end
-        
+          case operator_value
+          when '>' then [:asc, :gt, :lteq]
+          when '<' then [:desc, :lt, :gteq]
+          end
+
         actions = [{ key: operator_key, value: operator_value, input_type: :select }]
-        value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} #{direction}").first.send(key) }
-        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, pros_operator: pros_operator, cons_operator: cons_operator
+        value_func = lambda { |dt, key|
+          dt.data.order("#{dt.columns[key].source} #{direction}").first.send(key)
+        }
+        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func,
+                        pros_operator: pros_operator, cons_operator: cons_operator
       end
     end
 
-    shared_context :filter_season do | datatable |
-      filter = datatable.filters.flatten.find {|d| d.key == :season}
+    shared_context :filter_season do |datatable|
+      filter = datatable.filters.flatten.find { |d| d.key == :season }
       context 'filter_season' do
         include_context :filter_with_operator, filter, :season_operator, '>'
         include_context :filter_with_operator, filter, :season_operator, '<'
@@ -115,7 +118,6 @@ module AjaxFeatureHelper
     def ajax_action_filter(path:, input_type:, key:, value: nil)
       ajax_actions([key: key, value: value, input_type: input_type], path: path)
     end
-
   end
 
   ################
@@ -150,7 +152,7 @@ module AjaxFeatureHelper
               ## desc
               find("##{column_id}").click
               sleep SLEEP_COUNT
-              
+
               expect(expected.last).to appear_before expected.first
             }
           end

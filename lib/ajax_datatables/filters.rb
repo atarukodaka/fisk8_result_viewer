@@ -16,7 +16,7 @@ module AjaxDatatables
     end
 
     def flatten
-      map {|filter| filter.children.presence || filter}.flatten
+      map { |filter| filter.children.presence || filter }.flatten
     end
   end
   ################

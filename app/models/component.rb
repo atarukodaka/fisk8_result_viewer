@@ -5,7 +5,7 @@ class Component < ApplicationRecord
   alias_attribute :component_number, :number
 
   ## relations
-  #has_many :component_judge_details, dependent: :destroy
+  # has_many :component_judge_details, dependent: :destroy
   has_many :judge_details, as: :detailable, dependent: :destroy
   belongs_to :score
 

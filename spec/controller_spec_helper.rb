@@ -1,8 +1,8 @@
 module ControllerSpecHelper
   using MapValue
 
-  ################
-  ## filter
+################
+## filter
 =begin
   shared_context :json_filter do |key, datatable|
     it {
@@ -13,9 +13,9 @@ module ControllerSpecHelper
       expect(result.any? {|d| d[key.to_s] == value}).to be true
     }
   end
-=end  
-  ################
-  ## sort
+=end
+################
+## sort
 =begin
   shared_context :sort_column do |key, direction = :asc, datatable:|
     it {
@@ -50,8 +50,8 @@ module ControllerSpecHelper
         expected = datatable.data.order("#{column.source} #{direction}").map { |d| d.send(key).to_s }
         expect(got).to eq(expected)
       }
-      #include_context :sort_column, key, :asc, datatable: datatable
-      #include_context :sort_column, key, :desc, datatable: datatable
+      # include_context :sort_column, key, :asc, datatable: datatable
+      # include_context :sort_column, key, :desc, datatable: datatable
     end
   end
 
@@ -72,6 +72,4 @@ module ControllerSpecHelper
       include_context :sort, datatable
     end
   end
-
-
 end

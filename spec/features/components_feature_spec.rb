@@ -15,9 +15,9 @@ feature ComponentsController, type: :feature, feature: true do
     end
 
     context 'value operators' do
-      filter = datatable.filters.flatten.find {|d| d.key == :value }
+      filter = datatable.filters.flatten.find { |d| d.key == :value }
       include_context :filter_with_operator, filter, :value_operator, '>'
       include_context :filter_with_operator, filter, :value_operator, '<'
     end
-  end    
+  end
 end

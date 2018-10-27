@@ -19,7 +19,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
     super
     columns.add([:component_number, :component_name, :factor, :judges, :value,])
     columns.sources = source_mappings
-    columns[:date].source = "competitions.start_date"
+    columns[:date].source = 'competitions.start_date'
 
     ## operartors
     if view_context

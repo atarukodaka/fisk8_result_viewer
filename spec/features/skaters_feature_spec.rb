@@ -2,8 +2,6 @@ require 'rails_helper'
 require 'ajax_feature_helper'
 
 RSpec.describe SkatersController, feature: true do
-  let!(:no_scores_skater) { create(:skater, :no_scores) }
-
   before {
     create(:competition, :world)
     create(:competition, :finlandia)
@@ -17,9 +15,10 @@ RSpec.describe SkatersController, feature: true do
 
     context :filter_having_scores do
       it {
+        no_scores_skater = create(:skater, :no_scores)
         ajax_actions([key: :having_scores, input_type: :checkbox], path: skaters_path)
         expect(page.text).not_to have_content(no_scores_skater.name)
       }
     end
-    end
+  end
 end
