@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 feature CompetitionsController, type: :feature, feature: true do
-  let!(:world) { create(:competition, :world) }
-  let!(:finlandia) { create(:competition, :finlandia) }
+  #let!(:world) { create(:competition, :world) }
+  #let!(:finlandia) { create(:competition, :finlandia) }
+  before {
+    create(:competition, :world)
+    create(:competition, :finlandia)
+  }
 
   ################
   feature '#index', js: true do
@@ -10,8 +14,8 @@ feature CompetitionsController, type: :feature, feature: true do
     include_context :contains_all, datatable
     include_context :filters, datatable
     include_context :filter_season, datatable
+    include_context :orders, datatable
 
-=begin
     context 'paging' do
       it {
         page_length = CompetitionsDatatable.new.settings[:pageLength]
@@ -25,6 +29,6 @@ feature CompetitionsController, type: :feature, feature: true do
         expect(page.body).to have_content("Showing #{page_length + 1} to #{page_length * 2}")
       }
     end
-=end
+
   end
 end

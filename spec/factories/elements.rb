@@ -23,7 +23,7 @@ FactoryBot.define do
     trait :combination_jump do
       name { '3Lz+3T' }
       element_type { 'jump' }
-      element_subtype { 'combination' }
+      element_subtype { 'comb' }
       value { 15 }
       goe { 3 }
       base_value { 12 }
