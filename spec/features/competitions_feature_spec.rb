@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 feature CompetitionsController, type: :feature, feature: true do
-  #let!(:world) { create(:competition, :world) }
-  #let!(:finlandia) { create(:competition, :finlandia) }
   before {
     create(:competition, :world)
     create(:competition, :finlandia)
@@ -11,10 +9,9 @@ feature CompetitionsController, type: :feature, feature: true do
   ################
   feature '#index', js: true do
     datatable = CompetitionsDatatable.new
-    include_context :contains_all, datatable
-    include_context :filters, datatable
-    include_context :filter_season, datatable
-    include_context :orders, datatable
+    [:contains_all, :orders, :filters, :filter_season].each do |context|
+      include_context context, datatable
+    end
 
     context 'paging' do
       it {

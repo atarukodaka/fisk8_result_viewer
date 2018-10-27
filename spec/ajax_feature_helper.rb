@@ -80,10 +80,9 @@ module AjaxFeatureHelper
         end
       }
     end
-    shared_context :filters do |datatable| #, excludings: []|
+    shared_context :filters do |datatable|
       context 'filters' do
-        datatable.filters.map { |filter| filter.children.presence || filter }.flatten.each do |filter|
-          #.reject { |filter| excludings.include?(filter.key) }.each do |filter|
+        datatable.filters.flatten.each do |filter|
           context filter.key do
             it_behaves_like :filter, filter
           end
