@@ -1,35 +1,19 @@
 require 'rails_helper'
+require 'controller_spec_helper'
 
 RSpec.describe CompetitionsController, type: :controller do
   render_views
-
+  
   let!(:world)       { create(:competition, :world)     }
   let!(:finlandia)   { create(:competition, :finlandia) }
 
   ################
-  ## examples
-  shared_examples :having_all do
-    its(:body) { is_expected.to have_content(world.name) }
-    its(:body) { is_expected.to have_content(finlandia.name) }
-  end
-
-  ################
-  ## index
   describe '#index' do
-    context 'all' do
-      subject { get :index }
-      it_behaves_like :having_all
+    datatable = CompetitionsDatatable.new
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
     end
-
-    context 'format: ' do
-      [[:json, 'application/json'], [:csv, 'text/csv']].each do |format, _content_type|
-        context ".#{format}" do
-          subject { get :index, format: format }
-          it_behaves_like :having_all
-        end
-      end
-    end
-    include_context :json, CompetitionsDatatable.new
   end
 
   ################

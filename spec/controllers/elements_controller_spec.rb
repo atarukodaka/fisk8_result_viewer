@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'controller_spec_helper'
 
 RSpec.describe ElementsController, type: :controller do
   render_views
@@ -11,12 +12,10 @@ RSpec.describe ElementsController, type: :controller do
   let(:layback_spin) { finlandia_score.elements.where(element_type: 'spin').first }
 
   describe '#index' do
-    describe 'all' do
-      subject { get :index }
-      it { is_expected.to be_success }
-      its(:body) { is_expected.to have_content(solo_jump.name) }
-      its(:body) { is_expected.to have_content(combination_jump.name) }
-      its(:body) { is_expected.to have_content(layback_spin.name) }
+    datatable = ElementsDatatable.new
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
     end
   end
 end

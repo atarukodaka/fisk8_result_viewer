@@ -15,7 +15,7 @@ class IndexController < ApplicationController
       }
       format.csv {
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.serverside.limit.as_json.each { |row|  c << row }  ## TODO
+          datatable.serverside.limit.limit(params[:length], params[:offset]).as_json.each { |row|  c << row }
         end
         send_data csv, filename: "#{controller_name}.csv"
       }

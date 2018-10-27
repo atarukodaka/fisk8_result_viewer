@@ -28,6 +28,8 @@ FactoryBot.define do
       goe { 3 }
       base_value { 12 }
       judges { '3 3 3' }
+      info { '' }
+      credit { '' }
       number { 2 }
     end
 

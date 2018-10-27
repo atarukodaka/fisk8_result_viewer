@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'controller_spec_helper'
 
 describe PanelsController, type: :controller do
   render_views
@@ -8,10 +9,11 @@ describe PanelsController, type: :controller do
   let!(:mike) {    world.performed_segments.first.officials.second.panel }
 
   describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-    its(:body) { is_expected.to have_content(john.name) }
-    its(:body) { is_expected.to have_content(mike.name) }
+    datatable = PanelsDatatable.new
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
+    end
   end
   ################
   describe '#show' do
