@@ -9,32 +9,15 @@ feature ComponentsController, type: :feature, feature: true do
 
   ################
   feature '#index', js: true do
-    context 'all' do
-      subject { visit index_path; page }
-      it_behaves_like :contains, true, true
+    datatable = ComponentsDatatable.new
+    include_context :contains_all, datatable
+    include_context :filters, datatable
+    include_context :filter_season, datatable
+    context 'value operators' do
+      filter = datatable.filters.flatten.find {|d| d.key == :value }
+      include_context :filter_with_operator, filter, :value_operator, '>'
+      include_context :filter_with_operator, filter, :value_operator, '<'
     end
-    context 'filter' do
-      include_context :filter, ComponentsDatatable::Filters.new,
-                      excludings: [:season_operator, :value_operator, :component_name, :value]
-      include_context :filter_season
-
-      context 'component_name' do
-        subject {
-          ajax_action_filter(key: :component_name, value: 'Skating Skills', input_type: :select, path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-
-      context 'value' do
-        subject {
-          ajax_actions([{ key: :value_operator, value: '=', input_type: :select },
-                        { key: :value, value: main.value, input_type: :fill_in }], path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-    end
-    context 'order' do
-      include_context :order, ComponentsDatatable
-    end
-  end
+    include_context :orders, datatable
+  end    
 end

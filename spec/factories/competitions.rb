@@ -12,6 +12,7 @@ FactoryBot.define do
       season { '2014-15' }
       start_date { Date.new(2015, 2, 1) }
       end_date { Date.new(2015, 2, 3) }
+      timezone { 'Asia/Tokyo' }
 
       after(:build) do |competition|
         skater = create(:skater, :men)
@@ -32,7 +33,7 @@ FactoryBot.define do
       site_url { 'http://finlandia-2017/' }
       start_date { Date.new(2017, 9, 1) }
       end_date { Date.new(2017, 9, 3) }
-
+      timezone { 'UTC' }
       after(:build) do |competition|
         skater = create(:skater, :ladies)
         create(:performed_segment, :finlandia, competition: competition)

@@ -8,15 +8,9 @@ feature PanelsController, type: :feature, feature: true do
   let(:index_path) { panels_path }
 
   feature '#index', js: true do
-    context 'all' do
-      subject { visit index_path; page }
-      it_behaves_like :contains, true, true
-    end
-    context 'filter' do
-      include_context :filter, PanelsDatatable::Filters.new
-    end
-    context 'order' do
-      include_context :order, PanelsDatatable
-    end
+    datatable = PanelsDatatable.new
+    include_context :contains_all, datatable
+    include_context :filters, datatable
+    include_context :orders, datatable
   end
 end

@@ -113,19 +113,24 @@ class CompetitionUpdater < Updater
     end
   end
 
+  
+
   def update_judge_details(score)
     officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
 
-    score.elements.each do |element|
-      element.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
-        element.element_judge_details.create(number: i, value: value, official: officials[i])
+    [score.elements, score.components].flatten.each do |detailable|
+      #score.elements.each do |detailable|
+      detailable.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
+        detailable.judge_details.create(number: i, value: value, official: officials[i])
       end
     end
+=begin
     score.components.each do |component|
       component.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
-        component.component_judge_details.create(number: i, value: value, official: officials[i])
+        component.judge_details.create(number: i, value: value, official: officials[i])
       end
     end
+=end
   end
 
   ################

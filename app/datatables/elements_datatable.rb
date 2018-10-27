@@ -32,6 +32,7 @@ class ElementsDatatable < ScoreDetailsDatatable
     columns.add([:element_number, :element_name, :element_type, :element_subtype,
                  :level, :credit, :info, :base_value, :goe, :judges, :value,])
     columns.sources = source_mappings
+    columns[:date].source = "competitions.start_date"
 
     ## operartors
     if view_context

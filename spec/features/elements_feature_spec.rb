@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 
 feature ElementsController, type: :feature, feature: true do
@@ -9,47 +10,41 @@ feature ElementsController, type: :feature, feature: true do
 
   ################
   feature '#index', js: true do
-    context 'all' do
-      subject { visit index_path; page }
-      it_behaves_like :contains, true, true
+    datatable = ElementsDatatable.new
+    include_context :contains_all, datatable
+    include_context :filters, datatable
+    include_context :filter_season, datatable
+    
+    context 'match element name' do
+      it {
+        filter = datatable.filters.flatten.find {|d| d.key == :element_name }
+        pros = score_world.elements.where(element_type: :jump, element_subtype: :comb).first
+        value = pros.name.split(/\+/).first   ## '3Lz'
+        actions = [{key: :name_operator, input_type: :select, value: '⊆'},
+                   {key: :element_name, input_type: :text_field, value: value}]
+        ajax_actions(actions, path: datatable_index_path(datatable))
+        table_text = get_datatable(page).text
+        expect(table_text).to have_content(pros.name)
+      }
     end
-    context 'filter' do
-      include_context :filter, ElementsDatatable::Filters.new,
-                      excludings: [:season_operator, :name_operator, :goe_operator]
-      include_context :filter_season
 
-      context 'element_name' do
-        subject {
-          ajax_actions([{ key: :name_operator, value: '=', input_type: :select },
-                        { key: :element_name, value: main.element_name, input_type: :fill_in }], path: index_path)
-        }
-        it_behaves_like :contains, true, false
+    context 'goe operators' do
+      filter = datatable.filters.flatten.find {|d| d.key == :goe }
+      include_context :filter_with_operator, filter, :goe_operator, '>'
+      include_context :filter_with_operator, filter, :goe_operator, '<'
+=begin
+      context 'gt goe' do
+        additional_actions = [{ key: :goe_operator, value: '>', input_type: :select }]
+        value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} asc").first.send(key) }
+        it_behaves_like :filter, filter, additional_actions: additional_actions, pros_operator: :gt, cons_operator: :lteq
       end
-
-      context 'element_type' do
-        subject {
-          ajax_action_filter(key: :element_type, value: main.element_type, input_type: :select, path: index_path)
-        }
-        it_behaves_like :contains, true, false
+      context 'lt goe' do
+        additional_actions = [{ key: :goe_operator, value: '<', input_type: :select }]
+        value_func = lambda {|dt, key| dt.data.order("#{dt.columns[key].source} desc").first.send(key) }
+        it_behaves_like :filter, filter, additional_actions: additional_actions, pros_operator: :lt, cons_operator: :gteq
       end
-
-      context 'element_subtype' do
-        subject {
-          ajax_action_filter(key: :element_subtype, value: main.element_subtype, input_type: :select, path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
-
-      context 'goe' do
-        subject {
-          ajax_actions([{ key: :goe_operator, value: '=', input_type: :select },
-                        { key: :goe, value: main.goe, input_type: :fill_in }], path: index_path)
-        }
-        it_behaves_like :contains, true, false
-      end
+=end
     end
-    context 'order' do
-      include_context :order, ElementsDatatable
-    end
+    include_context :orders, datatable
   end
 end

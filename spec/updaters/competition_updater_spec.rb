@@ -123,8 +123,8 @@ RSpec.describe CompetitionUpdater, updater: true do
     let(:element) { score.elements.first }
     let(:component) { score.components.first }
     it {
-      expect(element.element_judge_details.count).to be > 0
-      expect(component.component_judge_details.count).to be > 0
+      expect(element.judge_details.count).to be > 0
+      expect(component.judge_details.count).to be > 0
     }
   end
 

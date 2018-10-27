@@ -16,10 +16,6 @@ module CompetitionUpdater::Deviations
     official_number = official.number
 
     score.deviations.create(official: official,
-                            # tes_deviation: tes[official_number].sum { |_k, hash| hash[:value].to_f },
-                            # tes_deviation_ratio: tes[official_number].sum { |_k, hash| hash[:ratio].to_f },
-                            # pcs_deviation: pcs[official_number].sum { |_k, hash| hash[:value].to_f },
-                            # pcs_deviation_ratio: pcs[official_number].sum { |_k, hash| hash[:ratio].to_f })
                             tes_deviation: tes[official_number].values.sum { |hash| hash[:value].to_f },
                             tes_deviation_ratio: tes[official_number].values.sum { |hash| hash[:ratio].to_f },
                             pcs_deviation: pcs[official_number].values.sum { |hash| hash[:value].to_f },
@@ -30,9 +26,9 @@ module CompetitionUpdater::Deviations
     num_elements = elements.count
 
     tes = Hash.new { |h, k| h[k] = {} }
-    elements.includes(:element_judge_details).each do |element|
+    elements.includes(:judge_details).each do |element|
       element_number = element.number
-      values = element.element_judge_details.pluck(:value, :number)
+      values = element.judge_details.pluck(:value, :number)
       avg = values.sum { |d| d[0] } / values.size
       values.each do |value, i|
         dev = (avg - value).abs
@@ -44,9 +40,9 @@ module CompetitionUpdater::Deviations
 
   def calculate_pcs_deviations(components)
     pcs = Hash.new { |h, k| h[k] = {} }
-    components.includes(:component_judge_details).each do |component|
+    components.includes(:judge_details).each do |component|
       component_number = component.number
-      values = component.component_judge_details.joins(:official).pluck(:value, :number)
+      values = component.judge_details.joins(:official).pluck(:value, :number)
       avg = values.sum { |d| d[0] } / values.size
       values.each do |value, i|
         dev = value - avg

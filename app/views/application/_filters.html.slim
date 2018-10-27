@@ -23,9 +23,9 @@
     label Length
     =text_field_tag(:length, params[:length], size: 10)
     label
-    = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
+    = button_tag("json", id: "json_button", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
     label
-    = button_tag("csv", type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
+    = button_tag("csv", id: "csv_button",  type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
   // = form_group(nil) do
     = submit_tag("Search", id: "submit", name: nil)
     label with format of

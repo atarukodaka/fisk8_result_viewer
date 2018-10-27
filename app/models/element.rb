@@ -4,7 +4,8 @@ class Element < ApplicationRecord
   alias_attribute :element_name, :name
 
   ## relations
-  has_many :element_judge_details, dependent: :destroy
+  #has_many :element_judge_details, dependent: :destroy
+  has_many :judge_details, as: :detailable, dependent: :destroy
   belongs_to :score
 
   ## scopes

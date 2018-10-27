@@ -10,7 +10,10 @@
 - limit: spec
 - spec: owg name correction
 - sorting_sql: super
- 
+- spec: update details
+- ajax helper: find by xpath
+- filters: flatten
+
 ### new feature
 
 ### check before release
