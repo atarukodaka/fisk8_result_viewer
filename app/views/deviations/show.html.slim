@@ -1,0 +1,63 @@
+h2 Deviation
+
+- deviation = Deviation.find_by(name: params[:name])
+= Listtable.new(self).columns([:deviation_name, :skater_name, :score_name, :panel_name, :official_number, :tes_deviation, :pcs_deviation]).records(deviation).decorate.render
+
+h3 Elements
+
+table.table.table-striped.table-hover.table-condensed
+  thead
+    tr
+      th element_number
+      th element_name
+      th value
+      th average
+      th abs deviation
+
+  tbody
+    - deviation.score.elements.each do |element|
+      tr
+        - average = element.judge_details.average(:value)
+        - value =element.judge_details.find_by(official: deviation.official).value
+        - abs_dev = (value - average).abs
+        td= element.number
+        td= element.name
+        td= value
+        td= average
+        td= abs_dev          
+    tr
+      td Total
+      td
+      td
+      td
+      td= deviation.decorate.tes_deviation
+
+
+h3 Components
+table.table.table-striped.table-hover.table-condensed
+  thead
+    tr
+      th element_number
+      th element_name
+      th value
+      th average
+      th deviation
+
+  tbody
+    - deviation.score.components.each do |component|
+      tr
+        - average = component.judge_details.average(:value)
+        - value =component.judge_details.find_by(official: deviation.official).value
+        - dev = value - average
+        td= component.number
+        td= component.name
+        td= value
+        td= average
+        td= dev          
+    tr
+      td Total
+      td
+      td
+      td
+      td= deviation.pcs_deviation
+

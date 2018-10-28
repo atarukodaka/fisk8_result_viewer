@@ -2,20 +2,20 @@ require 'csv'
 
 class IndexController < ApplicationController
   def index
-    datatable = create_datatable
     respond_to do |format|
       format.html {
         render :index, locals: {
-          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
-          #                 filters: "#{datatable.class}::Filters".constantize.new([], datatable: datatable),
+          datatable: create_datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
         }
       }
+
+      datatable = create_datatable.serverside.limit(params[:length], params[:offset])
       format.json {
-        render json: datatable.serverside.limit(params[:length], params[:offset]).as_json
+        render json: datatable.as_json
       }
       format.csv {
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.serverside.limit.limit(params[:length], params[:offset]).as_json.each { |row|  c << row }
+          datatable.as_json.each { |row|  c << row }
         end
         send_data csv, filename: "#{controller_name}.csv"
       }
@@ -31,7 +31,6 @@ class IndexController < ApplicationController
              iTotalDisplayRecords: datatable.data.total_count,
              data:                 datatable.as_json,
     }
-    # render json: create_datatable.serverside
   end
 
   def data_to_show

@@ -1,5 +1,5 @@
 class SkaterDecorator < EntryDecorator
-  def name
+  def skater_name
     h.link_to_skater(model)
   end
 
