@@ -15,16 +15,16 @@ table.table.table-striped.table-hover.table-condensed
       th abs deviation
 
   tbody
+    /- binding.pry
+    /- JudgeDetail.where(detailable_type: "Element", score:
     - deviation.score.elements.each do |element|
       tr
-        - average = element.judge_details.average(:value)
-        - value =element.judge_details.find_by(official: deviation.official).value
-        - abs_dev = (value - average).abs
-        td= element.number
-        td= element.name
-        td= value
-        td= average
-        td= abs_dev          
+        - detail =element.judge_details.find_by(official: deviation.official)
+        td= detail.detailable.number
+        td= detail.detailable.name
+        td= detail.value
+        td= detail.detailable.average
+        td= detail.deviation       
     tr
       td Total
       td

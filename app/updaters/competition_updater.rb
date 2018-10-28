@@ -118,9 +118,11 @@ class CompetitionUpdater < Updater
 
     [score.elements, score.components].flatten.each do |detailable|
       # score.elements.each do |detailable|
-      detailable.judges.split(/\s/).map(&:to_f).each.with_index(1) do |value, i|
+      details = detailable.judges.split(/\s/).map(&:to_f)
+      details.each.with_index(1) do |value, i|
         detailable.judge_details.create(number: i, value: value, official: officials[i])
       end
+      detailable.update(average: details.sum / details.size)
     end
 =begin
     score.components.each do |component|

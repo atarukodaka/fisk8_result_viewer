@@ -40,6 +40,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.float :goe
       t.string :judges
       t.float :value
+      t.float :average
 
       t.belongs_to :score
     end
@@ -51,6 +52,7 @@ class CreateScores < ActiveRecord::Migration[5.1]
       t.float :factor
       t.string :judges
       t.float :value
+      t.float :average
 
       t.belongs_to :score
     end

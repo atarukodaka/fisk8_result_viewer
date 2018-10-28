@@ -12,4 +12,9 @@ class JudgeDetail < ApplicationRecord
 
   ## scope
   # scope :valid, -> { joins(:official).where("officials.absence": false) }
+
+  def deviation
+    dev = value - detailable.average
+    (detailable_type == "Element") ? dev.abs : dev
+  end
 end

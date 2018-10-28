@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "factor"
     t.string "judges"
     t.float "value"
+    t.float "average"
     t.integer "score_id"
     t.index ["score_id"], name: "index_components_on_score_id"
   end
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "goe"
     t.string "judges"
     t.float "value"
+    t.float "average"
     t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
   end
