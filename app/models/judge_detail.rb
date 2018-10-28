@@ -16,10 +16,12 @@ class JudgeDetail < ApplicationRecord
   delegate :name, :number, to: :element, prefix: :element
   delegate :name, :number, to: :component, prefix: :component
 
+=begin
   def deviation
     dev = value - detailable.average
     (detailable_type == 'Element') ? dev.abs : dev
   end
+=end
 
   private
 end

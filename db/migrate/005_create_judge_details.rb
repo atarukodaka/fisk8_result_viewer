@@ -15,7 +15,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       # t.float :average
-      # t.float :deviation
+      t.float :deviation
       # t.float :abs_deviation
 
       t.references :detailable, polymorphic: true, index: true

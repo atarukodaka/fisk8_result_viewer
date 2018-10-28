@@ -109,20 +109,40 @@ class CompetitionUpdater < Updater
     debug('update judge details and deviations', indent: 3)
     competition.scores.each do |score|
       update_judge_details(score)
-      update_deviations(score)
     end
   end
 
   def update_judge_details(score)
+    debug("update details: #{score.name}", indent: 3)
+    tes_deviations = Hash.new(0.0)
+    pcs_deviations = Hash.new(0.0)
+    num_elements = score.elements.count
+    
     officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
-
     [score.elements, score.components].flatten.each do |detailable|
-      # score.elements.each do |detailable|
       details = detailable.judges.split(/\s/).map(&:to_f)
+      average = details.sum / details.size
+      detailable.update(average: average)
+
       details.each.with_index(1) do |value, i|
-        detailable.judge_details.create(number: i, value: value, official: officials[i])
+        deviation = average - value
+      
+        detailable.judge_details.create(number: i, value: value, official: officials[i], deviation: deviation)
+        case detailable
+        when Element then tes_deviations[i] += deviation.abs
+        when Component then pcs_deviations[i] += deviation
+        end
       end
-      detailable.update(average: details.sum / details.size)
+    end
+    
+    ActiveRecord::Base.transaction do
+      officials.each do|i, official|
+        score.deviations.create(official: official,
+                                tes_deviation: tes_deviations[i],
+                                tes_deviation_ratio: tes_deviations[i] / num_elements,
+                                pcs_deviation: pcs_deviations[i],
+                                pcs_deviation_ratio: pcs_deviations[i] / 7.5,)
+      end
     end
   end
 
