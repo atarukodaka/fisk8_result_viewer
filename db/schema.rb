@@ -109,12 +109,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "value"
     t.string "detailable_type"
     t.integer "detailable_id"
-    t.integer "element_id"
-    t.integer "component_id"
     t.integer "official_id"
-    t.index ["component_id"], name: "index_judge_details_on_component_id"
     t.index ["detailable_type", "detailable_id"], name: "index_judge_details_on_detailable_type_and_detailable_id"
-    t.index ["element_id"], name: "index_judge_details_on_element_id"
     t.index ["official_id"], name: "index_judge_details_on_official_id"
   end
 
