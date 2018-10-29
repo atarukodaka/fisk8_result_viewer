@@ -16,6 +16,7 @@ style
 // show server-side datatable
 
 /= render partial: "filters", locals: { filters: datatable.filters }
+= render partial: 'filters', locals: { filters: datatable.filters } if datatable.filters
 
 = datatable.render
 

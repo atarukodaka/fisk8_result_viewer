@@ -46,6 +46,7 @@ class SkateSeason
   end
 
   def <=>(other)
-    start_date <=> other.start_date
+    other_season = (other.class == SkateSeason) ? other : SkateSeason.new(other)
+    start_date <=> other_season.start_date
   end
 end

@@ -6,7 +6,7 @@ class DeviationDecorator < EntryDecorator
   def deviation_name
     h.link_to(model.name, h.url_for(controller: :deviations, action: :show, name: model.name))
   end
-                                  
+
   def category_name
     h.link_to_competition(model.score.competition, category: model.score.category)
   end
@@ -14,13 +14,13 @@ class DeviationDecorator < EntryDecorator
   def skater_name
     h.link_to_skater(model.score.skater)
     # h.link_to(model.score.skater_name, h.deviations_skater_path(model.score.skater_name))
-    #h.link_to(model.score.skater_name, h.skater_deviation_path(model.score.skater_name))
+    # h.link_to(model.score.skater_name, h.skater_deviation_path(model.score.skater_name))
   end
 
   def panel_name
     h.link_to_panel(model.official.panel)
     # h.link_to(model.official.panel_name, h.deviations_panel_path(model.official.panel_name))
-    #h.link_to(model.official.panel_name, h.panel_deviation_path(model.official.panel_name))
+    # h.link_to(model.official.panel_name, h.panel_deviation_path(model.official.panel_name))
   end
 
   def tes_deviation

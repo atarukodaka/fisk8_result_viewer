@@ -50,7 +50,7 @@ module AjaxFeatureHelper
         operators ||= { pros: :eq, cons: :not_eq }
         datatable = filter.filters.datatable
         column = datatable.columns[filter.key] || next
-        value_func ||= lambda { |dt, key| dt.data.first.send(key) }
+        value_func ||= ->(dt, key) { dt.data.first.send(key) }
 
         value = value_func.call(datatable, filter.key)
 
@@ -60,22 +60,18 @@ module AjaxFeatureHelper
         cons = datatable.data.where(arel.send(operators[:cons], value))
 
         path = datatable_index_path(datatable)
-        ajax = true
-        if ajax
-          actions = [{ key: filter.key, input_type: filter.input_type, value: value }]
-          actions.push(*additional_actions) if additional_actions
-          
-          ajax_actions(actions, path: path)
-          table_text = get_datatable(page).text
-          
-          pros.each {|item| expect(table_text).to have_content(item.name) }
-          cons.each {|item| expect(table_text).not_to have_content(item.name) }
-          ajax_actions(actions, path: path, format: :json)
-          pros.each {|item| expect(page.text).to have_content(item.name) }
-          cons.each {|item| expect(page.text).not_to have_content(item.name) }
-        else
-          #visit :index, params:  {}
-        end
+
+        actions = [{ key: filter.key, input_type: filter.input_type, value: value }]
+        actions.push(*additional_actions) if additional_actions
+
+        ajax_actions(actions, path: path)
+        table_text = get_datatable(page).text
+
+        pros.each { |item| expect(table_text).to have_content(item.name) }
+        cons.each { |item| expect(table_text).not_to have_content(item.name) }
+        ajax_actions(actions, path: path, format: :json)
+        pros.each { |item| expect(page.text).to have_content(item.name) }
+        cons.each { |item| expect(page.text).not_to have_content(item.name) }
       }
     end
     shared_context :filters do |datatable|
@@ -95,7 +91,7 @@ module AjaxFeatureHelper
           when '>=' then [:desc, { pros: :gteq, cons: :lt }]
           when '<' then [:desc, { pros: :lt, cons: :gteq }]
           when '<=' then [:asc, { pros: :lteq, cons: :gt }]
-          else raise 
+          else raise
           end
 
         actions = [{ key: operator_key, value: operator_value, input_type: :select }]

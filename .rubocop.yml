@@ -3,11 +3,10 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 2.4
   Exclude:
-    - '**/*.gemspec'
-    - '**/vendor/**/*'
     - 'db/schema.rb'
     - 'bin/*'
-    - 'lib/tasks/analysis.rake'         ## TODO: anlysis.rake refactor
+    - '**/*.gemspec'
+    - '**/vendor/**/*'
 
 ################
 Bundler/OrderedGems:
@@ -38,14 +37,14 @@ Metrics/ClassLength:
     - app/updaters/competition_updater.rb       ## TODO
       
 Metrics/BlockLength:
-  Max: 30
+  Max: 35
   Exclude:
     - spec/**/*.rb
     - config/routes.rb
     - lib/tasks/**/*.rake
 
 Metrics/MethodLength:
-  Max: 35
+  Max: 40
   Exclude:
     - db/migrate/*.rb
 
@@ -60,7 +59,7 @@ Rails/OutputSafety:
 
 ################
 ## Style
-Style/BlockComments:
+Style/BlockComments:      # allow =begin, =end
   Enabled: false
 
 Style/BlockDelimiters:
@@ -90,8 +89,8 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
-Style/Lambda:
-  Enabled: false
+#Style/Lambda:
+#  Enabled: false
 
 Style/MixinGrouping:
   Enabled: false
@@ -106,9 +105,6 @@ Style/RedundantParentheses:
   Enabled: false
 
 Style/RedundantSelf:
-  Enabled: false
-
-Style/RaiseArgs:
   Enabled: false
 
 Style/RegexpLiteral:   # %r{} or //
@@ -130,9 +126,6 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
   
-Style/UnlessElse:
-  Enabled: false
-
 Style/WordArray:
   Exclude: false
   

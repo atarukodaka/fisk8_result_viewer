@@ -6,7 +6,7 @@ class ComponentsDatatable < ScoreDetailsDatatable
         filter(:component_name, :select),
         filter(:value, nil) do
           [
-            filter(:value_operator, :select, label: '', onchange: lambda { |dt| ajax_draw(dt) }, options: OPERATORS),
+            filter(:value_operator, :select, label: '', onchange: ->(dt) { ajax_draw(dt) }, options: OPERATORS),
             filter(:value, :text_field, label: ''),
           ]
         end,

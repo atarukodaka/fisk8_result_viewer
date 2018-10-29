@@ -19,6 +19,8 @@ class DeviationsDatatable < IndexDatatable
              :tes_deviation, :tes_deviation_ratio, :pcs_deviation, :pcs_deviation_ratio])
     columns.sources = source_mappings
     columns[:deviation_name].source = 'deviations.name'
+
+    default_orders([[:tes_deviation_ratio, :desc]])
   end
 
   def fetch_records

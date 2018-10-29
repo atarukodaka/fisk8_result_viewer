@@ -2,20 +2,18 @@
 - table_id = datatable.table_id
 - attrs = datatable.as_attrs
 
-= render partial: 'filters', locals: { filters: datatable.filters } if datatable.filters
-
 ////////////////////////////////////////////////////////////////
-div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
+div id='attrs-#{table_id}' data-json='#{ attrs.to_json.to_s }'
 script
   | jQuery(function($){
   |  attrs = $('#attrs-#{table_id}').data('json');
   - if attrs[:ajax]
     |  attrs["ajax"]["data"] = function(d){ 
-    |    d.name_operator = $('#name_operator').val(),
-    |    d.goe_operator = $('#goe_operator').val(),
-    |    d.value_operator = $('#value_operator').val(),
-    |    d.season_operator = $('#season_operator').val(),
-    |    d.having_scores = $('#having_scores:checked').val() || "off"
+    |    d.name_operator = $('#name_operator').val();
+    |    d.goe_operator = $('#goe_operator').val();
+    |    d.value_operator = $('#value_operator').val();
+    |    d.season_operator = $('#season_operator').val();
+    |    d.having_scores = $('#having_scores:checked').val() || "off";
     |  };
   |   t = $("##{table_id}").DataTable( attrs );
   // numbering
@@ -35,12 +33,14 @@ table.table.table-striped.table-hover.table-condensed id="#{table_id}"
       - datatable.column_names.each do |key|
         th id="column_#{table_id}_#{key}"
           /= key.to_s.humanize
-          = datatable.records.human_attribute_name key
+          - model = datatable.default_model || datatable.records.model
+          = model.human_attribute_name key
           /= datatable.default_model.human_attribute_name key
           
   tbody
     /- unless datatable.settings[:ajax] 
-    - unless datatable.settings[:ajax] && datatable.settings[:deferLoading].blank?
+    /- unless datatable.settings[:ajax] && datatable.settings[:deferLoading].blank?
+    - if (!datatable.settings[:ajax]) || datatable.settings[:deferLoading].present?
       - datatable.as_json.each do |item|
         tr
           - item.each do |_key, value|

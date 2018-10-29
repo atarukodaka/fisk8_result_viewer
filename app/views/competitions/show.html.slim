@@ -20,15 +20,6 @@
     h2= t(".competition_summary", default: "Competition Summary")
     = Listtable.new(self).records(competition.decorate).columns([:name_info, :location, :site_url, :period, :comment]).render
 
-    /- if result_type == :segment
-      h3 Officials
-      - records = Official.where("performed_segments.competition": competition, "performed_segments.category": category, "performed_segments.segment": segment).includes(:performed_segment, :panel)
-      = AjaxDatatables::Datatable.new(self).records(records).columns([:number, :panel_name, :panel_nation]).update_settings(info: false, searching: false, paging: false ).decorate.render
-
-  /.col-sm-6
-    h2= t(".performed_segment", default: "Performed Segment")
-    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category_name, :segment_name, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
-
 ////////////////////////////////////////////////////////////////
 h2
   - case result_type
@@ -65,7 +56,6 @@ h2
     = category_results.update_settings(paging: false, info: false).decorate.render
   - when :segment
     = segment_results.update_settings(paging: false, info: false).decorate.render
-
 
 .row
   .col-sm-6
