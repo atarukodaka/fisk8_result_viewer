@@ -4,7 +4,7 @@ require 'controller_spec_helper'
 describe DeviationsController, type: :controller do
   render_views
 
-  let!(:main)) {
+  let!(:main) {
     competition = create(:competition, :world)
     score = competition.scores.first
     official = score.performed_segment.officials.first
