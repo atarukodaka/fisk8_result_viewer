@@ -5,7 +5,7 @@ RSpec.describe Element do
   using StringToModel
 
   let(:competition) { create(:competition, :world) }
-  
+
   describe 'single' do
     let(:score) { competition.scores.first }
     let(:skater) { score.skater }
@@ -56,8 +56,8 @@ RSpec.describe Element do
       its(:element_type) { is_expected.to eq('unknown') }
     end
   end
-  ################
-  ## ice dance
+################
+## ice dance
 =begin
   describe 'ice dance' do
     let(:skater) { create(:skater, :ice_dance) }

@@ -43,6 +43,7 @@ class CompetitionUpdater < Updater
           data[:scores].select_category_segment(category, segment).each do |item|
             score = update_score(competition, category, segment, item)
             next if !options[:enable_judge_details] || season < '2016-17'
+
             ## details / deviations
             officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
             update_judge_details(score, officials: officials)

@@ -1,3 +1,3 @@
 module ApplicationHelper
-  include LinkToHelper, FormHelper
+  include LinkToHelper, FormHelper, YoutubeHelper
 end

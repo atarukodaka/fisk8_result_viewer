@@ -3,7 +3,7 @@ using StringToModel
 
 RSpec.describe SkaterUpdater, updater: true do
   let(:updater) { SkaterUpdater.new(verbose: false) }
-  
+
   describe 'update skaters' do
     before(:all) {
       updater.new.update_skaters
@@ -22,7 +22,7 @@ RSpec.describe SkaterUpdater, updater: true do
       expect(skater.coach).not_to be_nil
     }
   end
-  
+
   describe 'skaters detail' do
     it {
       men = 'MEN'.to_category_type

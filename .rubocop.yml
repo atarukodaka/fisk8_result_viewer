@@ -18,6 +18,9 @@ Layout/AlignHash:
 Layout/ExtraSpacing:
   Enabled: false
 
+Layout/LeadingCommentSpace:
+  Enabled: false
+  
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
@@ -93,6 +96,9 @@ Style/IfUnlessModifier:
 #  Enabled: false
 
 Style/MixinGrouping:
+  Enabled: false
+
+Style/NumericLiterals:     ## 12_345
   Enabled: false
 
 Style/ParallelAssignment:

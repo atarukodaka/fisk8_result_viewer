@@ -11,28 +11,19 @@
 
     h2= t(".relevant_video", default: "Relevant Video")
     - query = "#{score.skater.name} #{score.competition.name} #{score.segment.name}"
-    /- api_key = ENV['YOUTUBE_API_KEY']
     - api_key = Settings[:youtube][:api_key]
     - if api_key.blank?
       div set ENV['YOUTUBE_API_KEY'] to search youtube videos.
     - else
-      - begin
-        - response = open("https://www.googleapis.com/youtube/v3/search?part=snippet&q='#{query}'&order=relevance&key=#{api_key}").read
-        - json = JSON.parse(response)
-        - if (item = json["items"].first)
-          - video_id = item["id"]["videoId"]
-          - video_title = item["snippet"]["title"]
-          - video_published_at = item["snippet"]["publishedAt"].in_time_zone("UTC")
-          iframe id="ytplayer" src="https://www.youtube.com/embed/#{video_id}" width=640 height=360
+      - if video = parse_youtube(query, api_key: api_key)
+          iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=640 height=360 allowfullscreen=true
           ul
             li= "query: #{query}"
-            li= "title: #{video_title}"
-            li= "date: #{video_published_at}"
-        - else
-          div No relevant videos found
-      - rescue OpenURI::HTTPError
-        div HTTP ERROR
-    div= link_to(t(".see_other_relevant_videos", default: "see other relevant videos"), "http://www.youtube.com/results?q=#{query}")
+            li= "title: #{video[:title]}"
+            li= "date: #{video[:published_at]}"
+      - else
+        div No relevant videos found
+    div= link_to(t(".see_other_relevant_videos", default: "see other relevant videos"), "http://www.youtube.com/results?q=#{query}", target: '_blank')
 
 h2= t(".elements", default: "Elements")
 
