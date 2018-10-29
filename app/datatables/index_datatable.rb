@@ -68,7 +68,7 @@ class IndexDatatable < AjaxDatatables::Datatable
   end
 
   def default_settings
-    super.merge(pageLength: 25, searching: true, searching: false)
+    super.merge(pageLength: 25, searching: false)
   end
 
   def default_model
