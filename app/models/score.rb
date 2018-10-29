@@ -8,16 +8,22 @@ class Score < ApplicationRecord
   has_many :components, dependent: :destroy, autosave: true
   has_many :deviations, dependent: :destroy
 
+  #has_many :judge_details, through: :elements
+  #has_many :officials, through: :performed_segment
+
   belongs_to :competition
 
   ## # references
   belongs_to :skater
   belongs_to :category
   belongs_to :segment
+  belongs_to :performed_segment
 
+=begin
   def performed_segment       ## rspec only
     competition.performed_segments.find_by(category: category, segment: segment)
   end
+=end
 
   ## scopes
   scope :recent, -> { order('date desc') }

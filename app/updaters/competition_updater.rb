@@ -43,8 +43,9 @@ class CompetitionUpdater < Updater
           data[:scores].select_category_segment(category, segment).each do |item|
             score = update_score(competition, category, segment, item)
             if options[:enable_judge_details] && season >= '2016-17'
-              update_judge_details(score)
-              update_deviations(score)
+              officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
+              update_judge_details(score, officials: officials)
+              update_deviations(score, officials: officials)
             end
           end
         end
@@ -97,6 +98,7 @@ class CompetitionUpdater < Updater
       ## performed segments
       ps = competition.performed_segments.category(category).segment(segment).first
       score.date = ps.starting_time.to_date
+      score.performed_segment = ps
       debug(score.summary)
     end
     cr&.update(segment.segment_type => sc)
@@ -111,8 +113,7 @@ class CompetitionUpdater < Updater
     sc  ## ensure to return score object
   end
 
-  def update_judge_details(score)
-    officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
+  def update_judge_details(score, officials:)
     [score.elements, score.components].flatten.each do |detailable|
       details = detailable.judges.split(/\s/).map(&:to_f)
       average = details.sum / details.size
@@ -125,10 +126,13 @@ class CompetitionUpdater < Updater
     end
   end
 
-  def update_deviations(score)
+  def update_deviations(score, officials:)
     num_elements = score.elements.count
+    #officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
+    #officials = JudgeDetail.where("elements.score_id": score.id)
+    officials = score.elements.first.officials
     ActiveRecord::Base.transaction do
-      officials.each do |_i, official|
+      officials.values.each do |_i, official|
         tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id)
                   .joins(:element).pluck(:deviation).map(&:abs).sum
         pcs_dev = JudgeDetail.where(official: official, "components.score_id": score.id)

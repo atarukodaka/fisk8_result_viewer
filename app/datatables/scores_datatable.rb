@@ -36,8 +36,8 @@ class ScoresDatatable < IndexDatatable
 
     columns.sources = source_mappings
 
-    [:competition_type, :competition_class, :competition_name, :season, :category_type_name, :seniority,
-     :segment_type, :team].each do |key|
+    [:competition_type, :competition_class, :competition_short_name, :season,
+     :category_type_name, :seniority, :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false
     end

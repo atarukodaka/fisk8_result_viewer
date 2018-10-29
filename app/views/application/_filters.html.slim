@@ -14,14 +14,14 @@
           = render_filter(child, datatable: filters.datatable)
         = render_filter(filter, datatable: filters.datatable)
 
-  = form_group(:data) do
+  = form_group(nil) do
     label Sort
     = select_tag(:sort_column, options_for_select([nil, *filters.datatable.columns.select(&:orderable).map(&:name)]))
     = select_tag(:sort_direction, options_for_select([:asc, :desc]))
     label= t("filter.offset", default: "Offset")
-    =text_field_tag(:offset, params[:offset], size: 10)
+    =text_field_tag(:offset, params[:offset] || 0, size: 10)
     label Length
-    =text_field_tag(:length, params[:length], size: 10)
+    =text_field_tag(:length, params[:length] || 1000, size: 10)
     label
     = button_tag("json", id: "json_button", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
     label

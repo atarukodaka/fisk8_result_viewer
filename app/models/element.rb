@@ -6,6 +6,8 @@ class Element < ApplicationRecord
   ## relations
   # has_many :element_judge_details, dependent: :destroy
   has_many :judge_details, as: :detailable, dependent: :destroy
+  has_many :officials, through: :judge_details
+
   belongs_to :score
 
   ## scopes
