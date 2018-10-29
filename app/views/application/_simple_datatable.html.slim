@@ -1,8 +1,10 @@
 // columns, data 
+- datatable || raise
 - settings ||= {}
 
+
 - table_id ||= "table_#{'dummy'.object_id}"
-- attrs = settings.merge({ columns: columns.map {|column_name| { name: column_name}} })
+- attrs = settings.merge({ columns: datatable.columns.map {|column_name| { name: column_name}} })
 div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
 
 script
@@ -11,10 +13,12 @@ script
 table.table.table-striped.table-hover.table-condensed id="#{table_id}"
   thead
     tr
-      - columns.each do |column|
-        th id="column_#{table_id}_#{column}" #{column}
+      - datatable.column_names.each do |key|
+        th id="column_#{table_id}_#{key}"
+          /= datatable.records.human_attribute_name key
+
   tbody
-    - data.each do |row|
+    - datatable.as_json.each do |item|
       tr
-        - row.each do |item|
-          td= item
+        - item.values.each do |value|
+          td= value

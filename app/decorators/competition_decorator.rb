@@ -1,5 +1,5 @@
 class CompetitionDecorator < EntryDecorator
-  def name
+  def competition_name
     h.link_to_competition(model)
   end
 

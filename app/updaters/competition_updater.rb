@@ -1,8 +1,8 @@
 class CompetitionUpdater < Updater
+  include NormalizePersonName
   using CategorySegmentSelector
   using StringToModel
   using MapValue
-  include CompetitionUpdater::Deviations
 
   ################
   def update_competition(site_url, options = {})
@@ -28,6 +28,7 @@ class CompetitionUpdater < Updater
 
       debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' %
             competition.attributes.symbolize_keys)
+      season = SkateSeason.new(competition.season)
       ## each categories
       data[:scores].categories.each do |category|
         debug('===  %s (%s) ===' % [category.name, competition.short_name], indent: 2)
@@ -40,11 +41,12 @@ class CompetitionUpdater < Updater
                          officials: data[:officials])
           ## scores
           data[:scores].select_category_segment(category, segment).each do |item|
-            update_score(competition, category, segment, item)
+            enable_judge_details = options[:enable_judge_details] && season.between?('2016-17', nil)
+            score = update_score(competition, category, segment, item)
+            update_judge_details(score) if enable_judge_details
           end
         end
       end
-      update_details(competition) if options[:enable_judge_details]
       competition        ## ensure to return competition object
     end ## transaction
   end
@@ -69,15 +71,16 @@ class CompetitionUpdater < Updater
     end
 
     ## officials
-    officials.select_category_segment(category, segment)
-      .reject { |d| d[:panel_name] == '-' }.each do |official|
-      panel = Panel.find_or_create_by(name: official[:panel_name])
+    officials.select_category_segment(category, segment).each do |official|
+      next if official[:panel_name] == '-'
+
+      panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
       panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
       performed_segment.officials.create!(number: official[:number], panel: panel)
     end
   end
 
-  def update_score(competition, category, segment, item)
+  def update_score(competition, category, segment, item, enable_judge_details: false)
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)
@@ -96,27 +99,21 @@ class CompetitionUpdater < Updater
     end
     cr&.update(segment.segment_type => sc)
 
-    item[:elements].each { |d| sc.elements.create!(d) }
-    item[:components].each { |d| sc.components.create!(d) }
-    sc.update(elements_summary: sc.elements.map(&:name).join('/'))
-    sc.update(components_summary: sc.components.map(&:value).join('/'))
-  end
+    ## details
+    elements_summary = item[:elements].map {|d| sc.elements.create!(d); d[:name] }.join('(/')
+    components_summary = item[:components].map { |d| sc.components.create!(d); d[:value] }.join('/')
+    
+    sc.update(elements_summary: elements_summary)
+    sc.update(components_summary: components_summary)
 
-  def update_details(competition)
-    ## it was random order before 2016-17
-    return unless SkateSeason.new(competition.season).between?('2016-17', nil)
-
-    debug('update judge details and deviations', indent: 3)
-    competition.scores.each do |score|
-      update_judge_details(score)
-    end
+    ## 
+    sc  ## ensure to return score object
   end
 
   def update_judge_details(score)
-    debug("update details: #{score.name}", indent: 3)
+    #debug("update details: #{score.name}", indent: 3)
     tes_deviations = Hash.new(0.0)
     pcs_deviations = Hash.new(0.0)
-    num_elements = score.elements.count
     
     officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
     [score.elements, score.components].flatten.each do |detailable|
@@ -126,15 +123,17 @@ class CompetitionUpdater < Updater
 
       details.each.with_index(1) do |value, i|
         deviation = average - value
-      
-        detailable.judge_details.create(number: i, value: value, official: officials[i], deviation: deviation)
+
+        #detailable.judge_details.create(number: i, value: value, official: officials[i], deviation: deviation)
+        JudgeDetail.create(detailable: detailable, number: i, value: value, official: officials[i], deviation: deviation)
         case detailable
         when Element then tes_deviations[i] += deviation.abs
         when Component then pcs_deviations[i] += deviation
         end
       end
     end
-    
+    ## deviation
+    num_elements = score.elements.count
     ActiveRecord::Base.transaction do
       officials.each do|i, official|
         score.deviations.create(official: official,
