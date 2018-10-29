@@ -50,7 +50,7 @@ module AjaxFeatureHelper
         operators ||= { pros: :eq, cons: :not_eq }
         datatable = filter.filters.datatable
         column = datatable.columns[filter.key] || next
-        value_func ||= lambda { |dt, key| dt.data.first.send(key) }
+        value_func ||= ->(dt, key) { dt.data.first.send(key) }
 
         value = value_func.call(datatable, filter.key)
 

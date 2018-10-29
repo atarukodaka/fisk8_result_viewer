@@ -29,11 +29,11 @@ class CompetitionParser
     protected
 
     def elem_to_i
-      lambda { |elem| elem.text.squish.to_i }
+      ->(elem) { elem.text.squish.to_i }
     end
 
     def elem_to_f
-      lambda { |elem| elem.text.squish.to_f }
+      ->(elem) { elem.text.squish.to_f }
     end
 
     def elem_to_isu_number

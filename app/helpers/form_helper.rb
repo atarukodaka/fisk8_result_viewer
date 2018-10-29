@@ -57,7 +57,7 @@ module FormHelper
   end
 
   def render_filter(filter, datatable:)
-    func = filter.onchange || lambda { |dt| ajax_search(filter.key, dt) }
+    func = filter.onchange || ->(dt) { ajax_search(filter.key, dt) }
     onc = func.call(datatable)
     size ||= filter.size || 70
     case filter.input_type
