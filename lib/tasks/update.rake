@@ -15,7 +15,7 @@ namespace :update do
   desc 'update all skaters detail'
   task skaters_detail: :environment do
     quiet = ENV['quiet'].to_i.nonzero?
-    SkaterUpdater.new(verbose: !quiet).update_skaters _detail
+    SkaterUpdater.new(verbose: !quiet).update_skaters_detail
   end
   ################
   def options_from_env

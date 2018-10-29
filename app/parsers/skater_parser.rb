@@ -24,17 +24,16 @@ class SkaterParser < Parser
 
   def update_bio_last_updated_at(data, page)
     ## bio last updated at
-    if (elem = page.xpath("//td/span[contains(., 'last update')]").first)
-      if elem.text =~ /last update: (.*)/
-        begin
-          data[:bio_updated_at] = $1.in_time_zone('UTC')
-        rescue ArgumentError => e
-          debug(e.message)
-        end
+    if page.xpath("//td/span[contains(., 'last update')]").first&.text =~ /last update: (.*)/
+      begin
+        data[:bio_updated_at] = $1.in_time_zone('UTC')
+      rescue ArgumentError => e
+        debug(e.message)
       end
     end
   end
 
+=begin
   def normalize_birthday(data)
     if data[:birthday].present?
       begin
@@ -44,7 +43,7 @@ class SkaterParser < Parser
       end
     end
   end
-
+=end
   def parse_skater_details(isu_number)
     page = get_url(isu_bio_url(isu_number)) || raise("invalid isu number: #{isu_number}")
     data = { isu_number: isu_number }
@@ -65,7 +64,7 @@ class SkaterParser < Parser
                   page.search("#FormView2_#{elem_id}").text
     end
 
-    normalize_birthday(data)
+    #normalize_birthday(data)
     update_bio_last_updated_at(data, page)
     data
   end

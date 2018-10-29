@@ -24,7 +24,7 @@ RSpec.describe ScoresController, type: :controller do
 
     context 'format: .json' do
       subject { get :show, params: { name: main.name, format: :json } }
-      its(:body) { is_expected.to include(main.name) }
+      its(:body) { is_expected.to have_content(main.name) }
     end
   end
 end

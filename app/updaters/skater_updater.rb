@@ -25,7 +25,7 @@ class SkaterUpdater < Updater
   ################
   # skater detail
   def update_skaters_detail
-    Skater.reject { |sk| sk.isu_number.blank? }.each do |skater|
+    Skater.find_each.reject { |sk| sk.isu_number.blank? }.each do |skater|
       update_skater_detail(skater.isu_number)
     end
   end
@@ -34,7 +34,7 @@ class SkaterUpdater < Updater
     skater = Skater.find_or_create_by(isu_number: isu_number)
 
     details_hash = parser.parse_skater_details(skater.isu_number)
-    debug("#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}")
+    debug("#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}, dob: #{details_hash[:birthday]} at #{details_hash[:bio_updated_at]}")
 
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,

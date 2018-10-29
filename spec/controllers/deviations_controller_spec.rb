@@ -4,13 +4,13 @@ require 'controller_spec_helper'
 describe DeviationsController, type: :controller do
   render_views
 
-  let!(:first) {
+  let!(:main)) {
     competition = create(:competition, :world)
     score = competition.scores.first
     official = score.performed_segment.officials.first
     create(:deviation, :first, score: score, official: official)
   }
-  let!(:second) {
+  let!(:sub) {
     competition = create(:competition, :finlandia)
     score = competition.scores.first
     official = score.performed_segment.officials.first
@@ -26,8 +26,9 @@ describe DeviationsController, type: :controller do
   end
 
   describe '#show' do
-    it {
-      ## TODO: show spec
-    }
+    context 'name' do
+      subject { get :show, params: { name: main.name } }
+      its(:body) { is_expected.to have_content(main.name) }
+    end
   end
 end
