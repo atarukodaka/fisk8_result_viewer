@@ -27,10 +27,10 @@ class IndexController < ApplicationController
     datatable = create_datatable.serverside.paging.decorate
 
     render json:  {
-             iTotalRecords: datatable.records.count,
+      iTotalRecords: datatable.records.count,
              iTotalDisplayRecords: datatable.data.total_count,
              data: datatable.as_json,
-           }
+    }
   end
 
   ################

@@ -19,8 +19,8 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       # t.float :abs_deviation
 
       t.references :detailable, polymorphic: true, index: true
-      #t.belongs_to :element
-      #t.belongs_to :component
+      # t.belongs_to :element
+      # t.belongs_to :component
       t.belongs_to :official
     end
 

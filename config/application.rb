@@ -9,7 +9,7 @@ module Fisk8ResultViewer
 
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    #config.logger = Logger.new(STDOUT)
+    # config.logger = Logger.new(STDOUT)
     config.load_defaults 5.1
     # config.i18n.default_locale = :ja
 
