@@ -16,9 +16,9 @@ RSpec.describe SkateSeason do
 
   describe 'compare' do
     it {
-      expect(season > '2016-17').to be false
+      expect(season > '2016-17').to be true
       expect(season == '2017-18').to be true
-      expect(season < '2017-18').to be true
+      expect(season < '2017-18').to be false
     }
   end
   describe 'between?' do
