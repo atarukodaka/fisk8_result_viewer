@@ -13,6 +13,7 @@
 - spec: update details
 - ajax helper: find by xpath
 - filters: flatten
+- spec: model/elements for icedance
 
 ### new feature
 
