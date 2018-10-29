@@ -42,11 +42,11 @@ class CompetitionUpdater < Updater
           ## scores
           data[:scores].select_category_segment(category, segment).each do |item|
             score = update_score(competition, category, segment, item)
-            if options[:enable_judge_details] && season >= '2016-17'
-              officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
-              update_judge_details(score, officials: officials)
-              update_deviations(score, officials: officials)
-            end
+            next if !options[:enable_judge_details] || season < '2016-17'
+            ## details / deviations
+            officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
+            update_judge_details(score, officials: officials)
+            update_deviations(score, officials: officials)
           end
         end
       end
@@ -130,7 +130,7 @@ class CompetitionUpdater < Updater
     num_elements = score.elements.count
     #officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
     #officials = JudgeDetail.where("elements.score_id": score.id)
-    officials = score.elements.first.officials
+    #officials = score.elements.first.officials
     ActiveRecord::Base.transaction do
       officials.values.each do |_i, official|
         tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id)

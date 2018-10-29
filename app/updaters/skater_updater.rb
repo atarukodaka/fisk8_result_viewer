@@ -34,8 +34,8 @@ class SkaterUpdater < Updater
     skater = Skater.find_or_create_by(isu_number: isu_number)
 
     details_hash = parser.parse_skater_details(skater.isu_number)
-    debug("#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}, dob: #{details_hash[:birthday]} at #{details_hash[:bio_updated_at]}")
-
+    debug("#{skater.name} [#{skater.isu_number}]: %s" %
+          details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
                :coach, :choreographer, :bio_updated_at]
