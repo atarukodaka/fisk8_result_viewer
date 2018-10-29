@@ -41,9 +41,11 @@ class CompetitionUpdater < Updater
                          officials: data[:officials])
           ## scores
           data[:scores].select_category_segment(category, segment).each do |item|
-            enable_judge_details = options[:enable_judge_details] && season >= '2016-17'
             score = update_score(competition, category, segment, item)
-            update_judge_details(score) if enable_judge_details
+            if options[:enable_judge_details] && season >= '2016-17'
+              update_judge_details(score)
+              update_deviations(score)
+            end
           end
         end
       end
@@ -110,10 +112,6 @@ class CompetitionUpdater < Updater
   end
 
   def update_judge_details(score)
-    # debug("update details: #{score.name}", indent: 3)
-    # tes_deviations = Hash.new(0.0)
-    # pcs_deviations = Hash.new(0.0)
-
     officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
     [score.elements, score.components].flatten.each do |detailable|
       details = detailable.judges.split(/\s/).map(&:to_f)
@@ -121,23 +119,16 @@ class CompetitionUpdater < Updater
       detailable.update(average: average)
 
       details.each.with_index(1) do |value, i|
-        deviation = average - value
-
-        # detailable.judge_details.create(number: i, value: value, official: officials[i], deviation: deviation)
-        JudgeDetail.create(detailable: detailable, number: i, value: value, official: officials[i], deviation: deviation)
-=begin
-        case detailable
-        when Element then tes_deviations[i] += deviation.abs
-        when Component then pcs_deviations[i] += deviation
-        end
-=end
+        JudgeDetail.create(detailable: detailable, number: i, value: value,
+                           official: officials[i], deviation: average - value)
       end
     end
-    ## deviation
+  end
+
+  def update_deviations(score)
     num_elements = score.elements.count
     ActiveRecord::Base.transaction do
       officials.each do |_i, official|
-        # tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id).joins(:element).sum(:deviation)
         tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id)
                   .joins(:element).pluck(:deviation).map(&:abs).sum
         pcs_dev = JudgeDetail.where(official: official, "components.score_id": score.id)
@@ -148,12 +139,6 @@ class CompetitionUpdater < Updater
                                 tes_deviation_ratio: tes_dev / num_elements,
                                 pcs_deviation: pcs_dev,
                                 pcs_deviation_ratio: pcs_dev / 7.5)
-=begin
-                                tes_deviation: tes_deviations[i],
-                                tes_deviation_ratio: tes_deviations[i] / num_elements,
-                                pcs_deviation: pcs_deviations[i],
-                                pcs_deviation_ratio: pcs_deviations[i] / 7.5,)
-=end
       end
     end
   end

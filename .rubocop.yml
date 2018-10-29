@@ -38,14 +38,14 @@ Metrics/ClassLength:
     - app/updaters/competition_updater.rb       ## TODO
       
 Metrics/BlockLength:
-  Max: 30
+  Max: 35
   Exclude:
     - spec/**/*.rb
     - config/routes.rb
     - lib/tasks/**/*.rake
 
 Metrics/MethodLength:
-  Max: 35
+  Max: 40
   Exclude:
     - db/migrate/*.rb
 
