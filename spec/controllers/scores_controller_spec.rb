@@ -16,8 +16,8 @@ RSpec.describe ScoresController, type: :controller do
     end
   end
 
-  describe '#show ', vcr: true do
-    context 'name' do
+  describe '#show ' do
+    context 'name', vcr: true do
       subject { get :show, params: { name: main.name } }
       its(:body) { is_expected.to include(main.name) }
     end
@@ -26,5 +26,6 @@ RSpec.describe ScoresController, type: :controller do
       subject { get :show, params: { name: main.name, format: :json } }
       its(:body) { is_expected.to have_content(main.name) }
     end
+
   end
 end
