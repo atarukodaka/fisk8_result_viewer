@@ -10,7 +10,7 @@ class SkaterUpdater < Updater
       debug("#{category_type.name}: #{category_type.isu_bio_url}")
 
       ActiveRecord::Base.transaction do
-        parser.parse_skaters(category_type.name, category_type.isu_bio_url).each do |hash|
+        parser.parse_skaters(category_type.name, category_type.isu_bio_url).map do |hash|
           # hash[:category] = hash[:category].to_category
           hash[:category_type] = category_type
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|

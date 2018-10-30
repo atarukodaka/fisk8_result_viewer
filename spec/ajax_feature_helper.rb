@@ -34,13 +34,14 @@ module AjaxFeatureHelper
         find_by_id(key).click
       end
       yield if block_given?
+      sleep SLEEP_COUNT
     end
     case format
     when :json
       find_by_id('json_button').click
+      sleep SLEEP_COUNT
     end
 
-    sleep SLEEP_COUNT
     page
   end
   ################

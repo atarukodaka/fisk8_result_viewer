@@ -14,27 +14,25 @@
     - api_key = Settings[:youtube][:api_key]
     - if api_key.blank?
       div set ENV['YOUTUBE_API_KEY'] to search youtube videos.
+    - elsif video = parse_youtube(query, api_key: api_key)
+        iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=640 height=360 allowfullscreen=true
+        ul
+          li= "query: #{query}"
+          li= "title: #{video[:title]}"
+          li= "date: #{video[:published_at]}"
     - else
-      - if video = parse_youtube(query, api_key: api_key)
-          iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=640 height=360 allowfullscreen=true
-          ul
-            li= "query: #{query}"
-            li= "title: #{video[:title]}"
-            li= "date: #{video[:published_at]}"
-      - else
-        div No relevant videos found
+      div No relevant videos found
     div= link_to(t(".see_other_relevant_videos", default: "see other relevant videos"), "http://www.youtube.com/results?q=#{query}", target: '_blank')
 
 h2= t(".elements", default: "Elements")
 
-= elements.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render
+= elements.decorate.render
 
 h2= t(".components", default: "Components")
 
-= components.update_settings(paging: false, info: false).default_orders([[:number, :asc]]).decorate.render
+= components.decorate.render
 
-- if score.deductions.to_f < 0
-  h2= t("view.score.deductions", default: "Deductions")
-  = score.deduction_reasons
+h2= t("view.score.deductions", default: "Deductions")
+= score.deduction_reasons || 'n/a'
 
 

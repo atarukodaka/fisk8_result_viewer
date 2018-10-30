@@ -55,5 +55,6 @@ module LinkToHelper
   def span_link_icon
     content_tag(:span, '', class: 'glyphicon glyphicon-link')
   end
+
   # rubocop:enable Style/OptionalArguments
 end ## module
