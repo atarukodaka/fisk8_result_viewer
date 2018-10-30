@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CompetitionParser::ScoreParser do
+RSpec.describe CompetitionParser::ScoreParser, vcr: true do
   describe 'deduction reasons' do
     ## rank3 kolyada: falls: -4.00(3)
     let(:score_url) { 'http://www.isuresults.com/results/season1718/gprus2017/gprus2017_Men_FS_Scores.pdf' }
