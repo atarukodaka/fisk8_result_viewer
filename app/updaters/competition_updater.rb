@@ -133,13 +133,13 @@ class CompetitionUpdater < Updater
     #officials = JudgeDetail.where("elements.score_id": score.id)
     #officials = score.elements.first.officials
     ActiveRecord::Base.transaction do
-      officials.values.each do |_i, official|
+      officials.values.each do |official|
         tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id)
                   .joins(:element).pluck(:deviation).map(&:abs).sum
         pcs_dev = JudgeDetail.where(official: official, "components.score_id": score.id)
                   .joins(:component).sum(:deviation)
 
-        score.deviations.create(official: official,
+        score.deviations.create!(official: official,
                                 tes_deviation: tes_dev,
                                 tes_deviation_ratio: tes_dev / num_elements,
                                 pcs_deviation: pcs_dev,
