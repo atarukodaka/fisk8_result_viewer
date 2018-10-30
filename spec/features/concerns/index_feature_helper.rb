@@ -1,4 +1,4 @@
-module AjaxFeatureHelper
+module IndexFeatureHelper
   SLEEP_COUNT = 0.5
   shared_context :contains_all do |datatable|
     context 'contains_all' do
@@ -160,7 +160,7 @@ module AjaxFeatureHelper
 end
 ################
 RSpec.configure do |config|
-  config.include AjaxFeatureHelper
-  config.include AjaxFeatureHelper::Filter
-  config.include AjaxFeatureHelper::Order
+  config.include IndexFeatureHelper
+  config.include IndexFeatureHelper::Filter
+  config.include IndexFeatureHelper::Order
 end

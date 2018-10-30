@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'ajax_feature_helper'
+require_relative 'concerns/index_feature_helper'
 
 feature ScoresController, type: :feature, feature: true do
   before {
