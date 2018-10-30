@@ -36,6 +36,8 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'rubocop', require: false
+  gem 'webmock', require: false
+  gem 'vcr', require: false
 end
 
 group :test do

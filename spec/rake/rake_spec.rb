@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rake'
 
-RSpec.describe 'rake', rake: true do
+RSpec.describe 'rake', rake: true, vcr: true do
   before(:all) do
     @rake = Rake::Application.new
     Rake.application = @rake
