@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'controller_spec_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 RSpec.describe ScoresController, type: :controller do
   render_views
@@ -26,6 +26,5 @@ RSpec.describe ScoresController, type: :controller do
       subject { get :show, params: { name: main.name, format: :json } }
       its(:body) { is_expected.to have_content(main.name) }
     end
-
   end
 end

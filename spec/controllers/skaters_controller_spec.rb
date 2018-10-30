@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'controller_spec_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 RSpec.describe SkatersController, type: :controller do
   using StringToModel

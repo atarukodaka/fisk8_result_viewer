@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'controller_spec_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 describe DeviationsController, type: :controller do
   render_views
