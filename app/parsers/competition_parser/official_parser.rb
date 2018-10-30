@@ -1,7 +1,7 @@
 class CompetitionParser
   class OfficialParser < Parser
     def parse(url, category, segment)
-      page = get_url(url, read_option: 'r:iso-8859-1').presence || (return [])
+      page = get_url(url, mode: 'r:iso-8859-1').presence || (return [])
       debug("-- parsing officials: #{url}", indent: 3)
       func = "contains(text(), 'Function')"
       elem = page.xpath("//th[#{func}] | //td[#{func}]") || raise('no Function cell')
