@@ -1,4 +1,5 @@
 class JudgeDetailDecorator < EntryDecorator
+=begin
   def score_name
     h.link_to_score(model.detailable.score)
   end
@@ -10,5 +11,6 @@ class JudgeDetailDecorator < EntryDecorator
   def panel_name
     h.link_to_panel(official.panel)
   end
-  decorate_as_score(:average)
+=end
+  decorate_as_score(:average, :deviation)
 end

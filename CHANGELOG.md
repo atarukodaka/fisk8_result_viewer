@@ -13,6 +13,9 @@
 - spec: update details
 - ajax helper: find by xpath
 - filters: flatten
+- spec: model/elements for icedance
+- spec: update competition details, deviation
+- view: link_to_filter
 
 ### new feature
 

@@ -13,7 +13,7 @@ class CompetitionsDatatable < IndexDatatable
           [
             filter(:competition_class, :select),
             filter(:competition_type, :select),
-            filter(:season_operator, :select, label: 'season', onchange: lambda { |dt| ajax_draw(dt) },
+            filter(:season_operator, :select, label: 'season', onchange: ->(dt) { ajax_draw(dt) },
                    options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
             filter(:season, :select, label: ''),
           ]

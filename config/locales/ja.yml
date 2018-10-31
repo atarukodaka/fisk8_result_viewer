@@ -205,6 +205,7 @@ ja:
         component_name: コンポーネント名
 
       deviation:
+        deviation_name: 逸脱度名
         official_number: オフィシャル番号
         tes_deviation: TES逸脱度
         pcs_deviation: PCS逸脱度        

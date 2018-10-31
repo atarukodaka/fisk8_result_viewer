@@ -1,0 +1,15 @@
+- deviation || raise
+
+h2 Deviation
+
+= Listtable.new(self).columns([:deviation_name, :skater_name, :score_name, :panel_name, :official_number]).records(deviation).decorate.render
+
+h2 TES
+= "%.4f" % [ deviation.tes_deviation ]
+
+= tes_deviations_datatable.decorate.render
+
+h3 PCS
+= "%.4f" % [ deviation.pcs_deviation]
+
+= pcs_deviations_datatable.decorate.render

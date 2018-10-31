@@ -15,10 +15,12 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.integer :number
       t.float :value
       # t.float :average
-      # t.float :deviation
+      t.float :deviation
       # t.float :abs_deviation
 
       t.references :detailable, polymorphic: true, index: true
+      # t.belongs_to :element
+      # t.belongs_to :component
       t.belongs_to :official
     end
 
@@ -36,6 +38,7 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
 
     ################
     create_table :deviations do |t|
+      t.string :name
       t.belongs_to :score
       t.belongs_to :official
 

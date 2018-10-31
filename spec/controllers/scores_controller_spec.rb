@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 RSpec.describe ScoresController, type: :controller do
   render_views
@@ -8,19 +9,22 @@ RSpec.describe ScoresController, type: :controller do
 
   ################
   describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
+    datatable = ScoresDatatable.new
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
+    end
   end
 
   describe '#show ' do
-    context 'name' do
+    context 'name', vcr: true do
       subject { get :show, params: { name: main.name } }
       its(:body) { is_expected.to include(main.name) }
     end
 
     context 'format: .json' do
       subject { get :show, params: { name: main.name, format: :json } }
-      its(:body) { is_expected.to include(main.name) }
+      its(:body) { is_expected.to have_content(main.name) }
     end
   end
 end

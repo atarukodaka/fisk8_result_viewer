@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CompetitionParser do
+RSpec.describe CompetitionParser, vcr: true do
   include HttpGet
   using AcceptCategories
   using MapValue

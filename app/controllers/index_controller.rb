@@ -1,23 +1,24 @@
-require 'csv'
-
 class IndexController < ApplicationController
   def index
-    datatable = create_datatable
     respond_to do |format|
       format.html {
         render :index, locals: {
-          datatable: datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
-          #                 filters: "#{datatable.class}::Filters".constantize.new([], datatable: datatable),
+          datatable: create_datatable.ajax(serverside: true, url: url_for(action: :list, format: :json)).defer_load
         }
       }
+
+      datatable = create_datatable.limit(params[:length], params[:offset])
       format.json {
-        render json: datatable.serverside.limit(params[:length], params[:offset]).as_json
+        render json: datatable.as_json
       }
       format.csv {
+        send_data datatable.as_csv, filename: "#{controller_name}.csv"
+=begin
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
-          datatable.serverside.limit.as_json.each { |row|  c << row }  ## TODO
+          datatable.as_json.each { |row|  c << row }
         end
         send_data csv, filename: "#{controller_name}.csv"
+=end
       }
     end
   end
@@ -27,21 +28,22 @@ class IndexController < ApplicationController
     datatable = create_datatable.serverside.paging.decorate
 
     render json:  {
-      iTotalRecords:        datatable.records.count,
+      iTotalRecords: datatable.records.count,
              iTotalDisplayRecords: datatable.data.total_count,
-             data:                 datatable.as_json,
+             data: datatable.as_json,
     }
-    # render json: create_datatable.serverside
   end
 
+  ################
+  ## show actions
   def data_to_show
     {}
   end
 
   def show
     respond_to do |format|
-      format.html {     render locals: data_to_show }
-      format.json {     render json: data_to_show }
+      format.html { render locals: data_to_show }
+      format.json { render json: data_to_show }
     end
   end
 

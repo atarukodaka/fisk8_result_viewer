@@ -102,6 +102,13 @@ module AjaxDatatables
         end.to_h.as_json(*args)
       end
     end
+    def as_csv
+      require 'csv'
+
+      CSV.generate(headers: column_names, write_headers: true) do |c|
+        as_json.each { |row|  c << row }
+      end
+    end
   end
 end
 ## -- end of datatable.rb

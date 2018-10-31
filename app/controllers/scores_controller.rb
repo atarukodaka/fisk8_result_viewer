@@ -13,8 +13,10 @@ class ScoresController < IndexController
     score = Score.find_by!(name: params[:name])
     {
       score: score,
-      elements:   elements_datatable(score),
-      components: components_datatable(score),
+      elements: elements_datatable(score).update_settings(paging: false, info: false)
+        .default_orders([[:number, :asc]]),
+      components: components_datatable(score).update_settings(paging: false, info: false)
+        .default_orders([[:number, :asc]]),
     }
   end
 end

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 RSpec.describe SkatersController, type: :controller do
   using StringToModel
@@ -17,34 +18,11 @@ RSpec.describe SkatersController, type: :controller do
 
   ################
   describe '#index' do
-    shared_examples :skaters_who_have_scores do
-      its(:body) { is_expected.to include(men_skater.name) }
-      its(:body) { is_expected.to include(ladies_skater.name) }
-      # its(:body) { is_expected.not_to include(no_scores_skater.name) }
-    end
-
-    describe 'all' do
-      subject { get :index }
-      it { is_expected.to be_success }
-      it_behaves_like :skaters_who_have_scores
-    end
-
-    describe 'format: ' do
-      [:json, :csv].each do |format|
-        context ".#{format}" do
-          subject { get :index, params: { format: format } }
-          it_behaves_like :skaters_who_have_scores
-        end
-      end
-    end
-
-=begin
     datatable = SkatersDatatable.new
-    include_context :json, datatable
-    datatable.filters.reject {|d| d.input_type.nil? }.each do |filter|
-      include_context :json_filter, :category_type_name, datatable
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
     end
-=end
   end
   ################
   describe '#show' do

@@ -1,4 +1,4 @@
-module AjaxFeatureHelper
+module IndexFeatureHelper
   SLEEP_COUNT = 0.5
   shared_context :contains_all do |datatable|
     context 'contains_all' do
@@ -11,7 +11,7 @@ module AjaxFeatureHelper
     end
   end
   ## shared functions
-  def get_datatable(page)
+  def get_datatable(page)   ## ajax
     table_id = page.find(:css, '.dataTable')[:id]
     page.find("##{table_id}")
   end
@@ -20,7 +20,7 @@ module AjaxFeatureHelper
     send("#{datatable.default_model.to_s.pluralize.underscore}_path".to_sym)
   end
 
-  def ajax_actions(actions, path:, format: :html)
+  def ajax_actions(actions, path:, format: :html)  ## ajax
     visit path
     actions.each do |hash|
       key, value, input_type = hash.values_at(:key, :value, :input_type)
@@ -34,50 +34,45 @@ module AjaxFeatureHelper
         find_by_id(key).click
       end
       yield if block_given?
+      sleep SLEEP_COUNT
     end
     case format
     when :json
       find_by_id('json_button').click
+      sleep SLEEP_COUNT
     end
 
-    sleep SLEEP_COUNT
     page
   end
   ################
   module Filter
-    shared_examples :filter do |filter, additional_actions: nil, value_func: nil, pros_operator: :eq, cons_operator: :not_eq|
+    shared_examples :filter do |filter, additional_actions: nil, value_func: nil, operators: nil|
       it {
+        operators ||= { pros: :eq, cons: :not_eq }
         datatable = filter.filters.datatable
         column = datatable.columns[filter.key] || next
-        value_func ||= lambda { |dt, key| dt.data.first.send(key) }
+        value_func ||= ->(dt, key) { dt.data.first.send(key) }
 
         value = value_func.call(datatable, filter.key)
 
         ## pros, cons
         arel = column.table_model.arel_table[column.table_field]
-        pros = datatable.data.where(arel.send(pros_operator, value))
-        cons = datatable.data.where(arel.send(cons_operator, value))
+        pros = datatable.data.where(arel.send(operators[:pros], value))
+        cons = datatable.data.where(arel.send(operators[:cons], value))
 
         path = datatable_index_path(datatable)
+
         actions = [{ key: filter.key, input_type: filter.input_type, value: value }]
         actions.push(*additional_actions) if additional_actions
 
         ajax_actions(actions, path: path)
         table_text = get_datatable(page).text
 
-        pros.each do |item|
-          expect(table_text).to have_content(item.name)
-        end
-        cons.each do |item|
-          expect(table_text).not_to have_content(item.name)
-        end
+        pros.each { |item| expect(table_text).to have_content(item.name) }
+        cons.each { |item| expect(table_text).not_to have_content(item.name) }
         ajax_actions(actions, path: path, format: :json)
-        pros.each do |item|
-          expect(page.text).to have_content(item.name)
-        end
-        cons.each do |item|
-          expect(page.text).not_to have_content(item.name)
-        end
+        pros.each { |item| expect(page.text).to have_content(item.name) }
+        cons.each { |item| expect(page.text).not_to have_content(item.name) }
       }
     end
     shared_context :filters do |datatable|
@@ -91,18 +86,20 @@ module AjaxFeatureHelper
     end
     shared_context :filter_with_operator do |filter, operator_key, operator_value|
       context "#{operator_key} #{operator_value}" do
-        direction, pros_operator, cons_operator =
+        direction, operators =
           case operator_value
-          when '>' then [:asc, :gt, :lteq]
-          when '<' then [:desc, :lt, :gteq]
+          when '>' then [:asc, { pros: :gt, cons: :lteq }]
+          when '>=' then [:desc, { pros: :gteq, cons: :lt }]
+          when '<' then [:desc, { pros: :lt, cons: :gteq }]
+          when '<=' then [:asc, { pros: :lteq, cons: :gt }]
+          else raise
           end
 
         actions = [{ key: operator_key, value: operator_value, input_type: :select }]
         value_func = lambda { |dt, key|
           dt.data.order("#{dt.columns[key].source} #{direction}").first.send(key)
         }
-        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func,
-                        pros_operator: pros_operator, cons_operator: cons_operator
+        it_behaves_like :filter, filter, additional_actions: actions, value_func: value_func, operators: operators
       end
     end
 
@@ -163,7 +160,7 @@ module AjaxFeatureHelper
 end
 ################
 RSpec.configure do |config|
-  config.include AjaxFeatureHelper
-  config.include AjaxFeatureHelper::Filter
-  config.include AjaxFeatureHelper::Order
+  config.include IndexFeatureHelper
+  config.include IndexFeatureHelper::Filter
+  config.include IndexFeatureHelper::Order
 end

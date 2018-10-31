@@ -10,7 +10,7 @@ class SkaterUpdater < Updater
       debug("#{category_type.name}: #{category_type.isu_bio_url}")
 
       ActiveRecord::Base.transaction do
-        parser.parse_skaters(category_type.name, category_type.isu_bio_url).each do |hash|
+        parser.parse_skaters(category_type.name, category_type.isu_bio_url).map do |hash|
           # hash[:category] = hash[:category].to_category
           hash[:category_type] = category_type
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
@@ -25,7 +25,7 @@ class SkaterUpdater < Updater
   ################
   # skater detail
   def update_skaters_detail
-    Skater.reject { |sk| sk.isu_number.blank? }.each do |skater|
+    Skater.find_each.reject { |sk| sk.isu_number.blank? }.each do |skater|
       update_skater_detail(skater.isu_number)
     end
   end
@@ -34,8 +34,8 @@ class SkaterUpdater < Updater
     skater = Skater.find_or_create_by(isu_number: isu_number)
 
     details_hash = parser.parse_skater_details(skater.isu_number)
-    debug("#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}")
-
+    debug("#{skater.name} [#{skater.isu_number}]: %s" %
+          details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
                :coach, :choreographer, :bio_updated_at]

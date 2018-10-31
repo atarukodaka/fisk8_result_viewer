@@ -1,15 +1,16 @@
 require 'rails_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 describe DeviationsController, type: :controller do
   render_views
 
-  let!(:first) {
+  let!(:main) {
     competition = create(:competition, :world)
     score = competition.scores.first
     official = score.performed_segment.officials.first
     create(:deviation, :first, score: score, official: official)
   }
-  let!(:second) {
+  let!(:sub) {
     competition = create(:competition, :finlandia)
     score = competition.scores.first
     official = score.performed_segment.officials.first
@@ -17,39 +18,17 @@ describe DeviationsController, type: :controller do
   }
 
   describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-    its(:body) { is_expected.to have_content(first.score.name) }
-    its(:body) { is_expected.to have_content(second.score.name) }
-  end
-
-  ################
-  describe '#panel_deviation' do
-    let!(:panel) { Panel.first }
-
-    context 'panel_name' do
-      subject { get :show_panel, params: { name: panel.name } }
-      its(:body) { is_expected.to have_content(panel.name) }
-    end
-
-    context 'format: .json' do
-      subject { get :show_panel, params: { name: panel.name, format: :json } }
-      its(:body) { is_expected.to have_content(panel.name) }
+    datatable = DeviationsDatatable.new
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
     end
   end
 
-  ################
-  describe '#skater_deviation' do
-    let!(:skater) { Skater.first }
-
-    context 'skater_name' do
-      subject { get :show_skater, params: { name: skater.name } }
-      its(:body) { is_expected.to have_content(skater.name) }
-    end
-
-    context 'format: .json' do
-      subject { get :show_skater, params: { name: skater.name, format: :json } }
-      its(:body) { is_expected.to have_content(skater.name) }
+  describe '#show' do
+    context 'name' do
+      subject { get :show, params: { name: main.name } }
+      its(:body) { is_expected.to have_content(main.name) }
     end
   end
 end

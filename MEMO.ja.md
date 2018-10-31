@@ -56,6 +56,31 @@ end
 - ajax 使う場合は DB カラムを作る必要あり
 - 文字列を返すカラムであること
 
+### 複数モデル
+
+- 他のモデルを参照する場合は、対応する virtual method を用意し、N+1を防ぐため includes する
+- ajax を使う場合は columns[key].source でテーブル名とフィールド名を指定し、かつ joins する
+
+```ruby
+% cat app/models/score.rb
+def score
+  ...
+  delegate :competition_class, to: competition
+  
+% cat app/datatables/scores_datatable.rb
+  def initialize(*)
+    super
+	columns([........, :competition_type,....])
+	columns[:competition_type].source = 'competitions.competition_type'
+
+  def fetch_records
+    super.joins(:competition).includes(:competition)
+```
+
+### datatable の仕組み
+- .html: 
+- .json/.csv: 
+
 
 ## メモ
 ### ActiveHash::Base

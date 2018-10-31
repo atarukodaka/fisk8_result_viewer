@@ -8,7 +8,6 @@ require 'rspec/rails'
 ActiveRecord::Migration.maintain_test_schema!
 
 require 'spec_helper'
-require 'controller_spec_helper'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
@@ -43,7 +42,4 @@ RSpec.configure do |config|
   config.before(:all) do
     FactoryBot.reload
   end
-
-  ## include ajax helpers
-  config.include ControllerSpecHelper
 end

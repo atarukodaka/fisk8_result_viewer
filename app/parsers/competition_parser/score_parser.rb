@@ -4,7 +4,7 @@ require 'tempfile'
 # rubocop:disable Metrics/ClassLength
 class CompetitionParser
   class ScoreParser < Parser
-    SCORE_DELIMITER = /Score Score/
+    SCORE_DELIMITER = /Score Score/.freeze
 
     def parse(score_url, category = nil, segment = nil)
       text = convert_pdf(score_url) || (return [])
