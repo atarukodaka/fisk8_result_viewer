@@ -77,6 +77,11 @@ def score
     super.joins(:competition).includes(:competition)
 ```
 
+### datatable の仕組み
+- .html: 
+- .json/.csv: 
+
+
 ## メモ
 ### ActiveHash::Base
 便利なのだが、whereが使えない。

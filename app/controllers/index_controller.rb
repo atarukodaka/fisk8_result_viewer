@@ -1,5 +1,3 @@
-require 'csv'
-
 class IndexController < ApplicationController
   def index
     respond_to do |format|
@@ -9,15 +7,18 @@ class IndexController < ApplicationController
         }
       }
 
-      datatable = create_datatable.serverside.limit(params[:length], params[:offset])
+      datatable = create_datatable.limit(params[:length], params[:offset])
       format.json {
         render json: datatable.as_json
       }
       format.csv {
+        send_data datatable.as_csv, filename: "#{controller_name}.csv"
+=begin
         csv = CSV.generate(headers: datatable.column_names, write_headers: true) do |c|
           datatable.as_json.each { |row|  c << row }
         end
         send_data csv, filename: "#{controller_name}.csv"
+=end
       }
     end
   end
@@ -41,8 +42,8 @@ class IndexController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html {     render locals: data_to_show }
-      format.json {     render json: data_to_show }
+      format.html { render locals: data_to_show }
+      format.json { render json: data_to_show }
     end
   end
 

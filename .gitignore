@@ -34,3 +34,4 @@ vendor/
 .env*
 \#*
 .rubocop_todo.yml
+spec/vcr

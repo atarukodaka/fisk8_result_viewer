@@ -53,5 +53,5 @@ Rails.application.configure do
   end
 
   # development badge
-  # config.rack_dev_mark.enable = true
+  config.rack_dev_mark.enable = true
 end
