@@ -1,46 +1,35 @@
-class ComponentsDatatable < IndexDatatable
+class ComponentsDatatable < ScoreDetailsDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      @data = [
+        filter(:component_name, :select),
+        filter(:value, nil) do
+          [
+            filter(:value_operator, :select, label: '', onchange: ->(dt) { ajax_draw(dt) }, options: OPERATORS),
+            filter(:value, :text_field, label: ''),
+          ]
+        end,
+        *ScoresDatatable::Filters.new(datatable: datatable).to_a,
+      ]
+    end
+  end
+  ################
   def initialize(*args)
     super
+    columns.add([:component_number, :component_name, :factor, :judges, :value,])
+    columns.sources = source_mappings
+    columns[:date].source = 'competitions.start_date'
 
-    columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
-             :ranking, :skater_name, :nation,
-             :number, :name, :factor, :judges, :value,])
-
-    columns.sources = {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      competition_class: "competitions.competition_class",
-      competition_type: "competitions.competition_type",
-      season: "competitions.season",
-      category: "categories.name",
-      category_type: "categories.category_type",
-      team: "categories.team",
-      seniority: "categories.seniority",
-      segment: "segments.name",
-      segment_type: "segments.segment_type",
-      date: "scores.date",
-      ranking: "scores.ranking",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      name: "components.name",
-    }
-  
-    ## searchble
-    columns[:date].searchable = false
-    columns[:value].operator = params[:value_operator].presence || :eq      if view_context
-
-    ## visible
-    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
-      columns[key].visible = false
-      columns[key].orderable = false
-    }
-    columns[:category].operator = :eq
-    columns[:team].operator = :boolean
-
-    default_orders([[:value, :desc]])
+    ## operartors
+    if view_context
+      columns[:value].operator = params[:value_operator].presence || :eq
+      columns[:season].operator = params[:season_operator].presence || :eq
+    end
   end
+
   def fetch_records
-    Component.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
+    super.includes(tables).joins(tables)
   end
 end

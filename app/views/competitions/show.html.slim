@@ -4,7 +4,7 @@
 
 - content_for :title do
   | competition: 
-  = [competition.name, category, segment].reject(&:blank?).join(' / ')
+  = [competition.name, category.try(:name), segment.try(:name)].reject(&:blank?).join(' / ')
 
 - case result_type
 - when :category
@@ -19,43 +19,53 @@
   .col-sm-6
     h2= t(".competition_summary", default: "Competition Summary")
     = Listtable.new(self).records(competition.decorate).columns([:name_info, :location, :site_url, :period, :comment]).render
-    
-  .col-sm-6
-    h2= t(".performed_segment", default: "Performed Segment")
-    = AjaxDatatables::Datatable.new(self).records(competition.performed_segments.includes(:category, :segment).order(:id)).columns([:category, :segment, :starting_time]).update_settings(paging: false, info: false, searching: false).decorate.render
 
 ////////////////////////////////////////////////////////////////
 h2
   - case result_type
-  /- when :none
-  /  ="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
+  - when :none
+    = t('field.results', default: 'Results')
+    /="#{t('field.category', default: 'Category')} / #{t('field.segment', default: 'Segment')}"
   - when :category
-    | #{t(".category_results", default: "Category Results")} : #{category}
+    | #{t(".category_results", default: "Category Results")} : #{category.name}
   - when :segment
-    | #{t(".segment_results", default: "Segment Results")} : #{category}/#{segment}
+    | #{t(".segment_results", default: "Segment Results")} : #{category.name} / #{segment.name}
 
 ////////////////
 // nav bar for category/segment
-//.nav
+.nav
+  // category tab
   ul.nav.nav-tabs
-    - competition.scores.recent.pluck(:category).uniq.each do |c|
-      - category_active = (category == c) ? "active" : ""
+    - competition.scores.includes(:category).map(&:category).uniq.each do |cat|
+      - category_active = (category == cat) ? "active" : ""
       li class="#{category_active}"
-        =link_to_competition(competition, category: c)
+        =link_to_competition(competition, category: cat)
 
-  ul.nav.nav-tabs
-    /- competition.scores.where(category: category).pluck(:segment).uniq.each do |s|
-    - competition.scores.where(category: category).recent.reverse.pluck(:segment).uniq.each do |s|
-      - segment_active = (segment == s) ? "active" : ""
-      li class="#{segment_active}"
-        = link_to_competition(competition, category: category, segment: s)
+  // segment tab
+  - if category.present?
+    ul.nav.nav-tabs
+      - competition.scores.where(category: category).includes(:segment).map(&:segment).uniq.each do |seg|
+        - segment_active = (segment == seg) ? "active" : ""
+        li class="#{segment_active}"
+          = link_to_competition(competition, category: category, segment: seg)
 
 ////////////////////////////////////////////////////////////////
 
-/- if result_type != :none
-  = results.update_settings(paging: false, info: false).decorate.render
 - case result_type
   - when :category
     = category_results.update_settings(paging: false, info: false).decorate.render
   - when :segment
     = segment_results.update_settings(paging: false, info: false).decorate.render
+
+.row
+  .col-sm-6
+    h2= t(".time_schedule", default: "Time Schedule")
+    = time_schedule.decorate.render
+
+  .col-sm-6
+    - if result_type == :segment
+      h3 Officials
+      = officials.decorate.render
+
+
+

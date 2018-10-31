@@ -1,33 +1,24 @@
 require 'rails_helper'
+require_relative 'concerns/index_feature_helper'
 
-RSpec.configure do |c|
-  c.filter_run_excluding feature: true
-end
-
-feature SkatersController, type: :feature, feature: true do
-  let!(:main) { create(:score).skater }
-  let!(:sub) { create(:score, :finlandia).skater }
-  let(:index_path) { skaters_path }
-  
+RSpec.describe SkatersController, feature: true do
+  before {
+    create(:competition, :world)
+    create(:competition, :finlandia)
+  }
   ################
-  feature "#index", js: true do
-    context 'index' do
-      subject { visit index_path; page }
-      it_behaves_like :both_main_sub
+  feature '#index', js: true do
+    datatable = SkatersDatatable.new
+    [:contains_all, :orders, :filters].each do |context|
+      include_context context, datatable
     end
-    
-    context 'search' do
-      {name: :fill_in, category: :select, nation: :select}.each do |key, value|
-        context key do
-          subject { ajax_action(key: key, value: main.send(key), input_type: value, path: index_path) }
-          it_behaves_like :only_main
-        end
-      end
-    end
-    context 'order' do
-      SkatersDatatable.new.columns.select(&:orderable).map(&:name).each do |key|
-        include_context :ajax_order, key        
-      end
+
+    context :filter_having_scores do
+      it {
+        no_scores_skater = create(:skater, :no_scores)
+        ajax_actions([key: :having_scores, input_type: :checkbox], path: skaters_path)
+        expect(page.text).not_to have_content(no_scores_skater.name)
+      }
     end
   end
 end

@@ -8,7 +8,8 @@
 .row
   .col-sm-6
     h2= t(".skater_summary", default: "Skater Summary")
-    = Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :isu_records, :category, :birthday, :height, :hometown, :club, :coach, :choreographer, :bio_updated_at]).decorate.render
+    = Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :isu_records, :category_type_name, :birthday, :height, :hometown, :club, :coach, :choreographer, :bio_updated_at]).decorate.render
 
 h2=t(".competition_results", default: "Competition Results")
-= render partial: "datatable", locals: { datatable: competition_results.decorate }
+/= render partial: "datatable", locals: { datatable: competition_results.decorate }
+= competition_results.decorate.render

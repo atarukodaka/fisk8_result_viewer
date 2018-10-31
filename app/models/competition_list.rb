@@ -8,7 +8,7 @@ class CompetitionList < ActiveYaml::Base
   # if specific parser required, write down as hash:
   # -
   #   url: http://www.isu.org/compC/result
-  #   parser: :foo
+  #   parser_type: :gpjpn
   #
   # if you want to load another list in config/,
   #
@@ -17,26 +17,29 @@ class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
 
-  #DEFAULT_PARSER = :isu_generic
-  
-  field :url
-  field :parser_type, default: CompetitionParser::DEFAULT_PARSER
+  field :site_url
+  field :parser_type
   field :comment
-  
+  field :name
+  field :country
+  field :city
+  field :date_format
+
   class << self
+    DEFAULT_KEY = 'site_url'.freeze
+
     def load_file
+      ## ruby2.5, rails5.2.6: hash key needs to be string.
       raw_data.map do |item|
         hash = {}
         case item
         when String
-          hash[:site_url] = item
+          hash[DEFAULT_KEY] = item
         when Hash
           hash = item
         end
-        hash[:parser_type] ||= CompetitionParser::DEFAULT_PARSER
         hash
-        
       end
     end
-  end
+  end  ## class
 end

@@ -1,51 +1,49 @@
-class ElementsDatatable < IndexDatatable
+class ElementsDatatable < ScoreDetailsDatatable
+  class Filters < IndexDatatable::Filters
+    def initialize(*)
+      super
+      @data = [
+        filter(:element_name, nil) do
+          [
+            filter(:name_operator, :select, label: '',  onchange: ->(dt) { ajax_draw(dt) },
+                       options: { '=': :eq, '&sube;'.to_s.html_safe => :matches }),
+            filter(:element_name, :text_field, label: ''),
+          ]
+        end,
+        filter(:element_type, nil) do
+          [
+            filter(:element_type, :select),
+            filter(:element_subtype, :select),
+          ]
+        end,
+        filter(:goe, nil) do
+          [
+            filter(:goe_operator, :select, label: '', onchange: ->(dt) { ajax_draw(dt) }, options: OPERATORS),
+            filter(:goe, :text_field, label: ''),
+          ]
+        end,
+        *ScoresDatatable::Filters.new(datatable: datatable).to_a,
+      ]
+    end
+  end
+  ################
   def initialize(*)
     super
+    columns.add([:element_number, :element_name, :element_type, :element_subtype,
+                 :level, :credit, :info, :base_value, :goe, :judges, :value,])
+    columns.sources = source_mappings
+    columns[:date].source = 'competitions.start_date'
 
-    columns([:score_name, :competition_name, :competition_class, :competition_type,
-             :category, :category_type, :team, :seniority, :segment, :segment_type, :date, :season,
-             :skater_name, :nation,
-             :number, :name, :element_type, :element_subtype, :level, :credit, :info, :base_value, :goe, :judges, :value,])
-
-    columns.sources = {
-      score_name: "scores.name",
-      competition_name: "competitions.name",
-      competition_class: "competitions.competition_class",
-      competition_type: "competitions.competition_type",
-      season: "competitions.season",
-      category: "categories.name",
-      category_type: "categories.category_type",
-      team: "categories.team",
-      seniority: "categories.seniority",
-      segment: "segments.name",
-      segment_type: "segments.segment_type",
-      date: "scores.date",
-      skater_name: "skaters.name",
-      nation: "skaters.nation",
-      name: "elements.name",
-      base_value: "elements.base_value",
-    }
-    ## searchable
-    [:date, :credit, :info].each {|key| columns[key].searchable = false }    
-
-    ## visible
-    [:competition_class, :competition_type, :category_type, :seniority, :team, :segment_type].each {|key|
-      columns[key].visible = false
-      columns[key].orderable = false
-    }
-
-    ## operartor
+    ## operartors
     if view_context
-      columns[:name].operator = params[:name_operator].presence || :matches
+      columns[:element_name].operator = params[:name_operator].presence || :matches
       columns[:goe].operator = params[:goe_operator].presence || :eq
+      columns[:season].operator = params[:season_operator].presence || :eq
     end
-    columns[:category].operator = :eq    
-    columns[:team].operator = :boolean
-
-    default_orders([[:value, :desc]])
   end
 
   def fetch_records
-    Element.includes(:score, score: [:competition, :skater, :category, :segment]).references(:score, score: [:competition, :skater, :category, :segment]).all
+    tables = [:score, score: [:competition, :skater, :segment, category: [:category_type]]]
+    super.includes(tables).joins(tables)
   end
 end

@@ -1,0 +1,2 @@
+class ElementJudgeDetailsController < IndexController
+end

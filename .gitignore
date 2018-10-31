@@ -21,6 +21,7 @@
 /yarn-error.log
 
 .byebug_history
+.\#*
 *~
 pdf/*
 tmp
@@ -28,8 +29,9 @@ coverage/
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
-#public/images/score_graph/
 public/assets
 vendor/
 .env*
 \#*
+.rubocop_todo.yml
+spec/vcr

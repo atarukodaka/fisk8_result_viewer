@@ -1,4 +1,4 @@
-- table || raise('no table given')
+- datatable || raise('no table given')
 
 - title = t("controller.#{controller_name}", default: controller_name.humanize)
 - content_for :title do
@@ -10,30 +10,13 @@ h2= title
 
 style
   | label { margin-left: 10px; margin-right: 10px; }
-  | .dataTables_filter { visibility: hidden; }
-
-// filter form
-= button_tag(t("filter.toggle_filter", default: "show/hide filters"), onclick: "$('#filter_form').toggle();", id: "toggle_filteres")
-= form_tag url_for(controller: controller_name, action: :index), method: :get, enforce_utf8: false, id: :filter_form do |f|
-  = render partial: "filter_content", locals: { table: table }
-  = form_group do
-    label= t("filter.offset", default: "Offset")
-    =text_field_tag(:offset, params[:offset], label: "AAA")
-    label
-    // = button_tag("html", type: "submit", name: "format", value: "html", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
-    label
-    = button_tag("json", type: "submit", name: "format", value: "json", onclick: "location.href='#{url_for(action: :index, format: :json).html_safe}'")
-    label
-    = button_tag("csv", type: "submit", name: "format", value: "csv", onclick: "location.href='#{url_for(action: :index, format: :csv).html_safe}'")
-  // = form_group(nil) do
-    = submit_tag("Search", id: "submit", name: nil)
-    label with format of
-    = select_tag(:format, options_for_select(['html', 'json', 'csv'], selected: params[:format]))
-
-    label
-
+  / | .dataTables_filter { visibility: hidden; }
 
 ////////////////////////////////////////////////////////////////
 // show server-side datatable
-= table.render
+
+/= render partial: "filters", locals: { filters: datatable.filters }
+= render partial: 'filters', locals: { filters: datatable.filters } if datatable.filters
+
+= datatable.render
 

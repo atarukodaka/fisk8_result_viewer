@@ -1,3 +1,2 @@
-class ElementsController < ApplicationController
-  include ControllerConcerns::Index
+class ElementsController < IndexController
 end

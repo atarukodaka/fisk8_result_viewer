@@ -1,0 +1,2 @@
+class ComponentJudgeDetailsController < IndexController
+end

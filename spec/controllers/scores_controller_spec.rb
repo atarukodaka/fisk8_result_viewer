@@ -1,54 +1,30 @@
 require 'rails_helper'
+require_relative 'concerns/index_controller_spec_helper'
 
 RSpec.describe ScoresController, type: :controller do
-
   render_views
 
-  let!(:world_score) {
-    create(:score, skater: create(:skater), competition: create(:competition))
-  }
+  let!(:main) { create(:competition, :world).scores.first }
+  let!(:sub)  { create(:competition, :finlandia).scores.first }
 
-  let!(:finlandia_score){
-    create(:score, :finlandia, skater: create(:skater, :ladies), competition: create(:competition, :finlandia))
-  }
-
+  ################
   describe '#index' do
-    subject { get :index }
-    it { is_expected.to be_success }
-  end
-
-  describe '#list' do
-    describe 'all' do
-      subject { get :list, xhr: true }
-      its(:body) { is_expected.to include(world_score.name) }
-      its(:body) { is_expected.to include(finlandia_score.name) }
-    end
-
     datatable = ScoresDatatable.new
-    describe 'filter: ' do
-      datatable.columns.select(&:searchable).map(&:name).each do |key|
-        it key do
-          expect_filter(world_score, finlandia_score, key)
-        end
-      end
-    end
-    describe 'sort: ' do
-      datatable.columns.select(&:orderable).map(&:name).each do |key|
-        it key do
-          expect_order(world_score, finlandia_score, key)
-        end
-      end
+    include_context :contains_all, datatable
+    [:json, :csv].each do |format|
+      include_context :format_response, datatable, format: format
     end
   end
+
   describe '#show ' do
-    context 'name' do
-      subject { get :show, params: { name: world_score.name } }
-      its(:body) { is_expected.to include(world_score.name) }
+    context 'name', vcr: true do
+      subject { get :show, params: { name: main.name } }
+      its(:body) { is_expected.to include(main.name) }
     end
 
     context 'format: .json' do
-      subject { get :show, params: { name: world_score.name, format: :json } }
-      its(:body) { is_expected.to include(world_score.name) }
+      subject { get :show, params: { name: main.name, format: :json } }
+      its(:body) { is_expected.to have_content(main.name) }
     end
   end
 end

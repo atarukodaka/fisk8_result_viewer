@@ -1,0 +1,24 @@
+// columns, data 
+- datatable || raise
+- settings ||= {}
+
+
+- table_id ||= "table_#{'dummy'.object_id}"
+- attrs = settings.merge({ columns: datatable.columns.map {|column_name| { name: column_name}} })
+div id='attrs-#{table_id}' data-json='#{ attrs.to_json }'
+
+script
+  | jQuery(function($){attrs = $('#attrs-#{table_id}').data('json'); $("##{table_id}").DataTable(attrs);});
+
+table.table.table-striped.table-hover.table-condensed id="#{table_id}"
+  thead
+    tr
+      - datatable.column_names.each do |key|
+        th id="column_#{table_id}_#{key}"
+          /= datatable.records.human_attribute_name key
+
+  tbody
+    - datatable.as_json.each do |item|
+      tr
+        - item.values.each do |value|
+          td= value

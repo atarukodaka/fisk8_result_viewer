@@ -1,33 +1,46 @@
-class SkaterUpdater
-  def initialize(verbose: false)
-    @verbose = verbose
-  end
-  
-  def update_skaters(details: false)
-    parser = SkaterParser.new
+class SkaterUpdater < Updater
+  using StringToModel
 
-    Category.all.select(&:isu_bio_url).each do |category|
-      puts "#{category.name}: #{category.isu_bio_url}" if @verbose
-    
+  def parser
+    @parser ||= SkaterParser.new
+  end
+
+  def update_skaters
+    CategoryType.all.each do |category_type|
+      debug("#{category_type.name}: #{category_type.isu_bio_url}")
+
       ActiveRecord::Base.transaction do
-        parser.parse_skaters(category.name, category.isu_bio_url).each do |hash|
-          hash[:category] = Category.find_by(name: hash[:category])
+        parser.parse_skaters(category_type.name, category_type.isu_bio_url).map do |hash|
+          # hash[:category] = hash[:category].to_category
+          hash[:category_type] = category_type
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
-            skater.update(hash)
+            attrs = [:name, :category_type, :nation, :isu_number]
+            skater.update(hash.slice(*attrs))
           end
         end
-      end  # transaction             
-    end
-
-    if details
-      Skater.all.each do |skater|
-        details_hash = parser.parse_skater_details(skater.isu_number)
-        puts "#{skater.name} [#{skater.isu_number}]:  club: #{details_hash[:club]}, coach: #{details_hash[:coach]}" if @verbose
-        
-        ActiveRecord::Base.transaction do
-          skater.update(details_hash)
-        end
-      end
+      end # transaction
     end
   end
-end
+
+  ################
+  # skater detail
+  def update_skaters_detail
+    Skater.find_each.reject { |sk| sk.isu_number.blank? }.each do |skater|
+      update_skater_detail(skater.isu_number)
+    end
+  end
+
+  def update_skater_detail(isu_number)
+    skater = Skater.find_or_create_by(isu_number: isu_number)
+
+    details_hash = parser.parse_skater_details(skater.isu_number)
+    debug("#{skater.name} [#{skater.isu_number}]: %s" %
+          details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
+    ActiveRecord::Base.transaction do
+      attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
+               :coach, :choreographer, :bio_updated_at]
+      skater.update(details_hash.slice(*attrs))
+      skater.update(category_type: details_hash[:category_type].to_category_type)
+    end
+  end
+end ## class

@@ -1,35 +1,53 @@
 language: ruby
 
 rvm:
-  - 2.2.10
   - 2.4.4
+  - 2.5.2
+  # - ruby-head
 
+matrix:
+  allow_failtures:
+    - rvm: ruby-head
+      
 install: bundle install --deployment
+
 cache:
   directories: vendor/bundle
   
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
-  - bundle exec rspec -fd
-  - bundle exec rspec --tag updater -fd
-  - bundle exec rspec --tag error_handler -fd
-  #- bundle exec rspec --tag feature -fd
-  - bundle exec rspec --tag rake -fd
-  - bundle exec rspec --tag parser -fd
+  - bundle exec rspec
+  - bundle exec rspec --tag feature
+  - bundle exec rspec --tag updater
+  - bundle exec rspec --tag rake
+  - bundle exec rspec --tag error_handler
 
-env: TEST=true
+env:
+  TEST: true
+  JS_DRIVER: poltergeist
 
 branches:
   only:
     - master
     - develop
     - /^release/
+    - refactoring
+
+################
+## addon packages
+
+sudo: required
+
+dist: trusty
 
 addons:
   apt:
     packages:
       - poppler-utils
-#      - gnuplot
+  #chrome: stable
+
+before_install:
+  sudo pip install codecov
 
 after_success:
   - codecov        

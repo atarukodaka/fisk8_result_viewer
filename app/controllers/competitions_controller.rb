@@ -1,6 +1,6 @@
-class CompetitionsController < ApplicationController
-  include ControllerConcerns::Index
-  
+class CompetitionsController < IndexController
+  using StringToModel
+
   def result_type(category, segment)
     if category.blank? && segment.blank?
       :none
@@ -10,58 +10,58 @@ class CompetitionsController < ApplicationController
       :segment
     end
   end
+
   def category_results_datatable(competition, category)
     return nil if category.blank?
 
-    AjaxDatatables::Datatable.new(view_context).records(competition.category_results.includes(:category).category(category).includes(:skater, :short, :free)).
-      columns([:ranking, :skater_name, :nation, :points, :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value, :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value,]).
-      tap {|d| d.default_orders([[:points, :desc], [:ranking, :asc]])}
+    records = competition.category_results.category(category).includes(:skater, :short, :free)
+    CategoryResultsDatatable.new(view_context).records(records)
   end
+
   def segment_results_datatable(competition, category, segment)
     return nil if category.blank? || segment.blank?
-    AjaxDatatables::Datatable.new(view_context).records(competition.scores.includes(:category, :segment).category(category).segment(segment).order(:ranking).includes(:skater)).  ## , :elements, :components
-      columns([:ranking, :name, :skater_name, :nation, :starting_number, :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]).tap {|d| d.default_orders([[:tss, :desc], [:ranking, :asc]])}
+
+    records = competition.scores.includes(:category, :segment)
+              .category(category).segment(segment)
+              .order(:ranking).includes(:skater)
+    columns = [:ranking, :name, :skater_name, :nation, :starting_number,
+               :tss, :tes, :pcs, :deductions, :elements_summary, :components_summary,]
+    AjaxDatatables::Datatable.new(view_context).records(records).columns(columns)
+      .default_orders([[:tss, :desc], [:ranking, :asc]])
   end
 
-  def show
-    competition = Competition.find_by(short_name: params[:short_name]) || raise(ActiveRecord::RecordNotFound)
+  def time_schedule_datatable(competition)
+    records = competition.performed_segments.includes(:category, :segment).order(:starting_time)
+    AjaxDatatables::Datatable.new(view_context).records(records)
+      .columns([:category_name, :segment_name, :starting_time])
+      .update_settings(paging: false, info: false, searching: false)
+  end
 
-    category, segment, ranking = params[:category], params[:segment], params[:ranking]
+  def officials_datatable(competition, category, segment)
+    return nil if category.nil? || segment.nil?
 
-    if ranking.present?
-      # redirect /OWG2018/MEN/SHORT PROGRAM/1 => /scores/OWG2018-MS-1
-      score = competition.scores.where(category: category, segment: segment, ranking: ranking).first ||
-              raise(ActiveRecord::RecordNotFound.new("no such score: " + [competition.short_name, category, segment, ranking].join('/')))
-      
-      respond_to do |format|
-        format.html {
-          redirect_to(controller: :scores, action: :show, name: score.name)
-        }
-        format.json {
-          redirect_to(controller: :scores, action: :show, name: score.name, format: :json)
-        }
-      end
-    else
-      respond_to do |format|
-        results = {
-          category_results: category_results_datatable(competition, Category.find_by(name: category)),
-          segment_results: segment_results_datatable(competition, Category.find_by(name: category),
-                                                     Segment.find_by(name: segment)),
-        }
-        format.html {
-          data = {
-            competition: competition,
-            category: category,
-            segment: segment,
-            result_type: result_type(category, segment),
-          }.merge(results)
-          render :show, locals: data
-        }
-        format.json {
-          render json: competition.slice(*[:name, :short_name, :competition_class, :competition_type,
-                                           :city, :country, :start_date, :end_date, :timezone, :comment]).merge(results)
-        }
-      end
-    end
+    ps = competition.performed_segments.where(category: category, segment: segment)
+    records = Official.where(performed_segment: ps).includes(:panel)
+    AjaxDatatables::Datatable.new(view_context).records(records)
+      .columns([:number, :panel_name, :panel_nation])
+      .update_settings(info: false, searching: false, paging: false)
+  end
+
+  def data_to_show
+    competition = Competition.find_by!(short_name: params[:short_name])
+
+    category = params[:category].to_category
+    segment = params[:segment].to_segment
+
+    {
+      competition: competition,
+      category:    category,
+      segment:     segment,
+      result_type: result_type(category.try(:name), segment.try(:name)),
+      category_results: category_results_datatable(competition, category),
+      segment_results:  segment_results_datatable(competition, category, segment),
+      time_schedule: time_schedule_datatable(competition),
+      officials: officials_datatable(competition, category, segment),
+    }
   end
 end

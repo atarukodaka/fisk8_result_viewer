@@ -7,29 +7,28 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :city
       t.string :country
-      t.string :timezone, default: "UTC"
-      t.date :start_date, default: Date.new(1970, 1, 1)
-      t.date :end_date, default: Date.new(1970, 1, 1)
+      t.string :timezone, default: 'UTC'
+      t.date :start_date
+      t.date :end_date
       t.string :season
       t.string :site_url
       t.string :competition_type
       t.string :competition_class
-      t.string :parser_type, default: "isu_generic"
-      
       t.string :comment
+
+      t.timestamps
     end
 
     ################
     # category results
     create_table :category_results do |t|
-      #t.string :category
       t.belongs_to :category
       t.integer :ranking
       t.float :points
 
       t.integer :short_ranking
       t.integer :free_ranking
-      
+
       ## relations
       t.belongs_to :competition
       t.references :skater
@@ -40,12 +39,10 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # performed segments
     create_table :performed_segments do |t|
-      #t.string :category
       t.belongs_to :category
-      #t.string :segment
       t.belongs_to :segment
-      t.datetime :starting_time, default: Time.new(1970, 1, 1, 0, 0, 0)
-      
+      t.datetime :starting_time
+
       ## relations
       t.belongs_to :competition
     end

@@ -1,19 +1,21 @@
 ## TODO
 - category: type: single/couple ?
-- property: readonly, writeonly
 
-- date search
-- delete country-city mapping?
-- panels: panel db entries
 - youtube register
-- components controller is necessary ??
-- codecov: icedance elements
-- spec
-  - feature
-  - cr doesnt have free: check nil
 - help for rake:update
-- skater updater spec: detail
-
+- clean panel with zero scores
+- spin level: B is 0 ??
+- accept_categories: parser or updater?
+- json:: depends to serverside ??
+- limit: spec
+- spec: owg name correction
+- sorting_sql: super
+- spec: update details
+- ajax helper: find by xpath
+- filters: flatten
+- spec: model/elements for icedance
+- spec: update competition details, deviation
+- view: link_to_filter
 
 ### new feature
 
@@ -21,6 +23,11 @@
 - app/controller/concerns/error_controller: unless Rails.env.develop
 - config/application: Version
 - config/competitions.yml: debug
+
+## 1.0.7
+- judge details
+- ruby2.2 support droped: capybara3.8 requires >=2.3
+- api drop: never used
 
 ## 1.0.6
 - element subtype
@@ -138,7 +145,6 @@
 - spec:
   - all filters to work
 
-
 ## 1.0.0-pre3
 - elements/show.csv should include scores key
 - total base_value in score
@@ -148,7 +154,6 @@
 - competition comment
 - content_for on <title>
 - skater-name correction
-
 
 ## 1.0.0-pre2
 
