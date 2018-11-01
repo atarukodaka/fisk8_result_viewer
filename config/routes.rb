@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     get :list, on: :collection
   end
 
+  resources :grandprixes, only: :index
+  
   resources :parsers, only: :index do
     collection do
       get :competition

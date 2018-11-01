@@ -5,6 +5,7 @@ class Skater < ApplicationRecord
   has_many :category_results, dependent: :nullify
   # belongs_to :category   ## reference
   belongs_to :category_type
+  #has_many :grandprix_entries
 
   ## validations
   validates :nation, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }
