@@ -42,7 +42,7 @@ module IndexControllerHelper
     end
   end
 
-  shared_examples :count_to_be do |n, format: |
+  shared_examples :count_to_be do |n, format:|
     it {
       count =
         case format
@@ -75,4 +75,3 @@ end
 RSpec.configure do |config|
   config.include IndexControllerHelper
 end
-

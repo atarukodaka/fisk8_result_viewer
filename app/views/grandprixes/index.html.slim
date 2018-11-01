@@ -1,33 +1,23 @@
 - season || category || events || points_by_skaters || raise
 
+style
+  | .done { font-weight: bold; }
+  | .qualified { background-color: #ffeeee; }
+  | .dnq {}
+
 h2 Grand Prix Series
 
 = form_tag grandprixes_path, method: :get, enforce_utf8: false, id: :grandprixes_form do |f|
-  /= form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, selected: season, onchange:"$('#grandprixes_form').submit()"))
-  = form_group(:category, select_tag_with_options(:category_name, onchange: "$('#grandprixes_form').submit()"))
-  = form_group(:simulation_times, text_field_tag(:simulation_times, simulation_parameters[:times], size: 30, onchange: "$('#grandprixes_form').submit()"))
-  = form_group(:stddev_ratio, text_field_tag(:stddev_ratio, simulation_parameters[:stddev_ratio], size: 30, onchange: "$('#grandprixes_form').submit()"))      
+  = form_group(:season, text_field_tag(:season, season.to_s))
+  /= form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, selected: season)
+  = form_group(:category, select_tag_with_options(:category_name))
+  = form_group(:simulation_times, text_field_tag(:simulation_times, simulation_parameters[:times], size: 30))
+  = form_group(:stddev_ratio, text_field_tag(:stddev_ratio, simulation_parameters[:stddev_ratio], size: 30))
+  = form_group(nil, submit_tag(:submit))
 hr
-.row
-  .col-sm-4
-    table.table.table-striped.table-hover.table-condensed
-      tr
-        th Season
-        td= season
-      tr
-        th Category
-        td= category.name
-      tr
-        th Simulation Times
-        td= simulation_parameters[:times]
-      tr
-        th Stdev ratio to average
-        td= simulation_parameters[:stddev_ratio]
-  .col-sm-8
-
 
 h3 Results
-table.table.table-striped.table-hover.table-condensed
+table.table.table-hover.table-condensed
   thead
     tr
       th Ranking
@@ -38,18 +28,18 @@ table.table.table-striped.table-hover.table-condensed
       th Probability to Qualify
 
   tbody
-    - results.sort_by {|_s, d| d[:probability_to_qualify]}.reverse.each.with_index(1) do |(skater, hash), ranking|
-      tr
-        td= ranking
+    - results.sort_by {|_s, d| d[:probability_to_qualify]}.reverse.each do |skater, hash|
+      - klass = (hash[:ranking] <= 6) ? :qualified : :dnq
+      tr class="#{klass}"
+        td= hash[:ranking]
         td= link_to_skater(skater)
-        - hash[:simulated_points].each.with_index do |point, i|
+        - hash[:points].each.with_index do |point, i|
           - event = events[i]
           - if event.done?
-            td
-              strong="%.2f" % [ point ]
+            td.done="%.2f" % [ point ]
           - elsif hash[:participated][i]
             td= "%.2f" % [ point ]
           - else
             td -
-        td= "%.2f" % [ hash[:simulated_points].sum ]
+        td= "%.2f" % [ hash[:points].sum ]
         td= "%.2f%" % [ hash[:probability_to_qualify].to_f * 100 ]

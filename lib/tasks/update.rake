@@ -1,5 +1,4 @@
 namespace :update do
-  
   desc 'update skaters'
   task skaters: :environment do
     quiet = ENV['quiet'].to_i.nonzero?
@@ -72,7 +71,7 @@ namespace :update do
     season = '2018-19'.to_season
 
     #['MEN', 'LADIES', 'PAIRS', 'ICE DANCE'].each do |key|
-    ['MEN', 'LADIES', 'PAIRS'].each do |key|
+    %w[MEN LADIES PAIRS].each do |key|
       category = key.to_category
       GrandprixUpdater.new(verbose: true).update(season, category)
     end

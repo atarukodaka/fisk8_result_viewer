@@ -34,9 +34,11 @@ module StringToModel
     def to_segment
       nil
     end
+
     def to_season
       nil
     end
+
     def to_skater
       nil
     end
