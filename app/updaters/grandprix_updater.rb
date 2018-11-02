@@ -26,8 +26,14 @@ class GrandprixUpdater < Updater
           points[i] = d.to_i
         end
       end
+      #row.xpath('td[3]/a/@href').text =~ /(\d+)\.htm$/
+
+      tds[2].xpath('a/@href').text =~ /(\d+)\.htm$/
+      isu_number = $1.to_i
+
       { current_ranking: tds[0].text.to_i, skater_name: tds[1].text,
-        skater_nation: tds[2].text, points: points, total: tds[9].text.to_i }
+        skater_nation: tds[2].text, isu_number: isu_number,
+        points: points, total: tds[9].text.to_i }
     end
     {
       events: events,
@@ -52,7 +58,9 @@ class GrandprixUpdater < Updater
       end
 
       data[:entries].each do |entry|
-        skater = entry[:skater_name].to_skater || raise("skater not found: #{entry[:skater_name]}")
+        #skater = entry[:skater_name].to_skater || raise("skater not found: #{entry[:skater_name]}")
+        sk_hash = entry.slice(:skater_name, :isu_number, :nation).merge(category: category.name)
+        skater = find_or_create_skater(sk_hash)
 
         entry[:points].each.with_index(1) do |point, i|
           next if point.nil?

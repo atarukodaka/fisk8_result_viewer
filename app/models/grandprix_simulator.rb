@@ -10,7 +10,7 @@ class GrandprixSimulator
     done_events = events.where(done: true)
     incoming_events = events.where(done: false)
 
-    last_season = SkateSeason.new(events.first.season) - 1
+    last_season = SkateSeason.new(events.first&.season) - 1
     average_scores = CategoryResult.where("competitions.season": last_season.to_s).qualified
                      .joins(:competition).group(:skater).average(:points)
 
@@ -28,7 +28,7 @@ class GrandprixSimulator
       end
     end
 
-    num_simulations.times do |_i|
+    num_simulations.times do
       sim_points = points.dup
 
       ## competitions not yet done
@@ -49,8 +49,9 @@ class GrandprixSimulator
         total_points[skater] = arr.map(&:to_i).sum
       end
       ## rankings / qualified
-      rankings = total_points.sort_by { |_k, v| v }.reverse.map { |d| d[0] }
-      rankings[0..5].each do |skater|
+      total_points.sort_by { |_k, v| v }.reverse_each.with_index do |(skater, _total), ranking|
+        break if ranking >= 6
+
         qualified[skater] += 1
       end
     end   ## sim

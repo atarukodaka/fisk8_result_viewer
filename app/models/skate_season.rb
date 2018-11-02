@@ -16,6 +16,8 @@ class SkateSeason
         Date.new(date, 7, 1)
       when Date, Time, ActiveSupport::TimeWithZone
         date
+      when NilClass
+        Date.today
       else
         raise "#{date.class} not supported"
       end
