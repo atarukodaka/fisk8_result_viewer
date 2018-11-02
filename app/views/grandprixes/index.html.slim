@@ -28,10 +28,10 @@ table.table.table-hover.table-condensed
       th Probability to Qualify
 
   tbody
-    - results.sort_by {|_s, d| d[:probability_to_qualify]}.reverse.each do |skater, hash|
-      - klass = (hash[:ranking] <= 6) ? :qualified : :dnq
+    - results.sort_by {|_s, d| d[:probability_to_qualify]}.reverse.each.with_index(1) do |(skater, hash), ranking|
+      - klass = (ranking <= 6) ? :qualified : :dnq
       tr class="#{klass}"
-        td= hash[:ranking]
+        td= ranking
         td= link_to_skater(skater)
         - hash[:points].each.with_index do |point, i|
           - event = events[i]

@@ -9,10 +9,11 @@ class GrandprixUpdater < Updater
     entries = []
 
     headers = rows[2].xpath('td')
-    headers[0..5].each.with_index(1) do |header, i|
-      events << { name: header.text.sub(/^[0-9]/, ''), number: i, done: true }
+    events = headers[0..5].map.with_index(1) do |header, i|
+      { name: header.text.sub(/^[0-9]/, ''), number: i, done: true }
     end
-    rows[3..-1].each do |row|
+    
+    entries = rows[3..-1].map do |row|
       tds = row.xpath('td')
       points = []
       0.upto(5).each do |i|
@@ -26,8 +27,8 @@ class GrandprixUpdater < Updater
           points[i] = d.to_i
         end
       end
-      entries << { current_ranking: tds[0].text.to_i, skater_name: tds[1].text,
-                   skater_nation: tds[2].text, points: points, total: tds[9].text.to_i }
+      { current_ranking: tds[0].text.to_i, skater_name: tds[1].text,
+        skater_nation: tds[2].text, points: points, total: tds[9].text.to_i }
     end
     {
       events: events,
