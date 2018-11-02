@@ -102,6 +102,7 @@ module AjaxDatatables
         end.to_h.as_json(*args)
       end
     end
+
     def as_csv
       require 'csv'
 

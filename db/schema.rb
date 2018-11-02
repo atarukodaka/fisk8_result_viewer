@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 5) do
+ActiveRecord::Schema.define(version: 6) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -102,6 +102,24 @@ ActiveRecord::Schema.define(version: 5) do
     t.float "average"
     t.integer "score_id"
     t.index ["score_id"], name: "index_elements_on_score_id"
+  end
+
+  create_table "grandprix_entries", force: :cascade do |t|
+    t.integer "ranking"
+    t.integer "skater_id"
+    t.integer "grandprix_event_id"
+    t.integer "point", default: 0
+    t.index ["grandprix_event_id"], name: "index_grandprix_entries_on_grandprix_event_id"
+    t.index ["skater_id"], name: "index_grandprix_entries_on_skater_id"
+  end
+
+  create_table "grandprix_events", force: :cascade do |t|
+    t.string "name"
+    t.integer "number"
+    t.string "season"
+    t.integer "category_id"
+    t.boolean "done"
+    t.index ["category_id"], name: "index_grandprix_events_on_category_id"
   end
 
   create_table "judge_details", force: :cascade do |t|

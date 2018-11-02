@@ -21,6 +21,7 @@ namespace :update do
   def options_from_env
     {
       last: (ENV.include?('last')) ? ENV['last'].to_i : nil,
+      reverse: ENV['reverse'].to_i.nonzero?,
       filename: ENV['filename'],
       force: ENV['force'].to_i.nonzero?,
       categories: (ENV['categories'].nil?) ? nil : ENV['categories'].to_s.split(/\s*,\s?/),
@@ -46,7 +47,11 @@ namespace :update do
     CompetitionList.filename = env_options[:filename] if env_options[:filename].present?
 
     list = CompetitionList.all
-    list = list.last(env_options[:last]).reverse if env_options[:last].present?
+    if env_options[:last].present?
+      list = list.last(env_options[:last]).reverse
+    elsif env_options[:reverse]
+      list.reverse!
+    end
 
     list.each do |item|
       options = env_options.dup
@@ -59,4 +64,16 @@ namespace :update do
       end
     end ## each
   end ## task
+
+  desc 'update gps'
+  task grandprix: :environment do
+    using StringToModel
+    season = '2018-19'.to_season
+
+    #['MEN', 'LADIES', 'PAIRS', 'ICE DANCE'].each do |key|
+    %w[MEN LADIES PAIRS].each do |key|
+      category = key.to_category
+      GrandprixUpdater.new(verbose: true).update(season, category)
+    end
+  end
 end # namespace

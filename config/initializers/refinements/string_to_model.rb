@@ -11,8 +11,17 @@ module StringToModel
     def to_segment
       Segment.find_by(name: self)
     end
+
+    def to_season
+      SkateSeason.new(self)
+    end
+
+    def to_skater
+      Skater.find_by(name: self)
+    end
   end
 
+  ################
   refine NilClass do
     def to_category
       nil
@@ -23,6 +32,14 @@ module StringToModel
     end
 
     def to_segment
+      nil
+    end
+
+    def to_season
+      nil
+    end
+
+    def to_skater
       nil
     end
   end
