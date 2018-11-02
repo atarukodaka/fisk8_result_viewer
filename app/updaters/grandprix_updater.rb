@@ -6,13 +6,12 @@ class GrandprixUpdater < Updater
     body = get_url(url)
     rows = body.xpath("//*[@class='GrandPrixListTable']/tr")
     events = []
-    entries = []
 
     headers = rows[2].xpath('td')
     events = headers[0..5].map.with_index(1) do |header, i|
       { name: header.text.sub(/^[0-9]/, ''), number: i, done: true }
     end
-    
+
     entries = rows[3..-1].map do |row|
       tds = row.xpath('td')
       points = []

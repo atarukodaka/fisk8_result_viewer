@@ -17,7 +17,6 @@ class GrandprixesController < ApplicationController
     results = GrandprixSimulator.new.run(events, parameters: simulation_parameters)
 
     render :index, locals: { season: season, category: category, events: events,
-                             results: results, simulation_parameters: simulation_parameters}
-
+                             results: results, simulation_parameters: simulation_parameters }
   end
 end

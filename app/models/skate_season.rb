@@ -45,7 +45,6 @@ class SkateSeason
     flag
   end
 
-
   ## operators
   def -(other)
     case other
@@ -55,7 +54,7 @@ class SkateSeason
       self.start_date.year - other.start_date.year
     end
   end
-  
+
   def <=>(other)
     other_season = (other.class == SkateSeason) ? other : SkateSeason.new(other)
     start_date <=> other_season.start_date
