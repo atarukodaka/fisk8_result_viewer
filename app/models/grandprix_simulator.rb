@@ -33,26 +33,31 @@ class GrandprixSimulator
 
       ## competitions not yet done
       incoming_events.each do |event|
-        scores = {}
-        event.grandprix_entries.each do |entry|
+        #scores = {}
+        scores = event.grandprix_entries.map do |entry|
           avg = average_scores[entry.skater] || 0.0
-          scores[entry.skater] = avg + bell.rand * stddev_to_ratio * avg
+          #scores[entry.skater] = avg + bell.rand * stddev_to_ratio * avg
+          { skater: entry.skater, score: avg + bell.rand * stddev_to_ratio * avg }
         end
-        scores.sort_by { |_k, v| v }.reverse_each.with_index(1) do |(skater, _score), ranking|
-          sim_points[skater][event.number - 1] = POINT_MAPPINGS[ranking]
-          accum_points[skater][event.number - 1] += POINT_MAPPINGS[ranking]
+        #scores.sort_by { |_k, v| v }.reverse_each.with_index(1) do |(skater, _score), ranking|
+        scores.sort_by { |h| h[:score] }.reverse_each.with_index(1) do |hash, ranking|
+          point = POINT_MAPPINGS[ranking]
+          sim_points[hash[:skater]][event.number - 1] = point
+          accum_points[hash[:skater]][event.number - 1] += point
         end
       end
       ## total points
-      total_points = {}
-      sim_points.each do |skater, arr|
-        total_points[skater] = arr.map(&:to_i).sum
+      #total_points = {}
+      total_points = sim_points.map do |skater, arr|
+        #total_points[skater] = arr.map(&:to_i).sum
+        { skater: skater, total_point: arr.map(&:to_i).sum }
       end
       ## rankings / qualified
-      total_points.sort_by { |_k, v| v }.reverse_each.with_index do |(skater, _total), ranking|
+      #total_points.sort_by { |_k, v| v }.reverse_each.with_index do |(skater, _total), ranking|
+      total_points.sort_by { |h| h[:total_point] }.reverse_each.with_index(1) do |hash, ranking|
         break if ranking >= 6
 
-        qualified[skater] += 1
+        qualified[hash[:skater]] += 1
       end
     end   ## sim
 
