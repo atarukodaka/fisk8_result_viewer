@@ -16,6 +16,8 @@ class SkateSeason
         Date.new(date, 7, 1)
       when Date, Time, ActiveSupport::TimeWithZone
         date
+      when NilClass
+        Date.today
       else
         raise "#{date.class} not supported"
       end
@@ -43,6 +45,16 @@ class SkateSeason
       flag = (self <= season_to)
     end
     flag
+  end
+
+  ## operators
+  def -(other)
+    case other
+    when Integer
+      SkateSeason.new(self.start_date.year - other)
+    when SkateSeason
+      self.start_date.year - other.start_date.year
+    end
   end
 
   def <=>(other)

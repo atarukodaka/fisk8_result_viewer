@@ -29,6 +29,7 @@ gem 'gretel'                                 ## breadcriumb
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rspec'                                 ## for heroku
 gem 'stackprof'                           # # profiling
+gem 'random_bell'
 
 group :development, :test do
   gem 'bullet'

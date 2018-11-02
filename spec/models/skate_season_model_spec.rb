@@ -7,6 +7,7 @@ RSpec.describe SkateSeason do
     it { expect(SkateSeason.new('2017-18')).to eq(season)    }
     it { expect(SkateSeason.new('2017-09-01')).to eq(season)    }
     it { expect(SkateSeason.new(Date.new(2017, 9, 1))).to eq(season)    }
+    it { expect(SkateSeason.new(nil)).to eq(SkateSeason.new(Date.today)) }
   end
 
   describe 'attributes' do
@@ -19,6 +20,12 @@ RSpec.describe SkateSeason do
       expect(season > '2016-17').to be true
       expect(season == '2017-18').to be true
       expect(season < '2017-18').to be false
+    }
+  end
+  describe 'minus operator' do
+    it {
+      expect(season - 1).to eq(SkateSeason.new('2016-17'))
+      expect(season - SkateSeason.new('2016-17')).to eq(1)
     }
   end
   describe 'between?' do

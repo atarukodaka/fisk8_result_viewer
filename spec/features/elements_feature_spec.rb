@@ -1,4 +1,3 @@
-# coding: utf-8
 require 'rails_helper'
 require_relative 'concerns/index_feature_helper'
 

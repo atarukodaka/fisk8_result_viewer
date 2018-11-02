@@ -1,0 +1,21 @@
+- datatable || raise('no table given')
+
+- title = t("controller.#{controller_name}", default: controller_name.humanize)
+- content_for :title do
+  = title
+
+- breadcrumb controller_name.to_sym
+
+h2= title
+
+style
+  | label { margin-left: 10px; margin-right: 10px; }
+  / | .dataTables_filter { visibility: hidden; }
+
+////////////////////////////////////////////////////////////////
+// show server-side datatable
+
+/= render partial: "filters", locals: { filters: datatable.filters }
+= render partial: 'filters', locals: { filters: datatable.filters } if datatable.filters
+
+= datatable.render

@@ -16,6 +16,7 @@
 - spec: model/elements for icedance
 - spec: update competition details, deviation
 - view: link_to_filter
+- season - minus operator
 
 ### new feature
 
