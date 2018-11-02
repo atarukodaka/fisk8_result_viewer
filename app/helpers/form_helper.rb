@@ -25,6 +25,8 @@ module FormHelper
       # when :category_name, :category_type, :seniority, :team
       when :competition_short_name
         FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key)
+      when :category
+        FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), :name)
       when :category_name, :seniority, :team
         FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), key)
       when :category_type_name, :category_type

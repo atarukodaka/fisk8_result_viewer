@@ -17,6 +17,7 @@
 - spec: update competition details, deviation
 - view: link_to_filter
 - season - minus operator
+- update season (adding to season_from, _to)
 
 ### new feature
 

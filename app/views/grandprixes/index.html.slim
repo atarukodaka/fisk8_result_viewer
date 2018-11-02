@@ -1,4 +1,4 @@
-- season || category || events || points_by_skaters || raise
+- season && events && results || raise
 
 style
   | .done { font-weight: bold; }
@@ -8,13 +8,24 @@ style
 h2 Grand Prix Series
 
 = form_tag grandprixes_path, method: :get, enforce_utf8: false, id: :grandprixes_form do |f|
-  = form_group(:season, text_field_tag(:season, season.to_s))
   /= form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, selected: season)
-  = form_group(:category, select_tag_with_options(:category_name))
+  = form_group(:category, select_tag_with_options(:category))
   = form_group(:simulation_times, text_field_tag(:simulation_times, simulation_parameters[:times], size: 30))
   = form_group(:stddev_ratio, text_field_tag(:stddev_ratio, simulation_parameters[:stddev_ratio], size: 30))
   = form_group(nil, submit_tag(:submit))
 hr
+
+h3 Simulation
+.row
+  .col-sm-4
+    table.table.table-hover.table-condensed
+      tr
+        th Season
+        td= season
+      tr
+        th Number of Simulation
+        td= simulation_parameters[:times]
+
 
 h3 Results
 table.table.table-hover.table-condensed

@@ -1,18 +1,34 @@
 class GrandprixSimulator
   POINT_MAPPINGS = [0, 15, 13, 11, 9, 7, 5, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].freeze
-  MAX_NUM_SIMULATIONS = 10000
+  MAX_NUM_SIMULATIONS = 1000
 
   def bell
     @bell ||= RandomBell.new(mu: 0, sigma: 1)
   end
 
+  def get_average_scores_by_skater(events)
+    last_season = SkateSeason.new(events.first&.season) - 1
+    CategoryResult.where("competitions.season": last_season.to_s).qualified
+      .joins(:competition).group(:skater).average(:points)
+  end
+
+  def update_qualified(sim_points, qualified)
+    ## total points
+    total_points = sim_points.map do |skater, arr|
+      { skater: skater, total_point: arr.map(&:to_i).sum }
+    end
+    ## rankings / qualified
+    total_points.sort_by { |h| h[:total_point] }.reverse_each.with_index(1) do |hash, ranking|
+      break if ranking >= 6
+      
+      qualified[hash[:skater]] += 1
+    end
+  end
+
   def run(events, parameters: {})
     done_events = events.where(done: true)
     incoming_events = events.where(done: false)
-
-    last_season = SkateSeason.new(events.first&.season) - 1
-    average_scores = CategoryResult.where("competitions.season": last_season.to_s).qualified
-                     .joins(:competition).group(:skater).average(:points)
+    average_scores = get_average_scores_by_skater(events)
 
     points = Hash.new { |h, k| h[k] = Array.new(6) { 0 } }
     accum_points = Hash.new { |h, k| h[k] = Array.new(6) { 0 } }
@@ -28,37 +44,21 @@ class GrandprixSimulator
       end
     end
 
-    num_simulations.times do
+    num_simulations.times do   ## run for incoming competitions
       sim_points = points.dup
 
-      ## competitions not yet done
       incoming_events.each do |event|
-        #scores = {}
         scores = event.grandprix_entries.map do |entry|
           avg = average_scores[entry.skater] || 0.0
-          #scores[entry.skater] = avg + bell.rand * stddev_to_ratio * avg
           { skater: entry.skater, score: avg + bell.rand * stddev_to_ratio * avg }
         end
-        #scores.sort_by { |_k, v| v }.reverse_each.with_index(1) do |(skater, _score), ranking|
         scores.sort_by { |h| h[:score] }.reverse_each.with_index(1) do |hash, ranking|
           point = POINT_MAPPINGS[ranking]
           sim_points[hash[:skater]][event.number - 1] = point
           accum_points[hash[:skater]][event.number - 1] += point
         end
       end
-      ## total points
-      #total_points = {}
-      total_points = sim_points.map do |skater, arr|
-        #total_points[skater] = arr.map(&:to_i).sum
-        { skater: skater, total_point: arr.map(&:to_i).sum }
-      end
-      ## rankings / qualified
-      #total_points.sort_by { |_k, v| v }.reverse_each.with_index do |(skater, _total), ranking|
-      total_points.sort_by { |h| h[:total_point] }.reverse_each.with_index(1) do |hash, ranking|
-        break if ranking >= 6
-
-        qualified[hash[:skater]] += 1
-      end
+      update_qualified(sim_points, qualified)
     end   ## sim
 
     ## calculate average points
