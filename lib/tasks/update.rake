@@ -65,12 +65,12 @@ namespace :update do
     end ## each
   end ## task
 
+  ################
   desc 'update gps'
   task grandprix: :environment do
     using StringToModel
-    season = '2018-19'.to_season
+    season = ENV.fetch('season', '2018-19').to_season
 
-    #['MEN', 'LADIES', 'PAIRS', 'ICE DANCE'].each do |key|
     %w[MEN LADIES PAIRS].each do |key|
       category = key.to_category
       GrandprixUpdater.new(verbose: true).update(season, category)

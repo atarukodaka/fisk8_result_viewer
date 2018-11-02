@@ -18,6 +18,7 @@
 - view: link_to_filter
 - season - minus operator
 - update season (adding to season_from, _to)
+- spec rake: update:grandprix
 
 ### new feature
 
