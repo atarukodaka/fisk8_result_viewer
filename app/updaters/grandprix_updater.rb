@@ -14,6 +14,8 @@ class GrandprixUpdater < Updater
 
     entries = rows[3..-1].map do |row|
       tds = row.xpath('td')
+      next if tds.count == 1   ## FINAL RESULT
+
       points = []
       0.upto(5).each do |i|
         d = tds[3 + i].text
@@ -37,7 +39,7 @@ class GrandprixUpdater < Updater
     end
     {
       events: events,
-      entries: entries,
+      entries: entries.compact,
     }
   end
 
