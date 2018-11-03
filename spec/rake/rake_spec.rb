@@ -13,7 +13,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
   describe 'update skater' do
     describe 'skaters' do
       it do
-        ENV['quiet'] = '1'
         @rake['update:skaters'].invoke
         expect(Skater.count).to be > 0
       end
@@ -22,7 +21,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
       it {
         isu_number = 10_967
         ENV['isu_number'] = isu_number.to_s
-        ENV['quiet'] = '1'
         @rake['update:skater_detail'].invoke
         expect(Skater.find_by(isu_number: isu_number).coach).not_to be_nil
       }
@@ -41,7 +39,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
   context 'update competitions' do
     it {
       ENV['last'] = '1'
-      ENV['quiet'] = '1'
       @rake['update:competitions'].execute
       site_url = CompetitionList.last.site_url
       expect(Competition.find_by(site_url: site_url).site_url).to eq(site_url)
@@ -55,7 +52,7 @@ RSpec.describe 'rake', rake: true, vcr: true do
       WebMock.enable!
       WebMock.stub_request(:get, url).to_return(
         body: File.read((Rails.root.join('spec/fixtures/webmock', 'gp2018-men.htm')).to_s),
-        status: 200,
+        status: 200
       )
 
       ENV['season'] = '2018-19'
@@ -67,7 +64,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
   describe 'parse scores' do
     it {
       ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
-      ENV['quiet'] = '1'
       expect(@rake['parse:scores'].invoke).to be_truthy
     }
   end

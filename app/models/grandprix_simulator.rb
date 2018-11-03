@@ -20,7 +20,7 @@ class GrandprixSimulator
     ## rankings / qualified
     total_points.sort_by { |h| h[:total_point] }.reverse_each.with_index(1) do |hash, ranking|
       break if ranking >= 6
-      
+
       qualified[hash[:skater]] += 1
     end
   end

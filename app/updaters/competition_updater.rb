@@ -9,9 +9,10 @@ class CompetitionUpdater < Updater
     debug('*' * 100)
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
-
+    
+    season_options = options.slice(:season, :season_from, :season_to)
     data = parser(options[:parser_type])
-           .parse(site_url, options.slice(:date_format, :categories, :season_from, :season_to)) || return
+           .parse(site_url, date_format: options[:date_format], categories: options[:categories], season_options: season_options) || return
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)

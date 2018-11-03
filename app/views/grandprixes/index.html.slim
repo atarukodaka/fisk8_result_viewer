@@ -1,4 +1,5 @@
 - season && events && results || raise
+- seasons ||= []
 
 style
   | .done { font-weight: bold; }
@@ -6,10 +7,13 @@ style
   | .dnq {}
 
 h2 Grand Prix Series
+- categories = ['', 'MEN', 'LADIES', 'PAIRS' ]
 
 = form_tag grandprixes_path, method: :get, enforce_utf8: false, id: :grandprixes_form do |f|
   /= form_group(Competition.human_attribute_name(:season), select_tag_with_options(:season, selected: season)
-  = form_group(:category, select_tag_with_options(:category))
+  = form_group(:season, select_tag(:season, options_for_select(seasons, selected: season)))
+  /= form_group(:category, select_tag_with_options(:category))
+  = form_group(:category, select_tag(:category, options_for_select(categories, selected: params[:category])))
   = form_group(:simulation_times, text_field_tag(:simulation_times, simulation_parameters[:times], size: 30))
   = form_group(:stddev_ratio, text_field_tag(:stddev_ratio, simulation_parameters[:stddev_ratio], size: 30))
   = form_group(nil, submit_tag(:submit))

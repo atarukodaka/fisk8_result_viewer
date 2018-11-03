@@ -1,21 +1,21 @@
 namespace :update do
   desc 'update skaters'
   task skaters: :environment do
-    quiet = ENV['quiet'].to_i.nonzero?
-    SkaterUpdater.new(verbose: !quiet).update_skaters # (details: details)
+    verbose = ENV['verbose'].to_i.nonzero?
+    SkaterUpdater.new(verbose: verbose).update_skaters # (details: details)
   end
 
   desc 'update skater detail'
   task skater_detail: :environment do
     isu_number = ENV['isu_number'] || raise('no isu_number given')
-    quiet = ENV['quiet'].to_i.nonzero?
-    SkaterUpdater.new(verbose: !quiet).update_skater_detail(isu_number)
+    verbose = ENV['verbose'].to_i.nonzero?
+    SkaterUpdater.new(verbose: verbose).update_skater_detail(isu_number)
   end
 
   desc 'update all skaters detail'
   task skaters_detail: :environment do
-    quiet = ENV['quiet'].to_i.nonzero?
-    SkaterUpdater.new(verbose: !quiet).update_skaters_detail
+    verbose = ENV['verbose'].to_i.nonzero?
+    SkaterUpdater.new(verbose: verbose).update_skaters_detail
   end
   ################
   def options_from_env
@@ -26,7 +26,8 @@ namespace :update do
       force: ENV['force'].to_i.nonzero?,
       categories: (ENV['categories'].nil?) ? nil : ENV['categories'].to_s.split(/\s*,\s?/),
       enable_judge_details: ENV['enable_judge_details'].to_i.nonzero?,
-      quiet: ENV['quiet'].to_i.nonzero?,
+      verbose: ENV['verbose'].to_i.nonzero?,
+      season: ENV['season'],
       season_from: ENV['season_from'],
       season_to: ENV['season_to'],
     }
@@ -38,7 +39,7 @@ namespace :update do
     # options[:params] = ENV.to_hash.slice(:city, :name, :comment)
     options[:parser_type] = ENV['parser_type']
     options[:date_format] =  ENV['date_format']
-    CompetitionUpdater.new(verbose: !options[:quiet]).update_competition(ENV['site_url'], options)
+    CompetitionUpdater.new(verbose: options[:verbose]).update_competition(ENV['site_url'], options)
   end
 
   desc 'update competitions listed in config/competitions.yml'
@@ -56,7 +57,7 @@ namespace :update do
     list.each do |item|
       options = env_options.dup
       options.merge!(item.attributes.slice(:date_format, :parser_type))
-      CompetitionUpdater.new(verbose: !options[:quiet])
+      CompetitionUpdater.new(verbose: options[:verbose])
         .update_competition(item[:site_url], options) do |competition|
         item.attributes.slice(:city, :name, :comment).each do |key, value|
           competition.update(key => value) if value.present?

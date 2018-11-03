@@ -3,10 +3,10 @@ class GrandprixesController < ApplicationController
   include DebugPrint
 
   def index
-    #category = (params[:category_name] || 'MEN').to_category
     category = params[:category].to_s.to_category
+    seasons = GrandprixEvent.order(season: :desc).pluck(:season).uniq
+    season = params[:season] || seasons.first || ''
 
-    season = GrandprixEvent.order(season: :desc).first&.season || ''
     events = GrandprixEvent.where(season: season, category: category)
              .includes(:grandprix_entries, grandprix_entries: [:skater])
 
@@ -17,7 +17,8 @@ class GrandprixesController < ApplicationController
 
     results = GrandprixSimulator.new.run(events, parameters: simulation_parameters)
 
-    render :index, locals: { season: season, category: category, events: events,
+    render :index, locals: { season: season, seasons: seasons,
+                             category: category, events: events,
                              results: results, simulation_parameters: simulation_parameters }
   end
 end
