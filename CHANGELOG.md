@@ -20,6 +20,8 @@
 - update season (adding to season_from, _to)
 - spec rake: update:grandprix
 - grandprix: dont run if FINAL RESULTS ready
+- spec update: wtt2017 tz 
+- grandprix locale ja
 
 ### new feature
 

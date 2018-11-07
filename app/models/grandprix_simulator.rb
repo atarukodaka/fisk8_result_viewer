@@ -26,8 +26,8 @@ class GrandprixSimulator
   end
 
   def run(events, parameters: {})
-    done_events = events.where(done: true)
-    incoming_events = events.where(done: false)
+    done_events = events.done
+    incoming_events = events.incoming
     average_scores = get_average_scores_by_skater(events)
 
     points = Hash.new { |h, k| h[k] = Array.new(6) { 0 } }

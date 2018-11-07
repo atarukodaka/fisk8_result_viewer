@@ -19,6 +19,7 @@ ja:
     deviations: 逸脱度
     element_judge_details: 技術要素ジャッジ詳細
     component_judge_details: コンポーネントジャッジ詳細
+    grandprixes: グランプリシリーズ
     
     
   competitions:
@@ -71,6 +72,11 @@ ja:
   diviations:
     index:
       skater_name: スケーター名
+  grandprixes:
+    index:
+      grandprixseries: グランプリシリーズ
+      simulation_times: シミュレーション回数
+      stddev_ratio_to_average: 対平均標準偏差率
   filter:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
