@@ -43,7 +43,7 @@ class CompetitionsController < IndexController
     ps = competition.performed_segments.where(category: category, segment: segment)
     records = Official.where(performed_segment: ps).includes(:panel)
     AjaxDatatables::Datatable.new(view_context).records(records)
-      .columns([:number, :panel_name, :panel_nation])
+      .columns([:function_type, :function, :panel_name, :panel_nation])
       .update_settings(info: false, searching: false, paging: false)
   end
 

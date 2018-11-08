@@ -134,6 +134,8 @@ ActiveRecord::Schema.define(version: 6) do
   end
 
   create_table "officials", force: :cascade do |t|
+    t.string "function_type"
+    t.string "function"
     t.integer "number"
     t.integer "panel_id"
     t.integer "performed_segment_id"

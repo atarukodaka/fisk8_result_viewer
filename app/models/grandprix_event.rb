@@ -6,5 +6,4 @@ class GrandprixEvent < ApplicationRecord
 
   scope :done, -> { where(done: true) }
   scope :incoming, -> { where(done: false) }
-    
 end

@@ -7,16 +7,30 @@ class CompetitionParser
       elem = page.xpath("//th[#{func}] | //td[#{func}]") || raise('no Function cell')
       rows = elem.xpath('ancestor::table[1]//tr')
       rows.map do |row|
-        next unless row.xpath('td[1]').text =~ /^Judge No\.(\d)/
-
-        {
+        data = {
           category: category,
           segment: segment,
-          type: :judge,
-          number: $1,
+          function_type: nil,
+          number: nil,
+          function: nil,
           panel_name: normalize_name(row.xpath('td[2]').text),
           panel_nation: normalize_nation(row.xpath('td[3]').text),
         }
+        td1 = row.xpath('td[1]').text
+        if /Referee/.match?(td1)
+          data[:function_type] = :technical
+          data[:function] = td1
+        elsif /Technical/.match?(td1)
+          data[:function_type] = :technical
+          data[:function] = td1
+        elsif td1 =~ /^Judge No\.(\d)/
+          data[:function_type] = :judge
+          data[:function] = td1
+          data[:number] = $1
+        else
+          next
+        end
+        data
       end.compact
     end
 

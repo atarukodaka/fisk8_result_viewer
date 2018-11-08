@@ -6,6 +6,8 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
     end
 
     create_table :officials do |t|
+      t.string :function_type
+      t.string :function
       t.integer :number
       t.references :panel
       t.belongs_to :performed_segment

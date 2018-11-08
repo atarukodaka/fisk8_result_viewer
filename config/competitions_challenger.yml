@@ -30,7 +30,9 @@
 - http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
 - http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-#- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+-
+  site_url: http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+  date_format: '%m/%d/%Y'
 - http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 
 ## warsaw cup

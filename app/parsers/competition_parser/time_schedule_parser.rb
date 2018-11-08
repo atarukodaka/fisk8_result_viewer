@@ -43,8 +43,8 @@ class CompetitionParser
       end.compact
 
       ## check parsed date
-      min_date = data.map {|d| d[:starting_time]}.min.to_date
-      max_date = data.map {|d| d[:starting_time]}.max.to_date
+      min_date = data.map { |d| d[:starting_time] }.min.to_date
+      max_date = data.map { |d| d[:starting_time] }.max.to_date
 
       raise "date parsing error: #{min_date} - #{max_date}" if max_date - min_date > 30
 

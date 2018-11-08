@@ -37,7 +37,9 @@
 -
   site_url: http://www.isuresults.com/results/ec2012/
   date_format: "%m/%d/%Y"
-- http://www.isuresults.com/results/fc2012/
+-
+  site_url: http://www.isuresults.com/results/fc2012/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
@@ -139,4 +141,3 @@
 
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
-
