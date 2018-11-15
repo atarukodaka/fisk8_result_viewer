@@ -138,6 +138,13 @@
 -
   site_url: "http://www.isuresults.com/results/season1819/gpfin2018/"
   date_format: "%d/%m/%Y"
+-
+  site_url: http://www.isuresults.com/results/season1819/gpjpn2018/
+  parser_type: gpjpn
+  name: ISU GP NHK Trophy 2018
+  city: Hiroshima
+  
 
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
+

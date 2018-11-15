@@ -60,7 +60,7 @@ namespace :update do
       CompetitionUpdater.new(verbose: options[:verbose])
         .update_competition(item[:site_url], options) do |competition|
         item.attributes.slice(:city, :name, :comment).each do |key, value|
-          competition.update(key => value) if value.present?
+          competition[key] = value if value.present?
         end
       end
     end ## each

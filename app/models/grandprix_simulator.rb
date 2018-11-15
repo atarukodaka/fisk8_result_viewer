@@ -12,13 +12,14 @@ class GrandprixSimulator
       .joins(:competition).group(:skater).average(:points)
   end
 
-  def update_qualified(sim_points, qualified)
+  def update_qualified(sim_points, qualified, min_ranks)
     ## total points
     total_points = sim_points.map do |skater, arr|
-      { skater: skater, total_point: arr.map(&:to_i).sum }
+      { skater: skater, total_point: arr.map(&:to_i).sum, min_ranks: min_ranks[skater] }
     end
     ## rankings / qualified
-    total_points.sort_by { |h| h[:total_point] }.reverse_each.with_index(1) do |hash, ranking|
+    total_points.sort { |a, b| a[:total_point] <=> b[:total_point] || b[:min_ranks] <=> a[:min_ranks] }
+      .reverse_each.with_index(1) do |hash, ranking|
       break if ranking >= 6
 
       qualified[hash[:skater]] += 1
@@ -46,6 +47,7 @@ class GrandprixSimulator
 
     num_simulations.times do   ## run for incoming competitions
       sim_points = points.dup
+      min_ranks = Hash.new { 9999 }
 
       incoming_events.each do |event|
         scores = event.grandprix_entries.map do |entry|
@@ -56,9 +58,10 @@ class GrandprixSimulator
           point = POINT_MAPPINGS[ranking]
           sim_points[hash[:skater]][event.number - 1] = point
           accum_points[hash[:skater]][event.number - 1] += point
+          min_ranks[hash[:skater]] = [min_ranks[hash[:skater]], ranking].min
         end
       end
-      update_qualified(sim_points, qualified)
+      update_qualified(sim_points, qualified, min_ranks)
     end   ## sim
 
     ## calculate average points
