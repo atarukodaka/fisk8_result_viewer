@@ -76,6 +76,7 @@ class CompetitionParser < Parser
   end
 
   def parse_city_country(page)
+    binding.pry
     node = page.search('td.caption3').presence || page.xpath('//h3') || raise
     str = (node.present?) ? node.first.text.strip : ''
     if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}

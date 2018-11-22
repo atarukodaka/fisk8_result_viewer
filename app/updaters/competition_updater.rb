@@ -13,6 +13,7 @@ class CompetitionUpdater < Updater
     options[:season_options] = options.slice(:season, :season_from, :season_to)
     data = parser(options[:parser_type])
            .parse(site_url, options.slice(:date_format, :categories, :season_options)) || return
+    binding.pry
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 

@@ -64,7 +64,9 @@
 - http://www.deu-event.de/results/Nebelhorn_2018/
 
 ## debug
-#- http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
+-
+  site_url: http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
+  date_format: '%m/%d/%Y'  
 
 
 
