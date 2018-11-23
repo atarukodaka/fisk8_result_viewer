@@ -13,7 +13,6 @@ class CompetitionUpdater < Updater
     options[:season_options] = options.slice(:season, :season_from, :season_to)
     data = parser(options[:parser_type])
            .parse(site_url, options.slice(:date_format, :categories, :season_options)) || return
-    binding.pry
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -23,6 +22,7 @@ class CompetitionUpdater < Updater
           end_date: data[:time_schedule].map_value(:starting_time).max.to_date,
           timezone: timezone(data),
         }
+        data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
         comp.attributes = data.slice(:site_url, :name, :country, :city)
         yield comp if block_given?
       end

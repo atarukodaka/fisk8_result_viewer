@@ -76,9 +76,28 @@ class CompetitionParser < Parser
   end
 
   def parse_city_country(page)
-    binding.pry
     node = page.search('td.caption3').presence || page.xpath('//h3') || raise
     str = (node.present?) ? node.first.text.strip : ''
+    city, country = str.split(/ *\/ */)
+
+    if country.nil?
+      city, country = city.split(/ *, */)
+      if country !~ /^[A-Z][A-Z][A-Z]$/
+        country = nil
+      end
+      
+    elsif country !~ /^[A-Z][A-Z][A-Z]$/
+
+      if str =~ /^(.*) *([A-Z][A-Z][A-Z])$/
+        country, city = $2, $1.sub(/, $/, '')
+      else
+        country = nil
+      end
+    end
+    puts "[#{city}], [#{country}]"
+    #binding.pry
+    [city, country]
+=begin
     if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
       city, country = $1, $2
       city = city.to_s.sub(/ *$/, '').sub(/,.*$/, '').sub(/ *\(.*\)$/, '').sub(/ *\/.*$/, '')
@@ -86,5 +105,7 @@ class CompetitionParser < Parser
     else
       [str, nil] ## to be set in competition.update()
     end
+=end
   end
+
 end
