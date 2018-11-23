@@ -45,22 +45,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
     }
   end
   ################
-  describe 'update grandprix' do
-    it {
-      ## TODO: ladies, pairs as well
-      url = 'http://www.isuresults.com/events/gp2018/gpsmen.htm'
-      WebMock.enable!
-      WebMock.stub_request(:get, url).to_return(
-        body: File.read((Rails.root.join('spec/fixtures/webmock', 'gp2018-men.htm')).to_s),
-        status: 200
-      )
-
-      ENV['season'] = '2018-19'
-      @rake['update:grandprix'].execute
-      expect(GrandprixEvent.count).to eq(18)
-    }
-  end
-  ################
   describe 'parse scores' do
     it {
       ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
