@@ -238,7 +238,6 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       end
     end
   end
-
   ################
   describe 'skater name correction' do
     def expect_same_skater(url, category, ranking) # TODO
