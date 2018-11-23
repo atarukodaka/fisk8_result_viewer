@@ -82,30 +82,16 @@ class CompetitionParser < Parser
 
     if country.nil?
       city, country = city.split(/ *, */)
-      if country !~ /^[A-Z][A-Z][A-Z]$/
+      unless /^[A-Z][A-Z][A-Z]$/.match?(country)
         country = nil
       end
-      
-    elsif country !~ /^[A-Z][A-Z][A-Z]$/
-
+    elsif !/^[A-Z][A-Z][A-Z]$/.match?(country)
       if str =~ /^(.*) *([A-Z][A-Z][A-Z])$/
         country, city = $2, $1.sub(/, $/, '')
       else
         country = nil
       end
     end
-    puts "[#{city}], [#{country}]"
-    #binding.pry
     [city, country]
-=begin
-    if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
-      city, country = $1, $2
-      city = city.to_s.sub(/ *$/, '').sub(/,.*$/, '').sub(/ *\(.*\)$/, '').sub(/ *\/.*$/, '')
-      [city, country]
-    else
-      [str, nil] ## to be set in competition.update()
-    end
-=end
   end
-
 end
