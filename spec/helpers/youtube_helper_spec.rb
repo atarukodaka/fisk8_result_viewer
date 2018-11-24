@@ -9,7 +9,7 @@ RSpec.describe YoutubeHelper do
 
       WebMock.enable!
       WebMock.stub_request(:get, url).to_return(
-        body: File.read((Rails.root.join('spec/fixtures/webmock-youtube-api.json')).to_s),
+        body: File.read((Rails.root.join('spec/fixtures/webmock', 'youtube-api.json')).to_s),
         status: 200,
         headers: { 'content-type': 'application/json' }
       )

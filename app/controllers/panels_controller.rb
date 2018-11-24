@@ -23,7 +23,7 @@ class PanelsController < IndexController
       #        Score.joins(performed_segment: [:officials]).where("officials.panel_id": panel.id).count,
     }
 
-    columns = [:competition_name, :category_name, :segment_name, :number]
+    columns = [:competition_name, :category_name, :segment_name, :function_type, :function]
     records = panel.officials.includes(performed_segment: [:competition, :category, :segment])
     participated_segments_datatable =
       AjaxDatatables::Datatable.new(self).records(records).columns(columns)

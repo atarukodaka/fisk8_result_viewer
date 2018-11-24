@@ -37,7 +37,9 @@
 -
   site_url: http://www.isuresults.com/results/ec2012/
   date_format: "%m/%d/%Y"
-- http://www.isuresults.com/results/fc2012/
+-
+  site_url: http://www.isuresults.com/results/fc2012/
+  date_format: "%m/%d/%Y"
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
@@ -130,5 +132,23 @@
   city: Nagoya
 - http://www.isuresults.com/results/season1718/owg2018/
 
+## 2018-19
+- http://www.isuresults.com/results/season1819/gpusa2018/
+- http://www.isuresults.com/results/season1819/gpcan2018/
+-
+  site_url: "http://www.isuresults.com/results/season1819/gpfin2018/"
+  date_format: "%d/%m/%Y"
+-
+  site_url: http://www.isuresults.com/results/season1819/gpjpn2018/
+  parser_type: gpjpn
+  name: ISU GP NHK Trophy 2018
+  city: Hiroshima
+  
+
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
+
+- http://www.isuresults.com/results/season1819/gpcan2018/
+- http://www.isuresults.com/results/season1516/ec2016/
+- http://www.isuresults.com/results/season1516/gpusa2015/
+- http://www.isuresults.com/results/gpusa2012/

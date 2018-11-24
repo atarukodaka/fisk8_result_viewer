@@ -2,15 +2,16 @@
 
 h2 Parsers
 
-h3 Competition Parser
-
-= form_tag url_for(action: :competition), method: :get, enforce_utf8: false, id: :competition_parser_form  do |f|
-  = form_group("URL", text_field_tag(:url, nil, size: 70))
-  = form_group(nil, submit_tag("parse"))
-
 h3 Scores Parser
 
 = form_tag url_for(action: :scores), method: :get, enforce_utf8: false, id: :scores_parser_form do |f|
+  = form_group("URL", text_field_tag(:url, nil, size: 70))
+  = form_group(nil, submit_tag("parse"))
+
+
+/h3 Competition Parser
+
+/= form_tag url_for(action: :competition), method: :get, enforce_utf8: false, id: :competition_parser_form  do |f|
   = form_group("URL", text_field_tag(:url, nil, size: 70))
   = form_group(nil, submit_tag("parse"))
 

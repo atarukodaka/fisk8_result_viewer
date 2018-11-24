@@ -20,7 +20,7 @@ class CompetitionParser
       rows = get_time_schedule_rows(page)
       dt_str = ''
       timezone = get_timezone(page)
-      rows.reject { |row| row.xpath('td').blank? }.map do |row|
+      data = rows.reject { |row| row.xpath('td').blank? }.map do |row|
         if (t = row.xpath('td[1]').text.presence)
           dt_str = t
           next
@@ -41,6 +41,14 @@ class CompetitionParser
           segment:  row.xpath('td[4]').text.squish.upcase
         }
       end.compact
+
+      ## check parsed date
+      min_date = data.map { |d| d[:starting_time] }.min.to_date
+      max_date = data.map { |d| d[:starting_time] }.max.to_date
+
+      raise "date parsing error: #{min_date} - #{max_date}" if max_date - min_date > 30
+
+      data
     end
   end
 end

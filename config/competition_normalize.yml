@@ -90,3 +90,9 @@
   competition_type: nepela
   short_name: NEPELA%{year}
   name: Ondrej Nepela Trophy %{year}
+-
+  regex: Asian Open
+  competition_class: challenger
+  competition_type: asianopen
+  short_name: ASIANOPEN%{year}
+  name: Asian Open %{year}

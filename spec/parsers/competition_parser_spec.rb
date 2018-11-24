@@ -35,6 +35,20 @@ RSpec.describe CompetitionParser, vcr: true do
     }
   end
 
+  ################
+  context 'city, countery' do
+    [['http://www.isuresults.com/results/gpusa2012/', 'Seattle / Kent, WA', 'USA'],
+     ['http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html', 'Bangkok', nil],
+     ['http://www.isuresults.com/results/season1516/jgpusa2015/', 'Colorado Springs CO', 'USA']]
+      .each do |url, city, country|
+      it {
+        page = get_url(url)
+        data = parser.parse_city_country(page)
+        expect(data).to eq([city, country])
+      }
+    end
+  end
+
 =begin
  describe 'synchronized' do
     let(:site_url) { 'http://www.figureskatingresults.fi/results/1314/FT2013/' }

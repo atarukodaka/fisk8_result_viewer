@@ -21,10 +21,10 @@ class CompetitionParser < Parser
   using SelectType
   attr_accessor :categories, :season_from, :season_to
 
-  def parse(site_url, date_format: nil, categories: nil, season_from: nil, season_to: nil)
+  def parse(site_url, date_format: nil, categories: nil, season_options: {})
     page = get_url(site_url) || return
     time_schedule = parse_time_schedule(page, date_format: date_format)
-    return nil unless season_to_parse?(time_schedule, from: season_from, to: season_to)
+    return nil unless season_to_parse?(time_schedule, season_options)
 
     data = {
       name: parse_name(page),
@@ -51,11 +51,15 @@ class CompetitionParser < Parser
   end
 
   ################
-  def season_to_parse?(time_schedule, from:, to:)
-    season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
-    return true if season.between?(from, to)
+  def season_to_parse?(time_schedule, season_options)
+    this_season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
+    season = season_options[:season]
+    from = (season) ? season : season_options[:season_from]
+    to = (season) ? season : season_options[:season_to]
 
-    debug('skipping...season %s out of range [%s, %s]' % [season.season, from, to], indent: 3)
+    return true if this_season.between?(from, to)
+
+    debug('skipping...season %s out of range [%s, %s]' % [this_season, from, to], indent: 3)
     false
   end
 
@@ -74,12 +78,20 @@ class CompetitionParser < Parser
   def parse_city_country(page)
     node = page.search('td.caption3').presence || page.xpath('//h3') || raise
     str = (node.present?) ? node.first.text.strip : ''
-    if str =~ %r{^(.*) *[,/] ([A-Z][A-Z][A-Z]) *$}
-      city, country = $1, $2
-      city = city.to_s.sub(/ *$/, '').sub(/,.*$/, '').sub(/ *\(.*\)$/, '').sub(/ *\/.*$/, '')
-      [city, country]
-    else
-      [str, nil] ## to be set in competition.update()
+    city, country = str.split(/ *\/ */)
+
+    if country.nil?
+      city, country = city.split(/ *, */)
+      unless /^[A-Z][A-Z][A-Z]$/.match?(country)
+        country = nil
+      end
+    elsif !/^[A-Z][A-Z][A-Z]$/.match?(country)
+      if str =~ /^(.*) *([A-Z][A-Z][A-Z])$/
+        country, city = $2, $1.sub(/, $/, '')
+      else
+        country = nil
+      end
     end
+    [city, country]
   end
 end

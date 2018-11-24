@@ -10,9 +10,9 @@ class CompetitionUpdater < Updater
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
+    options[:season_options] = options.slice(:season, :season_from, :season_to)
     data = parser(options[:parser_type])
-           .parse(site_url, options.slice(:date_format, :categories, :season_from, :season_to)) || return
-
+           .parse(site_url, options.slice(:date_format, :categories, :season_options)) || return
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -22,6 +22,7 @@ class CompetitionUpdater < Updater
           end_date: data[:time_schedule].map_value(:starting_time).max.to_date,
           timezone: timezone(data),
         }
+        data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
         comp.attributes = data.slice(:site_url, :name, :country, :city)
         yield comp if block_given?
       end
@@ -80,7 +81,11 @@ class CompetitionUpdater < Updater
 
       panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
       panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
-      performed_segment.officials.create!(number: official[:number], panel: panel)
+      #performed_segment.officials.create!(number: official[:number], panel: panel)
+
+      performed_segment.officials.create!(official.slice(:function_type, :function, :number)) do |of|
+        of.panel = panel
+      end
     end
   end
 
@@ -105,7 +110,7 @@ class CompetitionUpdater < Updater
     cr&.update(segment.segment_type => sc)
 
     ## details
-    elements_summary = item[:elements].map { |d| sc.elements.create!(d); d[:name] }.join('(/')
+    elements_summary = item[:elements].map { |d| sc.elements.create!(d); d[:name] }.join('/')
     components_summary = item[:components].map { |d| sc.components.create!(d); d[:value] }.join('/')
 
     sc.update(elements_summary: elements_summary)
@@ -129,9 +134,6 @@ class CompetitionUpdater < Updater
 
   def update_deviations(score, officials:)
     num_elements = score.elements.count
-    #officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
-    #officials = JudgeDetail.where("elements.score_id": score.id)
-    #officials = score.elements.first.officials
     ActiveRecord::Base.transaction do
       officials.values.each do |official|
         tes_dev = JudgeDetail.where(official: official, "elements.score_id": score.id)

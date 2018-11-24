@@ -33,46 +33,46 @@ class CompetitionParser
       ################
       # rubocop:disable all
       def parse_time_schedule(_page, date_format:)
-        Time.zone ||= 'UTC'
+        tz = 'Asia/Tokyo' # ActiveSupport::TimeZone[timezone]
         [
           {
-            starting_time: Time.zone.parse('2017/04/20 15:15:00'),
+            starting_time: '2017/04/20 15:15:00'.in_time_zone(tz),
             category: 'TEAM ICE DANCE',
             segment: 'SHORT DANCE',
           },
           {
-            starting_time: Time.zone.parse('2017/04/20 16:35:00'),
+            starting_time: '2017/04/20 16:35:00 +9:00'.in_time_zone(tz),
             category: 'TEAM LADIES',
             segment: 'SHORT PROGRAM',
           },
           {
-            starting_time: Time.zone.parse('2017/04/20 18:40:00'),
+            starting_time: '2017/04/20 18:40:00'.in_time_zone(tz),
             category: 'TEAM MEN',
             segment: 'SHORT PROGRAM',
           },
           {
-            starting_time: Time.zone.parse('2017/04/21 16:00:00'),
+            starting_time: '2017/04/21 16:00:00'.in_time_zone(tz),
             category: 'TEAM PAIRS',
             segment: 'SHORT PROGRAM',
           },
           {
-            starting_time: Time.zone.parse('2017/04/21 17:25:00'),
+            starting_time: '2017/04/21 17:25:00'.in_time_zone(tz),
             category: 'TEAM ICE DANCE',
             segment: 'FREE DANCE',
           },
           {
-            starting_time: Time.zone.parse('2017/04/21 19:00:00'),
+            starting_time: '2017/04/21 19:00:00'.in_time_zone(tz),
             category: 'TEAM MEN',
             segment: 'FREE SKATING',
           },
           {
-            starting_time: Time.zone.parse('2017/04/22 15:15:00'),
+            starting_time: '2017/04/22 15:15:00'.in_time_zone(tz),
             category: 'TEAM PAIRS',
             segment: 'FREE SKATING',
           },
 
           {
-            starting_time: Time.zone.parse('2017/04/22 16:50:00'),
+            starting_time: '2017/04/22 16:50:00'.in_time_zone(tz),
             category: 'TEAM LADIES',
             segment: 'FREE SKATING',
           },

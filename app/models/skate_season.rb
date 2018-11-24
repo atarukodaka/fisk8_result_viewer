@@ -57,6 +57,16 @@ class SkateSeason
     end
   end
 
+=begin
+  def ==(other)
+    case other
+    when SkateSeason
+      super.==(other)
+    else
+      super.==(SkateSeason.new(other))
+    end
+  end
+=end
   def <=>(other)
     other_season = (other.class == SkateSeason) ? other : SkateSeason.new(other)
     start_date <=> other_season.start_date
