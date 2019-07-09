@@ -48,6 +48,14 @@ class SkateSeason
   end
 
   ## operators
+  def +(other)
+    case other
+    when Integer
+      SkateSeason.new(self.start_date.year + other)
+    when SkateSeason
+      self.start_date.year + other.start_date.year
+    end
+  end
   def -(other)
     case other
     when Integer
