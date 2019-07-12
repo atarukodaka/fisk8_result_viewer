@@ -1,4 +1,7 @@
 ja:
+  Category: カテゴリー
+  Result: 競技結果
+
   date:
     formats:
       default: "%Y/%m/%d"
@@ -20,8 +23,8 @@ ja:
     element_judge_details: 技術要素ジャッジ詳細
     component_judge_details: コンポーネントジャッジ詳細
     grandprixes: グランプリシリーズ
-    
-    
+
+
   competitions:
     show:
       competition_summary: 競技会情報
@@ -32,7 +35,7 @@ ja:
   home:
     index:
       about: このサイトについて
-    
+
   skaters:
     show:
       skater_summary: 選手情報
@@ -81,7 +84,7 @@ ja:
     toggle_filter: 検索フィルターを表示/非表示
     offset: オフセット
 
-  ################    
+  ################
   # models
   attributes:
     skater_name: スケーター名
@@ -111,7 +114,7 @@ ja:
     element_name: 要素名
     value: 値
     average: 平均
-  
+
   activerecord:
     models:
       skater: スケーター
@@ -214,6 +217,6 @@ ja:
         deviation_name: 逸脱度名
         official_number: オフィシャル番号
         tes_deviation: TES逸脱度
-        pcs_deviation: PCS逸脱度        
+        pcs_deviation: PCS逸脱度
         tes_deviation_ratio: TES逸脱率
-        pcs_deviation_ratio: PCS逸脱率        
+        pcs_deviation_ratio: PCS逸脱率

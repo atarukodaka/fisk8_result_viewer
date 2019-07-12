@@ -21,7 +21,6 @@ class CompetitionParser
     def get_rows(page)
       place_elem = page.xpath("//th[text()='FPl' or text()='FPl.'] | //td[text()='PL']").first ||
                    raise("No Placement Cell found (#{self.class})")
-
       place_elem.xpath('../../tr')
     end
 

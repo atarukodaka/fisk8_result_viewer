@@ -23,6 +23,7 @@ class CompetitionParser < Parser
 
   def parse(site_url, date_format: nil, categories: nil, season_options: {})
     page = get_url(site_url) || return
+    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)
 
@@ -34,18 +35,17 @@ class CompetitionParser < Parser
     }
     data[:city], data[:country] = parse_city_country(page)
 
-    cr_parser = CategoryResultParser.new(verbose: verbose)
-    official_parser = OfficialParser.new(verbose: verbose)
-    score_parser = ScoreParser.new(verbose: verbose)
+    #cr_parser = CategoryResultParser.new(verbose: verbose)
+    #official_parser = OfficialParser.new(verbose: verbose)
+    #score_parser = ScoreParser.new(verbose: verbose)
 
-    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*cr_parser.parse(item[:result_url], item[:category]))
+      data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))
     end
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)
-      data[:officials].push(*official_parser.parse(item[:official_url], category, segment))
-      data[:scores].push(*score_parser.parse(item[:score_url], category, segment))
+      data[:officials].push(*parse_officials(item[:official_url], category, segment))
+      data[:scores].push(*parse_score(item[:score_url], category, segment))
     end
     data
   end
@@ -63,12 +63,28 @@ class CompetitionParser < Parser
     false
   end
 
+  def get_parser(ptype)
+    [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize
+  end
+
   def parse_time_schedule(page, date_format: nil)
-    TimeScheduleParser.new.parse(page, date_format: date_format)
+    get_parser(:time_schedule).new.parse(page, date_format: date_format)
   end
 
   def parse_summary_table(page, base_url: '')
-    SummaryTableParser.new.parse(page, base_url: base_url)
+    get_parser(:summary_table).new.parse(page, base_url: base_url)
+  end
+
+  def parse_category_result(url, category)
+    get_parser(:category_result).new(verbose: verbose).parse(url, category)
+  end
+
+  def parse_score(url, category, segment)
+    get_parser(:score).new(verbose: verbose).parse(url, category, segment)
+  end
+
+  def parse_officials(url, category, segment)
+    get_parser(:official).new(verbose: verbose).parse(url, category, segment)
   end
 
   def parse_name(page)

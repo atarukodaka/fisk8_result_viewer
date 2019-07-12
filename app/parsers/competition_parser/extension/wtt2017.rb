@@ -26,9 +26,9 @@ class CompetitionParser
         %w[Tokyo JPN]
       end
 
-      def parse_summary_table(page, base_url: nil)
-        SummaryTableParser.new.parse(page, base_url: base_url)
-      end
+      #def parse_summary_table(page, base_url: nil)
+      #  SummaryTableParser.new.parse(page, base_url: base_url)
+      #end
 
       ################
       # rubocop:disable all

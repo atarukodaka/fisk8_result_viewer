@@ -155,7 +155,7 @@ class CompetitionUpdater < Updater
   def competition_exists?(site_url)
     if Competition.find_by(site_url: site_url)
       debug('already existing', indent: 3)
-      true
+      true<
     else
       false
     end

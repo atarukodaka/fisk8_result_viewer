@@ -56,6 +56,7 @@ class SkateSeason
       self.start_date.year + other.start_date.year
     end
   end
+
   def -(other)
     case other
     when Integer

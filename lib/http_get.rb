@@ -6,10 +6,10 @@ module HttpGet
 
   def get_url(url, mode: 'r')
     body = open(url, mode).read   # rubocop:disable Security/Open
-  rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => err
+  rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => e
     #http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
-    Rails.logger.warn(err.message)
-    debug("#{err.message}: #{url}")
+    Rails.logger.warn(e.message)
+    debug("#{e.message}: #{url}")
     nil
   else
     Nokogiri::HTML(body)
