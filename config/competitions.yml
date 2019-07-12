@@ -162,16 +162,6 @@
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
 
-
--
-  name: ISU World Figureskating Championships 2019
-  site_url: http://www.isuresults.com/results/season1819/wc2019/
-  parser_type: gpjpn
-  city: Saitama
--
-  site_url: https://www.jsfresults.com/National/2018-2019/fs_j/nationalsenior/
-  parser_type: all_japan
+#  site_url: https://www.jsfresults.com/National/2018-2019/fs_j/nationalsenior/
+#  parser_type: all_japan
 #- http://www.isuresults.com/results/season1819/gpf1819/
--
-  site_url: https://www.jsfresults.com/National/2017-2018/fs_j/nationalsenior/
-  parser_type: all_japan

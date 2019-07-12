@@ -20,7 +20,7 @@ class CompetitionParser
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
         def parse(page, date_format: nil)
           timezone = "Japan"
-          elem = page.xpath("//*[text()='期日']").first || raise "no time schedule table found"
+          elem = page.xpath("//*[text()='期日']").first || raise("no time schedule table found")
           rows = elem.xpath('ancestor::table[1]//tr')
 
           date = nil
