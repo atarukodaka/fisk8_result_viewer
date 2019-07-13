@@ -21,7 +21,7 @@ class CompetitionParser
 
     ################
     def parse(url)
-      page = get_url(url, mode: 'r:iso-8859-1').presence || (return [])
+      page = get_url(url, mode: "r:#{@encoding}").presence || (return [])
       rows = get_rows(page) || (return [])
       headers = get_headers(rows[0])
       ##
@@ -35,7 +35,6 @@ class CompetitionParser
           data[key] = (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
         end
         next if invalid_skater_name?(data[:skater_name])
-
         data
       end.compact  ## rows
     end

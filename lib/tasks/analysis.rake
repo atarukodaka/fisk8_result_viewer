@@ -9,7 +9,6 @@ namespace :analysis do
     end
   end
 
-  
   desc 'tes pcs ratio'
   task tes_pcs_ratio: :environment do
     Score.all.includes(:skater, category: [:category_type])
