@@ -16,7 +16,7 @@ class CompetitionParser
     end
 
     def parse(page, date_format: nil) ## TODO: date_format
-      rows = find_table_rows(page, "aaDate") || raise("table not found")
+      rows = find_table_rows(page, "Date").presence || raise("time schedule table not found")
 
       dt_str = ''
       timezone = get_timezone(page)
