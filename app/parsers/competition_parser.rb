@@ -35,10 +35,6 @@ class CompetitionParser < Parser
     }
     data[:city], data[:country] = parse_city_country(page)
 
-    #cr_parser = CategoryResultParser.new(verbose: verbose)
-    #official_parser = OfficialParser.new(verbose: verbose)
-    #score_parser = ScoreParser.new(verbose: verbose)
-
     summary_table.select_type(:category).each do |item|
       data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))
     end
@@ -64,27 +60,28 @@ class CompetitionParser < Parser
   end
 
   def get_parser(ptype)
-    [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize
+    @parsers ||= {}
+    @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new(verbose: verbose)
   end
 
   def parse_time_schedule(page, date_format: nil)
-    get_parser(:time_schedule).new.parse(page, date_format: date_format)
+    get_parser(:time_schedule).parse(page, date_format: date_format)
   end
 
   def parse_summary_table(page, base_url: '')
-    get_parser(:summary_table).new.parse(page, base_url: base_url)
+    get_parser(:summary_table).parse(page, base_url: base_url)
   end
 
   def parse_category_result(url, category)
-    get_parser(:category_result).new(verbose: verbose).parse(url, category)
+    get_parser(:category_result).parse(url, category)
   end
 
   def parse_score(url, category, segment)
-    get_parser(:score).new(verbose: verbose).parse(url, category, segment)
+    get_parser(:score).parse(url, category, segment)
   end
 
   def parse_officials(url, category, segment)
-    get_parser(:official).new(verbose: verbose).parse(url, category, segment)
+    get_parser(:official).parse(url, category, segment)
   end
 
   def parse_name(page)

@@ -7,10 +7,10 @@ class CompetitionParser
       end
 
       def parse(site_url, *args)
-        @encoding = "SJIS"
+        @encoding = "UTF-8"
         data = super(site_url, *args)
         if data[:time_schedule].blank?
-          page = get_url(site_url, "r:UTF-8") || []
+          page = get_url(site_url, mode: "r:UTF-8") || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
@@ -25,8 +25,8 @@ class CompetitionParser
       end
 
       class SummaryTableParser < CompetitionParser::SummaryTableParser
-        def initialize
-          super
+        def initialize(*args)
+          super(*args)
           @search_strings[:summary_table_column] = 'カテゴリー'
           @search_strings[:result] = '競技結果'
         end

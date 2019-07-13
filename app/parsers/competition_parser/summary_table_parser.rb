@@ -1,8 +1,8 @@
 class CompetitionParser
   class SummaryTableParser < Parser
     include CompetitionParser::Utils
-    def initialize
-      super
+    def initialize(*args)
+      super(*args)
       @search_strings = {
         summary_table_column: 'Category',
         result: 'Result',
