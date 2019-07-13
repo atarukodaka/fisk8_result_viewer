@@ -10,7 +10,7 @@ class CompetitionParser
     end
 
     def get_summary_table_rows(page)
-      elem = page.xpath("//*[text()='#{@search_strings[:summary_table_column]}']").first || raise
+      elem = page.xpath("//*[text()='#{@search_strings[:summary_table_column]}']").first || raise("summary table not found: #{@search_strings[:summary_table_column]}")
       rows = elem.xpath('ancestor::table[1]//tr')
     end
 

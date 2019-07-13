@@ -22,7 +22,7 @@ class CompetitionParser < Parser
   attr_accessor :categories, :season_from, :season_to
 
   def parse(site_url, date_format: nil, categories: nil, season_options: {})
-    page = get_url(site_url) || return
+    page = get_url(site_url, mode: "r:#{@encoding}") || return
     summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)

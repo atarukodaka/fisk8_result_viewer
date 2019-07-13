@@ -6,6 +6,24 @@ class CompetitionParser
         ["", "JPN"]
       end
 
+      def parse(site_url, *args)
+        @encoding = "SJIS"
+        data = super(site_url, *args)
+        if data[:time_schedule].blank?
+          page = get_url(site_url, "r:UTF-8") || []
+          page.text =~ /(\d+)年(\d+)月(\d+)日/
+          tm = Time.zone.local($1, $2, $3)
+          data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
+            {
+              starting_time: tm,
+              category: d[0],
+              segment: d[1]
+            }
+          }
+        end
+        data
+      end
+
       class SummaryTableParser < CompetitionParser::SummaryTableParser
         def initialize
           super
@@ -19,8 +37,9 @@ class CompetitionParser
 
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
         def parse(page, date_format: nil)
-          timezone = "Japan"
-          elem = page.xpath("//*[text()='期日']").first || raise("no time schedule table found")
+          timezone = "Asia/Tokyo"
+          elem = page.xpath("//*[text()='期日']").first #|| return( []) # raise("no time schedule table found")
+          return [] if elem.nil?
           rows = elem.xpath('ancestor::table[1]//tr')
 
           date = nil
@@ -53,6 +72,14 @@ class CompetitionParser
       end
       ## rubocop:enable all
 
+      class OfficialParser < CompetitionParser::OfficialParser
+        def initialize(*args)
+          super(*args)
+          @search_string = '役 職'
+          @encoding = 'UTF-8'
+        end
+      end
+
       class CategoryResultParser < CompetitionParser::CategoryResultParser
         def initialize(*args)
             super(*args)
@@ -68,8 +95,8 @@ class CompetitionParser
       end
       class ScoreParser < CompetitionParser::ScoreParser
         def parse_skater(line, score)
-          name_re = %q([亜-熙ぁ-んァ-ヶ ]+)
-          name_team_re = '[亜-熙ぁ-んァ-ヶA-Za-z0-9]+'
+          #name_re = %q([亜-熙ぁ-んァ-ヶ ]+)
+          #name_team_re = '[亜-熙ぁ-んァ-ヶA-Za-z0-9]+'
           if line =~ /^(\d+) (.*) ([^ ]+) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
             score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
                          starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
