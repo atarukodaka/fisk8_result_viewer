@@ -16,8 +16,8 @@ class CompetitionParser
     end
 
     def parse(page, date_format: nil) ## TODO: date_format
-      ## time schedule
-      rows = get_time_schedule_rows(page)
+      rows = find_table_rows(page, "Date") || raise("table not found")
+
       dt_str = ''
       timezone = get_timezone(page)
       data = rows.reject { |row| row.xpath('td').blank? }.map do |row|

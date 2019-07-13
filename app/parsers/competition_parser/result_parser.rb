@@ -35,7 +35,6 @@ class CompetitionParser
           data[key] = (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
         end
         next if invalid_skater_name?(data[:skater_name])
-
         data
       end.compact  ## rows
     end
