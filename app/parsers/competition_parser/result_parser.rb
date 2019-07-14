@@ -20,8 +20,8 @@ class CompetitionParser
     end
 
     ################
-    def parse(url)
-      page = get_url(url, mode: "r:#{@encoding}").presence || (return [])
+    def parse(url, encoding: nil)
+      page = get_url(url, encoding: encoding).presence || (return [])
       rows = get_rows(page) || (return [])
       headers = get_headers(rows[0])
       ##

@@ -5,6 +5,6 @@ describe StaticsController, type: :controller do
 
   describe '#index' do
     subject { create(:competition, :world); get :index }
-    it { is_expected.to be_success }
+    it { is_expected.to be_successful }
   end
 end

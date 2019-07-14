@@ -40,11 +40,7 @@ class CompetitionParser
           page.xpath("//*[text()='Men']").first
         end
       end
-      ################
-      #def parse_summary_table(page, base_url: nil)
-      #  SummaryTableParser.new.parse(page, base_url: base_url)
-      #end
-
+      #######
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
       ## rubocop:disable all
       ## this site is nightmare again: TD doesnt wraped with TR

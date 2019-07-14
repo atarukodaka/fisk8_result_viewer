@@ -3,11 +3,11 @@ class CompetitionParser
     def initialize(*args)
       super(*args)
       @search_string = 'Function'
-      @encoding = 'iso-8859-1'
     end
 
-    def parse(url, category, segment)
-      page = get_url(url, mode: "r:#{@encoding}").presence || (return [])
+
+    def parse(url, category, segment, encoding: nil)
+      page = get_url(url, encoding: encoding).presence || (return [])
       debug("-- parsing officials: #{url}", indent: 3)
       #func = "contains(text(), @search_string)"
       #binding.pry
@@ -26,7 +26,7 @@ class CompetitionParser
         }
         td1 = row.xpath('td[1]').text
         if /Referee/.match?(td1)
-          data[:function_type] = :technical
+          data[:function_type] = :referee
           data[:function] = td1
         elsif /Technical/.match?(td1)
           data[:function_type] = :technical

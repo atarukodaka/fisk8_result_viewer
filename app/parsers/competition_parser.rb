@@ -3,7 +3,6 @@ module AcceptCategories
     def accept_categories(categories)
       categories ||= Category.all.map(&:name)
       select { |d| categories.include?(d[:category])   }
-      # select { |d| categories.nil? || categories.include?(d[:category])   }
     end
   end
 end
@@ -21,8 +20,8 @@ class CompetitionParser < Parser
   using SelectType
   attr_accessor :categories, :season_from, :season_to
 
-  def parse(site_url, date_format: nil, categories: nil, season_options: {})
-    page = get_url(site_url, mode: "r:#{@encoding}") || return
+  def parse(site_url, date_format: nil, categories: nil, season_options: {}, encoding: 'iso-8859-1')
+    page = get_url(site_url, encoding: encoding) || return
     summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)
@@ -36,11 +35,11 @@ class CompetitionParser < Parser
     data[:city], data[:country] = parse_city_country(page)
 
     summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))
+      data[:category_results].push(*parse_category_result(item[:result_url], item[:category], encoding: encoding))
     end
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)
-      data[:officials].push(*parse_officials(item[:official_url], category, segment))
+      data[:officials].push(*parse_officials(item[:official_url], category, segment, encoding: encoding))
       data[:scores].push(*parse_score(item[:score_url], category, segment))
     end
     data
@@ -72,16 +71,16 @@ class CompetitionParser < Parser
     get_parser(:summary_table).parse(page, base_url: base_url)
   end
 
-  def parse_category_result(url, category)
-    get_parser(:category_result).parse(url, category)
+  def parse_category_result(url, category, encoding: nil)
+    get_parser(:category_result).parse(url, category, encoding: encoding)
   end
 
   def parse_score(url, category, segment)
     get_parser(:score).parse(url, category, segment)
   end
 
-  def parse_officials(url, category, segment)
-    get_parser(:official).parse(url, category, segment)
+  def parse_officials(url, category, segment, encoding: nil)
+    get_parser(:official).parse(url, category, segment, encoding: encoding)
   end
 
   def parse_name(page)

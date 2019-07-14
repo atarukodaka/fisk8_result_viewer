@@ -7,10 +7,9 @@ class CompetitionParser
       end
 
       def parse(site_url, *args)
-        @encoding = "UTF-8"
         data = super(site_url, *args)
         if data[:time_schedule].blank?
-          page = get_url(site_url, mode: "r:UTF-8") || []
+          page = get_url(site_url) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
@@ -75,16 +74,11 @@ class CompetitionParser
       class OfficialParser < CompetitionParser::OfficialParser
         def initialize(*args)
           super(*args)
-          @search_string = '役 職'
-          @encoding = 'UTF-8'
+          @search_string = '役 '
         end
       end
 
       class CategoryResultParser < CompetitionParser::CategoryResultParser
-        def initialize(*args)
-            super(*args)
-            @encoding = 'UTF-8'
-        end
         def columns
           hash = super
           hash[:skater_name] = { header_regex: /選手名/ }
@@ -97,7 +91,7 @@ class CompetitionParser
         def parse_skater(line, score)
           #name_re = %q([亜-熙ぁ-んァ-ヶ ]+)
           #name_team_re = '[亜-熙ぁ-んァ-ヶA-Za-z0-9]+'
-          if line =~ /^(\d+) (.*) ([^ ]+) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+          if line =~ /^(\d+) (.*) ([^ ]+) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
             score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
                          starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
                          pcs: $7.to_f, deductions: $8.to_f.abs * -1)

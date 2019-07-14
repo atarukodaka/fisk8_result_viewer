@@ -72,7 +72,7 @@ class CompetitionParser
           jump_under(element)
           score[:elements] << element
         else
-          raise 'parseing error on TES'
+          raise "parseing error on TES: #{line}"
         end
         :tes
       when /^([\d\.]+) +[\d\.]+$/

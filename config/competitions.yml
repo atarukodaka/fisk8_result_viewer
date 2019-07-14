@@ -156,7 +156,9 @@
   parser_type: gpjpn
   city: Saitama
 - http://www.isuresults.com/results/season1819/fc2019/
-- http://www.isuresults.com/results/season1819/ec2019/
+-
+  site_url: http://www.isuresults.com/results/season1819/ec2019/
+  encoding: iso-8859-1
 #- http://www.isuresults.com/results/season1819/gpf1819/
 
 ## for debug
@@ -169,3 +171,4 @@
 #-
 #  site_url: https://www.jsfresults.com/National/2013-2014/fs_j/nationals/index.htm
 #  parser_type: all_japan
+#  encoding: Shift_JIS
