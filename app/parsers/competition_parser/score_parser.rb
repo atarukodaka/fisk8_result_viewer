@@ -63,7 +63,10 @@ class CompetitionParser
       when /^(\d+) +(.*)$/
         number = $1.to_i; rest = $2
         element_re = '[\w\+\!<\*]+'
-        if rest =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
+        #   1 3A< 6.00 ‑1.00 ‑1 ‑1 ‑1 0 ‑1 ‑1 ‑2 5.00
+        # 1 3Lz+3Lo< < 9.58 0.00 -2 1 -1 0 0 0 1 0 0 9.58"
+
+        if rest.gsub('‑', '-') =~ /(#{element_re}) ([<>\!\*e]*) *([\d\.]+) ([Xx]?) *([\d\.\-]+) ([\d\- ]+) ([\d\.\-]+)$/
           element = {
             number: number, name: $1, info: $2, base_value: $3.to_f,
             credit: $4.downcase, goe: $5.to_f, judges: $6, value: $7.to_f,

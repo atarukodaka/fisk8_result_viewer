@@ -6,12 +6,13 @@ class CompetitionParser
         ["", "JPN"]
       end
 
-      def parse(site_url, *args)
-        data = super(site_url, *args)
+      def parse(site_url, options) # *args)
+        data = super(site_url, options) # *args)
         if data[:time_schedule].blank?
-          page = get_url(site_url) || []
+          page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
+          #tm = Time.zone.now
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
             {
               starting_time: tm,
