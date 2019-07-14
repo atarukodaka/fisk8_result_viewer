@@ -5,15 +5,10 @@ class CompetitionParser
       @search_string = 'Function'
     end
 
-
     def parse(url, category, segment, encoding: nil)
       page = get_url(url, encoding: encoding).presence || (return [])
       debug("-- parsing officials: #{url}", indent: 3)
-      #func = "contains(text(), @search_string)"
-      #binding.pry
-      #elem = page.xpath("//th[#{func}] | //td[#{func}]") || raise('no Function cell')
-      #rows = elem.xpath('ancestor::table[1]//tr')
-      rows = find_table_rows(page, @search_string, type: :match) || raise('no Function cell')
+      rows = find_table_rows(page, @search_string, type: :match) || raise('table not found: #{@search_string}')
       rows.map do |row|
         data = {
           category: category,
