@@ -1,11 +1,14 @@
 class CompetitionParser
   class OfficialParser < Parser
-    def parse(url, category, segment)
-      page = get_url(url, mode: 'r:iso-8859-1').presence || (return [])
+    def initialize(*args)
+      super(*args)
+      @search_string = 'Function'
+    end
+
+    def parse(url, category, segment, encoding: nil)
+      page = get_url(url, encoding: encoding).presence || (return [])
       debug("-- parsing officials: #{url}", indent: 3)
-      func = "contains(text(), 'Function')"
-      elem = page.xpath("//th[#{func}] | //td[#{func}]") || raise('no Function cell')
-      rows = elem.xpath('ancestor::table[1]//tr')
+      rows = find_table_rows(page, @search_string, type: :match) || raise("table not found: #{@search_string}")
       rows.map do |row|
         data = {
           category: category,
@@ -13,12 +16,12 @@ class CompetitionParser
           function_type: nil,
           number: nil,
           function: nil,
-          panel_name: normalize_name(row.xpath('td[2]').text),
+          panel_name: normalize_name(row.xpath('td[2]').text.squish),
           panel_nation: normalize_nation(row.xpath('td[3]').text),
         }
         td1 = row.xpath('td[1]').text
         if /Referee/.match?(td1)
-          data[:function_type] = :technical
+          data[:function_type] = :referee
           data[:function] = td1
         elsif /Technical/.match?(td1)
           data[:function_type] = :technical

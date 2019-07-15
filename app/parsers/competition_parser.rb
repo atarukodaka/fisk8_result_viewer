@@ -3,7 +3,6 @@ module AcceptCategories
     def accept_categories(categories)
       categories ||= Category.all.map(&:name)
       select { |d| categories.include?(d[:category])   }
-      # select { |d| categories.nil? || categories.include?(d[:category])   }
     end
   end
 end
@@ -21,33 +20,33 @@ class CompetitionParser < Parser
   using SelectType
   attr_accessor :categories, :season_from, :season_to
 
-  def parse(site_url, date_format: nil, categories: nil, season_options: {})
-    page = get_url(site_url) || return
+  def parse(site_url, date_format: nil, categories: nil, season_options: {}, encoding: 'iso-8859-1')
+    page = get_url(site_url, encoding: encoding) || return
+    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)
 
-    data = {
-      name: parse_name(page),
-      time_schedule: time_schedule,
-      site_url: site_url,
-      officials: [], category_results: [], scores: [],
-    }
-    data[:city], data[:country] = parse_city_country(page)
+    city, country = parse_city_country(page)
 
-    cr_parser = CategoryResultParser.new(verbose: verbose)
-    official_parser = OfficialParser.new(verbose: verbose)
-    score_parser = ScoreParser.new(verbose: verbose)
+    category_results = summary_table.select_type(:category).map do |item|
+      parse_category_result(item[:result_url], item[:category], encoding: encoding)
+    end.flatten
 
-    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
-    summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*cr_parser.parse(item[:result_url], item[:category]))
-    end
+    officials = []
+    scores = []
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)
-      data[:officials].push(*official_parser.parse(item[:official_url], category, segment))
-      data[:scores].push(*score_parser.parse(item[:score_url], category, segment))
+      officials.push(*parse_official(item[:official_url], category, segment, encoding: encoding))
+      scores.push(*parse_score(item[:score_url], category, segment))
     end
-    data
+
+    {
+      name: parse_name(page),
+      time_schedule: time_schedule,
+      city: city, country: country,
+      site_url: site_url,
+      officials: officials, category_results: category_results, scores: scores,
+    }
   end
 
   ################
@@ -63,12 +62,15 @@ class CompetitionParser < Parser
     false
   end
 
-  def parse_time_schedule(page, date_format: nil)
-    TimeScheduleParser.new.parse(page, date_format: date_format)
+  def get_parser(ptype)
+    @parsers ||= {}
+    @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new(verbose: verbose)
   end
 
-  def parse_summary_table(page, base_url: '')
-    SummaryTableParser.new.parse(page, base_url: base_url)
+  [:time_schedule, :summary_table, :category_result, :score, :official].each do |ptype|
+    define_method("parse_#{ptype}"){|*args|
+      get_parser(ptype).parse(*args)
+    }
   end
 
   def parse_name(page)

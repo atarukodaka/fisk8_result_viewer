@@ -1,4 +1,14 @@
 namespace :analysis do
+  task components: :environment do
+    men = Category.find_by(name: 'MEN')
+    ladies = Category.find_by(name: 'LADIES')
+
+    #Score.where(category: men).includes(:components).each do |score|
+    Score.includes(:components).each do |score|
+      puts score.components.pluck(:value).join(',')
+    end
+  end
+
   desc 'tes pcs ratio'
   task tes_pcs_ratio: :environment do
     Score.all.includes(:skater, category: [:category_type])

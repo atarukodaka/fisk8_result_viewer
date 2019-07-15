@@ -1,8 +1,8 @@
 class CompetitionParser
   class CategoryResultParser < ResultParser
-    def parse(url, category)
+    def parse(url, category, encoding: nil)
       debug("-- parsing category result for '%-10s': %s" % [category, url], indent: 3)
-      super(url).map { |d| d[:category] = category; d }
+      super(url, encoding: encoding).map { |d| d[:category] = category; d }
     end
 
     def columns
@@ -19,10 +19,10 @@ class CompetitionParser
     end
 
     def get_rows(page)
-      place_elem = page.xpath("//th[text()='FPl' or text()='FPl.'] | //td[text()='PL']").first ||
-                   raise("No Placement Cell found (#{self.class})")
-
-      place_elem.xpath('../../tr')
+      #place_elem = page.xpath("//th[contains(text(), 'FPl') | td[text()='PL']").first ||
+      #            raise("No Placement Cell found (#{self.class})")
+      #place_elem.xpath('../../tr')
+      find_table_rows(page, ['FPl', 'FPl.', 'PL']) || raise("No Placement Cell found (#{self.class})")
     end
 
     ## callback functions
