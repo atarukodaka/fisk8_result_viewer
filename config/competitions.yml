@@ -139,7 +139,7 @@
 - http://www.isuresults.com/results/season1819/gpusa2018/
 - http://www.isuresults.com/results/season1819/gpcan2018/
 -
-  site_url: "http://www.isuresults.com/results/season1819/gpfin2018/"
+  site_url: http://www.isuresults.com/results/season1819/gpfin2018/
   date_format: "%d/%m/%Y"
 -
   site_url: http://www.isuresults.com/results/season1819/gpfra2018/
@@ -159,6 +159,8 @@
 -
   site_url: http://www.isuresults.com/results/season1819/ec2019/
   encoding: iso-8859-1
+
+## for debug
 #- http://www.isuresults.com/results/season1819/gpf1819/
 
 ## for debug
