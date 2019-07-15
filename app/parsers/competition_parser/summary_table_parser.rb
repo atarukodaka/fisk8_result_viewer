@@ -17,7 +17,6 @@ class CompetitionParser
     def parse(page, base_url: '')
       rows = get_summary_table_rows(page)
       category = ''
-      binding.pry
       data = rows.reject { |r| r.xpath('td').blank? }.map do |row|
         if (c = row.xpath('td[1]').text.presence)
           category = normalize_category(c)

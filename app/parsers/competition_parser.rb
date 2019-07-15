@@ -26,24 +26,27 @@ class CompetitionParser < Parser
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)
 
-    data = {
-      name: parse_name(page),
-      time_schedule: time_schedule,
-      site_url: site_url,
-      officials: [], category_results: [], scores: [],
-    }
-    data[:city], data[:country] = parse_city_country(page)
+    city, country = parse_city_country(page)
 
-    summary_table.select_type(:category).each do |item|
-      data[:category_results].push(*parse_category_result(item[:result_url], item[:category], encoding: encoding))
-    end
+    category_results = summary_table.select_type(:category).map do |item|
+      parse_category_result(item[:result_url], item[:category], encoding: encoding)
+    end.flatten
+
+    officials = []
+    scores = []
     summary_table.select_type(:segment).each do |item|
       category, segment = item.values_at(:category, :segment)
-      data[:officials].push(*parse_officials(item[:official_url], category, segment, encoding: encoding))
-      data[:scores].push(*parse_score(item[:score_url], category, segment))
+      officials.push(*parse_official(item[:official_url], category, segment, encoding: encoding))
+      scores.push(*parse_score(item[:score_url], category, segment))
     end
-    binding.pry
-    data
+
+    {
+      name: parse_name(page),
+      time_schedule: time_schedule,
+      city: city, country: country,
+      site_url: site_url,
+      officials: officials, category_results: category_results, scores: scores,
+    }
   end
 
   ################
@@ -64,24 +67,10 @@ class CompetitionParser < Parser
     @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new(verbose: verbose)
   end
 
-  def parse_time_schedule(page, date_format: nil)
-    get_parser(:time_schedule).parse(page, date_format: date_format)
-  end
-
-  def parse_summary_table(page, base_url: '')
-    get_parser(:summary_table).parse(page, base_url: base_url)
-  end
-
-  def parse_category_result(url, category, encoding: nil)
-    get_parser(:category_result).parse(url, category, encoding: encoding)
-  end
-
-  def parse_score(url, category, segment)
-    get_parser(:score).parse(url, category, segment)
-  end
-
-  def parse_officials(url, category, segment, encoding: nil)
-    get_parser(:official).parse(url, category, segment, encoding: encoding)
+  [:time_schedule, :summary_table, :category_result, :score, :official].each do |ptype|
+    define_method("parse_#{ptype}"){|*args|
+      get_parser(ptype).parse(*args)
+    }
   end
 
   def parse_name(page)
