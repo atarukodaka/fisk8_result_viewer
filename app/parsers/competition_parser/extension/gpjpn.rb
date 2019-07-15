@@ -3,6 +3,7 @@ class CompetitionParser
     class Gpjpn < CompetitionParser
       class SummaryTableParser < CompetitionParser::SummaryTableParser
         include CompetitionParser::Utils
+
         def parse(page, base_url: '')
           data = []
           category = ''

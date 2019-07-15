@@ -96,3 +96,8 @@
   competition_type: asianopen
   short_name: ASIANOPEN%{year}
   name: Asian Open %{year}
+-
+  regex: "全日本.*選手権大会"
+  competition_class: local
+  competition_type: alljapan
+  short_name: "ALLJAPAN%{year}"

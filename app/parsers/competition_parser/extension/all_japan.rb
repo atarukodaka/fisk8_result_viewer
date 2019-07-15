@@ -6,13 +6,19 @@ class CompetitionParser
         ["", "JPN"]
       end
 
+      def parse_name(page)
+        name = super(page)
+        name =~ /第([0-9０-９]+)回.*/
+        count = $1
+        "第#{count.tr('０-９', '0-9')}回全日本フィギュアスケート選手権大会"
+      end
+
       def parse(site_url, options) # *args)
         data = super(site_url, options) # *args)
         if data[:time_schedule].blank?
           page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
-          #tm = Time.zone.now
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
             {
               starting_time: tm,
@@ -31,7 +37,7 @@ class CompetitionParser
           @search_strings[:result] = '競技結果'
         end
         def normalize_category(category)
-          category.sub(/男子/, 'MEN').sub(/女子/, 'LADIES').sub(/ペア/, 'PAIRS').sub(/アイスダンス/, 'ICE DANCE')
+          category.gsub(/シングル/, '').sub(/男子/, 'MEN').sub(/女子/, 'LADIES').sub(/ペア/, 'PAIRS').sub(/アイスダンス/, 'ICE DANCE')
         end
       end
 
@@ -75,7 +81,7 @@ class CompetitionParser
       class OfficialParser < CompetitionParser::OfficialParser
         def initialize(*args)
           super(*args)
-          @search_string = '役 '
+          @search_string = '役'
         end
       end
 

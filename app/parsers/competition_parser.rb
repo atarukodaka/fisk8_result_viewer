@@ -42,6 +42,7 @@ class CompetitionParser < Parser
       data[:officials].push(*parse_officials(item[:official_url], category, segment, encoding: encoding))
       data[:scores].push(*parse_score(item[:score_url], category, segment))
     end
+    binding.pry
     data
   end
 
