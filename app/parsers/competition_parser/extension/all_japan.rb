@@ -99,11 +99,17 @@ class CompetitionParser
         def parse_skater(line, score)
           #name_re = %q([亜-熙ぁ-んァ-ヶ ]+)
           #name_team_re = '[亜-熙ぁ-んァ-ヶA-Za-z0-9]+'
-          if line =~ /^(\d+) (.*) ([^ ]+) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
-            score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
-                         starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
-                         pcs: $7.to_f, deductions: $8.to_f.abs * -1)
-            :tes
+           if line =~ /^(\d+) (.*) ([^ ]+) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+             score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
+                          starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
+                          pcs: $7.to_f, deductions: $8.to_f.abs * -1)
+             :tes
+           elsif line =~ /^(\d+) (.*) ([^ ]+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+               score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
+                            starting_number: 0, tss: $4.to_f, tes: $5.to_f,
+                            pcs: $6.to_f, deductions: $7.to_f.abs * -1)
+                            ## 2008-9 or older score sheets have not skating number
+               :tes
           else
             :skater
           end

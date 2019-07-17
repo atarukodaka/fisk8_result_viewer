@@ -31,7 +31,7 @@ class CompetitionParser
       {
         type: :category,
         category: category,
-        result_url: parse_url_by_string(row, 'Category', base_url: base_url)
+        result_url: parse_url_by_string(row, 'Result', base_url: base_url)
       }
     end
 

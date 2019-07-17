@@ -25,7 +25,6 @@ class CompetitionParser < Parser
     summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page, date_format: date_format)
     return nil unless season_to_parse?(time_schedule, season_options)
-
     city, country = parse_city_country(page)
 
     category_results = summary_table.select_type(:category).map do |item|
@@ -39,7 +38,6 @@ class CompetitionParser < Parser
       officials.push(*parse_official(item[:official_url], category, segment, encoding: encoding))
       scores.push(*parse_score(item[:score_url], category, segment))
     end
-
     {
       name: parse_name(page),
       time_schedule: time_schedule,
