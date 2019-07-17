@@ -8,12 +8,12 @@ rvm:
 matrix:
   allow_failtures:
     - rvm: ruby-head
-      
+
 install: bundle install --deployment
 
 cache:
   directories: vendor/bundle
-  
+
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rspec
@@ -47,8 +47,9 @@ addons:
   #chrome: stable
 
 before_install:
-  sudo pip install codecov
-  gem update --system
+  - sudo pip install codecov
+  - gem update --system
+  - gem install bundler
 
 after_success:
-  - codecov        
+  - codecov
