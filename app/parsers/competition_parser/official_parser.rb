@@ -5,10 +5,14 @@ class CompetitionParser
       @search_string = 'Function'
     end
 
+    def get_rows(page)
+      find_table_rows(page, 'Function', type: :match)
+    end
+
     def parse(url, category, segment, encoding: nil)
       page = get_url(url, encoding: encoding).presence || (return [])
       debug("-- parsing officials: #{url}", indent: 3)
-      rows = find_table_rows(page, @search_string, type: :match) || raise("table not found: #{@search_string}")
+      rows = get_rows(page) || raise("table not found")
       rows.map do |row|
         data = {
           category: category,

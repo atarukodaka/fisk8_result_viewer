@@ -7,10 +7,8 @@ class CompetitionParser
       end
 
       def parse_name(page)
-        name = super(page)
-        name =~ /第([0-9０-９]+)回.*/
-        count = $1
-        "第#{count.tr('０-９', '0-9')}回全日本フィギュアスケート選手権大会"
+        super(page) =~ /第([0-9０-９]+)回.*/
+        "第#{$1.tr('０-９', '0-9')}回全日本フィギュアスケート選手権大会"
       end
 
       def parse(site_url, options) # *args)
@@ -31,11 +29,15 @@ class CompetitionParser
       end
 
       class SummaryTableParser < CompetitionParser::SummaryTableParser
-        def initialize(*args)
-          super(*args)
-          @search_strings[:summary_table_column] = 'カテゴリー'
-          @search_strings[:result] = '競技結果'
+        def get_rows(page)
+          find_table_rows(page, 'カテゴリー') || raise('no summary table found')
         end
+        def parse_category_section(row, category, base_url: nil)
+          hash = super(row, category, base_url: base_url)
+          hash[:result_url] = parse_url_by_string(row, '競技結果', base_url: base_url)
+          hash
+        end
+
         def normalize_category(category)
           category.gsub(/シングル/, '').sub(/男子/, 'MEN').sub(/女子/, 'LADIES').sub(/ペア/, 'PAIRS').sub(/アイスダンス/, 'ICE DANCE')
         end
@@ -79,9 +81,8 @@ class CompetitionParser
       ## rubocop:enable all
 
       class OfficialParser < CompetitionParser::OfficialParser
-        def initialize(*args)
-          super(*args)
-          @search_string = '役'
+        def get_rows(page)
+          find_table_rows(page, '役', type: :match)
         end
       end
 
@@ -98,11 +99,17 @@ class CompetitionParser
         def parse_skater(line, score)
           #name_re = %q([亜-熙ぁ-んァ-ヶ ]+)
           #name_team_re = '[亜-熙ぁ-んァ-ヶA-Za-z0-9]+'
-          if line =~ /^(\d+) (.*) ([^ ]+) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
-            score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
-                         starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
-                         pcs: $7.to_f, deductions: $8.to_f.abs * -1)
-            :tes
+           if line =~ /^(\d+) (.*) ([^ ]+) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+             score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
+                          starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
+                          pcs: $7.to_f, deductions: $8.to_f.abs * -1)
+             :tes
+           elsif line =~ /^(\d+) (.*) ([^ ]+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+               score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
+                            starting_number: 0, tss: $4.to_f, tes: $5.to_f,
+                            pcs: $6.to_f, deductions: $7.to_f.abs * -1)
+                            ## 2008-9 or older score sheets have not skating number
+               :tes
           else
             :skater
           end

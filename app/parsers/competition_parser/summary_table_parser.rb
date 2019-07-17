@@ -1,21 +1,10 @@
 class CompetitionParser
   class SummaryTableParser < Parser
     include CompetitionParser::Utils
-    def initialize(*args)
-      super(*args)
-      @search_strings = {
-        summary_table_column: 'Category',
-        result: 'Result',
-      }
-    end
-
-    def get_summary_table_rows(page)
-      elem = page.xpath("//*[text()='#{@search_strings[:summary_table_column]}']").first || raise("summary table not found: #{@search_strings[:summary_table_column]}")
-      rows = elem.xpath('ancestor::table[1]//tr')
-    end
 
     def parse(page, base_url: '')
-      rows = get_summary_table_rows(page)
+      #rows = find_table_rows(page, @search_strings[:summary_table_column])
+      rows = get_rows(page)
       category = ''
       data = rows.reject { |r| r.xpath('td').blank? }.map do |row|
         if (c = row.xpath('td[1]').text.presence)
@@ -27,23 +16,34 @@ class CompetitionParser
                 (row.xpath('td[1]').text.blank? && row.xpath('td[2]').text.blank?)
 
         if segment.blank?   ## category section
-          {
-            type: :category,
-            category: category,
-            result_url: parse_url_by_string(row, @search_strings[:result], base_url: base_url)
-          }
+          parse_category_section(row, category, base_url: base_url)
         else    ## segment section
-          {
-            type: :segment,
-            category: category,
-            segment: segment,
-            official_url: parse_url_by_column(row, 3, base_url: base_url).squish,
-            result_url: parse_url_by_column(row, 4, base_url: base_url).squish,
-            score_url: parse_url_by_column(row, 5, base_url: base_url).squish,
-          }
+          parse_segment_section(row, category, segment, base_url: base_url)
         end
       end.compact
       data
+    end
+
+    def get_rows(page)
+      find_table_rows(page, 'Category') || raise('no summary table found')
+    end
+    def parse_category_section(row, category, base_url: nil)
+      {
+        type: :category,
+        category: category,
+        result_url: parse_url_by_string(row, 'Result', base_url: base_url)
+      }
+    end
+
+    def parse_segment_section(row, category, segment, base_url: nil)
+      {
+        type: :segment,
+        category: category,
+        segment: segment,
+        official_url: parse_url_by_column(row, 3, base_url: base_url).squish,
+        result_url: parse_url_by_column(row, 4, base_url: base_url).squish,
+        score_url: parse_url_by_column(row, 5, base_url: base_url).squish,
+      }
     end
 
     def join_url(base_url, path)
@@ -64,12 +64,10 @@ class CompetitionParser
           break
         end
       end
-      # (a_elem) ? File.join(base_url, a_elem.attributes['href'].value) : nil
       (a_elem) ? join_url(base_url, a_elem.attributes['href'].value) : nil
     end
 
     def parse_url_by_column(row, column_number, base_url: '')
-      # File.join(base_url, row.xpath("td[#{column_number}]//a/@href").text)
       join_url(base_url, row.xpath("td[#{column_number}]//a/@href").text)
     end
   end

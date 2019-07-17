@@ -6,7 +6,7 @@ module HttpGet
 
   def get_url(url, encoding: nil)
     #mode = encoding ? ['r', encoding].join(':') : 'r'
-    mode = ['r', encoding].compact.join(':')
+    mode = ['r', encoding.to_s].compact.join(':')
     body = open(url, mode).read   # rubocop:disable Security/Open
   rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => e
     #http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
