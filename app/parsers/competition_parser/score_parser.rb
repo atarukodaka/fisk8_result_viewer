@@ -45,6 +45,11 @@ class CompetitionParser
                      starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
                      pcs: $7.to_f, deductions: $8.to_f.abs * -1)
         :tes
+      elsif line =~ /^(\d+) (#{name_re}) *(#{nation_re}) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/  ## no skating number
+        score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: $3,
+                     starting_number: 0, tss: $4.to_f, tes: $5.to_f,
+                     pcs: $6.to_f, deductions: $7.to_f.abs * -1)
+        :tes
       else
         :skater
       end

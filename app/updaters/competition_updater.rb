@@ -69,7 +69,7 @@ class CompetitionUpdater < Updater
   def update_segment(competition, category, segment, time_schedule:, officials:)
     ## performed_segments
     performed_segment = competition.performed_segments.create! do |ps|
-      item = time_schedule.select_category_segment(category, segment).first
+      item = time_schedule.select_category_segment(category, segment).first || raise
       ps.update_common_attributes(item)
       ps.category = category
       ps.segment = segment

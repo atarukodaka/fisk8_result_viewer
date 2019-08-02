@@ -16,7 +16,7 @@ class CompetitionParser
     end
 
     def parse(page, date_format: nil) ## TODO: date_format
-      rows = find_table_rows(page, "Date").presence || raise("time schedule table not found")
+      rows = find_table_rows(page, "Date") || raise("time schedule table not found")
 
       dt_str = ''
       timezone = get_timezone(page)
@@ -38,7 +38,7 @@ class CompetitionParser
         {
           starting_time: tm,
           category: normalize_category(row.xpath('td[3]').text),
-          segment:  row.xpath('td[4]').text.squish.upcase
+          segment:  row.xpath('td[4]').text.squish.upcase.sub(/ \- .*$/, '')
         }
       end.compact
 

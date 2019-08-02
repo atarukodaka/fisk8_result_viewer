@@ -7,6 +7,43 @@
 #
 #  in that case you need to register the parser_type into Fisk8Viewer::CompetitionSummaryParser_Type.registered. see fisk8viewer/competition_summary_parser_type.rb and fisk8viewer/competition_summary_parser_type/isu_generic.rb for dettails.
 
+## 2006-07
+- http://www.isuresults.com/results/gpjpn06/
+- http://www.isuresults.com/results/gpf0607/
+- http://www.isuresults.com/results/wc2007/
+
+## 2007-08
+- http://www.isuresults.com/results/gpjpn07/
+- http://www.isuresults.com/results/gpf0708/
+- http://www.isuresults.com/results/fc2008/
+- http://www.isuresults.com/results/wc2008/
+
+## 2008-09
+# wtt
+- http://www.isuresults.com/results/gpfra08/  ## parsing error on score
+- http://www.isuresults.com/results/gpjpn08/
+- http://www.isuresults.com/results/gpf0809/
+- http://www.isuresults.com/results/wc2009/
+- http://www.isuresults.com/results/wtt2009/
+-
+  site_url: http://www.isuresults.com/results/fc2009/
+  date_format: "%m/%d/%Y"
+
+## 2009-10
+-
+  site_url: http://www.isuresults.com/results/gpfra09/
+  date_format: "%m/%d/%Y"
+-
+  site_url: http://www.isuresults.com/results/gprus09/
+  date_format: "%m/%d/%Y"
+-
+  site_url: http://www.isuresults.com/results/fc2010/
+  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/owg2010/
+-
+  site_url: http://www.isuresults.com/results/wc2010/
+  date_format: "%m/%d/%Y"
+
 ##2010-11
 -
   site_url: http://www.isuresults.com/results/gpusa2010/
@@ -159,9 +196,6 @@
 -
   site_url: http://www.isuresults.com/results/season1819/ec2019/
   encoding: iso-8859-1
-
-## for debug
-#- http://www.isuresults.com/results/season1819/gpf1819/
 
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
