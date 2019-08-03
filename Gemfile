@@ -30,6 +30,7 @@ gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rspec'                                 ## for heroku
 gem 'stackprof'                           # # profiling
 gem 'random_bell'
+gem 'rchardet'
 
 group :development, :test do
   gem 'bullet'

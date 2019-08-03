@@ -14,6 +14,12 @@ module HttpGet
     debug("#{e.message}: #{url}")
     nil
   else
-    Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
+    #Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
+    if encoding.nil?
+      det = CharDet.detect(body)
+      debug("* charset detected: #{det['encoding']}")
+      body = body.encode('UTF-8', det["encoding"])
+    end
+    Nokogiri::HTML(body)
   end
 end

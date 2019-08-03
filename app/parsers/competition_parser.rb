@@ -22,6 +22,7 @@ class CompetitionParser < Parser
 
   def parse(site_url, categories: nil, season_options: {}, encoding: nil) # 'iso-8859-1')
     page = get_url(site_url, encoding: encoding) || return
+     binding.pry
     summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
     time_schedule = parse_time_schedule(page)
     return nil unless season_to_parse?(time_schedule, season_options)

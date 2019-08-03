@@ -37,7 +37,7 @@ class CompetitionUpdater < Updater
           update_category_result(competition, category, item)
         end
         ## each segments
-        data[:scores].select_category(category).segments.each do |segment|
+        data[:scores].select_category(category).segments.compact.each do |segment|
           update_segment(competition, category, segment, time_schedule: data[:time_schedule],
                          officials: data[:officials])
           ## scores
