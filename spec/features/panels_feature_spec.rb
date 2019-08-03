@@ -9,7 +9,7 @@ feature PanelsController, type: :feature, feature: true do
 
   feature '#index', js: true do
     datatable = PanelsDatatable.new
-    [:contains_all, :orders, :filters].each do |context|
+    [:contains_all_feature, :orders, :filters].each do |context|
       include_context context, datatable
     end
   end

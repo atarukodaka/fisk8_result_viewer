@@ -279,7 +279,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
     end
 
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
-    describe 'parses unicode (fin2014)' do
+    describe 'parses unicode/utf-16 (fin2014)' do
       let(:url) { 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/' }
       subject { updater.update_competition(url, categories: ['MEN']) }
       its(:site_url) { is_expected.to eq(url) }

@@ -1,7 +1,7 @@
 module IndexFeatureHelper
   SLEEP_COUNT = 0.5
-  shared_context :contains_all do |datatable|
-    context 'contains_all' do
+  shared_context :contains_all_feature do |datatable|
+    context 'contains_all_feature' do
       it {
         visit datatable_index_path(datatable)
         datatable.data.all.each do |item|

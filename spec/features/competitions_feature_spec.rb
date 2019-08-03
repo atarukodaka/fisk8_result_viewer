@@ -10,7 +10,7 @@ feature CompetitionsController, type: :feature, feature: true do
   ################
   feature '#index', js: true do
     datatable = CompetitionsDatatable.new
-    [:contains_all, :orders, :filters, :filter_season].each do |context|
+    [:contains_all_feature, :orders, :filters, :filter_season].each do |context|
       include_context context, datatable
     end
 
