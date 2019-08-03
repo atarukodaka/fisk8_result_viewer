@@ -19,7 +19,7 @@ class Parser
     end.flatten.join(' | ')
     #  xpath = "//table//tr//th[#{cond}] | //table//tr//td[#{cond}]"
     #page.xpath(xpath).xpath('ancestor::table[1]//tr')
-    page.xpath(xpath).first&.xpath("ancestor::table[1]//tr")
+    page.xpath(xpath).first&.xpath("ancestor::table[1]/tr")
     # page.xpath(xpath).first&.xpath("../../tr")     ## TODO
   end
 end

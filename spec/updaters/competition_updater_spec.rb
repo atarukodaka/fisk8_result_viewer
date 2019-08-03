@@ -32,8 +32,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
     ################
     describe 'date_format: jgpfra2010 with isu_generic for mdy_date type' do
       let(:url) { 'http://www.isuresults.com/results/jgpfra2010/' }
-      let(:date_format) { '%m/%d/%Y' }
-      subject { updater.update_competition(url, categories: ['MEN'], date_format: date_format) }
+      subject { updater.update_competition(url, categories: ['MEN']) }
       its(:site_url) { is_expected.to eq(url) }
     end
 
@@ -246,9 +245,9 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       expect(cr.skater).to eq(cr.short.skater)
       expect(cr.skater).to eq(cr.free.skater)
     end
-    shared_context :skater_having_different_name do |url, category, ranking, date_format: nil|
+    shared_context :skater_having_different_name do |url, category, ranking|
       subject(:result) {
-        CompetitionUpdater.new.update_competition(url, categories: [category], date_format: date_format)
+        CompetitionUpdater.new.update_competition(url, categories: [category])
           .category_results.where("categories.name": category, ranking: ranking).joins(:category).first
       }
     end
@@ -259,7 +258,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
 
     context 'Sandra KHOPON (fc2012)' do # Sandra KHOPON or KOHPON ??
       url = 'http://www.isuresults.com/results/fc2012/'
-      include_context :skater_having_different_name, url, 'LADIES', 15, date_format: '%m/%d/%Y'
+      include_context :skater_having_different_name, url, 'LADIES', 15
       it_behaves_like :same_name_between_segments
     end
 
@@ -282,7 +281,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'parses unicode (fin2014)' do
       let(:url) { 'http://www.figureskatingresults.fi/results/1415/CSFIN2014/' }
-      subject { updater.update_competition(url, categories: ['MEN']) }
+      subject { updater.update_competition(url, categories: ['MEN'], encoding: 'UTF-16') }
       its(:site_url) { is_expected.to eq(url) }
     end
   end
@@ -291,7 +290,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'rescue not found on nepela2014/pairs and count' do
       let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
-      let(:competition) { updater.update_competition(url, categories: ['PAIRS'], date_format: '%m/%d/%Y') }
+      let(:competition) { updater.update_competition(url, categories: ['PAIRS']) }
       it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
       # expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end

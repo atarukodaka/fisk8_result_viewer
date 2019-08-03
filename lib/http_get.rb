@@ -14,6 +14,6 @@ module HttpGet
     debug("#{e.message}: #{url}")
     nil
   else
-    Nokogiri::HTML(body)
+    Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
   end
 end

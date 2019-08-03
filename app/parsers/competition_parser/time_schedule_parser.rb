@@ -16,7 +16,7 @@ class CompetitionParser
       find_table_rows(page, 'Date') || raise("time schedule table not found")
     end
 
-    def parse(page, date_format: nil) ## TODO: date_format
+    def parse(page)
       # rows = find_table_rows(page, "Date") || raise("time schedule table not found")
       rows = get_time_schedule_rows(page)
 
@@ -74,13 +74,6 @@ class CompetitionParser
         end
       end
       data
-        ## check parsed date
-        #        min_date = data.map { |d| d[:starting_time] }.min.to_date
-        #        max_date = data.map { |d| d[:starting_time] }.max.to_date
-#        raise "date parsing error: #{min_date} - #{max_date}" if max_date - min_date > 30
-
-#        data
-
     end
   end
 end

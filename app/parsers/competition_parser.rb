@@ -20,10 +20,10 @@ class CompetitionParser < Parser
   using SelectType
   attr_accessor :categories, :season_from, :season_to
 
-  def parse(site_url, date_format: nil, categories: nil, season_options: {}, encoding: 'iso-8859-1')
+  def parse(site_url, categories: nil, season_options: {}, encoding: nil) # 'iso-8859-1')
     page = get_url(site_url, encoding: encoding) || return
     summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
-    time_schedule = parse_time_schedule(page, date_format: date_format)
+    time_schedule = parse_time_schedule(page)
     return nil unless season_to_parse?(time_schedule, season_options)
     city, country = parse_city_country(page)
 

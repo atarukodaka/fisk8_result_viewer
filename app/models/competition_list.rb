@@ -23,7 +23,7 @@ class CompetitionList < ActiveYaml::Base
   field :name
   field :country
   field :city
-  field :date_format
+  # field :date_format
 
   class << self
     DEFAULT_KEY = 'site_url'.freeze

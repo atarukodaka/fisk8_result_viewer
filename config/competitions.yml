@@ -19,7 +19,7 @@
 - http://www.isuresults.com/results/wc2008/
 
 ## 2008-09
-- http://www.isuresults.com/results/gpfra08/  
+- http://www.isuresults.com/results/gpfra08/
 - http://www.isuresults.com/results/gpjpn08/
 - http://www.isuresults.com/results/gpf0809/
 - http://www.isuresults.com/results/wc2009/
@@ -151,7 +151,9 @@
 
 ## 2018-19
 - http://www.isuresults.com/results/season1819/gpusa2018/
-- http://www.isuresults.com/results/season1819/gpcan2018/
+-
+  site_url: http://www.isuresults.com/results/season1819/gpcan2018/
+  encoding: iso-8859-1
 - http://www.isuresults.com/results/season1819/gpfin2018/
 - http://www.isuresults.com/results/season1819/gpfra2018/
 - http://www.isuresults.com/results/season1819/gprus2018/
@@ -172,5 +174,7 @@
 
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
-- http://www.isuresults.com/results/ec2013/
-- http://www.isuresults.com/results/fc2012/
+#- http://www.isuresults.com/results/ec2013/
+#- http://www.isuresults.com/results/fc2012/
+- http://www.isuresults.com/results/season1718/fc2018/
+- http://www.isuresults.com/results/season1819/gpcan2018/
