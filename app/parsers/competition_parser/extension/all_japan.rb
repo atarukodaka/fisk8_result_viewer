@@ -14,9 +14,11 @@ class CompetitionParser
       def parse(site_url, options) # *args)
         data = super(site_url, options) # *args)
         if data[:time_schedule].blank?
+          binding.pry
           page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
+          binding.pry
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
             {
               starting_time: tm,
@@ -29,7 +31,7 @@ class CompetitionParser
       end
 
       class SummaryTableParser < CompetitionParser::SummaryTableParser
-        def get_rows(page)
+        def get_summary_table_rows(page)
           find_table_rows(page, 'カテゴリー') || raise('no summary table found')
         end
         def parse_category_section(row, category, base_url: nil)
@@ -108,7 +110,7 @@ class CompetitionParser
                score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
                             starting_number: 0, tss: $4.to_f, tes: $5.to_f,
                             pcs: $6.to_f, deductions: $7.to_f.abs * -1)
-                            ## 2008-9 or older score sheets have not skating number
+                            ## 2008-9 or older score sheets dont have skating number
                :tes
           else
             :skater

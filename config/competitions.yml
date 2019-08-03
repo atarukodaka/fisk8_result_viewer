@@ -19,47 +19,30 @@
 - http://www.isuresults.com/results/wc2008/
 
 ## 2008-09
-# wtt
-- http://www.isuresults.com/results/gpfra08/  ## parsing error on score
+- http://www.isuresults.com/results/gpfra08/  
 - http://www.isuresults.com/results/gpjpn08/
 - http://www.isuresults.com/results/gpf0809/
 - http://www.isuresults.com/results/wc2009/
 - http://www.isuresults.com/results/wtt2009/
--
-  site_url: http://www.isuresults.com/results/fc2009/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/fc2009/
 
 ## 2009-10
--
-  site_url: http://www.isuresults.com/results/gpfra09/
-  date_format: "%m/%d/%Y"
--
-  site_url: http://www.isuresults.com/results/gprus09/
-  date_format: "%m/%d/%Y"
--
-  site_url: http://www.isuresults.com/results/fc2010/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/gpfra09/
+- http://www.isuresults.com/results/gprus09/
+- http://www.isuresults.com/results/fc2010/
 - http://www.isuresults.com/results/owg2010/
--
-  site_url: http://www.isuresults.com/results/wc2010/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/wc2010/
+
 
 ##2010-11
--
-  site_url: http://www.isuresults.com/results/gpusa2010/
-  date_format: "%m/%d/%Y"
-- site_url: http://www.isuresults.com/results/gpcan2010/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/gpusa2010/
+- http://www.isuresults.com/results/gpcan2010/
 - http://www.isuresults.com/results/gpchn2010/
--
-  site_url: http://www.isuresults.com/results/gpfra2010/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/gpfra2010/
 - http://www.isuresults.com/results/gprus2010/
 - http://www.isuresults.com/results/gpjpn2010/
 - http://www.isuresults.com/results/gpf1011/
--
-  site_url: http://www.isuresults.com/results/ec2011/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/ec2011/
 - http://www.isuresults.com/results/fc2011/
 - http://www.isuresults.com/results/wc2011/
 
@@ -71,12 +54,8 @@
 - http://www.isuresults.com/results/gprus2011/
 - http://www.isuresults.com/results/gpjpn2011/
 - http://www.isuresults.com/results/gpf1112/
--
-  site_url: http://www.isuresults.com/results/ec2012/
-  date_format: "%m/%d/%Y"
--
-  site_url: http://www.isuresults.com/results/fc2012/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/ec2012/
+- http://www.isuresults.com/results/fc2012/
 - http://www.isuresults.com/results/wc2012/
 - http://www.isuresults.com/results/wtt2012/
 
@@ -89,9 +68,7 @@
 - http://www.isuresults.com/results/gpjpn2012/
 - http://www.isuresults.com/results/gpf1213/
 - http://www.isuresults.com/results/fc2013/
--
-  site_url: http://www.isuresults.com/results/ec2013/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/ec2013/
 - http://www.isuresults.com/results/wc2013/
 
 
@@ -175,12 +152,8 @@
 ## 2018-19
 - http://www.isuresults.com/results/season1819/gpusa2018/
 - http://www.isuresults.com/results/season1819/gpcan2018/
--
-  site_url: http://www.isuresults.com/results/season1819/gpfin2018/
-  date_format: "%d/%m/%Y"
--
-  site_url: http://www.isuresults.com/results/season1819/gpfra2018/
-  date_format: '%d/%m/%Y'
+- http://www.isuresults.com/results/season1819/gpfin2018/
+- http://www.isuresults.com/results/season1819/gpfra2018/
 - http://www.isuresults.com/results/season1819/gprus2018/
 -
   site_url: http://www.isuresults.com/results/season1819/gpjpn2018/
@@ -199,3 +172,5 @@
 
 ## for debug
 #- http://www.isuresults.com/results/season1617/wc2017/
+- http://www.isuresults.com/results/ec2013/
+- http://www.isuresults.com/results/fc2012/

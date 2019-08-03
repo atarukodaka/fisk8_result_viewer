@@ -4,7 +4,7 @@ class CompetitionParser
 
     def parse(page, base_url: '')
       #rows = find_table_rows(page, @search_strings[:summary_table_column])
-      rows = get_rows(page)
+      rows = get_summary_table_rows(page)
       category = ''
       data = rows.reject { |r| r.xpath('td').blank? }.map do |row|
         if (c = row.xpath('td[1]').text.presence)
@@ -24,7 +24,7 @@ class CompetitionParser
       data
     end
 
-    def get_rows(page)
+    def get_summary_table_rows(page)
       find_table_rows(page, 'Category') || raise('no summary table found')
     end
     def parse_category_section(row, category, base_url: nil)
