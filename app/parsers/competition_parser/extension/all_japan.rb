@@ -14,11 +14,9 @@ class CompetitionParser
       def parse(site_url, options) # *args)
         data = super(site_url, options) # *args)
         if data[:time_schedule].blank?
-          binding.pry
           page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.zone.local($1, $2, $3)
-          binding.pry
           data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
             {
               starting_time: tm,
@@ -46,41 +44,14 @@ class CompetitionParser
       end
 
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
-        def parse(page, date_format: nil)
-          timezone = "Asia/Tokyo"
-          elem = page.xpath("//*[text()='期日']").first #|| return( []) # raise("no time schedule table found")
-          return [] if elem.nil?
-          rows = elem.xpath('ancestor::table[1]//tr')
-
-          date = nil
-          data = rows[1..-1].map do |row|
-            tds = row.xpath("td")
-            if tds.count == 4
-              date, time, category, segment = tds.map(&:text)
-            else
-              time, category, segment = tds.map(&:text)
-            end
-            dt_tm_str = "#{date} #{time}"
-            tm = if date_format.present?
-              Time.strptime(dt_str, "#{date_format} %H:%M:%S")
-            else
-              dt_tm_str
-            end.in_time_zone(ActiveSupport::TimeZone[timezone])
-            category = normalize_category(category)
-            {
-              starting_time: tm,
-              category: normalize_category(category),
-              segment: segment.upcase,
-            }
-          end.compact
-
-          data
+        def get_time_schedule_rows(page)
+          find_table_rows(page, '期日') || []
         end
+
         def normalize_category(category)
           category.sub(/男子/, 'MEN').sub(/女子/, 'LADIES').sub(/ペア/, 'PAIRS').sub(/アイスダンス/, 'ICE DANCE')
         end
       end
-      ## rubocop:enable all
 
       class OfficialParser < CompetitionParser::OfficialParser
         def get_rows(page)
