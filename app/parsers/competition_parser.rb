@@ -77,7 +77,7 @@ class CompetitionParser < Parser
   end
 
   def parse_city_country(page)
-    node = page.search('td.caption3').presence || page.xpath('//h3') || raise
+    node = page.search('td.caption3').presence || page.xpath('//h3') || raise("no city/country info found")
     str = (node.present?) ? node.first.text.strip : ''
     city, country = str.split(/ *\/ */)
 
