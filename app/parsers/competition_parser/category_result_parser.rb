@@ -9,7 +9,7 @@ class CompetitionParser
       {
         skater_name:   { header_regex: /Name/ },
         isu_number:    { header_regex: /Name/, callback: elem_to_isu_number, },
-        skater_nation:        { header_regex: /Nation/ },
+        skater_nation:        { header_regex: /Nation|Nat\./ },
 
         ranking:       { header_regex: /F?P[lL]\.?/, callback: elem_to_i },
         points:        { header_regex: /Points/, callback: elem_to_f },

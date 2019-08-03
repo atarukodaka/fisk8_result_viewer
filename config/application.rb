@@ -15,6 +15,7 @@ module Fisk8ResultViewer
 
     config.enable_dependency_loading = true # for rails 5 production
     config.autoload_paths += %W[#{config.root}/lib #{config.root}/datatables #{config.root}/refinements]
+    Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
     config.generators do |g|
       g.javascripts false
       g.stylesheets false

@@ -1,4 +1,28 @@
 namespace :analysis do
+  task panel_judge: :environment do
+    skater = Skater.find_by(name: "Mao ASADA")
+
+    Element.where(element_type: :jump).where("scores.skater": skater).joins(:score).each do |element|
+      success = (element.name =~ /</) ? 0 : 1
+      skater_name = element.score.skater.name
+      element.score.performed_segment.officials.where(function_type: :technical).each do |official|
+        puts [skater_name, element.name, official.panel.name, success].join(',')
+      end
+    end
+  end
+
+  task asada3a: :environment do
+    skater = Skater.find_by(name: "Mao ASADA")
+
+    Element.where("scores.skater" => skater).where("elements.name like ?", "%3A%").joins(:score).each do |element|
+      panels = element.score.performed_segment.officials.where(function_type: "technical").map do |official|
+        official.panel.name.encode("shift_jis")
+      end
+      score = element.score
+      puts [score.name, "'#{score.competition.season}", element.name, element.goe, panels].flatten.join(',')
+    end
+  end
+
   task components: :environment do
     men = Category.find_by(name: 'MEN')
     ladies = Category.find_by(name: 'LADIES')

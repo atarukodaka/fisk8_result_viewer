@@ -12,7 +12,7 @@ class CompetitionUpdater < Updater
 
     options[:season_options] = options.slice(:season, :season_from, :season_to)
     data = parser(options[:parser_type])
-           .parse(site_url, options.slice(:date_format, :categories, :season_options, :encoding)) || return
+           .parse(site_url, options.slice(:categories, :season_options, :encoding)) || return
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -37,7 +37,7 @@ class CompetitionUpdater < Updater
           update_category_result(competition, category, item)
         end
         ## each segments
-        data[:scores].select_category(category).segments.each do |segment|
+        data[:scores].select_category(category).segments.compact.each do |segment|
           update_segment(competition, category, segment, time_schedule: data[:time_schedule],
                          officials: data[:officials])
           ## scores
@@ -69,7 +69,7 @@ class CompetitionUpdater < Updater
   def update_segment(competition, category, segment, time_schedule:, officials:)
     ## performed_segments
     performed_segment = competition.performed_segments.create! do |ps|
-      item = time_schedule.select_category_segment(category, segment).first
+      item = time_schedule.select_category_segment(category, segment).first || raise
       ps.update_common_attributes(item)
       ps.category = category
       ps.segment = segment

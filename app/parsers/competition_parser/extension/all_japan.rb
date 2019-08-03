@@ -29,7 +29,7 @@ class CompetitionParser
       end
 
       class SummaryTableParser < CompetitionParser::SummaryTableParser
-        def get_rows(page)
+        def get_summary_table_rows(page)
           find_table_rows(page, 'カテゴリー') || raise('no summary table found')
         end
         def parse_category_section(row, category, base_url: nil)
@@ -44,41 +44,14 @@ class CompetitionParser
       end
 
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
-        def parse(page, date_format: nil)
-          timezone = "Asia/Tokyo"
-          elem = page.xpath("//*[text()='期日']").first #|| return( []) # raise("no time schedule table found")
-          return [] if elem.nil?
-          rows = elem.xpath('ancestor::table[1]//tr')
-
-          date = nil
-          data = rows[1..-1].map do |row|
-            tds = row.xpath("td")
-            if tds.count == 4
-              date, time, category, segment = tds.map(&:text)
-            else
-              time, category, segment = tds.map(&:text)
-            end
-            dt_tm_str = "#{date} #{time}"
-            tm = if date_format.present?
-              Time.strptime(dt_str, "#{date_format} %H:%M:%S")
-            else
-              dt_tm_str
-            end.in_time_zone(ActiveSupport::TimeZone[timezone])
-            category = normalize_category(category)
-            {
-              starting_time: tm,
-              category: normalize_category(category),
-              segment: segment.upcase,
-            }
-          end.compact
-
-          data
+        def get_time_schedule_rows(page)
+          find_table_rows(page, '期日') || []
         end
+
         def normalize_category(category)
           category.sub(/男子/, 'MEN').sub(/女子/, 'LADIES').sub(/ペア/, 'PAIRS').sub(/アイスダンス/, 'ICE DANCE')
         end
       end
-      ## rubocop:enable all
 
       class OfficialParser < CompetitionParser::OfficialParser
         def get_rows(page)
@@ -108,7 +81,7 @@ class CompetitionParser
                score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: 'JPN',
                             starting_number: 0, tss: $4.to_f, tes: $5.to_f,
                             pcs: $6.to_f, deductions: $7.to_f.abs * -1)
-                            ## 2008-9 or older score sheets have not skating number
+                            ## 2008-9 or older score sheets dont have skating number
                :tes
           else
             :skater

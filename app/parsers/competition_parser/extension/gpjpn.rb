@@ -45,7 +45,7 @@ class CompetitionParser
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
       ## rubocop:disable all
       ## this site is nightmare again: TD doesnt wraped with TR
-        def parse(page, date_format: '')
+        def parse(page)
           Time.zone ||= 'UTC'
           header_elem = page.xpath("//*[text()='Date']").first
           table = header_elem.xpath('../..')

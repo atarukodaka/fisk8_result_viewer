@@ -1,23 +1,11 @@
 ## 2010-11
--
-  site_url: http://www.isuresults.com/results/jgpfra2010/
-  date_format: "%m/%d/%Y"  
--
-  site_url: http://www.isuresults.com/results/jgprou2010/
-  date_format: "%m/%d/%Y"  
--
-  site_url: http://www.isuresults.com/results/jgpaut2010/
-  date_format: "%m/%d/%Y"  
+- http://www.isuresults.com/results/jgpfra2010/
+- http://www.isuresults.com/results/jgprou2010/
+- http://www.isuresults.com/results/jgpaut2010/
 - http://www.isuresults.com/results/jgpjpn2010/
--
-  site_url: http://www.isuresults.com/results/jgpgbr2010/
-  date_format: "%m/%d/%Y"  
--
-  site_url: http://www.isuresults.com/results/jgpger2010/
-  date_format: "%m/%d/%Y"  
--
-  site_url: http://www.isuresults.com/results/jgpcze2010/
-  date_format: "%m/%d/%Y"  
+- http://www.isuresults.com/results/jgpgbr2010/
+- http://www.isuresults.com/results/jgpger2010/
+- http://www.isuresults.com/results/jgpcze2010/
 - http://www.isuresults.com/results/wjc2011/
 
 ## 2011-12
@@ -28,10 +16,7 @@
 - http://www.isuresults.com/results/jgpaut2011/
 - http://www.isuresults.com/results/jgpita2011/
 - http://www.isuresults.com/results/jgpest2011/
--
-  site_url: http://www.isuresults.com/results/wjc2012/
-  date_format: "%m/%d/%Y"  
-
+- http://www.isuresults.com/results/wjc2012/
 
 ## 2012-13
 - http://www.isuresults.com/results/jgpfra2012/
@@ -86,32 +71,18 @@
 ## 2017-18
 - http://www.isuresults.com/results/season1718/jgpaus2017/
 - http://www.isuresults.com/results/season1718/jgpaut2017/
--
-  site_url: http://www.isuresults.com/results/season1718/jgplat2017/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/season1718/jgplat2017/
 - http://www.isuresults.com/results/season1718/jgpblr2017/
--
-  site_url: http://www.isuresults.com/results/season1718/jgpcro2017/
-  date_format: "%m/%d/%Y"
+- http://www.isuresults.com/results/season1718/jgpcro2017/
 - http://www.isuresults.com/results/season1718/jgppol2017/
--
-  site_url: http://www.isuresults.com/results/season1718/jgpita2017/
-  date_format: "%m/%d/%Y" 
- 
+- http://www.isuresults.com/results/season1718/jgpita2017/
+
 ## 2018-19
--
-  site_url: http://www.isuresults.com/results/season1819/jgpaut2018/
-  date_format: "%d/%m/%y"
--
-  site_url: http://www.isuresults.com/results/season1819/jgpsvk2018/
-  date_format: "%d/%m/%Y"
--
-  site_url: http://www.isuresults.com/results/season1819/jgpaut2018/
-  date_format: "%d/%m/%Y"
+- http://www.isuresults.com/results/season1819/jgpaut2018/
+- http://www.isuresults.com/results/season1819/jgpsvk2018/
+- http://www.isuresults.com/results/season1819/jgpaut2018/
 - http://www.isuresults.com/results/season1819/jgpltu2018/
--
-  site_url: http://www.isuresults.com/results/season1819/jgpcan2018/
-  date_format: "%d/%m/%Y"
+- http://www.isuresults.com/results/season1819/jgpcan2018/
 - http://www.isuresults.com/results/season1819/jgpcze2018/
 
 ## debug

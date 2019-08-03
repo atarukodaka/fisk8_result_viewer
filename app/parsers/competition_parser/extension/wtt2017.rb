@@ -32,7 +32,7 @@ class CompetitionParser
 
       ################
       # rubocop:disable all
-      def parse_time_schedule(_page, date_format:)
+      def parse_time_schedule(_page)
         tz = 'Asia/Tokyo' # ActiveSupport::TimeZone[timezone]
         [
           {
