@@ -178,3 +178,13 @@
 #- http://www.isuresults.com/results/fc2012/
 - http://www.isuresults.com/results/season1718/fc2018/
 - http://www.isuresults.com/results/season1819/gpcan2018/
+-
+  site_url: http://www.isuresults.com/results/season1718/gpjpn2017/
+  parser_type: gpjpn
+  name: ISU GP NHK Trophy 2017
+  city: Osaka
+-
+  site_url: https://www.jsfresults.com/intl/2016-2017/wtt/
+  parser_type: :wtt2017
+  comment: "no category results provided"
+- http://www.isuresults.com/results/owg2014/

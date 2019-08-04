@@ -1,75 +1,68 @@
-module AcceptCategories
-  refine Array do
-    def accept_categories(categories)
-      categories ||= Category.all.map(&:name)
-      select { |d| categories.include?(d[:category])   }
-    end
-  end
-end
-module SelectType
-  refine Array do
-    def select_type(type)
-      select { |d| d[:type] == type }
-    end
-  end
-end
-
-################
 class CompetitionParser < Parser
-  using AcceptCategories
-  using SelectType
-  attr_accessor :categories, :season_from, :season_to
-
-  def parse(site_url, categories: nil, season_options: {}, encoding: nil) # 'iso-8859-1')
+  def parse(site_url, encoding: nil)
     page = get_url(site_url, encoding: encoding) || return
-    #  binding.pry
-    summary_table = parse_summary_table(page, base_url: site_url).accept_categories(categories)
+    summary_table = parse_summary_table(page, base_url: site_url)
     time_schedule = parse_time_schedule(page)
-    return nil unless season_to_parse?(time_schedule, season_options)
-    city, country = parse_city_country(page)
 
-    category_results = summary_table.select_type(:category).map do |item|
-      parse_category_result(item[:result_url], item[:category], encoding: encoding)
-    end.flatten
-
-    officials = []
-    scores = []
-    summary_table.select_type(:segment).each do |item|
-      category, segment = item.values_at(:category, :segment)
-      officials.push(*parse_official(item[:official_url], category, segment, encoding: encoding))
-      scores.push(*parse_score(item[:score_url], category, segment))
+    performed_categories = summary_table.select {|d| d[:type] == :category }.map do |item|
+      {
+        category: item[:category],
+        result_url: item[:result_url],
+      }
     end
-    {
+    ## for team trophy
+    summary_table.select {|d| d[:type] == :segment}.each do |item|
+      unless performed_categories.find {|d| d[:category] == item[:category]}
+        performed_categories.push( { category: item[:category] })
+      end
+    end
+    performed_segments = summary_table.select {|d| d[:type] == :segment}.map do |item|
+      {
+        starting_time: time_schedule.select {|d|
+          d[:category] == item[:category] && d[:segment] == item[:segment]
+        }.first.try(:[], :starting_time) || Time.now,
+        category: item[:category],
+        segment: item[:segment],
+        official_url: item[:official_url],
+        score_url: item[:score_url],
+      }
+    end
+    data = {
       name: parse_name(page),
-      time_schedule: time_schedule,
-      city: city, country: country,
       site_url: site_url,
-      officials: officials, category_results: category_results, scores: scores,
+      performed_categories: performed_categories,
+      performed_segments: performed_segments,
+      start_date: time_schedule.map {|d| d[:starting_time]}.min.to_date,
+      end_date: time_schedule.map {|d| d[:starting_time]}.max.to_date,
     }
+    data[:city], data[:country] = parse_city_country(page)
+    data
   end
 
   ################
-  def season_to_parse?(time_schedule, season_options)
-    this_season = SkateSeason.new(time_schedule.map { |d| d[:starting_time] }.min)
-    season = season_options[:season]
-    from = (season) ? season : season_options[:season_from]
-    to = (season) ? season : season_options[:season_to]
-
-    return true if this_season.between?(from, to)
-
-    debug('skipping...season %s out of range [%s, %s]' % [this_season, from, to], indent: 3)
-    false
-  end
-
   def get_parser(ptype)
     @parsers ||= {}
     @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new(verbose: verbose)
   end
 
-  [:time_schedule, :summary_table, :category_result, :score, :official].each do |ptype|
-    define_method("parse_#{ptype}"){|*args|
-      get_parser(ptype).parse(*args)
-    }
+  def parse_time_schedule(page)
+    get_parser(:time_schedule).parse(page)
+  end
+
+  def parse_summary_table(page, base_url: '')
+    get_parser(:summary_table).parse(page, base_url: base_url)
+  end
+
+  def parse_category_result(url, category)
+    get_parser(:category_result).parse(url, category)
+  end
+
+  def parse_score(url, category, segment)
+    get_parser(:score).parse(url, category, segment)
+  end
+
+  def parse_officials(url, category, segment)
+    get_parser(:official).parse(url, category, segment)
   end
 
   def parse_name(page)
@@ -77,7 +70,7 @@ class CompetitionParser < Parser
   end
 
   def parse_city_country(page)
-    node = page.search('td.caption3').presence || page.xpath('//h3') || raise("no city/country info found")
+    node = page.search('td.caption3').presence || page.xpath('//h3') || raise
     str = (node.present?) ? node.first.text.strip : ''
     city, country = str.split(/ *\/ */)
 

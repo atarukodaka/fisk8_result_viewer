@@ -13,6 +13,7 @@ class CompetitionParser
 
       def parse(site_url, options) # *args)
         data = super(site_url, options) # *args)
+        ## TODO
         if data[:time_schedule].blank?
           page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
