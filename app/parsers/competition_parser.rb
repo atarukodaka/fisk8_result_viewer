@@ -10,12 +10,6 @@ class CompetitionParser < Parser
         result_url: item[:result_url],
       }
     end
-    ## for team trophy
-    summary_table.select {|d| d[:type] == :segment}.each do |item|
-      unless performed_categories.find {|d| d[:category] == item[:category]}
-        performed_categories.push( { category: item[:category] })
-      end
-    end
     performed_segments = summary_table.select {|d| d[:type] == :segment}.map do |item|
       {
         starting_time: time_schedule.select {|d|
@@ -27,13 +21,20 @@ class CompetitionParser < Parser
         score_url: item[:score_url],
       }
     end
+    ## for team trophy
+    performed_segments.pluck(:category).uniq.each do |category|
+      unless performed_categories.find {|d| d[:category] == category}
+        performed_categories.push( { category: category })
+      end
+    end
+
     data = {
       name: parse_name(page),
       site_url: site_url,
       performed_categories: performed_categories,
       performed_segments: performed_segments,
-      start_date: time_schedule.map {|d| d[:starting_time]}.min.to_date,
-      end_date: time_schedule.map {|d| d[:starting_time]}.max.to_date,
+      start_date: time_schedule.map {|d| d[:starting_time]}.min.try(:to_date),
+      end_date: time_schedule.map {|d| d[:starting_time]}.max.try(:to_date),
     }
     data[:city], data[:country] = parse_city_country(page)
     data

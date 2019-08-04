@@ -13,18 +13,16 @@ class CompetitionParser
 
       def parse(site_url, options) # *args)
         data = super(site_url, options) # *args)
-        ## TODO
-        if data[:time_schedule].blank?
+        if data[:start_date].nil?
           page = get_url(site_url, encoding: options[:encoding]) || []
           page.text =~ /(\d+)年(\d+)月(\d+)日/
-          tm = Time.zone.local($1, $2, $3)
-          data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
-            {
-              starting_time: tm,
-              category: d[0],
-              segment: d[1]
-            }
-          }
+          tm = Time.utc($1, $2, $3).in_time_zone('Asia/Tokyo')
+          #data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
+          data[:performed_segments].each do |item|
+            item[:starting_time] = tm
+          end
+          data[:start_date] = tm.to_date
+          data[:end_data] = tm.to_date
         end
         data
       end
