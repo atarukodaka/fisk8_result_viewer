@@ -58,8 +58,8 @@ namespace :update do
       options = env_options.dup
       #options.merge!(item.attributes.slice(:date_format, :parser_type, :encoding))
       options.merge!(item.attributes.slice(:parser_type, :encoding))
-      CompetitionUpdater.new(verbose: options[:verbose])
-        .update_competition(item[:site_url], options) do |competition|
+      CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options) do |competition|
+        competition.short_name = item[:short_name]
         item.attributes.slice(:city, :name, :comment).each do |key, value|
           competition[key] = value if value.present?
         end

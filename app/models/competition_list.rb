@@ -17,6 +17,7 @@ class CompetitionList < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competitions'
 
+=begin
   field :site_url
   field :parser_type
   field :comment
@@ -24,12 +25,25 @@ class CompetitionList < ActiveYaml::Base
   field :country
   field :city
   # field :date_format
+=end
 
   class << self
     DEFAULT_KEY = 'site_url'.freeze
 
     def load_file
       ## ruby2.5, rails5.2.6: hash key needs to be string.
+      data = raw_data.map do |key, value|
+        hash = { "short_name" => key}
+        case value
+        when String
+          hash[DEFAULT_KEY] = value
+        when Hash
+          hash.merge!(value)
+        end
+        hash
+      end
+      data
+=begin
       raw_data.map do |item|
         hash = {}
         case item
@@ -40,6 +54,7 @@ class CompetitionList < ActiveYaml::Base
         end
         hash
       end
+=end
     end
   end  ## class
 end
