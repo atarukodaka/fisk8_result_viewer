@@ -190,52 +190,14 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       its(:updated_at) { is_expected.not_to eq(original.updated_at) }
     end
   end
-
-  describe 'competition_type / short_name' do
-    [['http://www.isuresults.com/results/season1617/gpjpn2016/',
-      :isu, :gp, 'GPJPN2016'],
-     ['http://www.isuresults.com/results/season1617/gpf1617/',
-      :isu, :gp, 'GPF2016'],
-     ['http://www.isuresults.com/results/owg2014/',
-      :isu, :olympic, 'OWG2014'],
-     ['http://www.isuresults.com/results/season1617/wc2017/',
-      :isu, :world, 'WORLD2017'],
-     ['http://www.isuresults.com/results/season1617/fc2017/',
-      :isu, :fcc, 'FCC2017'],
-     ['http://www.isuresults.com/results/season1617/ec2017/',
-      :isu, :euro, 'EURO2017'],
-     ['http://www.isuresults.com/results/wtt2012/',
-      :isu, :team, 'TEAM2012'],
-     ['http://www.isuresults.com/results/season1617/wjc2017/',
-      :isu, :jworld, 'JWORLD2017'],
-     ['http://www.isuresults.com/results/season1617/jgpger2016/',
-      :isu, :jgp, 'JGPGER2016'],
-     ['http://www.figureskatingresults.fi/results/1617/CSFIN2016/',
-      :challenger, :finlandia, 'FINLANDIA2016'],
-     ['http://www.isuresults.com/results/season1718/csger2017/',
-      :challenger, :nebelhorn, 'NEBELHORN2017'],
-     ['http://www.fisg.it/upload/result/4468/index.html',
-      :challenger, :lombardia, 'LOMBARDIA2017'],
-     ['http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/',
-      :challenger, :nepela, 'NEPELA2017'],
-     ['http://www.pfsa.com.pl/results/1314/WC2013/',
-      :challenger, :warsaw, 'WARSAW2013'],].each do |ary|
-      ## TODO: competition_class, and other examples to add
-      context ary[0] do
-        let(:url) { ary[0] }
-        let(:competition_class) { ary[1].to_s }
-        let(:competition_type) { ary[2].to_s }
-        let(:short_name) { ary[3] }
-
-        subject(:competition) { updater.update_competition(url, categories: []) }
-        it {
-          expect(competition.site_url).to eq(url)
-          expect(competition.competition_class).to eq(competition_class)
-          expect(competition.competition_type).to eq(competition_type)
-          expect(competition.short_name).to eq(short_name)
-        }
-      end
-    end
+  describe 'competition normalize' do
+    it {
+      CompetitionNormalize.create(regex: '^DUMMY[0-9]', competition_class: 'isu', competition_type: 'dum', name: 'Dummy %{year}')
+      competition = Competition.create(short_name: 'DUMMY2019', start_date: Time.new(2019, 1,1))
+      expect(competition.competition_class).to eq('isu')
+      expect(competition.competition_type).to eq('dum')
+      expect(competition.name).to eq('Dummy 2019')
+    }
   end
   ################
   describe 'skater name correction' do
