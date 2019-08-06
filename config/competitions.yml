@@ -1,11 +1,16 @@
 # add any competitions that you want to add into the database.
-# if the result site conform to ISU standards format, just add the url as array.
-# if it requires specific parser_type, add it with parser_type key as hash e.g.
-#   -
-#     site_url: http://www.foo.bar/results/xxxx2017/
-#     parser_type: foo
+# if the result site conform to ISU standards format, just add set of short_name and url, i.e:
+#  WC2017: http://www.isuresults.com/results/season1617/wc2017/
 #
-#  in that case you need to register the parser_type into Fisk8Viewer::CompetitionSummaryParser_Type.registered. see fisk8viewer/competition_summary_parser_type.rb and fisk8viewer/competition_summary_parser_type/isu_generic.rb for dettails.
+# if it requires specific parser_type, add it with parser_type key as hash e.g.
+#  GPF2017:
+#    name: ISU Grand Prix of Figure Skating Final 2017
+#    site_url: http://www.isuresults.com/results/season1718/gpf1718/
+#    parser_type: gpjpn
+#    city: Nagoya#
+#
+#  in that case you need to register the parser_type into:
+#    CompetitionParser::Extension::Gpjpn
 
 ## 2006-07
 - http://www.isuresults.com/results/gpjpn06/

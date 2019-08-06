@@ -1,11 +1,7 @@
 class CompetitionUpdater < Updater
   include NormalizePersonName
-  # using CategorySegmentSelector
   using StringToModel
-  #using MapValue
-  #using AcceptCategories
 
-  ################
   def update_competition(site_url, options = {})
     debug('*' * 100)
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
@@ -57,9 +53,9 @@ class CompetitionUpdater < Updater
             next if official[:panel_name] == '-'
 
             panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
-            panel.update!(nation: official[:panel_nation]) if official[:panel_nation] != 'ISU' && panel.nation.blank?
-            #performed_segment.officials.create!(number: official[:number], panel: panel)
-
+            if official[:panel_nation] != 'ISU'
+              panel.update!(nation: official[:panel_nation]) && panel.nation.blank?
+            end
             performed_segment.officials.create!(official.slice(:function_type, :function, :number)) do |of|
               of.panel = panel
             end
@@ -82,8 +78,8 @@ class CompetitionUpdater < Updater
         end
       end
 
-      debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' %
-            competition.attributes.symbolize_keys)
+      #debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' %
+      #      competition.attributes.symbolize_keys)
       competition        ## ensure to return competition object
     end ## transaction
   end
