@@ -7,7 +7,7 @@ module HttpGet
   def get_url(url, encoding: nil)
     mode = encoding ? ['r', encoding].join(':') : 'r'
     #mode = ['r', encoding.to_s].compact.join(':')
-    body = open(url, mode).read.gsub(/&nbsp;?/, ' ')   # rubocop:disable Security/Open
+    body = open(url, mode).read   # rubocop:disable Security/Open
   rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => e
     #http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
     Rails.logger.warn(e.message)
@@ -20,6 +20,6 @@ module HttpGet
       #debug("* charset detected: #{det['encoding']}")
       body = body.encode('UTF-8', det["encoding"])
     end
-    Nokogiri::HTML(body)
+    Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
   end
 end
