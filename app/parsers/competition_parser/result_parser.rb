@@ -42,7 +42,7 @@ class CompetitionParser
     private
 
     def find_column(from:, headers:, to_match:)
-      col_number = headers.index { |d| d =~ to_match } || raise('no relevant column')
+      col_number = headers.index { |d| d =~ to_match } || raise("no relevant column: from #{from}, headers: #{headers}, to match: #{to_match}")
       from[col_number]
     end
 

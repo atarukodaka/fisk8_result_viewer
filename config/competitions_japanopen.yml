@@ -1,0 +1,29 @@
+## debug
+
+JO2012:
+  site_url: https://www.jsfresults.com/InterNational/2012-2013/jo/
+  parser_type: japan_open
+
+JO2013:
+  site_url: https://www.jsfresults.com/InterNational/2013-2014/jo/
+  parser_type: japan_open
+
+JO2014:
+  site_url: https://www.jsfresults.com/InterNational/2014-2015/jo/
+  parser_type: japan_open
+
+JO2015:
+  site_url: https://www.jsfresults.com/InterNational/2015-2016/jo/
+  parser_type: japan_open
+
+JO2016:
+  site_url: http://www.jsfresults.com/InterNational/2016-2017/jo/
+  parser_type: japan_open
+
+JO2017:
+  site_url: http://www.jsfresults.com/InterNational/2017-2018/japanopen/
+  parser_type: japan_open
+
+JO2018:
+  site_url: http://www.jsfresults.com/InterNational/2018-2019/japanopen/
+  parser_type: japan_open

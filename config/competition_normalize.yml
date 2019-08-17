@@ -77,3 +77,7 @@
   regex: "^ALLJAPAN[0-9]"
   competition_class: local
   competition_type: alljapan
+-
+  regex: "^JO[0-9]"
+  competition_class: isu
+  competition_type: japanopen
