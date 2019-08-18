@@ -6,7 +6,8 @@ class CompetitionParser
           data = super(page, base_url: base_url)
 
           ## no category results
-          data.reject { |d| d[:type] == :category }.map do |item|
+          #data.reject { |d| d[:type] == :category }.map do |item|
+          data.map do |item|
             item[:category] = "TEAM #{item[:category]}" if item[:category].present?
             item
           end

@@ -13,12 +13,13 @@ class CompetitionParser
     def get_time_schedule_rows(page)
       #elem = page.xpath("//table//tr//*[text()='Date']").first || raise
       #elem.xpath('ancestor::table[1]//tr')
-      find_table_rows(page, 'Date') || raise("time schedule table not found")
+      find_table_rows(page, 'Date')   ##|| raise("time schedule table not found")
     end
 
     def parse(page)
       # rows = find_table_rows(page, "Date") || raise("time schedule table not found")
       rows = get_time_schedule_rows(page)
+      return [] if rows.nil?
 
       dt_str = ''
       tz = get_timezone(page)

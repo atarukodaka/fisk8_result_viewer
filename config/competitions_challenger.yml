@@ -1,68 +1,57 @@
 ## Challenger Series
 
 ## nebelhorn
-- http://www.deu-event.de/results/Nebelhorn_2010/
-- http://www.deu-event.de/results/Nebelhorn_2011/
-- http://www.deu-event.de/results/Nebelhorn_2012/
-- http://www.isuresults.com/results/nt2013/
-- http://www.isuresults.com/results/nt2014/
-- http://www.isuresults.com/results/season1516/csger2015/
-- http://www.deu-event.de/results/Nebelhorn_2016/
-- http://www.isuresults.com/results/season1718/csger2017/
+NBL2010: http://www.deu-event.de/results/Nebelhorn_2010/
+NBL2011: http://www.deu-event.de/results/Nebelhorn_2011/
+NBL2012: http://www.deu-event.de/results/Nebelhorn_2012/
+NBL2013: http://www.isuresults.com/results/nt2013/
+NBL2014: http://www.isuresults.com/results/nt2014/
+NBL2015: http://www.isuresults.com/results/season1516/csger2015/
+NBL2016: http://www.deu-event.de/results/Nebelhorn_2016/
+NBL2017: http://www.isuresults.com/results/season1718/csger2017/
 
 ## finlandia
-- http://www.figureskatingresults.fi/results/1718/CSFIN2017/
-- http://www.figureskatingresults.fi/results/1617/CSFIN2016/
-- http://www.figureskatingresults.fi/results/1516/CSFIN2015/
--
+FIN2017: http://www.figureskatingresults.fi/results/1718/CSFIN2017/
+FIN2016: http://www.figureskatingresults.fi/results/1617/CSFIN2016/
+FIN2015: http://www.figureskatingresults.fi/results/1516/CSFIN2015/
+FIN2014:
   site_url: http://www.figureskatingresults.fi/results/1415/CSFIN2014/
   encoding: UTF-16
-- http://www.figureskatingresults.fi/results/1314/FT2013/
-- http://www.figureskatingresults.fi/results/1213/FT2012/
-- http://www.figureskatingresults.fi/results/1112/FT2011/
-- http://www.figureskatingresults.fi/results/1011/FT2010/
+FIN2013: http://www.figureskatingresults.fi/results/1314/FT2013/
+FIN2012: http://www.figureskatingresults.fi/results/1213/FT2012/
+FIN2011: http://www.figureskatingresults.fi/results/1112/FT2011/
+FIN2010: http://www.figureskatingresults.fi/results/1011/FT2010/
 
 ## lombardia
-- http://www.fisg.it/upload/result/4468/index.html
-- http://www.fisg.it/upload/result/4144/senior/
-- http://www.fisg.it/upload/result/3860/index.html
-- http://www.fisg.it/upload/result/4468/index.html
+LOMB2017: http://www.fisg.it/upload/result/4468/index.html
+LOMB2016: http://www.fisg.it/upload/result/4144/senior/
+LOMB2015: http://www.fisg.it/upload/result/3860/index.html
+LOMB2014: http://www.fisg.it/upload/result/4468/index.html
 
 ## ondreij nepela
-- http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
-- http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
+NPL2017: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
+NPL2016: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+NPL2015: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
+NPL2014: http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+NPL2013: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 
 ## warsaw cup
-- http://pfsa.com.pl/cspol2016/
-- http://pfsa.com.pl/cspol15/
-- http://www.pfsa.com.pl/warsawcup2014/
-- http://www.pfsa.com.pl/results/1314/WC2013/
-
-## autumn classic
-##  this result format is shxt
-#-
-#  site_url: https://skatecanada.ca/2017-autumn-classic-international/
-#  parser_type: autumn_classic
-#-
-#  site_url: https://skatecanada.ca/event/2016-autumn-classic-international/
-#  parser_type: :autumn_classic
-
-## debug
-#- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+WRS2016: http://pfsa.com.pl/cspol2016/
+WRS2015: http://pfsa.com.pl/cspol15/
+WRS2014: http://www.pfsa.com.pl/warsawcup2014/
+WRS2013: http://www.pfsa.com.pl/results/1314/WC2013/
 
 ## 2018-19
 #-
 #  site_url: https://lamp.skatecanada.ca/results/2018ACI/index.htm
 #  parser_type: autumn_classic
 
-- http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
-- http://www.fisg.it/upload/result/4802/  ## Lombardia
-- http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
-- http://www.deu-event.de/results/Nebelhorn_2018/
-- http://www.isuresults.com/results/season1819/warsaw2018/
-## debug
-#- http://www.figureskatingresults.fi/results/1213/FT2012/   ## TODO: time schedule parser
-- http://www.figureskatingresults.fi/results/1415/CSFIN2014/
+# http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
+LOMB2018: http://www.fisg.it/upload/result/4802/  ## Lombardia
+NPL2018: http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
+NBL2018: http://www.deu-event.de/results/Nebelhorn_2018/
+WRS2018: http://www.isuresults.com/results/season1819/warsaw2018/
+
+    
+# JO2016:
+#https://www.jsfresults.com/InterNational/2018-2019/japanopen/

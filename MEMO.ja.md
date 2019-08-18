@@ -66,7 +66,7 @@ end
 def score
   ...
   delegate :competition_class, to: competition
-  
+
 % cat app/datatables/scores_datatable.rb
   def initialize(*)
     super
@@ -78,8 +78,8 @@ def score
 ```
 
 ### datatable の仕組み
-- .html: 
-- .json/.csv: 
+- .html:
+- .json/.csv:
 
 
 ## メモ
@@ -101,6 +101,13 @@ su postgres
 dropdb fisk8viewer
 createdb fisk8viewer
 ^D
+
+export DATABASE_PASSWORD=****
+export DATABASE_HOST=localhost
+export RAILS_ENV=production
+bundle exec rake db:reset
+bundle exec rake update:skaters
+bundle exec rake update:competitions
 
 ```
 ### heroku

@@ -20,7 +20,7 @@ class Competition < ApplicationRecord
   def _normalize
     matched_item = nil
     CompetitionNormalize.all.each do |item|    ## rubocop:disable Rails/FindEach
-      if self.name.match?(item.regex)
+      if self.short_name.to_s.match?(item.regex)
         matched_item = item
         break
       end
@@ -31,7 +31,7 @@ class Competition < ApplicationRecord
     self.competition_class ||= matched_item.competition_class.to_sym
     self.competition_type ||= matched_item.competition_type.to_sym
     self.name = matched_item.name % hash if matched_item.name.to_s.present?
-    self.short_name ||= matched_item.short_name.to_s % hash || self.name
+    # self.short_name ||= matched_item.short_name.to_s % hash || self.name
     self.season = SkateSeason.new(self.start_date).season
 
     self           ## ensure to return self

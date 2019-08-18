@@ -13,8 +13,8 @@ Result and Score viewer of figureskating competitions. you can see below details
 ## Install
 
 ```sh
-% sudo yum -y install poppler-utils 
-or 
+% sudo yum -y install poppler-utils
+or
 % sudo apt-get install poppler-utils
 % bundle install
 ```
@@ -29,6 +29,7 @@ on production,
 ```sh
 % bundle exec rake assets:precompile
 % bundle exec rake secret
+(% EDITOR=vim bundle exec rake credentials:edit)
 % export SECRET_KEY_BASE=.....
 % bundle exec rake db:migrate
 ```

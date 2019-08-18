@@ -21,7 +21,6 @@ class CompetitionParser
     end
 
     def parse_score(text)
-      # @mode = :skater
       mode = :skater
       score = { elements: [], components: [] }
 
@@ -40,7 +39,7 @@ class CompetitionParser
       ## adding '1' for Mariya1 BAKUSHEVA
       ##   (see: http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)
       nation_re = '[A-Z][A-Z][A-Z]'
-      if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) (\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
+      if line =~ /^(\d+) (#{name_re}) *(#{nation_re}) #?(\d+) ([\d\.]+) ([\d\.]+) ([\d\.]+) ([\d\.\-]+)/
         score.update(ranking: $1.to_i, skater_name: $2.strip, skater_nation: $3,
                      starting_number: $4.to_i, tss: $5.to_f, tes: $6.to_f,
                      pcs: $7.to_f, deductions: $8.to_f.abs * -1)

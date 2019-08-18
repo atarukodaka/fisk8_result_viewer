@@ -17,9 +17,9 @@ module HttpGet
     #Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
     if encoding.nil?
       det = CharDet.detect(body)
-      debug("* charset detected: #{det['encoding']}")
+      #debug("* charset detected: #{det['encoding']}")
       body = body.encode('UTF-8', det["encoding"])
     end
-    Nokogiri::HTML(body)
+    Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
   end
 end

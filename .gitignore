@@ -35,3 +35,6 @@ vendor/
 \#*
 .rubocop_todo.yml
 spec/vcr
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

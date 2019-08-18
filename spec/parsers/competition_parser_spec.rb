@@ -2,11 +2,12 @@ require 'rails_helper'
 
 RSpec.describe CompetitionParser, vcr: true do
   include HttpGet
-  using AcceptCategories
+  #using AcceptCategories
   using MapValue
   let(:site_url) { 'http://www.isuresults.com/results/season1617/wc2017/' }
   let(:parser) { CompetitionParser.new }
 
+=begin
   describe 'categories' do
     let(:all_categories) { ['MEN', 'LADIES', 'PAIRS', 'ICE DANCE'] }
     let(:invalid_category) { 'SYNCHRONIZED SKATING' }
@@ -20,7 +21,7 @@ RSpec.describe CompetitionParser, vcr: true do
       expect(summary_table.accept_categories([invalid_category]).map_value(:category).uniq).to be_empty
     }
   end
-
+=end
   describe 'summary_parser: join_url' do
     it {
       st_parser = CompetitionParser::SummaryTableParser.new
