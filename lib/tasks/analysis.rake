@@ -1,4 +1,15 @@
 namespace :analysis do
+  task tech_nation: :environment do
+
+    #skater = Skater.find_by(name: 'Yuzuru HANYU')
+    skater = Skater.find_by(name: 'Shoma UNO')
+    Score.where(skater: skater).joins(:competition).each do |score|
+      score.performed_segment.officials.where(function_type: "technical").each do |official|
+        puts "#{skater.name},#{score.competition.season},#{score.name},#{official.panel.name},#{official.panel.nation}"
+      end
+    end
+  end
+
   task panel_judge: :environment do
     skater = Skater.find_by(name: "Mao ASADA")
 
