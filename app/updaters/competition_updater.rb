@@ -53,8 +53,9 @@ class CompetitionUpdater < Updater
             next if official[:panel_name] == '-'
 
             panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
-            if official[:panel_nation] != 'ISU'
-              panel.update!(nation: official[:panel_nation]) && panel.nation.blank?
+            if panel.nation.blank? &&
+              official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
+              panel.update!(nation: official[:panel_nation])
             end
             performed_segment.officials.create!(official.slice(:function_type, :function, :number)) do |of|
               of.panel = panel

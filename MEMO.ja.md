@@ -94,13 +94,12 @@ def score
 edit config/database.yml
 
 ```
-su
-/etc/init.d/postgresql start
-update-rc.d postgresql defaults
-su postgres
-dropdb fisk8viewer
-createdb fisk8viewer
-^D
+sudo /etc/init.d/postgresql start
+sudo update-rc.d postgresql defaults
+sudo -u postgres createuser -d -P fisk8viewer
+Password: xxx
+sudo -u postgres dropdb fisk8viewer
+sudo -u postgres createdb fisk8viewer -O fisk8viewer
 
 export DATABASE_PASSWORD=****
 export DATABASE_HOST=localhost
@@ -113,9 +112,14 @@ bundle exec rake update:competitions
 ### heroku
 
 ```
-git push heroku master
+heroku login
+(herokuの設定で github の repository と連携するようにする）
+git push origin master
+#git remote add heroku git@heroku.com:fisk8-result-viewer.git
+#git push heroku master
+sudo -u postgres createuser -s `whoami` （これしとかないと role '***' does not exist が出る）
 heroku pg:reset --confirm fisk8-result-viewer
-heroku pg:push fisk8viewer HEROKU_POSTGRESQL_BLUE_URL
+heroku pg:push fisk8viewer DATABASE_URL
 heroku restart
 ```
 
