@@ -19,9 +19,7 @@ class CompetitionUpdater < Updater
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.slice(:site_url, :name, :country, :city)
-        comp.start_date = data[:start_date]
-        comp.end_date = data[:end_date]
+        comp.attributes = data.slice(:site_url, :name, :country, :city, :start_date, :end_date)
         comp.timezone = data[:performed_segments].first[:starting_time].time_zone.name
 
         yield comp if block_given?
@@ -52,6 +50,7 @@ class CompetitionUpdater < Updater
           officials = parser.parse_officials(seg_item[:official_url], category.name, segment.name).each do |official|
             next if official[:panel_name] == '-'
 
+            #update_official(item, performed_segment: performed_segment)
             panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
             if panel.nation.blank? &&
               official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
@@ -78,9 +77,6 @@ class CompetitionUpdater < Updater
           end
         end
       end
-
-      #debug('%<name>s [%<short_name>s] at %<city>s/%<country>s on %<start_date>s' %
-      #      competition.attributes.symbolize_keys)
       competition        ## ensure to return competition object
     end ## transaction
   end
@@ -89,7 +85,7 @@ class CompetitionUpdater < Updater
   def update_category_result(competition, category, item)
     competition.category_results.create! do |category_result|
       category_result.update_common_attributes(item)
-      category_result.skater = find_or_create_skater(item)
+      category_result.skater = find_or_create_skater(item.slice(:skater_name, :isu_number, :skater_nation, :category))
       category_result.category = category
       debug(category_result.summary)
     end
@@ -105,7 +101,7 @@ class CompetitionUpdater < Updater
       ## relevant category result
       cr = competition.category_results.category(category)
            .segment_ranking(segment, score.ranking).first
-      score.skater = cr.try(:skater) || find_or_create_skater(item)
+      score.skater = cr.try(:skater) || find_or_create_skater(item.slice(:skater_name, :isu_number, :skater_nation, :category))
 
       yield score if block_given?
       debug(score.summary)

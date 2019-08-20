@@ -9,8 +9,11 @@ class SkaterUpdater < Updater
     CategoryType.all.each do |category_type|
       debug("#{category_type.name}: #{category_type.isu_bio_url}")
 
+#      cols = Skater.column_names.map(&:to_sym)
+#      data = []
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category_type.name, category_type.isu_bio_url).map do |hash|
+          data << hash.slice(*cols).merge(category: category_type.name)
           # hash[:category] = hash[:category].to_category
           hash[:category_type] = category_type
           Skater.find_or_create_by(isu_number: hash[:isu_number]) do |skater|
@@ -19,6 +22,9 @@ class SkaterUpdater < Updater
           end
         end
       end # transaction
+#      File.open("config/skaters.yml", "w") do |f|
+#        f.puts data.to_yaml
+#      end
     end
   end
 
