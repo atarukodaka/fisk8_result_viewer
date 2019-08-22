@@ -37,7 +37,7 @@ FactoryBot.define do
       end_date { Date.new(2017, 9, 3) }
       timezone { 'UTC' }
       after(:build) do |competition|
-        create(:official, :first, competition: competition, category: Category.find_by(name: "JUNIOR LADIES"), segment: Segment.find_by(name: "FREE SKATING"))
+        create(:official, :second, competition: competition, category: Category.find_by(name: "JUNIOR LADIES"), segment: Segment.find_by(name: "FREE SKATING"))
 
         skater = create(:skater, :ladies)
         create(:category_result, :finlandia, competition: competition, skater: skater)
