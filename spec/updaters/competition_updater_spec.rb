@@ -85,7 +85,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       let(:url) { 'http://www.isuresults.com/results/season1617/gpusa2016/' }
       let(:competition) { updater.update_competition(url, categories: ['PAIRS'])  }
       let(:officials) {
-        competition.performed_segments.find_by(segment: 'SHORT PROGRAM'.to_segment).officials
+        competition.officials.where(segment: 'SHORT PROGRAM'.to_segment)
       }
       subject { officials.find_by(number: 6) }
       it { is_expected.to be nil }

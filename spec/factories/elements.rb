@@ -15,8 +15,8 @@ FactoryBot.define do
 
       after(:create) do |element|
         score = element.score
-        official = score.competition.performed_segments
-                   .where(category: score.category, segment: score.segment).first.officials.find_by(number: 1)
+        official = score.competition.officials
+                   .where(category: score.category, segment: score.segment, number: 1).first
         create(:judge_detail, :element, detailable: element, official: official)
       end
     end

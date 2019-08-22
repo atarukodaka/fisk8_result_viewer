@@ -31,7 +31,8 @@ class CompetitionsController < IndexController
   end
 
   def time_schedule_datatable(competition)
-    records = competition.performed_segments.includes(:category, :segment).order(:starting_time)
+    #records = competition.performed_segments.includes(:category, :segment).order(:starting_time)
+    records = competition.time_schedules.includes(:category, :segment).order(:starting_time)
     AjaxDatatables::Datatable.new(view_context).records(records)
       .columns([:category_name, :segment_name, :starting_time])
       .update_settings(paging: false, info: false, searching: false)
@@ -40,8 +41,9 @@ class CompetitionsController < IndexController
   def officials_datatable(competition, category, segment)
     return nil if category.nil? || segment.nil?
 
-    ps = competition.performed_segments.where(category: category, segment: segment)
-    records = Official.where(performed_segment: ps).includes(:panel)
+    #ps = competition.performed_segments.where(category: category, segment: segment)
+    #records = Official.where(performed_segment: ps).includes(:panel)
+    records = Official.where(competition: competition, category: category, segment: segment).includes(:panel)
     AjaxDatatables::Datatable.new(view_context).records(records)
       .columns([:function_type, :function, :panel_name, :panel_nation])
       .update_settings(info: false, searching: false, paging: false)

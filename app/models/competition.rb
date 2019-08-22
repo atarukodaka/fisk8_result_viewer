@@ -5,9 +5,11 @@ class Competition < ApplicationRecord
   alias_attribute :competition_short_name, :short_name
 
   ## relations
-  has_many :performed_segments, dependent: :destroy
+  #has_many :performed_segments, dependent: :destroy
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
+  has_many :time_schedules, dependent: :destroy
+  has_many :officials, dependent: :destroy
 
   ## validations
   validates :country, allow_nil: true, format: { with: /\A[A-Z][A-Z][A-Z]\Z/ }

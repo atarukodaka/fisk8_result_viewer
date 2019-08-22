@@ -9,8 +9,8 @@ class SkaterUpdater < Updater
     CategoryType.all.each do |category_type|
       debug("#{category_type.name}: #{category_type.isu_bio_url}")
 
-#      cols = Skater.column_names.map(&:to_sym)
-#      data = []
+      cols = Skater.column_names.map(&:to_sym)
+      data = []
       ActiveRecord::Base.transaction do
         parser.parse_skaters(category_type.name, category_type.isu_bio_url).map do |hash|
           data << hash.slice(*cols).merge(category: category_type.name)

@@ -24,7 +24,8 @@ class PanelsController < IndexController
     }
 
     columns = [:competition_name, :category_name, :segment_name, :function_type, :function]
-    records = panel.officials.includes(performed_segment: [:competition, :category, :segment])
+    #records = panel.officials.includes(performed_segment: [:competition, :category, :segment])
+    records = panel.officials.includes(:competition, :category, :segment)
     participated_segments_datatable =
       AjaxDatatables::Datatable.new(self).records(records).columns(columns)
 
