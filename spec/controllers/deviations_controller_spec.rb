@@ -7,13 +7,14 @@ describe DeviationsController, type: :controller do
   let!(:main) {
     competition = create(:competition, :world)
     score = competition.scores.first
-    official = score.performed_segment.officials.first
+    #official = score.performed_segment.officials.first
+    official = competition.officials.where(category: score.category, segment: score.segment).first
     create(:deviation, :first, score: score, official: official)
   }
   let!(:sub) {
     competition = create(:competition, :finlandia)
     score = competition.scores.first
-    official = score.performed_segment.officials.first
+    official = competition.officials.where(category: score.category, segment: score.segment).first
     create(:deviation, :second, score: score, official: official)
   }
 

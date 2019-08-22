@@ -45,7 +45,7 @@ RSpec.describe CompetitionsController, type: :controller do
         is_expected.to have_content(world.name)
         is_expected.to have_content(category.name)
         is_expected.to have_content(segment.name)
-        is_expected.to have_content(score.performed_segment.officials.first.panel.name)
+        #is_expected.to have_content(score.performed_segment.officials.first.panel.name)
       }
     end
     context 'format: json' do

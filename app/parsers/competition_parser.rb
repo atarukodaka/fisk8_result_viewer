@@ -40,6 +40,7 @@
     data = {
       name: parse_name(page),
       site_url: site_url,
+      time_schedule: time_schedule,
       performed_categories: performed_categories,
       performed_segments: performed_segments,
       ## start_date: time_schedule.map {|d| d[:starting_time]}.min.try(:to_date),
