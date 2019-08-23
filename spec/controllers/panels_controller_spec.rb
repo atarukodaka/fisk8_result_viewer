@@ -5,8 +5,8 @@ describe PanelsController, type: :controller do
   render_views
 
   let!(:world) { create(:competition, :world) }
-  let!(:john) {    world.performed_segments.first.officials.first.panel }
-  let!(:mike) {    world.performed_segments.first.officials.second.panel }
+  let!(:john) {    world.officials.first.panel }
+  let!(:mike) {    world.officials.second.panel }
 
   describe '#index' do
     datatable = PanelsDatatable.new

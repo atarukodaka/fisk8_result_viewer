@@ -27,7 +27,16 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.float :points
 
       t.integer :short_ranking
+      t.float :short_tss
+      t.float :short_tes
+      t.float :short_pcs
+      t.float :short_deductions
+
       t.integer :free_ranking
+      t.float :free_tss
+      t.float :free_tes
+      t.float :free_pcs
+      t.float :free_deductions
 
       ## relations
       t.belongs_to :competition
@@ -37,14 +46,12 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     end
 
     ################
-    # performed segments
-    create_table :performed_segments do |t|
+    # time schedule
+    create_table :time_schedules do |t|
+      t.belongs_to :competition
       t.belongs_to :category
       t.belongs_to :segment
       t.datetime :starting_time
-
-      ## relations
-      t.belongs_to :competition
     end
   end
 end

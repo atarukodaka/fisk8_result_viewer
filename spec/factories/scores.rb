@@ -19,7 +19,8 @@ FactoryBot.define do
       after(:build) do |score|
         element = create(:element, :solo_jump, score: score)
         create(:element, :combination_jump, score: score)
-        create(:judge_detail, :element, detailable: element, official: score.performed_segment.officials.first)
+        official = score.competition.officials.where(category: score.category, segment: score.segment).first
+        create(:judge_detail, :element, detailable: element, official: official)
         create(:component, :ss, score: score)
       end
 

@@ -15,10 +15,12 @@ FactoryBot.define do
       timezone { 'Asia/Tokyo' }
 
       after(:build) do |competition|
+        create(:official, :first, competition: competition, category: Category.find_by(name: "MEN"), segment: Segment.find_by(name: "SHORT PROGRAM"))
+        create(:official, :first, competition: competition, category: Category.find_by(name: "TEAM MEN"), segment: Segment.find_by(name: "SHORT PROGRAM"))
         skater = create(:skater, :men)
-        ps = create(:performed_segment, :world, competition: competition)
         create(:category_result, :world, competition: competition, skater: skater)
-        create(:score, :world, competition: competition, skater: skater, performed_segment: ps)
+        score = create(:score, :world, competition: competition, skater: skater)
+
       end
     end
 
@@ -35,10 +37,12 @@ FactoryBot.define do
       end_date { Date.new(2017, 9, 3) }
       timezone { 'UTC' }
       after(:build) do |competition|
+        create(:official, :second, competition: competition, category: Category.find_by(name: "JUNIOR LADIES"), segment: Segment.find_by(name: "FREE SKATING"))
+
         skater = create(:skater, :ladies)
-        ps = create(:performed_segment, :finlandia, competition: competition)
         create(:category_result, :finlandia, competition: competition, skater: skater)
-        create(:score, :finlandia, competition: competition, skater: skater, performed_segment: ps)
+        create(:score, :finlandia, competition: competition, skater: skater)
+
       end
     end
   end

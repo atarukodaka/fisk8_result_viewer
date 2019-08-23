@@ -18,7 +18,7 @@ class CompetitionParser
           page.text =~ /(\d+)年(\d+)月(\d+)日/
           tm = Time.utc($1, $2, $3).in_time_zone('Asia/Tokyo')
           #data[:time_schedule] = data[:scores].map {|d| [d[:category], d[:segment]]}.uniq.map {|d|
-          data[:performed_segments].each do |item|
+          data[:time_schedule].each do |item|
             item[:starting_time] = tm
           end
           data[:start_date] = tm.to_date

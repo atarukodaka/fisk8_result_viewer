@@ -10,7 +10,9 @@ class CreateJudgeDetails < ActiveRecord::Migration[5.1]
       t.string :function
       t.integer :number
       t.references :panel
-      t.belongs_to :performed_segment
+      t.belongs_to :competition
+      t.belongs_to :category
+      t.belongs_to :segment
     end
 
     create_table :judge_details do |t|

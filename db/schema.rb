@@ -27,7 +27,19 @@ ActiveRecord::Schema.define(version: 5) do
     t.integer "ranking"
     t.float "points"
     t.integer "short_ranking"
+    t.float "short_tss"
+    t.float "short_tes"
+    t.float "short_pcs"
+    t.float "short_base_value"
+    t.float "short_goe"
+    t.float "short_deductions"
     t.integer "free_ranking"
+    t.float "free_tss"
+    t.float "free_tes"
+    t.float "free_pcs"
+    t.float "free_base_value"
+    t.float "free_goe"
+    t.float "free_deductions"
     t.integer "competition_id"
     t.integer "skater_id"
     t.integer "short_id"
@@ -120,24 +132,18 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "function"
     t.integer "number"
     t.integer "panel_id"
-    t.integer "performed_segment_id"
+    t.integer "competition_id"
+    t.integer "category_id"
+    t.integer "segment_id"
+    t.index ["category_id"], name: "index_officials_on_category_id"
+    t.index ["competition_id"], name: "index_officials_on_competition_id"
     t.index ["panel_id"], name: "index_officials_on_panel_id"
-    t.index ["performed_segment_id"], name: "index_officials_on_performed_segment_id"
+    t.index ["segment_id"], name: "index_officials_on_segment_id"
   end
 
   create_table "panels", force: :cascade do |t|
     t.string "name"
     t.string "nation"
-  end
-
-  create_table "performed_segments", force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "segment_id"
-    t.datetime "starting_time"
-    t.integer "competition_id"
-    t.index ["category_id"], name: "index_performed_segments_on_category_id"
-    t.index ["competition_id"], name: "index_performed_segments_on_competition_id"
-    t.index ["segment_id"], name: "index_performed_segments_on_segment_id"
   end
 
   create_table "scores", force: :cascade do |t|
@@ -158,10 +164,8 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "components_summary"
     t.integer "competition_id"
     t.integer "skater_id"
-    t.integer "performed_segment_id"
     t.index ["category_id"], name: "index_scores_on_category_id"
     t.index ["competition_id"], name: "index_scores_on_competition_id"
-    t.index ["performed_segment_id"], name: "index_scores_on_performed_segment_id"
     t.index ["segment_id"], name: "index_scores_on_segment_id"
     t.index ["skater_id"], name: "index_scores_on_skater_id"
   end
@@ -186,6 +190,16 @@ ActiveRecord::Schema.define(version: 5) do
     t.string "club"
     t.datetime "bio_updated_at"
     t.index ["category_type_id"], name: "index_skaters_on_category_type_id"
+  end
+
+  create_table "time_schedules", force: :cascade do |t|
+    t.integer "competition_id"
+    t.integer "category_id"
+    t.integer "segment_id"
+    t.datetime "starting_time"
+    t.index ["category_id"], name: "index_time_schedules_on_category_id"
+    t.index ["competition_id"], name: "index_time_schedules_on_competition_id"
+    t.index ["segment_id"], name: "index_time_schedules_on_segment_id"
   end
 
 end
