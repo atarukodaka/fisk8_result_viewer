@@ -9,9 +9,11 @@ class CompetitionUpdater < Updater
 
     parser = get_parser(options[:parser_type])
     data = parser.parse(site_url, encoding: options[:encoding]) || return
-    season = SkateSeason.new(data[:start_date])
+    start_date = data[:time_schedule].map {|d| d[:starting_time]}.min.to_date
 
+    season = SkateSeason.new(start_date)
     return unless season_to_update?(season, options.slice(:season, :season_from, :season_to))
+
     categories_to_update = options[:categories] || Category.all.map(&:name)
 
     ActiveRecord::Base.transaction do
@@ -20,65 +22,69 @@ class CompetitionUpdater < Updater
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
         comp.attributes = data.slice(:site_url, :name, :country, :city, :start_date, :end_date)
-        comp.timezone = data[:performed_segments].first[:starting_time].time_zone.name
+        comp.start_date = start_date
+        comp.end_date = data[:time_schedule].map {|d| d[:starting_time]}.max.to_date
+        comp.timezone = data[:time_schedule].first[:starting_time].time_zone.name
 
         yield comp if block_given?
       end
 
+      ## time schedule
       data[:time_schedule].each do |ts_item|
+        next unless categories_to_update.include?(ts_item[:category])
         category = ts_item[:category].to_category || next
         segment = ts_item[:segment].to_segment || next
-        competition.time_schedules.create! do |ts|
-          ts.category = category
-          ts.segment = segment
-          ts.starting_time = ts_item[:starting_time]
+        competition.time_schedules.create!(category: category, segment: segment,
+          starting_time: ts_item[:starting_time])
+      end
+
+      ## category result
+      data[:summary_table].select {|d| d[:type] == :category}.each do |item|
+        next unless categories_to_update.include?(item[:category])
+        next if !categories_to_update.include?(item[:category]) || item[:result_url].blank?
+        category = Category.find_by(name: item[:category]) || next
+        debug('===  %s ===' % [ category.name ], indent: 2)
+
+        parser.parse_category_result(item[:result_url], category.name).each do |result|
+          update_category_result(competition, category, result)
         end
       end
 
-      data[:performed_categories].each do |cat_item|
-        next unless categories_to_update.include?(cat_item[:category])
+      ## segment results
+      data[:summary_table].select {|d| d[:type] == :segment}.each do |item|
+        next unless categories_to_update.include?(item[:category])
+        category = Category.find_by(name: item[:category]) || next
+        segment = Segment.find_by(name: item[:segment]) || next
+        debug('===  %s / %s ===' % [ category.name, segment.name ], indent: 2)
 
-        category = Category.find_by(name: cat_item[:category])
-        debug('===  %s ===' % [ category.name ], indent: 2)
+        date = data[:time_schedule].select {|d| d[:category] == category.name && d[:segment] == segment.name }.first.try(:[], :starting_time)
 
-        parser.parse_category_result(cat_item[:result_url], category.name).each do |result|
-          update_category_result(competition, category, result)
-        end if cat_item[:result_url]
+        ## officials
+        parser.parse_officials(item[:official_url], category.name, segment.name).each do |official|
+          next if official[:panel_name] == '-'
 
-        data[:performed_segments].select {|d| d[:category] == category.name }.each do |seg_item|
-          segment = Segment.find_by(name: seg_item[:segment]) || next
-          debug('===  %s ===' % [ segment.name ], indent: 2)
-
-          date = data[:time_schedule].select {|d| d[:category] == category.name && d[:segment] == segment.name }.first.try(:[], :starting_time)
-
-          ## officials
-          officials = parser.parse_officials(seg_item[:official_url], category.name, segment.name).each do |official|
-            next if official[:panel_name] == '-'
-
-            panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
-            if panel.nation.blank? &&
-              official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
-              panel.update!(nation: official[:panel_nation])
-            end
-            Official.create!(competition: competition, category: category, segment: segment) do |of|
-              of.attributes = official.slice(:function_type, :function, :number)
-              of.panel = panel
-            end
+          panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
+          if panel.nation.blank? &&
+            official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
+            panel.update!(nation: official[:panel_nation])
           end
-
-          ## scores
-          parser.parse_score(seg_item[:score_url], category.name, segment.name).each do |item|
-            score = update_score(competition, category, segment, item) do |sc|
-              sc.date = date
-            end
-            next if !options[:enable_judge_details] || season < '2016-17'
-
-            ## details / deviations
-            #officials = score.performed_segment.officials.map { |d| [d.number, d] }.to_h
-            officials = competition.officials.where(category: score.category, segment: score.segment).map {|d| [d.number, d] }.to_h
-            update_judge_details(score, officials: officials)
-            update_deviations(score, officials: officials)
+          Official.create!(competition: competition, category: category, segment: segment) do |of|
+            of.attributes = official.slice(:function_type, :function, :number)
+            of.panel = panel
           end
+        end
+
+        ## scores
+        parser.parse_score(item[:score_url], category.name, segment.name).each do |item|
+          score = update_score(competition, category, segment, item) do |sc|
+            sc.date = date
+          end
+          next if !options[:enable_judge_details] || season < '2016-17'
+
+          ## details / deviations
+          officials = competition.officials.where(category: score.category, segment: score.segment).map {|d| [d.number, d] }.to_h
+          update_judge_details(score, officials: officials)
+          update_deviations(score, officials: officials)
         end
       end
       competition        ## ensure to return competition object
