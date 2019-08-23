@@ -30,12 +30,12 @@ class CompetitionUpdater < Updater
       end
 
       ## time schedule
-      data[:time_schedule].each do |ts_item|
-        next unless categories_to_update.include?(ts_item[:category])
-        category = ts_item[:category].to_category || next
-        segment = ts_item[:segment].to_segment || next
+      data[:time_schedule].each do |item|
+        next unless categories_to_update.include?(item[:category])
+        category = item[:category].to_category || next
+        segment = item[:segment].to_segment || next
         competition.time_schedules.create!(category: category, segment: segment,
-          starting_time: ts_item[:starting_time])
+          starting_time: item[:starting_time])
       end
 
       ## category result
@@ -76,13 +76,12 @@ class CompetitionUpdater < Updater
 
         ## scores
         parser.parse_score(item[:score_url], category.name, segment.name).each do |item|
-          score = update_score(competition, category, segment, item) do |sc|
-            sc.date = date
-          end
+          score = update_score(competition, category, segment, item)
+          score.update(date: date)
           next if !options[:enable_judge_details] || season < '2016-17'
 
           ## details / deviations
-          officials = competition.officials.where(category: score.category, segment: score.segment).map {|d| [d.number, d] }.to_h
+          officials = competition.officials.where(category: category, segment: segment).map {|d| [d.number, d] }.to_h
           update_judge_details(score, officials: officials)
           update_deviations(score, officials: officials)
         end
@@ -116,7 +115,13 @@ class CompetitionUpdater < Updater
       yield score if block_given?
       debug(score.summary)
     end
-    cr&.update(segment.segment_type => sc)
+    if cr
+      cr.update(segment.segment_type => sc)
+      cr.update(segment.segment_type => sc)
+      [:tss, :tes, :pcs, :deductions].each do |key|
+        cr.update("#{segment.segment_type}_#{key}" => sc[key])
+      end
+    end
 
     ## details
     elements_summary = item[:elements].map { |d| sc.elements.create!(d); d[:name] }.join('/')
