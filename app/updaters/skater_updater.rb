@@ -22,6 +22,7 @@ class SkaterUpdater < Updater
           end
         end
       end # transaction
+
 #      File.open("config/skaters.yml", "w") do |f|
 #        f.puts data.to_yaml
 #      end
@@ -31,9 +32,36 @@ class SkaterUpdater < Updater
   ################
   # skater detail
   def update_skaters_detail(options = {})
-    Skater.find_each.reject { |sk| sk.isu_number.blank? }.each do |skater|
+
+    cache_filename = "cache/skaters.yml"
+    cached_skaters = begin
+      YAML.load_file(cache_filename)
+    rescue Errno::ENOENT
+      []
+    end
+    skaters = Skater.find_each.reject { |sk| sk.isu_number.blank? }.map do |skater|
       next if options[:active_only] && skater.category_results.count == 0
-      update_skater_detail(skater.isu_number)
+
+      if options[:force]
+        update_skater_detail(skater.isu_number)
+      else
+        cached_skater = cached_skaters.select {|d| d["isu_number"] == skater.isu_number}.first
+        if cached_skater.blank?
+          update_skater_detail(skater.isu_number)
+        else
+          cached_skater["bio_updated_at"] = cached_skater["bio_updated_at"].in_time_zone
+          skater.attributes = cached_skater.except(:id)
+          skater.save!
+        end
+      end
+      hash = skater.attributes
+      hash["bio_updated_at"] = skater.bio_updated_at.to_s
+      hash
+    end.compact
+
+    ## store to cache
+    File.open("cache/skaters.yml", "w") do |f|
+      f.puts skaters.to_yaml
     end
   end
 
@@ -48,6 +76,7 @@ class SkaterUpdater < Updater
                :coach, :practice_low_season, :practice_high_season, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))
       skater.update(category_type: details_hash[:category_type].to_category_type)
+      skater
     end
-  end
+  end  ## ensure to return skater object
 end ## class
