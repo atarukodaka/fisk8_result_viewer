@@ -1,6 +1,17 @@
 class Skater < ApplicationRecord
   alias_attribute :skater_name, :name
 
+  class << self
+    def find_or_create_by_name_or_isu_number(name:, isu_number:)
+      corrected_name = SkaterNameCorrection.correct(name)
+      skater = Skater.find_by(isu_number: isu_number) if isu_number.present?
+      skater || Skater.find_or_create_by(name: corrected_name) do |sk|
+        sk.isu_number = isu_number
+        yield(sk) if block_given?
+      end
+    end
+  end
+
   ## relations
   has_many :category_results, dependent: :nullify
   # belongs_to :category   ## reference
@@ -19,4 +30,5 @@ class Skater < ApplicationRecord
 
   ## virtual methods
   delegate :category_type_name, to: :category_type, allow_nil: true
+
 end

@@ -9,6 +9,7 @@ class SkatersController < IndexController
                :short_ranking, :short_tss, :short_tes, :short_pcs, :short_deductions,
                :free_ranking, :free_tss, :free_tes, :free_pcs, :free_deductions,]
     records = skater.category_results.recent.includes(:competition, :short, :free, :category)
+    #records = skater.category_results.recent.includes(:competition, :category)
     AjaxDatatables::Datatable.new(self).records(records).columns(columns).default_orders([[:date, :desc]])
   end
 

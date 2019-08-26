@@ -103,10 +103,9 @@ sudo -u postgres createdb fisk8viewer -O fisk8viewer
 
 export DATABASE_PASSWORD=****
 export DATABASE_HOST=localhost
-export RAILS_ENV=production
-bundle exec rake db:reset
-bundle exec rake update:skaters
-bundle exec rake update:competitions
+RAILS_ENV=production bundle exec rake db:reset
+RAILS_ENV=production bundle exec rake update:skaters
+RAILS_ENV=production bundle exec rake update:competitions
 
 ```
 ### heroku

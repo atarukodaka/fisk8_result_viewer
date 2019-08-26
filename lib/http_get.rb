@@ -18,7 +18,9 @@ module HttpGet
     if encoding.nil?
       det = CharDet.detect(body)
       #debug("* charset detected: #{det['encoding']}")
-      body = body.encode('UTF-8', det["encoding"])
+      encoding = det["encoding"]
+      encoding = "iso8859-1" if encoding == "TIS-620"  ## TODO: 9088 detected as TIS-620 somehow
+      body = body.encode('UTF-8', encoding)
     end
     Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
   end

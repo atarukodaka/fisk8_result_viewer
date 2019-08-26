@@ -50,7 +50,7 @@ class SkaterParser < Parser
     {
       nation:        'person_nationLabel',
       name:          'person_cnameLabel',
-      category_type:      'CategoryLabel',
+      category_type: 'CategoryLabel',
       birthday:      'person_dobLabel',
       height:        'person_heightLabel',
       hometown:      'person_htometownLabel',
@@ -59,6 +59,9 @@ class SkaterParser < Parser
 
       coach:         'person_media_information_coachLabel',
       choreographer: 'person_media_information_choreographerLabel',
+      practice_low_season:  'person_media_information_practice_on_ice_low_seasonLabel',
+      practice_high_season: 'person_media_information_on_ice_high_seasonLabel',
+
     }.each do |key, elem_id|
       data[key] = page.search("#FormView1_#{elem_id}").text.presence ||
                   page.search("#FormView2_#{elem_id}").text

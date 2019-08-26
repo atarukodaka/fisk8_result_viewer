@@ -1,5 +1,12 @@
 namespace :analysis do
 
+  task practice: :environment do
+    Skater.all.each do |skater|
+      next if skater.practice_low_season.blank?
+      puts [:name, :isu_number, :nation, :practice_low_season, :practice_high_season].map {|d| skater[d]}.push(skater.category_type.name).join(',')
+    end
+  end
+
   task tech_nation: :environment do
     skater = Skater.find_by(name: 'Yuzuru HANYU')
     #skater = Skater.find_by(name: 'Shoma UNO')

@@ -15,7 +15,8 @@ namespace :update do
   desc 'update all skaters detail'
   task skaters_detail: :environment do
     verbose = ENV['verbose'].to_i.nonzero?
-    SkaterUpdater.new(verbose: verbose).update_skaters_detail
+    options = { active_only: ENV['active_only'].to_i.nonzero? }
+    SkaterUpdater.new(verbose: verbose).update_skaters_detail(options)
   end
   ################
   def options_from_env
