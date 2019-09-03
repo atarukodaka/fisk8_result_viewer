@@ -22,10 +22,6 @@ class SkaterUpdater < Updater
           end
         end
       end # transaction
-
-#      File.open("config/skaters.yml", "w") do |f|
-#        f.puts data.to_yaml
-#      end
     end
   end
 
@@ -33,35 +29,9 @@ class SkaterUpdater < Updater
   # skater detail
   def update_skaters_detail(options = {})
 
-    cache_filename = "cache/skaters.yml"
-    cached_skaters = begin
-      YAML.load_file(cache_filename)
-    rescue Errno::ENOENT
-      []
-    end
-    skaters = Skater.find_each.reject { |sk| sk.isu_number.blank? }.map do |skater|
+    Skater.find_each.reject { |sk| sk.isu_number.blank? }.map do |skater|
       next if options[:active_only] && skater.category_results.count == 0
-
-      if options[:force]
-        update_skater_detail(skater.isu_number)
-      else
-        cached_skater = cached_skaters.select {|d| d["isu_number"] == skater.isu_number}.first
-        if cached_skater.blank?
-          update_skater_detail(skater.isu_number)
-        else
-          cached_skater["bio_updated_at"] = cached_skater["bio_updated_at"].in_time_zone
-          skater.attributes = cached_skater.except(:id)
-          skater.save!
-        end
-      end
-      hash = skater.attributes
-      hash["bio_updated_at"] = skater.bio_updated_at.to_s
-      hash
-    end.compact
-
-    ## store to cache
-    File.open("cache/skaters.yml", "w") do |f|
-      f.puts skaters.to_yaml
+      update_skater_detail(skater.isu_number)
     end
   end
 
