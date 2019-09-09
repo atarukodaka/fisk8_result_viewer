@@ -32,7 +32,9 @@ LOMB2014: http://www.fisg.it/upload/result/4468/index.html
 NPL2017: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 NPL2016: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
 NPL2015: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-NPL2014: http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+NPL2014:
+  site_url: http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
+  excluding_categories: ['PAIR']
 NPL2013: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 
 ## warsaw cup
@@ -52,6 +54,6 @@ NPL2018: http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
 NBL2018: http://www.deu-event.de/results/Nebelhorn_2018/
 WRS2018: http://www.isuresults.com/results/season1819/warsaw2018/
 
-    
+
 # JO2016:
 #https://www.jsfresults.com/InterNational/2018-2019/japanopen/

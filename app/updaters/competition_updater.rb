@@ -9,22 +9,18 @@ class CompetitionUpdater < Updater
 
     parser = get_parser(options[:parser_type])
     data = parser.parse(site_url, encoding: options[:encoding]) || return
-    start_date = data[:time_schedule].map {|d| d[:starting_time]}.min.to_date
 
-    season = SkateSeason.new(start_date)
+    season = SkateSeason.new(data[:start_date])
     return unless season_to_update?(season, options.slice(:season, :season_from, :season_to))
 
-    categories_to_update = options[:categories] || Category.all.map(&:name)
+    categories_to_update = options[:categories] || Category.all.map(&:name).reject {|d| Array(options[:excluding_categories]).include?(d) }
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.slice(:site_url, :name, :country, :city)
-        comp.start_date = start_date
-        comp.end_date = data[:time_schedule].map {|d| d[:starting_time]}.max.to_date
-        comp.timezone = data[:time_schedule].first[:starting_time].time_zone.name
+        comp.attributes = data.slice(:site_url, :name, :country, :city, :start_date, :end_date, :timezone)
 
         yield comp if block_given?
       end
@@ -39,6 +35,11 @@ class CompetitionUpdater < Updater
       end
 
       ## category result
+      data[:category_results].each do |item|
+        category = Category.find_by(name: item[:category]) || next
+        update_category_result(competition, category, item)
+      end
+=begin
       data[:summary_table].select {|d| d[:type] == :category}.each do |item|
         # next unless categories_to_update.include?(item[:category])
         next if !categories_to_update.include?(item[:category]) || item[:result_url].blank?
@@ -49,8 +50,22 @@ class CompetitionUpdater < Updater
           update_category_result(competition, category, result)
         end
       end
+=end
+      ## officials
+      data[:officials].each do |item|
+        category = Category.find_by(name: item[:category]) || next
+        segment = Segment.find_by(name: item[:segment]) || next
+        update_official(competition, category, segment, item)
+      end
 
-      ## segment results
+      ## segment results (scores)
+      data[:scores].each do |item|
+        category = Category.find_by(name: item[:category]) || next
+        segment = Segment.find_by(name: item[:segment]) || next
+        update_segment_result(competition, category, segment, item)
+        binding.pry
+      end
+=begin
       data[:summary_table].select {|d| d[:type] == :segment}.each do |item|
         next unless categories_to_update.include?(item[:category])
         category = Category.find_by(name: item[:category]) || next
@@ -61,31 +76,31 @@ class CompetitionUpdater < Updater
 
         ## officials
         parser.parse_officials(item[:official_url], category.name, segment.name).each do |official|
-          next if official[:panel_name] == '-'
-
-          panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
-          if panel.nation.blank? &&
-            official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
-            panel.update!(nation: official[:panel_nation])
-          end
-          Official.create!(competition: competition, category: category, segment: segment) do |of|
-            of.attributes = official.slice(:function_type, :function, :number)
-            of.panel = panel
-          end
+          update_official(competition, category, segment, official)
         end
 
-        ## scores
-        parser.parse_score(item[:score_url], category.name, segment.name).each do |item|
-          score = update_score(competition, category, segment, item)
-          score.update(date: date)
+        ## result
+        scores = parser.parse_score(item[:score_url], category.name, segment.name)
+        parser.parse_segment_result(item[:result_url], category.name, segment.name).each do |item|
+          segment_result = update_segment_result(competition, category, segment, item)
+          segment_result.date = date
+
+          score = scores.select {|d| d[:ranking] == item[:ranking] }.first || next
+          ## details
+          score[:elements].each { |d| segment_result.elements.create!(d) }
+          score[:components].each { |d| segment_result.components.create!(d) }
+          segment_result.elements_summary = score[:elements].map {|d| d[:name]}.join('/')
+          segment_result.components_summary = score[:components].map {|d| d[:name]}.join('/')
+
           next if !options[:enable_judge_details] || season < '2016-17'
 
           ## details / deviations
           officials = competition.officials.where(category: category, segment: segment).map {|d| [d.number, d] }.to_h
-          update_judge_details(score, officials: officials)
-          update_deviations(score, officials: officials)
+          update_judge_details(segment_result, officials: officials)
+          update_deviations(segment_result, officials: officials)
         end
       end
+=end
       competition        ## ensure to return competition object
     end ## transaction
   end
@@ -104,7 +119,21 @@ class CompetitionUpdater < Updater
     end
   end
 
-  def update_score(competition, category, segment, item)
+  def update_official(competition, category, segment, official)
+    return if official[:panel_name] == '-'
+
+    panel = Panel.find_or_create_by(name: normalize_person_name(official[:panel_name]))
+    if panel.nation.blank? &&
+      official[:panel_nation].present? && (official[:panel_nation] != 'ISU')
+      panel.update!(nation: official[:panel_nation])
+    end
+    Official.create!(competition: competition, category: category, segment: segment) do |of|
+      of.attributes = official.slice(:function_type, :function, :number)
+      of.panel = panel
+    end
+  end
+
+  def update_segment_result(competition, category, segment, item)
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)
@@ -127,13 +156,6 @@ class CompetitionUpdater < Updater
         cr.update("#{segment.segment_type}_#{key}" => sc[key])
       end
     end
-
-    ## details
-    elements_summary = item[:elements].map { |d| sc.elements.create!(d); d[:name] }.join('/')
-    components_summary = item[:components].map { |d| sc.components.create!(d); d[:value] }.join('/')
-
-    sc.update(elements_summary: elements_summary)
-    sc.update(components_summary: components_summary)
 
     sc  ## ensure to return score object
   end

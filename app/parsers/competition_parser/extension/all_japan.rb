@@ -58,6 +58,15 @@ class CompetitionParser
         end
       end
 
+      class SegmentResultParser < CompetitionParser::SegmentResultParser
+        def columns
+          hash = super
+          hash[:skater_name] = { header_regex: /選手名/ }
+          hash.delete(:isu_number)
+          hash.delete(:skater_nation)
+          hash
+        end
+      end
       class CategoryResultParser < CompetitionParser::CategoryResultParser
         def columns
           hash = super
