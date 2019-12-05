@@ -214,7 +214,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (3.1.1)
-    puma (3.12.1)
+    puma (3.12.2)
     rack (2.0.7)
     rack-dev-mark (0.7.8)
       rack (>= 1.1, < 2.1)
@@ -396,7 +396,7 @@ DEPENDENCIES
   poltergeist
   pry-byebug
   pry-rails
-  puma (~> 3.7)
+  puma (~> 3.12)
   rack-dev-mark
   rack-mini-profiler
   rails (~> 5.2.0)
