@@ -1,8 +1,8 @@
   class CompetitionParser < Parser
-  def parse(site_url, encoding: nil, categories: [])
+  def parse(site_url, encoding: nil, categories: [], season_skipper: nil)
     page = get_url(site_url, encoding: encoding) || return
     city, country = parse_city_country(page)
-    time_schedule =
+    #time_schedule =
     data = {
       name: parse_name(page),
       city: city,
@@ -11,11 +11,13 @@
       time_schedule: parse_time_schedule(page),
       summary_table: parse_summary_table(page, base_url: site_url),
     }
-
     if data[:time_schedule].present?
       data[:start_date] = data[:time_schedule].map {|d| d[:starting_time]}.min.try(:to_date)
       data[:end_date] = data[:time_schedule].map {|d| d[:starting_time]}.max.to_date
       data[:timezone] = data[:time_schedule].first[:starting_time].time_zone.name
+      if season_skipper&.skip?(SkateSeason.new(data[:start_date]))
+        return
+      end
     end
 
     ## category result
@@ -24,18 +26,21 @@
       next if categories.present? && !categories.include?(item[:category])
       debug('===  %s ===' % [ item[:category] ], indent: 2)
 
-      data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))
+      if item[:result_url]   ## wtt doenst have category result
+        data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))
+      end
     end
 
     ## segment result
     data[:scores] = []
+    data[:segment_results] = []
     data[:officials] = []
     data[:summary_table].select {|d| d[:type] == :segment}.each do |item|
       next if categories.present? && !categories.include?(item[:category])
       #parse_segment_result(item[:result_url], item[:category], item[:segment])
       #scores = parse_score(item[:score_url], item[:category], item[:segment])
       #segment_results = parse_segment_result(item[:score_url], item[:category], item[:segment]))
-      data[:segment_results].push(*parse_segment_result(item[:score_url], item[:category], item[:segment]))
+      data[:segment_results].push(*parse_segment_result(item[:result_url], item[:category], item[:segment]))
       data[:scores].push(*parse_score(item[:score_url], item[:category], item[:segment]))
       data[:officials].push(*parse_officials(item[:official_url], item[:category], item[:segment]))
     end

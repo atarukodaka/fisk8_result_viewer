@@ -38,7 +38,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { updater.update_competition(url, categories: [], parser_type: :wtt2017) }
+      subject { updater.update_competition(url, categories: ['MEN'], parser_type: :wtt2017) }
       its(:site_url) { is_expected.to eq(url) }
     end
 

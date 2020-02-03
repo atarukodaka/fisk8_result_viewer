@@ -1,3 +1,20 @@
+class SeasonSkipper
+  include DebugPrint
+
+  def initialize(specific_season, from, to)
+    @from = specific_season || from
+    @to = specific_season || to
+  end
+  def skip?(season)
+    unless season.between?(@from, @to)
+      debug('skipping...season %s out of range [%s, %s]' % [@season, @from, @to], indent: 3)
+      true
+    else
+      false
+    end
+  end
+end
+
 class CompetitionUpdater < Updater
   include NormalizePersonName
   using StringToModel
@@ -7,14 +24,13 @@ class CompetitionUpdater < Updater
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
-    parser = get_parser(options[:parser_type])
-    data = parser.parse(site_url, encoding: options[:encoding]) || return
-
-    season = SkateSeason.new(data[:start_date])
-    return unless season_to_update?(season, options.slice(:season, :season_from, :season_to))
-
     categories_to_update = options[:categories] || Category.all.map(&:name).reject {|d| Array(options[:excluding_categories]).include?(d) }
 
+    # return unless season_to_update?(season, options.slice(:season, :season_from, :season_to))
+    parser = get_parser(options[:parser_type])
+    data = parser.parse(site_url, encoding: options[:encoding], categories: categories_to_update, season_skipper: SeasonSkipper.new(options[:season], options[:season_from], options[:season_to])) || return
+
+    season = SkateSeason.new(data[:start_date])
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
@@ -58,13 +74,38 @@ class CompetitionUpdater < Updater
         update_official(competition, category, segment, item)
       end
 
-      ## segment results (scores)
-      data[:scores].each do |item|
+      ## segment results
+      #   get skater and points details from segment results table
+      #   get elements, components details from score pdf sheets
+      data[:segment_results].each do |item|
+        #binding.pry
         category = Category.find_by(name: item[:category]) || next
         segment = Segment.find_by(name: item[:segment]) || next
-        update_segment_result(competition, category, segment, item)
-        binding.pry
+        segment_result = update_segment_result(competition, category, segment, item)
+        segment_result.date = data[:time_schedule].select {|d| d[:category] == category.name && d[:segment] == segment.name }.first.try(:[], :starting_time)
+
+        score = data[:scores].select {|d| d[:ranking] == item[:ranking] && d[:category] == item[:category] && d[:segment] == item[:segment] }.first || next
+
+        ## check if segment results data matches score data
+        [:skater_nation, :ranking, :tss, :tes, :pcs, :deduction, :category, :segment].each do |key|
+          if item[key] != score[key]
+            debug("invalid data for key '#{key}': '#{item[key]}' doesnt match '#{score[key]}'")
+          end
+        end
+        score[:elements].each { |d| segment_result.elements.create!(d) }
+        score[:components].each { |d| segment_result.components.create!(d) }
+
+        segment_result.elements_summary = score[:elements].map {|d| d[:name]}.join('/')
+        segment_result.components_summary = score[:components].map {|d| d[:value]}.join('/')
+        segment_result.save!
+        next if !options[:enable_judge_details] || season < '2016-17'
+
+        ## details / deviations
+        officials = competition.officials.where(category: category, segment: segment).map {|d| [d.number, d] }.to_h
+        update_judge_details(segment_result, officials: officials)
+        update_deviations(segment_result, officials: officials)
       end
+
 =begin
       data[:summary_table].select {|d| d[:type] == :segment}.each do |item|
         next unless categories_to_update.include?(item[:category])
@@ -137,6 +178,7 @@ class CompetitionUpdater < Updater
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)
+      #binding.pry
       score.category = category
       score.segment = segment
 
@@ -148,6 +190,7 @@ class CompetitionUpdater < Updater
       end
 
       yield score if block_given?
+      #binding.pry
       debug(score.summary)
     end
     if cr

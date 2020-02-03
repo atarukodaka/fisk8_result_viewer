@@ -26,6 +26,8 @@ class CompetitionParser
       headers = get_headers(rows[0])
       ##
       rows[1..-1].map do |row|
+        #binding.pry #if self.class == CompetitionParser::SegmentResultParser
+        next if row.attributes["style"].try(:value) =~ /display:\s*none/
         elems = row.xpath('td')
         next if elems.size == 1
 
@@ -40,6 +42,7 @@ class CompetitionParser
             end
           end
           data[key] = (callback = hash[:callback]) ? callback.call(elem) : elem.text.squish
+          # binding.pry if self.class == CompetitionParser::SegmentResultParser
         end
 
         next if invalid_skater_name?(data[:skater_name])

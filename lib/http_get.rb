@@ -15,13 +15,22 @@ module HttpGet
     nil
   else
     #Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
-    if encoding.nil?
-      det = CharDet.detect(body)
-      debug("* charset detected: #{det['encoding']}")
-      encoding = det["encoding"] || 'UTF-8'
-      encoding = "iso8859-1" if encoding == "TIS-620"  ## TODO: 9088 detected as TIS-620 somehow
-      body = body.encode('UTF-8', encoding)
+
+    det = CharDet.detect(body)
+    #debug("* charset detected: #{det['encoding']}")
+    encoding = det["encoding"]
+
+    [det["encoding"], 'UTF-8', 'ISO8859-2'].each do |e|
+      #encoding = "iso8859-1" if encoding == "TIS-620"  ## TODO: 9088 detected as TIS-620 somehow
+      begin
+        #debug(" try encode with #{e}")
+        body = body.encode('UTF-8', e)
+        elem = Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
+      rescue Encoding::UndefinedConversionError, ArgumentError
+        debug("  ! encoding failed with #{e}")
+      else
+        return elem
+      end
     end
-    Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
   end
 end

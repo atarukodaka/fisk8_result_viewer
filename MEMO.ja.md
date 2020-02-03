@@ -129,3 +129,4 @@ heroku restart
 - http://www.pfsa.com.pl/results/1314/WC2013/ : Mairya1 BAKUSHEVA と Mariya と以下同文
 - http://www.isuresults.com/results/season1617/gpfra2016/SEG007.HTM がまだLIVE
 - http://www.isuresults.com/results/season1718/gpchn2017/SEG003.HTM がまだLIVE
+- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/index.htm PAIRエントリーないのにリザルトページはある（だけどテーブルは無し）
