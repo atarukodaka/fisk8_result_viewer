@@ -1,6 +1,5 @@
 
 
-# youtube settings
 - youtube_width = 640
 - youtube_height = 360
 
@@ -21,7 +20,7 @@
     - if api_key.blank?
       div set ENV['YOUTUBE_API_KEY'] to search youtube videos.
     - elsif video = parse_youtube(query, api_key: api_key)
-        iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=#{youtube_width} height=#{youtube_height} allowfullscreen=true
+        iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width="#{youtube_width}" height="#{youtube_height}" allowfullscreen=true
         ul
           li= "query: #{query}"
           li= "title: #{video[:title]}"
