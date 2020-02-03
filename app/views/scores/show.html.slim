@@ -1,8 +1,14 @@
+
+
+# youtube settings
+- youtube_width = 640
+- youtube_height = 360
+
+
 - content_for :title do
   | score: #{score.name}
 
 - breadcrumb :score, score
-
 .row
   .col-sm-6
     h2= t(".score_summary", default: "Score Summary")
@@ -15,7 +21,7 @@
     - if api_key.blank?
       div set ENV['YOUTUBE_API_KEY'] to search youtube videos.
     - elsif video = parse_youtube(query, api_key: api_key)
-        iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=640 height=360 allowfullscreen=true
+        iframe id="ytplayer" src="https://www.youtube.com/embed/#{video[:id]}" width=#{youtube_width} height=#{youtube_height} allowfullscreen=true
         ul
           li= "query: #{query}"
           li= "title: #{video[:title]}"
@@ -34,5 +40,3 @@ h2= t(".components", default: "Components")
 
 h2= t("view.score.deductions", default: "Deductions")
 = score.deduction_reasons || 'n/a'
-
-

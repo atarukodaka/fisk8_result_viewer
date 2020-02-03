@@ -1,5 +1,23 @@
 namespace :analysis do
 
+  task goediff: :environment do
+    Score.all.each {|sc|
+      sc.elements.each {|el|
+        puts [sc.competition.season, sc.name, sc.skater.name, el.judges.split(/ /)].flatten.join(',')
+      }
+    }
+  end
+
+  task nhk: :environment do
+    comp = Competition.last
+    seg = Segment.where(segment_type: "free").first
+    Score.where(competition: comp, segment: seg).each do |score|
+      score.elements.each do |elem|
+        puts [score.skater.name, elem.name, "'#{elem.judges}"].join(",")
+      end
+    end
+  end
+
   task practice: :environment do
     Skater.all.each do |skater|
       next if skater.practice_low_season.blank?

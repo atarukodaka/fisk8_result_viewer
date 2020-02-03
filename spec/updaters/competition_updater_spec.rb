@@ -38,7 +38,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { updater.update_competition(url, categories: [], parser_type: :wtt2017) }
+      subject { updater.update_competition(url, categories: ['MEN'], parser_type: :wtt2017) }
       its(:site_url) { is_expected.to eq(url) }
     end
 
@@ -247,8 +247,14 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       its(:site_url) { is_expected.to eq(url) }
     end
   end
+  describe 'excluding_categories' do
+    let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
+    let(:competition) { updater.update_competition(url, excluding_categories: ['PAIRS']) }
+    it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
+  end
   ################
   describe 'network errors' do
+=begin
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'rescue not found on nepela2014/pairs and count' do
       let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
@@ -256,7 +262,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
       # expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
-
+=end
     describe 'rescue socket error and return value' do
       let(:url) { 'http://xxxxxzzzzxxx.com/qqqq.pdf' }
       subject { updater.update_competition(url, categories: ['MEN']) }
