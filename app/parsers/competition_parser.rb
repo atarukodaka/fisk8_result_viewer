@@ -1,5 +1,5 @@
   class CompetitionParser < Parser
-  def parse(site_url, encoding: nil, categories: [], season_skipper: nil)
+  def parse(site_url, encoding: nil, season_skipper: nil, category_skipper: nil)
     page = get_url(site_url, encoding: encoding) || return
     city, country = parse_city_country(page)
     #time_schedule =
@@ -15,15 +15,14 @@
       data[:start_date] = data[:time_schedule].map {|d| d[:starting_time]}.min.try(:to_date)
       data[:end_date] = data[:time_schedule].map {|d| d[:starting_time]}.max.to_date
       data[:timezone] = data[:time_schedule].first[:starting_time].time_zone.name
-      if season_skipper&.skip?(SkateSeason.new(data[:start_date]))
-        return
-      end
+      return if season_skipper&.skip?(data[:start_date])
     end
 
     ## category result
     data[:category_results] = []
     data[:summary_table].select {|d| d[:type] == :category}.each do |item|
-      next if categories.present? && !categories.include?(item[:category])
+      #next if categories.present? && !categories.include?(item[:category])
+      next if category_skipper.skip?(item[:category])
       debug('===  %s ===' % [ item[:category] ], indent: 2)
 
       if item[:result_url]   ## wtt doenst have category result
@@ -31,12 +30,12 @@
       end
     end
 
-    ## segment result
     data[:scores] = []
     data[:segment_results] = []
     data[:officials] = []
     data[:summary_table].select {|d| d[:type] == :segment}.each do |item|
-      next if categories.present? && !categories.include?(item[:category])
+      #next if categories.present? && !categories.include?(item[:category])
+      next if category_skipper.skip?(item[:category])
       #parse_segment_result(item[:result_url], item[:category], item[:segment])
       #scores = parse_score(item[:score_url], item[:category], item[:segment])
       #segment_results = parse_segment_result(item[:score_url], item[:category], item[:segment]))
