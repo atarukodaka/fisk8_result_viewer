@@ -55,7 +55,7 @@ class SkaterParser < Parser
   end
 
   def parse_skater_details_flexcel_6_19(page, isu_number)
-    #    FlexCel 6.19.5.0
+    #    FlexCel 6.19.5.0; format have been changed at feb2020
     data = {
       isu_number: isu_number,
       name: page.xpath("//table[1]/tr[4]/td[3]").text,
@@ -80,6 +80,7 @@ class SkaterParser < Parser
         data[key] = tr.xpath("td[2]").text
       end
     end
+    data[:club] = data[:club].split(/ *\/ */).last if data[:club]
     data
   end
   def parse_skater_details_ver1(page, isu_number)

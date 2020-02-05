@@ -1,12 +1,13 @@
 language: ruby
+os: linux
 
 rvm:
   - 2.4.4
   - 2.5.1
   # - ruby-head
 
-matrix:
-  allow_failtures:
+jobs:
+  allow_failures:
     - rvm: ruby-head
 
 install: bundle install --deployment
@@ -47,8 +48,8 @@ addons:
   #chrome: stable
 
 before_install:
-  - sudo pip install codecov
+  - pip install codecov
   - gem update --system
-  
+
 after_success:
   - codecov

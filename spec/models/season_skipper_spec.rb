@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe SeasonSkipper do
   describe 'blank' do
     let (:skipper) { SeasonSkipper.new(nil) }
-    it { expect(skipper.skip?('2015/1/1')).to be false }
+    it { expect(skipper.skip?('2015')).to be false }
   end
 
   describe 'just' do

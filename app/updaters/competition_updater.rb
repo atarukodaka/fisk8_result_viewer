@@ -1,15 +1,3 @@
-class CategorySkipper
-  def initialize(categories, excluding: nil)
-    excluding_categories ||= []
-    @categories_to_update = categories || Category.all.map(&:name).reject {|d| Array(excluding).include?(d) }
-  end
-
-  def skip?(category)
-    !@categories_to_update.include?(category)
-  end
-end
-
-
 class CompetitionUpdater < Updater
   include NormalizePersonName
   using StringToModel
@@ -19,8 +7,6 @@ class CompetitionUpdater < Updater
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
-    #categories_to_update = options[:categories] || Category.all.map(&:name).reject {|d| Array(options[:excluding_categories]).include?(d) }
-
     parser = get_parser(options[:parser_type])
 
     skippers = {
@@ -29,8 +15,6 @@ class CompetitionUpdater < Updater
     }
 
     data = parser.parse(site_url, encoding: options[:encoding], season_skipper: skippers[:season], category_skipper: skippers[:category]) || return
-
-#    data = parser.parse(site_url, encoding: options[:encoding], categories: categories_to_update, season_skipper: SeasonSkipper.new(options[:season], options[:season_from], options[:season_to])) || return
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
@@ -44,8 +28,6 @@ class CompetitionUpdater < Updater
 
       ## time schedule
       data[:time_schedule].each do |item|
-        #next unless categories_to_update.include?(item[:category])
-        #next if skippers[:category].skip?(item[:category])
         category = item[:category].to_category || next
         segment = item[:segment].to_segment || next
         competition.time_schedules.create!(category: category, segment: segment,
@@ -104,7 +86,6 @@ class CompetitionUpdater < Updater
   def update_category_result(competition, category, item)
     competition.category_results.create! do |category_result|
       category_result.update_common_attributes(item)
-      #category_result.skater = find_or_create_skater(item.slice(:skater_name, :isu_number, #:skater_nation, :category))
       category_result.skater = Skater.find_or_create_by_name_or_isu_number(name: item[:skater_name], isu_number: item[:isu_number]) do |sk|
         sk.nation = item[:skater_nation]
         sk.category_type = category.category_type
@@ -210,16 +191,4 @@ class CompetitionUpdater < Updater
       CompetitionParser
     end.new(verbose: verbose)
   end
-=begin
-  def season_to_update?(this_season, season_options)
-    season = season_options[:season]
-    from = (season) ? season : season_options[:season_from]
-    to = (season) ? season : season_options[:season_to]
-
-    return true if this_season.between?(from, to)
-
-    debug('skipping...season %s out of range [%s, %s]' % [this_season, from, to], indent: 3)
-    false
-  end
-=end
 end
