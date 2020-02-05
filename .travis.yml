@@ -48,7 +48,7 @@ addons:
   #chrome: stable
 
 before_install:
-  - pip install codecov
+  - sudo pip install codecov
   - gem update --system
 
 after_success:
