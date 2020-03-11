@@ -1,5 +1,11 @@
 namespace :analysis do
 
+  task percentile: :environment do
+    Component.all.each do |comp|
+      puts comp.score.name + "," + comp.judges.gsub(/ /, ',')
+    end
+  end
+
   task goediff: :environment do
     Score.all.each {|sc|
       sc.elements.each {|el|

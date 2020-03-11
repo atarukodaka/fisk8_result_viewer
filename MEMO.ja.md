@@ -1,3 +1,12 @@
+
+## TODO
+
+- parser は　dev のときだけ
+- deviatino メニューは flag on のときだけ
+- competitions.conf は年ごと分ける？
+- timeschedules を conf に
+- season_skipper はやめるかな
+
 ## DB設計
 - Skater has many of Competition
 - Competition has many of CategoryResults and Scores
