@@ -1,0 +1,20 @@
+isu:
+  gp: "^GP[A-Z][A-Z][A-Z][0-9]+|^GPF[0-9]+"
+  owg: "^OWG"
+  wc: "^WC[0-9]"
+  fcc: "^FCC[0-9]"
+  ec: "^EC[0-9]"
+  wtt: "^WTT[0-9]"
+  jwc: "^JWC[0-9]"
+  jgp: "^JGP[0-9]"
+challenger:
+  finlandia: "^FIN[0-9]"
+  warsaw: "WRS[0-9]"
+  nebelhorn: "^NBL[0-9]"
+  lombardia: "^LOMB[0-9]"
+  nepela: "^NPL[0-9]"
+  asianopen: "^AO[0-9]"
+other:
+  japanopen: "^JO[0-9]"
+local:
+  alljapan: "^ALLJAPAN[0-9]"  
