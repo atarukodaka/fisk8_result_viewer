@@ -2,30 +2,22 @@ class CompetitionUpdater < Updater
   include NormalizePersonName
   using StringToModel
 
-  def normalize
-      matched_item = nil
-      CompetitionNormalize.all.each do |item|    ## rubocop:disable Rails/FindEach
-      if self.short_name.to_s.match?(item.regex)
-          matched_item = item
-          break
-        end
+  def normalize_competition_name(data)
+    CompetitionNormalize.all.each do |item|
+      if data[:competition_type] == item.competition_type
+        hash = { year: data[:start_date].year, country: data[:country], city: data[:city] }
+
+        data[:name]  = item.name % hash
       end
-      matched_item ||= CompetitionNormalize.new(short_name: self.name.to_s.gsub(/\s+/, '_'))
-
-      hash = { year: self.start_date.year, country: self.country, city: self.city }
-      self.competition_class ||= matched_item.competition_class.to_sym
-      self.competition_type ||= matched_item.competition_type.to_sym
-      self.name = matched_item.name % hash if matched_item.name.to_s.present?
-      # self.short_name ||= matched_item.short_name.to_s % hash || self.name
-      self.season ||= SkateSeason.new(self.start_date).season
-
-      self           ## ensure to return self
+    end
   end
 
   def update_competition(site_url, options = {})
     debug('*' * 100)
     debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
+
+    # CompetitionClass.load_file
 
     parser = get_parser(options[:parser_type])
     data = parser.parse_summary(site_url, encoding: options[:encoding]) || return
@@ -34,15 +26,23 @@ class CompetitionUpdater < Updater
     season = SkateSeason.new(data[:start_date])
     return if season_skipper.skip?(season)
 
+    CompetitionClass.all.each do |item|
+      if options[:attributes].try(:[], :short_name).try(:match?, item.regex)
+        data[:competition_class] = item.competition_class
+        data[:competition_type] = item.competition_type
+      end
+    end
+
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city).compact
+        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
         comp.season = season
         yield comp if block_given?
       end
+
 =begin
       ## time schedule
       data[:time_schedule].each do |item|
@@ -52,7 +52,6 @@ class CompetitionUpdater < Updater
           starting_time: item[:starting_time])
       end
 =end
-
       ## category
       data[:summary_table].map {|d| d[:category] }.uniq.each do |cat|
         next if category_skipper.skip?(cat)
@@ -65,7 +64,6 @@ class CompetitionUpdater < Updater
             update_category_result(competition, category, item)
           end
         }
-
         ## segments
         data[:summary_table].select {|d| d[:type] == :segment && d[:category] == cat}.each do |d|
           segment = Segment.find_by(name: d[:segment]) || next
