@@ -1,7 +1,7 @@
 
 ## TODO
 
-- parser は　dev のときだけ
+- parser は　dev のときだけe
 - deviatino メニューは flag on のときだけ
 - competitions.conf は年ごと分ける？
 - timeschedules を conf に

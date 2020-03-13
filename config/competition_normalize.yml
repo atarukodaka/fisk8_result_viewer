@@ -15,7 +15,7 @@
   regex: "^WC[0-9]"
   competition_class: isu
   competition_type: wc
-  name: "ISU World Championshops %{year}"
+  name: "ISU World Championships %{year}"
 -
   regex: "^FCC[0-9]"
   competition_class: isu
