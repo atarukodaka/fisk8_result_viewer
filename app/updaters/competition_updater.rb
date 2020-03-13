@@ -2,12 +2,15 @@ class CompetitionUpdater < Updater
   include NormalizePersonName
   using StringToModel
 
-  def normalize_competition_name(data)
+  def normalize(data)
     CompetitionNormalize.all.each do |item|
-      if data[:competition_type] == item.competition_type
-        hash = { year: data[:start_date].year, country: data[:country], city: data[:city] }
-
-        data[:name]  = item.name % hash
+      if data[:short_name].try(:match?, item.regex)
+        data[:competition_class] = item.competition_class
+        data[:competition_type] = item.competition_type
+        if item.name
+          hash = { year: data[:start_date].year, country: data[:country], city: data[:city] }
+          data[:name] = item.name % hash
+        end
       end
     end
   end
@@ -26,19 +29,16 @@ class CompetitionUpdater < Updater
     season = SkateSeason.new(data[:start_date])
     return if season_skipper.skip?(season)
 
-    CompetitionClass.all.each do |item|
-      if options[:attributes].try(:[], :short_name).try(:match?, item.regex)
-        data[:competition_class] = item.competition_class
-        data[:competition_type] = item.competition_type
-      end
-    end
+    data.merge!(options[:attributes] || {})
+    normalize(data)
 
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
+#        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
+        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
         comp.season = season
         yield comp if block_given?
       end

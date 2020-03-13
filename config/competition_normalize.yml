@@ -1,12 +1,42 @@
-owg: "Olympic Winter Games %{city} %{year}"
-wc: "ISU World Championships %{year}"
-fcc: ISU Four Continents Championships %{year}
-ec: ISU European Championships %{year}
-wtt: ISU World Team Trophy %{year}
-
-fin: Finlandia Trophy %{year}
-warsaw: Warsaw Cup %{year}
-nebelhorn: Nebelhorn Trophy %{year}
-lombardia: Lombardia Trophy %{year}
-nepela: Ondrej Nepela Trophy %{year}
-asianopen: Asian Open %{year}
+isu:
+  gp: "^GP[A-Z][A-Z][A-Z][0-9]+|^GPF[0-9]+"
+  owg:
+    regex: "^OWG"
+    name: "Olympic Winter Games %{city} %{year}"
+  wc:
+    regex: "^WC[0-9]"
+    name: "ISU World Championships %{year}"
+  fcc:
+    regex: "^FCC[0-9]"
+    name: "ISU Four Continents Championships XXX %{year}"
+  ec:
+    regex: "^EC[0-9]"
+    name: "ISU European Championships %{year}"
+  wtt:
+    regex: "^WTT[0-9]"
+    name: "ISU World Team Trophy %{year}"
+  jwc: "^JWC[0-9]"
+  jgp: "^JGP[0-9]"
+challenger:
+  finlandia:
+    regex: "^FIN[0-9]"
+    name: Finlandia Trophy %{year}
+  warsaw:
+    regex: "WRS[0-9]"
+    name: Warsaw Cup %{year}
+  nebelhorn:
+    regex: "^NBL[0-9]"
+    name: Nebelhorn Trophy %{year}
+  lombardia:
+    regex: "^LOMB[0-9]"
+    name: Lombardia Trophy %{year}
+  nepela:
+    regex: "^NPL[0-9]"
+    name: Ondrej Nepela Trophy %{year}
+  asianopen:
+    regex: "^AO[0-9]"
+    name: Asian Open %{year}
+other:
+  japanopen: "^JO[0-9]"
+local:
+  alljapan: "^ALLJAPAN[0-9]"

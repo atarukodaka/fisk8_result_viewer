@@ -2,18 +2,30 @@ class CompetitionNormalize < ActiveYaml::Base
   set_root_path Rails.root.join('config')
   set_filename 'competition_normalize'
 
-  #field :regex, default: ''
-  #field :competition_class, default: :unknown
-  field :competition_type, default: :unknown
-#  field :short_name
+  field :regex, default: ''
   field :name
+  field :competition_class, default: :unknown
+  field :competition_type, default: :unknown
 
   class << self
     def load_file
-      raw_data.map do |k, v|
-        { competition_type: k, name: v}
-      end
+      raw_data.map do |competition_class, v|
+        v.map do |competition_type, value|
+          hash = {
+            competition_class: competition_class,
+            competition_type: competition_type,
+          }
+          case value
+          when String
+            hash[:regex] = value
+          when Hash
+            hash.merge!(value.symbolize_keys)
+          else
+            raise
+          end
+          hash
+        end
+      end.flatten
     end
   end
-
 end
