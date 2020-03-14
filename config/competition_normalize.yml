@@ -1,83 +1,42 @@
--
-  regex: "^GP[A-Z][A-Z][A-Z][0-9]"
-  competition_class: isu
-  competition_type: gp
--
-  regex: "^GPF[0-9]"
-  competition_class: isu
-  competition_type: gp
--
-  regex: "^OWG"
-  competition_class: isu
-  competition_type: owg
-  name: "Olympic Winter Games %{city} %{year}"
--
-  regex: "^WC[0-9]"
-  competition_class: isu
-  competition_type: wc
-  name: "ISU World Championshops %{year}"
--
-  regex: "^FCC[0-9]"
-  competition_class: isu
-  competition_type: fcc
-  name: ISU Four Continents Championships %{year}
--
-  regex: "^EC[0-9]"
-  competition_class: isu
-  competition_type: ec
-  name: ISU European Championships %{year}
--
-  regex: "^WTT[0-9]"
-  competition_class: isu
-  competition_type: wtt
-  short_name: WTT%{year}
-  name: ISU World Team Trophy %{year}
--
-  regex: "^JWC[0-9]"
-  competition_class: isu
-  competition_type: jwc
--
-  regex: "^JGP[0-9]"
-  competition_class: isu
-  competition_type: jgp
-  name:
-
-############
--
-  regex: "^FIN[0-9]"
-  competition_class: challenger
-  competition_type: finlandia
-  name: Finlandia Trophy %{year}
--
-  regex: "^WRS[0-9]"
-  competition_class: challenger
-  competition_type: warsaw
-  name: Warsaw Cup %{year}
--
-  regex: "^NBL[0-9]"
-  competition_class: challenger
-  competition_type: nebelhorn
-  name: Nebelhorn Trophy %{year}
--
-  regex: "^LOMB[0-9]"
-  competition_class: challenger
-  competition_type: lombardia
-  name: Lombardia Trophy %{year}
--
-  regex: "^NPL[0-9]"
-  competition_class: challenger
-  competition_type: nepela
-  name: Ondrej Nepela Trophy %{year}
--
-  regex: "^AO[0-9]"
-  competition_class: challenger
-  competition_type: asianopen
-  name: Asian Open %{year}
--
-  regex: "^ALLJAPAN[0-9]"
-  competition_class: local
-  competition_type: alljapan
--
-  regex: "^JO[0-9]"
-  competition_class: isu
-  competition_type: japanopen
+isu:
+  gp: "^GP[A-Z][A-Z][A-Z][0-9]+|^GPF[0-9]+"
+  owg:
+    regex: "^OWG"
+    name: "Olympic Winter Games %{city} %{year}"
+  wc:
+    regex: "^WC[0-9]"
+    name: "ISU World Championships %{year}"
+  fcc:
+    regex: "^FCC[0-9]"
+    name: "ISU Four Continents Championships XXX %{year}"
+  ec:
+    regex: "^EC[0-9]"
+    name: "ISU European Championships %{year}"
+  wtt:
+    regex: "^WTT[0-9]"
+    name: "ISU World Team Trophy %{year}"
+  jwc: "^JWC[0-9]"
+  jgp: "^JGP[0-9]"
+challenger:
+  finlandia:
+    regex: "^FIN[0-9]"
+    name: Finlandia Trophy %{year}
+  warsaw:
+    regex: "WRS[0-9]"
+    name: Warsaw Cup %{year}
+  nebelhorn:
+    regex: "^NBL[0-9]"
+    name: Nebelhorn Trophy %{year}
+  lombardia:
+    regex: "^LOMB[0-9]"
+    name: Lombardia Trophy %{year}
+  nepela:
+    regex: "^NPL[0-9]"
+    name: Ondrej Nepela Trophy %{year}
+  asianopen:
+    regex: "^AO[0-9]"
+    name: Asian Open %{year}
+other:
+  japanopen: "^JO[0-9]"
+local:
+  alljapan: "^ALLJAPAN[0-9]"

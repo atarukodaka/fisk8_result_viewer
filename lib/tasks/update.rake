@@ -54,14 +54,20 @@ namespace :update do
     end
 
     list.each do |item|
-      options = env_options.dup
-      options.merge!(item.attributes.slice(:parser_type, :encoding))
-      CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options) do |competition|
+      #options = env_options.dup
+      #options.merge!(item.attributes.slice(:parser_type, :encoding))
+      options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
+      options[:attributes] = item.attributes.slice(:short_name, :city, :name, :comment).compact
+      CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options)
+=begin
+       do |competition|
         competition.short_name = item[:short_name]
+        binding.pry
         item.attributes.slice(:city, :name, :comment).each do |key, value|
           competition[key] = value if value.present?
         end
       end
+=end
     end ## each
   end ## task
 end # namespace

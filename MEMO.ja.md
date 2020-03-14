@@ -1,7 +1,8 @@
 
 ## TODO
 
-- parser は　dev のときだけ
+- competition_type -> competition_subclass
+- parser は　dev のときだけe
 - deviatino メニューは flag on のときだけ
 - competitions.conf は年ごと分ける？
 - timeschedules を conf に

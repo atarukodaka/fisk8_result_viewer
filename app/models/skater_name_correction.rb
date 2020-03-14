@@ -5,13 +5,13 @@ class SkaterNameCorrection < ActiveYaml::Base
   field :original_name
   field :corrected_name
 
-  class << self
-    include NormalizePersonName
-    def load_file
-      raw_data.map do |k, v|
-        { original_name: k, corrected_name: v }
+    class << self
+      include NormalizePersonName
+      def load_file
+        raw_data.map do |k, v|
+          { original_name: k, corrected_name: v }
+        end
       end
-    end
 
     def correct(name)
       corrected = self.find_by(original_name: name).try(:corrected_name) || name
