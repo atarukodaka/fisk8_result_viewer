@@ -51,7 +51,7 @@ class CompetitionParser
                    elem[:starting_time].in_time_zone(tz)
                  else
                    Time.strptime(elem[:starting_time], "#{md_format} %H:%M:%S").in_time_zone(tz)
-            end
+                 end
             tm += 2000.years if tm.year < 100 ## for ondrei nepela
             elem[:starting_time] = tm
           rescue ArgumentError

@@ -66,7 +66,7 @@ class CompetitionParser < Parser
     end
 
     data
-end
+  end
 
   ################
   def get_parser(ptype)

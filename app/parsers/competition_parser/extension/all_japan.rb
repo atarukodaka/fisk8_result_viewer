@@ -93,7 +93,7 @@ class CompetitionParser
             :tes
           else
             :skater
-         end
+          end
         end
       end
     end

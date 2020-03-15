@@ -1,4 +1,7 @@
 inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
+#  - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.4
@@ -32,13 +35,11 @@ Lint/RedundantCopEnableDirective:
   Enabled: false
 
 ################
-Metrics/LineLength:
-  Max: 120
-
 Metrics/ClassLength:
   Max: 100
   Exclude:
     - app/updaters/competition_updater.rb       ## TODO
+    - app/parsers/competition_parser.rb       ## TODO
 
 Metrics/BlockLength:
   Max: 35
@@ -54,12 +55,12 @@ Metrics/MethodLength:
 
 ################
 ## Rails
-#Rails/CreateTableWithTimestamps:
-#  Enabled: false
+Rails/CreateTableWithTimestamps:
+  Enabled: false
 
-#Rails/OutputSafety:
-#  Exclude:
-#    - app/datatables/elements_datatable.rb   ## html_safe
+Rails/OutputSafety:
+  Exclude:
+    - app/datatables/elements_datatable.rb   ## html_safe
 
 ################
 ## Style
@@ -135,3 +136,14 @@ Style/TrailingCommaInHashLiteral:
 
 Style/WordArray:
   Exclude: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+# For rubocop < 1.0.0
+Style/HashTransformKeys:
+  Enabled: true
+
+# For rubocop < 1.0.0
+Style/HashTransformValues:
+  Enabled: true
