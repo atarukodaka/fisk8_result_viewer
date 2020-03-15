@@ -16,9 +16,11 @@ class Official < ApplicationRecord
   def competition_name
     competition.name
   end
+
   def category_name
     category.name
   end
+
   def segment_name
     segment.name
   end

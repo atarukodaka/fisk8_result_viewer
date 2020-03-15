@@ -27,7 +27,8 @@ class CompetitionParser
       ##
       rows[1..-1].map do |row|
         #binding.pry #if self.class == CompetitionParser::SegmentResultParser
-        next if row.attributes["style"].try(:value) =~ /display:\s*none/
+        next if row.attributes['style'].try(:value) =~ /display:\s*none/
+
         elems = row.xpath('td')
         next if elems.size == 1
 
@@ -46,6 +47,7 @@ class CompetitionParser
         end
 
         next if invalid_skater_name?(data[:skater_name])
+
         data
       end.compact  ## rows
     end

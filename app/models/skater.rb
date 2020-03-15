@@ -30,5 +30,4 @@ class Skater < ApplicationRecord
 
   ## virtual methods
   delegate :category_type_name, to: :category_type, allow_nil: true
-
 end

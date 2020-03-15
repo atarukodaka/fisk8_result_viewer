@@ -13,7 +13,7 @@ AllCops:
 Bundler/OrderedGems:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
 Layout/ExtraSpacing:
@@ -21,14 +21,14 @@ Layout/ExtraSpacing:
 
 Layout/LeadingCommentSpace:
   Enabled: false
-  
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
-Lint/UnneededCopEnableDirective:
+Lint/RedundantCopDisableDirective:
   Enabled: false
 
-Lint/UnneededCopDisableDirective:
+Lint/RedundantCopEnableDirective:
   Enabled: false
 
 ################
@@ -39,7 +39,7 @@ Metrics/ClassLength:
   Max: 100
   Exclude:
     - app/updaters/competition_updater.rb       ## TODO
-      
+
 Metrics/BlockLength:
   Max: 35
   Exclude:
@@ -54,12 +54,12 @@ Metrics/MethodLength:
 
 ################
 ## Rails
-Rails/CreateTableWithTimestamps:
-  Enabled: false
+#Rails/CreateTableWithTimestamps:
+#  Enabled: false
 
-Rails/OutputSafety:
-  Exclude:
-    - app/datatables/elements_datatable.rb   ## html_safe
+#Rails/OutputSafety:
+#  Exclude:
+#    - app/datatables/elements_datatable.rb   ## html_safe
 
 ################
 ## Style
@@ -104,7 +104,7 @@ Style/NumericLiterals:     ## 12_345
 
 Style/ParallelAssignment:
   Enabled: false
-  
+
 Style/PerlBackrefs:
   Enabled: false
 
@@ -132,7 +132,6 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   Enabled: false
-  
+
 Style/WordArray:
   Exclude: false
-  

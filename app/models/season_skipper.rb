@@ -5,6 +5,7 @@ class SeasonSkipper
     @from = specific_season || from
     @to = specific_season || to
   end
+
   def skip?(season)
     season = SkateSeason.new(season) unless season.class == SkateSeason
 

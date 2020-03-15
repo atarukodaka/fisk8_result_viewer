@@ -5,7 +5,7 @@ module HttpGet
   include DebugPrint
 
   def get_url(url, encoding: nil)
-    mode = encoding ? ['r', encoding].join(':') : 'r'
+    mode = (encoding) ? ['r', encoding].join(':') : 'r'
     #mode = ['r', encoding.to_s].compact.join(':')
     body = open(url, mode).read   # rubocop:disable Security/Open
   rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => e
@@ -18,9 +18,9 @@ module HttpGet
 
     det = CharDet.detect(body)
     #debug("* charset detected: #{det['encoding']}")
-    encoding = det["encoding"]
+    encoding = det['encoding']
 
-    [det["encoding"], 'UTF-8', 'ISO8859-2'].each do |e|
+    [det['encoding'], 'UTF-8', 'ISO8859-2'].each do |e|
       #encoding = "iso8859-1" if encoding == "TIS-620"  ## TODO: 9088 detected as TIS-620 somehow
       begin
         #debug(" try encode with #{e}")

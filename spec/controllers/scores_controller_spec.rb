@@ -31,6 +31,5 @@ RSpec.describe ScoresController, type: :controller do
       subject { get :show, params: { name: main.name, format: :xml } }
       its(:body) { is_expected.to have_content(main.name) }
     end
-
   end
 end

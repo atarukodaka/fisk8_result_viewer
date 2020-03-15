@@ -26,6 +26,7 @@ class CompetitionParser
 
       data = rows.map do |row|
         next if row.xpath('td').blank?
+
         if (t = row.xpath('td[1]').text.presence)
           dt_str = t
           next
@@ -40,16 +41,16 @@ class CompetitionParser
         }
       end.compact
 
-      [nil, "%d/%m/%Y", "%m/%d/%Y", "%d.%m.%Y", "%m.%d.%Y"].each do |md_format|
+      [nil, '%d/%m/%Y', '%m/%d/%Y', '%d.%m.%Y', '%m.%d.%Y'].each do |md_format|
         #debug("** parse date by #{md_format}")
         invalid_format = false
         tmp_data = data.deep_dup
         tmp_data.each do |elem|
           begin
             tm = if md_format.nil?
-              elem[:starting_time].in_time_zone(tz)
-            else
-              Time.strptime(elem[:starting_time], "#{md_format} %H:%M:%S").in_time_zone(tz)
+                   elem[:starting_time].in_time_zone(tz)
+                 else
+                   Time.strptime(elem[:starting_time], "#{md_format} %H:%M:%S").in_time_zone(tz)
             end
             tm += 2000.years if tm.year < 100 ## for ondrei nepela
             elem[:starting_time] = tm
@@ -61,7 +62,7 @@ class CompetitionParser
         end
 
         ## date range check
-        next if invalid_format or tmp_data.empty?
+        next if invalid_format || tmp_data.empty?
 
         min_date = tmp_data.map { |d| d[:starting_time] }.min.to_date
         max_date = tmp_data.map { |d| d[:starting_time] }.max.to_date

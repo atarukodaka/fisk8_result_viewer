@@ -11,7 +11,7 @@ module FsmlBuilder
         }
         xml.time_schedule {
           competition.time_schedules.includes(:category, :segment).each do |item|
-            xml.starting_time(category: item.category.name, segment: item.segment.name){
+            xml.starting_time(category: item.category.name, segment: item.segment.name) {
               xml.text item.starting_time
             }
           end
@@ -19,7 +19,7 @@ module FsmlBuilder
         xml.results {
           competition.category_results.includes(:category, :skater).each do |result|
             xml.result(result.slice(:ranking, :points, :short_ranking, :free_ranking).merge(category: result.category.name)) {
-              xml.skater(isu_number: result.skater.isu_number, nation: result.skater.nation){
+              xml.skater(isu_number: result.skater.isu_number, nation: result.skater.nation) {
                 xml.text result.skater.name
               }
             }
@@ -41,7 +41,7 @@ module FsmlBuilder
 
               xml.elements {
                 score.elements.each.with_index(1) do |element, i|
-                  xml.element(element.slice(:name, :base_value, :info, :credit).merge(number: i, judge_details: element[:judges]).compact){
+                  xml.element(element.slice(:name, :base_value, :info, :credit).merge(number: i, judge_details: element[:judges]).compact) {
                     xml.text element.value
                   }
                 end
@@ -60,6 +60,7 @@ module FsmlBuilder
     end
     doc
   end
+
   def build_score(score, doc: nil)
     doc ||= Nokogiri::XML::Document.new
 
@@ -77,7 +78,7 @@ module FsmlBuilder
 
         xml.elements {
           score.elements.each.with_index(1) do |element, i|
-            xml.element(element.slice(:name, :base_value, :info, :credit).merge(number: i, judge_details: element[:judges]).compact){
+            xml.element(element.slice(:name, :base_value, :info, :credit).merge(number: i, judge_details: element[:judges]).compact) {
               xml.text element.value
             }
           end
