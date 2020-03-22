@@ -22,31 +22,32 @@ class SkaterUpdater < Updater
           end
         end
       end # transaction
-#      File.open("config/skaters.yml", "w") do |f|
-#        f.puts data.to_yaml
-#      end
     end
   end
 
   ################
   # skater detail
-  def update_skaters_detail
-    Skater.find_each.reject { |sk| sk.isu_number.blank? }.each do |skater|
+  def update_skaters_detail(options = {})
+    Skater.find_each.reject { |sk| sk.isu_number.blank? }.map do |skater|
+      next if options[:active_only] && skater.category_results.count == 0
+
       update_skater_detail(skater.isu_number)
     end
   end
 
   def update_skater_detail(isu_number)
     skater = Skater.find_or_create_by(isu_number: isu_number)
-
+    debug("#{skater.name}[#{skater.isu_number}]...")
     details_hash = parser.parse_skater_details(skater.isu_number)
-    debug("#{skater.name} [#{skater.isu_number}]: %s" %
+
+    debug('   %s' %
           details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,
-               :coach, :choreographer, :bio_updated_at]
+               :coach, :practice_low_season, :practice_high_season, :choreographer, :bio_updated_at]
       skater.update(details_hash.slice(*attrs))
       skater.update(category_type: details_hash[:category_type].to_category_type)
+      skater
     end
-  end
+  end  ## ensure to return skater object
 end ## class

@@ -1,0 +1,1637 @@
+---
+- id: 1
+  isu_number: 7684
+  name: Javier FERNANDEZ
+  nation: ESP
+  category_type_id: 1
+  coach: Brian Orser, Tracy Wilson
+  choreographer: David Wilson
+  birthday: 1991-04-15
+  hobbies: tennis, frontennis, soccer, friends
+  hometown: Madrid
+  height: '173'
+  club: Club Hielo Valdemoro
+  practice_low_season: '13'
+  practice_high_season: '18'
+  bio_updated_at: 2019-05-04 16:00:53 UTC
+- id: 2
+  isu_number: 13646
+  name: Alexander SAMARIN
+  nation: RUS
+  category_type_id: 1
+  coach: Svetlana Sokolovskaia
+  choreographer: Vitali Butikov
+  birthday: 1998-06-15
+  hobbies: movies, music
+  hometown: Moscow
+  height: '178'
+  club: CSKA Moscow
+  practice_low_season: ''
+  practice_high_season: ''
+  bio_updated_at: 2019-08-16 17:05:27 UTC
+- id: 3
+  name: Matteo RIZZO
+  nation: ITA
+  category_type_id: 1
+  isu_number: 13919
+  coach: Franca Bianconi, Valter Rizzo
+  choreographer: Corrado Giordani, Massimo Scali
+  birthday: 1998-09-05
+  hobbies: Formula 1, moto GP, planes, computers
+  hometown: Sesto San Giovanni
+  height: '171'
+  club: G.S. Fiamme Azzurre, Rome
+  practice_low_season: '21'
+  practice_high_season: '21'
+  bio_updated_at: 2019-08-16 17:05:41 UTC
+- id: 4
+  name: Kevin AYMOZ
+  nation: FRA
+  category_type_id: 1
+  isu_number: 14227
+  coach: John Zimmerman, Silvia Fontana
+  choreographer: Silvia Fontana, John Zimmerman
+  birthday: 1997-08-01
+  hobbies: painting, twirling baton, friends, making music, partying
+  hometown: Jarrie
+  height: '160'
+  club: GIMP Grenoble
+  practice_low_season: '24'
+  practice_high_season: '29'
+  bio_updated_at: 2019-08-16 17:05:50 UTC
+- id: 5
+  name: Mikhail KOLYADA
+  nation: RUS
+  category_type_id: 1
+  isu_number: 13562
+  coach: Valentina Chebotareva, Mikhail Semenenok
+  choreographer: Stephane Lambiel (SP), Olga Kliushnichenko (FS)
+  birthday: 1995-02-18
+  hobbies: cars, table tennis, billiards, websurfing
+  hometown: St. Petersburg
+  height: '167'
+  club: Olympic School St. Petersburg
+  practice_low_season: '32'
+  practice_high_season: '28'
+  bio_updated_at: 2019-08-16 17:05:20 UTC
+- id: 6
+  name: Daniel GRASSL
+  nation: ITA
+  category_type_id: 1
+  isu_number: 35262
+  coach: Lorenzo Magri
+  choreographer: Benoit Richaud
+  birthday: 2002-04-04
+  hobbies: tennis, friends, video games, social media
+  hometown: Merano
+  height: '175'
+  club: Young Goose Academy Egna/Neumarkt
+  practice_low_season: '30'
+  practice_high_season: '30'
+  bio_updated_at: 2019-08-16 16:37:21 UTC
+- id: 7
+  name: Michal BREZINA
+  nation: CZE
+  category_type_id: 1
+  isu_number: 7004
+  coach: Rafael and Vera Arutunian, Nadia Kanaeva
+  choreographer: Shae-Lynn Bourne (SP), Nadezhda Kanaeva (FS)
+  birthday: 1990-03-30
+  hobbies: music, hockey, cycling, soccer, design, being with friends
+  hometown: Lakewood USA
+  height: '172'
+  club: VSK Technika Brno
+  practice_low_season: '27'
+  practice_high_season: '26'
+  bio_updated_at: 2019-08-16 17:04:05 UTC
+- id: 8
+  name: Alexander MAJOROV
+  nation: SWE
+  category_type_id: 1
+  isu_number: 7659
+  coach: Alexander Majorov sr
+  choreographer: Irina Majorova, Marica SandstrÃ¶m Lindh
+  birthday: 1991-07-19
+  hobbies: roadbiking, longboard riding, playing the guitar
+  hometown: Lulea
+  height: '168'
+  club: Lulea FSC
+  practice_low_season: '40'
+  practice_high_season: '31'
+  bio_updated_at: 2019-05-04 16:00:51 UTC
+- id: 9
+  name: Alexei BYCHENKO
+  nation: ISR
+  category_type_id: 1
+  isu_number: 7020
+  coach: Galit Chait Moracci, Roman Serov, Nikolai Morozov
+  choreographer: Galit Chait Moracci
+  birthday: 1988-02-05
+  hobbies: partying, music, sports, travelling
+  hometown: Hackensack USA
+  height: '174'
+  club: Israel ISF
+  practice_low_season: '27'
+  practice_high_season: '21'
+  bio_updated_at: 2019-08-16 17:04:09 UTC
+- id: 10
+  name: Morisi KVITELASHVILI
+  nation: GEO
+  category_type_id: 1
+  isu_number: 34232
+  coach: Eteri Tutberidze, Sergei Dudakov
+  choreographer: Daniil Gleikhengauz, Alexei Zhelezniakov
+  birthday: 1995-03-17
+  hobbies: movies, music, reading, computer games
+  hometown: Moscow RUS
+  height: '180'
+  club: Sambo 70 (Khrustalni)
+  practice_low_season: '36 '
+  practice_high_season: '36'
+  bio_updated_at: 2019-08-16 17:06:12 UTC
+- id: 11
+  name: Deniss VASILJEVS
+  nation: LAT
+  category_type_id: 1
+  isu_number: 11354
+  coach: Stephane Lambiel
+  choreographer: Stephane Lambiel, Salome Brunner, Kenta Kojiri
+  birthday: 1999-08-09
+  hobbies: video games, history, drawing, reading, cooking
+  hometown: Champery SUI
+  height: '172'
+  club: Daugavpils SC
+  practice_low_season: '27'
+  practice_high_season: '27'
+  bio_updated_at: 2019-08-16 17:04:39 UTC
+- id: 12
+  name: Adam SIAO HIM FA
+  nation: FRA
+  category_type_id: 1
+  isu_number: 54795
+  coach: Brian Joubert, Cornelia Paquier, Marina Anissina
+  choreographer: Laurie May, Fabian Bourzat
+  birthday: 2001-01-31
+  hobbies: guitar, drums, video games
+  hometown: Poitiers
+  height: '167'
+  club: Brian Joubert Poitiers Glace
+  practice_low_season: '18'
+  practice_high_season: '15'
+  bio_updated_at: 2019-08-16 16:38:00 UTC
+- id: 13
+  name: Daniel SAMOHIN
+  nation: ISR
+  category_type_id: 1
+  isu_number: 34509
+  coach: Igor Samohin
+  choreographer: Irina Samohin, Nikolai Morozov
+  birthday: 1998-03-12
+  hobbies: collecting model cars,  skateboarding, swimming, singing
+  hometown: San Diego USA
+  height: '176'
+  club: Ice Holon Israel
+  practice_low_season: '28'
+  practice_high_season: '25'
+  bio_updated_at: 2019-08-16 17:06:26 UTC
+- id: 14
+  name: Maxim KOVTUN
+  nation: RUS
+  category_type_id: 1
+  isu_number: 12891
+  coach: Elena Buianova, Alexander Uspenski
+  choreographer: Peter Chernyshev
+  birthday: 1995-06-18
+  hobbies: reading, cars, music, dogs
+  hometown: Moscow
+  height: '182'
+  club: CSKA Moscow
+  practice_low_season: '31'
+  practice_high_season: '26'
+  bio_updated_at: 2019-05-04 16:03:26 UTC
+- id: 15
+  name: Paul FENTZ
+  nation: GER
+  category_type_id: 1
+  isu_number: 11033
+  coach: Romy Oesterreich
+  choreographer: Mark Pillay
+  birthday: 1992-09-08
+  hobbies: darts, American football, basketball, NHL hockey
+  hometown: Berlin
+  height: '179'
+  club: SC Berlin
+  practice_low_season: '32'
+  practice_high_season: '40'
+  bio_updated_at: 2019-08-16 17:04:33 UTC
+- id: 16
+  name: Vladimir LITVINTSEV
+  nation: AZE
+  category_type_id: 1
+  isu_number: 106448
+  coach: Alexei Chetverukhin, Vladimir Kotin
+  choreographer: Anastasia Kazakova
+  birthday: 2001-02-18
+  hobbies: music
+  hometown: Moscow RUS
+  height: '167'
+  club: Sambo 70 (Khrustalnyi)
+  practice_low_season: '23'
+  practice_high_season: '23'
+  bio_updated_at: 2019-08-16 17:07:08 UTC
+- id: 17
+  name: Aleksandr SELEVKO
+  nation: EST
+  category_type_id: 1
+  isu_number: 54504
+  coach: Irina Kononova
+  choreographer: Valentin Molotov
+  birthday: 2001-05-23
+  hobbies: drawing, piano
+  hometown: Tallinn
+  height: '172'
+  club: Kristalluisk Tallinn
+  practice_low_season: '18'
+  practice_high_season: '20'
+  bio_updated_at: 2019-08-16 16:37:38 UTC
+- id: 18
+  name: Sondre ODDVOLL BOE
+  nation: NOR
+  category_type_id: 1
+  isu_number: 14101
+  coach: Berit Steigedal
+  choreographer: Mark Pillay
+  birthday: 1998-01-13
+  hobbies: music, dance, fashion, photography, videography
+  hometown: Asker
+  height: '180'
+  club: Asker FSC
+  practice_low_season: '30'
+  practice_high_season: '20'
+  bio_updated_at: 2019-05-04 16:05:46 UTC
+- id: 19
+  name: Matyas BELOHRADSKY
+  nation: CZE
+  category_type_id: 1
+  isu_number: 54497
+  coach: Vlasta Koprivova, Tomas Verner
+  choreographer: Tomas Verner
+  birthday: 2001-06-07
+  hobbies: soccer, music, computer
+  hometown: Marianske Lazne
+  height: '170'
+  club: Tomas Verner Academy
+  practice_low_season: '23'
+  practice_high_season: '20'
+  bio_updated_at: 2019-08-22 05:36:55 UTC
+- id: 20
+  name: Luc MAIERHOFER
+  nation: AUT
+  category_type_id: 1
+  isu_number: 35069
+  coach: Lorenzo Magri
+  choreographer: Benoit Richaud
+  birthday: 2002-05-24
+  hobbies: dancing, volleyball
+  hometown: Vienna
+  height: '183'
+  club: Eissport Klub Engelmann Vienna
+  practice_low_season: ''
+  practice_high_season: ''
+  bio_updated_at: 2019-05-04 16:10:21 UTC
+- id: 21
+  name: Graham NEWBERRY
+  nation: GBR
+  category_type_id: 1
+  isu_number: 14165
+  coach: Christian Newberry
+  choreographer: Daisuke Isozaki, Florent Amodio
+  birthday: 1998-06-07
+  hobbies: fitness, gaming
+  hometown: London
+  height: '172'
+  club: Sapphiere Ice and Leisure, Romford
+  practice_low_season: '25'
+  practice_high_season: '25'
+  bio_updated_at: 2019-08-20 16:33:44 UTC
+- id: 22
+  name: Ivan SHMURATKO
+  nation: UKR
+  category_type_id: 1
+  isu_number: 54633
+  coach: Marina Amirkhanova
+  choreographer: Julia Listratova, Dmitri Dmitrenko,Irina Chubarets
+  birthday: 2001-12-21
+  hobbies: soccer, tennis, motorcycles
+  hometown: Kiev
+  height: '171'
+  club: Leader Kiev
+  practice_low_season: '18'
+  practice_high_season: '22'
+  bio_updated_at: 2019-08-22 05:44:23 UTC
+- id: 23
+  name: Irakli MAYSURADZE
+  nation: GEO
+  category_type_id: 1
+  isu_number: 54498
+  coach: Svetlana Sokolovskaia
+  choreographer: Nikita Mikhailov, Vitali Butikov
+  birthday: 2000-05-24
+  hobbies: friends, computer games
+  hometown: Moscow RUS
+  height: '175'
+  club: CSKA Moscow
+  practice_low_season: '26'
+  practice_high_season: '34'
+  bio_updated_at: 2019-05-04 16:11:33 UTC
+- id: 24
+  name: Davide LEWTON BRAIN
+  nation: MON
+  category_type_id: 1
+  isu_number: 35075
+  coach: Didier Lucine, Sophie Golaz
+  choreographer: Merovee Ephrem
+  birthday: 1998-12-23
+  hobbies: movies, travelling, biking
+  hometown: Monaco
+  height: '173'
+  club: SC of Monaco
+  practice_low_season: '20'
+  practice_high_season: '25'
+  bio_updated_at: 2019-05-04 16:10:24 UTC
+- id: 25
+  name: Igor REZNICHENKO
+  nation: POL
+  category_type_id: 1
+  isu_number: 11207
+  coach: Franca Bianconi, Dmitri Savin
+  choreographer: Olga Glinka, Raffaela Cazzaniga
+  birthday: 1994-12-30
+  hobbies: movies, reading, soccer
+  hometown: Gdansk
+  height: '169'
+  club: Gdansk FSC
+  practice_low_season: '10'
+  practice_high_season: '10'
+  bio_updated_at: 2019-05-04 16:01:59 UTC
+- id: 26
+  name: Slavik HAYRAPETYAN
+  nation: ARM
+  category_type_id: 1
+  isu_number: 12102
+  coach: Samvel Hayrapetyan, Alexei Urmanov
+  choreographer: Ekaterina Proskurina
+  birthday: 1996-03-16
+  hobbies: bowling
+  hometown: Erevan
+  height: '172'
+  club: Erevan FSC
+  practice_low_season: '24'
+  practice_high_season: '24'
+  bio_updated_at: 2019-05-04 16:02:24 UTC
+- id: 27
+  name: Nikolaj MAJOROV
+  nation: SWE
+  category_type_id: 1
+  isu_number: 54796
+  coach: Alexander Majorov sr.
+  choreographer: Irina Majorova
+  birthday: 2000-08-18
+  hobbies: photography, fire artist
+  hometown: Lulea
+  height: '174'
+  club: Lulea FSC
+  practice_low_season: '27'
+  practice_high_season: '27'
+  bio_updated_at: 2019-05-04 16:12:33 UTC
+- id: 28
+  name: Burak DEMIRBOGA
+  nation: TUR
+  category_type_id: 1
+  isu_number: 13414
+  coach: Rana Belkis Gocmen
+  choreographer: Florent Amodio, Rana Belkis Gocmen
+  birthday: 1996-06-07
+  hobbies: ice hockey, soccer, playstation
+  hometown: Kocaeli
+  height: '175'
+  club: Kocaeli Buyuksehir Belediyesi Kagitsport
+  practice_low_season: '19'
+  practice_high_season: '19'
+  bio_updated_at: 2019-05-04 16:03:42 UTC
+- id: 29
+  name: Nicky OBREYKOV
+  nation: BUL
+  category_type_id: 1
+  isu_number: 11933
+  coach: Alexei Fedoseev
+  choreographer: Romain Gazave
+  birthday: 1995-12-05
+  hobbies: playing the cello, cycling
+  hometown: Sollentuna SWE
+  height: '174'
+  club: SASK Stockholm
+  practice_low_season: '20'
+  practice_high_season: '15'
+  bio_updated_at: 2019-05-04 16:02:16 UTC
+- id: 30
+  name: Yakau ZENKO
+  nation: BLR
+  category_type_id: 1
+  isu_number: 54753
+  coach: Nadezhda Pakhamovich
+  choreographer: Elizaveta Anikhimoskaia
+  birthday: 2000-07-21
+  hobbies: playing and watching soccer, reading
+  hometown: Minsk
+  height: '183'
+  club: Club Minsk
+  practice_low_season: ''
+  practice_high_season: '27'
+  bio_updated_at: 2019-08-24 19:40:29 UTC
+- id: 31
+  name: Lukas BRITSCHGI
+  nation: SUI
+  category_type_id: 1
+  isu_number: 54585
+  coach: Alexei Pospelov, Michael Huth
+  choreographer: Michael Huth, Rostislav Sinicyn
+  birthday: 1998-02-17
+  hobbies: soccer, going out with friends, dance
+  hometown: Schaffhausen
+  height: '170'
+  club: ES Frauenfeld
+  practice_low_season: '21'
+  practice_high_season: '20'
+  bio_updated_at: 2019-05-04 16:11:50 UTC
+- id: 32
+  name: Roman GALAY
+  nation: FIN
+  category_type_id: 1
+  isu_number: 14214
+  coach: Sirkka Kaipio
+  choreographer: Tatiana Prokofieva
+  birthday: 1998-08-20
+  hobbies: studying, extreme sports, racing motorcycles, computer, reading
+  hometown: Lappeenranta
+  height: '180'
+  club: Etela-Vantaa SC
+  practice_low_season: '19'
+  practice_high_season: '20'
+  bio_updated_at: 2019-05-04 16:06:10 UTC
+- id: 33
+  name: Conor STAKELUM
+  nation: IRL
+  category_type_id: 1
+  isu_number: 54307
+  coach: Simon Briggs, Debi Briggs
+  choreographer: Andrew Smith
+  birthday: 1993-08-03
+  hobbies: reading, fitness, running, swimming
+  hometown: Dundee GBR
+  height: '180'
+  club: ''
+  practice_low_season: '30'
+  practice_high_season: '30'
+  bio_updated_at: 2019-08-20 16:33:58 UTC
+- id: 34
+  name: Hector ALONSO SERRANO
+  nation: ESP
+  category_type_id: 1
+  isu_number: 14241
+  coach: Ivan Saez, Carolina Sanz, Jordi Lafarga
+  choreographer: Ivan Saez
+  birthday: 1997-11-04
+  hobbies: music, humor
+  hometown: Madrid
+  height: '176'
+  club: La Nevera Majadahonda
+  practice_low_season: '28'
+  practice_high_season: '17'
+  bio_updated_at: 2019-05-04 16:06:19 UTC
+- id: 35
+  name: Michael NEUMAN
+  nation: SVK
+  category_type_id: 1
+  isu_number: 9088
+  coach: Alexei Fedoseev, Anna Rechnio, Tanja Magnusson
+  choreographer: Alexei Vasilievski, Romain Gazave
+  birthday: 1990-06-03
+  hobbies: movies, music, adventures, games
+  hometown: Stockholm SWE
+  height: '190'
+  club: SASK Stockholm
+  practice_low_season: '37'
+  practice_high_season: '20'
+  bio_updated_at: 2019-05-04 16:01:08 UTC
+- id: 36
+  name: Thomas KENNES
+  nation: NED
+  category_type_id: 1
+  isu_number: 12489
+  coach: Carine Herrygers, Jorik Hendrickx
+  choreographer: Benoit Richaud
+  birthday: 1996-06-25
+  hobbies: teaching
+  hometown: Oisterwijk
+  height: '184'
+  club: BKV S-Hertogenbosch
+  practice_low_season: '17'
+  practice_high_season: '16'
+  bio_updated_at: 2019-05-04 16:02:54 UTC
+- id: 37
+  name: Alexander BOROVOJ
+  nation: HUN
+  category_type_id: 1
+  isu_number: 14590
+  coach: Julia Gor-Sebestyen
+  choreographer: Julia Gor-Sebestyen, Barbara Maros
+  birthday: 1999-06-28
+  hobbies: piano, bowling, billiards
+  hometown: Budapest
+  height: '176'
+  club: Sebestyen SC
+  practice_low_season: '25'
+  practice_high_season: '25'
+  bio_updated_at: 2019-05-04 16:06:59 UTC
+- id: 38
+  name: Sofia SAMODUROVA
+  nation: RUS
+  category_type_id: 2
+  isu_number: 101139
+  coach: Tatiana Mishina, Alexei Mishin
+  choreographer: Tatiana Prokofieva
+  birthday: 2002-07-30
+  hobbies: singing
+  hometown: St. Petersburg
+  height: '156'
+  club: Zvezdnyi Led St. Petersburg
+  practice_low_season: ''
+  practice_high_season: ''
+  bio_updated_at: 2019-08-16 17:11:06 UTC
+- id: 39
+  name: Alina ZAGITOVA
+  nation: RUS
+  category_type_id: 2
+  isu_number: 101053
+  coach: Eteri Tutberidze, Sergei Dudakov
+  choreographer: Daniil Gleikhengauz, Eteri Tutberidze
+  birthday: 2002-05-18
+  hobbies: taking care of pets, drawing
+  hometown: Moscow
+  height: '158'
+  club: Sambo 70 (Khrustalni)
+  practice_low_season: ''
+  practice_high_season: ''
+  bio_updated_at: 2019-08-16 17:11:03 UTC
+- id: 40
+  name: Viveca LINDFORS
+  nation: FIN
+  category_type_id: 2
+  isu_number: 14753
+  coach: Virpi Horttana
+  choreographer: Shanetta Folle
+  birthday: 1999-01-30
+  hobbies: dancing, photography
+  hometown: Helsinki
+  height: '159'
+  club: Espoon Jäätaiturit
+  practice_low_season: '17'
+  practice_high_season: '22'
+  bio_updated_at: 2019-08-16 17:09:46 UTC
+- id: 41
+  name: Stanislava KONSTANTINOVA
+  nation: RUS
+  category_type_id: 2
+  isu_number: 34742
+  coach: Valentina Chebotareva, Mikhail Semenenok
+  choreographer: Olga Zotova
+  birthday: 2000-07-14
+  hobbies: drawing, handicraft, her cat
+  hometown: St. Petersburg
+  height: '167'
+  club: Olympic School St. Petersburg
+  practice_low_season: ''
+  practice_high_season: ''
+  bio_updated_at: 2019-08-16 17:10:17 UTC
+- id: 42
+  name: Laurine LECAVELIER
+  nation: FRA
+  category_type_id: 2
+  isu_number: 12525
+  coach: Kori Ade
+  choreographer: Fabian Bourzat, Karen Kwan-Oppegard
+  birthday: 1996-04-26
+  hobbies: music, dance, reading, yoga, shopping
+  hometown: Colorado Springs
+  height: '162'
+  club: Francais Volants, Paris
+  practice_low_season: '37'
+  practice_high_season: '30'
+  bio_updated_at: 2019-08-16 17:09:01 UTC
+- id: 43
+  name: Alexia PAGANINI
+  nation: SUI
+  category_type_id: 2
+  isu_number: 35472
+  coach: Igor Krokavec
+  choreographer: Nikolai Morozov
+  birthday: 2001-11-15
+  hobbies: swimming, skiing, snowboarding, cooking, friends
+  hometown: Harrison USA
+  height: '169'
+  club: Winterthurer SC
+  practice_low_season: '27'
+  practice_high_season: '27'
+  bio_updated_at: 2019-08-16 17:10:26 UTC
+- id: 44
+  name: Mae Berenice MEITE
+  nation: FRA
+  category_type_id: 2
+  isu_number: 10706
+  coach: Silvia Fontana, John Zimmerman
+  choreographer: Charlie White, Silvia Fontana
+  birthday: 1994-09-21
+  hobbies: reading, dance, arts
+  hometown: Tampa USA, Paris
+  height: '168'
+  club: ES Vitry Patinage
+  practice_low_season: '25'
+  practice_high_season: '25'
+  bio_updated_at: 2019-08-16 17:08:38 UTC
+- id: 45
+  name: Emmi PELTONEN
+  nation: FIN
+  category_type_id: 2
+  isu_number: 14671
+  coach: Sirkka Kaipio, Stephane Lambiel
+  choreographer: Mark Pillay
+  birthday: 1999-11-29
+  hobbies: music, reading
+  hometown: Helsinki
+  height: '162'
+  club: Vantaa SC
+  practice_low_season: '23'
+  practice_high_season: '23'
+  bio_updated_at: 2019-05-04 16:25:36 UTC
+- id: 46
+  name: Nicole RAJICOVA
+  nation: SVK
+  category_type_id: 2
+  isu_number: 13894
+  coach: Igor Krokavec, Tom Rajic
+  choreographer: Nikolai Morozov
+  birthday: 1995-08-13
+  hobbies: reading, swimming, skiing, cooking
+  hometown: Bratislava
+  height: '163'
+  club: SKP Bratislava
+  practice_low_season: '26'
+  practice_high_season: '28'
+  bio_updated_at: 2019-05-04 16:23:41 UTC
+- id: 47
+  name: Eliska BREZINOVA
+  nation: CZE
+  category_type_id: 2
+  isu_number: 12118
+  coach: Rudolf Brezina, Igor Krokavec, Jozef Sabovcik
+  choreographer: Misha Ge
+  birthday: 1996-02-19
+  hobbies: swimming, music, dancing
+  hometown: Brno
+  height: '165'
+  club: VSK Technika Brno
+  practice_low_season: '24'
+  practice_high_season: '11'
+  bio_updated_at: 2019-05-04 16:20:57 UTC
+- id: 48
+  name: Alexandra FEIGIN
+  nation: BUL
+  category_type_id: 2
+  isu_number: 34916
+  coach: Andrei Lutai, Ina Lutai
+  choreographer: 'Ina Lutai, Albena Denkova, Maxim Staviski '
+  birthday: 2002-12-22
+  hobbies: drawing, dogs
+  hometown: Sofia
+  height: '165'
+  club: Ice Dance Denkova-Staviski SC
+  practice_low_season: '30'
+  practice_high_season: '27'
+  bio_updated_at: 2019-08-22 05:36:00 UTC
+- id: 49
+  name: Ekaterina RYABOVA
+  nation: AZE
+  category_type_id: 2
+  isu_number: 106045
+  coach: Alexander Volkov, Evgeni Plushenko
+  choreographer: Martine Dagenais
+  birthday: 2003-03-27
+  hobbies: reading
+  hometown: Moscow RUS
+  height: '162'
+  club: FS Academy of Evgeni Plushenko, Moscow
+  practice_low_season: '23'
+  practice_high_season: '23'
+  bio_updated_at: 2019-08-16 17:11:51 UTC
+- id: 50
+  name: Ivett TOTH
+  nation: HUN
+  category_type_id: 2
+  isu_number: 54361
+  coach: Zsofia Tokaji-Kulcsar, Zoltan Toth
+  choreographer: Benoit Richaud
+  birthday: 1998-12-20
+  hobbies: 'dancing, drawing     '
+  hometown: Budapest
+  height: '159'
+  club: Vasas Budapest
+  practice_low_season: '35'
+  practice_high_season: '25'
+  bio_updated_at: 2019-05-04 16:33:18 UTC
+- id: 51
+  name: Julia SAUTER
+  nation: ROU
+  category_type_id: 2
+  isu_number: 13021
+  coach: Marius Negrea, Roxana Luca Hartmann
+  choreographer: Roxana Luca Hartmann, Julia Sauter
+  birthday: 1997-06-18
+  hobbies: baking, hip-hop, being with friends, travelling
+  hometown: Ravensburg GER
+  height: '167'
+  club: CSU Brasov
+  practice_low_season: '20'
+  practice_high_season: '20'
+  bio_updated_at: 2019-05-04 16:21:37 UTC
+- id: 52
+  name: Yasmine Kimiko YAMADA
+  nation: SUI
+  category_type_id: 2
+  isu_number: 13884
+  coach: Igor Samohin, Stanislav Samohin
+  choreographer: Irina Samohin, O. Volozhinskaia, S. Brunner
+  birthday: 1997-08-30
+  hobbies: tennis, skiing, meeting friends, music, cooking
+  hometown: Zürich
+  height: '158'
+  club: EC Zürich
+  practice_low_season: '23'
+  practice_high_season: '23'
+  bio_updated_at: 2019-05-04 16:23:36 UTC
+- id: 53
+  name: Nicole SCHOTT
+  nation: GER
+  category_type_id: 2
+  isu_number: 11603
+  coach: Michael Huth
+  choreographer: Michael Huth
+  birthday: 1996-09-12
+  hobbies: dancing, mountain climbing, music
+  hometown: Oberstdorf
+  height: '164'
+  club: Essener Jugend FSC
+  practice_low_season: '30'
+  practice_high_season: '23'
+  bio_updated_at: 2019-05-04 16:20:21 UTC
+- id: 54
+  name: Dasa GRM
+  nation: SLO
+  category_type_id: 2
+  isu_number: 7367
+  coach: Anej Wagner
+  choreographer: Dasa Grm
+  birthday: 1991-04-18
+  hobbies: doing choreography for younger skaters, coaching, reading, spending time
+    with her family
+  hometown: Celje
+  height: '162'
+  club: SC Celje
+  practice_low_season: '15'
+  practice_high_season: '11'
+  bio_updated_at: 2019-05-04 16:19:33 UTC
+- id: 55
+  name: Anita OSTLUND
+  nation: SWE
+  category_type_id: 2
+  isu_number: 14929
+  coach: Andrea Dohany, Aksana Jolkin
+  choreographer: Stephane Lambiel, Andrea Dohany
+  birthday: 2001-01-30
+  hobbies: baking, cooking, being with friends
+  hometown: Grabo
+  height: '165'
+  club: Landvetter SC
+  practice_low_season: '29'
+  practice_high_season: '22'
+  bio_updated_at: 2019-05-04 16:26:38 UTC
+- id: 56
+  name: Lucrezia GENNARO
+  nation: ITA
+  category_type_id: 2
+  isu_number: 54596
+  coach: Ludmila Mladenova
+  choreographer: Edoardo de Bernadis
+  birthday: 2001-07-25
+  hobbies: reading, shopping, movies, make up
+  hometown: Treviso
+  height: '162'
+  club: Ice Skate Academy Padova
+  practice_low_season: '2433'
+  practice_high_season: '20'
+  bio_updated_at: 2019-08-22 05:37:52 UTC
+- id: 57
+  name: Natasha MCKAY
+  nation: GBR
+  category_type_id: 2
+  isu_number: 10137
+  coach: Debi and Simon Briggs
+  choreographer: Benoit Richaud (SP), Andrew Smith
+  birthday: 1995-01-14
+  hobbies: running, fitness, music
+  hometown: Dundee
+  height: '154'
+  club: Dundee ISC
+  practice_low_season: '30'
+  practice_high_season: '30'
+  bio_updated_at: 2019-08-20 16:33:38 UTC
+- id: 58
+  name: Nathalie WEINZIERL
+  nation: GER
+  category_type_id: 2
+  isu_number: 10623
+  coach: Anett Poetzsch
+  choreographer: Edoardo de Bernadis, Tracey Solomons-Henn
+  birthday: 1994-04-08
+  hobbies: reading, music, dancing
+  hometown: Frankenthal
+  height: '160'
+  club: Mannheimer ERC
+  practice_low_season: '28'
+  practice_high_season: '25'
+  bio_updated_at: 2019-05-04 16:20:00 UTC
+- id: 59
+  name: Anastasiya GALUSTYAN
+  nation: ARM
+  category_type_id: 2
+  isu_number: 54430
+  coach: Irina Galustyan
+  choreographer: Mikhail Zobnin
+  birthday: 1999-06-25
+  hobbies: relaxing, spending time with her little sister, yoga
+  hometown: Moscow RUS
+  height: '167'
+  club: ''
+  practice_low_season: '16'
+  practice_high_season: '16'
+  bio_updated_at: 2019-05-04 16:33:29 UTC
+- id: 60
+  name: Pernille SORENSEN
+  nation: DEN
+  category_type_id: 2
+  isu_number: 13676
+  coach: Kalle Strid, M. Olofsson, A. Weisiger
+  choreographer: Kalle Strid
+  birthday: 1998-02-20
+  hobbies: shopping, travelling, music
+  hometown: Odense
+  height: '171'
+  club: Odense SC
+  practice_low_season: '15'
+  practice_high_season: '15'
+  bio_updated_at: 2019-05-04 16:22:57 UTC
+- id: 61
+  name: Antonina DUBININA
+  nation: SRB
+  category_type_id: 2
+  isu_number: 14875
+  coach: Svetlana Sokolovskaia, Stanislav Zakharov
+  choreographer: Nikita Mikhailov, Vitali Butikov
+  birthday: 1996-10-23
+  hobbies: music
+  hometown: Belgrade
+  height: '166'
+  club: CSKA Moscow
+  practice_low_season: '25'
+  practice_high_season: '25'
+  bio_updated_at: 2019-05-04 16:26:30 UTC
+- id: 62
+  name: Elzbieta GABRYSZAK
+  nation: POL
+  category_type_id: 2
+  isu_number: 34307
+  coach: Iwona Mydlarz-Chruscinska
+  choreographer: Sebastian Kolasinski
+  birthday: 1998-08-06
+  hobbies: aviation, dance, literature, alpine skiing, drawing
+  hometown: Oswiecim
+  height: '161'
+  club: LKS Sota Oswiecim
+  practice_low_season: '14'
+  practice_high_season: '14'
+  bio_updated_at: 2019-05-04 16:27:46 UTC
+- id: 63
+  name: Sophia SCHALLER
+  nation: AUT
+  category_type_id: 2
+  isu_number: 101138
+  coach: Julia Kiefer, Sandra Riegler
+  choreographer: Mark Pillay
+  birthday: 2000-09-17
+  hobbies: music, meeting friends, reading
+  hometown: Salzburg
+  height: '162'
+  club: EVS Salzburg
+  practice_low_season: '22'
+  practice_high_season: '17'
+  bio_updated_at: 2019-05-04 16:38:01 UTC
+- id: 64
+  name: Gerli LIINAMAE
+  nation: EST
+  category_type_id: 2
+  isu_number: 12550
+  coach: Tiiu Valgemäe
+  choreographer: Olga Volozhinskaia
+  birthday: 1995-03-21
+  hobbies: yoga, music, nature
+  hometown: Tallinn
+  height: '160'
+  club: Gliss SC
+  practice_low_season: '28'
+  practice_high_season: '22'
+  bio_updated_at: 2019-05-04 16:21:14 UTC
+- id: 65
+  name: Kyarha VAN TIEL
+  nation: NED
+  category_type_id: 2
+  isu_number: 34661
+  coach: Kevin van der Perren, Jenna McCorkell, N. Oogjen
+  choreographer: Adam Solya, Jenna McCorkell
+  birthday: 2000-05-17
+  hobbies: music, movies
+  hometown: Rotterdam
+  height: '150'
+  club: Kat, The Hague
+  practice_low_season: '19'
+  practice_high_season: '18'
+  bio_updated_at: 2019-05-04 16:29:16 UTC
+- id: 66
+  name: Lara Naki GUTMANN
+  nation: ITA
+  category_type_id: 2
+  isu_number: 35407
+  coach: Gabriele Minchio, Stephanie Cuel, Elena Mattivi
+  choreographer: Gabriele Minchio, Riccardo Morelli, Prisca Picano
+  birthday: 2002-11-06
+  hobbies: music, TV serials, going out with friends
+  hometown: Rovereto
+  height: '168'
+  club: Circolo Pattinatori Artistici Trento
+  practice_low_season: '25'
+  practice_high_season: '19'
+  bio_updated_at: 2019-08-23 23:49:30 UTC
+- id: 67
+  name: Silvia HUGEC
+  nation: SVK
+  category_type_id: 2
+  isu_number: 101563
+  coach: Benjamin Miller Reisman
+  choreographer: Molly Oberstar
+  birthday: 2000-12-22
+  hobbies: reading, music, netflix, friends
+  hometown: St. Paul USA
+  height: '171'
+  club: Krasocentrum Kosice
+  practice_low_season: '30'
+  practice_high_season: '30'
+  bio_updated_at: 2019-05-04 16:39:12 UTC
+- id: 68
+  name: Valentina MATOS
+  nation: ESP
+  category_type_id: 2
+  isu_number: 35268
+  coach: Barbara Luoni
+  choreographer: Sara Hurtado, Corrado Giordani
+  birthday: 2000-09-28
+  hobbies: travelling, fashion, astronomy, physics
+  hometown: Milan ITA
+  height: '175'
+  club: La Nevera Madrid
+  practice_low_season: '21'
+  practice_high_season: '21'
+  bio_updated_at: 2019-05-04 16:32:21 UTC
+- id: 69
+  name: Paulina RAMANAUSKAITE
+  nation: LTU
+  category_type_id: 2
+  isu_number: 101592
+  coach: Dmitri Kozlov
+  choreographer: Ingrida Snieskiene
+  birthday: 2003-01-27
+  hobbies: reading, drawing, dancing
+  hometown: Kaunas
+  height: '164'
+  club: Baltu Ainai Kaunas
+  practice_low_season: '32'
+  practice_high_season: '24'
+  bio_updated_at: 2019-08-19 11:42:48 UTC
+- id: 70
+  name: Camilla GJERSEM
+  nation: NOR
+  category_type_id: 2
+  isu_number: 11701
+  coach: Berit Steigendal
+  choreographer: Kaja Hanevold
+  birthday: 1994-01-06
+  hobbies: ''
+  hometown: Asker
+  height: '158'
+  club: Asker FSC
+  practice_low_season: '33'
+  practice_high_season: '24'
+  bio_updated_at: 2019-05-04 16:20:30 UTC
+- id: 71
+  name: Hana CVIJANOVIC
+  nation: CRO
+  category_type_id: 2
+  isu_number: 100949
+  coach: Ivana Jakupcevic, Fedor Klimov, I. Japaridze
+  choreographer: Ekaterina Ivleva, Ivana Jakupcevic
+  birthday: 2002-12-02
+  hobbies: reading, music, writing
+  hometown: Zagreb
+  height: '155'
+  club: Leda SC
+  practice_low_season: '21'
+  practice_high_season: '16'
+  bio_updated_at: 2019-08-22 05:36:44 UTC
+- id: 72
+  name: Elizabete JUBKANE
+  nation: LAT
+  category_type_id: 2
+  isu_number: 54732
+  coach: Raimo Reinsalu, Samanta Kovalkova
+  choreographer: Ruslan Kurlovich
+  birthday: 2000-11-21
+  hobbies: reading, painting
+  hometown: Jurmala
+  height: '172'
+  club: Kristal Ice
+  practice_low_season: '28'
+  practice_high_season: '16'
+  bio_updated_at: 2019-05-04 16:34:49 UTC
+- id: 73
+  name: Anastasia GOZHVA
+  nation: UKR
+  category_type_id: 2
+  isu_number: 54635
+  coach: Marina Amirkhanova
+  choreographer: Irina Chubarets
+  birthday: 2001-12-05
+  hobbies: reading, music, mathematics
+  hometown: Kiev
+  height: '157'
+  club: Leader Kiev
+  practice_low_season: '16'
+  practice_high_season: '16'
+  bio_updated_at: 2019-05-04 16:34:21 UTC
+- id: 74
+  name: Vanessa JAMES / Morgan CIPRES
+  nation: FRA
+  category_type_id: 3
+  isu_number: 13733
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 75
+  name: Evgenia TARASOVA / Vladimir MOROZOV
+  nation: RUS
+  category_type_id: 3
+  isu_number: 54323
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 76
+  name: Aleksandra BOIKOVA / Dmitrii KOZLOVSKII
+  nation: RUS
+  category_type_id: 3
+  isu_number: 101158
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 77
+  name: Nicole DELLA MONICA / Matteo GUARISE
+  nation: ITA
+  category_type_id: 3
+  isu_number: 34093
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 78
+  name: Daria PAVLIUCHENKO / Denis KHODYKIN
+  nation: RUS
+  category_type_id: 3
+  isu_number: 102756
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 79
+  name: Minerva Fabienne HASE / Nolan SEEGERT
+  nation: GER
+  category_type_id: 3
+  isu_number: 34724
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 80
+  name: Laura BARQUERO / Aritz MAESTU
+  nation: ESP
+  category_type_id: 3
+  isu_number: 103015
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 81
+  name: Lana PETRANOVIC / Antonio SOUZA-KORDEIRU
+  nation: CRO
+  category_type_id: 3
+  isu_number: 101795
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 82
+  name: Rebecca GHILARDI / Filippo AMBROSINI
+  nation: ITA
+  category_type_id: 3
+  isu_number: 101420
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 83
+  name: Zoe JONES / Christopher BOYADJI
+  nation: GBR
+  category_type_id: 3
+  isu_number: 101667
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 84
+  name: Miriam ZIEGLER / Severin KIEFER
+  nation: AUT
+  category_type_id: 3
+  isu_number: 54366
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 85
+  name: Gabriella PAPADAKIS / Guillaume CIZERON
+  nation: FRA
+  category_type_id: 4
+  isu_number: 11507
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 86
+  name: Alexandra STEPANOVA / Ivan BUKIN
+  nation: RUS
+  category_type_id: 4
+  isu_number: 12117
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 87
+  name: Charlene GUIGNARD / Marco FABBRI
+  nation: ITA
+  category_type_id: 4
+  isu_number: 12929
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 88
+  name: Victoria SINITSINA / Nikita KATSALAPOV
+  nation: RUS
+  category_type_id: 4
+  isu_number: 54477
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 89
+  name: Natalia KALISZEK / Maksym SPODYRIEV
+  nation: POL
+  category_type_id: 4
+  isu_number: 14997
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 90
+  name: Lilah FEAR / Lewis GIBSON
+  nation: GBR
+  category_type_id: 4
+  isu_number: 101309
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 91
+  name: Sara HURTADO / Kirill KHALIAVIN
+  nation: ESP
+  category_type_id: 4
+  isu_number: 102241
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 92
+  name: Olivia SMART / Adrian DIAZ
+  nation: ESP
+  category_type_id: 4
+  isu_number: 101308
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 93
+  name: Sofia EVDOKIMOVA / Egor BAZIN
+  nation: RUS
+  category_type_id: 4
+  isu_number: 13679
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 94
+  name: Marie-Jade LAURIAULT / Romain LE GAC
+  nation: FRA
+  category_type_id: 4
+  isu_number: 15087
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 95
+  name: Juulia TURKKILA / Matthias VERSLUIS
+  nation: FIN
+  category_type_id: 4
+  isu_number: 101384
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 96
+  name: Adelina GALYAVIEVA / Louis THAURON
+  nation: FRA
+  category_type_id: 4
+  isu_number: 106271
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 97
+  name: Allison REED / Saulius AMBRULEVICIUS
+  nation: LTU
+  category_type_id: 4
+  isu_number: 103181
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 98
+  name: Jasmine TESSARI / Francesco FIORETTI
+  nation: ITA
+  category_type_id: 4
+  isu_number: 35270
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 99
+  name: Shari KOCH / Christian NÜCHTERN
+  nation: GER
+  category_type_id: 4
+  isu_number: 11635
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 100
+  name: Darya POPOVA / Volodymyr BYELIKOV
+  nation: UKR
+  category_type_id: 4
+  isu_number: 55109
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 101
+  name: Robynne TWEEDALE / Joseph BUCKLAND
+  nation: GBR
+  category_type_id: 4
+  isu_number: 101859
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 102
+  name: Anna KUBLIKOVA / Yuri HULITSKI
+  nation: BLR
+  category_type_id: 4
+  isu_number: 103260
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 103
+  name: Anna YANOVSKAYA / Adam LUKACS
+  nation: HUN
+  category_type_id: 4
+  isu_number: 102719
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 104
+  name: Shira ICHILOV / Vadim DAVIDOVICH
+  nation: ISR
+  category_type_id: 4
+  isu_number: 102173
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 105
+  name: Carolina MOSCHENI / Andrea FABBRI
+  nation: ITA
+  category_type_id: 4
+  isu_number: 103089
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 106
+  name: Justyna PLUTOWSKA / Jeremie FLEMIN
+  nation: POL
+  category_type_id: 4
+  isu_number: 101397
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 107
+  name: Teodora MARKOVA / Simon DAZE
+  nation: BUL
+  category_type_id: 4
+  isu_number: 103522
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 108
+  name: Victoria MANNI / Carlo ROETHLISBERGER
+  nation: SUI
+  category_type_id: 4
+  isu_number: 101850
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''
+- id: 109
+  name: Katerina BUNINA / German FROLOV
+  nation: EST
+  category_type_id: 4
+  isu_number: 54756
+  coach: 
+  choreographer: 
+  birthday: 
+  hobbies: 
+  hometown: 
+  height: 
+  club: 
+  practice_low_season: 
+  practice_high_season: 
+  bio_updated_at: ''

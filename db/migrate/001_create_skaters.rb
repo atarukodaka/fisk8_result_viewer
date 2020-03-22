@@ -14,6 +14,9 @@ class CreateSkaters < ActiveRecord::Migration[5.1]
       t.string :height
       t.string :club
 
+      t.string :practice_low_season
+      t.string :practice_high_season
+
       t.timestamp :bio_updated_at
     end
   end

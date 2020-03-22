@@ -38,7 +38,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
 
     describe 'wtt2017' do
       let(:url) { 'https://www.jsfresults.com/intl/2016-2017/wtt/' }
-      subject { updater.update_competition(url, categories: [], parser_type: :wtt2017) }
+      subject { updater.update_competition(url, categories: ['MEN'], parser_type: :wtt2017) }
       its(:site_url) { is_expected.to eq(url) }
     end
 
@@ -190,6 +190,16 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       its(:updated_at) { is_expected.not_to eq(original.updated_at) }
     end
   end
+=begin
+  describe 'competition class' do
+    it {
+      CompetitionClass.create(competition_class: :isu, competition_type: :zzz, regex: "^ZZZ[0-9]")
+      competition = Competition.create(short_name: "ZZZ2019", start_date: Date.new(2019, 1, 1))
+      expect(competition.competition_class).to eq('isu')
+      expect(competition.competition_type).to eq('zzz')
+    }
+  end
+
   describe 'competition normalize' do
     it {
       CompetitionNormalize.create(regex: '^DUMMY[0-9]', competition_class: 'isu', competition_type: 'dum', name: 'Dummy %{year}')
@@ -199,6 +209,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       expect(competition.name).to eq('Dummy 2019')
     }
   end
+=end
   ################
   describe 'skater name correction' do
     def expect_same_skater(url, category, ranking) # TODO
@@ -247,8 +258,14 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       its(:site_url) { is_expected.to eq(url) }
     end
   end
+  describe 'excluding_categories' do
+    let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
+    let(:competition) { updater.update_competition(url, excluding_categories: ['PAIRS']) }
+    it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
+  end
   ################
   describe 'network errors' do
+=begin
     ## TODO: TEMPOLARY COMMENTED OUT DUE TO SLOW NETWORK CONNECTION
     describe 'rescue not found on nepela2014/pairs and count' do
       let(:url) { 'http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/' }
@@ -256,7 +273,7 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       it { expect(competition.category_results.where(category: 'PAIRS'.to_category).count).to be_zero }
       # expect(Competition.find_by(site_url: url).results.where(category: "PAIRS").count).to be_zero
     end
-
+=end
     describe 'rescue socket error and return value' do
       let(:url) { 'http://xxxxxzzzzxxx.com/qqqq.pdf' }
       subject { updater.update_competition(url, categories: ['MEN']) }

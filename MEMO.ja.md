@@ -1,3 +1,14 @@
+
+## TODO
+
+- competition key を必須にするか
+- competition_type -> competition_subclass
+- parser は　dev のときだけ
+- deviatino メニューは flag on のときだけ
+- competitions.conf は年ごと分ける？
+- timeschedules を conf に
+- season_skipper はやめるかな
+
 ## DB設計
 - Skater has many of Competition
 - Competition has many of CategoryResults and Scores
@@ -103,10 +114,9 @@ sudo -u postgres createdb fisk8viewer -O fisk8viewer
 
 export DATABASE_PASSWORD=****
 export DATABASE_HOST=localhost
-export RAILS_ENV=production
-bundle exec rake db:reset
-bundle exec rake update:skaters
-bundle exec rake update:competitions
+RAILS_ENV=production bundle exec rake db:reset
+RAILS_ENV=production bundle exec rake update:skaters
+RAILS_ENV=production bundle exec rake update:competitions
 
 ```
 ### heroku
@@ -130,3 +140,4 @@ heroku restart
 - http://www.pfsa.com.pl/results/1314/WC2013/ : Mairya1 BAKUSHEVA と Mariya と以下同文
 - http://www.isuresults.com/results/season1617/gpfra2016/SEG007.HTM がまだLIVE
 - http://www.isuresults.com/results/season1718/gpchn2017/SEG003.HTM がまだLIVE
+- http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/index.htm PAIRエントリーないのにリザルトページはある（だけどテーブルは無し）

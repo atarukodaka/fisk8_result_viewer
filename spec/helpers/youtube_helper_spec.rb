@@ -17,7 +17,7 @@ RSpec.describe YoutubeHelper do
     it {
       item = parse_youtube('', api_key: nil)
       expect(item[:id]).to eq('23EfsN7vEOA')
-      expect(item[:title]).to eq("Yuzuru Hanyu (JPN) - Gold Medal | Men's Figure Skating | Free Programme | PyeongChang 2018")  ## rubocop:disable Metrics/LineLength
+      expect(item[:title]).to eq("Yuzuru Hanyu (JPN) - Gold Medal | Men's Figure Skating | Free Programme | PyeongChang 2018")  ## rubocop:disable Layout/LineLength
       expect(item[:published_at]).to eq(Time.utc(2018, 3, 9, 17, 0, 0).in_time_zone('UTC'))
     }
   end

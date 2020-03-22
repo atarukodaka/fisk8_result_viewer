@@ -1,4 +1,7 @@
 inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
+#  - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.4
@@ -13,7 +16,7 @@ AllCops:
 Bundler/OrderedGems:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
 Layout/ExtraSpacing:
@@ -21,25 +24,23 @@ Layout/ExtraSpacing:
 
 Layout/LeadingCommentSpace:
   Enabled: false
-  
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
-Lint/UnneededCopEnableDirective:
+Lint/RedundantCopDisableDirective:
   Enabled: false
 
-Lint/UnneededCopDisableDirective:
+Lint/RedundantCopEnableDirective:
   Enabled: false
 
 ################
-Metrics/LineLength:
-  Max: 120
-
 Metrics/ClassLength:
   Max: 100
   Exclude:
     - app/updaters/competition_updater.rb       ## TODO
-      
+    - app/parsers/competition_parser.rb       ## TODO
+
 Metrics/BlockLength:
   Max: 35
   Exclude:
@@ -104,7 +105,7 @@ Style/NumericLiterals:     ## 12_345
 
 Style/ParallelAssignment:
   Enabled: false
-  
+
 Style/PerlBackrefs:
   Enabled: false
 
@@ -132,7 +133,17 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   Enabled: false
-  
+
 Style/WordArray:
   Exclude: false
-  
+
+Style/HashEachMethods:
+  Enabled: true
+
+# For rubocop < 1.0.0
+Style/HashTransformKeys:
+  Enabled: true
+
+# For rubocop < 1.0.0
+Style/HashTransformValues:
+  Enabled: true

@@ -15,7 +15,8 @@ namespace :update do
   desc 'update all skaters detail'
   task skaters_detail: :environment do
     verbose = ENV['verbose'].to_i.nonzero?
-    SkaterUpdater.new(verbose: verbose).update_skaters_detail
+    options = { active_only: ENV['active_only'].to_i.nonzero? }
+    SkaterUpdater.new(verbose: verbose).update_skaters_detail(options)
   end
   ################
   def options_from_env
@@ -53,14 +54,9 @@ namespace :update do
     end
 
     list.each do |item|
-      options = env_options.dup
-      options.merge!(item.attributes.slice(:parser_type, :encoding))
-      CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options) do |competition|
-        competition.short_name = item[:short_name]
-        item.attributes.slice(:city, :name, :comment).each do |key, value|
-          competition[key] = value if value.present?
-        end
-      end
+      options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
+      options[:attributes] = item.attributes.slice(:short_name, :city, :name, :comment).compact
+      CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options)
     end ## each
   end ## task
 end # namespace

@@ -26,11 +26,11 @@ class CategoryResultDecorator < EntryDecorator
   def short_ranking
     h.link_to_score(model.short.try(:ranking).as_ranking, model.short)
   end
-  decorate_as_score(:short_tss, :short_tes, :short_pcs, :short_deductions, :short_base_value)
+  decorate_as_score(:short_tss, :short_tes, :short_pcs, :short_deductions)
 
   ## free
   def free_ranking
     h.link_to_score(model.free.try(:ranking).as_ranking, model.free)
   end
-  decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions, :free_base_value)
+  decorate_as_score(:free_tss, :free_tes, :free_pcs, :free_deductions)
 end

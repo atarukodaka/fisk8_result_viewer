@@ -21,23 +21,5 @@ class CompetitionParser
     def get_rows(page)
       find_table_rows(page, ['FPl', 'FPl.', 'PL']) || raise("No Placement Cell found (#{self.class})")
     end
-
-    ## callback functions
-    protected
-
-    def elem_to_i
-      ->(elem) { elem.text.squish.to_i }
-    end
-
-    def elem_to_f
-      ->(elem) { elem.text.squish.to_f }
-    end
-
-    def elem_to_isu_number
-      lambda { |elem|
-        href = elem.xpath('a/@href').text
-        (href =~ /([0-9]+)\.htm$/) ? $1.to_i : nil
-      }
-    end
   end ## class
 end
