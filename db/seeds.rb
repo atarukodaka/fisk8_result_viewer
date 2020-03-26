@@ -165,10 +165,10 @@ end
 end
 
 ### panels
-YAML.load_file("config/panels.yml").each do |item|
-  if panel = Panel.find_by(name: item["name"])
-    panel.update(nation: item["nation"])
+YAML.load_file('config/panels.yml').each do |item|
+  if panel = Panel.find_by(name: item['name'])
+    panel.update(nation: item['nation'])
   else
-    Panel.find_or_create_by!(item.slice("name", "nation"))
+    Panel.find_or_create_by!(item.slice('name', 'nation'))
   end
 end

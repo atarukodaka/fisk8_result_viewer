@@ -144,7 +144,7 @@ class CompetitionParser
         end
       rescue OpenURI::HTTPError
         Rails.logger.warn("HTTP Error: #{url}")
-        return nil
+        nil
       end
     end
   end # module

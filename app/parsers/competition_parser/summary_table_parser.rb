@@ -27,6 +27,7 @@ class CompetitionParser
     def get_summary_table_rows(page)
       find_table_rows(page, 'Category') || raise('no summary table found')
     end
+
     def parse_category_section(row, category, base_url: nil)
       {
         type: :category,

@@ -1,9 +1,8 @@
-
 class CompetitionParser
   module Extension
     class JapanOpen < CompetitionParser
       class TimeScheduleParser < CompetitionParser::TimeScheduleParser
-        def parse(page)
+        def parse(_page)
           []
         end
       end
@@ -13,7 +12,7 @@ class CompetitionParser
           {
             skater_name: { header_regex: /Competitor/  },
             skater_nation: { header_regex: /Nation/ },
-            ranking: { header_regex: /PL/, callback: elem_to_i},
+            ranking: { header_regex: /PL/, callback: elem_to_i },
             points: { header_regex: /Points/, callback: elem_to_f },
           }
         end
@@ -26,7 +25,7 @@ class CompetitionParser
       end
       class ScoreParser < CompetitionParser::ScoreParser
         def parse_skater(line, score)
-          @last_line ||= ""
+          @last_line ||= ''
           name_re = %q([[:alpha:]1\.\- \/\']+)
           ## adding '1' for Mariya1 BAKUSHEVA
           ##   (see: http://www.pfsa.com.pl/results/1314/WC2013/CAT003EN.HTM)

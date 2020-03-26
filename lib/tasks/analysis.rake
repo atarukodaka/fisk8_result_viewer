@@ -1,14 +1,13 @@
 namespace :analysis do
-
   task percentile: :environment do
     Component.all.each do |comp|
-      puts comp.score.name + "," + comp.judges.gsub(/ /, ',')
+      puts comp.score.name + ',' + comp.judges.gsub(/ /, ',')
     end
   end
 
   task goediff: :environment do
-    Score.all.each {|sc|
-      sc.elements.each {|el|
+    Score.all.each { |sc|
+      sc.elements.each { |el|
         puts [sc.competition.season, sc.name, sc.skater.name, el.judges.split(/ /)].flatten.join(',')
       }
     }
@@ -16,10 +15,10 @@ namespace :analysis do
 
   task nhk: :environment do
     comp = Competition.last
-    seg = Segment.where(segment_type: "free").first
+    seg = Segment.where(segment_type: 'free').first
     Score.where(competition: comp, segment: seg).each do |score|
       score.elements.each do |elem|
-        puts [score.skater.name, elem.name, "'#{elem.judges}"].join(",")
+        puts [score.skater.name, elem.name, "'#{elem.judges}"].join(',')
       end
     end
   end
@@ -27,7 +26,8 @@ namespace :analysis do
   task practice: :environment do
     Skater.all.each do |skater|
       next if skater.practice_low_season.blank?
-      puts [:name, :isu_number, :nation, :practice_low_season, :practice_high_season].map {|d| skater[d]}.push(skater.category_type.name).join(',')
+
+      puts [:name, :isu_number, :nation, :practice_low_season, :practice_high_season].map { |d| skater[d] }.push(skater.category_type.name).join(',')
     end
   end
 
@@ -35,14 +35,14 @@ namespace :analysis do
     skater = Skater.find_by(name: 'Yuzuru HANYU')
     #skater = Skater.find_by(name: 'Shoma UNO')
     Score.where(skater: skater).joins(:competition).each do |score|
-      score.performed_segment.officials.where(function_type: "technical").each do |official|
+      score.performed_segment.officials.where(function_type: 'technical').each do |official|
         puts "#{skater.name},#{score.competition.season},#{score.name},#{official.panel.name},#{official.panel.nation}"
       end
     end
   end
 
   task panel_judge: :environment do
-    skater = Skater.find_by(name: "Mao ASADA")
+    skater = Skater.find_by(name: 'Mao ASADA')
 
     Element.where(element_type: :jump).where("scores.skater": skater).joins(:score).each do |element|
       success = (element.name =~ /</) ? 0 : 1
@@ -54,11 +54,11 @@ namespace :analysis do
   end
 
   task asada3a: :environment do
-    skater = Skater.find_by(name: "Mao ASADA")
+    skater = Skater.find_by(name: 'Mao ASADA')
 
-    Element.where("scores.skater" => skater).where("elements.name like ?", "%3A%").joins(:score).each do |element|
-      panels = element.score.performed_segment.officials.where(function_type: "technical").map do |official|
-        official.panel.name.encode("shift_jis")
+    Element.where('scores.skater' => skater).where('elements.name like ?', '%3A%').joins(:score).each do |element|
+      panels = element.score.performed_segment.officials.where(function_type: 'technical').map do |official|
+        official.panel.name.encode('shift_jis')
       end
       score = element.score
       puts [score.name, "'#{score.competition.season}", element.name, element.goe, panels].flatten.join(',')

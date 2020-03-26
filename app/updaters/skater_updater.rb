@@ -28,9 +28,9 @@ class SkaterUpdater < Updater
   ################
   # skater detail
   def update_skaters_detail(options = {})
-
     Skater.find_each.reject { |sk| sk.isu_number.blank? }.map do |skater|
       next if options[:active_only] && skater.category_results.count == 0
+
       update_skater_detail(skater.isu_number)
     end
   end
@@ -40,7 +40,7 @@ class SkaterUpdater < Updater
     debug("#{skater.name}[#{skater.isu_number}]...")
     details_hash = parser.parse_skater_details(skater.isu_number)
 
-    debug("   %s" %
+    debug('   %s' %
           details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,

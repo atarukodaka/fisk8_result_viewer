@@ -6,7 +6,6 @@ namespace :parse do
 
     # parser = CompetitionParser::IsuGeneric::ScoreParser.new
     parser = CompetitionParser::ScoreParser.new(verbose: verbose)
-    # rubocop:disable Metrics/LineLength
     parser.parse(url).each do |score|
       str = '-' * 100 + "\n"
       str << "%<ranking>d %<skater_name>s [%<skater_nation>s] %<starting_number>d  %<tss>6.2f = %<tes>6.2f + %<pcs>6.2f + %<deductions>2d\n" % score
@@ -23,6 +22,5 @@ namespace :parse do
       end
       puts str if verbose
     end
-    # rubocop:enable Metrics/LineLength
   end
 end

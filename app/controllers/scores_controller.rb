@@ -19,16 +19,15 @@ class ScoresController < IndexController
         .default_orders([[:number, :asc]]),
     }
   end
+
   def show
-    begin
-      super
-    rescue ActionController::UnknownFormat
-      respond_to do |format|
-        format.xml {
-          doc = FsmlBuilder.build_score(Score.find_by!(name: params[:name]))
-          render xml: doc
-        }
-      end
+    super
+  rescue ActionController::UnknownFormat
+    respond_to do |format|
+      format.xml {
+        doc = FsmlBuilder.build_score(Score.find_by!(name: params[:name]))
+        render xml: doc
+      }
     end
   end
 end

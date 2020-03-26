@@ -2,7 +2,7 @@ module SkaterFinder
   using StringToModel
 
   def find_or_create_skater(skater_name:, isu_number: nil, skater_nation: nil, category:)
-  #def find_or_create_skater(name:, isu_number:, nation:, category_type: )
+    #def find_or_create_skater(name:, isu_number:, nation:, category_type: )
     if isu_number.present?
       Skater.find_by(isu_number: isu_number)
     else

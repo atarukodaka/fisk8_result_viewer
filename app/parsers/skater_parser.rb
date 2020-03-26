@@ -58,13 +58,13 @@ class SkaterParser < Parser
     #    FlexCel 6.19.5.0; format have been changed at feb2020
     data = {
       isu_number: isu_number,
-      name: page.xpath("//table[1]/tr[4]/td[3]").text,
-      nation: page.xpath("//table[1]/tr[6]/td[3]").text,
-      category_type: page.xpath("//table[1]/tr[2]/td[1]").text.upcase,
+      name: page.xpath('//table[1]/tr[4]/td[3]').text,
+      nation: page.xpath('//table[1]/tr[6]/td[3]').text,
+      category_type: page.xpath('//table[1]/tr[2]/td[1]').text.upcase,
     }
     tags = {
       'Date of birth' => :birthday,
-      'Height' =>:height,
+      'Height' => :height,
       'Home town' => :hometown,
       'Start sk. / Club' => :club,
       'Hobbies' => :hobbies,
@@ -74,17 +74,17 @@ class SkaterParser < Parser
       'Practice high season' => :practice_high_season,
 
     }
-    page.xpath("//table[1]/tr").each do |tr|
-      tag = tr.xpath("td[1]").text.sub(/:/, '')
+    page.xpath('//table[1]/tr').each do |tr|
+      tag = tr.xpath('td[1]').text.sub(/:/, '')
       if key = tags[tag]
-        data[key] = tr.xpath("td[2]").text
+        data[key] = tr.xpath('td[2]').text
       end
     end
     data[:club] = data[:club].split(/ *\/ */).last if data[:club]
     data
   end
-  def parse_skater_details_ver1(page, isu_number)
 
+  def parse_skater_details_ver1(page, isu_number)
     #page = get_url(isu_bio_url(isu_number)) || raise("invalid isu number: #{isu_number}")
     data = { isu_number: isu_number }
     {

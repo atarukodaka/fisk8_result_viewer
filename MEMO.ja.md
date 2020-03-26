@@ -1,8 +1,9 @@
 
 ## TODO
 
+- competition key を必須にするか
 - competition_type -> competition_subclass
-- parser は　dev のときだけe
+- parser は　dev のときだけ
 - deviatino メニューは flag on のときだけ
 - competitions.conf は年ごと分ける？
 - timeschedules を conf に

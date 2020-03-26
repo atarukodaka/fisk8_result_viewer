@@ -21,7 +21,5 @@ class CompetitionParser
     def get_rows(page)
       find_table_rows(page, ['FPl', 'FPl.', 'PL']) || raise("No Placement Cell found (#{self.class})")
     end
-
-
   end ## class
 end
