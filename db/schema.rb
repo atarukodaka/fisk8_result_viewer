@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 5) do
   end
 
   create_table "competitions", force: :cascade do |t|
-    t.string "short_name"
+    t.string "key"
     t.string "name"
     t.string "city"
     t.string "country"

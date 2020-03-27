@@ -18,22 +18,22 @@ crumb :competitions do
   parent :root
 end
 crumb :competition do |competition|
-  link competition.name, competition_path(competition.short_name)
+  link competition.name, competition_path(competition.key)
   parent :competitions
 end
 
 crumb :competition_category do |_competion, _category|
-  link competition.name, competition_path(competition.short_name)
+  link competition.name, competition_path(competition.key)
   parent :competition
 end
 
 crumb :competition_category do |competition, category|
-  link category.name, competition_path(competition.short_name, category: category.name)
+  link category.name, competition_path(competition.key, category: category.name)
   parent :competition, competition
 end
 
 crumb :competition_segment do |competition, category, segment|
-  link segment.name, competition_path(competition.short_name, category: category.name, segment: segment.name)
+  link segment.name, competition_path(competition.key, category: category.name, segment: segment.name)
   parent :competition_category, competition, category
 end
 

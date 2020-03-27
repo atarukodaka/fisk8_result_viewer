@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     get :list, on: :collection
   end
 
-  resources :competitions, only: [:index], param: :short_name do
+  resources :competitions, only: [:index], param: :key do
     get :list, on: :collection
     get '(/:category(/:segment(/:ranking)))', action: :show, on: :member, as: ''
   end

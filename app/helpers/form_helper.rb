@@ -23,7 +23,7 @@ module FormHelper
     col =
       case key
       # when :category_name, :category_type, :seniority, :team
-      when :competition_short_name
+      when :competition_key
         FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key)
       when :category
         FormHelper.cache_uniq_list("category/#{key}", Category.order(:id), :name)

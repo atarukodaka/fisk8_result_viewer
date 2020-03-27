@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :competition do
     trait :world do
       name { 'World FS 2015' }
-      short_name { 'WORLD2015' }
+      key { 'WORLD2015' }
       competition_type { 'world' }
       competition_class { 'isu' }
       city { 'Tokyo' }
@@ -24,7 +24,7 @@ FactoryBot.define do
     end
 
     trait :finlandia do
-      short_name { 'FIN2017' }
+      key { 'FIN2017' }
       name { 'Finlandia 2017' }
       season { '2017-18' }
       competition_type { 'finlandia' }

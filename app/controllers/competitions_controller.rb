@@ -47,7 +47,7 @@ class CompetitionsController < IndexController
   end
 
   def data_to_show
-    competition = Competition.find_by!(short_name: params[:short_name])
+    competition = Competition.find_by!(key: params[:key])
 
     category = params[:category].to_category
     segment = params[:segment].to_segment

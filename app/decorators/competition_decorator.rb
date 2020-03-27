@@ -4,7 +4,7 @@ class CompetitionDecorator < EntryDecorator
   end
 
   def name_info
-    '%<name>s [%<short_name>s] (%<competition_type>s/%<competition_class>s)' %
+    '%<name>s [%<key>s] (%<competition_type>s/%<competition_class>s)' %
       model.attributes.symbolize_keys
   end
 

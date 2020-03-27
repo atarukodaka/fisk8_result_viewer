@@ -10,7 +10,7 @@ SitemapGenerator::Sitemap.create do
   add '/panels', changefreq: 'monthly'
 
   Competition.find_each do |competition|
-    add competition_path(competition.short_name)
+    add competition_path(competition.key)
   end
 
   Skater.having_scores.find_each do |skater|

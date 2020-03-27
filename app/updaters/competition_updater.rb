@@ -15,15 +15,13 @@ class CompetitionUpdater < Updater
     return if season_skipper.skip?(season)
 
     data.merge!(options[:attributes] || {})
-    normalize(data)
-
+    #normalize(data)
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        #        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
-        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
+        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_type).compact
         comp.season = season
         yield comp if block_given?
       end
@@ -172,8 +170,13 @@ class CompetitionUpdater < Updater
   ## utils
 
   def normalize(data)
+    if data[:key].nil?
+      data[:key] = data[:name].to_s.upcase.gsub(/\s+/, '_')
+      return
+    end
+
     CompetitionNormalize.all.each do |item|
-      next unless data[:short_name].try(:match?, item.regex)
+      next unless data[:key].try(:match?, item.regex)
 
       data[:competition_class] = item.competition_class
       data[:competition_type] = item.competition_type
