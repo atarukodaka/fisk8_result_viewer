@@ -78,7 +78,7 @@ class CompetitionParser
     end
 
     def invalid_skater_name?(skater_name)
-      skater_name == 'Final not Reached'     ## wc2018 has 'Final not Reached' record
+      skater_name =~ /Final not Reached/i     ## wc2018 has 'Final not Reached' record
     end
   end
 end

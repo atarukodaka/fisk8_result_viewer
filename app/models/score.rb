@@ -24,7 +24,7 @@ class Score < ApplicationRecord
   scope :segment, ->(s) { where(segment: s) }
 
   ## virtual attributes
-  delegate :competition_name, :competition_short_name, :competition_class, :competition_type, :season, to: :competition
+  delegate :competition_name, :competition_key, :competition_class, :competition_type, :season, to: :competition
   delegate :skater_name, :nation, to: :skater
   delegate :category_name, :category_type, :seniority, :team, to: :category
   delegate :segment_name, :segment_type, to: :segment
@@ -52,7 +52,7 @@ class Score < ApplicationRecord
 
   def set_score_name
     if name.blank?
-      self.name = [competition.try(:short_name), category.abbr, segment.abbr, ranking].join('-')
+      self.name = [competition.try(:key), category.abbr, segment.abbr, ranking].join('-')
     end
     self
   end

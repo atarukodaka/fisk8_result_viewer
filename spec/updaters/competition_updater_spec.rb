@@ -190,26 +190,6 @@ RSpec.describe CompetitionUpdater, updater: true, vcr: true do
       its(:updated_at) { is_expected.not_to eq(original.updated_at) }
     end
   end
-=begin
-  describe 'competition class' do
-    it {
-      CompetitionClass.create(competition_class: :isu, competition_type: :zzz, regex: "^ZZZ[0-9]")
-      competition = Competition.create(short_name: "ZZZ2019", start_date: Date.new(2019, 1, 1))
-      expect(competition.competition_class).to eq('isu')
-      expect(competition.competition_type).to eq('zzz')
-    }
-  end
-
-  describe 'competition normalize' do
-    it {
-      CompetitionNormalize.create(regex: '^DUMMY[0-9]', competition_class: 'isu', competition_type: 'dum', name: 'Dummy %{year}')
-      competition = Competition.create(short_name: 'DUMMY2019', start_date: Time.new(2019, 1,1))
-      expect(competition.competition_class).to eq('isu')
-      expect(competition.competition_type).to eq('dum')
-      expect(competition.name).to eq('Dummy 2019')
-    }
-  end
-=end
   ################
   describe 'skater name correction' do
     def expect_same_skater(url, category, ranking) # TODO

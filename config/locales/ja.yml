@@ -90,7 +90,7 @@ ja:
     skater_name: スケーター名
     skater_nation: スケーター国名
     competition_name: 大会名
-    competition_short_name: 大会略称
+    competition_key: 大会キー
     competition_class: 競技クラス
     competition_type: 競技タイプ
     competition_class_type: 競技クラス/タイプ

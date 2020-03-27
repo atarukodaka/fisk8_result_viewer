@@ -2,11 +2,9 @@ class Competition < ApplicationRecord
   before_save :_normalize
 
   alias_attribute :competition_name, :name
-  alias_attribute :competition_short_name, :short_name
-  alias_attribute :competition_key, :short_name
+  alias_attribute :competition_key, :key
 
   ## relations
-  #has_many :performed_segments, dependent: :destroy
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
   has_many :time_schedules, dependent: :destroy
@@ -21,19 +19,20 @@ class Competition < ApplicationRecord
   private
 
   def _normalize
-    if self.short_name
+    if self.key
       matched_item = nil
       CompetitionNormalize.all.each do |item|    ## rubocop:disable Rails/FindEach
-        if self.short_name.to_s.match?(item.regex)
+        if self.key.to_s.match?(item.regex)
           hash = { year: self.start_date.year, country: self.country, city: self.city }
+          self.name = item.name % hash if item.name
+
           self.competition_class = item.competition_class
           self.competition_type = item.competition_type
-          self.name = item.name % hash
           break
         end
       end
     else
-      self.short_name = self.name.to_s.upcase.gsub(/\s+/, '_')
+      self.key = self.name.to_s.upcase.gsub(/\s+/, '_')
     end
 
     self.competition_class ||= 'unknown'

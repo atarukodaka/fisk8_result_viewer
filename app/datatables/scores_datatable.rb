@@ -28,7 +28,7 @@ class ScoresDatatable < IndexDatatable
   # ###############"
   def initialize(*)
     super
-    columns([:score_name, :competition_name, :competition_short_name,
+    columns([:score_name, :competition_name, :competition_key,
              :competition_class, :competition_type,
              :category_name, :category_type_name, :team, :seniority, :segment_name, :segment_type,
              :season, :date, :result_pdf, :ranking, :skater_name, :nation,
@@ -36,7 +36,7 @@ class ScoresDatatable < IndexDatatable
 
     columns.sources = source_mappings
 
-    [:competition_type, :competition_class, :competition_short_name, :season,
+    [:competition_type, :competition_class, :competition_key, :season,
      :category_type_name, :seniority, :segment_type, :team].each do |key|
       columns[key].visible = false
       columns[key].orderable = false

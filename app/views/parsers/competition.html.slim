@@ -8,7 +8,7 @@
 h2 Competition
 
 ul
-  - [:name, :short_name, :site_url, :city, :country, :competition_type, :start_date, :end_date, :comment].each do |k|
+  - [:name, :key, :site_url, :city, :country, :competition_type, :start_date, :end_date, :comment].each do |k|
     li= [k, summary[k]].join(': ')
 
 h3 Table of Index
@@ -35,4 +35,3 @@ ul
     - score_parser = Parser::ScoreParser.new
     - scores = score_parser.parse(seg_item[:score_url])
     = render template: "parsers/scores", locals: { scores: scores }
-  

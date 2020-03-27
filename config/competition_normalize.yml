@@ -8,7 +8,7 @@ isu:
     name: "ISU World Championships %{year}"
   fcc:
     regex: "^FCC[0-9]"
-    name: "ISU Four Continents Championships XXX %{year}"
+    name: "ISU Four Continents Championships %{year}"
   ec:
     regex: "^EC[0-9]"
     name: "ISU European Championships %{year}"

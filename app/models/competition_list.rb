@@ -33,7 +33,7 @@ class CompetitionList < ActiveYaml::Base
     def load_file
       ## ruby2.5, rails5.2.6: hash key needs to be string.
       data = raw_data.map do |key, value|
-        hash = { 'short_name' => key }
+        hash = { 'key' => key }
         case value
         when String
           hash[DEFAULT_KEY] = value
