@@ -5,7 +5,6 @@ class Competition < ApplicationRecord
   alias_attribute :competition_key, :key
 
   ## relations
-  #has_many :performed_segments, dependent: :destroy
   has_many :category_results, dependent: :destroy
   has_many :scores, dependent: :destroy
   has_many :time_schedules, dependent: :destroy
@@ -25,9 +24,10 @@ class Competition < ApplicationRecord
       CompetitionNormalize.all.each do |item|    ## rubocop:disable Rails/FindEach
         if self.key.to_s.match?(item.regex)
           hash = { year: self.start_date.year, country: self.country, city: self.city }
+          self.name = item.name % hash if item.name
+
           self.competition_class = item.competition_class
           self.competition_type = item.competition_type
-          self.name = item.name % hash
           break
         end
       end
