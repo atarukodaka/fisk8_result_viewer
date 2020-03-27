@@ -1,8 +1,6 @@
 module LinkToHelper
   # rubocop:disable Style/OptionalArguments
   def link_to_skater(text = nil, skater, name: nil, isu_number: nil, params: {})
-    binding.pry if skater.nil?
-    return 'NO SKATER SPECIFIED' if skater.nil?
     isu_number ||= skater[:isu_number]
     name ||= skater[:name]
     text ||= name
