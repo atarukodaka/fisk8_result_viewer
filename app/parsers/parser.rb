@@ -2,12 +2,6 @@ class Parser
   include HttpGet
   include DebugPrint
 
-  attr_accessor :verbose
-
-  def initialize(verbose: false)
-    @verbose = verbose
-  end
-
   def find_table_rows(page, keyword, type: :equal)
     xpath = Array(keyword).map do |key|
       cond = (type == :equal) ? "text()='#{key}'" : "contains(text(), '#{key}')"

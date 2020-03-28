@@ -13,6 +13,9 @@ class CompetitionUpdater < Updater
     season = SkateSeason.new(data[:start_date])
     return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season)
 
+    options[:attributes] ||= {}
+    return if Skipper::ClassSkipper.new(options[:competition_class]).skip?(options[:attributes][:key])
+
     data.merge!(options[:attributes] || {})
     #normalize(data)
     ActiveRecord::Base.transaction do
@@ -214,7 +217,7 @@ class CompetitionUpdater < Updater
       "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
     else
       CompetitionParser
-    end.new(verbose: verbose)
+    end.new
   end
 end
 
@@ -246,6 +249,24 @@ class CompetitionUpdater < Updater
         else
           debug('skipping...season %s out of range [%s, %s]' % [season, @from, @to], indent: 3)
           true
+        end
+      end
+    end ## class
+
+    class ClassSkipper
+      include DebugPrint
+      def initialize(specific_competition_class)
+        @specific_competition_class = specific_competition_class
+      end
+      def skip?(competition_key)
+        return false if competition_key.nil? || @specific_competition_class.nil?
+        competition_class = CompetitionNormalize.find_match(competition_key).try(:competition_class)
+
+        if @specific_competition_class != competition_class
+          debug('skipping...class %s not match %s' % [competition_class, @specific_competition_class])
+          true
+        else
+          false
         end
       end
     end

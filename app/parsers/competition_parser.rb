@@ -71,7 +71,7 @@ class CompetitionParser < Parser
   ################
   def get_parser(ptype)
     @parsers ||= {}
-    @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new(verbose: verbose)
+    @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new
   end
 
   def parse_time_schedule(page)
