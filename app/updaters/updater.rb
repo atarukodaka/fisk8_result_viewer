@@ -32,5 +32,5 @@ end
 
 class Updater
   include SkaterFinder
-  include DebugPrint
+  include Message
 end

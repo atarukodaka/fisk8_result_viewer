@@ -50,7 +50,7 @@ class CompetitionParser < Parser
     data[:summary_table].select { |d| d[:type] == :category }.each do |item|
       next if category_skipper&.skip?(item[:category])
 
-      debug('===  %s ===' % [item[:category]], indent: 2)
+      message('===  %s ===' % [item[:category]], indent: 2)
 
       if item[:result_url]   ## wtt doenst have category result
         data[:category_results].push(*parse_category_result(item[:result_url], item[:category]))

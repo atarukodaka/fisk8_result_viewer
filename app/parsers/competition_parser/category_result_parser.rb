@@ -1,7 +1,7 @@
 class CompetitionParser
   class CategoryResultParser < ResultParser
     def parse(url, category, encoding: nil)
-      debug("-- parsing category result for '%-10s': %s" % [category, url], indent: 3)
+      message("-- parsing category result for '%-10s': %s" % [category, url], indent: 3)
       super(url, encoding: encoding).map { |d| d[:category] = category; d }
     end
 

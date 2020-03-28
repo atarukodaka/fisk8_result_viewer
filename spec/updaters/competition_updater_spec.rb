@@ -2,6 +2,7 @@ require 'rails_helper'
 using StringToModel
 
 RSpec.describe CompetitionUpdater, updater: true, vcr: true do
+  before { Message.silent = true }  
   let(:updater) { CompetitionUpdater.new }
 
   shared_examples :having_competition_with_url do

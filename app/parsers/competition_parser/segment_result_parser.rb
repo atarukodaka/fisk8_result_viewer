@@ -1,7 +1,7 @@
 class CompetitionParser
   class SegmentResultParser < ResultParser
     def parse(url, category, segment, encoding: nil)
-      debug("-- parsing segment result for '%-10s/%s': %s" % [category, segment, url], indent: 3)
+      message("-- parsing segment result for '%-10s/%s': %s" % [category, segment, url], indent: 3)
       super(url, encoding: encoding).map { |d| d[:category] = category; d[:segment] = segment; d }
       #binding.pry
       #a
@@ -24,7 +24,7 @@ class CompetitionParser
 
     def get_rows(page)
       find_table_rows(page, ['Pl.', 'PL.'], type: :match) || (
-        debug("No Placement Cell found (#{self.class})")
+        message("No Placement Cell found (#{self.class})")
         nil
       )
     end

@@ -3,8 +3,8 @@ class CompetitionUpdater < Updater
   using StringToModel
 
   def update_competition(site_url, options = {})
-    debug('*' * 100)
-    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
+    message('*' * 100)
+    message("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
     parser = get_parser(options[:parser_type])
@@ -86,7 +86,7 @@ class CompetitionUpdater < Updater
         sk.category_type = category.category_type
       end
       category_result.category = category
-      debug(category_result.summary)
+      message(category_result.summary)
     end
   end
 
@@ -119,7 +119,7 @@ class CompetitionUpdater < Updater
       end
 
       #yield score if block_given?
-      debug(score.summary)
+      message(score.summary)
     end
     if cr
       cr.update(segment.segment_type => sc)
@@ -193,14 +193,14 @@ class CompetitionUpdater < Updater
   def validate_score_matching(segment_result, score)
     [:skater_nation, :ranking, :tss, :tes, :pcs, :deduction, :category, :segment].each do |key|
       if segment_result[key] != score[key]
-        debug("invalid data for key '#{key}': '#{segment_result[key]}' doesnt match '#{score[key]}'")
+        message("invalid data for key '#{key}': '#{segment_result[key]}' doesnt match '#{score[key]}'")
       end
     end
   end
 
   def competition_exists?(site_url)
     if Competition.find_by(site_url: site_url)
-      debug('already existing', indent: 3)
+      message('already existing', indent: 3)
       true
     else
       false
@@ -235,7 +235,7 @@ class CompetitionUpdater < Updater
     end
 
     class SeasonSkipper
-      include DebugPrint
+      include Message
 
       def initialize(specific_season, from: nil, to: nil)
         @from = specific_season || from
@@ -248,14 +248,14 @@ class CompetitionUpdater < Updater
         if (@from.nil? && @to.nil?) || season.between?(@from, @to)
           false
         else
-          debug('skipping...season %s out of range [%s, %s]' % [season, @from, @to], indent: 3)
+          message('skipping...season %s out of range [%s, %s]' % [season, @from, @to], indent: 3)
           true
         end
       end
     end ## class
 
     class ClassSkipper
-      include DebugPrint
+      include Message
       def initialize(specific_competition_class)
         @specific_competition_class = specific_competition_class
       end
@@ -266,7 +266,7 @@ class CompetitionUpdater < Updater
         competition_class = CompetitionNormalize.find_match(competition_key).try(:competition_class)
 
         if @specific_competition_class != competition_class
-          debug('skipping...class %s not match %s' % [competition_class, @specific_competition_class])
+          message('skipping...class %s not match %s' % [competition_class, @specific_competition_class])
           true
         else
           false

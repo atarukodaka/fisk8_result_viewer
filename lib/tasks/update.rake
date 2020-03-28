@@ -1,20 +1,20 @@
 namespace :update do
   desc 'update skaters'
   task skaters: :environment do
-    DebugPrint.verbose(ENV['verbose'].to_i.nonzero?)
+    Message.silent = ENV['silent'].to_i.nonzero?
     SkaterUpdater.new.update_skaters # (details: details)
   end
 
   desc 'update skater detail'
   task skater_detail: :environment do
     isu_number = ENV['isu_number'] || raise('no isu_number given')
-    DebugPrint.verbose(ENV['verbose'].to_i.nonzero?)
+    Message.silent = ENV['silent'].to_i.nonzero?
     SkaterUpdater.new.update_skater_detail(isu_number)
   end
 
   desc 'update all skaters detail'
   task skaters_detail: :environment do
-    DebugPrint.verbose(ENV['verbose'].to_i.nonzero?)
+    Message.silent = ENV['silent'].to_i.nonzero?
     options = { active_only: ENV['active_only'].to_i.nonzero? }
     SkaterUpdater.new.update_skaters_detail(options)
   end
@@ -28,6 +28,7 @@ namespace :update do
       categories: (ENV['categories'].nil?) ? nil : ENV['categories'].to_s.split(/\s*,\s?/),
       enable_judge_details: ENV['enable_judge_details'].to_i.nonzero?,
       verbose: ENV['verbose'].to_i.nonzero?,
+      silent: ENV['silent'].to_i.nonzero?,
       season: ENV['season'],
       season_from: ENV['season_from'],
       season_to: ENV['season_to'],
@@ -39,7 +40,7 @@ namespace :update do
   task competition: :environment do
     options = options_from_env
     options[:parser_type] = ENV['parser_type']
-    DebugPrint.verbose(options[:verbose])
+    Message.silent = options[:slient]
     CompetitionUpdater.new.update_competition(ENV['site_url'], options)
   end
 
@@ -55,9 +56,10 @@ namespace :update do
       list.reverse!
     end
 
+    Message.silent = env_options[:slinent]
     list.each do |item|
       options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
-      DebugPrint.verbose(options[:verbose])
+      #DebugPrint.verbose = options[:verbose]
       options[:attributes] = item.attributes.slice(:key, :city, :name, :comment).compact
       CompetitionUpdater.new.update_competition(item[:site_url], options)
     end ## each

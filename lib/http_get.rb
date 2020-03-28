@@ -2,7 +2,7 @@ require 'open-uri'
 require 'open_uri_redirections'
 
 module HttpGet
-  include DebugPrint
+  include Message
 
   def get_url(url, encoding: nil)
     mode = (encoding) ? ['r', encoding].join(':') : 'r'
@@ -11,7 +11,7 @@ module HttpGet
   rescue OpenURI::HTTPError, Errno::ETIMEDOUT, SocketError, Timeout::Error => e
     #http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/CAT003RS.HTM returns 404 somehow
     Rails.logger.warn(e.message)
-    debug("#{e.message}: #{url}")
+    message("#{e.message}: #{url}")
     nil
   else
     #Nokogiri::HTML(body.force_encoding('UTF-8').scrub('?'))
@@ -26,8 +26,9 @@ module HttpGet
         #debug(" try encode with #{e}")
         body = body.encode('UTF-8', e)
         elem = Nokogiri::HTML(body.to_s.gsub(/&nbsp;?/, ' '))
-      rescue Encoding::UndefinedConversionError, ArgumentError
-        debug("  ! encoding failed with #{e}")
+      rescue Encoding::UndefinedConversionError, ArgumentError => e
+        Rails.logger.warn(e.message)
+        message("  ! encoding failed with #{e}")
       else
         return elem
       end

@@ -8,7 +8,7 @@ class CompetitionParser
 
     def parse(score_url, category = nil, segment = nil)
       text = convert_pdf(score_url) || (return [])
-      debug("-- parsing score for '%-20s': %s" % [[category, segment].join('/'), score_url], indent: 3)
+      message("-- parsing score for '%-20s': %s" % [[category, segment].join('/'), score_url], indent: 3)
       normalize_line(text).split(/\f/).map.with_index(1) do |page_text, i|
         page_text.split(SCORE_DELIMITER)[1..-1].map do |t|
           parse_score(t) do |score|

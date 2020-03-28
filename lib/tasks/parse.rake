@@ -2,8 +2,7 @@ namespace :parse do
   desc 'parse score of given url'
   task scores: :environment do
     url = ENV['url']
-    DebugPrint.verbose(ENV['verbose'].to_i.nonzero?)
-
+    Message.silent = ENV['silent'].to_i.nonzero?
     # parser = CompetitionParser::IsuGeneric::ScoreParser.new
     parser = CompetitionParser::ScoreParser.new
     parser.parse(url).each do |score|

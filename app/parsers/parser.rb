@@ -1,6 +1,8 @@
 class Parser
   include HttpGet
-  include DebugPrint
+  #include DebugPrint
+  include Message
+
 
   def find_table_rows(page, keyword, type: :equal)
     xpath = Array(keyword).map do |key|
