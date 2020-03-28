@@ -59,23 +59,17 @@ class CompetitionUpdater < Updater
           scores = parser.parse_score(d[:score_url], d[:category], d[:segment])
 
           segment_results.each do |res|
-            #            update_score(competition, category, segment,
-            score = scores.find { |s| s[:ranking] == res[:ranking] } || next
-            validate_score_matching(res, score)
-            segment_result = update_segment_result(competition, category, segment, res)
-            score[:elements].each { |d| segment_result.elements.create!(d) }
-            score[:components].each { |d| segment_result.components.create!(d) }
+            score_data = scores.find { |s| s[:ranking] == res[:ranking] } || next
+            validate_score_matching(res, score_data)
+            score = update_score(competition, category, segment, res.merge(score_data))
+            score.date = date
 
-            segment_result.date = date
-            segment_result.elements_summary = score[:elements].map { |d| d[:name] }.join('/')
-            segment_result.components_summary = score[:components].map { |d| d[:value] }.join('/')
-            segment_result.save!
             next if !options[:enable_judge_details] || competition.season < '2016-17'
 
             ## details / deviations
             officials = competition.officials.where(category: category, segment: segment).map { |d| [d.number, d] }.to_h
-            update_judge_details(segment_result, officials: officials)
-            update_deviations(segment_result, officials: officials)
+            update_judge_details(score, officials: officials)
+            update_deviations(score, officials: officials)
           end
         end
       end
@@ -110,7 +104,7 @@ class CompetitionUpdater < Updater
     end
   end
 
-  def update_segment_result(competition, category, segment, item)
+  def update_score(competition, category, segment, item)
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)
@@ -124,7 +118,7 @@ class CompetitionUpdater < Updater
         sk.category_type = category.category_type
       end
 
-      yield score if block_given?
+      #yield score if block_given?
       debug(score.summary)
     end
     if cr
@@ -133,6 +127,13 @@ class CompetitionUpdater < Updater
         cr.update("#{segment.segment_type}_#{key}" => sc[key])
       end
     end
+    item[:elements].each { |d| sc.elements.create!(d) }
+    item[:components].each { |d| sc.components.create!(d) }
+
+    #segment_result.date = date
+    sc.elements_summary = item[:elements].map { |d| d[:name] }.join('/')
+    sc.components_summary = item[:components].map { |d| d[:value] }.join('/')
+    sc.save!
 
     sc  ## ensure to return score object
   end
