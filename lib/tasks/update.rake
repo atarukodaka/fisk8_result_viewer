@@ -54,7 +54,7 @@ namespace :update do
     end
 
     list.each do |item|
-      options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
+      options = env_options.slice(:categories, :enable_judge_details, :season, :season_from, :season_to).merge(item.attributes.slice(:parser_type, :encoding))
       options[:attributes] = item.attributes.slice(:key, :city, :name, :comment).compact
       CompetitionUpdater.new(verbose: options[:verbose]).update_competition(item[:site_url], options)
     end ## each

@@ -9,10 +9,9 @@ class CompetitionUpdater < Updater
 
     parser = get_parser(options[:parser_type])
     data = parser.parse_summary(site_url, encoding: options[:encoding]) || return
-    category_skipper = CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
-    season_skipper = SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to])
+    category_skipper = Skipper::CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
     season = SkateSeason.new(data[:start_date])
-    return if season_skipper.skip?(season)
+    return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season)
 
     data.merge!(options[:attributes] || {})
     #normalize(data)
@@ -23,7 +22,6 @@ class CompetitionUpdater < Updater
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
         comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_type).compact
         comp.season = season
-        yield comp if block_given?
       end
 
       ## category
@@ -58,6 +56,7 @@ class CompetitionUpdater < Updater
           scores = parser.parse_score(d[:score_url], d[:category], d[:segment])
 
           segment_results.each do |res|
+            #            update_score(competition, category, segment,
             score = scores.find { |s| s[:ranking] == res[:ranking] } || next
             validate_score_matching(res, score)
             segment_result = update_segment_result(competition, category, segment, res)
@@ -216,5 +215,39 @@ class CompetitionUpdater < Updater
     else
       CompetitionParser
     end.new(verbose: verbose)
+  end
+end
+
+class CompetitionUpdater < Updater
+  module Skipper
+    class CategorySkipper
+      def initialize(categories, excluding: nil)
+        @categories_to_update = categories || Category.all.map(&:name).reject { |d| Array(excluding).include?(d) }
+      end
+
+      def skip?(category)
+        !@categories_to_update.include?(category)
+      end
+    end
+
+    class SeasonSkipper
+      include DebugPrint
+
+      def initialize(specific_season, from: nil, to: nil)
+        @from = specific_season || from
+        @to = specific_season || to
+      end
+
+      def skip?(season)
+        season = SkateSeason.new(season) unless season.class == SkateSeason
+
+        if (@from.nil? && @to.nil?) || season.between?(@from, @to)
+          false
+        else
+          debug('skipping...season %s out of range [%s, %s]' % [season, @from, @to], indent: 3)
+          true
+        end
+      end
+    end
   end
 end

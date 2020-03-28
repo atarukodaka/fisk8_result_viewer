@@ -29,7 +29,7 @@ class CompetitionNormalize < ActiveYaml::Base
     end ## load file
 
     def find_match(key)
-      self.find_each do |item|
+      self.all.find_each do |item|
         return item if key.to_s.match?(item.regex)
       end
       nil

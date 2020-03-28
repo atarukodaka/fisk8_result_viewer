@@ -35,7 +35,5 @@ class Competition < ApplicationRecord
     self.season ||= SkateSeason.new(self.start_date).season if self.start_date
 
     self           ## ensure to return self
-
   end
-
 end

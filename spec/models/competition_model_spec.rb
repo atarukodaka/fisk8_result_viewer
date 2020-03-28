@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Competition do
   describe 'normalization' do
     describe 'unknown' do
-      subject { Competition.create(key: 'FOOOOTESTDUMMY', start_date: Time.zone.today)}
+      subject { Competition.create(key: 'FOOOOTESTDUMMY', start_date: Time.zone.today) }
       its(:competition_class) { is_expected.to eq('unknown') }
     end
 
