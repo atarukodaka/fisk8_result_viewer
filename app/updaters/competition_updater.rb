@@ -258,8 +258,10 @@ class CompetitionUpdater < Updater
       def initialize(specific_competition_class)
         @specific_competition_class = specific_competition_class
       end
+
       def skip?(competition_key)
         return false if competition_key.nil? || @specific_competition_class.nil?
+
         competition_class = CompetitionNormalize.find_match(competition_key).try(:competition_class)
 
         if @specific_competition_class != competition_class
