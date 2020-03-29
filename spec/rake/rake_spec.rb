@@ -13,8 +13,8 @@ RSpec.describe 'rake', rake: true, vcr: true do
   describe 'update skater' do
     describe 'skaters' do
       it do
-        @rake['update:skaters'].invoke
         ENV['silent'] = "1"
+        @rake['update:skaters'].invoke
         expect(Skater.count).to be > 0
       end
     end

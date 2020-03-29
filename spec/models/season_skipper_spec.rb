@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe CompetitionUpdater::Skipper::SeasonSkipper do
+  before { Message.silent = true } 
   describe 'blank' do
-    let (:skipper) { CompetitionUpdater::Skipper::CompetitionUpdater::Skipper::SeasonSkipper.new(nil) }
+    let (:skipper) { CompetitionUpdater::Skipper::SeasonSkipper.new(nil) }
     it { expect(skipper.skip?('2015')).to be false }
   end
 

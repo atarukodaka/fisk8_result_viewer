@@ -40,7 +40,7 @@ namespace :update do
   task competition: :environment do
     options = options_from_env
     options[:parser_type] = ENV['parser_type']
-    Message.silent = options[:slient]
+    Message.silent = options[:silent]
     CompetitionUpdater.new.update_competition(ENV['site_url'], options)
   end
 
@@ -56,7 +56,7 @@ namespace :update do
       list.reverse!
     end
 
-    Message.silent = env_options[:slinent]
+    Message.silent = env_options[:silent]
     list.each do |item|
       options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
       #DebugPrint.verbose = options[:verbose]

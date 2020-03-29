@@ -19,7 +19,7 @@ namespace :parse do
       if score[:deduction_reasons]
         str << "\nDeductions\n  " + score[:deduction_reasons] << "\n"
       end
-      puts str if verbose
+      Message.message(str)
     end
   end
 end
