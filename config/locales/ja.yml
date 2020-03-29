@@ -92,7 +92,7 @@ ja:
     competition_name: 大会名
     competition_key: 大会キー
     competition_class: 競技クラス
-    competition_type: 競技タイプ
+    competition_subtype: 競技サブクラス
     competition_class_type: 競技クラス/タイプ
     score_name: スコア名
     category: カテゴリー
@@ -144,7 +144,7 @@ ja:
         period: 開催期間
         competition_class: 競技クラス
         competition_class_type: 競技クラス
-        competition_type: 競技タイプ
+        competition_subtype: 競技タイプ
         season: シーズン
         start_date: 開始日
         end_date: 終了日

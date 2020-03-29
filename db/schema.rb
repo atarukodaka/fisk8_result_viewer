@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 5) do
     t.date "end_date"
     t.string "season"
     t.string "site_url"
-    t.string "competition_type", default: "unknown"
+    t.string "competition_subclass", default: "unknown"
     t.string "competition_class", default: "unknown"
     t.string "comment"
     t.datetime "created_at", null: false

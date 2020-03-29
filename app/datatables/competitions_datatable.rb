@@ -12,7 +12,7 @@ class CompetitionsDatatable < IndexDatatable
         filter(:competition_class, nil) {
           [
             filter(:competition_class, :select),
-            filter(:competition_type, :select),
+            filter(:competition_subclass, :select),
             filter(:season_operator, :select, label: 'season', onchange: ->(dt) { ajax_draw(dt) },
                    options: { '=': :eq, '<': :lt, '<=': :lteq, '>': :gt, '>=': :gteq }),
             filter(:season, :select, label: ''),
@@ -28,10 +28,10 @@ class CompetitionsDatatable < IndexDatatable
   def initialize(*)
     super
     columns([:competition_name, :competition_key, :site_url, :city, :country,
-             :competition_class, :competition_type, :season, :start_date, :timezone])
+             :competition_class, :competition_subclass, :season, :start_date, :timezone])
     columns.sources = source_mappings
 
-    [:competition_key, :competition_class, :competition_type].each do |key|
+    [:competition_key, :competition_class, :competition_subclass].each do |key|
       columns[key].operator = :eq
     end
 

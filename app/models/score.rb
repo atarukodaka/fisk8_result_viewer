@@ -24,7 +24,7 @@ class Score < ApplicationRecord
   scope :segment, ->(s) { where(segment: s) }
 
   ## virtual attributes
-  delegate :competition_name, :competition_key, :competition_class, :competition_type, :season, to: :competition
+  delegate :competition_name, :competition_key, :competition_class, :competition_subclass, :season, to: :competition
   delegate :skater_name, :nation, to: :skater
   delegate :category_name, :category_type, :seniority, :team, to: :category
   delegate :segment_name, :segment_type, to: :segment

@@ -16,7 +16,7 @@ class IndexDatatable < AjaxDatatables::Datatable
       competition_name:  'competitions.name',
       competition_key:  'competitions.key',
       competition_class: 'competitions.competition_class',
-      competition_type:  'competitions.competition_type',
+      competition_subclass:  'competitions.competition_subclass',
 
       team:              'categories.team',
       seniority:         'categories.seniority',
