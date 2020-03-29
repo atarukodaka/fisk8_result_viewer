@@ -3,7 +3,6 @@ class Parser
   #include DebugPrint
   include Message
 
-
   def find_table_rows(page, keyword, type: :equal)
     xpath = Array(keyword).map do |key|
       cond = (type == :equal) ? "text()='#{key}'" : "contains(text(), '#{key}')"
