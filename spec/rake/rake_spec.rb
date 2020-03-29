@@ -8,12 +8,12 @@ RSpec.describe 'rake', rake: true, vcr: true do
     Rake.application.rake_require('update', [Rails.root.join('lib', 'tasks')])
     Rake.application.rake_require('parse', [Rails.root.join('lib', 'tasks')])
     Rake::Task.define_task(:environment)
+    ENV['silent'] = '1'
   end
 
   describe 'update skater' do
     describe 'skaters' do
       it do
-        ENV['silent'] = '1'
         @rake['update:skaters'].invoke
         expect(Skater.count).to be > 0
       end
@@ -22,7 +22,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
       it {
         isu_number = 10_967
         ENV['isu_number'] = isu_number.to_s
-        ENV['silent'] = '1'
         @rake['update:skater_detail'].invoke
         expect(Skater.find_by(isu_number: isu_number).coach).not_to be_nil
       }
@@ -34,7 +33,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
     it {
       site_url = 'http://www.isuresults.com/results/season1718/wc2018/'
       ENV['site_url'] = site_url
-      ENV['silent'] = '1'
       @rake['update:competition'].execute
       expect(Competition.find_by(site_url: site_url).site_url).to eq(site_url)
     }
@@ -42,7 +40,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
   context 'update competitions' do
     it {
       ENV['last'] = '1'
-      ENV['silent'] = '1'
       @rake['update:competitions'].execute
       site_url = CompetitionList.last.site_url
       expect(Competition.find_by(site_url: site_url).site_url).to eq(site_url)
@@ -51,7 +48,6 @@ RSpec.describe 'rake', rake: true, vcr: true do
   ################
   describe 'parse scores' do
     it {
-      ENV['silent'] = '1'
       ENV['url'] = 'http://www.isuresults.com/results/season1617/wc2017/wc2017_Men_SP_Scores.pdf'
       expect(@rake['parse:scores'].invoke).to be_truthy
     }
