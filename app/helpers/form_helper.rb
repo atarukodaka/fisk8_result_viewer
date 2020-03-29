@@ -35,7 +35,7 @@ module FormHelper
         FormHelper.cache_uniq_list("segment/#{key}", Segment.order(:id), key)
       when :nation
         FormHelper.cache_uniq_list('skater/nation', Skater.order(:nation), :nation)
-      when :competition_class, :competition_type
+      when :competition_class, :competition_subclass
         FormHelper.cache_uniq_list("competition/#{key}", Competition.all, key).sort
       when :season_from, :season_to, :season
         FormHelper.cache_uniq_list('competition/competition_season', Competition.all, :season).sort.reverse

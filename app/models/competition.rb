@@ -26,7 +26,7 @@ class Competition < ApplicationRecord
       self.name = item.name % hash if item.name
 
       self.competition_class = item.competition_class
-      self.competition_type = item.competition_type
+      self.competition_subclass = item.competition_subclass
     end
   end
 

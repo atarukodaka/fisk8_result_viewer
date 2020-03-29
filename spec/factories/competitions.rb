@@ -4,7 +4,7 @@ FactoryBot.define do
     trait :world do
       name { 'World FS 2015' }
       key { 'WORLD2015' }
-      competition_type { 'world' }
+      competition_subclass { 'world' }
       competition_class { 'isu' }
       city { 'Tokyo' }
       country { 'JPN' }
@@ -27,7 +27,7 @@ FactoryBot.define do
       key { 'FIN2017' }
       name { 'Finlandia 2017' }
       season { '2017-18' }
-      competition_type { 'finlandia' }
+      competition_subclass { 'finlandia' }
       competition_class { 'challenger' }
       city { 'Finland' }
       country { 'FIN' }

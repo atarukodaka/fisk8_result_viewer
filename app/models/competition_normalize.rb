@@ -5,15 +5,15 @@ class CompetitionNormalize < ActiveYaml::Base
   field :regex, default: ''
   field :name
   field :competition_class, default: :unknown
-  field :competition_type, default: :unknown
+  field :competition_subclass, default: :unknown
 
   class << self
     def load_file
       raw_data.map do |competition_class, v|
-        v.map do |competition_type, value|
+        v.map do |competition_subclass, value|
           hash = {
             competition_class: competition_class,
-            competition_type: competition_type,
+            competition_subclass: competition_subclass,
           }
           case value
           when String

@@ -8,7 +8,7 @@
 h2 Competition
 
 ul
-  - [:name, :key, :site_url, :city, :country, :competition_type, :start_date, :end_date, :comment].each do |k|
+  - [:name, :key, :site_url, :city, :country, :competition_subclass, :start_date, :end_date, :comment].each do |k|
     li= [k, summary[k]].join(': ')
 
 h3 Table of Index

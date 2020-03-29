@@ -9,11 +9,11 @@ RSpec.describe Competition do
 
     describe 'normalize name, class, type' do
       subject {
-        CompetitionNormalize.create(regex: '^ZZZWC[0-9]', competition_class: 'zzzisu', competition_type: 'zzzworld', name: 'ZZZ ISU World Figure Skating %{year}')
+        CompetitionNormalize.create(regex: '^ZZZWC[0-9]', competition_class: 'zzzisu', competition_subclass: 'zzzworld', name: 'ZZZ ISU World Figure Skating %{year}')
         Competition.create(key: 'ZZZWC2017', start_date: '2017-7-1')
       }
       its(:competition_class) { is_expected.to eq('zzzisu') }
-      its(:competition_type) { is_expected.to eq('zzzworld') }
+      its(:competition_subclass) { is_expected.to eq('zzzworld') }
       its(:name) { is_expected.to eq('ZZZ ISU World Figure Skating 2017') }
     end
 

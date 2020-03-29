@@ -23,7 +23,7 @@ class CompetitionUpdater < Updater
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_type).compact
+        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_subclass).compact
         comp.season = season
       end
 
@@ -182,7 +182,7 @@ class CompetitionUpdater < Updater
       next unless data[:key].try(:match?, item.regex)
 
       data[:competition_class] = item.competition_class
-      data[:competition_type] = item.competition_type
+      data[:competition_subclass] = item.competition_subclass
       if item.name
         hash = { year: data[:start_date].year, country: data[:country], city: data[:city] }
         data[:name] = item.name % hash
