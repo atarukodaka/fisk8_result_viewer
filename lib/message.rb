@@ -9,6 +9,7 @@ module Message
 
   def message(msg, indent: 0)
     puts(' ' * indent + msg) unless Message.silent
+    #Rails.logger.info(' ' * indent + msg) unless Message.silent
   end
   module_function :message
 end

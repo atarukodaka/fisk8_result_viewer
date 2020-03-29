@@ -54,9 +54,11 @@ crumb :scores do
 end
 
 crumb :score do |score|
-  link [score.competition_name, score.category.name, score.segment.name,
-        score.ranking, score.skater_name].join(' / '), scores_path
-  parent :scores
+  #link [score.competition_name, score.category.name, score.segment.name,
+  #      score.ranking, score.skater_name].join(' / '), scores_path
+  #parent :scores
+  link [score.ranking, score.skater_name].join(' / '), scores_path
+  parent :competition_segment, score.competition, score.category, score.segment
 end
 
 ################

@@ -7,16 +7,16 @@ class CompetitionUpdater < Updater
     message("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
+    options[:attributes] ||= {}
+
     parser = get_parser(options[:parser_type])
     data = parser.parse_summary(site_url, encoding: options[:encoding]) || return
     category_skipper = Skipper::CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
     season = SkateSeason.new(data[:start_date])
-    return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season)
+    return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season) ||
+              Skipper::ClassSkipper.new(options[:competition_class]).skip?(options[:attributes][:key])
 
-    options[:attributes] ||= {}
-    return if Skipper::ClassSkipper.new(options[:competition_class]).skip?(options[:attributes][:key])
-
-    data.merge!(options[:attributes] || {})
+    data.merge!(options[:attributes])
     #normalize(data)
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
@@ -60,9 +60,9 @@ class CompetitionUpdater < Updater
 
           segment_results.each do |res|
             score_data = scores.find { |s| s[:ranking] == res[:ranking] } || next
+            score_data[:date] = date
             validate_score_matching(res, score_data)
             score = update_score(competition, category, segment, res.merge(score_data))
-            score.date = date
 
             next if !options[:enable_judge_details] || competition.season < '2016-17'
 
