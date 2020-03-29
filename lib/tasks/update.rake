@@ -27,19 +27,18 @@ namespace :update do
       force: ENV['force'].to_i.nonzero?,
       categories: (ENV['categories'].nil?) ? nil : ENV['categories'].to_s.split(/\s*,\s?/),
       enable_judge_details: ENV['enable_judge_details'].to_i.nonzero?,
-      verbose: ENV['verbose'].to_i.nonzero?,
       silent: ENV['silent'].to_i.nonzero?,
       season: ENV['season'],
       season_from: ENV['season_from'],
       season_to: ENV['season_to'],
-      competition_class: ENV['competition_class'],
     }
   end
 
   desc 'update competition'
   task competition: :environment do
-    options = options_from_env
+    options = options_from_env.slice(:parser_type, :categories, :enable_judge_details, :silent)
     options[:parser_type] = ENV['parser_type']
+    options[:attributes] = { competition_class: ENV['competition_class'] }
     Message.silent = options[:silent]
     CompetitionUpdater.new.update_competition(ENV['site_url'], options)
   end
