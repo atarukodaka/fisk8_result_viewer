@@ -7,7 +7,7 @@ class SkaterUpdater < Updater
 
   def update_skaters
     CategoryType.all.each do |category_type|
-      debug("#{category_type.name}: #{category_type.isu_bio_url}")
+      message("#{category_type.name}: #{category_type.isu_bio_url}")
 
       cols = Skater.column_names.map(&:to_sym)
       data = []
@@ -37,10 +37,10 @@ class SkaterUpdater < Updater
 
   def update_skater_detail(isu_number)
     skater = Skater.find_or_create_by(isu_number: isu_number)
-    debug("#{skater.name}[#{skater.isu_number}]...")
+    message("#{skater.name}[#{skater.isu_number}]...")
     details_hash = parser.parse_skater_details(skater.isu_number)
 
-    debug('   %s' %
+    message('   %s' %
           details_hash.values_at(:club, :coach, :birthday, :bio_updated_at).join('/'))
     ActiveRecord::Base.transaction do
       attrs = [:name, :nation, :height, :birthday, :hometown, :club, :hobbies,

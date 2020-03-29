@@ -26,6 +26,13 @@ class CompetitionNormalize < ActiveYaml::Base
           hash
         end
       end.flatten
+    end ## load file
+
+    def find_match(key)
+      self.all.each do |item| ## rubocop:disable Rails/FindEach
+        return item if key.to_s.match?(item.regex)
+      end
+      nil
     end
   end
 end

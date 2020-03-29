@@ -12,7 +12,7 @@ class CompetitionParser
 
     def parse(url, category, segment, encoding: nil)
       page = get_url(url, encoding: encoding).presence || (return [])
-      debug("-- parsing officials: #{url}", indent: 3)
+      message("-- parsing officials: #{url}", indent: 3)
 
       rows = get_rows(page) || raise('table not found')
       rows.map do |row|

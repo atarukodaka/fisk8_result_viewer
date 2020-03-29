@@ -6,7 +6,7 @@ class CompetitionsDatatable < IndexDatatable
         filter(:competition_name, nil) {
           [
             filter(:competition_name, :text_field, size: 40),
-            filter(:competition_short_name, :select)
+            filter(:competition_key, :select)
           ]
         },
         filter(:competition_class, nil) {
@@ -27,11 +27,11 @@ class CompetitionsDatatable < IndexDatatable
   # include IndexDatatable::SeasonFilterable
   def initialize(*)
     super
-    columns([:competition_name, :competition_short_name, :site_url, :city, :country,
+    columns([:competition_name, :competition_key, :site_url, :city, :country,
              :competition_class, :competition_type, :season, :start_date, :timezone])
     columns.sources = source_mappings
 
-    [:competition_short_name, :competition_class, :competition_type].each do |key|
+    [:competition_key, :competition_class, :competition_type].each do |key|
       columns[key].operator = :eq
     end
 

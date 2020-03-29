@@ -3,7 +3,7 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
     ################
     # competitions
     create_table :competitions do |t|
-      t.string :short_name
+      t.string :key
       t.string :name
       t.string :city
       t.string :country
@@ -12,8 +12,8 @@ class CreateCompetitions < ActiveRecord::Migration[5.1]
       t.date :end_date
       t.string :season
       t.string :site_url
-      t.string :competition_type
-      t.string :competition_class
+      t.string :competition_type, default: 'unknown'
+      t.string :competition_class, default: 'unknown'
       t.string :comment
 
       t.timestamps

@@ -1,6 +1,6 @@
 module ScoreVirtualAttributes
   ## shared virtual attributes for elements/components
-  [:score_name, :competition_name, :competition_short_name, :competition_class,
+  [:score_name, :competition_name, :competition_key, :competition_class,
    :competition_type, :team, :season,
    :category_name, :category_type_name, :seniority, :segment_name, :segment_type,
    :ranking, :skater_name, :nation, :date].each do |key|

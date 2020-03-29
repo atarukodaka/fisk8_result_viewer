@@ -1,21 +1,25 @@
 require 'rails_helper'
 
-=begin
 RSpec.describe Competition do
   describe 'normalization' do
-    it {
-      comp = Competition.create(short_name: 'FOOOOTESTDUMMY', start_date: Time.zone.today)
-      expect(comp.competition_class).to eq('unknown')
-    }
+    describe 'unknown' do
+      subject { Competition.create(key: 'FOOOOTESTDUMMY', start_date: Time.zone.today) }
+      its(:competition_class) { is_expected.to eq('unknown') }
+    end
 
-    it {
-      CompetitionNormalize.create(regex: '^WC[0-9]', competition_class: 'isu', competition_type: 'world',
-                                  name: 'ISU World Figure Skating %{year}')
-      comp = Competition.create(short_name: 'WC2017', start_date: '2017-7-1')
-      expect(comp.competition_class).to eq('isu')
-      expect(comp.competition_type).to eq('wc')
-      expect(comp.name).to eq('ISU World Figure Skating 2017')
-    }
+    describe 'normalize name, class, type' do
+      subject {
+        CompetitionNormalize.create(regex: '^ZZZWC[0-9]', competition_class: 'zzzisu', competition_type: 'zzzworld', name: 'ZZZ ISU World Figure Skating %{year}')
+        Competition.create(key: 'ZZZWC2017', start_date: '2017-7-1')
+      }
+      its(:competition_class) { is_expected.to eq('zzzisu') }
+      its(:competition_type) { is_expected.to eq('zzzworld') }
+      its(:name) { is_expected.to eq('ZZZ ISU World Figure Skating 2017') }
+    end
+
+    describe 'no key' do
+      subject { Competition.create(name: 'Foo Skating') }
+      its(:key) { is_expected.to eq('FOO_SKATING') }
+    end
   end
 end
-=end

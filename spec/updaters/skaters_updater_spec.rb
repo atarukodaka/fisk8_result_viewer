@@ -2,7 +2,8 @@ require 'rails_helper'
 using StringToModel
 
 RSpec.describe SkaterUpdater, updater: true, vcr: true do
-  let!(:updater) { SkaterUpdater.new(verbose: false) }
+  before { Message.silent = true }
+  let!(:updater) { SkaterUpdater.new }
 
   describe 'update skaters' do
     let!(:all_skaters) { updater.update_skaters }

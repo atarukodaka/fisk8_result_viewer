@@ -8,6 +8,7 @@ RSpec.describe 'rake', rake: true, vcr: true do
     Rake.application.rake_require('update', [Rails.root.join('lib', 'tasks')])
     Rake.application.rake_require('parse', [Rails.root.join('lib', 'tasks')])
     Rake::Task.define_task(:environment)
+    ENV['silent'] = '1'
   end
 
   describe 'update skater' do

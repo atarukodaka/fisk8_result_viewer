@@ -114,7 +114,7 @@ class SkaterParser < Parser
       begin
         data[:bio_updated_at] = $1.in_time_zone('UTC')
       rescue ArgumentError => e
-        debug(e.message)
+        message(e.message)
       end
     end
     data

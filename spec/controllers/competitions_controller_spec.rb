@@ -22,23 +22,23 @@ RSpec.describe CompetitionsController, type: :controller do
     let(:category) { score.category }
     let(:segment) { score.segment }
 
-    context 'short_name' do
-      subject { get :show, params: { short_name: world.short_name } }
+    context '' do
+      subject { get :show, params: { key: world.key } }
       its(:body) { is_expected.to have_content(world.name) }
     end
 
-    context 'short_name/category' do
+    context 'key/category' do
       subject {
-        get :show, params: { short_name: world.short_name, category: category.name }
+        get :show, params: { key: world.key, category: category.name }
       }
       its(:body) {
         is_expected.to have_content(world.name)
         is_expected.to have_content(category.name)
       }
     end
-    context 'short_name/category/segment' do
+    context 'key/category/segment' do
       subject {
-        get :show, params: { short_name: world.short_name,
+        get :show, params: { key: world.key,
                              category: score.category.name, segment: score.segment.name }
       }
       its(:body) {
@@ -50,7 +50,7 @@ RSpec.describe CompetitionsController, type: :controller do
     end
     context 'format: json' do
       subject {
-        get :show, params: { short_name: world.short_name,
+        get :show, params: { key: world.key,
                              category: score.category.name, segment: score.segment.name, format: 'json' }
       }
       its(:content_type) { is_expected.to eq('application/json') }

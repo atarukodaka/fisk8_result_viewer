@@ -3,29 +3,28 @@ class CompetitionUpdater < Updater
   using StringToModel
 
   def update_competition(site_url, options = {})
-    debug('*' * 100)
-    debug("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
+    message('*' * 100)
+    message("updating competition '%s' with %s parser" % [site_url, options[:parser_type] || 'standard'])
     return if !options[:force] && competition_exists?(site_url)
 
     parser = get_parser(options[:parser_type])
     data = parser.parse_summary(site_url, encoding: options[:encoding]) || return
-    category_skipper = CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
-    season_skipper = SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to])
+    category_skipper = Skipper::CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
     season = SkateSeason.new(data[:start_date])
-    return if season_skipper.skip?(season)
+    return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season)
+
+    options[:attributes] ||= {}
+    return if Skipper::ClassSkipper.new(options[:competition_class]).skip?(options[:attributes][:key])
 
     data.merge!(options[:attributes] || {})
-    normalize(data)
-
+    #normalize(data)
     ActiveRecord::Base.transaction do
       clear_existing_competitions(site_url)
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        #        comp.attributes = data.merge(options[:attributes] || {}).slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
-        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :short_name, :country, :city, :competition_class, :competition_type).compact
+        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_type).compact
         comp.season = season
-        yield comp if block_given?
       end
 
       ## category
@@ -60,22 +59,17 @@ class CompetitionUpdater < Updater
           scores = parser.parse_score(d[:score_url], d[:category], d[:segment])
 
           segment_results.each do |res|
-            score = scores.find { |s| s[:ranking] == res[:ranking] } || next
-            validate_score_matching(res, score)
-            segment_result = update_segment_result(competition, category, segment, res)
-            score[:elements].each { |d| segment_result.elements.create!(d) }
-            score[:components].each { |d| segment_result.components.create!(d) }
+            score_data = scores.find { |s| s[:ranking] == res[:ranking] } || next
+            validate_score_matching(res, score_data)
+            score = update_score(competition, category, segment, res.merge(score_data))
+            score.date = date
 
-            segment_result.date = date
-            segment_result.elements_summary = score[:elements].map { |d| d[:name] }.join('/')
-            segment_result.components_summary = score[:components].map { |d| d[:value] }.join('/')
-            segment_result.save!
             next if !options[:enable_judge_details] || competition.season < '2016-17'
 
             ## details / deviations
             officials = competition.officials.where(category: category, segment: segment).map { |d| [d.number, d] }.to_h
-            update_judge_details(segment_result, officials: officials)
-            update_deviations(segment_result, officials: officials)
+            update_judge_details(score, officials: officials)
+            update_deviations(score, officials: officials)
           end
         end
       end
@@ -92,7 +86,7 @@ class CompetitionUpdater < Updater
         sk.category_type = category.category_type
       end
       category_result.category = category
-      debug(category_result.summary)
+      message(category_result.summary)
     end
   end
 
@@ -110,7 +104,7 @@ class CompetitionUpdater < Updater
     end
   end
 
-  def update_segment_result(competition, category, segment, item)
+  def update_score(competition, category, segment, item)
     cr = nil
     sc = competition.scores.create! do |score|
       score.update_common_attributes(item)
@@ -124,8 +118,8 @@ class CompetitionUpdater < Updater
         sk.category_type = category.category_type
       end
 
-      yield score if block_given?
-      debug(score.summary)
+      #yield score if block_given?
+      message(score.summary)
     end
     if cr
       cr.update(segment.segment_type => sc)
@@ -133,6 +127,13 @@ class CompetitionUpdater < Updater
         cr.update("#{segment.segment_type}_#{key}" => sc[key])
       end
     end
+    item[:elements].each { |d| sc.elements.create!(d) }
+    item[:components].each { |d| sc.components.create!(d) }
+
+    #segment_result.date = date
+    sc.elements_summary = item[:elements].map { |d| d[:name] }.join('/')
+    sc.components_summary = item[:components].map { |d| d[:value] }.join('/')
+    sc.save!
 
     sc  ## ensure to return score object
   end
@@ -172,8 +173,13 @@ class CompetitionUpdater < Updater
   ## utils
 
   def normalize(data)
+    if data[:key].nil?
+      data[:key] = data[:name].to_s.upcase.gsub(/\s+/, '_')
+      return
+    end
+
     CompetitionNormalize.all.each do |item|
-      next unless data[:short_name].try(:match?, item.regex)
+      next unless data[:key].try(:match?, item.regex)
 
       data[:competition_class] = item.competition_class
       data[:competition_type] = item.competition_type
@@ -187,14 +193,14 @@ class CompetitionUpdater < Updater
   def validate_score_matching(segment_result, score)
     [:skater_nation, :ranking, :tss, :tes, :pcs, :deduction, :category, :segment].each do |key|
       if segment_result[key] != score[key]
-        debug("invalid data for key '#{key}': '#{segment_result[key]}' doesnt match '#{score[key]}'")
+        message("invalid data for key '#{key}': '#{segment_result[key]}' doesnt match '#{score[key]}'")
       end
     end
   end
 
   def competition_exists?(site_url)
     if Competition.find_by(site_url: site_url)
-      debug('already existing', indent: 3)
+      message('already existing', indent: 3)
       true
     else
       false
@@ -212,6 +218,60 @@ class CompetitionUpdater < Updater
       "CompetitionParser::Extension::#{parser_type.to_s.camelize}".constantize
     else
       CompetitionParser
-    end.new(verbose: verbose)
+    end.new
+  end
+end
+
+class CompetitionUpdater < Updater
+  module Skipper
+    class CategorySkipper
+      def initialize(categories, excluding: nil)
+        @categories_to_update = categories || Category.all.map(&:name).reject { |d| Array(excluding).include?(d) }
+      end
+
+      def skip?(category)
+        !@categories_to_update.include?(category)
+      end
+    end
+
+    class SeasonSkipper
+      include Message
+
+      def initialize(specific_season, from: nil, to: nil)
+        @from = specific_season || from
+        @to = specific_season || to
+      end
+
+      def skip?(season)
+        season = SkateSeason.new(season) unless season.class == SkateSeason
+
+        if (@from.nil? && @to.nil?) || season.between?(@from, @to)
+          false
+        else
+          message('skipping...season %s out of range [%s, %s]' % [season, @from, @to], indent: 3)
+          true
+        end
+      end
+    end ## class
+
+    class ClassSkipper
+      include Message
+      def initialize(specific_competition_class)
+        @specific_competition_class = specific_competition_class
+      end
+
+      def skip?(competition_key)
+        return false if competition_key.nil? || @specific_competition_class.nil?
+
+        competition_class = CompetitionNormalize.find_match(competition_key).try(:competition_class)
+
+        if @specific_competition_class != competition_class
+          message('skipping...class %s not match %s' % [competition_class, @specific_competition_class])
+          true
+        else
+          false
+        end
+      end
+    end
   end
 end

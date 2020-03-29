@@ -42,7 +42,6 @@ class CompetitionParser
       end.compact
 
       [nil, '%d/%m/%Y', '%m/%d/%Y', '%d.%m.%Y', '%m.%d.%Y'].each do |md_format|
-        #debug("** parse date by #{md_format}")
         invalid_format = false
         tmp_data = data.deep_dup
         tmp_data.each do |elem|
@@ -56,7 +55,6 @@ class CompetitionParser
             elem[:starting_time] = tm
           rescue ArgumentError
             invalid_format = true
-            #debug("** invalid format #{md_format} on #{elem[:starting_time]}")
             break
           end
         end
