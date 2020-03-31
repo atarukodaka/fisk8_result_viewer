@@ -1,13 +1,15 @@
 
 ## TODO
 
-- competition key を必須にするか
-- competition_type -> competition_subclass
 - parser は　dev のときだけ
-- deviatino メニューは flag on のときだけ
+- deviation メニューは flag on のときだけ
 - competitions.conf は年ごと分ける？
 - timeschedules を conf に
 - season_skipper はやめるかな
+
+## DONE
+- competition_type -> competition_subclass
+- competition key を必須にするか => しないが before save でつける
 
 ## DB設計
 - Skater has many of Competition

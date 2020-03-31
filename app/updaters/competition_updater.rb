@@ -23,7 +23,7 @@ class CompetitionUpdater < Updater
 
       competition = Competition.create! do |comp|
         data[:country] ||= CityCountry.find_by(city: data[:city]).try(:country)
-        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_class, :competition_subclass).compact
+        comp.attributes = data.slice(:start_date, :end_date, :timezone, :site_url, :name, :key, :country, :city, :competition_key, :competition_class, :competition_subclass).compact
         comp.season = season
       end
 
@@ -266,7 +266,7 @@ class CompetitionUpdater < Updater
         competition_class = CompetitionNormalize.find_match(competition_key).try(:competition_class)
 
         if @specific_competition_class != competition_class
-          message('skipping...class %s not match %s' % [competition_class, @specific_competition_class])
+          message("skipping...class '%s' not match '%s'" % [competition_class, @specific_competition_class])
           true
         else
           false

@@ -1,6 +1,6 @@
 inherit_from: .rubocop_todo.yml
-require:
-  - rubocop-rails
+#require:
+#  - rubocop-rails
 #  - rubocop-rspec
 
 AllCops:
@@ -52,15 +52,6 @@ Metrics/MethodLength:
   Max: 40
   Exclude:
     - db/migrate/*.rb
-
-################
-## Rails
-Rails/CreateTableWithTimestamps:
-  Enabled: false
-
-Rails/OutputSafety:
-  Exclude:
-    - app/datatables/elements_datatable.rb   ## html_safe
 
 ################
 ## Style

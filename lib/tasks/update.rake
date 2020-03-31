@@ -31,12 +31,13 @@ namespace :update do
       season: ENV['season'],
       season_from: ENV['season_from'],
       season_to: ENV['season_to'],
+      competition_class: ENV['competition_class'],
     }
   end
 
   desc 'update competition'
   task competition: :environment do
-    options = options_from_env.slice(:parser_type, :categories, :enable_judge_details, :silent)
+    options = options_from_env.slice(:parser_type, :categories, :enable_judge_details, :silent, :competition_class)
     options[:parser_type] = ENV['parser_type']
     options[:attributes] = { competition_class: ENV['competition_class'] }
     Message.silent = options[:silent]
