@@ -77,10 +77,12 @@ class CompetitionParser
                 b_header = false
                 next
               end
+              dt_str = "#{date} #{elem.xpath('td[1]').text}"
               summary << {
+
                 category: elem.xpath('td[2]').text.upcase,
                 segment:  elem.xpath('td[3]').text.upcase,
-                starting_time:     "#{date} #{elem.xpath('td[1]').text}".in_time_zone(timezone),
+                starting_time: DatetimeParser.parse(dt_str, timezone: timezone, date_format: date_format),
               }
             end
           end

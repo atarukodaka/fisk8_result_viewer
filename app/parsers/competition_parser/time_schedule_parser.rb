@@ -25,7 +25,7 @@ class CompetitionParser
       tz = get_timezone(page)
       #opts = (date_format.nil?) ? {} : { md_formats: [date_format] }
       opts = { timezone: tz }
-      opts[:date_formats] = [ date_format ] if date_format
+      opts[:date_formats] = [date_format] if date_format
       data = rows.map do |row|
         next if row.xpath('td').blank?
 
@@ -46,8 +46,8 @@ class CompetitionParser
       ## chk within 30days?
       unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
         #raise('!!! period over 30days !!! make sure date format is correct. ')
-        data.each {|d| puts [d[:starting_time], d[:category], d[:segment]].join(', ') }
-        puts("period over 30days. correct ? (yes/no)")
+        data.each { |d| puts [d[:starting_time], d[:category], d[:segment]].join(', ') }
+        puts('period over 30days. correct ? (yes/no)')
         case STDIN.gets.chomp
         when /yes/i
         else

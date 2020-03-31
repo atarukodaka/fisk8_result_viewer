@@ -12,7 +12,9 @@ class DatetimeParser
     end
     tm ||= Time.parse(dt_tm_str)
 
-    (tm.year < 100) ? ( tm.year >= 69 ? tm += 1900.years : tm += 2000.years) : nil
+    if tm.year < 100
+      tm += (tm.year >= 69) ? 1900.years : 2000.years
+    end
     tm.in_time_zone(timezone)
   end ## parse()
 

@@ -1,7 +1,7 @@
 module Message
   def self.silent
     @silent
-  end
+end
 
   def self.silent=(val)
     @silent = val
