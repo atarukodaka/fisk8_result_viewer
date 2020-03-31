@@ -25,7 +25,9 @@ GPJPN2008: http://www.isuresults.com/results/gpjpn08/
 GPF2008: http://www.isuresults.com/results/gpf0809/
 WC2009: http://www.isuresults.com/results/wc2009/
 WTT2009: http://www.isuresults.com/results/wtt2009/
-FCC2009: http://www.isuresults.com/results/fc2009/
+FCC2009:
+  site_url: http://www.isuresults.com/results/fc2009/
+  date_format: '%m/%d/%Y'
 GPFRA2009: http://www.isuresults.com/results/gpfra09/
 GPRUS2009: http://www.isuresults.com/results/gprus09/
 FCC2010: http://www.isuresults.com/results/fc2010/
@@ -41,7 +43,7 @@ GPRUS2010: http://www.isuresults.com/results/gprus2010/
 GPJPN2010: http://www.isuresults.com/results/gpjpn2010/
 GPF2010: http://www.isuresults.com/results/gpf1011/
 EC2011: http://www.isuresults.com/results/ec2011/
-FC2011: http://www.isuresults.com/results/fc2011/
+FCC2011: http://www.isuresults.com/results/fc2011/
 WC2011: http://www.isuresults.com/results/wc2011/
 
 ## 2011-12
@@ -53,7 +55,9 @@ GPRUS2011: http://www.isuresults.com/results/gprus2011/
 GPJPN2011: http://www.isuresults.com/results/gpjpn2011/
 GPF2011: http://www.isuresults.com/results/gpf1112/
 EC2012: http://www.isuresults.com/results/ec2012/
-FC2012: http://www.isuresults.com/results/fc2012/
+FCC2012:
+  site_url: http://www.isuresults.com/results/fc2012/
+  date_format: '%m/%d/%Y'
 WC2012: http://www.isuresults.com/results/wc2012/
 WTT2012: http://www.isuresults.com/results/wtt2012/
 
@@ -65,7 +69,7 @@ GPFRA2012: http://www.isuresults.com/results/gpfra2012/
 GPRUS2012: http://www.isuresults.com/results/gprus2012/
 GPJPN2012: http://www.isuresults.com/results/gpjpn2012/
 GPF2012: http://www.isuresults.com/results/gpf1213/
-FC2013: http://www.isuresults.com/results/fc2013/
+FCC2013: http://www.isuresults.com/results/fc2013/
 EC2013: http://www.isuresults.com/results/ec2013/
 WC2013: http://www.isuresults.com/results/wc2013/
 
@@ -77,7 +81,7 @@ GPFRA2013: http://www.isuresults.com/results/gpfra2013/
 GPRUS2013: http://www.isuresults.com/results/gprus2013/
 GPJPN2013: http://www.isuresults.com/results/gpjpn2013/
 GPF2013: http://www.isuresults.com/results/gpf1314/
-FC2014: http://www.isuresults.com/results/fc2014/
+FCC2014: http://www.isuresults.com/results/fc2014/
 EC2014: http://www.isuresults.com/results/ec2014/
 WC2014: http://www.isuresults.com/results/wc2014/
 OWG2014: http://www.isuresults.com/results/owg2014/
@@ -90,7 +94,7 @@ GPFRA2014: http://www.isuresults.com/results/gpfra2014/
 GPRUS2014: http://www.isuresults.com/results/gprus2014/
 GPJPN2014: http://www.isuresults.com/results/gpjpn2014/
 GPF1415: http://www.isuresults.com/results/gpf1415/
-FC2015: http://www.isuresults.com/results/fc2015/
+FCC2015: http://www.isuresults.com/results/fc2015/
 EC2015: http://www.isuresults.com/results/ec2015/
 WC2015: http://www.isuresults.com/results/wc2015/
 
@@ -192,5 +196,3 @@ GPFRA2019: http://www.isuresults.com/results/season1920/gpfra2019/
 GPRUS2019: http://www.isuresults.com/results/season1920/gprus2019/
 GPF2019: http://www.isuresults.com/results/season1920/gpf1920/
 FCC2020: http://www.isuresults.com/results/season1920/fc2020/
-
-WRS2018: http://www.isuresults.com/results/season1819/warsaw2018/

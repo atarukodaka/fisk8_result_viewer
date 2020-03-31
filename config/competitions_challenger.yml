@@ -1,14 +1,14 @@
 ## Challenger Series
 
 ## nebelhorn
-NBL2010: http://www.deu-event.de/results/Nebelhorn_2010/
-NBL2011: http://www.deu-event.de/results/Nebelhorn_2011/
-NBL2012: http://www.deu-event.de/results/Nebelhorn_2012/
-NBL2013: http://www.isuresults.com/results/nt2013/
-NBL2014: http://www.isuresults.com/results/nt2014/
-NBL2015: http://www.isuresults.com/results/season1516/csger2015/
-NBL2016: http://www.deu-event.de/results/Nebelhorn_2016/
-NBL2017: http://www.isuresults.com/results/season1718/csger2017/
+NEBEL2010: http://www.deu-event.de/results/Nebelhorn_2010/
+NEBEL2011: http://www.deu-event.de/results/Nebelhorn_2011/
+NEBEL2012: http://www.deu-event.de/results/Nebelhorn_2012/
+NEBEL2013: http://www.isuresults.com/results/nt2013/
+NEBEL2014: http://www.isuresults.com/results/nt2014/
+NEBEL2015: http://www.isuresults.com/results/season1516/csger2015/
+NEBEL2016: http://www.deu-event.de/results/Nebelhorn_2016/
+NEBEL2017: http://www.isuresults.com/results/season1718/csger2017/
 
 ## finlandia
 FIN2017: http://www.figureskatingresults.fi/results/1718/CSFIN2017/
@@ -29,13 +29,14 @@ LOMB2015: http://www.fisg.it/upload/result/3860/index.html
 LOMB2014: http://www.fisg.it/upload/result/4468/index.html
 
 ## ondreij nepela
-NPL2017: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
-NPL2016: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
-NPL2015: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
-NPL2014:
+NEPELA2017: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
+NEPELA2016: http://www.kraso.sk/wp-content/uploads/sutaze/2016_2017/20160929_mon/
+NEPELA2015: http://www.kraso.sk/wp-content/uploads/sutaze/2015_2016/20151001_ont/
+NEPELA2014:
   site_url: http://www.kraso.sk/wp-content/uploads/sutaze/2014_2015/20141001_ont/html/
   excluding_categories: ['PAIR']
-NPL2013: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
+  date_format: '%m/%d/%Y'
+NEPELA2013: http://www.kraso.sk/wp-content/uploads/sutaze/2017_2018/20170921_ont/
 
 ## warsaw cup
 WRS2016: http://pfsa.com.pl/cspol2016/
@@ -50,10 +51,9 @@ WRS2013: http://www.pfsa.com.pl/results/1314/WC2013/
 
 # http://www.fsatresults.com/ISUchallenger/indexISUCSAOFST2018.html
 LOMB2018: http://www.fisg.it/upload/result/4802/  ## Lombardia
-NPL2018: http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
-NBL2018: http://www.deu-event.de/results/Nebelhorn_2018/
+NEPELA2018: http://www.kraso.sk/wp-content/uploads/sutaze/2018_2019/20180920_ont/
+NEBEL2018: http://www.deu-event.de/results/Nebelhorn_2018/
 WRS2018: http://www.isuresults.com/results/season1819/warsaw2018/
-
 
 # JO2016:
 #https://www.jsfresults.com/InterNational/2018-2019/japanopen/

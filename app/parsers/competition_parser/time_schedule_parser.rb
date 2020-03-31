@@ -16,14 +16,16 @@ class CompetitionParser
       find_table_rows(page, 'Date')   ##|| raise("time schedule table not found")
     end
 
-    def parse(page)
+    def parse(page, date_format: nil)
       # rows = find_table_rows(page, "Date") || raise("time schedule table not found")
       rows = get_time_schedule_rows(page)
       return [] if rows.nil?
 
       dt_str = ''
       tz = get_timezone(page)
-
+      #opts = (date_format.nil?) ? {} : { md_formats: [date_format] }
+      opts = { timezone: tz }
+      opts[:date_formats] = [ date_format ] if date_format
       data = rows.map do |row|
         next if row.xpath('td').blank?
 
@@ -35,12 +37,32 @@ class CompetitionParser
         dt_tm_str = "#{dt_str} #{tm_str}"
 
         {
-          starting_time: dt_tm_str,
+          starting_time: DatetimeParser.parse(dt_tm_str, opts),
           category: normalize_category(row.xpath('td[3]').text),
           segment:  row.xpath('td[4]').text.squish.upcase.sub(/ \- .*$/, '')
         }
       end.compact
 
+      ## chk within 30days?
+      unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
+        #raise('!!! period over 30days !!! make sure date format is correct. ')
+        data.each {|d| puts [d[:starting_time], d[:category], d[:segment]].join(', ') }
+        puts("period over 30days. correct ? (yes/no)")
+        case STDIN.gets.chomp
+        when /yes/i
+        else
+          raise
+        end
+      end
+#      warn('!!! period over 30days !!! make sure date format is correct. ') unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
+=begin
+      unless DatetimeParser.within_days?(data.map {|d| d[:starting_time] }, days: 30)
+        data.each do |item|
+          item[:starting_time] = DatetimeParser.parse(item[:starting_time], md_formats: ['%m/%d/%Y', '%m.%d.%Y'])
+        end
+      end
+=end
+=begin
       [nil, '%d/%m/%Y', '%m/%d/%Y', '%d.%m.%Y', '%m.%d.%Y'].each do |md_format|
         invalid_format = false
         tmp_data = data.deep_dup
@@ -73,6 +95,7 @@ class CompetitionParser
           # debug("** looks strange: try other format")
         end
       end
+=end
       data
     end
   end
