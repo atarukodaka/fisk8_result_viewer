@@ -1,5 +1,5 @@
 class CompetitionParser < Parser
-  def parse_summary(site_url, encoding: nil)
+  def parse_summary(site_url, encoding: nil, date_format: nil)
     page = get_url(site_url, encoding: encoding) || return
     city, country = parse_city_country(page)
 
@@ -8,7 +8,7 @@ class CompetitionParser < Parser
       city: city,
       country: country,
       site_url: site_url,
-      time_schedule: parse_time_schedule(page),
+      time_schedule: parse_time_schedule(page, date_format: date_format),
       scores: [],
       segment_results: [],
       officials: [],
@@ -32,7 +32,7 @@ class CompetitionParser < Parser
     city: city,
     country: country,
     site_url: site_url,
-    time_schedule: parse_time_schedule(page),
+    time_schedule: parse_time_schedule(page, date_format: date_format),
     scores: [],
     segment_results: [],
     officials: [],
@@ -74,8 +74,8 @@ class CompetitionParser < Parser
     @parsers[ptype] ||= [self.class, "#{ptype.to_s.camelize}Parser"].join('::').constantize.new
   end
 
-  def parse_time_schedule(page)
-    get_parser(:time_schedule).parse(page)
+  def parse_time_schedule(page, date_format: nil)
+    get_parser(:time_schedule).parse(page, date_format: date_format)
   end
 
   def parse_summary_table(page, base_url: '')

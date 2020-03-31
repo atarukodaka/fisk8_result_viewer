@@ -15,8 +15,10 @@ isu:
   wtt:
     regex: "^WTT[0-9]"
     name: "ISU World Team Trophy %{year}"
-  jwc: "^JWC[0-9]"
-  jgp: "^JGP[0-9]"
+  wjc: "^WJC[0-9]"
+  jgp:
+    regex: "^JGP[A-Z][A-Z][A-Z][0-9]+"
+    name: "ISU World Junior Championships %{year}"
 challenger:
   finlandia:
     regex: "^FIN[0-9]"
@@ -25,17 +27,17 @@ challenger:
     regex: "WRS[0-9]"
     name: Warsaw Cup %{year}
   nebelhorn:
-    regex: "^NBL[0-9]"
+    regex: "^NEBEL[0-9]"
     name: Nebelhorn Trophy %{year}
   lombardia:
     regex: "^LOMB[0-9]"
     name: Lombardia Trophy %{year}
   nepela:
-    regex: "^NPL[0-9]"
+    regex: "^NEPELA[0-9]"
     name: Ondrej Nepela Trophy %{year}
   asianopen:
     regex: "^AO[0-9]"
-    name: Asian Open %{year}
+    #name: Asian Open %{year}
 other:
   japanopen: "^JO[0-9]"
 local:

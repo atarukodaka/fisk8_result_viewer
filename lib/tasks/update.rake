@@ -58,7 +58,7 @@ namespace :update do
 
     Message.silent = env_options[:silent]
     list.each do |item|
-      options = env_options.merge(item.attributes.slice(:parser_type, :encoding))
+      options = env_options.merge(item.attributes.slice(:parser_type, :encoding, :date_format))
       #DebugPrint.verbose = options[:verbose]
       options[:attributes] = item.attributes.slice(:key, :city, :name, :comment).compact
       CompetitionUpdater.new.update_competition(item[:site_url], options)

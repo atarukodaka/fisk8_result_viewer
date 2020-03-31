@@ -1,10 +1,16 @@
 
 JGPFRA2010: http://www.isuresults.com/results/jgpfra2010/
-JGPROU2010: http://www.isuresults.com/results/jgprou2010/
+JGPROU2010:
+  site_url: http://www.isuresults.com/results/jgprou2010/
+  date_format: '%m/%d/%Y'
 JGPAUT2010: http://www.isuresults.com/results/jgpaut2010/
 JGPJPN2010: http://www.isuresults.com/results/jgpjpn2010/
-JGPGBR2010: http://www.isuresults.com/results/jgpgbr2010/
-JGPGER2010: http://www.isuresults.com/results/jgpger2010/
+JGPGBR2010:
+  site_url: http://www.isuresults.com/results/jgpgbr2010/
+  date_format: '%m/%d/%Y'
+JGPGER2010:
+  site_url: http://www.isuresults.com/results/jgpger2010/
+  date_format: '%m/%d/%Y'
 JGPCZE2010: http://www.isuresults.com/results/jgpcze2010/
 WJC2011: http://www.isuresults.com/results/wjc2011/
 
@@ -15,7 +21,9 @@ JGPROU2011: http://www.isuresults.com/results/jgprou2011/
 JGPAUT2011: http://www.isuresults.com/results/jgpaut2011/
 JGPITA2011: http://www.isuresults.com/results/jgpita2011/
 JGPEST2011: http://www.isuresults.com/results/jgpest2011/
-WJC2012: http://www.isuresults.com/results/wjc2012/
+WJC2012:
+  site_url: http://www.isuresults.com/results/wjc2012/
+  date_format: '%m/%d/%Y'
 
 JGPFRA2012: http://www.isuresults.com/results/jgpfra2012/
 JGPUSA2012: http://www.isuresults.com/results/jgpusa2012/
@@ -64,11 +72,15 @@ WJC2017: http://www.isuresults.com/results/season1617/wjc2017/
 
 JGPAUS2017: http://www.isuresults.com/results/season1718/jgpaus2017/
 JGPAUT2017: http://www.isuresults.com/results/season1718/jgpaut2017/
-JGPLAT2017: http://www.isuresults.com/results/season1718/jgplat2017/
+JGPLAT2017:
+  site_url: http://www.isuresults.com/results/season1718/jgplat2017/
+  date_format: '%m/%d/%Y'
 JGPBLR2017: http://www.isuresults.com/results/season1718/jgpblr2017/
 JGPCRO2017: http://www.isuresults.com/results/season1718/jgpcro2017/
 JGPPOL2017: http://www.isuresults.com/results/season1718/jgppol2017/
-JGPITA2017: http://www.isuresults.com/results/season1718/jgpita2017/
+JGPITA2017:
+  site_url: http://www.isuresults.com/results/season1718/jgpita2017/
+  date_format: '%m/%d/%Y'
 
 JGPAUT2018: http://www.isuresults.com/results/season1819/jgpaut2018/
 JGPSVK2018: http://www.isuresults.com/results/season1819/jgpsvk2018/
