@@ -11,19 +11,15 @@ class CompetitionParser
     end
 
     def get_time_schedule_rows(page)
-      #elem = page.xpath("//table//tr//*[text()='Date']").first || raise
-      #elem.xpath('ancestor::table[1]//tr')
       find_table_rows(page, 'Date')   ##|| raise("time schedule table not found")
     end
 
     def parse(page, date_format: nil)
-      # rows = find_table_rows(page, "Date") || raise("time schedule table not found")
       rows = get_time_schedule_rows(page)
       return [] if rows.nil?
 
       dt_str = ''
       tz = get_timezone(page)
-      #opts = (date_format.nil?) ? {} : { md_formats: [date_format] }
       opts = { timezone: tz }
       opts[:date_formats] = [date_format] if date_format
       data = rows.map do |row|
@@ -43,9 +39,13 @@ class CompetitionParser
         }
       end.compact
 
+      validate_period(data)
+      data
+    end
+
+    def validate_period(data)
       ## chk within 30days?
       unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
-        #raise('!!! period over 30days !!! make sure date format is correct. ')
         data.each { |d| puts [d[:starting_time], d[:category], d[:segment]].join(', ') }
         puts('period over 30days. correct ? (yes/no)')
         case STDIN.gets.chomp
@@ -54,49 +54,6 @@ class CompetitionParser
           raise
         end
       end
-#      warn('!!! period over 30days !!! make sure date format is correct. ') unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
-=begin
-      unless DatetimeParser.within_days?(data.map {|d| d[:starting_time] }, days: 30)
-        data.each do |item|
-          item[:starting_time] = DatetimeParser.parse(item[:starting_time], md_formats: ['%m/%d/%Y', '%m.%d.%Y'])
-        end
-      end
-=end
-=begin
-      [nil, '%d/%m/%Y', '%m/%d/%Y', '%d.%m.%Y', '%m.%d.%Y'].each do |md_format|
-        invalid_format = false
-        tmp_data = data.deep_dup
-        tmp_data.each do |elem|
-          begin
-            tm = if md_format.nil?
-                   elem[:starting_time].in_time_zone(tz)
-                 else
-                   Time.strptime(elem[:starting_time], "#{md_format} %H:%M:%S").in_time_zone(tz)
-                 end
-            tm += 2000.years if tm.year < 100 ## for ondrei nepela
-            elem[:starting_time] = tm
-          rescue ArgumentError
-            invalid_format = true
-            break
-          end
-        end
-
-        ## date range check
-        next if invalid_format || tmp_data.empty?
-
-        min_date = tmp_data.map { |d| d[:starting_time] }.min.to_date
-        max_date = tmp_data.map { |d| d[:starting_time] }.max.to_date
-
-        if max_date - min_date < 30  # looks okey
-          data = tmp_data
-          # debug("** time parse okey")
-          break
-        else
-          # debug("** looks strange: try other format")
-        end
-      end
-=end
-      data
     end
   end
 end
