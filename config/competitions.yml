@@ -13,9 +13,15 @@
 #    CompetitionParser::Extension::Gpjpn
 
 ## olders
-GPJPN2006: http://www.isuresults.com/results/gpjpn06/
-GPF2006: http://www.isuresults.com/results/gpf0607/
-WC2007: http://www.isuresults.com/results/wc2007/
+GPJPN2006:
+  site_url: http://www.isuresults.com/results/gpjpn06/
+  country: JPN
+GPF2006:
+  site_url: http://www.isuresults.com/results/gpf0607/
+  country: RUS
+WC2007:
+  site_url: http://www.isuresults.com/results/wc2007/
+  country: JPN
 GPJPN07: http://www.isuresults.com/results/gpjpn07/
 GPF0708: http://www.isuresults.com/results/gpf0708/
 FCC2008: http://www.isuresults.com/results/fc2008/

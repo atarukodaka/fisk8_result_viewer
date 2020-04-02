@@ -45,14 +45,11 @@ class CompetitionParser
 
     def validate_period(data)
       ## chk within 30days?
-      unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: 30)
+      accesptable_period = 30
+      unless DatetimeParser.within_days?(data.map { |d| d[:starting_time] }, days: accesptable_period)
         data.each { |d| puts [d[:starting_time], d[:category], d[:segment]].join(', ') }
-        puts('period over 30days. correct ? (yes/no)')
-        case STDIN.gets.chomp
-        when /yes/i
-        else
-          raise
-        end
+        puts('period over #{acceptable_period} days. correct ? (yes/no)')
+        raise unless STDIN.gets.chomp =~ /yes/i
       end
     end
   end

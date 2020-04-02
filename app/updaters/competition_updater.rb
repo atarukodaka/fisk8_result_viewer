@@ -11,10 +11,11 @@ class CompetitionUpdater < Updater
 
     parser = get_parser(options[:parser_type])
     data = parser.parse_summary(site_url, encoding: options[:encoding], date_format: options[:date_format]) || return
-    category_skipper = Skipper::CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
     season = SkateSeason.new(data[:start_date])
     return if Skipper::SeasonSkipper.new(options[:season], from: options[:season_from], to: options[:season_to]).skip?(season) ||
               Skipper::ClassSkipper.new(options[:competition_class]).skip?(options[:attributes][:key])
+
+    category_skipper = Skipper::CategorySkipper.new(options[:categories], excluding: options[:excluding_categories])
 
     data.merge!(options[:attributes])
     #normalize(data)
@@ -30,7 +31,6 @@ class CompetitionUpdater < Updater
       ## category
       data[:summary_table].map { |d| d[:category] }.uniq.each do |cat|
         next if category_skipper.skip?(cat)
-
         category = Category.find_by(name: cat) || next
 
         ## category result

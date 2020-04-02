@@ -82,7 +82,7 @@ class CompetitionParser
 
                 category: elem.xpath('td[2]').text.upcase,
                 segment:  elem.xpath('td[3]').text.upcase,
-                starting_time: DatetimeParser.parse(dt_str, timezone: timezone, date_format: date_format),
+                starting_time: DatetimeParser.parse(dt_str, timezone: timezone, date_formats: [date_format]),
               }
             end
           end
