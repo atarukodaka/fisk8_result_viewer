@@ -29,6 +29,7 @@ gem 'open_uri_redirections'         ## for http: -> https: redirect
 gem 'sitemap_generator'
 gem 'active_hash', '~> 1.5'         ## 2.x doenst support Ruby < 2.4 and Rails < 5
 gem 'gretel'                                 ## breadcriumb
+#gem 'loaf'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rspec'                                 ## for heroku
 gem 'stackprof'                           # # profiling

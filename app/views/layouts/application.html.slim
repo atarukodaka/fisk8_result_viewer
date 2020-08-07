@@ -19,8 +19,10 @@ html
     script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 
     // Databales
-    link ref="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+
+    link ref="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"
     script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
+    script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
 
     = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all'
@@ -34,7 +36,13 @@ html
   body
     div.container
       = render partial: "navbar", cached: true
-      = raw breadcrumbs(style: :bootstrap)
+      //= raw breadcrumbs(style: :bootstrap)
+      - breadcrumbs.tap do |links|
+        - if links.any?
+          ol.breadcrumb
+            - links.each do |link|
+              li.breadcrumb-item
+                = link_to_unless(link.current?, link.text, link.url)
       = yield
 
       div.footer
