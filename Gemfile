@@ -11,14 +11,17 @@ gem 'rails', '~> 5.2.0'
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'therubyracer', platforms: :ruby
+gem 'jquery-rails'
+gem 'mini_racer', platforms: :ruby
+#gem 'therubyracer', platforms: :ruby
 
 gem 'json'    # , '>= 2.0.0'
 gem 'coffee-rails', '~> 4.2'
 
 gem 'slim-rails'
 gem 'pdftotext'
-gem 'bootstrap-sass'
+#gem 'bootstrap-sass'
+gem 'bootstrap', '~>4.1.1'
 gem 'kaminari'                           ## paging
 gem 'draper'                              ## decoration
 gem 'config'
@@ -26,6 +29,7 @@ gem 'open_uri_redirections'         ## for http: -> https: redirect
 gem 'sitemap_generator'
 gem 'active_hash', '~> 1.5'         ## 2.x doenst support Ruby < 2.4 and Rails < 5
 gem 'gretel'                                 ## breadcriumb
+#gem 'loaf'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rspec'                                 ## for heroku
 gem 'stackprof'                           # # profiling
