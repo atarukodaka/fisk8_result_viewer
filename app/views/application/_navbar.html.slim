@@ -1,8 +1,19 @@
-nav.navbar.navbar-default role="navigation" 
-  .container-fluid
+
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  .countainer
+    .button.navbar-toggle data-target="navbar-toggle" data-toggle="collapse" type="button"
+    #navbar-toggle.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        - controllers = [:home, :skaters, :competitions, :scores, :elements, :components, :panels, :deviations, :statics, :parsers]
+        - controllers.each do |ctrl|
+          li.nav-item= link_to(I18n.t("controller.#{ctrl}", default: ctrl.to_s.humanize), {controller: ctrl, action: :index}, class: "nav-link")
+
+//nav.navbar.navbar-default role="navigation"
+//nav.navbar.navbar-expand-lg.navbar-light.bg-light role="navigation"
+  .container
     /! Brand and toggle get grouped for better mobile display
     .navbar-header
-      button.navbar-toggle data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button" 
+    button.navbar-toggle data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
@@ -10,10 +21,10 @@ nav.navbar.navbar-default role="navigation"
       /a.navbar-brand href="#"  Brand
     /! Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      ul.nav.navbar-nav
-        - controllers = [:home, :skaters, :competitions, :scores, :elements, :components, :panels, :deviations, :statics, :parsers]
-        - controllers.each do |ctrl|
-          li= link_to(I18n.t("controller.#{ctrl}", default: ctrl.to_s.humanize), {controller: ctrl, action: :index})
+    ul.nav.navbar-nav
+      - controllers = [:home, :skaters, :competitions, :scores, :elements, :components, :panels, :deviations, :statics, :parsers]
+      - controllers.each do |ctrl|
+        li= link_to(I18n.t("controller.#{ctrl}", default: ctrl.to_s.humanize), {controller: ctrl, action: :index})
 
     /! /.navbar-collapse
-  /! /.container-fluid
+  /! /.container

@@ -2,25 +2,30 @@ doctype html
 
 html
   head
-    title 
-      | Fisk8 Result Viewer;  
+    title
+      | Fisk8 Result Viewer;
       =yield :title
     meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport"
     meta name="description" content="Result Viewer for Figureskating Competitions"
     meta name="keywords" content="Figureskating, Score, Result, Competitions, PCS, TES"
     meta name="generator" content="fisk8viewer"
     meta name="application-name" content="fisk8viewer"
-    script src="https://code.jquery.com/jquery-2.2.4.min.js"
-    script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    // = javascript_include_tag '/youtube_search'
-    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    link rel="stylesheet" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.css"
+
+    // Bootstrap4
+    link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+
+    script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+
+    // Databales
+    link ref="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+    script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
+
     = csrf_meta_tags
-    //= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    //= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
-    script src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/datatables.min.js"
+
     css:
       .form-group { margin-bottom: 10px; }
       body { font-size: 13px; }
@@ -34,8 +39,6 @@ html
 
       div.footer
         hr
-          p 
-            | Powered by 
+          p
+            | Powered by
             = link_to("Fisk8ResultViewer #{Fisk8ResultViewer::VERSION}", 'https://github.com/atarukodaka/fisk8_result_viewer', target: "_blank")
-      
-
