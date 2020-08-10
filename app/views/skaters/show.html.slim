@@ -5,11 +5,21 @@
 - content_for :title do
   | skater: #{skater.name}
 
-.row
+/.row
   .col-sm-6
     h2= t(".skater_summary", default: "Skater Summary")
     = Listtable.new(self).records(skater).columns([:name, :nation, :isu_number, :isu_records, :category_type_name, :birthday, :height, :hometown, :club, :coach, :choreographer, :bio_updated_at]).decorate.render
 
-h2=t(".competition_results", default: "Competition Results")
-/= render partial: "datatable", locals: { datatable: competition_results.decorate }
-= competition_results.decorate.render
+h2= "#{skater.name} (#{skater.nation}) [#{skater.isu_number}]"
+
+/- skater.category_results.order("competitions.season": :desc).joins(:competition).includes(:competition).group_by {|d| d.competition.season }.each do |season, data|
+  h3= season
+  - datatable = AjaxDatatables::Datatable.new(self).records(data)
+  - datatable.render
+
+
+
+
+//h2=t(".competition_results", default: "Competition Results")
+= render partial: "datatable", locals: { datatable: competition_results.decorate }
+//= competition_results.decorate.render

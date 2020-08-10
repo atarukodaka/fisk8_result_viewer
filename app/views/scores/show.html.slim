@@ -8,6 +8,10 @@
   | score: #{score.name}
 
 - breadcrumb :score, score
+
+h2 #{score.competition.name}
+h3 #{score.category.name} / #{score.segment.name}
+
 .row
   .col-sm-6
     h2= t(".score_summary", default: "Score Summary")
