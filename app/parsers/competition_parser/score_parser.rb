@@ -134,7 +134,7 @@ class CompetitionParser
       return nil if url.blank?
 
       begin
-        open(url, allow_redirections: :safe) do |f|            # rubocop:disable Security/Open
+        URI.open(url, allow_redirections: :safe) do |f|            # rubocop:disable Security/Open
           Tempfile.create('score') do |out|
             out.binmode
             out.write f.read
