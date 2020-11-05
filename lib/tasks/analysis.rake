@@ -1,4 +1,30 @@
 namespace :analysis do
+  task spin_no_value: :environment do
+    Element.where(element_type: "spin", value: 0.0).each {|elem|
+      puts [elem.score.name, elem.score.skater.name, elem.element_name, elem.value].join(',')
+    }
+  end
+
+  task mao3a: :environment do
+    skater = Skater.find_by(name: 'Mao ASADA')
+
+    binding.pry
+    Element.where("elements.name like '%3A'").where("scores.skater": skater).joins(:score).each do |elem|
+      techs = elem.officials.where("function_type": "technical").includes(:panel).map {|of| of.panel.name}
+      puts [elem.score.name, elem.name, techs].flatten.join(',')
+    end
+
+  end
+
+  task deviations: :environment do
+    Deviation.where("officials.function_type": "judge").joins(:official).each do |dev|
+      skater = dev.score.skater
+      panel = dev.official.panel
+      sd = (skater.nation == panel.nation) ? 'S' : 'D'
+      puts [dev.score.category.name, dev.score.name, skater.name, skater.nation, panel.name, panel.nation,dev.tes_deviation_ratio, dev.pcs_deviation].join(',')
+    end
+  end
+
   task percentile: :environment do
     Component.all.each do |comp|
       puts comp.score.name + ',' + comp.judges.gsub(/ /, ',')
@@ -35,7 +61,7 @@ namespace :analysis do
     skater = Skater.find_by(name: 'Yuzuru HANYU')
     #skater = Skater.find_by(name: 'Shoma UNO')
     Score.where(skater: skater).joins(:competition).each do |score|
-      score.performed_segment.officials.where(function_type: 'technical').each do |official|
+      score.officials.where(function_type: 'technical').each do |official|
         puts "#{skater.name},#{score.competition.season},#{score.name},#{official.panel.name},#{official.panel.nation}"
       end
     end

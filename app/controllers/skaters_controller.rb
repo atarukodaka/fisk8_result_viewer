@@ -14,6 +14,11 @@ class SkatersController < IndexController
   end
 
   def data_to_show
+
+    #skater.category_results.order("competitions.season": :desc).joins(:competition).group_by {|d| d.competition.season }.each do |season, data|
+
+    #end
+
     { skater: skater, competition_results: competition_results_datatable(skater) }
   end
 end
